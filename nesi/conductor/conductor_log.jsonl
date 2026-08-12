@@ -1,0 +1,167 @@
+{"ts": "2026-07-16T21:26:19", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": false, "mode": "once"}
+{"ts": "2026-07-16T21:26:28", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": false, "mode": "once"}
+{"ts": "2026-07-16T21:26:28", "event": "drop-detected", "pile": "test_pile_batch1.md", "bytes": 108}
+{"ts": "2026-07-16T21:27:10", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": true, "mode": "once"}
+{"ts": "2026-07-16T21:27:10", "event": "drop-detected", "pile": "test_pile_batch2.md", "bytes": 330}
+{"ts": "2026-07-16T21:27:10", "event": "organ-run-start", "pile": "test_pile_batch2.md"}
+{"ts": "2026-07-16T21:27:11", "event": "organ-run-error", "pile": "test_pile_batch2.md", "error": "engine returned no JSON (rc=1): "}
+{"ts": "2026-07-16T21:42:38", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "once", "port": 8799}
+{"ts": "2026-07-16T21:42:38", "event": "drop-detected", "pile": "test_pile_batch2.md", "bytes": 330}
+{"ts": "2026-07-16T21:42:38", "event": "organ-run-start", "pile": "test_pile_batch2.md", "engine": "stub"}
+{"ts": "2026-07-16T21:42:38", "event": "organ-run-done", "pile": "test_pile_batch2.md", "staged": "2026-07-16_test_pile_batch2_bd15bb.json", "items": 5}
+{"ts": "2026-07-16T21:43:00", "event": "lint-done", "staged": "2026-07-16_test_pile_batch2_bd15bb.json"}
+{"ts": "2026-07-16T21:44:20", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T21:44:40", "event": "drop-detected", "pile": "test_pile_markcheck.md", "bytes": 31}
+{"ts": "2026-07-16T21:44:40", "event": "organ-run-start", "pile": "test_pile_markcheck.md", "engine": "stub"}
+{"ts": "2026-07-16T21:44:40", "event": "organ-run-done", "pile": "test_pile_markcheck.md", "staged": "2026-07-16_test_pile_markcheck_df2651.json", "items": 1}
+{"ts": "2026-07-16T21:45:11", "event": "lint-done", "staged": "2026-07-16_test_pile_markcheck_df2651.json"}
+{"ts": "2026-07-16T21:45:41", "event": "mark-recorded", "id": "2026-07-16_test_pile_markcheck_df2651", "verdict": "compost"}
+{"ts": "2026-07-16T21:59:37", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:02:17", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:02:35", "event": "drop-detected", "pile": "test_pile_exe.md", "bytes": 45}
+{"ts": "2026-07-16T22:02:35", "event": "organ-run-start", "pile": "test_pile_exe.md", "engine": "stub"}
+{"ts": "2026-07-16T22:02:35", "event": "organ-run-done", "pile": "test_pile_exe.md", "staged": "2026-07-16_test_pile_exe_b2d82a.json", "items": 1}
+{"ts": "2026-07-16T22:02:51", "event": "lint-done", "staged": "2026-07-16_test_pile_exe_b2d82a.json"}
+{"ts": "2026-07-16T22:03:34", "event": "mark-recorded", "id": "2026-07-16_test_pile_exe_b2d82a", "verdict": "compost"}
+{"ts": "2026-07-16T22:03:54", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:05:46", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:14:25", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:15:35", "event": "drop-detected", "pile": "test_pile_A_turbo.md", "bytes": 141}
+{"ts": "2026-07-16T22:15:35", "event": "organ-run-start", "pile": "test_pile_A_turbo.md", "engine": "stub"}
+{"ts": "2026-07-16T22:15:35", "event": "organ-run-done", "pile": "test_pile_A_turbo.md", "staged": "2026-07-16_test_pile_A_turbo_b2b785.json", "items": 2}
+{"ts": "2026-07-16T22:15:36", "event": "drop-detected", "pile": "test_pile_A_turbo.md", "bytes": 141}
+{"ts": "2026-07-16T22:15:36", "event": "organ-run-start", "pile": "test_pile_A_turbo.md", "engine": "stub"}
+{"ts": "2026-07-16T22:15:36", "event": "organ-run-done", "pile": "test_pile_A_turbo.md", "staged": "2026-07-16_test_pile_A_turbo_9029d2.json", "items": 2}
+{"ts": "2026-07-16T22:15:58", "event": "lint-done", "staged": "2026-07-16_test_pile_A_turbo_b2b785.json"}
+{"ts": "2026-07-16T22:16:08", "event": "lint-done", "staged": "2026-07-16_test_pile_A_turbo_9029d2.json"}
+{"ts": "2026-07-16T22:16:29", "event": "mark-recorded", "id": "2026-07-16_test_pile_A_turbo_b2b785", "verdict": "cross"}
+{"ts": "2026-07-16T22:20:55", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "stub", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T22:24:40", "event": "mark-recorded", "id": "2026-07-16_test_pile_A_turbo_b2b785", "verdict": "cross"}
+{"ts": "2026-07-16T22:25:08", "event": "index-rebuilt", "rc": 0}
+{"ts": "2026-07-16T22:26:02", "event": "drop-detected", "pile": "test_pile_B_echo.md", "bytes": 88}
+{"ts": "2026-07-16T22:26:02", "event": "organ-run-start", "pile": "test_pile_B_echo.md", "engine": "stub"}
+{"ts": "2026-07-16T22:26:02", "event": "organ-run-done", "pile": "test_pile_B_echo.md", "staged": "2026-07-16_test_pile_B_echo_cf1118.json", "items": 1}
+{"ts": "2026-07-16T22:26:18", "event": "lint-done", "staged": "2026-07-16_test_pile_B_echo_cf1118.json"}
+{"ts": "2026-07-16T22:37:25", "event": "cross-rolled-back", "id": "2026-07-16_failtest_000000"}
+{"ts": "2026-07-16T23:04:32", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "claude-cli", "mode": "once", "port": 8799}
+{"ts": "2026-07-16T23:04:33", "event": "drop-detected", "pile": "test_pile_fallback.md", "bytes": 51}
+{"ts": "2026-07-16T23:04:33", "event": "organ-run-start", "pile": "test_pile_fallback.md", "engine": "claude-cli"}
+{"ts": "2026-07-16T23:04:34", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-16T23:04:34", "event": "organ-run-done", "pile": "test_pile_fallback.md", "staged": "2026-07-16_test_pile_fallback_5e5111.json", "items": 1}
+{"ts": "2026-07-16T23:04:56", "event": "lint-done", "staged": "2026-07-16_test_pile_fallback_5e5111.json"}
+{"ts": "2026-07-16T23:10:55", "event": "conductor-up", "inbox": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox", "engine": "claude-cli", "mode": "watch+serve", "port": 8799}
+{"ts": "2026-07-16T23:21:57", "event": "mark-recorded", "id": "2026-07-16_test_pile_fallback_5e5111", "verdict": "hold"}
+{"ts": "2026-07-16T23:23:14", "event": "drop-detected", "pile": "test_pile_native.md", "bytes": 31}
+{"ts": "2026-07-16T23:23:14", "event": "organ-run-start", "pile": "test_pile_native.md", "engine": "claude-cli"}
+{"ts": "2026-07-16T23:23:17", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-16T23:23:17", "event": "organ-run-done", "pile": "test_pile_native.md", "staged": "2026-07-16_test_pile_native_4ce0d7.json", "items": 1}
+{"ts": "2026-07-16T23:23:32", "event": "lint-done", "staged": "2026-07-16_test_pile_native_4ce0d7.json"}
+{"ts": "2026-07-17T10:27:11", "event": "mark-recorded", "id": "2026-07-16_test_pile_native_4ce0d7", "verdict": "compost"}
+{"ts": "2026-07-17T10:45:18", "event": "drop-detected", "pile": "probe_engine_live.md", "bytes": 195}
+{"ts": "2026-07-17T10:45:18", "event": "organ-run-start", "pile": "probe_engine_live.md", "engine": "claude-cli"}
+{"ts": "2026-07-17T10:45:25", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-17T10:45:25", "event": "organ-run-done", "pile": "probe_engine_live.md", "staged": "2026-07-17_probe_engine_live_cd8e24.json", "items": 3}
+{"ts": "2026-07-17T10:47:29", "event": "lint-done", "staged": "2026-07-17_probe_engine_live_cd8e24.json"}
+{"ts": "2026-07-17T18:18:19", "event": "mark-recorded", "id": "2026-07-17_probe_engine_live_cd8e24", "verdict": "compost"}
+{"ts": "2026-07-17T22:20:00", "event": "interrogator-v0-built", "note": "Moves A+B live (deterministic, no engine call); conditions extracted NESI-side with provenance; first-seen ledger stamped 23 helds; thresholds 3w/24/15 in config.json; pane wired into nesi_app.py; NESI.exe rebuilt + boot-verified; metabolizer loop untouched"}
+{"ts": "2026-07-17T22:35:00", "event": "continuity-v0-built", "note": "derived resume-view live: checkpoint-on-mutation (change-keyed, threaded), WM_DELETE_WINDOW close write + timestamped history snapshot (retention 14, config), resume board renders on open with zero gesture; sources of truth untouched; NESI.exe rebuilt + boot-verified; 2 real snapshots in continuity/history"}
+{"ts": "2026-07-17T22:52:00", "event": "return-circuit-v0-built", "note": "per-item anchor-fired returns live: explicit tags only (until-date, when-file-exists), render-only cards, no marks/no promotion/no store; tray audit 0 date / 0 artifact / 23 felt so it renders silence truthfully today; Move B seam disjoint by construction; NESI.exe rebuilt + boot-verified; interior set CLOSED"}
+{"ts": "2026-07-17T22:48:00", "event": "return-circuit-v0-built", "note": "per-item anchor-fired returns live: explicit tags only (until-date, when-file-exists), render-only cards, no marks/no promotion/no store; tray audit 0 date / 0 artifact / 23 felt so it renders silence truthfully today; Move B seam disjoint by construction; NESI.exe rebuilt 22:45 + boot-verified after killing a zombie exe that blocked the first build; interior set CLOSED"}
+{"ts": "2026-07-17T23:09:55", "event": "bench-landed", "id": "2026-07-17_made_an_instrument_for_witnessing_a_gift_with_daf9fe", "stub": true}
+{"ts": "2026-07-17T23:12:18", "event": "bench-landed", "id": "2026-07-17_made_a_floor_that_holds_a_stranger_without_ex_0be5d0", "stub": true}
+{"ts": "2026-07-17T23:17:00", "event": "bench-v0-built", "note": "production surface internal-complete: one invoke(op,payload) socket, 4 ops (draft/break/refine/semantic_pull=MoveC) all loud STUB, keyword pull floor over slug+title+thesis, land->staged/ origin=made no crossing-eligibility, existing verbs downstream; full loop verified headless+window; fixed return-circuit threading-law violation found by the smoke (after() from worker -> queue marshal); NESI.exe rebuilt 23:15 + boot-verified, zero processes left"}
+{"ts": "2026-07-17T23:40:00", "event": "organ-prune-complete", "note": "Kevin marked compost all four + sweep baks: drift/brier/falsifier/metamorphic panes removed from window (code archived nesi/_compost/organ_panes_2026-07-17.py.txt with why-note; tools/recognition scripts untouched, live for chat-side skills; falsifier queue fact preserved as evidence); 5 exe .baks swept to _compost; window now metabolizer+bench+interrogator tabs + continuity board + return strip; zombie-checked, NESI.exe rebuilt + boot-verified, zero processes left"}
+{"ts": "2026-07-17T23:39:39", "event": "drop-detected", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "bytes": 54}
+{"ts": "2026-07-17T23:39:39", "event": "organ-run-start", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "engine": "claude-cli"}
+{"ts": "2026-07-17T23:40:42", "event": "drop-detected", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "bytes": 54}
+{"ts": "2026-07-17T23:40:42", "event": "organ-run-start", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "engine": "claude-cli"}
+{"ts": "2026-07-17T23:40:46", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-17T23:40:46", "event": "organ-run-done", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "staged": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_8b90ef.json", "items": 1}
+{"ts": "2026-07-17T23:45:00", "event": "front-v0-built", "note": "conversational front live as landing tab (selected on open): verb-table routing floor (Kevin: table stands), escalation-rule confirm boundary, ask-on-miss via stubbed classify op on the one socket, outward wall (membrane unratified), assembly through existing organ seams only, bench objects handed to the bench pane; 7 probes + window smoke verified; backup now goes straight to _compost; NESI.exe rebuilt + boot-verified, zero processes left"}
+{"ts": "2026-07-17T23:41:57", "event": "drop-detected", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "bytes": 54}
+{"ts": "2026-07-17T23:41:57", "event": "organ-run-start", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "engine": "claude-cli"}
+{"ts": "2026-07-17T23:42:01", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-17T23:42:01", "event": "organ-run-done", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "staged": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1.json", "items": 1}
+{"ts": "2026-07-17T23:42:04", "event": "lint-error", "staged": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1.json", "error": "lint failed: "}
+{"ts": "2026-07-19T13:47:17", "event": "bench-landed", "id": "2026-07-19_made_id_like_to_build_a_lease_3e1350", "stub": true}
+{"ts": "2026-07-19T20:44:53", "event": "mark-recorded", "id": "unmark_selftest_000000", "verdict": "hold"}
+{"ts": "2026-07-19T20:44:53", "event": "unmarked", "id": "unmark_selftest_000000", "was": "hold"}
+{"ts": "2026-07-19T20:44:53", "event": "mark-recorded", "id": "unmark_selftest_000000", "verdict": "compost"}
+{"ts": "2026-07-19T20:44:53", "event": "unmarked", "id": "unmark_selftest_000000", "was": "compost"}
+{"ts": "2026-07-20T16:06:47", "event": "bench-landed", "id": "2026-07-20_made_a_departure_note_to_frank_about_leaving__15bc5b", "type": "note", "stub": true}
+{"ts": "2026-07-20T16:32:31", "event": "bench-landed", "id": "2026-07-20_made_a_departure_note_to_frank_about_leaving__2bce71", "type": "note", "stub": true}
+{"ts": "2026-07-20T16:51:37", "event": "composer-built", "organ": "composer", "engine": "stub", "diagram_status_lease": "present", "diagram_status_floor": "missing", "note": "render organ instantiates ratified ARTIFACT_GRAMMAR; author_diagram stubbed at bench.invoke socket"}
+{"ts": "2026-07-20T16:57:38", "event": "bench-landed", "id": "2026-07-20_made_a_note_to_hold_the_well_pump_reading_abc569", "type": "note", "stub": true, "diagram_status": "missing"}
+{"ts": "2026-07-20T16:58:04", "event": "composer-wired", "organs": "bench,front", "note": "bench.new_object()/land() now compose_preview()/compose() through composer.py; front.py bench branch surfaces diagram_status in plain text, no HTML in front by design; smoke-test staged object removed after verification"}
+{"ts": "2026-07-20T17:07:02", "event": "composer-bench-tab-wired", "note": "nesi_app.py bench tab now shows a native tkinter COMPOSED panel (Canvas redraw of composed.dsl, no HTML/web layer, per the ratified no-web-layer law) instead of a webview; composer.compose() extended to return the resolved dsl alongside card/infographic/doc for this native path; smoke-tested headless against a real tk.Canvas for none/missing/present cases"}
+{"ts": "2026-07-21T22:08:33", "event": "paste-captured", "pile": "paste_2026-07-21_220833.md", "bytes": 175}
+{"ts": "2026-07-21T22:08:34", "event": "drop-detected", "pile": "paste_2026-07-21_220833.md", "bytes": 175}
+{"ts": "2026-07-21T22:08:34", "event": "organ-run-start", "pile": "paste_2026-07-21_220833.md", "engine": "claude-cli"}
+{"ts": "2026-07-21T22:08:38", "event": "engine-fallback", "engine": "claude-cli", "error": "engine returned no JSON (rc=1): Not logged in · Please run /login"}
+{"ts": "2026-07-21T22:08:38", "event": "organ-run-done", "pile": "paste_2026-07-21_220833.md", "staged": "2026-07-21_paste_2026-07-21_220833_f71abc.json", "items": 1}
+{"ts": "2026-07-21T22:09:41", "event": "lint-done", "staged": "2026-07-21_paste_2026-07-21_220833_f71abc.json"}
+{"ts": "2026-07-22T17:57:06", "event": "superseded", "ancestor": "zz_ancestor", "by": "crossed_zz_ancestor_descendant_r_desc.md"}
+{"ts": "2026-07-22T17:57:06", "event": "mark-recorded", "id": "2026-07-22_175706962650_zz_ancestor_desc", "verdict": "cross"}
+{"ts": "2026-07-22T18:21:55", "event": "superseded", "ancestor": "zz_anc", "by": "crossed_zz_anc_descendant_c_desc.md"}
+{"ts": "2026-07-22T18:21:55", "event": "mark-recorded", "id": "2026-07-22_182155537030_zz_anc_desc", "verdict": "cross"}
+{"ts": "2026-07-22T18:30:56", "event": "superseded", "ancestor": "zz_anc", "by": "crossed_zz_anc_descendant_c_desc.md"}
+{"ts": "2026-07-22T18:30:56", "event": "mark-recorded", "id": "2026-07-22_183056488421_zz_anc_desc", "verdict": "cross"}
+{"ts": "2026-07-23T13:29:26", "event": "preflight-failed", "report": {"metabolizer": {"ok": true, "detail": ["structure intact — stub + claude-cli registered, seam callable"]}, "bench": {"ok": false, "detail": ["fell back but did not badge the fallback honestly"]}, "overall_ok": false}}
+{"ts": "2026-07-23T18:51:42", "event": "preflight-failed", "report": {"metabolizer": {"ok": true, "detail": ["structure intact — stub + claude-cli registered, seam callable"]}, "bench": {"ok": false, "detail": ["fell back but did not badge the fallback honestly"]}, "overall_ok": false}}
+{"ts": "2026-07-23T19:06:07", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T21:11:54", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T21:11:56", "event": "paste-captured", "pile": "paste_2026-07-23_211156.md", "bytes": 68}
+{"ts": "2026-07-23T21:11:58", "event": "drop-detected", "pile": "paste_2026-07-23_211156.md", "bytes": 68}
+{"ts": "2026-07-23T21:11:58", "event": "organ-run-start", "pile": "paste_2026-07-23_211156.md", "engine": "claude-cli"}
+{"ts": "2026-07-23T21:11:58", "event": "organ-run-done", "pile": "paste_2026-07-23_211156.md", "staged": "2026-07-23_paste_2026-07-23_211156_b0944f.json", "items": 1}
+{"ts": "2026-07-23T21:13:02", "event": "lint-done", "staged": "2026-07-23_paste_2026-07-23_211156_b0944f.json"}
+{"ts": "2026-07-23T21:34:22", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T21:36:28", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T21:40:15", "event": "mark-recorded", "id": "2026-07-23_paste_2026-07-23_211156_b0944f", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:19", "event": "mark-recorded", "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:20", "event": "mark-recorded", "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_8b90ef", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:27", "event": "mark-recorded", "id": "2026-07-17_made_a_floor_that_holds_a_stranger_without_ex_0be5d0", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:30", "event": "mark-recorded", "id": "2026-07-17_made_an_instrument_for_witnessing_a_gift_with_daf9fe", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:32", "event": "mark-recorded", "id": "2026-07-19_made_id_like_to_build_a_lease_3e1350", "verdict": "compost"}
+{"ts": "2026-07-23T21:54:34", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T21:56:18", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T22:16:52", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T22:17:28", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T22:30:18", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-23T22:35:31", "event": "preflight-failed", "report": {"metabolizer": {"ok": true, "detail": ["structure intact — stub + claude-cli registered, seam callable"]}, "bench": {"ok": false, "detail": ["fell back but did not badge the fallback honestly"]}, "overall_ok": false}}
+{"ts": "2026-07-23T23:31:02", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T16:15:48", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T16:16:34", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T16:26:21", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T16:26:22", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T16:42:19", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-24T17:01:26", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:16:42", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:16:42", "event": "paste-captured", "pile": "paste_2026-07-25_151642.md", "bytes": 17}
+{"ts": "2026-07-25T15:16:42", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:16:42", "event": "paste-captured", "pile": "paste_2026-07-25_151642_2.md", "bytes": 62}
+{"ts": "2026-07-25T15:16:42", "event": "paste-captured", "pile": "paste_2026-07-25_151642_3.md", "bytes": 48}
+{"ts": "2026-07-25T15:20:59", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:23:14", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:23:14", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:27:06", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:27:18", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:29:33", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:37:18", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:41:35", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T15:51:03", "event": "preflight-failed", "report": {"metabolizer": {"ok": true, "detail": ["structure intact — stub + claude-cli registered, seam callable"]}, "bench": {"ok": false, "detail": ["fell back but did not badge the fallback honestly"]}, "overall_ok": false}}
+{"ts": "2026-07-25T15:51:03", "event": "drop-detected", "pile": "paste_2026-07-25_151642.md", "bytes": 17}
+{"ts": "2026-07-25T15:51:03", "event": "organ-run-start", "pile": "paste_2026-07-25_151642.md", "engine": "claude-cli"}
+{"ts": "2026-07-25T15:51:03", "event": "organ-run-done", "pile": "paste_2026-07-25_151642.md", "staged": "2026-07-25_paste_2026-07-25_151642_0bc07d.json", "items": 1}
+{"ts": "2026-07-25T15:51:18", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T17:24:53", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T18:23:20", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T18:26:00", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T18:28:29", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T18:45:20", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-25T18:45:32", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-26T12:02:24", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-26T12:02:24", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-26T12:02:25", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-07-26T12:02:25", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-05T16:00:54", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}

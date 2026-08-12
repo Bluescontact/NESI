@@ -1,0 +1,5 @@
+{
+  "_comment": "Continuity config — Kevin-editable. Defaults carried from the v0 spec 2026-07-17 ('defaults fine'); retention + checkpoint mode are open §6 marks.",
+  "snapshot_retention": 14,
+  "checkpoint_on_mutation": true
+}

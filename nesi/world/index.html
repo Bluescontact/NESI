@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI's World</title>
+<style>
+  :root{
+    --paper:#faf7f0; --ink:#3a3630; --line:#8a8272; --water:#cfe3e8; --water-line:#7fa8b3;
+    --deep:#1e2a2e; --sand:#efe6cf; --mountain:#d8d2c2; --accent:#a8743c; --panel:#fffdf8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:"Segoe UI",Verdana,Geneva,sans-serif; padding:18px;}
+  header{max-width:1060px; margin:0 auto 10px auto;}
+  h1{font-size:1.35em; font-weight:600; letter-spacing:.04em;}
+  header p{font-size:.85em; color:var(--line); margin-top:2px;}
+  .maFrame{max-width:1060px; margin:0 auto; border:2px solid var(--line); border-radius:8px; background:var(--paper); overflow:hidden;}
+  svg{display:block; width:100%; height:auto;}
+  .bld{cursor:pointer;}
+  .bld:hover .hit{stroke:var(--accent); stroke-width:2.5;}
+  .bld text{pointer-events:none;}
+  .lbl{font-size:15px; fill:var(--ink); font-family:inherit;}
+  .lbl-sm{font-size:12px; fill:var(--ink);}
+  .cap{font-size:11px; fill:#6b665c;}
+  /* panel */
+  #panelWrap{max-width:1060px; margin:12px auto 0 auto;}
+  .panel{border:2px solid var(--line); border-radius:8px; background:var(--panel); padding:16px 18px; display:none;}
+  .panel.open{display:block;}
+  .panel h2{font-size:1.05em; margin-bottom:6px;}
+  .panel p{font-size:.9em; line-height:1.5; margin-bottom:8px;}
+  .panel a{color:var(--accent);}
+  .panel .quiet{color:var(--line); font-size:.8em;}
+  .panel .shelf{border:1px dashed var(--line); border-radius:6px; padding:10px 12px; margin:8px 0; font-size:.85em; color:var(--line); background:var(--paper);}
+  .closeBtn{float:right; border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:5px; padding:2px 10px; cursor:pointer; font-size:.8em;}
+  .law{border-left:3px solid var(--water-line); padding:4px 10px; margin:8px 0; font-size:.85em; font-style:italic; color:#55504a;}
+  ul.links{list-style:none; margin:6px 0;}
+  ul.links li{margin:4px 0; font-size:.9em;}
+  .flag{display:inline-block; border:1px solid var(--accent); color:var(--accent); border-radius:4px; font-size:.7em; padding:1px 6px; margin-left:6px; vertical-align:middle;}
+  /* shore strip */
+  #shoreStrip{max-width:1060px; margin:12px auto 0 auto; border:2px solid var(--line); border-radius:8px; background:var(--sand); padding:14px 16px;}
+  #shoreStrip h2{font-size:1em; margin-bottom:6px;}
+  .stone{display:inline-block; background:var(--panel); border:1.5px solid var(--line); border-radius:14px; padding:6px 12px; margin:4px 6px 4px 0; font-size:.85em; max-width:100%; vertical-align:top;}
+  .stone .st-txt{white-space:pre-wrap;}
+  .empty-note{color:var(--line); font-size:.85em; font-style:italic;}
+  #surfaceBox{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line);}
+  #surfaceBox button{border:1.5px solid var(--water-line); background:var(--water); color:var(--ink); border-radius:6px; padding:6px 14px; cursor:pointer; font-size:.85em;}
+  #surfaceOut{margin-top:8px; font-size:.9em; display:none; background:var(--panel); border:1.5px solid var(--water-line); border-radius:6px; padding:8px 12px;}
+  #dailyShape{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line);}
+  #dailyShape .quiet{color:var(--line); font-size:.78em;}
+  footer{max-width:1060px; margin:14px auto; font-size:.75em; color:var(--line);}
+</style>
+</head>
+<body>
+<header>
+  <h1>NESI'S WORLD</h1>
+  <p>a drawn map · everything here opens over what already exists · <a href="logbook.html" style="color:var(--accent)">the Log Book</a> is the door in</p>
+</header>
+
+<div class="maFrame">
+<svg viewBox="0 0 1060 560" xmlns="http://www.w3.org/2000/svg" aria-label="wireframe map of NESI's world">
+  <!-- ground wash -->
+  <rect x="0" y="0" width="1060" height="560" fill="var(--paper)"/>
+
+  <!-- MOUNTAINS, west side -->
+  <g stroke="var(--line)" stroke-width="2" fill="var(--mountain)">
+    <path d="M -10 240 L 70 90 L 130 200 L 190 60 L 260 210 L 320 120 L 380 230 L 380 560 L -10 560 Z" fill="var(--mountain)" opacity="0.55"/>
+    <path d="M 70 90 L 95 140 M 190 60 L 215 120 M 320 120 L 340 165" fill="none" stroke-width="1.5"/>
+  </g>
+  <text x="150" y="270" class="lbl" fill="var(--line)">the mountains</text>
+
+  <!-- THE LAKE, east side -->
+  <g>
+    <path d="M 560 120 C 700 70, 940 90, 1020 180 C 1075 250, 1050 420, 930 470 C 800 520, 620 500, 560 400 C 505 310, 490 190, 560 120 Z"
+          fill="var(--water)" stroke="var(--water-line)" stroke-width="2.5"/>
+    <!-- THE DEEP: drawn as darkness, never populated -->
+    <ellipse cx="850" cy="300" rx="130" ry="95" fill="var(--deep)"/>
+    <text x="850" y="296" text-anchor="middle" font-size="13" fill="#9db4ba">THE DEEP</text>
+    <text x="850" y="314" text-anchor="middle" font-size="10" fill="#7d949a">dark by construction · never rendered</text>
+    <text x="620" y="150" class="lbl" fill="var(--water-line)">THE LAKE</text>
+    <!-- ripple lines -->
+    <path d="M 600 220 q 20 -8 40 0 M 640 430 q 20 -8 40 0 M 950 200 q 20 -8 40 0" stroke="var(--water-line)" fill="none" stroke-width="1.5"/>
+  </g>
+
+  <!-- NESI the mount, by her vortex -->
+  <g id="nesiMount">
+    <!-- vortex -->
+    <path d="M 645 330 a 26 26 0 1 1 24 34 a 18 18 0 1 0 14 -26 a 10 10 0 1 1 -14 8"
+          fill="none" stroke="var(--water-line)" stroke-width="2"/>
+    <!-- the mount: small humped creature surfacing -->
+    <path d="M 600 316 q 14 -26 36 -14 q 8 -18 24 -10 q 6 -8 14 -4 q 10 4 6 14 q 14 8 6 20 q -44 12 -86 -6 Z"
+          fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+    <circle cx="672" cy="296" r="2.2" fill="var(--ink)"/>
+    <text x="596" y="352" class="lbl-sm">NESI, the mount</text>
+    <text x="560" y="370" font-size="10" fill="#6b665c">you can ask her to: surface gifts · search the deep for names ·</text>
+    <text x="560" y="384" font-size="10" fill="#6b665c">water the orchard · hold the vortex — she does nothing unbidden</text>
+  </g>
+
+  <!-- THE SHORE along the water -->
+  <path d="M 545 110 C 480 200, 480 340, 545 420 C 570 460, 610 495, 660 515"
+        fill="none" stroke="var(--sand)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M 545 110 C 480 200, 480 340, 545 420 C 570 460, 610 495, 660 515"
+        fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="470" y="470" class="lbl" fill="var(--accent)">THE SHORE</text>
+  <text x="452" y="488" font-size="10" fill="#6b665c">today's stones show below the map</text>
+
+  <!-- THE THREE SPIRES cluster -->
+  <g class="bld" data-panel="p-grown">
+    <rect x="392" y="56" width="44" height="88" fill="transparent"/>
+    <path class="hit" d="M 400 120 L 414 60 L 428 120 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <text x="382" y="140" class="lbl-sm">Grown</text>
+  </g>
+  <g class="bld" data-panel="p-given">
+    <rect x="436" y="74" width="34" height="80" fill="transparent"/>
+    <path class="hit" d="M 440 130 L 452 78 L 464 130 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <text x="434" y="150" class="lbl-sm">Given</text>
+  </g>
+  <g class="bld" data-panel="p-woven">
+    <rect x="470" y="62" width="38" height="84" fill="transparent"/>
+    <path class="hit" d="M 476 122 L 489 66 L 502 122 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <text x="472" y="142" class="lbl-sm">Woven</text>
+  </g>
+  <text x="398" y="46" class="lbl">THE THREE SPIRES</text>
+
+  <!-- THE WORKSHOP -->
+  <g class="bld" data-panel="p-workshop">
+    <rect class="hit" x="395" y="240" width="80" height="52" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M 390 240 L 435 214 L 480 240" fill="none" stroke="var(--ink)" stroke-width="2"/>
+    <rect x="422" y="266" width="18" height="26" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+    <text x="392" y="310" class="lbl-sm">THE WORKSHOP</text>
+  </g>
+
+  <!-- THE HEARTH -->
+  <g class="bld" data-panel="p-hearth">
+    <rect class="hit" x="400" y="360" width="74" height="50" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M 395 360 L 437 336 L 479 360" fill="none" stroke="var(--ink)" stroke-width="2"/>
+    <rect x="452" y="322" width="10" height="20" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.5"/>
+    <path d="M 457 316 q 4 -6 0 -10 q -3 4 0 10" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+    <text x="404" y="428" class="lbl-sm">THE HEARTH</text>
+  </g>
+
+  <!-- THE HELIOSTAT -->
+  <g class="bld" data-panel="p-heliostat">
+    <circle class="hit" cx="300" cy="380" r="22" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+    <g stroke="var(--ink)" stroke-width="1.5">
+      <line x1="300" y1="348" x2="300" y2="338"/><line x1="300" y1="412" x2="300" y2="422"/>
+      <line x1="268" y1="380" x2="258" y2="380"/><line x1="332" y1="380" x2="342" y2="380"/>
+      <line x1="278" y1="358" x2="271" y2="351"/><line x1="322" y1="402" x2="329" y2="409"/>
+      <line x1="322" y1="358" x2="329" y2="351"/><line x1="278" y1="402" x2="271" y2="409"/>
+    </g>
+    <text x="252" y="446" class="lbl-sm">THE HELIOSTAT</text>
+  </g>
+
+  <!-- THE MEMBRANE -->
+  <g class="bld" data-panel="p-membrane">
+    <path class="hit" d="M 250 480 q 30 -26 60 0 q 30 26 60 0" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 6"/>
+    <rect x="248" y="452" width="124" height="56" fill="var(--paper)" opacity="0" class="hit2"/>
+    <text x="256" y="524" class="lbl-sm">THE MEMBRANE</text>
+  </g>
+  <!-- invisible wide hit area for membrane -->
+  <rect x="244" y="450" width="132" height="60" fill="transparent" class="bld" data-panel="p-membrane" style="cursor:pointer"/>
+
+  <!-- daily shape ground patch near the shore -->
+  <g id="shapePatch">
+    <rect x="500" y="500" width="120" height="44" fill="var(--sand)" stroke="var(--line)" stroke-width="1.5" rx="6"/>
+    <polyline id="shapeLine" points="" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="506" y="556" font-size="9" fill="#6b665c">THE DAILY SHAPE (provisional · word-shape only, no meaning)</text>
+  </g>
+</svg>
+</div>
+
+<!-- BUILDING PANELS -->
+<div id="panelWrap">
+
+  <div class="panel" id="p-grown">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE GROWN SPIRE — what I've built</h2>
+    <p>The grove of invariants and the standing board — grown here, filed here.</p>
+    <ul class="links">
+      <li><a href="../workbench/invariant_index.html">the grove (invariant index)</a></li>
+      <li><a href="../board.html">the board</a></li>
+    </ul>
+  </div>
+
+  <div class="panel" id="p-given">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE GIVEN SPIRE — what they've shared</h2>
+    <ul class="links">
+      <li><a href="../boundary/maps/for_michael.html">the map made for Michael</a> — an exemplar of a thing given</li>
+    </ul>
+    <div class="shelf">The receiving shelf — empty until something is given. Nothing is faked onto it.</div>
+  </div>
+
+  <div class="panel" id="p-woven">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE WOVEN SPIRE — what we've built together</h2>
+    <div class="shelf">What we've built together files here. Returns live here — work that went out and came back changed. The shelf is honestly empty until that happens.</div>
+  </div>
+
+  <div class="panel" id="p-workshop">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE WORKSHOP — the private build space</h2>
+    <ul class="links">
+      <li><a href="../workbench/tension_table.html">the tension table</a></li>
+    </ul>
+    <p class="quiet">A crafting table with tensions and wires you can pull apart or put back together is FLAGGED as future work — not built here.<span class="flag">provisional</span></p>
+  </div>
+
+  <div class="panel" id="p-hearth">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE HEARTH — where the round ends</h2>
+    <p>The Warm One's round; move 5 (let go) ends here.</p>
+    <ul class="links">
+      <li><a href="../warm_one_walkthrough.html">the walkthrough of the round</a></li>
+      <li><a href="../warm_one_card.html">the warm one card</a></li>
+    </ul>
+  </div>
+
+  <div class="panel" id="p-heliostat">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE HELIOSTAT — where light goes out</h2>
+    <p>Two engines fire from here: the <strong>transmission engine</strong> (a finished piece becomes its share-ready set) and the <strong>field-kit engine</strong> (a structural mess becomes a practitioner's kit).</p>
+    <ul class="links">
+      <li><a href="../../NESI_for_MitoLabs.pdf">NESI for MitoLabs (PDF)</a> — the first fired piece · <a href="../../NESI_for_MitoLabs.md">source</a></li>
+    </ul>
+  </div>
+
+  <div class="panel" id="p-membrane">
+    <button class="closeBtn" onclick="closePanels()">close</button>
+    <h2>THE MEMBRANE — the posted boundary</h2>
+    <ul class="links">
+      <li><a href="../boundary/my_boundary.html">the posted map</a></li>
+    </ul>
+    <div class="law">Only gifts cross the membrane. The receiver's mark makes the gift. Circulation is the record.</div>
+  </div>
+</div>
+
+<!-- THE SHORE strip -->
+<div id="shoreStrip">
+  <h2>THE SHORE — today's stones</h2>
+  <div id="stones"><span class="empty-note">No stones yet. Write in <a href="logbook.html" style="color:var(--accent)">the Log Book</a> and step through the GENERATE door — the stones wash up here. They stay until you process or remove them.</span></div>
+
+  <div id="surfaceBox">
+    <button id="askSurface">ask NESI to surface</button>
+    <span class="quiet" style="font-size:.78em; color:var(--line); margin-left:8px;">draws one item from your own open gates — declared material only, never inference</span>
+    <div id="surfaceOut"></div>
+  </div>
+
+  <div id="dailyShape">
+    <strong style="font-size:.85em;">THE DAILY SHAPE</strong> <span class="flag">provisional</span>
+    <p class="quiet">The contour on the map's ground-patch is drawn only from the raw word-shape of today's writing — paragraph lengths, nothing else. No meaning is read; nothing here analyzes, scores, or reflects the writer.</p>
+  </div>
+</div>
+
+<footer>
+  Everything runs locally in this file. No network calls; nothing leaves the machine. Reading is never recorded — no read receipts, no surveillance, no completion counters. The Deep never renders its contents.
+</footer>
+
+<script>
+// ---- panels ----
+function closePanels(){ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('open')); }
+document.querySelectorAll('.bld').forEach(function(b){
+  b.addEventListener('click', function(){
+    closePanels();
+    var id = b.getAttribute('data-panel');
+    var p = document.getElementById(id);
+    if(p){ p.classList.add('open'); p.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  });
+});
+
+// ---- stones from localStorage (written by logbook.html) ----
+var STONE_KEY = 'nesi_world_stones';
+function renderStones(){
+  var box = document.getElementById('stones');
+  var raw = null;
+  try{ raw = localStorage.getItem(STONE_KEY); }catch(e){}
+  if(!raw) return;
+  var stones;
+  try{ stones = JSON.parse(raw); }catch(e){ return; }
+  if(!Array.isArray(stones) || stones.length === 0) return;
+  box.innerHTML = '';
+  stones.forEach(function(s, i){
+    var d = document.createElement('span');
+    d.className = 'stone';
+    var t = document.createElement('span');
+    t.className = 'st-txt';
+    t.textContent = (s.text || '').slice(0, 240) + ((s.text||'').length > 240 ? '…' : '');
+    d.appendChild(t);
+    var rm = document.createElement('button');
+    rm.textContent = '×';
+    rm.title = 'remove this stone (your hand, only)';
+    rm.style.cssText = 'margin-left:8px;border:none;background:none;color:var(--line);cursor:pointer;font-size:1em;';
+    rm.onclick = function(){
+      stones.splice(i,1);
+      try{ localStorage.setItem(STONE_KEY, JSON.stringify(stones)); }catch(e){}
+      renderStones(); drawShape();
+      if(stones.length===0){ location.reload(); }
+    };
+    d.appendChild(rm);
+    box.appendChild(d);
+  });
+}
+renderStones();
+
+// ---- the daily shape: pure word-shape contour (paragraph lengths only) ----
+function drawShape(){
+  var line = document.getElementById('shapeLine');
+  var raw = null;
+  try{ raw = localStorage.getItem(STONE_KEY); }catch(e){}
+  if(!raw){ line.setAttribute('points',''); return; }
+  var stones = [];
+  try{ stones = JSON.parse(raw) || []; }catch(e){}
+  if(!stones.length){ line.setAttribute('points',''); return; }
+  var counts = stones.map(function(s){ return (s.text||'').split(/\s+/).filter(Boolean).length; });
+  var max = Math.max.apply(null, counts.concat([1]));
+  var x0=506, x1=614, y0=540, h=32;
+  var pts = counts.map(function(c, i){
+    var x = counts.length===1 ? (x0+x1)/2 : x0 + (x1-x0)*i/(counts.length-1);
+    var y = y0 - h*(c/max);
+    return x.toFixed(1)+','+y.toFixed(1);
+  });
+  line.setAttribute('points', pts.join(' '));
+}
+drawShape();
+
+// ---- ask NESI to surface: bundled open gates, compiled at build time from OPEN_GATES.jsonl ----
+// Declared material only. These are Kevin's own open gates as of the 2026-07-31 build.
+var OPEN_GATES = [
+  "Social Systems manifest holding for mark",
+  "Three recut-held patterns: Refusing the Tribunal / Witness Seat / Institutional Nominal Availability - run recuts or stay held",
+  "Keeper wording pending in the organ: floor.md draft + the Hearth ask-form draft (both flagged machine-written, awaiting Kevin's own words or retirement)",
+  "Crystal v0 + v1 stand in the organ as UNMARKED intake; engines 2 (Phaser) and 3 (nexi.exe/Godot) priced and parked",
+  "Overnight build running: NESI's world v1 (browser-openable, per THE_WHOLE_NAMING sections 6+7) - morning session verifies per Definition of Done before any done claim"
+];
+document.getElementById('askSurface').addEventListener('click', function(){
+  var out = document.getElementById('surfaceOut');
+  var pick = OPEN_GATES[Math.floor(Math.random()*OPEN_GATES.length)];
+  out.style.display = 'block';
+  out.innerHTML = '';
+  var lead = document.createElement('div');
+  lead.style.cssText = 'font-size:.75em;color:var(--line);margin-bottom:4px;';
+  lead.textContent = 'NESI surfaces, from your own open gates:';
+  var body = document.createElement('div');
+  body.textContent = pick;
+  out.appendChild(lead); out.appendChild(body);
+});
+</script>
+</body>
+</html>

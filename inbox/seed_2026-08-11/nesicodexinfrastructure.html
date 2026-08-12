@@ -1,0 +1,224 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NESI Codex · infrastructure</title>
+<style>
+:root{--a:#9b8cf0;--bg0:#04070c;--bg1:#071019;--text:#dce9ea;--muted:#8aa3a7;--faint:#5f797f;--line:rgba(122,205,205,.13);
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--text);line-height:1.6;
+background:radial-gradient(1200px 700px at 50% -12%, color-mix(in srgb, var(--a) 16%, transparent), transparent 60%),
+linear-gradient(180deg,var(--bg1),var(--bg0));background-attachment:fixed;min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+h1,h2,h3{font-family:var(--serif);font-weight:500}
+.top{padding:38px 0 10px}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--a)}
+h1{font-size:40px;margin:8px 0 2px;text-transform:capitalize}
+.one{color:var(--faint);font-size:14px;margin:0 0 18px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+.pill{--a:var(--a);display:flex;align-items:center;gap:7px;text-decoration:none;color:var(--muted);font-size:13px;
+text-transform:capitalize;border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:.2s}
+.pill .pg{color:var(--a)}
+.pill:hover{border-color:var(--a);color:var(--text)}
+.pill.on{color:#04070c;background:var(--a);border-color:var(--a);font-weight:600}
+.pill.on .pg{color:#04070c}
+.def{font-size:16px;color:var(--muted);max-width:66ch;border-left:2px solid var(--a);padding-left:16px;margin:0 0 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 4px;font-size:12px;color:var(--faint)}
+.legend b{font-weight:600}
+.lg{display:flex;align-items:center;gap:6px}.lgd{width:8px;height:8px;border-radius:50%}
+.count{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin:30px 0 14px}
+.card{position:relative;display:flex;background:rgba(14,30,40,.5);border:1px solid var(--line);border-radius:16px;
+overflow:hidden;margin:16px 0;backdrop-filter:blur(6px)}
+.rail{width:5px;background:linear-gradient(180deg,var(--a),transparent);flex:none}
+.cbody{padding:22px 26px 24px;flex:1;min-width:0}
+.card h3{font-size:21px;margin:0 0 4px}
+.essence{color:var(--a);font-style:italic;margin:0 0 16px;font-size:15px;opacity:.92}
+.lab{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--faint);margin:16px 0 7px}
+.pattern{margin:0;color:var(--text);opacity:.9;font-size:15px}
+.mech{margin-top:4px}
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.step{background:color-mix(in srgb,var(--a) 12%,transparent);border:1px solid color-mix(in srgb,var(--a) 30%,transparent);
+border-radius:9px;padding:6px 11px;font-size:13.5px}
+.arw{color:var(--a);font-weight:700}
+.xls{display:flex;flex-direction:column;gap:9px}
+.xl{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:9px}
+.xdot{width:8px;height:8px;border-radius:50%;align-self:center}
+.xlens{text-transform:uppercase;font-size:11px;letter-spacing:.1em;min-width:92px}
+.xread{color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.slice{margin-top:18px;font-size:14px;color:var(--text);background:color-mix(in srgb,var(--a) 9%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 22%,transparent);border-radius:11px;padding:12px 14px}
+.slab{display:inline-block;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;color:var(--a);margin-right:8px;font-weight:700}
+.synth{margin-top:34px;padding:26px 28px;border-radius:16px;background:color-mix(in srgb,var(--a) 8%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 24%,transparent)}
+.synth .lab{color:var(--a)}
+.synth p{margin:6px 0 0;font-size:16px;line-height:1.7}
+.foot{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
+</style></head>
+<body><div class="wrap">
+<div class="top">
+  <div class="eyebrow">NESI Codex</div>
+  <h1>infrastructure</h1>
+  <div class="one">▤ &nbsp;what it all runs on</div>
+  <div class="nav"><a class="pill " href="nesi-codex-game.html" style="--a:#e88fb0">
+      <span class="pg">◆</span>game</a><a class="pill " href="nesi-codex-tool.html" style="--a:#f2b872">
+      <span class="pg">⌘</span>tool</a><a class="pill on" href="nesi-codex-infrastructure.html" style="--a:#9b8cf0">
+      <span class="pg">▤</span>infrastructure</a><a class="pill " href="nesi-codex-organ.html" style="--a:#6ee7d6">
+      <span class="pg">❋</span>organ</a></div>
+  <p class="def">In NESI, INFRASTRUCTURE is the substrate layer other things run on: the engines, protocols, and physical nodes that generate, coordinate, or sustain activity without being the activity itself. It spans both digital engines (pattern extractors, agent loops, trust protocols) and physical off-grid nodes (water, shelter, sanitation appliances). Infrastructure is defined by being load-bearing and reusable — it drifts toward coherence, holds trust in the open, and keeps a camp alive whether or not anyone is watching.</p>
+  <div class="legend">
+    <span>every gift also reads across the other lenses:</span>
+    <span class="lg"><span class="lgd" style="background:#e88fb0"></span><b style="color:#e88fb0">game</b></span><span class="lg"><span class="lgd" style="background:#f2b872"></span><b style="color:#f2b872">tool</b></span><span class="lg"><span class="lgd" style="background:#9b8cf0"></span><b style="color:#9b8cf0">infrastructure</b></span><span class="lg"><span class="lgd" style="background:#6ee7d6"></span><b style="color:#6ee7d6">organ</b></span>
+  </div>
+</div>
+<div class="count">6 gifts in this class</div>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Core Extraction Engine (built, deliberately unwired)</h3>
+      <p class="essence">A self-improving pattern-extraction engine kept intentionally decoupled from any live vehicle.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">An engine that refines itself through ordinary use, drifting toward structural coherence instead of entropy, can be built and matured before it is ever bolted to an output. Keeping it unwired lets the substrate stabilize under low-stakes load so that when a vehicle is finally attached, the engine is already trustworthy. The reusable move is: mature the substrate in isolation, wire the consumers later.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Decoupled self-refining engine</span></div>
+        <div class="loop"><span class="step">feed it basic use</span><span class="arw">→</span><span class="step">it extracts and reorganizes patterns</span><span class="arw">→</span><span class="step">it drifts toward coherence, ready to power a vehicle when hooked</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A pattern-extractor you can run against any corpus without committing it to a product.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A metabolic core that digests inputs into structure, quietly getting fitter with every meal.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A hidden engine humming under the board — power accrues before the first move is played.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Four-agent tetrahedron engine (as a possible vehicle/harness)</span><span class="tag">Trust engine (patterns of contribution feed graduation)</span><span class="tag">every NESI organ that eventually needs extraction</span></div>
+      <div class="slice"><span class="slab">First slice</span> A single unwired extraction pass over one small corpus with a coherence metric logged run-over-run, proving self-improvement without any live consumer attached.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Four-Agent Tetrahedron Engine</h3>
+      <p class="essence">Four cold-session roles arranged as a tetrahedron that cycle until the Governor calls dry.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Assigning each cognitive role one resistance and binding them along six named edges turns a loose prompt chain into a rigid, load-bearing structure. Cycling ground-&gt;dream-&gt;cut-&gt;shape-&gt;re-ground with an explicit stop condition ('calls dry') prevents runaway generation and forces convergence. The reusable pattern is a portable, MCP-agnostic deliberation loop where geometry enforces balance no single agent can override.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Tetrahedral role cycle</span></div>
+        <div class="loop"><span class="step">enter a raw problem</span><span class="arw">→</span><span class="step">ground/dream/cut/shape across four resisting roles over six edges</span><span class="arw">→</span><span class="step">re-ground until Governor calls dry, yielding a settled output</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A drop-in multi-agent reasoning harness that runs on Ollama, LM Studio, OpenWebUI, any MCP setup.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A four-chambered mind where each chamber's resistance keeps the others honest.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A four-player round with fixed roles and a referee who ends the hand when it's played out.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Core extraction engine (as the vehicle it could drive)</span><span class="tag">Trust engine (Governor/graduation logic rhymes)</span><span class="tag">any NESI decision needing balanced deliberation</span></div>
+      <div class="slice"><span class="slab">First slice</span> Wire the four roles with one resistance each and a single edge cycle in a local MCP setup, ending on a hardcoded Governor 'dry' check over one real question.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Trust Engine — Five Gears</h3>
+      <p class="essence">Five graduated community states advanced by visible deposits, not reputation scores.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Trust modeled as discrete states (Stranger -&gt; Recognized -&gt; Contributing -&gt; Circulating -&gt; Architecting) driven by five gears (recognition, deposit, graduation, circulation, repair) makes standing legible without scoring people. Because progression comes from public, auditable contribution rather than likability, the protocol resists popularity capture and gaming. The reusable pattern is a graduated-trust state machine where every transition is an observable deposit anyone can inspect.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Graduated deposit ladder</span></div>
+        <div class="loop"><span class="step">arrive as a stranger</span><span class="arw">→</span><span class="step">make a visible contribution (deposit)</span><span class="arw">→</span><span class="step">graduate to the next trust gear by contribution, with repair available on faults</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A progression ladder where you rank up by contribution, not by charm or a score.</span></div><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A coordination protocol for granting access and roles based on auditable action.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A social membrane that admits, promotes, and heals members as circulation demands.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Four-agent tetrahedron engine (graduation/Governor logic)</span><span class="tag">physical nodes (who may operate/steward Water, Dome, Toilet)</span><span class="tag">Core extraction engine (deposits as extractable patterns)</span></div>
+      <div class="slice"><span class="slab">First slice</span> Implement the five states and the deposit-&gt;graduation transition for a single member with all deposits stored in the open, no score anywhere.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>The Sleeve Pump</h3>
+      <p class="essence">A child-operable manual pump reaching 40m groundwater with zero power.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A physical extraction node that requires no grid, no fuel, and low operator strength turns a scarce resource (water at depth) into an always-available baseline utility. Designing for the weakest operator (a child) maximizes resilience and access across a camp. The reusable pattern is a powerless, low-skill extraction node that anyone can run, making the resource independent of infrastructure that can fail.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Manual depth extraction</span></div>
+        <div class="loop"><span class="step">place hands on the sleeve</span><span class="arw">→</span><span class="step">pump manually</span><span class="arw">→</span><span class="step">groundwater rises from up to 40m with no power required</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A hand pump anyone, including a child, can operate to draw deep water.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">The Water node's mouth — the point where the settlement draws its lifeblood from the ground.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">The reference object anchoring the Water node on the map of survivable places.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Water node (its reference object)</span><span class="tag">Biochar toilet (needs the water it extracts)</span><span class="tag">Self-erecting dome (co-located camp infrastructure)</span><span class="tag">Trust engine (who stewards the pump)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A single sleeve-pump prototype proving child-operable draw from a shallow test bore, documented as the Water node's reference build.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Self-Erecting Dome (crown hub + center pole)</h3>
+      <p class="essence">One-person dome assembly built in the air on a center pole and rotated into place.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Anchoring a structure to a crown hub on a central pole lets one person build edge-to-edge in the air and rotate the work, collapsing a 4-hour multi-person job to 15-30 solo minutes. Standard parts (2020 aluminum, T-bulb gaskets, edge connectors) keep it repairable and reproducible. The reusable pattern is a central-mast self-erecting node that removes the crew as a dependency for shelter.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Central-mast self-erection</span></div>
+        <div class="loop"><span class="step">mount crown hub on center pole</span><span class="arw">→</span><span class="step">add edge-to-edge connectors in the air and rotate</span><span class="arw">→</span><span class="step">a full dome stands in 15-30 minutes, solo</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A solo-buildable shelter kit of standard aluminum and gasketed connectors.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">The Shelter node — the skin a settlement grows over itself in minutes.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A build action that once cost a crew and four hours now costs one player and one turn.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Water node (Sleeve Pump) as co-sited camp infrastructure</span><span class="tag">Biochar toilet (housed/served within camp)</span><span class="tag">Trust engine (who is credentialed to erect/steward)</span></div>
+      <div class="slice"><span class="slab">First slice</span> Assemble one crown-hub-on-pole dome solo and time it, validating the 15-30 minute single-operator claim with standard parts.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#9b8cf0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Biochar Toilet Appliance</h3>
+      <p class="essence">A 12-quart pressure-cooker that dewaters then carbonizes waste into odorless garden biochar.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A sealed appliance that first extracts water then pyrolyzes waste at 500-600C in zero oxygen converts a sanitation liability into a soil asset with no smell and no grid. Running on solar or propane and serving 40-50 people from one unit makes it a shared camp-scale node rather than per-person plumbing. The reusable pattern is a closed-loop waste-to-resource node that terminates a hazard stream and outputs something the settlement can use.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Anaerobic pyrolysis conversion</span></div>
+        <div class="loop"><span class="step">load waste</span><span class="arw">→</span><span class="step">dewater then carbonize at 500-600C in zero oxygen (solar/propane)</span><span class="arw">→</span><span class="step">odorless biochar out, serving a camp of 40-50</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A pressure-cooker-form appliance that turns waste into usable biochar.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">The settlement's gut and kidney — extracting water, digesting waste, excreting soil.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A shared utility node that clears a hazard resource and yields a soil resource for the whole camp.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Water node / Sleeve Pump (water extracted feeds back into the loop)</span><span class="tag">Self-erecting dome (co-sited camp node)</span><span class="tag">Trust engine (stewardship of the shared unit)</span><span class="tag">garden/soil systems (biochar output)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A single 12-quart unit demonstrating the dewater-then-carbonize cycle on test input, verifying odorless biochar output at 500-600C from one heat source.</div>
+    </div>
+  </article>
+<div class="synth">
+  <div class="lab">Synthesis — what this class does for NESI</div>
+  <p>Together these six form the two-layer substrate NESI runs on: a digital stack (self-refining extraction engine, tetrahedral deliberation loop, graduated trust protocol) and a physical stack (water, shelter, sanitation nodes) that keep bodies alive at a site. The digital layer decides and coordinates while drifting toward coherence rather than entropy; the physical layer makes a place survivable by one person with no grid and no crew. Trust is the connective tissue binding them — it governs who may drive the engines and steward the nodes, all through visible deposits rather than scores. The whole is load-bearing by design: each piece is matured in isolation, wired to its consumers deliberately, and reproducible from standard parts so the settlement's substrate never depends on a single point that can fail.</p>
+</div>
+<div class="foot">NESI Codex · infrastructure · one of four · brought to the gate, awaiting your mark</div>
+</div></body></html>

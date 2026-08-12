@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE TENSION TABLE — NESI workbench</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;
+  --red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;
+  --bdr:#ccc5b0;--bdrk:rgba(58,48,32,0.15);
+  --seed:#b06a00;--seed-bg:#f6ead2;
+  --org:#3a5a8a;--nut:#2a6a1a;--lens:#6a3a6a;--pol:#a0407a;--nul:#8a7a5a;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.55}
+.top{padding:14px 20px 12px;border-bottom:1px solid var(--bdr)}
+.eye{font-size:8px;letter-spacing:3px;color:var(--gf);margin-bottom:5px}
+.name{font-size:17px;font-weight:bold;color:var(--gb);letter-spacing:2px}
+.sub{font-size:10px;color:var(--gd);margin-top:3px;max-width:820px}
+.layout{display:flex;gap:0;align-items:stretch;min-height:calc(100vh - 74px)}
+/* shelf */
+.shelf{width:280px;flex:none;border-right:1px solid var(--bdr);display:flex;flex-direction:column;background:var(--sf)}
+.shelf-hd{padding:10px 14px;border-bottom:1px solid var(--bdr)}
+.shelf-lab{font-size:8px;letter-spacing:2px;color:var(--gd);font-weight:bold;text-transform:uppercase;margin-bottom:6px}
+.shelf input{width:100%;font-family:inherit;font-size:11px;color:var(--g);background:#fff;border:1px solid var(--bdr);padding:6px 8px}
+.shelf-count{font-size:8px;color:var(--gf);margin-top:5px;letter-spacing:0.5px}
+.shelf-list{overflow-y:auto;flex:1;padding:6px}
+.node{padding:6px 9px;border:1px solid transparent;border-radius:2px;cursor:pointer;margin-bottom:2px}
+.node:hover{background:var(--bg);border-color:var(--bdr)}
+.node.on{background:var(--sf2);border-color:var(--gd);opacity:0.5}
+.node-t{font-size:11px;color:var(--gb);font-weight:bold;line-height:1.35}
+.node-s{font-size:8px;color:var(--gf);letter-spacing:0.5px;margin-top:1px}
+.cat{display:inline-block;font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:0 4px;
+  border:1px solid var(--bdr);border-left-width:3px;margin-top:3px;color:var(--gd);background:#fff}
+.cat.organ{border-left-color:var(--org);color:var(--org)}
+.cat.seed{border-left-color:var(--seed);color:var(--seed)}
+.cat.nutrient{border-left-color:var(--nut);color:var(--nut)}
+.cat.lens{border-left-color:var(--lens);color:var(--lens)}
+.cat.pollen{border-left-color:var(--pol);color:var(--pol)}
+.catbar{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.catbar .cb{font-size:8px;padding:1px 5px;border:1px solid var(--bdr);border-left-width:3px;cursor:pointer;color:var(--gd);background:#fff}
+.catbar .cb.on{background:var(--sf2);font-weight:bold;color:var(--gb)}
+.catbar .cb.organ{border-left-color:var(--org)}.catbar .cb.seed{border-left-color:var(--seed)}
+.catbar .cb.nutrient{border-left-color:var(--nut)}.catbar .cb.lens{border-left-color:var(--lens)}
+.catbar .cb.pollen{border-left-color:var(--pol)}
+/* board */
+.board-wrap{flex:1;display:flex;flex-direction:column;min-width:0}
+.board{position:relative;height:60vh;min-height:440px;max-height:640px;background:radial-gradient(circle at 50% 46%, #fffdf8 0%, var(--bg) 70%)}
+#field{position:absolute;inset:0;width:100%;height:100%}
+.tok{position:absolute;transform:translate(-50%,-50%);max-width:150px;cursor:pointer;z-index:2;
+  background:var(--sf);border:1px solid var(--gd);border-radius:3px;padding:5px 8px;text-align:center;
+  box-shadow:0 1px 0 var(--bdrk)}
+.tok:hover{background:#fff;border-color:var(--gb)}
+.tok-t{font-size:10px;color:var(--gb);font-weight:bold;line-height:1.25}
+.tok-x{font-size:7px;color:var(--gf);letter-spacing:1px;margin-top:2px}
+.empty{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:var(--gf);z-index:1;max-width:340px}
+.empty .big{font-size:12px;color:var(--gd);margin-bottom:6px;letter-spacing:1px}
+.empty .sm{font-size:10px;line-height:1.6}
+.hw-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:10px;color:var(--org);z-index:2;letter-spacing:0.5px;pointer-events:none;font-weight:bold}
+.hw-cap .sub{display:block;font-size:8px;color:var(--gf);font-weight:normal;letter-spacing:1px;margin-top:2px}
+/* the soil — the ground at the bottom of the board */
+.soil{position:absolute;left:0;right:0;bottom:0;height:22px;z-index:3;
+  background:repeating-linear-gradient(0deg,#e4d6bc,#e4d6bc 3px,#ded0b4 3px,#ded0b4 6px);
+  border-top:2px solid #c8b48c;transition:height .35s ease,background .2s,border-color .2s;
+  padding:4px 12px;overflow:hidden}
+.soil.rich{background:repeating-linear-gradient(0deg,#dcc9a4,#dcc9a4 3px,#d2bd92 3px,#d2bd92 6px)}
+.soil.hot{border-top:2px solid var(--nut);background:#d6e4cc}
+.soil-lab{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#7a6238;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.soil-undo{font-size:8px;color:#7a6238;cursor:pointer;letter-spacing:0.5px}
+.soil-undo:hover{color:var(--red)}
+.soil-hint{font-size:8px;color:#a08a5c;letter-spacing:0.5px;margin-top:2px}
+.tok.dragging{opacity:0.4}
+.tok-drag-ghost{position:absolute;transform:translate(-50%,-50%);max-width:150px;z-index:20;pointer-events:none;
+  background:var(--sf);border:1px solid var(--nut);border-radius:3px;padding:5px 8px;text-align:center;box-shadow:0 2px 6px rgba(58,48,32,0.25)}
+.tok-drag-ghost .tok-t{font-size:10px;color:var(--gb);font-weight:bold}
+.tok-sink{font-size:7px;color:var(--nut);letter-spacing:1px;margin-top:2px}
+.gauge{position:absolute;top:12px;right:16px;text-align:right;z-index:3}
+.gauge-lab{font-size:8px;letter-spacing:2px;color:var(--gf);text-transform:uppercase}
+.gauge-val{font-size:22px;font-weight:bold;color:var(--gd)}
+.gauge-n{font-size:8px;color:var(--gf);letter-spacing:1px}
+/* reading */
+.reading{border-top:1px solid var(--bdr);background:var(--sf);padding:14px 18px;max-height:38vh;overflow-y:auto}
+.rrow{margin-bottom:14px}
+.rrow:last-child{margin-bottom:0}
+.rlab{font-size:8px;letter-spacing:2px;color:var(--gd);font-weight:bold;text-transform:uppercase;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:10px;padding:2px 8px;border:1px solid var(--bdr);background:#fff;color:var(--g);border-radius:2px;white-space:nowrap}
+.chip .n{color:var(--gf);font-size:8px;margin-left:4px}
+.chip.seed{background:var(--seed-bg);border-color:var(--seed);color:var(--seed);font-weight:bold}
+.chip.scar{background:var(--grn-bg);border-color:var(--grn);color:var(--grn)}
+.muted{font-size:10px;color:var(--gf);font-style:italic}
+.stub{font-size:9px;color:var(--yel);background:var(--yel-bg);border:1px solid var(--bdr);padding:8px 10px;line-height:1.6;border-radius:2px}
+.stub b{color:var(--yel)}
+.seed-line{font-size:11px;color:var(--seed);font-weight:bold;margin-bottom:6px}
+.hint{font-size:9px;color:var(--gf);margin-top:2px}
+.typ{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tcard{flex:1 1 150px;border:1px solid var(--bdr);background:#fff;padding:6px 9px;border-left:3px solid var(--gd)}
+.tcard.seed{border-left-color:var(--seed)}
+.tcard.organ{border-left-color:var(--org)}
+.tcard.nutrient{border-left-color:var(--nut)}
+.tcard.reg{border-left-color:var(--lens)}
+.tcard.pollen{border-left-color:var(--pol)}
+.tcard.nul{border-left-color:var(--nul)}
+.tname{font-size:9px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:var(--gb)}
+.tcard.gap .tname::after{content:' · gap';color:var(--seed);font-weight:normal}
+.tdest{font-size:8px;color:var(--gf);letter-spacing:0.5px;text-transform:uppercase}
+.ttest{font-size:9px;color:var(--gd);margin-top:3px;line-height:1.45}
+.typ .tcard{cursor:pointer;transition:background .12s}
+.typ .tcard:hover{background:var(--sf2)}
+.typ .tcard .tplace{font-size:8px;color:var(--gf);margin-top:4px;letter-spacing:0.5px}
+.typ .tcard:hover .tplace{color:var(--gb)}
+/* the board remembers — persistent accretion */
+.memory{border-bottom:1px solid var(--bdr);background:var(--sf);padding:8px 12px}
+.mem-lab{font-size:8px;letter-spacing:1.5px;color:var(--gd);font-weight:bold;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.mem-clear{font-size:8px;color:var(--gf);cursor:pointer;letter-spacing:0.5px}
+.mem-clear:hover{color:var(--red)}
+.vessels{display:flex;gap:6px}
+.vessel{flex:1;border:1px solid var(--bdr);background:#fff;padding:4px 7px;position:relative;overflow:hidden;min-height:46px}
+.vessel .vfill{position:absolute;left:0;bottom:0;right:0;height:0;z-index:0;transition:height .35s ease}
+.vessel.organ .vfill{background:rgba(58,90,138,0.16)}
+.vessel.nutrient .vfill{background:rgba(42,106,26,0.16)}
+.vessel.lens .vfill{background:rgba(106,58,106,0.16)}
+.vessel.seed .vfill{background:rgba(176,106,0,0.13)}
+.vessel.pollen .vfill{background:rgba(160,64,122,0.13)}
+.vessel.nul .vfill{background:rgba(138,122,90,0.16)}
+.vessel .vn{position:relative;z-index:1;font-size:8px;letter-spacing:0.5px;text-transform:uppercase;color:var(--gd);font-weight:bold}
+.vessel .vc{position:relative;z-index:1;font-size:16px;font-weight:bold;color:var(--gb);line-height:1.1}
+.vessel .vd{position:relative;z-index:1;font-size:7px;color:var(--gf);letter-spacing:0.3px}
+.vessel.gate{border-style:dashed;border-color:var(--red)}
+.vessel.gate .vd{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="eye">NESI · WORKBENCH · THE GRAFT, NOT YET THE FOREST</div>
+  <div class="name">THE TENSION TABLE</div>
+  <div class="sub">Pull 3&ndash;6 patterns into one membrane. The web tightens as they share threads. The <b>seed</b> is the thread the membrane holds that <i>no single pattern names</i> &mdash; deterministic geometry only; the felt read, and the mark, stay yours. Engine-dark.</div>
+</div>
+
+<div class="layout">
+  <div class="shelf">
+    <div class="shelf-hd">
+      <div class="shelf-lab">the library &middot; click to pull onto the table</div>
+      <input id="search" type="text" placeholder="filter patterns…" autocomplete="off">
+      <div class="catbar" id="catbar"></div>
+      <div class="shelf-count" id="shelfcount"></div>
+    </div>
+    <div class="shelf-list" id="shelflist"></div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="memory" id="memory"></div>
+    <div class="board" id="board">
+      <svg id="field"></svg>
+      <div class="gauge" id="gauge" style="display:none">
+        <div class="gauge-lab">tension</div>
+        <div class="gauge-val" id="gval">0</div>
+        <div class="gauge-n" id="gn">0 nodes</div>
+      </div>
+      <div class="empty" id="empty">
+        <div class="big">the table is empty</div>
+        <div class="sm">Click patterns from the library to pull them into tension. A membrane needs at least 2; the seed tends to light between 3 and 6. Drag a node <b>down into the soil</b> to compost it.</div>
+      </div>
+      <div class="hw-cap" id="hwcap"></div>
+      <div class="soil" id="soil"></div>
+    </div>
+    <div class="reading" id="reading" style="display:none"></div>
+  </div>
+</div>
+
+<script src="tension_index.js"></script>
+<script>
+const IDX = (window.TENSION_INDEX || []);
+const BY = {}; IDX.forEach(r=>BY[r.slug]=r);
+let sel = [];            // selected slugs, in pull order
+const MAX = 6;
+
+// library document-frequency — computed once. A word in >1/3 of patterns is
+// structural boilerplate, never the hidden seed (mirrors tension_table.py).
+const DF = {}; IDX.forEach(r=>{ new Set(r.words).forEach(w=>{DF[w]=(DF[w]||0)+1;}); });
+const COMMON_CUT = Math.max(3, Math.floor(0.33*IDX.length));
+// calibrated 2026-07-24: at df<=12% a rare word shared by EVERY member is a real
+// signal — random triples share ~0 (582/600), ~3% of sets share one, and the
+// survivors are often genuine cores (body·felt, crossing·lineage). It proposes a
+// CANDIDATE invariant; whether it's a true invariant vs coincidence is Kevin's read.
+const STRICT_DF = Math.max(2, Math.floor(0.12*IDX.length));
+
+// ---- deterministic tension engine (mirrors nesi/conductor/tension_table.py) ----
+function tension(slugs){
+  const nodes = slugs.map(s=>BY[s]).filter(Boolean);
+  const n = nodes.length;
+  if(n<2) return {ok:false};
+  const counts = {};
+  nodes.forEach(r=>{ new Set(r.words).forEach(w=>{counts[w]=(counts[w]||0)+1;}); });
+  const titlewords = new Set();
+  nodes.forEach(r=>r.titlewords.forEach(w=>titlewords.add(w)));
+  const threads = Object.keys(counts).filter(w=>counts[w]>=2)
+    .map(w=>({word:w,spread:counts[w],df:(DF[w]||1)}))
+    .sort((a,b)=> b.spread-a.spread || a.df-b.df || (a.word<b.word?-1:1));
+  const seeds = threads.filter(t=>!titlewords.has(t.word) && t.df<=COMMON_CUT)
+    .sort((a,b)=> a.df-b.df || b.spread-a.spread || (a.word<b.word?-1:1));
+  const selset = new Set(slugs);
+  const scars = [];
+  nodes.forEach(r=>r.extends.forEach(t=>{ if(selset.has(t)) scars.push({from:r.slug,to:t}); }));
+  const distinct = Object.keys(counts).length;
+  const shared = Object.values(counts).filter(c=>c>=2).length;
+  const tightness = distinct? shared/distinct : 0;
+  return {ok:true,n,nodes:nodes.map(r=>r.slug),threads,seeds,scars,tightness};
+}
+// pairwise shared-word count — draws the web
+function pairWeight(a,b){
+  const wb=new Set(BY[b].words); let k=0;
+  BY[a].words.forEach(w=>{ if(wb.has(w)) k++; });
+  return k;
+}
+
+// ---- THE REDUCTION — does this tension collapse to an invariant? (Kevin's
+// telos turn 2026-07-24: reduce, don't grow). CORE = rare words carried by
+// EVERY member — the candidate invariant the members may all be facets of.
+// Calibrated: random membranes share none; ~3% share one; whether it's a true
+// invariant or coincidence is Kevin's felt read. Engine-dark.
+function coreInvariant(sel){
+  const nodes=sel.map(s=>BY[s]).filter(Boolean); if(nodes.length<2) return {words:[],n:0};
+  let inter=new Set(nodes[0].words);
+  for(let i=1;i<nodes.length;i++){const w=new Set(nodes[i].words); inter=new Set([...inter].filter(x=>w.has(x)));}
+  const words=[...inter].filter(w=>(DF[w]||1)<=STRICT_DF).sort((a,b)=>(DF[a]||1)-(DF[b]||1)||(a<b?-1:1));
+  return {words, n:words.length};
+}
+
+// ---- THE DOWNSTREAM — a seed is seen by what it opens (Kevin's read 2026-07-24)
+// The tension becomes a VIRTUAL NODE: its seed-threads (rare, named by no member).
+// The downstream options are the patterns OUTSIDE the membrane that connect to
+// THAT node — combinations reachable only because this tension is held,
+// invisible from any single member. Count = the seed-signal (deterministic).
+// Whether an opened option is ALIVE stays Kevin's felt read. Engine-dark.
+function downstream(t){
+  if(!t||!t.ok||!t.seeds||!t.seeds.length) return {options:[],words:[]};
+  const sw=new Set(t.seeds.map(s=>s.word));      // the tension's distinctive, rare threads
+  const inMemb=new Set(t.nodes);
+  const opts=[];
+  IDX.forEach(r=>{
+    if(inMemb.has(r.slug))return;
+    const hits=r.words.filter(w=>sw.has(w));      // does this pattern reach the tension itself?
+    if(hits.length) opts.push({slug:r.slug,title:r.title,hits,score:hits.length});
+  });
+  opts.sort((a,b)=> b.score-a.score || (a.title<b.title?-1:1));
+  return {options:opts, words:[...sw]};
+}
+
+// ---- THE BOARD REMEMBERS — placement + accretion (the game's Scene 5) ----
+// Placing a membrane ROUTES it per the confirmed gate-line (2026-07-24):
+// reversible/interior yields (organ/nutrient/lens/tension-only) circulate below
+// the gate and thicken their vessel now; irreversible/outward (seed/pollen)
+// QUEUE at the gate, waiting Kevin's mark — they don't complete on a click.
+// Persists in localStorage (reversible: undo + clear). Engine-dark.
+const DEST={organ:'the heartwood',nutrient:'the soil',lens:'the library','tension-only':'compost',seed:'the door',pollen:'the witness'};
+const GATE={organ:'below',nutrient:'below',lens:'below','tension-only':'below',seed:'gate',pollen:'gate'};
+const VCLASS={organ:'organ',nutrient:'nutrient',lens:'lens','tension-only':'nul',seed:'seed',pollen:'pollen'};
+const MEM_ORDER=['organ','nutrient','lens','seed','pollen','tension-only'];
+const MEM_KEY='nesi_board_memory_v1';
+function loadMem(){try{const s=localStorage.getItem(MEM_KEY);if(s){const m=JSON.parse(s);MEM_ORDER.forEach(c=>{if(!m[c])m[c]=[];});if(!m.soil)m.soil=[];return m;}}catch(e){}
+  return {organ:[],nutrient:[],lens:[],seed:[],pollen:[],'tension-only':[],soil:[]};}
+let MEM=loadMem(); let lastPlace=null;
+function status(t){const el=document.getElementById('shelfcount');if(el)el.textContent=t;}
+function saveMem(){try{localStorage.setItem(MEM_KEY,JSON.stringify(MEM));}catch(e){}}
+function place(cat){
+  if(!GATE.hasOwnProperty(cat))return;
+  if(cat!=='tension-only' && sel.length<2){status('pull a membrane first — at least 2 nodes in tension');return;}
+  const t=sel.length>=2?tension(sel):{seeds:[]};
+  const rec={membrane:sel.slice(),seed:(t.seeds&&t.seeds[0]?t.seeds[0].word:null),n:sel.length,ts:Date.now()};
+  MEM[cat].push(rec); lastPlace=cat; saveMem();
+  const gated=GATE[cat]==='gate';
+  if((cat==='nutrient'||cat==='tension-only') && rec.membrane.length) feedSoilFromMembrane(rec,cat);
+  renderMemory();
+  sel=[]; render();   // placing ends the turn — the board clears for the next pull
+  status(gated
+    ? '✋ placed as '+cat+' → QUEUED at '+DEST[cat]+' ('+MEM[cat].length+' waiting your mark)'
+    : '↻ placed as '+cat+' → '+DEST[cat]+' thickened (now '+MEM[cat].length+')');
+}
+function undoPlace(){ if(!lastPlace||!MEM[lastPlace].length){status('nothing to undo');return;} MEM[lastPlace].pop(); saveMem(); const c=lastPlace; lastPlace=null; renderMemory(); status('released the last placement from '+c); }
+function clearMem(){ MEM={organ:[],nutrient:[],lens:[],seed:[],pollen:[],'tension-only':[],soil:[]}; lastPlace=null; saveMem(); renderMemory(); renderSoil(); if(!sel.length)render(); status('the board forgot everything (memory cleared)'); }
+// ---- THE SOIL — dead branches metabolized into nutrient reserve ----
+// Kevin's gesture: drag a branch down into the ground; it is disassembled into
+// nutrients and disappears from the surface; the bed deepens; the reserve later
+// feeds the graft ("this rotted here — it feeds this cross"). Realizes
+// _INTAKE/SPEC_the_soil. Read-only over what it's given; never un-composts.
+function metabolize(slug){
+  const r=BY[slug]; if(!r)return null;
+  // the nutrients: the pattern's concept-words that are NOT its own title —
+  // the reserve it carried under its name. Capped, deterministic.
+  const tw=new Set(r.titlewords);
+  const nutrients=r.words.filter(w=>!tw.has(w)).slice(0,8);
+  return {label:r.title, slug:slug, nutrients:nutrients, from:'branch', ts:Date.now()};
+}
+function compostNode(slug){                 // the drag-into-ground gesture
+  const e=metabolize(slug); if(!e)return;
+  MEM.soil.push(e); saveMem();
+  const i=sel.indexOf(slug); if(i>=0) sel.splice(i,1);
+  renderSoil(); render();
+  status('⤓ '+e.label+' metabolized into the soil — '+e.nutrients.length+' nutrients · the bed deepens ('+MEM.soil.length+')');
+}
+function feedSoilFromMembrane(rec,cat){     // nutrient / tension-only placements also feed the ground
+  const words=new Set(); rec.membrane.forEach(s=>{const r=BY[s];if(r)r.words.forEach(w=>words.add(w));});
+  MEM.soil.push({label:rec.membrane.map(s=>BY[s]?BY[s].title:s).join(' + ').slice(0,60),
+    slug:null, nutrients:[...words].slice(0,8), from:cat, ts:Date.now()});
+  saveMem(); renderSoil();
+}
+function undoSoil(){ if(!MEM.soil.length){status('the soil is empty');return;} const e=MEM.soil.pop(); saveMem(); renderSoil(); if(!sel.length)render(); status('lifted '+ (e.label||'a reserve') +' back out of the soil'); }
+function soilOffers(){                       // what the ground offers the current membrane
+  if(sel.length<2||!MEM.soil.length) return [];
+  const memb=new Set(); sel.forEach(s=>{const r=BY[s];if(r)r.words.forEach(w=>memb.add(w));});
+  const offers=[];
+  MEM.soil.forEach(e=>{ const hit=(e.nutrients||[]).filter(w=>memb.has(w)); if(hit.length) offers.push({label:e.label,words:hit}); });
+  return offers;
+}
+let dragGhost=null;
+function makeDraggable(el,slug){
+  let sx,sy,moved=false,dragging=false;
+  el.addEventListener('pointerdown',e=>{ e.preventDefault(); sx=e.clientX; sy=e.clientY; moved=false; dragging=true; try{el.setPointerCapture(e.pointerId);}catch(_){} });
+  el.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    if(!moved && Math.hypot(e.clientX-sx,e.clientY-sy)>6){
+      moved=true; el.classList.add('dragging');
+      dragGhost=document.createElement('div'); dragGhost.className='tok-drag-ghost';
+      dragGhost.innerHTML='<div class="tok-t">'+esc(BY[slug].title)+'</div><div class="tok-sink">⤓ into the soil</div>';
+      board.appendChild(dragGhost);
+    }
+    if(moved && dragGhost){
+      const br=board.getBoundingClientRect();
+      dragGhost.style.left=(e.clientX-br.left)+'px'; dragGhost.style.top=(e.clientY-br.top)+'px';
+      const soil=document.getElementById('soil'), sr=soil.getBoundingClientRect();
+      soil.classList.toggle('hot', e.clientY>=sr.top);
+    }
+  });
+  el.addEventListener('pointerup',e=>{
+    if(!dragging)return; dragging=false;
+    const soil=document.getElementById('soil'); soil.classList.remove('hot');
+    if(dragGhost){ dragGhost.remove(); dragGhost=null; }
+    el.classList.remove('dragging');
+    if(!moved){ toggle(slug); return; }                 // a tap = release from the board
+    const sr=soil.getBoundingClientRect();
+    if(e.clientY>=sr.top) compostNode(slug);             // dropped in the ground → metabolized
+    else render();                                        // dropped elsewhere → snaps back
+  });
+}
+function renderSoil(){
+  const el=document.getElementById('soil'); if(!el)return;
+  const n=MEM.soil.length;
+  const H=Math.min(78, 22 + n*5);
+  el.style.height=H+'px';
+  el.className='soil'+(n?' rich':'');
+  el.innerHTML='<div class="soil-lab">the soil · '+n+' reserve'+(n===1?'':'s')+' metabolized'
+    +(n?' <span class="soil-undo" onclick="undoSoil();event.stopPropagation();">↶ lift last</span>':'')
+    +'</div><div class="soil-hint">drag a branch down here — it feeds the ground</div>';
+}
+function renderMemory(){
+  const m=document.getElementById('memory'); if(!m)return;
+  const total=MEM_ORDER.reduce((s,c)=>s+MEM[c].length,0);
+  const max=Math.max(3,...MEM_ORDER.map(c=>MEM[c].length));
+  let h='<div class="mem-lab"><span>the board remembers — '+total+' placement'+(total===1?'':'s')+' · persists on this machine · your reads accrete</span>'
+    +'<span class="mem-clear" onclick="undoPlace()">↶ undo · </span><span class="mem-clear" onclick="clearMem()">clear</span></div><div class="vessels">';
+  MEM_ORDER.forEach(c=>{
+    const n=MEM[c].length; const pct=Math.round(n/max*100); const gated=GATE[c]==='gate';
+    h+='<div class="vessel '+VCLASS[c]+(gated?' gate':'')+'"><div class="vfill" style="height:'+pct+'%"></div>'
+      +'<div class="vn">'+c+'</div><div class="vc">'+n+'</div><div class="vd">'+(gated?'⚑ '+DEST[c]:DEST[c])+'</div></div>';
+  });
+  m.innerHTML=h+'</div>';
+}
+
+// ---- shelf ----
+const listEl=document.getElementById('shelflist');
+const searchEl=document.getElementById('search');
+const CAT_ORDER=['organ','nutrient','lens','seed','pollen'];
+let catFilter=null;   // null = all; else a category slug
+const CATCOUNT={}; IDX.forEach(r=>{CATCOUNT[r.category]=(CATCOUNT[r.category]||0)+1;});
+function renderCatbar(){
+  const cb=document.getElementById('catbar'); cb.innerHTML='';
+  const all=document.createElement('span'); all.className='cb'+(catFilter===null?' on':'');
+  all.textContent='all '+IDX.length; all.onclick=()=>{catFilter=null;renderShelf();}; cb.appendChild(all);
+  CAT_ORDER.forEach(c=>{
+    const s=document.createElement('span'); s.className='cb '+c+(catFilter===c?' on':'');
+    s.textContent=c+' '+(CATCOUNT[c]||0); s.onclick=()=>{catFilter=(catFilter===c?null:c);renderShelf();};
+    cb.appendChild(s);
+  });
+}
+function renderShelf(){
+  const q=(searchEl.value||'').toLowerCase().trim();
+  const rows=IDX.filter(r=> (!catFilter || r.category===catFilter) &&
+    (!q || r.slug.toLowerCase().includes(q) || (r.title||'').toLowerCase().includes(q) || (r.thesis||'').toLowerCase().includes(q)));
+  listEl.innerHTML='';
+  rows.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='node'+(sel.includes(r.slug)?' on':'');
+    d.innerHTML='<div class="node-t">'+esc(r.title)+'</div><div class="node-s">'+esc(r.slug)+'</div>'
+      +'<span class="cat '+r.category+'">'+r.category+'</span>';
+    d.onclick=()=>toggle(r.slug);
+    listEl.appendChild(d);
+  });
+  renderCatbar();
+  document.getElementById('shelfcount').textContent=rows.length+' of '+IDX.length+' patterns'+(catFilter?' · '+catFilter:'')+(sel.length?' · '+sel.length+'/'+MAX+' on the table':'')+' · categories are a proposal, your read corrects';
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function toggle(slug){
+  const i=sel.indexOf(slug);
+  if(i>=0){ sel.splice(i,1); }
+  else{ if(sel.length>=MAX){ flash(); return; } sel.push(slug); }
+  render();
+}
+function flash(){ const g=document.getElementById('gval'); g.style.color='var(--red)'; setTimeout(()=>g.style.color='',300); }
+
+// ---- board render ----
+const board=document.getElementById('board');
+const svg=document.getElementById('field');
+const SVGNS='http://www.w3.org/2000/svg';
+function svgEl(tag,attrs){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+// THE HEARTWOOD — the accreted self, grown by play. Rendered live from the
+// organ placements (MEM.organ), never stored, NEVER scored (same law as the
+// exe heartwood: it renders the marks, never a verdict). One ring per organ.
+function renderHeartwood(W,H){
+  const organs=MEM.organ, n=organs.length;
+  const emptyEl=document.getElementById('empty');
+  const cap=document.getElementById('hwcap');
+  svg.innerHTML='';
+  if(n===0){ emptyEl.style.display='block'; cap.innerHTML=''; return; }
+  emptyEl.style.display='none';
+  const cx=W/2, cy=H*0.44;
+  const maxR=Math.min(W,H)*0.40, baseR=16;
+  const step=Math.min(24,(maxR-baseR)/Math.max(n,1));
+  // rings, oldest innermost — the tree reads its own age
+  organs.forEach((o,i)=>{
+    const r=baseR+i*step;
+    const a=(0.22+0.55*(i+1)/n).toFixed(2);
+    svg.appendChild(svgEl('circle',{cx,cy,r,fill:'none',
+      stroke:'rgba(58,90,138,'+a+')','stroke-width':(i===n-1?2.2:1.4)}));
+    // a leaf per organ on its ring, placed by the golden angle so growth spirals
+    const ang=-Math.PI/2 + i*2.399963;
+    const lx=cx+r*Math.cos(ang), ly=cy+r*Math.sin(ang);
+    svg.appendChild(svgEl('circle',{cx:lx,cy:ly,r:(i===n-1?4.5:3.2),
+      fill:'rgba(58,90,138,'+(0.55+0.4*(i+1)/n).toFixed(2)+')'}));
+  });
+  // the core — the invariant center
+  svg.appendChild(svgEl('circle',{cx,cy,r:9,fill:'rgba(122,104,64,0.92)'}));
+  svg.appendChild(svgEl('circle',{cx,cy,r:4,fill:'rgba(26,20,8,0.9)'}));
+  cap.innerHTML='◉ the heartwood — '+n+' organ'+(n===1?'':'s')+' grown by play'
+    +'<span class="sub">the accreted self · derived live · never scored</span>';
+}
+
+function render(){
+  renderShelf();
+  document.querySelectorAll('.tok').forEach(e=>e.remove());
+  const W=board.clientWidth, H=board.clientHeight;
+  const emptyEl=document.getElementById('empty');
+  const gauge=document.getElementById('gauge');
+  svg.innerHTML='';
+  if(sel.length===0){ gauge.style.display='none'; document.getElementById('reading').style.display='none'; renderHeartwood(W,H); return; }
+  emptyEl.style.display='none';
+  document.getElementById('hwcap').innerHTML=''; gauge.style.display='block';
+
+  const cx=W/2, cy=H*0.46, R=Math.min(W,H)*0.30;
+  const pos={};
+  sel.forEach((s,k)=>{
+    const ang = -Math.PI/2 + (2*Math.PI*k/sel.length);
+    pos[s]=[cx+R*Math.cos(ang), cy+R*Math.sin(ang)];
+  });
+  const t=tension(sel);
+
+  // membrane fill (tightness) — a soft polygon through the nodes
+  if(sel.length>=2){
+    const pts=sel.map(s=>pos[s].join(',')).join(' ');
+    const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    poly.setAttribute('points',pts);
+    const op = t.ok? Math.min(0.28, 0.05+t.tightness*0.7) : 0.04;
+    poly.setAttribute('fill','rgba(176,106,0,'+op.toFixed(3)+')');
+    poly.setAttribute('stroke','none');
+    svg.appendChild(poly);
+  }
+  // edges — thickness = pairwise shared threads
+  for(let a=0;a<sel.length;a++)for(let b=a+1;b<sel.length;b++){
+    const w=pairWeight(sel[a],sel[b]);
+    const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',pos[sel[a]][0]);ln.setAttribute('y1',pos[sel[a]][1]);
+    ln.setAttribute('x2',pos[sel[b]][0]);ln.setAttribute('y2',pos[sel[b]][1]);
+    ln.setAttribute('stroke', w>0? 'rgba(122,104,64,'+Math.min(0.75,0.2+w*0.13).toFixed(2)+')' : 'rgba(122,104,64,0.10)');
+    ln.setAttribute('stroke-width', w>0? Math.min(6,1+w*0.9) : 1);
+    if(w===0) ln.setAttribute('stroke-dasharray','3 4');
+    svg.appendChild(ln);
+  }
+  // lineage scars — a distinct green tie
+  (t.scars||[]).forEach(sc=>{
+    if(!pos[sc.from]||!pos[sc.to])return;
+    const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',pos[sc.from][0]);ln.setAttribute('y1',pos[sc.from][1]);
+    ln.setAttribute('x2',pos[sc.to][0]);ln.setAttribute('y2',pos[sc.to][1]);
+    ln.setAttribute('stroke','rgba(42,106,26,0.8)');ln.setAttribute('stroke-width','2');
+    ln.setAttribute('stroke-dasharray','1 4');ln.setAttribute('stroke-linecap','round');
+    svg.appendChild(ln);
+  });
+
+  // tokens — tap to release · drag DOWN into the soil to compost (Kevin's gesture)
+  sel.forEach(s=>{
+    const r=BY[s]; const p=pos[s];
+    const d=document.createElement('div');
+    d.className='tok'; d.style.left=p[0]+'px'; d.style.top=p[1]+'px';
+    d.innerHTML='<div class="tok-t">'+esc(r.title)+'</div><div class="tok-x">✕ tap · ⤓ drag to soil</div>';
+    makeDraggable(d,s);
+    board.appendChild(d);
+  });
+
+  // gauge
+  document.getElementById('gval').textContent = t.ok? Math.round(t.tightness*100) : '0';
+  document.getElementById('gn').textContent = sel.length+(sel.length===1?' node':' nodes')+(t.ok?' · '+t.threads.length+' threads':'');
+
+  renderReading(t);
+}
+
+function renderReading(t){
+  const R=document.getElementById('reading'); R.style.display='block';
+  if(!t.ok){ R.innerHTML='<div class="muted">Pull one more pattern in — a membrane needs at least 2 nodes in tension.</div>'; return; }
+  let h='';
+  // THE REDUCTION — the headline now (telos: reduce, don't grow)
+  const inv=coreInvariant(sel);
+  h+='<div class="rrow"><div class="rlab" style="color:var(--nut)">reduction — does this collapse to an invariant? (calibrated: random membranes share none)</div>';
+  if(inv.n){
+    h+='<div class="seed-line" style="color:var(--nut)">◈ candidate invariant — all '+t.n+' members rest on: '+inv.words.slice(0,6).map(esc).join(' · ')+'</div>';
+    h+='<div class="hint">Every member carries these rare threads — they may all be facets of one thing. Random membranes share none, so this is real signal; whether it&rsquo;s a <b>true</b> invariant or coincidence is your felt read. If it holds, these '+t.n+' could reduce to it.</div>';
+  }else{
+    h+='<div class="muted">no shared core — these members don&rsquo;t reduce to one invariant (they stay plural). Not everything compresses; that&rsquo;s honest too.</div>';
+  }
+  h+='</div>';
+  // the raw signal — distinctive shared threads no node names
+  h+='<div class="rrow">';
+  if(t.seeds.length){
+    h+='<div class="seed-line">◆ what the membrane holds — distinctive thread(s) no pattern here names <span style="font-weight:normal;color:var(--gf)">(the raw signal)</span></div>';
+    h+='<div class="chips">'+t.seeds.slice(0,14).map(s=>'<span class="chip seed">'+esc(s.word)+'<span class="n">×'+s.spread+'</span></span>').join('')+'</div>';
+    h+='<div class="hint">These live across the set but sit in no node&rsquo;s title. Play until one lights in your body — then <b>place what it is</b> below, and mark it in NESI.</div>';
+  }else{
+    h+='<div class="rlab">the raw signal</div><div class="muted">No hidden thread yet — every shared thread here is already named by one of these patterns&rsquo; titles. Swap a node, or reach wider: the yield lives where kin don&rsquo;t announce their kinship.</div>';
+  }
+  h+='</div>';
+  // the typology fork — what KIND of thing a membrane can hold. The floor cannot
+  // classify (stay/travel, whole/partial, produce/reveal are felt reads); this
+  // presents the fork, Kevin's felt read places it. Mirrors _INTAKE/TYPOLOGY_*.
+  // the downstream — patterns this tension reaches. AN EXPLORATION AID, NOT a
+  // seed-verdict: calibration (2026-07-24) showed the COUNT does not separate
+  // seeds from noise on this word-graph (kin and random membranes both reach
+  // ~40-60). So it offers a next place to walk; it does not judge. No fake score.
+  const ds=downstream(t);
+  h+='<div class="rrow"><div class="rlab">downstream — where you could walk next (an aid, not a verdict)</div>';
+  if(ds.options.length){
+    h+='<div class="chips">'+ds.options.slice(0,10).map(o=>'<span class="chip" title="reaches the tension via: '+esc(o.hits.slice(0,4).join(', '))+'">'+esc(o.title.length>26?o.title.slice(0,26)+'…':o.title)+' <span class="n">×'+o.score+'</span></span>').join('')+'</div>';
+    h+='<div class="hint">Patterns that touch this tension’s distinctive threads — a place to walk, not a score. <b>Tested:</b> the count doesn’t tell a seed from noise (most tensions reach 40–60); recognizing a seed is still your felt walk, not a number.</div>';
+  }else{
+    h+='<div class="muted">this tension reaches nothing distinctive on the word-graph — likely thin.</div>';
+  }
+  h+='</div>';
+  h+='<div class="rrow"><div class="rlab">place this membrane — click the kind you feel · it routes (your felt read, the table won&rsquo;t decide)</div><div class="typ">'
+    +'<div class="tcard organ" onclick="place(\'organ\')"><div class="tname">organ</div><div class="tdest">stays · whole</div><div class="ttest">does work, takes load off you. test: if it vanished you&rsquo;d carry it again.</div><div class="tplace">↻ → the body</div></div>'
+    +'<div class="tcard nutrient" onclick="place(\'nutrient\')"><div class="tname">nutrient</div><div class="tdest">stays · partial</div><div class="ttest">reserve the graft draws in — the SOIL&rsquo;s currency. test: a graft cites it.</div><div class="tplace">↻ → the soil</div></div>'
+    +'<div class="tcard reg" onclick="place(\'lens\')"><div class="tname">lens</div><div class="tdest">reveals</div><div class="ttest">changes what you can see, produces nothing. test: shifts seeing, not doing.</div><div class="tplace">↻ → the library</div></div>'
+    +'<div class="tcard seed" onclick="place(\'seed\')"><div class="tname">seed</div><div class="tdest">travels · whole</div><div class="ttest">a compressed whole made to be given. test: roots in soil that isn&rsquo;t yours.</div><div class="tplace">✋ → the door (queues at your gate)</div></div>'
+    +'<div class="tcard pollen" onclick="place(\'pollen\')"><div class="tname">pollen</div><div class="tdest">travels · partial</div><div class="ttest">reserve that leaves to fertilize another&rsquo;s bloom. test: quickens a body not yours.</div><div class="tplace">✋ → the witness (queues at your gate)</div></div>'
+    +'<div class="tcard nul" onclick="place(\'tension-only\')"><div class="tname">tension-only</div><div class="tdest">holds nothing</div><div class="ttest">just shared threads, no gift. most sets. keeps the table honest.</div><div class="tplace">↻ → compost (releases the board)</div></div>'
+    +'</div></div>';
+  const offers=soilOffers();
+  if(offers.length){
+    h+='<div class="rrow"><div class="rlab" style="color:var(--nut)">the soil offers — rotted here, feeds this cross</div><div class="chips">'
+      + offers.slice(0,10).map(o=>'<span class="chip" style="border-color:var(--nut);background:rgba(42,106,26,0.06);color:var(--nut)">'+o.words.slice(0,3).map(esc).join(', ')+' <span class="n" style="color:var(--gf)">← '+esc(o.label.slice(0,22))+'</span></span>').join('')
+      +'</div></div>';
+  }
+  // threads
+  if(t.threads.length){
+    h+='<div class="rrow"><div class="rlab">threads across the membrane ('+t.threads.length+')</div><div class="chips">'+
+       t.threads.slice(0,20).map(x=>'<span class="chip'+(t.seeds.find(s=>s.word===x.word)?' seed':'')+'">'+esc(x.word)+'<span class="n">×'+x.spread+'</span></span>').join('')+'</div></div>';
+  }
+  // scars
+  if(t.scars.length){
+    h+='<div class="rrow"><div class="rlab">lineage scars — EXTENDS ties inside the set</div><div class="chips">'+
+       t.scars.map(s=>'<span class="chip scar">'+esc(s.from)+' → '+esc(s.to)+'</span>').join('')+'</div></div>';
+  }
+  // tightness + honest stub
+  h+='<div class="rrow"><div class="rlab">the reading</div><div class="stub"><b>reduction '+inv.n+'</b> — rare threads shared by ALL members (the candidate invariant; calibrated, random&asymp;0). <b>tension '+Math.round(t.tightness*100)+'/100</b> — shared word-mass. <b>downstream reach '+ds.options.length+'</b> — patterns touching this tension.<br><br><b>FINDING (tested this build):</b> the downstream COUNT does <i>not</i> discriminate a seed from noise — random membranes reach as many neighbors as kin ones, because word-overlap in this library is roughly uniform. So the reach is an <i>exploration aid</i>, not the seed-signal. Recognizing a seed still needs either your felt walk, or a signal richer than shared words (semantic, or a real lineage graph). No fake verdict is rendered — the honest result of "develop the downstream count" is that the count alone isn’t enough.</div></div>';
+  R.innerHTML=h;
+}
+
+searchEl.addEventListener('input',renderShelf);
+window.addEventListener('resize',()=>{ if(sel.length) render(); });
+renderShelf();
+renderMemory();
+renderSoil();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+---
+name: project_fesa_tetra
+description: "The FESA / David Guerin exchange and the two-tetra build on the federal contractor safety-compliance gap — SENT, circuit open, closed 2026-07-03"
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: 84b1d71c-43dc-4d5a-9a51-7aa6c10a8f22
+---
+
+David Guerin (Managing Member, Lift Systems International LLC; NYC union-trained elevator mechanic since 1985, QEI/CET-S, expert witness, IAEC; LinkedIn `david-guerin-a797b11b` — confirmed real & domain-credible) asked Kevin for a **tight, instance-stripped structural analysis of the federal contractor worker-safety compliance gap** at DOE/DOD sites — 3-4pp, congressional-tight, NO OIG case, NO constitutional argument, structural finding only.
+
+Kevin's executive decision (2026-06-22): build **two parallel tetrahedra**, 4 faces each. **Shareable** (David-ready; Face 1 "The Gap" leads as the standalone) + **Private** (full depth, constitutional Face 4 + FESA convergence/divergence; NEVER crosses). The Track A/B hard wall is enforced as **separate file-sets** (the hardening's A5: a wall by instruction leaks; a file boundary does not). Four vertices: Body · Sub-federal frameworks · Federal safety law · Authority. Faces omit one vertex each.
+
+Staged at `_INTAKE/fesa_tetra/`: `shareable/` (4 faces + `_SIFT_LOG.md`), `private/` (4 faces), `_GATE_before_sending.md`, `_cover_note_to_david_DRAFT.md`, `_divergence_question_DRAFT.md`, `_COHERENCE.md`. Coherence verdict PASS (one date-consistency fix applied).
+
+**Verified domain facts (corrected Kevin's premises; cited):** (1) whistleblower expansion **NOT enacted** — S.874 passed Senate by UC 2026-04-29, held at House desk; the only enacted 2025 DOE change (10 CFR 708 ADR rescission, eff. 2025-07-15) was a *narrowing*; even proposed = anti-retaliation remedy, not a reporting path. (2) **CMMC** = confirmed federal-flowdown-as-condition-of-contract mechanism (32 CFR 170 eff. 2024-12-16; DFARS 252.204-7021 eff. 2025-11-10) but cybersecurity-only — "sidesteps the union" is inference/analogy, never asserted as fact. (3) **Hazard-analysis sign-off before work** = CONFIRMED federal requirement (EM 385-1-1 AHA; DOE 10 CFR 851 + ISMS Core Function 4); "must be electronic" is site practice, NOT a federal mandate. **FESA-the-bill: NOT-FOUND** in public record → never assert it exists; the realized yield is David's domain-credible validation.
+
+**Reframed thesis:** the gap is not "no federal oversight infrastructure exists" — the closing mechanism (flowdown + named-authority sign-off) already exists in federal practice; it is simply **not applied as a uniform federal safety-reporting floor**. Where it isn't, sub-federal frameworks fill the vacuum, cost lands on the body, signal dies before authority.
+
+**Gate: PASSED from the body** (2026-06-22, recorded in `_GATE_before_sending.md`) — Kevin's frame: a gift that completes in the release, the wound metabolized, not reactivated. Divergence question = **form B**. Cover note finalized as the LinkedIn reply (`LINKEDIN_REPLY_to_david.md`). The send itself is Kevin's hand on LinkedIn, beyond the membrane; the private tetra never crosses; confirm S.874 status at send (time-sensitive).
+
+**Register passes (2026-06-22):** (1) stripped the over-applied FACT/INFERENCE epistemic tags from the reader copy (citations are the fact-anchor); verify-items pulled to `_PRE_SEND_CHECKLIST.md`. (2) Resolved the one open edge via primary-source research: the AHA/ISMS sign-off is a **front-end gate, not an onward channel** — between sign-off and post-event reporting the live hazard has no uniform federal channel (folded into The Gap + The Severed Signal). (3) Simulated David's AI (interpret + adversarial): verdict *credible, trust the diagnosis, pressure-test "apply ≠ invent"*; spine survives; but it detected "a personal charge underneath the neutrality." (4) **De-charge pass** — removed all wound-adjacent framing (somatic "body" language, the "not a brief/demand/threat" disclaimer, gift-edge, the "failure of courage" self-exoneration, the "survives every contested leg" defensiveness). Re-ran the detector: charge dropped moderate-strong → faint.
+
+**SENT — circuit closed (recorded 2026-07-03).** Kevin's confirmation, verbatim: *"sent to david. circuit open. Gift recieved. Recognition capacity exceeded."* The verify flag is closed. The send was Kevin's hand on LinkedIn; the private tetra never crossed and never does. Nothing in this arc is a live next-action.
+
+**The de-charge floor (a canon-grade refinement, candidate for [[feedback_composting_threshold]] / the composting framework):** below the wound-*framing* lies an irreducible signal — the **fact-selection** (operator-level knowledge of DPO/ECP/ENG 3394/ISMS CF4). That is **not the wound; it's the knowing** — and to a domain expert it reads as authority, not grievance. The metabolized trace of having lived it is the *proof the pattern is real*, not a leak to seal; scrubbing it to zero guts precision and tries to un-live the developmental cost that became the expertise. Kevin **accepted the floor**. Packet send-ready: `SEND_shareable_analysis.md` (~27.5k, neutral register). See [[feedback_map_both_sides]], [[the_silent_close]], [[feedback_publish_instance_not_model]], [[project_iuec_arc]].

@@ -1,0 +1,19 @@
+{"ts": "2026-07-16T21:45:41", "id": "2026-07-16_test_pile_markcheck_df2651", "pile": "test_pile_markcheck.md", "verdict": "compost"}
+{"ts": "2026-07-16T22:03:34", "id": "2026-07-16_test_pile_exe_b2d82a", "pile": "test_pile_exe.md", "verdict": "compost"}
+{"ts": "2026-07-16T22:16:29", "id": "2026-07-16_test_pile_A_turbo_b2b785", "pile": "test_pile_A_turbo.md", "verdict": "cross"}
+{"ts": "2026-07-16T22:20:00", "id": "2026-07-16_test_pile_A_turbo_b2b785", "verdict": "correction", "note": "cross above was recorded by a stale zombie server (old code, no promotion); mark reset for a clean re-run"}
+{"ts": "2026-07-16T22:24:40", "id": "2026-07-16_test_pile_A_turbo_b2b785", "pile": "test_pile_A_turbo.md", "verdict": "cross"}
+{"ts": "2026-07-16T22:28:11", "id": "2026-07-16_test_pile_A_turbo_b2b785", "pile": "test_pile_A_turbo.md", "verdict": "uncross", "note": "test cross (session artifact) pulled from canon pending source-of-truth mark"}
+{"ts": "2026-07-16T23:21:57", "id": "2026-07-16_test_pile_fallback_5e5111", "pile": "test_pile_fallback.md", "verdict": "hold"}
+{"ts": "2026-07-17T10:27:11", "id": "2026-07-16_test_pile_native_4ce0d7", "pile": "test_pile_native.md", "verdict": "compost"}
+{"ts": "2026-07-17T18:18:19", "id": "2026-07-17_probe_engine_live_cd8e24", "pile": "probe_engine_live.md", "verdict": "compost"}
+{"ts": "2026-07-19T20:44:53", "id": "unmark_selftest_000000", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "verdict": "hold", "condition": "until 2026-08-01"}
+{"ts": "2026-07-19T20:44:53", "id": "unmark_selftest_000000", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "annotation": "unmark", "was": "hold"}
+{"ts": "2026-07-19T20:44:53", "id": "unmark_selftest_000000", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "verdict": "compost"}
+{"ts": "2026-07-19T20:44:53", "id": "unmark_selftest_000000", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "annotation": "unmark", "was": "compost"}
+{"ts": "2026-07-23T21:40:15", "id": "2026-07-23_paste_2026-07-23_211156_b0944f", "pile": "paste_2026-07-23_211156.md", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:19", "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:20", "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_8b90ef", "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:27", "id": "2026-07-17_made_a_floor_that_holds_a_stranger_without_ex_0be5d0", "pile": "bench:a_floor_that_holds_a_stranger_without_ex.md", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:30", "id": "2026-07-17_made_an_instrument_for_witnessing_a_gift_with_daf9fe", "pile": "bench:an_instrument_for_witnessing_a_gift_with.md", "verdict": "compost"}
+{"ts": "2026-07-23T21:40:32", "id": "2026-07-19_made_id_like_to_build_a_lease_3e1350", "pile": "bench:id_like_to_build_a_lease.md", "verdict": "compost"}

@@ -1,0 +1,33 @@
+# Hand-authored diagram DSL — proves the "real bench object + real DSL"
+# half of the success test (§5 of the brief). Authored by hand this session
+# because author_diagram is honestly stubbed while the engine is dark; this
+# is exactly the kind of authoring that call takes over at engine login.
+#
+# Reads the bench object 2026-07-19_made_id_like_to_build_a_lease_3e1350.json:
+# intent "id like to build a lease", bearing patterns Build Before Distill /
+# Build Precedes Legible Spine / The Governor. The load path this names:
+# intent feeds the drafted structure, the structure feeds standing land-use,
+# and land-use loops back to reshape intent — the one move is the first
+# edge, where loose intent actually commits to a structure.
+nodes:
+  - id: self
+    label: "intent"
+  - id: structure
+    label: "the lease"
+  - id: land
+    label: "standing use"
+edges:
+  - from: self
+    to: structure
+    kind: feed
+  - from: structure
+    to: land
+    kind: feed
+  - from: land
+    to: self
+    kind: loop
+leverage:
+  on: edge:self→structure
+boundary:
+  between: [latent, active]
+  marker: "the lease turns loose intent into standing structure"

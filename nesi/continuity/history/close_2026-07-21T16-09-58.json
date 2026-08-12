@@ -1,0 +1,42 @@
+{
+ "closed_at": "2026-07-21T16:09:58",
+ "where_it_closed": "bench-mechanics session: cycle 2 (diction) of the geometric bench built and smoke-tested ALL GREEN; raw drop staged to intake, no mark taken",
+ "open_threads": [
+  {
+   "id": "2026-07-18_tensegrity_substrate_writeup_owed",
+   "pile": "marks/2026-07-18_same-quartet-tensegrity-reconciliation.md",
+   "summary": "Substrate write-up for the tensegrity assembly/standing reconciliation was named as the next hop before membrane crossing. Still not written, surfaced again this session.",
+   "engine": "n/a — writing task, not engine-run"
+  },
+  {
+   "id": "2026-07-21_late_sealing_mirror",
+   "pile": "_INTAKE/EXTRACTION_christopher-alexander-six-patterns_2026-07-18.md",
+   "summary": "LATE_SEALING held, not promoted — live mirror-question against this session's own naming move. Not resolved by design.",
+   "engine": "n/a"
+  },
+  {
+   "id": "2026-07-21_bench_cycle3_deferred",
+   "pile": "nesi/bench/geometric_bench/STANDING_NOTE.md",
+   "summary": "Cycle 3 (visual polish) of the geometric bench still fully deferred, untouched through cycles 1 and 2.",
+   "engine": "n/a"
+  },
+  {
+   "id": "2026-07-21_five_strut_variant_proposed",
+   "pile": "_INTAKE/raw/substrate_source_2026-07-21_bench-mechanics-tensegrity.md",
+   "summary": "A five-strut artifact variant (LATE_SEALING as the strut whose cable never draws taut) was offered, not built.",
+   "engine": "n/a"
+  }
+ ],
+ "inbox": [
+  "substrate_source_2026-07-21_bench-mechanics-tensegrity.md"
+ ],
+ "held_count": 23,
+ "felt_read_count": 23,
+ "last_marks": [
+  {
+   "ts": "2026-07-21T16:09:58",
+   "pile": "substrate_source_2026-07-21_bench-mechanics-tensegrity.md",
+   "verdict": "raw-drop, no mark"
+  }
+ ]
+}

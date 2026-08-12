@@ -1,0 +1,59 @@
+{
+ "closed_at": "2026-07-21T16:36:42",
+ "where_it_closed": "last mark: compost on front_2026-07-17_hold_onto_this_the_inverter_manual_i.md · 2026-07-19T20:44:53",
+ "open_threads": [
+  {
+   "id": "2026-07-19_made_id_like_to_build_a_lease_3e1350",
+   "pile": "bench:id_like_to_build_a_lease.md",
+   "summary": "[STUB DRAFT — engine not wired] intent: id like to build a lease · bearing patterns: Build Before Distill, Build Precedes Legible Spine, The",
+   "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'clau"
+  },
+  {
+   "id": "2026-07-17_made_an_instrument_for_witnessing_a_gift_with_daf9fe",
+   "pile": "bench:an_instrument_for_witnessing_a_gift_with.md",
+   "summary": "[STUB DRAFT — engine not wired] intent: an instrument for witnessing a gift without merging with the giver · bearing patterns: Catalysis Wit",
+   "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'clau"
+  },
+  {
+   "id": "2026-07-17_made_a_floor_that_holds_a_stranger_without_ex_0be5d0",
+   "pile": "bench:a_floor_that_holds_a_stranger_without_ex.md",
+   "summary": "[STUB DRAFT — engine not wired] intent: a floor that holds a stranger without extraction · bearing patterns: Catalysis Without Claim, extend",
+   "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'clau"
+  },
+  {
+   "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_8b90ef",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+   "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JS"
+  },
+  {
+   "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+   "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JS"
+  }
+ ],
+ "inbox": [
+  "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "probe_engine_live.md"
+ ],
+ "held_count": 23,
+ "felt_read_count": 23,
+ "last_marks": [
+  {
+   "ts": "2026-07-19T20:44:53",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "verdict": "compost"
+  },
+  {
+   "ts": "2026-07-19T20:44:53",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "verdict": "hold"
+  },
+  {
+   "ts": "2026-07-17T18:18:19",
+   "pile": "probe_engine_live.md",
+   "verdict": "compost"
+  }
+ ]
+}

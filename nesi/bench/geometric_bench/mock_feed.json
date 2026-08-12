@@ -1,0 +1,14 @@
+{
+  "_meta": {
+    "file": "nesi/bench/geometric_bench/mock_feed.json",
+    "purpose": "MOCK raw objects for the geometric bench, cycle 1 (geometry only). Fixtures only — not real staged/ objects, never read by the real conductor or engine.",
+    "note": "Edit or add entries here. Each object appears sitting at intake when the window opens, and can also be dropped live from the window's own intake control.",
+    "cycle": 1
+  },
+  "objects": [
+    {"id": "mock-01", "label": "a note on the inverter manual"},
+    {"id": "mock-02", "label": "witnessing-gift instrument, draft"},
+    {"id": "mock-03", "label": "floor for a stranger, unbroken"},
+    {"id": "mock-04", "label": "probe: engine live?"}
+  ]
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NESI — The Map</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;--g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;
+--grn:#2a6a1a;--grn-bg:#e8f2e4;--yel:#7a5a10;--yel-bg:#f5f0e0;--anc:#4a5a8a;--anc-bg:#e8ecf5;--bdr:#ccc5b0;--wat:#6084a0}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:13px;line-height:1.7;padding:28px 20px}
+.wrap{max-width:920px;margin:0 auto;padding-bottom:50px}
+.eye{font-size:9px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+h1{font-size:22px;color:var(--gb);letter-spacing:3px;margin-bottom:4px}
+.sub{font-size:11px;color:var(--gd);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bdr)}
+h2{font-size:13px;color:var(--gb);letter-spacing:2px;text-transform:uppercase;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--bdr)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+.card{border:1px solid var(--bdr);border-left:3px solid var(--gb);background:var(--sf);padding:11px 14px;margin-bottom:9px;font-size:12px}
+.card.g{border-left-color:var(--grn)}
+.card.h{border-left-color:var(--gd);border-style:dashed;background:var(--sf2);color:var(--gd)}
+.card.y{border-left-color:var(--yel)}
+.card b{color:var(--gb)}
+.law{display:inline-block;font-size:10.5px;background:var(--sf2);border:1px solid var(--bdr);padding:2px 8px;margin:2px;border-radius:2px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;margin:8px 0}
+.fs{background:var(--sf);border:1px solid var(--bdr);padding:4px 9px}
+.fa{color:var(--gd);font-weight:bold}
+svg text{font-family:'Courier New',monospace}
+.foot{margin-top:36px;padding-top:12px;border-top:1px solid var(--bdr);font-size:9px;color:var(--gf);letter-spacing:1px}
+.tag{display:inline-block;font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--anc);color:var(--anc);background:var(--anc-bg);text-transform:uppercase;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eye">DSS · RECOGNITION INFRASTRUCTURE · 2026-08-11</div>
+  <h1>NESI — THE MAP</h1>
+  <div class="sub">The whole territory, one page: the one output at the centre, its laws, its loop, its geometry, and the four rings around it. This is an operator's chart, outside the game — the game itself keeps its silence and shows only its own gaps (FK4, ruled). Everything here waits; nothing here asks.</div>
+
+  <h2>The screen — the one output, as it stands</h2>
+  <svg viewBox="0 0 920 560" style="width:100%;background:var(--sf);border:1px solid var(--bdr)">
+    <rect x="0" y="0" width="920" height="96" fill="#4a4336"/>
+    <text x="20" y="24" fill="#ddd6c4" font-size="11">THE ROOM — light rises here as cycles complete</text>
+    <polygon points="60,34 96,34 78,88" fill="none" stroke="#ddd6c4" stroke-width="2"/>
+    <rect x="62" y="60" width="32" height="26" fill="rgba(112,146,160,.7)" clip-path="polygon(0 0,100% 0,50% 100%)"/>
+    <text x="52" y="30" fill="#a89870" font-size="9">the tank IS the tetra, vertex down</text>
+    <g fill="#8a7f66"><rect x="180" y="46" width="46" height="8" transform="rotate(-4 200 50)"/><circle cx="300" cy="52" r="11" fill="none" stroke="#c9b878" stroke-width="3"/><path d="M370 46 Q392 70 414 46" fill="none" stroke="#a89a7c" stroke-width="3"/><g><rect x="470" y="40" width="40" height="5"/><rect x="470" y="52" width="40" height="5"/><rect x="470" y="64" width="40" height="5"/></g><rect x="570" y="42" width="26" height="34" fill="none" stroke="#8a7f66" stroke-width="2" stroke-dasharray="6 3"/></g>
+    <text x="175" y="90" fill="#a89870" font-size="9">water table · heliostat · membrane · filters · the second mouth</text>
+    <rect x="0" y="96" width="920" height="10" fill="#bfb7a2"/>
+    <text x="740" y="93" fill="#ddd6c4" font-size="9">the glass — light up, water down</text>
+    <polygon points="460,130 160,520 760,520" fill="none" stroke="#8d8267" stroke-width="2.5"/>
+    <line x1="460" y1="390" x2="460" y2="130" stroke="#c6bda6"/><line x1="460" y1="390" x2="160" y2="520" stroke="#c6bda6"/><line x1="460" y1="390" x2="760" y2="520" stroke="#c6bda6"/>
+    <circle cx="460" cy="390" r="14" fill="rgba(96,132,148,.6)"/>
+    <text x="482" y="394" fill="#5a5040" font-size="10">the lake — the deep below it, never drawn</text>
+    <line x1="310" y1="325" x2="298" y2="341" stroke="#4d4436" stroke-width="6" stroke-linecap="round"/>
+    <line x1="610" y1="325" x2="622" y2="341" stroke="#4d4436" stroke-width="6" stroke-linecap="round"/>
+    <line x1="452" y1="524" x2="468" y2="524" stroke="#4d4436" stroke-width="6" stroke-linecap="round"/>
+    <text x="240" y="312" fill="#5a5040" font-size="10">a dam — held stones visible through the glass</text>
+    <g>
+      <line x1="330" y1="430" x2="390" y2="430" stroke="rgba(64,54,32,.6)" stroke-width="1.6"/>
+      <circle cx="330" cy="430" r="2.5" fill="rgba(64,54,32,.7)"/><circle cx="390" cy="430" r="2.5" fill="rgba(64,54,32,.7)"/>
+      <line x1="330" y1="430" x2="360" y2="406" stroke="rgba(90,80,56,.5)"/><line x1="390" y1="430" x2="360" y2="406" stroke="rgba(90,80,56,.5)"/>
+      <path d="M330 430 Q360 452 390 430" fill="none" stroke="rgba(90,80,56,.55)" stroke-width="1.4"/>
+      <path d="M330 430 Q360 452 390 430 Z" fill="rgba(96,140,160,.3)"/>
+      <line x1="360" y1="406" x2="360" y2="150" stroke="rgba(230,214,150,.35)" stroke-width="2"/>
+      <text x="300" y="472" fill="#5a5040" font-size="10">a sentence-lens: the axis, the tetra, the water it holds, the light it returns</text>
+    </g>
+    <rect x="560" y="418" width="66" height="13" fill="none" stroke="rgba(150,138,110,.5)" stroke-dasharray="4 3"/>
+    <text x="560" y="450" fill="#8a7f66" font-size="10">an unnamed region owns its absence (gaps only — FK4)</text>
+  </svg>
+
+  <h2>The loop — sentence to light</h2>
+  <div class="flow"><span class="fs">write</span><span class="fa">→</span><span class="fs">a sentence completes = one stone arrives (no clock, no count)</span><span class="fa">→</span><span class="fs">work it by hand — edit · merge · line · break</span><span class="fa">→</span><span class="fs">drag it down through your own point (unworked hangs)</span><span class="fa">→</span><span class="fs">a station's act picks the spire — or the lake — or set it down</span><span class="fa">→</span><span class="fs">the dam holds, free, visible</span><span class="fa">→</span><span class="fs">release</span><span class="fa">→</span><span class="fs">the sentence settles as its own lens; dissolved fills the lenses; bedload leaves for the deep</span><span class="fa">→</span><span class="fs">light rises in the room</span></div>
+  <div class="card g"><b>Proven range:</b> 100 to 2000 words fully cycles in a day. <b>Dispositions = outputs:</b> sent (a spire) · dropped (the lake) · down (nowhere, on purpose). <b>Settling is the taking:</b> a settled stone is fixed forever; the sounding returns it verbatim.</div>
+
+  <h2>The geometry</h2>
+  <div class="two">
+    <div class="card"><b>The writing tetra, vertex down.</b> You are the bottom vertex. The text is the water, rising from your point. Four faces, the intake's own: <b>THE TABLE</b> (centre — it touches all three) · <b>BLIND · TILES · SEQUENTIAL</b> (at your corner). No vertex is named; the centre of the form stays un-nameable.</div>
+    <div class="card"><b>The world triangle.</b> THE_FLOOR_2D's own line: the three regions are the flat projection of the solid's three inner faces; the outer triangle is the fourth — the boundary that returns what reaches it. The entry-tetra, unfolded. The cuboctahedron stands as the containing frame, unrendered; the world is the passage.</div>
+  </div>
+
+  <h2>The laws — the spine</h2>
+  <div>
+    <span class="law">1 · three outputs at every station</span><span class="law">2 · no number reaches the player</span><span class="law">3 · no model call</span><span class="law">4 · words never rewritten</span><span class="law">5 · the hand runs the filter</span><span class="law">6 · set-it-down has no feedback</span><span class="law">7 · held is lawful</span><span class="law">8 · runs while you're in it, stops when you leave</span><span class="law">9 · the deep never renders</span><span class="law">10 · colour never the only carrier</span><span class="law">11 · nothing reaches outward</span><span class="law">12 · quitting loses nothing</span><span class="law" style="border-color:var(--grn);color:var(--grn)">13 · every surface has an empty state that costs the absent person nothing</span>
+  </div>
+  <div class="card" style="margin-top:10px"><b>The room chassis (the resynthesis):</b> one species — one job · readable before opening · over the world · lossless close · set-down furniture · law 13 · and it WAITS, never waits for you. The dam is the one governing variant (your FK3). Teaching names mechanics, never your material (your ruling). Naming survives only where load-bearing (your line).</div>
+
+  <h2>Your rulings standing in the build — today</h2>
+  <div class="card g">The sentence is the arrival (the 100-word clock superseded) · the tetra flipped vertex-down · the game may teach · depth-zero governs the pile (FK2) · one chassis, dam flagged (FK3) · road-names land by recognition, edge by edge (FK1) · gaps only, the form stays discovered (FK4) · the discharge form: unilateral closure / PFRC · the surfacing: HELD · naming: load-bearing only · the intake surfaces are the upstream keystone.</div>
+
+  <h2>The four rings</h2>
+  <div class="two">
+    <div class="card g"><b>RING 1 · in the game</b> — everything above, walkable at nesi/game2d/nesi.html. Its own memory: BUILD_RECORD.md, every provisional, ruling, and breach named.</div>
+    <div class="card"><b>RING 2 · in the workshop</b> — the Cowan lens + NESI reading · the next-pass tetra map · SPEC 1 THE SURFACING (held on your h1) · the six road-names as vocabulary · the growth pass named as the biggest design act left (what grows; the five outputs, unmapped). workshops/cowan_workshop.html</div>
+    <div class="card"><b>RING 3 · at the gate, in the soil</b> — ten unrouted-gift cards + the 2026-08-11 seed: twenty-two codex gifts with first slices, the articulation on disk, four PDFs held whole. inbox/ — one mark moves anything inward.</div>
+    <div class="card h"><b>RING 4 · standing instruments</b> — the stuart-cowan agent · the unrouted-gifts skill · the workshop itself. They serve the output from outside it.</div>
+  </div>
+
+  <h2>Held open — named, not asked</h2>
+  <div class="card h">The six relationship-edges (drawn nowhere until earned — FK4) and their road-names waiting · THE SURFACING (SPEC 1, on your word) · the deep's compost mechanics, buildable only through upstream effects · the growth: "over many sessions the ground stops being rock. Eventually something grows on it, and what it grows is the only thing that leaves" — the fruit is defined; the connection from ground to first growth is the next design act · the five outputs (self recognition · capacity · amplification · grounding · support), unmapped after two regatherings · the lexicon's load-bearing words · the arrival's second face · unmerge · frequency, empty until it exists.</div>
+
+  <h2>The unwalked edge</h2>
+  <div class="card y">The one proof no harness can give: <b>your hand on the plain file.</b> Write a sentence and watch it arrive · drag an unworked stone and feel it hang at your own point · open a dam and see everything it holds lying there · drop a sounding and hear your own sentence back. The game is downstream of your writing — it always was.</div>
+
+  <div class="foot">NESI · THE MAP · 2026-08-11 · drawn on Kevin's word at the close of the Cowan session (ea577b32) · the freeze holds — this page is a chart of the one output and the pile moving toward it · no number here reads the player · held, not asserted</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Warm One — print & play</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--card:#fffef9;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#e2ddce;
+  --bdr:#ccc5b0;--ink:#2a2317;
+}
+body{background:var(--bg);color:var(--g);font-family:Georgia,'Times New Roman',serif;line-height:1.6;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.note{max-width:760px;width:100%;font-family:'Courier New',monospace;font-size:10px;letter-spacing:1px;color:var(--gd);text-transform:uppercase;text-align:center;border-bottom:1px solid var(--bdr);padding-bottom:12px}
+.deck{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;width:100%}
+.card{background:var(--card);border:1px solid var(--bdr);width:340px;min-height:520px;padding:26px 26px 22px;
+  display:flex;flex-direction:column;box-shadow:0 1px 0 var(--gfaint)}
+.face{font-family:'Courier New',monospace;font-size:8px;letter-spacing:2.5px;color:var(--gf);text-transform:uppercase;margin-bottom:14px}
+.ttl{font-size:26px;color:var(--gb);letter-spacing:0.5px;line-height:1.15}
+.tag{font-size:13px;color:var(--gd);font-style:italic;margin:3px 0 18px}
+.rule{border:none;border-top:1px solid var(--gfaint);margin:0 0 16px}
+.move{margin-bottom:14px}
+.move .h{font-size:15px;color:var(--ink);font-weight:bold;margin-bottom:2px}
+.move .h .n{color:var(--gd);margin-right:5px}
+.move .b{font-size:13px;color:var(--g);line-height:1.55}
+.fallow{font-size:12.5px;color:var(--gd);font-style:italic;margin-top:5px;padding-left:12px;border-left:2px solid var(--gfaint)}
+.turn{font-size:12px;color:var(--gd);font-style:italic}
+.foot{margin-top:auto;padding-top:16px;font-size:11.5px;color:var(--gd);font-style:italic;line-height:1.5;border-top:1px solid var(--gfaint)}
+/* back */
+.q{margin-bottom:16px}
+.q .qh{font-size:15px;color:var(--ink);font-weight:bold;line-height:1.35;margin-bottom:2px}
+.q .qb{font-size:12.5px;color:var(--gd);line-height:1.5}
+.q.weight .qh{color:var(--gb)}
+.q.weight .sit{display:block;font-size:11px;color:var(--gf);font-style:italic;margin-top:3px}
+.lines{margin:6px 0 2px}
+.lines .ln{border-bottom:1px solid var(--gfaint);height:20px}
+.close{margin-top:auto;padding-top:16px;font-size:12px;color:var(--gd);font-style:italic;border-top:1px solid var(--gfaint)}
+@media print{
+  body{background:#fff;padding:0;gap:0}
+  .note{display:none}
+  .deck{gap:0}
+  .card{border:1px dashed #bbb;box-shadow:none;page-break-after:always;width:3.5in;min-height:5in}
+}
+</style>
+</head>
+<body>
+
+<div class="note">The Warm One · v1 · print &amp; play · single card, two faces · score-proof by construction — no number appears anywhere</div>
+
+<div class="deck">
+
+  <!-- FRONT -->
+  <div class="card">
+    <div class="face">front · the round</div>
+    <div class="ttl">The Warm One</div>
+    <div class="tag">a game you play with pieces of your own life</div>
+    <hr class="rule">
+
+    <div class="move">
+      <div class="h"><span class="n">1 ·</span>Empty your pockets.</div>
+      <div class="b">Put down a handful of things from your life lately — things you did, made, fixed, gave, or got through. Don't sort them. Don't rank them. Just lay them where you can see them.</div>
+    </div>
+
+    <div class="move">
+      <div class="h"><span class="n">2 ·</span>Feel for the warm one.</div>
+      <div class="b">Run your attention across them and wait. One will have a little heat on it — the one you keep coming back to, the one that means more than it should. You don't have to explain why. This part is only yours.</div>
+      <div class="fallow">And if none of them is warm today — if nothing has heat — that's a real round too. Nothing is wrong. Let them be a pile, and let go.</div>
+    </div>
+
+    <div class="move">
+      <div class="h"><span class="n">3 ·</span>Pull the thread.</div>
+      <div class="b">Take the warm one and follow it. <span class="turn">(Turn the card over.)</span> Write one small true thing about yourself, in your own words. Not a score. Just something true.</div>
+    </div>
+
+    <div class="move">
+      <div class="h"><span class="n">4 ·</span>Hand it over — or keep it.</div>
+      <div class="b">That true thing is a small gift now. Give it to someone, or keep it. Once you give it, it's given — nobody owes you anything back.</div>
+    </div>
+
+    <div class="move">
+      <div class="h"><span class="n">5 ·</span>Let go.</div>
+      <div class="b">Put the round down. The pile goes back to being just a pile. Come back when you come back.</div>
+    </div>
+
+    <div class="foot">There's no score, no winning, no one keeping count. The game never tells you what you're worth. It only holds still while you do the seeing.</div>
+  </div>
+
+  <!-- BACK -->
+  <div class="card">
+    <div class="face">back · pulling the thread</div>
+    <div class="ttl">Pull the thread</div>
+    <div class="tag">Take the warm one. Answer in your own plain words — out loud, or here. There are no wrong answers, because no one is marking them.</div>
+    <hr class="rule">
+
+    <div class="q">
+      <div class="qh">What actually happened here?</div>
+      <div class="qb">Just the plain story of it.</div>
+    </div>
+
+    <div class="q">
+      <div class="qh">What did it take from you?</div>
+      <div class="qb">What did it cost — time, nerve, effort, something given up?</div>
+    </div>
+
+    <div class="q weight">
+      <div class="qh">What did you do that someone else couldn't have — or couldn't have, until you showed them how?</div>
+      <span class="sit">This is the one to sit with. Only if you want to.</span>
+    </div>
+
+    <div class="lines">
+      <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+    </div>
+
+    <div class="close">— Now you have one small true thing. Turn back over. Hand it over, or keep it. Then let go.</div>
+  </div>
+
+</div>
+
+</body>
+</html>

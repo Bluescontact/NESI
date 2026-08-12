@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NESI bench — geometric layer (cycle 1)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="pagehead">nesi bench — geometric layer · cycle 1 · mock feed, engine dark</div>
+
+<div class="stage">
+
+  <div class="grain">
+
+    <div class="region" data-region="intake">
+      <div class="region-label">intake</div>
+      <div class="region-voice">unformed — before assembly starts</div>
+      <div class="intake-controls">
+        <input type="text" id="drop-input" placeholder="name a raw thing" maxlength="60">
+        <button id="drop-btn" type="button">drop</button>
+      </div>
+      <div class="lane" data-lane="intake"></div>
+    </div>
+
+    <div class="connector" aria-hidden="true"></div>
+
+    <div class="region" data-region="staging">
+      <div class="region-label">staging</div>
+      <div class="region-voice">strung — tensioned, not yet tested</div>
+      <div class="lane" data-lane="staging"></div>
+    </div>
+
+    <div class="connector" aria-hidden="true"></div>
+
+    <div class="region" data-region="break">
+      <div class="region-label">break</div>
+      <div class="region-voice">under test — does this hold</div>
+      <div class="lane" data-lane="break"></div>
+    </div>
+
+    <div class="connector" aria-hidden="true"></div>
+
+    <div class="region gate-region" data-region="gate">
+      <div class="region-label">gate</div>
+      <div class="region-voice">held at the threshold — one function crosses it</div>
+      <div class="lane" data-lane="gate"></div>
+    </div>
+
+    <div class="connector connector-gate" aria-hidden="true"></div>
+
+    <div class="region" data-region="landing">
+      <div class="region-label">standing</div>
+      <div class="region-voice">held simultaneously — none of the four first anymore</div>
+      <div class="lane" data-lane="landing"></div>
+    </div>
+
+  </div>
+
+  <div class="branch">
+    <div class="branch-line branch-line-left" aria-hidden="true"></div>
+    <div class="region off" data-region="held-bay">
+      <div class="region-label">held-bay</div>
+      <div class="region-voice">off the grain — reversible</div>
+      <div class="lane" data-lane="held-bay"></div>
+    </div>
+    <div class="region off" data-region="compost">
+      <div class="region-label">compost</div>
+      <div class="region-voice">off the grain — reversible</div>
+      <div class="lane" data-lane="compost"></div>
+    </div>
+    <div class="branch-line branch-line-right" aria-hidden="true"></div>
+  </div>
+
+</div>
+
+<div class="controlbar" id="controlbar">
+  <span class="controlbar-empty" id="controlbar-empty">click a marker to select it</span>
+</div>
+
+<div class="footer-status" id="footer-status">loading feed…</div>
+
+<script src="app.js"></script>
+</body>
+</html>

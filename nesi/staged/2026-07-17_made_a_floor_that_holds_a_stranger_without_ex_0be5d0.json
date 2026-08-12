@@ -1,0 +1,89 @@
+{
+  "id": "2026-07-17_made_a_floor_that_holds_a_stranger_without_ex_0be5d0",
+  "origin": "made",
+  "pile": "bench:a_floor_that_holds_a_stranger_without_ex.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-17T23:12:18",
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "error": null
+  },
+  "object": {
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "pile": "bench:a_floor_that_holds_a_stranger_without_ex.md",
+    "summary": "[STUB DRAFT — engine not wired] intent: a floor that holds a stranger without extraction · bearing patterns: Catalysis Without Claim, extend_dont_invent_name_the_wall, Inhabitable Without the Author, Extraction Legible Only as Lineage, Legal Is the Floor, load_to_form\n[STUB REFINE — engine not wired] notes were not applied",
+    "items": [
+      {
+        "item": "bearing pattern: Catalysis Without Claim",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "catalysis_without_claim.md",
+        "evidence": "keyword overlap: without"
+      },
+      {
+        "item": "bearing pattern: extend_dont_invent_name_the_wall",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "extend_dont_invent_name_the_wall.md",
+        "evidence": "keyword overlap: floor"
+      },
+      {
+        "item": "bearing pattern: Inhabitable Without the Author",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "inhabitable_without_author.md",
+        "evidence": "keyword overlap: without"
+      },
+      {
+        "item": "bearing pattern: Extraction Legible Only as Lineage",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "instrument_as_self_portrait.md",
+        "evidence": "keyword overlap: extraction"
+      },
+      {
+        "item": "bearing pattern: Legal Is the Floor",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "legal_as_floor.md",
+        "evidence": "keyword overlap: floor"
+      },
+      {
+        "item": "bearing pattern: load_to_form",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "load_to_form.md",
+        "evidence": "keyword overlap: without"
+      }
+    ],
+    "restored_count": 0
+  },
+  "bench": {
+    "intent": "a floor that holds a stranger without extraction",
+    "history": [
+      {
+        "op": "draft",
+        "at": "2026-07-17T23:12:14",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      },
+      {
+        "op": "break",
+        "at": "2026-07-17T23:12:16",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      },
+      {
+        "op": "refine",
+        "at": "2026-07-17T23:12:17",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      }
+    ],
+    "break_notes": [
+      "[STUB BREAK — engine not wired] no falsification performed; a real reader would attack the draft's claims against the pulled patterns"
+    ],
+    "stub": true
+  },
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-23T21:40:27"
+  }
+}

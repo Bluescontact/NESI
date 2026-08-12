@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Warm One</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;--card:#fffef9;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#e2ddce;
+  --bdr:#ccc5b0;--ember:#c0501f;--ember-glow:#e8863f;--ember-bg:#f7ece2;--leaf:#5f7a3a;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g);font-family:Georgia,'Times New Roman',serif;
+  display:flex;flex-direction:column;align-items:center;padding:30px 18px 60px;min-height:100%}
+.wrap{width:100%;max-width:600px}
+.top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--bdr);padding-bottom:10px;margin-bottom:6px}
+.name{font-family:'Courier New',monospace;font-size:20px;letter-spacing:4px;color:var(--gb)}
+.tag{font-size:12px;color:var(--gd);font-style:italic}
+.foot-note{font-family:'Courier New',monospace;font-size:9px;letter-spacing:1px;color:var(--gf);text-align:center;margin-top:26px}
+/* steps */
+.step{margin-top:22px}
+.step-n{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;color:var(--gd);text-transform:uppercase;margin-bottom:6px}
+.step-h{font-size:18px;color:var(--gb);margin-bottom:4px}
+.step-say{font-size:13px;color:var(--gd);line-height:1.55;margin-bottom:12px}
+.row{display:flex;gap:8px}
+input[type=text],textarea{flex:1;font-family:Georgia,serif;font-size:15px;color:var(--gb);background:var(--card);
+  border:1px solid var(--bdr);padding:10px 12px;width:100%}
+textarea{min-height:70px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:none;border-color:var(--gd)}
+button{font-family:'Courier New',monospace;font-size:12px;letter-spacing:1px;color:var(--gb);background:var(--sf);
+  border:1px solid var(--gd);padding:10px 16px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--sf2)}
+button.quiet{border-color:var(--bdr);color:var(--gd);background:none}
+button.warm{border-color:var(--ember);color:var(--ember)}
+/* the pile */
+.pile{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.piece{font-size:14px;background:var(--card);border:1px solid var(--bdr);padding:8px 12px;cursor:pointer;transition:all .15s;position:relative}
+.piece:hover{border-color:var(--gd)}
+.piece.warm{border-color:var(--ember);background:var(--ember-bg);color:var(--gb);box-shadow:0 0 0 1px var(--ember)}
+.piece .x{color:var(--gf);margin-left:8px;font-family:monospace}
+.hint{font-size:12px;color:var(--gf);font-style:italic;margin-top:10px}
+.hidden{display:none}
+/* thread */
+.thread{background:var(--card);border:1px solid var(--ember);border-left:3px solid var(--ember);padding:16px;margin-top:14px}
+.thread-q{font-size:12px;color:var(--gd);margin-bottom:8px}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.done-msg{font-size:15px;color:var(--leaf);font-style:italic;margin-top:12px;line-height:1.5}
+/* the grove of kept embers */
+.grove{margin-top:34px;border-top:1px solid var(--bdr);padding-top:16px}
+.grove-lab{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;color:var(--gd);text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between}
+.grove-lab .clear{font-size:9px;color:var(--gf);cursor:pointer;letter-spacing:1px}
+.embers{display:flex;flex-direction:column;gap:8px}
+.ember-item{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:8px 0;border-top:1px solid var(--gfaint)}
+.ember-item:first-child{border-top:none}
+.ember-dot{color:var(--ember);flex-shrink:0;font-size:12px;padding-top:3px}
+.ember-txt{flex:1;color:var(--gb);line-height:1.5}
+.ember-when{font-family:'Courier New',monospace;font-size:9px;color:var(--gf);flex-shrink:0}
+.grove-empty{font-size:13px;color:var(--gf);font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="name">NESI</div>
+    <div class="tag">the warm one — a game you play with pieces of your own life</div>
+  </div>
+
+  <!-- STEP 1 · empty your pockets -->
+  <div class="step" id="s1">
+    <div class="step-n">1 · empty your pockets</div>
+    <div class="step-h">Put down a handful of things.</div>
+    <div class="step-say">Things you did, made, fixed, gave, or got through lately. Don't sort them, don't rank them — just lay them where you can see them.</div>
+    <div class="row">
+      <input type="text" id="pieceInput" placeholder="something from your life lately…" autocomplete="off">
+      <button id="addBtn">put it down</button>
+    </div>
+    <div class="pile" id="pile"></div>
+    <div class="hint" id="s1hint"></div>
+  </div>
+
+  <!-- STEP 2 · feel for the warm one -->
+  <div class="step hidden" id="s2">
+    <div class="step-n">2 · feel for the warm one</div>
+    <div class="step-h">Which one has a little heat on it?</div>
+    <div class="step-say">Run your attention across them and wait. Click the one you keep coming back to — the one that means more than it should. You don't have to explain why. And if none is warm today, that's a real round too.</div>
+    <button class="quiet" id="fallowBtn">nothing's warm today — let it go</button>
+  </div>
+
+  <!-- STEP 3 · pull the thread -->
+  <div class="step hidden" id="s3">
+    <div class="step-n">3 · pull the thread</div>
+    <div class="step-h">Write one small true thing.</div>
+    <div class="thread">
+      <div class="thread-q">Take the warm one — “<span id="warmEcho"></span>”. In your own plain words: what did you do that someone else couldn't have — or couldn't, until you showed them how? (No wrong answers. No one is marking this.)</div>
+      <textarea id="threadText" placeholder="one small true thing, in your own words…"></textarea>
+      <div class="acts">
+        <button class="warm" id="keepBtn">keep it</button>
+        <button id="handBtn">hand it over</button>
+      </div>
+      <div class="done-msg hidden" id="doneMsg"></div>
+    </div>
+  </div>
+
+  <!-- STEP 5 · let go -->
+  <div class="step hidden" id="s5">
+    <button class="quiet" id="letGoBtn">let go — put the round down</button>
+  </div>
+
+  <!-- the grove -->
+  <div class="grove">
+    <div class="grove-lab"><span>your embers · the true things you've kept</span><span class="clear" id="clearBtn">forget them all</span></div>
+    <div class="embers" id="embers"></div>
+  </div>
+
+  <div class="foot-note">no score · nothing kept count · saved only on this device, in your browser · you can forget them any time</div>
+</div>
+
+<script>
+const KEY = "nesi.embers.v1";
+let pile = [];        // [{id,text,warm}]
+let nextId = 1;
+
+const $ = id => document.getElementById(id);
+function show(id){ $(id).classList.remove("hidden"); }
+function hide(id){ $(id).classList.add("hidden"); }
+
+function loadEmbers(){ try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ return []; } }
+function saveEmbers(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+
+function renderPile(){
+  const el = $("pile"); el.innerHTML = "";
+  pile.forEach(p => {
+    const d = document.createElement("span");
+    d.className = "piece" + (p.warm ? " warm" : "");
+    d.innerHTML = p.text.replace(/</g,"&lt;") + '<span class="x" title="remove">×</span>';
+    d.onclick = (ev) => {
+      if (ev.target.classList.contains("x")) { pile = pile.filter(x => x.id !== p.id); afterPileChange(); return; }
+      // feel for the warm one: mark exactly one
+      pile.forEach(x => x.warm = (x.id === p.id));
+      afterPileChange();
+    };
+    el.appendChild(d);
+  });
+}
+function afterPileChange(){
+  renderPile();
+  if (pile.length >= 1) show("s2"); else hide("s2");
+  const warm = pile.find(p => p.warm);
+  if (warm){
+    $("warmEcho").textContent = warm.text;
+    show("s3");
+  } else {
+    hide("s3");
+  }
+  $("s1hint").textContent = pile.length ? "click one to feel for the warm one · click × to drop a piece" : "";
+}
+
+$("addBtn").onclick = addPiece;
+$("pieceInput").addEventListener("keydown", e => { if (e.key === "Enter") addPiece(); });
+function addPiece(){
+  const v = $("pieceInput").value.trim();
+  if (!v) return;
+  pile.push({ id: nextId++, text: v, warm: false });
+  $("pieceInput").value = "";
+  $("pieceInput").focus();
+  afterPileChange();
+}
+
+function completeRound(given){
+  const warm = pile.find(p => p.warm);
+  const text = $("threadText").value.trim();
+  if (!text){ $("threadText").focus(); return; }
+  const list = loadEmbers();
+  const now = new Date();
+  list.unshift({ text, from: warm ? warm.text : "", given: !!given,
+                 when: now.toISOString().slice(0,10) });
+  saveEmbers(list);
+  renderEmbers();
+  const msg = given
+    ? "given. it's theirs now — nobody owes you anything back. and the grove still holds it."
+    : "kept. it's yours, in your own hand.";
+  $("doneMsg").textContent = "— " + msg;
+  show("doneMsg");
+  hide("s2");
+  $("threadText").disabled = true; $("keepBtn").disabled = true; $("handBtn").disabled = true;
+  show("s5");
+}
+$("keepBtn").onclick = () => completeRound(false);
+$("handBtn").onclick = () => completeRound(true);
+
+$("fallowBtn").onclick = () => {
+  // FALLOW — an empty round is lawful, honored, no nag
+  hide("s2"); hide("s3");
+  $("s1hint").textContent = "nothing was warm today. that's a real round. let it be a pile, and let go.";
+  show("s5");
+};
+
+$("letGoBtn").onclick = resetRound;
+function resetRound(){
+  pile = [];
+  $("threadText").value = ""; $("threadText").disabled = false;
+  $("keepBtn").disabled = false; $("handBtn").disabled = false;
+  hide("doneMsg"); hide("s2"); hide("s3"); hide("s5");
+  $("s1hint").textContent = "";
+  renderPile();
+  $("pieceInput").focus();
+}
+
+function renderEmbers(){
+  const list = loadEmbers();
+  const el = $("embers");
+  if (!list.length){ el.innerHTML = '<div class="grove-empty">no embers yet — play a round and keep one.</div>'; return; }
+  el.innerHTML = "";
+  list.forEach(e => {
+    const d = document.createElement("div");
+    d.className = "ember-item";
+    d.innerHTML = '<span class="ember-dot">●</span>'
+      + '<span class="ember-txt">' + e.text.replace(/</g,"&lt;")
+      + (e.given ? ' <span style="color:var(--leaf);font-style:italic;font-size:12px">· handed over</span>' : '')
+      + '</span><span class="ember-when">' + (e.when||"") + '</span>';
+    el.appendChild(d);
+  });
+}
+$("clearBtn").onclick = () => {
+  if (confirm("Forget all your kept embers on this device? This can't be undone.")){
+    localStorage.removeItem(KEY); renderEmbers();
+  }
+};
+
+renderPile();
+renderEmbers();
+$("pieceInput").focus();
+</script>
+</body>
+</html>

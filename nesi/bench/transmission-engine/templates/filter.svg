@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="800" y="130" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="50" font-weight="400" letter-spacing="6"
+        fill="#e8dcc4">{{TITLE}}</text>
+
+  <!-- Input node -->
+  <circle cx="280" cy="500" r="50" fill="url(#glow)"/>
+  <circle cx="280" cy="500" r="6" fill="#f0c674"/>
+  <text x="280" y="430" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{INPUT}}</text>
+
+  <!-- Flow line in -->
+  <line x1="340" y1="500" x2="650" y2="500" stroke="#d4af6a" stroke-width="1.2" stroke-opacity="0.7"/>
+
+  <!-- Filter / criteria (vertical band) -->
+  <rect x="660" y="320" width="280" height="360" fill="none" stroke="#d4af6a" stroke-width="1.5" stroke-opacity="0.9"/>
+  <text x="800" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{CRITERIA}}</text>
+  <text x="800" y="490" text-anchor="middle" font-family="Cormorant Garamond, Garamond, serif" font-style="italic" font-size="18" letter-spacing="2" fill="#9a8d76">{{CRITERIA_NOTE_1}}</text>
+  <text x="800" y="520" text-anchor="middle" font-family="Cormorant Garamond, Garamond, serif" font-style="italic" font-size="18" letter-spacing="2" fill="#9a8d76">{{CRITERIA_NOTE_2}}</text>
+
+  <!-- Flow line out -->
+  <line x1="950" y1="500" x2="1260" y2="500" stroke="#d4af6a" stroke-width="1.2" stroke-opacity="0.7"/>
+
+  <!-- Output node -->
+  <circle cx="1320" cy="500" r="50" fill="url(#glow)"/>
+  <circle cx="1320" cy="500" r="6" fill="#f0c674"/>
+  <text x="1320" y="430" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{OUTPUT}}</text>
+
+  <text x="800" y="820" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#9a8d76">{{SUBTITLE}}</text>
+</svg>

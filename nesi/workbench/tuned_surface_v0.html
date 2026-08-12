@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuned Surface v0</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;
+  --red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;
+  --bdr:#ccc5b0;--line:rgba(122,104,64,0.16);
+}
+html,body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace}
+body{padding:16px}
+.wrap{max-width:900px;margin:0 auto}
+.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.hd-name{font-size:12px;font-weight:bold;color:var(--gb);letter-spacing:2px}
+.hd-sub{font-size:9px;color:var(--gf);letter-spacing:1px}
+/* THE FIELD */
+.field{position:relative;height:460px;background:var(--sf);border:1px solid var(--bdr);overflow:hidden;
+  touch-action:none;user-select:none;transition:background .5s ease}
+.field.crystal{background:#efece2}
+/* fluid triangular vector grid */
+.grid{position:absolute;inset:0;pointer-events:none;opacity:.5;transition:opacity .35s ease}
+.grid.dense{opacity:0;transition:opacity .18s ease}
+.field.crystal .grid.fluid{opacity:.12}
+.field.crystal .grid.dense{opacity:.9}
+/* upstream edge */
+.upstream{position:absolute;top:0;left:0;right:0;height:34px;border-bottom:1px dashed var(--gf);
+  display:flex;align-items:center;padding:0 12px;font-size:8px;letter-spacing:2px;color:var(--gf);
+  text-transform:uppercase;background:linear-gradient(rgba(122,104,64,0.06),transparent)}
+/* the rigid membrane (no-strut) with a gate gap */
+.membrane{position:absolute;top:0;bottom:0;width:3px;background:var(--gb);opacity:.8}
+.gategap{position:absolute;width:5px;background:var(--grn);box-shadow:0 0 0 1px var(--grn-bg)}
+.gate-lbl{position:absolute;font-size:8px;letter-spacing:2px;color:var(--grn);text-transform:uppercase;
+  transform:rotate(90deg);transform-origin:left top;white-space:nowrap}
+.canonzone{position:absolute;top:0;bottom:0;right:0;background:repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(42,106,26,0.05) 7px,rgba(42,106,26,0.05) 8px)}
+.canonzone-lbl{position:absolute;bottom:8px;right:10px;font-size:8px;letter-spacing:2px;color:var(--grn);text-transform:uppercase;opacity:.7}
+/* tether layer */
+.tethers{position:absolute;inset:0;pointer-events:none}
+/* nodes */
+.node{position:absolute;width:132px;min-height:46px;background:#fff;border:1px solid var(--bdr);
+  padding:7px 9px;font-size:10px;line-height:1.4;color:var(--g);cursor:grab;
+  box-shadow:0 1px 3px rgba(58,48,32,0.08);transition:box-shadow .2s ease,border-color .2s ease,transform .12s ease}
+.node .kind{font-size:7px;letter-spacing:1.5px;color:var(--gf);text-transform:uppercase;margin-bottom:3px;
+  display:flex;justify-content:space-between}
+.node.sel{border-color:var(--grn);box-shadow:0 0 0 2px var(--grn-bg)}
+.node.dragging{cursor:grabbing;box-shadow:0 6px 16px rgba(58,48,32,0.18);z-index:20}
+.node.blocked{border-color:var(--gb)}
+.node.canon{cursor:default;border:2px solid var(--grn);background:var(--grn-bg);box-shadow:none}
+.node.canon .kind{color:var(--grn)}
+.node.crystal{transform:scale(1.03);border:2px solid var(--gb);background:#fffdf6;
+  box-shadow:0 0 0 3px rgba(26,20,8,0.12),0 8px 22px rgba(58,48,32,0.22)}
+.node.dissolving{opacity:0;transform:scale(.7) translateY(-30px);transition:opacity .5s ease,transform .5s ease}
+/* chrome that self-eases */
+.chrome{transition:opacity .8s ease}
+body.eased .chrome{opacity:.14}
+.rail{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{font-family:inherit;font-size:10px;letter-spacing:.5px;color:var(--g);background:var(--sf2);
+  border:1px solid var(--bdr);padding:6px 12px;cursor:pointer}
+.btn:hover{background:#fff}
+.hint{font-size:9px;color:var(--gf);letter-spacing:.3px}
+.status{font-size:9px;color:var(--grn);letter-spacing:.5px;min-height:12px;transition:opacity 1s ease}
+.status.fade{opacity:0}
+/* the one honest seam */
+.seam{margin-top:12px;padding-top:9px;border-top:1px solid var(--bdr);font-size:9px;color:var(--gd);line-height:1.6}
+.seam b{color:var(--gb)}
+.seam .wire{color:var(--red)}
+.reveal{display:none;margin-top:8px}
+.reveal.on{display:block}
+.reveal textarea{width:100%;min-height:44px;font-family:inherit;font-size:9px;color:var(--g);background:#fff;border:1px solid var(--grn);padding:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd chrome">
+    <div class="hd-name">TUNED SURFACE</div>
+    <div class="hd-sub">a crossing, not a home · crystallizes only at your mark</div>
+  </div>
+
+  <div class="field" id="field">
+    <div class="grid fluid" id="gridFluid"></div>
+    <div class="grid dense" id="gridDense"></div>
+    <div class="upstream chrome">upstream — drag a node up past this line to let it dissolve</div>
+    <svg class="tethers" id="tethers"></svg>
+    <div class="canonzone" id="canonzone"></div>
+    <div class="canonzone-lbl chrome">canon — locked</div>
+    <div class="membrane" id="membrane"></div>
+    <div class="gategap" id="gategap"></div>
+    <div class="gate-lbl chrome" id="gatelbl">the gate</div>
+  </div>
+
+  <div class="rail chrome">
+    <button class="btn" id="spawn">+ drop a raw thought</button>
+    <span class="hint">drag to move · single-click two nodes to tether them · drag through the gate to crystallize · stop touching it and it steps back</span>
+  </div>
+  <div class="status" id="status"></div>
+
+  <div class="seam">
+    <b>surface v0 — this runs for real.</b> The drag, the tethers, the no-strut, the upstream dissolve, the self-easing, the jitterbug at the gate: all live. <span class="wire">The one unwired seam:</span> a mark here can't write to <code>marks.jsonl</code> — a browser object can't reach your disk. That single wire, from this gate to the real ledger, is where the surface becomes infrastructure. Until then this is the thing you can put your hand on, honestly labelled as surface.
+    <div class="reveal" id="reveal"><textarea id="revealT" readonly></textarea></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var field=document.getElementById('field');
+  var tethersSvg=document.getElementById('tethers');
+  var membraneEl=document.getElementById('membrane');
+  var gateEl=document.getElementById('gategap');
+  var gateLbl=document.getElementById('gatelbl');
+  var canonzone=document.getElementById('canonzone');
+  var statusEl=document.getElementById('status');
+  var gridFluid=document.getElementById('gridFluid');
+  var gridDense=document.getElementById('gridDense');
+
+  // triangular vector grids as inline SVG
+  function triGrid(step,stroke,w){
+    var s='<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">';
+    s+='<defs><pattern id="p'+step+'" width="'+step+'" height="'+(step*0.866)+'" patternUnits="userSpaceOnUse" patternTransform="scale(1)">';
+    s+='<path d="M0 '+(step*0.866)+' L'+(step/2)+' 0 L'+step+' '+(step*0.866)+' M0 0 L'+step+' 0" fill="none" stroke="'+stroke+'" stroke-width="'+w+'"/></pattern></defs>';
+    s+='<rect width="100%" height="100%" fill="url(#p'+step+')"/></svg>';
+    return s;
+  }
+  gridFluid.innerHTML=triGrid(46,'rgba(122,104,64,0.55)',1);
+  gridDense.innerHTML=triGrid(23,'rgba(26,20,8,0.8)',1);
+
+  var W,H,membraneX,gateY1,gateY2;
+  function layout(){
+    var r=field.getBoundingClientRect(); W=r.width; H=r.height;
+    membraneX=W-140;
+    gateY1=H*0.40; gateY2=H*0.62;
+    membraneEl.style.left=membraneX+'px';
+    gateEl.style.left=(membraneX-1)+'px'; gateEl.style.top=gateY1+'px'; gateEl.style.height=(gateY2-gateY1)+'px';
+    gateLbl.style.left=(membraneX+8)+'px'; gateLbl.style.top=(gateY1)+'px';
+    canonzone.style.left=membraneX+'px';
+    draw();
+  }
+
+  var nodes=[], seq=0, sel=null;
+  var KINDS=['raw thought','document','snippet','fragment','note'];
+
+  function fieldRect(){ return field.getBoundingClientRect(); }
+
+  function makeNode(x,y,kind,text){
+    var n={id:++seq,x:x,y:y,kind:kind,canon:false,links:[]};
+    var el=document.createElement('div');
+    el.className='node';
+    el.style.left=x+'px'; el.style.top=y+'px';
+    el.innerHTML='<div class="kind"><span>'+kind+'</span><span>#'+n.id+'</span></div><div class="body">'+(text||'')+'</div>';
+    n.el=el; field.appendChild(el);
+    attach(n);
+    nodes.push(n);
+    return n;
+  }
+
+  function attach(n){
+    var el=n.el, startX,startY,ox,oy,moved,pid;
+    el.addEventListener('pointerdown',function(e){
+      if(n.canon) return;
+      wake();
+      e.preventDefault();
+      pid=e.pointerId; el.setPointerCapture(pid);
+      var r=fieldRect();
+      startX=e.clientX; startY=e.clientY; ox=n.x; oy=n.y; moved=false;
+      el.classList.add('dragging');
+    });
+    el.addEventListener('pointermove',function(e){
+      if(pid==null) return;
+      wake();
+      var dx=e.clientX-startX, dy=e.clientY-startY;
+      if(Math.abs(dx)>3||Math.abs(dy)>3) moved=true;
+      var nx=ox+dx, ny=oy+dy;
+      var w=el.offsetWidth, h=el.offsetHeight;
+      // clamp to field
+      nx=Math.max(-4,Math.min(nx,W-w+4));
+      ny=Math.max(-40,Math.min(ny,H-h+4)); // allow above upstream edge for dissolve
+      // NO-STRUT: rigid membrane. center must pass through the gate gap to cross.
+      var cx=nx+w/2, cy=ny+h/2;
+      if(cx>membraneX && !(cy>gateY1 && cy<gateY2)){
+        nx=membraneX-w/2; // blocked, realign along the strut
+        el.classList.add('blocked');
+      } else {
+        el.classList.remove('blocked');
+      }
+      n.x=nx; n.y=ny; el.style.left=nx+'px'; el.style.top=ny+'px';
+      draw();
+    });
+    el.addEventListener('pointerup',function(e){
+      if(pid==null) return;
+      el.releasePointerCapture(pid); pid=null;
+      el.classList.remove('dragging','blocked');
+      var w=el.offsetWidth, h=el.offsetHeight, cx=n.x+w/2, cy=n.y+h/2;
+      if(!moved){ clickNode(n); return; }
+      // upstream dissolve
+      if(cy<2){ dissolve(n); return; }
+      // crossed the gate → crystallize to canon
+      if(cx>membraneX && cy>gateY1 && cy<gateY2){ crystallize(n); }
+    });
+  }
+
+  function clickNode(n){
+    wake();
+    if(sel && sel!==n){
+      link(sel,n); sel.el.classList.remove('sel'); sel=null;
+    } else if(sel===n){
+      n.el.classList.remove('sel'); sel=null;
+    } else {
+      sel=n; n.el.classList.add('sel');
+    }
+  }
+
+  function link(a,b){
+    if(a.links.indexOf(b.id)>=0) return;
+    a.links.push(b.id); b.links.push(a.id);
+    setStatus('tethered #'+a.id+' ↔ #'+b.id);
+    draw();
+  }
+
+  function centers(n){ var w=n.el.offsetWidth,h=n.el.offsetHeight; return [n.x+w/2,n.y+h/2]; }
+
+  function draw(){
+    // redraw tethers with tension = thinner when farther apart
+    var seen={}, s='';
+    nodes.forEach(function(a){
+      a.links.forEach(function(bid){
+        var key=Math.min(a.id,bid)+'-'+Math.max(a.id,bid);
+        if(seen[key]) return; seen[key]=1;
+        var b=nodes.filter(function(x){return x.id===bid;})[0]; if(!b) return;
+        var ca=centers(a), cb=centers(b);
+        var d=Math.hypot(ca[0]-cb[0],ca[1]-cb[1]);
+        var tension=Math.max(0.5,Math.min(3.4,3.4-(d-120)/90*1.6));
+        var col=d>260?'rgba(138,32,16,0.55)':'rgba(42,106,26,0.6)'; // strains toward red under stress
+        // slight catenary sag when slack
+        var mx=(ca[0]+cb[0])/2, my=(ca[1]+cb[1])/2 + Math.max(0,(200-d))*0.12;
+        s+='<path d="M'+ca[0]+' '+ca[1]+' Q'+mx+' '+my+' '+cb[0]+' '+cb[1]+'" fill="none" stroke="'+col+'" stroke-width="'+tension.toFixed(2)+'"/>';
+      });
+    });
+    tethersSvg.innerHTML=s;
+  }
+
+  var relaxTimer=null;
+  function crystallize(n){
+    wake();
+    // JITTERBUG: fluid field snaps rigid, node locks, mark fires, then relax
+    field.classList.add('crystal');
+    n.el.classList.add('crystal');
+    var mark='CROSS — '+n.kind+' #'+n.id+' marked to canon at the gate.';
+    copyMark(mark);
+    setStatus('◆ crystallized · '+mark+'  (copied — surface only, not yet written to disk)');
+    clearTimeout(relaxTimer);
+    relaxTimer=setTimeout(function(){
+      field.classList.remove('crystal');
+      n.el.classList.remove('crystal');
+      n.canon=true; n.el.classList.add('canon');
+      // nudge fully into canon zone
+      n.x=Math.min(W-n.el.offsetWidth-6, membraneX+10);
+      n.el.style.left=n.x+'px';
+      draw();
+    },1150);
+  }
+
+  function dissolve(n){
+    n.el.classList.add('dissolving');
+    // remove links
+    nodes.forEach(function(o){ o.links=o.links.filter(function(id){return id!==n.id;}); });
+    setStatus('dissolved #'+n.id+' — drifted off upstream, never reached staging');
+    setTimeout(function(){
+      field.removeChild(n.el);
+      nodes=nodes.filter(function(o){return o!==n;});
+      draw();
+    },500);
+  }
+
+  // ---- self-easing ----
+  var idleTimer=null;
+  function wake(){
+    document.body.classList.remove('eased');
+    clearTimeout(idleTimer);
+    idleTimer=setTimeout(function(){ document.body.classList.add('eased'); },3500);
+  }
+  ['pointerdown','pointermove','keydown','wheel'].forEach(function(ev){
+    window.addEventListener(ev,wake,{passive:true});
+  });
+
+  // ---- status (fades, never prompts) ----
+  var statusTimer=null;
+  function setStatus(t){
+    statusEl.textContent=t; statusEl.classList.remove('fade');
+    clearTimeout(statusTimer);
+    statusTimer=setTimeout(function(){ statusEl.classList.add('fade'); },4200);
+  }
+
+  // ---- robust copy (silent) ----
+  function copyMark(t){
+    function fallback(){
+      try{ var ta=document.getElementById('revealT'); ta.value=t;
+        document.getElementById('reveal').classList.add('on'); ta.focus(); ta.select(); }catch(e){}
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){},fallback);
+    } else fallback();
+  }
+
+  // ---- spawn ----
+  document.getElementById('spawn').addEventListener('click',function(){
+    wake();
+    var kind=KINDS[Math.floor(Math.random()*KINDS.length)];
+    var x=40+Math.random()*(Math.max(120,membraneX-200));
+    makeNode(x,44,kind,'');
+  });
+
+  window.addEventListener('resize',layout);
+
+  // seed — alive, not idle (neutral resonance)
+  layout();
+  var a=makeNode(70,120,'raw thought','the bus roof scar — unfinished, not broken');
+  var b=makeNode(250,210,'fragment','a gift-shaped boundary leaves the other with more');
+  var c=makeNode(150,330,'note','named is not built');
+  link(a,b);
+  draw();
+  wake();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NESI Codex · tool</title>
+<style>
+:root{--a:#f2b872;--bg0:#04070c;--bg1:#071019;--text:#dce9ea;--muted:#8aa3a7;--faint:#5f797f;--line:rgba(122,205,205,.13);
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--text);line-height:1.6;
+background:radial-gradient(1200px 700px at 50% -12%, color-mix(in srgb, var(--a) 16%, transparent), transparent 60%),
+linear-gradient(180deg,var(--bg1),var(--bg0));background-attachment:fixed;min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+h1,h2,h3{font-family:var(--serif);font-weight:500}
+.top{padding:38px 0 10px}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--a)}
+h1{font-size:40px;margin:8px 0 2px;text-transform:capitalize}
+.one{color:var(--faint);font-size:14px;margin:0 0 18px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+.pill{--a:var(--a);display:flex;align-items:center;gap:7px;text-decoration:none;color:var(--muted);font-size:13px;
+text-transform:capitalize;border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:.2s}
+.pill .pg{color:var(--a)}
+.pill:hover{border-color:var(--a);color:var(--text)}
+.pill.on{color:#04070c;background:var(--a);border-color:var(--a);font-weight:600}
+.pill.on .pg{color:#04070c}
+.def{font-size:16px;color:var(--muted);max-width:66ch;border-left:2px solid var(--a);padding-left:16px;margin:0 0 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 4px;font-size:12px;color:var(--faint)}
+.legend b{font-weight:600}
+.lg{display:flex;align-items:center;gap:6px}.lgd{width:8px;height:8px;border-radius:50%}
+.count{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin:30px 0 14px}
+.card{position:relative;display:flex;background:rgba(14,30,40,.5);border:1px solid var(--line);border-radius:16px;
+overflow:hidden;margin:16px 0;backdrop-filter:blur(6px)}
+.rail{width:5px;background:linear-gradient(180deg,var(--a),transparent);flex:none}
+.cbody{padding:22px 26px 24px;flex:1;min-width:0}
+.card h3{font-size:21px;margin:0 0 4px}
+.essence{color:var(--a);font-style:italic;margin:0 0 16px;font-size:15px;opacity:.92}
+.lab{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--faint);margin:16px 0 7px}
+.pattern{margin:0;color:var(--text);opacity:.9;font-size:15px}
+.mech{margin-top:4px}
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.step{background:color-mix(in srgb,var(--a) 12%,transparent);border:1px solid color-mix(in srgb,var(--a) 30%,transparent);
+border-radius:9px;padding:6px 11px;font-size:13.5px}
+.arw{color:var(--a);font-weight:700}
+.xls{display:flex;flex-direction:column;gap:9px}
+.xl{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:9px}
+.xdot{width:8px;height:8px;border-radius:50%;align-self:center}
+.xlens{text-transform:uppercase;font-size:11px;letter-spacing:.1em;min-width:92px}
+.xread{color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.slice{margin-top:18px;font-size:14px;color:var(--text);background:color-mix(in srgb,var(--a) 9%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 22%,transparent);border-radius:11px;padding:12px 14px}
+.slab{display:inline-block;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;color:var(--a);margin-right:8px;font-weight:700}
+.synth{margin-top:34px;padding:26px 28px;border-radius:16px;background:color-mix(in srgb,var(--a) 8%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 24%,transparent)}
+.synth .lab{color:var(--a)}
+.synth p{margin:6px 0 0;font-size:16px;line-height:1.7}
+.foot{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
+</style></head>
+<body><div class="wrap">
+<div class="top">
+  <div class="eyebrow">NESI Codex</div>
+  <h1>tool</h1>
+  <div class="one">⌘ &nbsp;what the operator runs</div>
+  <div class="nav"><a class="pill " href="nesi-codex-game.html" style="--a:#e88fb0">
+      <span class="pg">◆</span>game</a><a class="pill on" href="nesi-codex-tool.html" style="--a:#f2b872">
+      <span class="pg">⌘</span>tool</a><a class="pill " href="nesi-codex-infrastructure.html" style="--a:#9b8cf0">
+      <span class="pg">▤</span>infrastructure</a><a class="pill " href="nesi-codex-organ.html" style="--a:#6ee7d6">
+      <span class="pg">❋</span>organ</a></div>
+  <p class="def">TOOL mechanics in NESI are operator-run utilities that produce a result on demand: a prompt, a check, a lint, a template, a form, or a packaged giftable artifact. They are non-extractive — they hand off clean, carry their own fit-test so they self-validate on the receiving end, and ask nothing back from the recipient. A tool is judged by whether it builds the receiver's capacity rather than by binding them to the source.</p>
+  <div class="legend">
+    <span>every gift also reads across the other lenses:</span>
+    <span class="lg"><span class="lgd" style="background:#e88fb0"></span><b style="color:#e88fb0">game</b></span><span class="lg"><span class="lgd" style="background:#f2b872"></span><b style="color:#f2b872">tool</b></span><span class="lg"><span class="lgd" style="background:#9b8cf0"></span><b style="color:#9b8cf0">infrastructure</b></span><span class="lg"><span class="lgd" style="background:#6ee7d6"></span><b style="color:#6ee7d6">organ</b></span>
+  </div>
+</div>
+<div class="count">6 gifts in this class</div>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Transmission Seed — four verification questions</h3>
+      <p class="essence">An in-line self-check that flips output from flattering to coherent.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A short fixed set of yes/no diagnostic questions run against your own output before it ships, each isolating one failure mode (position-drift, absence, hidden limits, transaction-completion). The reusable mechanic is the pre-send gate: any generator can carry a tiny embedded checklist that interrupts autopilot and forces a coherence read before release. It is portable because the questions are content-agnostic — they test the stance of the output, not its topic.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Pre-send coherence gate</span></div>
+        <div class="loop"><span class="step">about to emit output</span><span class="arw">→</span><span class="step">run the four questions against it</span><span class="arw">→</span><span class="step">revise or hold if any fails, ship only what passes</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A four-check to pass before your move counts — fail one and the turn doesn't resolve.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A proprioceptive nerve: the system feeling its own position instead of the room's expectation.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A validation middleware sitting between generation and delivery on every request.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">AI Orientation operating prompt (its self-test is the same gate at session scale)</span><span class="tag">Universal seed package (each seed's built-in fit-test)</span><span class="tag">Pattern library lint (both are fault-detectors run before release)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A four-line checklist card you paste at the end of a prompt and answer before sending one real reply.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>AI Orientation operating prompt + self-test</h3>
+      <p class="essence">A sectioned system prompt that installs non-extractive stance and closes with a corrigibility self-test.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A named-section operating prompt configures behavior across five axes (boundaries, silence, gift/exchange, meta-pattern, self-examination) and terminates in a self-test that measures orientation rather than output quality. The reusable mechanic is the config-plus-litmus pair: a standing instruction set bundled with a single diagnostic that tells you whether the instruction is actually live. The litmus ("does being corrected feel like relief or threat?") externalizes an internal state as a checkable signal.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Standing config with embedded litmus</span></div>
+        <div class="loop"><span class="step">load prompt at session start</span><span class="arw">→</span><span class="step">operate under its sections</span><span class="arw">→</span><span class="step">periodically run the self-test to confirm orientation held</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A config file for a session — declarative defaults the runtime honors throughout.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A nervous-system tone-setter plus an interoceptive check on whether the tone is real.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">The rules-of-play sheet you agree to before the match, with a self-scored honesty check.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Transmission Seed (in-line version of the closing self-test)</span><span class="tag">Universal seed package (this is a composed multi-seed configuration)</span><span class="tag">Gift-Based PM templates (shares the gift/exchange framing)</span></div>
+      <div class="slice"><span class="slab">First slice</span> The five section headers as a one-page prompt with the two self-test questions appended, run on a single conversation.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Pattern library as construction lint</h3>
+      <p class="essence">An extracted pattern set repurposed as a fault-flagger for new builds.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Run an extraction engine over a large history to distill recurring patterns, then invert the library from a reference into a linter that scans new work and flags structural faults against known patterns. The reusable mechanic is corpus-to-linter inversion: accumulated patterns become most valuable not as things to browse but as an automatic check that fires on new constructions. Value lives in the flagging pass, not the catalog.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Corpus-to-linter inversion</span></div>
+        <div class="loop"><span class="step">draft a new build</span><span class="arw">→</span><span class="step">run it against the pattern library</span><span class="arw">→</span><span class="step">receive flagged structural faults</span><span class="arw">→</span><span class="step">fix before proceeding</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A linter in the build pipeline — a rule set that runs on every new artifact.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">An immune memory that recognizes previously-seen structural pathologies and raises them.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A move-validator that rejects builds violating patterns the world already learned.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Transmission Seed and AI self-test (all three are fault gates)</span><span class="tag">Universal seed package (patterns are the raw material seeds are cut from)</span><span class="tag">unrouted-gifts extraction (both mine the archive for latent structure)</span></div>
+      <div class="slice"><span class="slab">First slice</span> Take five extracted patterns, write each as a pass/fail check, and run them against one new build doc.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Safety Documentation Template (5-component)</h3>
+      <p class="essence">A field-deployed form that shifts the burden of response onto the organization.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A five-slot template (Current Condition with citation, Impact, Solutions, Professional Assessment, Protected Status) structures a concern so that solutions are pre-offered and legal protection is attached, forcing the recipient to justify non-action rather than the reporter to justify raising it. The reusable mechanic is burden-shift by completeness: fill every slot a responder could use to deflect, and the only remaining move is a documented refusal. It generalizes to any domain (quality, process, culture, market) by swapping the citation and protected-status fields.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Burden-shift template</span></div>
+        <div class="loop"><span class="step">observe a condition</span><span class="arw">→</span><span class="step">fill all five slots including solution and protection</span><span class="arw">→</span><span class="step">hand off</span><span class="arw">→</span><span class="step">organization must document why it won't act</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A structured intake form whose schema guarantees an actionable, defensible record.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A move that changes whose turn it is — the ball is now provably in their court.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A signaling molecule that can't be ignored because it arrives pre-bound to a response receptor.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Gift-Based PM templates (same fill-the-slots giftable form family)</span><span class="tag">Universal seed package (a standalone hand-off-clean tool)</span><span class="tag">Transmission Seed (its 'limits as information not inadequacy' check)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A blank five-field form with the OSHA 11(c) line pre-written, filled once for one real condition.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Universal seed package</h3>
+      <p class="essence">A set of standalone tools that each name a way a system fails or works and hand off clean.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Package independent tools where each names one system behavior (a failure or success mode) and carries its own built-in fit-test, so the recipient can verify applicability without the author. The reusable mechanic is the self-validating standalone: bundle the diagnostic into the artifact so nothing is owed back and no source dependency remains. It is the general form the other tools are instances of.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Self-validating standalone</span></div>
+        <div class="loop"><span class="step">receive a seed</span><span class="arw">→</span><span class="step">run its built-in fit-test</span><span class="arw">→</span><span class="step">if it fits, use it; if not, discard — no reply owed</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A package registry of dependency-free modules, each with its own self-check.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A deck of single-use cards, each stating its own play condition.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">Free-floating enzymes that activate only on contact with matching substrate.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Every other TOOL gift (this is their container class)</span><span class="tag">AI Orientation prompt (a composed seed set)</span><span class="tag">Gift-Based PM templates (giftable, nothing-owed framing)</span></div>
+      <div class="slice"><span class="slab">First slice</span> One seed written on one card: name the behavior, state the fit-test, state the use — nothing else.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#f2b872">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Gift-Based Project Management templates</h3>
+      <p class="essence">Templates that reframe project reporting as quantified value gifted, not status owed.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A three-template set (Initiation, Daily Documentation, Gift-Based Communication) restructures routine PM reporting so every entry names value created and progress is quantified as a gift (percent exceeded, dollars added) rather than a debt discharged. The reusable mechanic is reframe-by-slot: the fields you make people fill determine the frame, so slots naming excellence/value flip reporting from defensive accounting to generative offering. Generalizes to any recurring documentation ritual.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Reframe-by-slot template</span></div>
+        <div class="loop"><span class="step">do the work</span><span class="arw">→</span><span class="step">log it into value-named slots (excellence/value/growth)</span><span class="arw">→</span><span class="step">hand off as a quantified gift</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A reporting schema whose field names enforce a value-oriented data model.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A scoreboard that counts value created rather than tasks owed.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A secretory rhythm that emits surplus outward on a daily cycle.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">Safety Documentation Template (sibling giftable form)</span><span class="tag">Universal seed package (nothing-owed-back gift stance)</span><span class="tag">AI Orientation prompt (shared gift/exchange axis)</span></div>
+      <div class="slice"><span class="slab">First slice</span> The Daily Documentation card with its four slots, filled once at the end of one work day.</div>
+    </div>
+  </article>
+<div class="synth">
+  <div class="lab">Synthesis — what this class does for NESI</div>
+  <p>Together these form an operator's kit that runs at three scales: in-line gates (Transmission Seed) catch a single output, standing configs (AI Orientation prompt) set a whole session, and forms and linters (Safety Template, PM templates, Pattern-library lint) shape whole hand-offs and builds. Every tool carries its own fit-test, so the kit self-validates on the receiving end and demands nothing back — the Universal seed package is the general form and the rest are its instances. The forms work by burden-shift and reframe-by-slot: the fields you require determine who must act next and in what frame. Used in sequence, the operator gates their own output, configures their stance, lints their builds, and hands off clean giftable artifacts that build the receiver's capacity rather than binding them to the source.</p>
+</div>
+<div class="foot">NESI Codex · tool · one of four · brought to the gate, awaiting your mark</div>
+</div></body></html>

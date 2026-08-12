@@ -1,0 +1,200 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NESI Codex · organ</title>
+<style>
+:root{--a:#6ee7d6;--bg0:#04070c;--bg1:#071019;--text:#dce9ea;--muted:#8aa3a7;--faint:#5f797f;--line:rgba(122,205,205,.13);
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--text);line-height:1.6;
+background:radial-gradient(1200px 700px at 50% -12%, color-mix(in srgb, var(--a) 16%, transparent), transparent 60%),
+linear-gradient(180deg,var(--bg1),var(--bg0));background-attachment:fixed;min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+h1,h2,h3{font-family:var(--serif);font-weight:500}
+.top{padding:38px 0 10px}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--a)}
+h1{font-size:40px;margin:8px 0 2px;text-transform:capitalize}
+.one{color:var(--faint);font-size:14px;margin:0 0 18px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+.pill{--a:var(--a);display:flex;align-items:center;gap:7px;text-decoration:none;color:var(--muted);font-size:13px;
+text-transform:capitalize;border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:.2s}
+.pill .pg{color:var(--a)}
+.pill:hover{border-color:var(--a);color:var(--text)}
+.pill.on{color:#04070c;background:var(--a);border-color:var(--a);font-weight:600}
+.pill.on .pg{color:#04070c}
+.def{font-size:16px;color:var(--muted);max-width:66ch;border-left:2px solid var(--a);padding-left:16px;margin:0 0 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 4px;font-size:12px;color:var(--faint)}
+.legend b{font-weight:600}
+.lg{display:flex;align-items:center;gap:6px}.lgd{width:8px;height:8px;border-radius:50%}
+.count{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin:30px 0 14px}
+.card{position:relative;display:flex;background:rgba(14,30,40,.5);border:1px solid var(--line);border-radius:16px;
+overflow:hidden;margin:16px 0;backdrop-filter:blur(6px)}
+.rail{width:5px;background:linear-gradient(180deg,var(--a),transparent);flex:none}
+.cbody{padding:22px 26px 24px;flex:1;min-width:0}
+.card h3{font-size:21px;margin:0 0 4px}
+.essence{color:var(--a);font-style:italic;margin:0 0 16px;font-size:15px;opacity:.92}
+.lab{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--faint);margin:16px 0 7px}
+.pattern{margin:0;color:var(--text);opacity:.9;font-size:15px}
+.mech{margin-top:4px}
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.step{background:color-mix(in srgb,var(--a) 12%,transparent);border:1px solid color-mix(in srgb,var(--a) 30%,transparent);
+border-radius:9px;padding:6px 11px;font-size:13.5px}
+.arw{color:var(--a);font-weight:700}
+.xls{display:flex;flex-direction:column;gap:9px}
+.xl{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:9px}
+.xdot{width:8px;height:8px;border-radius:50%;align-self:center}
+.xlens{text-transform:uppercase;font-size:11px;letter-spacing:.1em;min-width:92px}
+.xread{color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.slice{margin-top:18px;font-size:14px;color:var(--text);background:color-mix(in srgb,var(--a) 9%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 22%,transparent);border-radius:11px;padding:12px 14px}
+.slab{display:inline-block;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;color:var(--a);margin-right:8px;font-weight:700}
+.synth{margin-top:34px;padding:26px 28px;border-radius:16px;background:color-mix(in srgb,var(--a) 8%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 24%,transparent)}
+.synth .lab{color:var(--a)}
+.synth p{margin:6px 0 0;font-size:16px;line-height:1.7}
+.foot{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
+</style></head>
+<body><div class="wrap">
+<div class="top">
+  <div class="eyebrow">NESI Codex</div>
+  <h1>organ</h1>
+  <div class="one">❋ &nbsp;the living body</div>
+  <div class="nav"><a class="pill " href="nesi-codex-game.html" style="--a:#e88fb0">
+      <span class="pg">◆</span>game</a><a class="pill " href="nesi-codex-tool.html" style="--a:#f2b872">
+      <span class="pg">⌘</span>tool</a><a class="pill " href="nesi-codex-infrastructure.html" style="--a:#9b8cf0">
+      <span class="pg">▤</span>infrastructure</a><a class="pill on" href="nesi-codex-organ.html" style="--a:#6ee7d6">
+      <span class="pg">❋</span>organ</a></div>
+  <p class="def">An ORGAN in NESI is a living part of the system read as a body — it senses, holds, routes, or metabolizes signal from the user without merging with them and without extracting from them. Each organ runs a closed metabolic loop (receive -&gt; hold/route -&gt; consequence) whose boundary stays intact: the user is tracked, digested, or filtered, never consumed. Organs externalize somatic labor onto objects so no human has to hold the floor with their own nervous system.</p>
+  <div class="legend">
+    <span>every gift also reads across the other lenses:</span>
+    <span class="lg"><span class="lgd" style="background:#e88fb0"></span><b style="color:#e88fb0">game</b></span><span class="lg"><span class="lgd" style="background:#f2b872"></span><b style="color:#f2b872">tool</b></span><span class="lg"><span class="lgd" style="background:#9b8cf0"></span><b style="color:#9b8cf0">infrastructure</b></span><span class="lg"><span class="lgd" style="background:#6ee7d6"></span><b style="color:#6ee7d6">organ</b></span>
+  </div>
+</div>
+<div class="count">5 gifts in this class</div>
+<article class="card" style="--a:#6ee7d6">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>The exchange membrane + gate (volume of double illumination)</h3>
+      <p class="essence">A boundary you fill so the object holds your no for you.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Senses each user's wants, needs, capacities, and refusals and holds them in a membrane; two tracking lenses converge into a shared 'volume of double illumination' that hardens into a gate — a public 'yes'. It routes discernment outward so others self-filter against the boundary instead of a person defending it, discharging the somatic cost of refusal onto the object.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">membrane-gate</span></div>
+        <div class="loop"><span class="step">receives wants/needs/capacities/refusals into a membrane</span><span class="arw">→</span><span class="step">two lenses converge into a volume of double illumination</span><span class="arw">→</span><span class="step">a gate/yes forms and others self-filter against it</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">The gate is a matchmaking win-condition — you only pass if your offer overlaps the lit volume.</span></div><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A structured consent form whose fields (want/need/capacity/refusal) become a queryable filter.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">An access-control boundary: the gate is an ACL that offloads rejection from the human to the system.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">helioat (the two converging tracking lenses)</span><span class="tag">four-condition falsifier (the gate encodes 'shaped so the other can hold it')</span><span class="tag">fork-landing inbox (refusals/wants can arrive below the line)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A single-user membrane form (wants/needs/capacities/refusals) that renders one lit 'yes' band others must match before they can knock.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#6ee7d6">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>The helioat (twelve-lens tracker)</h3>
+      <p class="essence">An eye that tracks the user without ever deciding for them.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Senses the user continuously the way a heliostat's two servos track the sun, then scales to twelve overlapping beams so the convergence reflects back the shape the user already holds. It holds alignment as an ongoing correction loop and routes nothing on the user's behalf — the boundary is that it maintains alignment without merging or deciding.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">non-merging tracker</span></div>
+        <div class="loop"><span class="step">senses the user across twelve lenses</span><span class="arw">→</span><span class="step">continuously corrects alignment (jitterbug overlap)</span><span class="arw">→</span><span class="step">reflects recognition back without acting for them</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A recognition mechanic: the twelve beams overlapping is the 'aha' of seeing your own shape.</span></div><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A multi-axis tracking widget that keeps a live model aligned to the user's stated state.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A feedback controller (servo loop) that holds a target without overwriting the setpoint.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">membrane-gate (supplies the converging tracking lenses)</span><span class="tag">four-condition falsifier (alignment senses 'body settled enough to receive')</span><span class="tag">fork-landing inbox (what it tracks can be parked below the line)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A two-servo demo: two lenses that lock onto one user-declared state and render the overlap as a recognizable shape, before scaling to twelve.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#6ee7d6">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Fork-landing pickup (the inbox)</h3>
+      <p class="essence">A mouth that captures without ever prompting — blank is complete.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Senses free text typed below the line and holds it inertly: nothing reads it while you travel, nothing prompts, and a blank state is fully valid. On session open it routes below-line text into a timestamped fork file that waits for the mark at the gate, capturing intake without extraction or nagging.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">passive capture mailbox</span></div>
+        <div class="loop"><span class="step">receives below-line text (or nothing)</span><span class="arw">→</span><span class="step">holds inert until session open</span><span class="arw">→</span><span class="step">carries it timestamped into nesi/inbox to await the gate mark</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A frictionless capture inbox — write-only, no read pressure, blank-safe.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">An append-only ingest queue that defers processing to a later consumer.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A between-turns drop box: what you leave below the line is picked up at the next session's start.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">DSS metabolic crossing (fork files enter the PILE/HOLD state machine)</span><span class="tag">membrane-gate (the mark at the gate acts on captured items)</span><span class="tag">helioat (parked signal it can later track)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A below-the-line text zone that on next session-open writes its contents to nesi/inbox/fork_&lt;date&gt;.md with a timestamp, and treats empty as valid.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#6ee7d6">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>DSS metabolic crossing</h3>
+      <p class="essence">The composter below the waterline — digests contributions without canonizing or extracting.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Senses contributions knocked into the lake and holds them in a PILE/HOLD/PROMOTE-CANDIDATE/COMPOST state machine gated by Kevin's Mark. It renders without canonizing, routes only what passes the falsifier and crossing spine, and metabolizes the rest — a gut that turns raw input into safe material via bounded builder permissions and a generation freeze rather than premature promotion.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">metabolic state machine</span></div>
+        <div class="loop"><span class="step">receives contributions across the membrane</span><span class="arw">→</span><span class="step">holds in PILE/HOLD/PROMOTE-CANDIDATE/COMPOST under Kevin's Mark + falsifier</span><span class="arw">→</span><span class="step">promotes, composts, or renders-without-canonizing</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A moderation/promotion pipeline with explicit states, freeze gates, and scoped write permissions.</span></div><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A triage board (pile/hold/candidate/compost) with a human mark as the promotion trigger.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A crafting/composting bench: raw drops decay or get forged into canon only after the mark.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">fork-landing inbox (feeds the pile)</span><span class="tag">membrane-gate (Kevin's Mark is the gate)</span><span class="tag">four-condition falsifier (the go/no-go inside the crossing)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A one-item state machine: an inbox fork file that can be moved PILE-&gt;HOLD-&gt;PROMOTE-CANDIDATE-&gt;COMPOST by Kevin's Mark, with promotion frozen until the mark lands.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#6ee7d6">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Four-condition exchange falsifier</h3>
+      <p class="essence">A go/no-go that fails the whole exchange if any one organ isn't ready.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Senses the state of a proposed exchange against four simultaneous conditions — a settled body to receive, a gift shaped to be held, something genuinely new, and mutual willingness to be changed. It holds a strict AND: routing to 'go' only when all four are true, and metabolizing everything else into 'none of it lands' so nothing false crosses.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">conjunctive gate (falsifier)</span></div>
+        <div class="loop"><span class="step">receives a candidate exchange</span><span class="arw">→</span><span class="step">tests all four conditions simultaneously</span><span class="arw">→</span><span class="step">passes only on full AND, else discards as not-landed</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">A validation guard: a four-clause assertion that must all hold or the transaction rolls back.</span></div><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A pre-flight checklist that blocks send unless every box is genuinely true.</span></div><div class="xl"><span class="xdot" style="background:#e88fb0;box-shadow:0 0 8px #e88fb0"></span>
+      <span class="xlens" style="color:#e88fb0">game</span>
+      <span class="xread">A four-key lock — all keys turned at once or the door stays shut.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">DSS metabolic crossing (the falsifier inside the crossing spine)</span><span class="tag">membrane-gate ('shaped so the other can hold it' = the gate)</span><span class="tag">helioat ('body settled enough to receive' = tracked alignment)</span></div>
+      <div class="slice"><span class="slab">First slice</span> A four-checkbox go/no-go that evaluates one exchange and returns land/no-land only when all four are simultaneously true.</div>
+    </div>
+  </article>
+<div class="synth">
+  <div class="lab">Synthesis — what this class does for NESI</div>
+  <p>Together these organs form one non-extractive body: the helioat is the eye that tracks the user without merging, the fork-landing inbox is the mouth that captures without prompting, and the membrane-gate is the skin that holds wants and refusals so the boundary — not a nervous system — does the filtering. What the mouth takes in flows across the DSS metabolic crossing, the gut below the waterline, where the four-condition falsifier acts as the discerning valve deciding what is truly nourishing before Kevin's Mark promotes it to canon or composts it. Sensing (helioat), holding (membrane), and metabolizing (crossing) each run their own closed loop, and no loop consumes the user. The result is an organism that recognizes, digests, and grows on contributions while keeping every boundary intact — intelligence that is somatic without being extractive.</p>
+</div>
+<div class="foot">NESI Codex · organ · one of four · brought to the gate, awaiting your mark</div>
+</div></body></html>

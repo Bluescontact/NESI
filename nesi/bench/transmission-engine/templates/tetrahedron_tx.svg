@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <!-- Transmission register: warm off-white field, dark earth geometry -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a3020" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f7f5f0"/>
+
+  <text x="800" y="130" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="50" font-weight="400" letter-spacing="6"
+        fill="#1a1408">{{TITLE}}</text>
+
+  <!-- Tetrahedron edges (apex top, three-point base) -->
+  <!-- Apex: (800, 270), Base: (560, 720), (1040, 720), (800, 620 simulated depth) -->
+  <line x1="800" y1="270" x2="560" y2="720" stroke="#3a3020" stroke-width="1.5"/>
+  <line x1="800" y1="270" x2="1040" y2="720" stroke="#3a3020" stroke-width="1.5"/>
+  <line x1="800" y1="270" x2="800" y2="620" stroke="#ccc5b0" stroke-width="1.2" stroke-opacity="0.8" stroke-dasharray="3,3"/>
+  <line x1="560" y1="720" x2="1040" y2="720" stroke="#3a3020" stroke-width="1.5"/>
+  <line x1="560" y1="720" x2="800" y2="620" stroke="#ccc5b0" stroke-width="1.2" stroke-opacity="0.8" stroke-dasharray="3,3"/>
+  <line x1="1040" y1="720" x2="800" y2="620" stroke="#ccc5b0" stroke-width="1.2" stroke-opacity="0.8" stroke-dasharray="3,3"/>
+
+  <!-- Vertex glows -->
+  <circle cx="800" cy="270" r="40" fill="url(#glow)"/>
+  <circle cx="800" cy="270" r="6" fill="#3a3020"/>
+  <text x="800" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{APEX}}</text>
+
+  <circle cx="560" cy="720" r="40" fill="url(#glow)"/>
+  <circle cx="560" cy="720" r="6" fill="#3a3020"/>
+  <text x="500" y="760" text-anchor="end" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{BASE_LEFT}}</text>
+
+  <circle cx="1040" cy="720" r="40" fill="url(#glow)"/>
+  <circle cx="1040" cy="720" r="6" fill="#3a3020"/>
+  <text x="1100" y="760" text-anchor="start" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{BASE_RIGHT}}</text>
+
+  <circle cx="800" cy="620" r="35" fill="url(#glow)"/>
+  <circle cx="800" cy="620" r="5" fill="#3a3020"/>
+  <text x="800" y="660" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{BASE_REAR}}</text>
+
+  <text x="800" y="840" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#7a6840">{{SUBTITLE}}</text>
+</svg>

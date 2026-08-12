@@ -1,0 +1,48 @@
+{
+ "closed_at": "2026-07-25T15:51:05",
+ "where_it_closed": "last mark: compost on bench:id_like_to_build_a_lease.md · 2026-07-23T21:40:32",
+ "open_threads": [
+  {
+   "id": "2026-07-25_paste_2026-07-25_151642_0bc07d",
+   "pile": "paste_2026-07-25_151642.md",
+   "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+   "engine": "dark (articulation awaits the engine or Kevin's hand)"
+  },
+  {
+   "id": "2026-07-23_front_2026-07-17_hold_onto_this_the_inverter_manual_i_fe8216",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "summary": "The pile contains a single instruction to hold onto the inverter manual, which was found in the gray bin.",
+   "engine": "local"
+  },
+  {
+   "id": "2026-07-23_front_2026-07-17_hold_onto_this_the_inverter_manual_i_54de94",
+   "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+   "summary": "The pile contains a single instruction to hold onto the inverter manual, which was found in the gray bin.",
+   "engine": "local"
+  }
+ ],
+ "inbox": [
+  "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "paste_2026-07-25_151642.md",
+  "probe_engine_live.md"
+ ],
+ "held_count": 23,
+ "felt_read_count": 23,
+ "last_marks": [
+  {
+   "ts": "2026-07-23T21:40:32",
+   "pile": "bench:id_like_to_build_a_lease.md",
+   "verdict": "compost"
+  },
+  {
+   "ts": "2026-07-23T21:40:30",
+   "pile": "bench:an_instrument_for_witnessing_a_gift_with.md",
+   "verdict": "compost"
+  },
+  {
+   "ts": "2026-07-23T21:40:27",
+   "pile": "bench:a_floor_that_holds_a_stranger_without_ex.md",
+   "verdict": "compost"
+  }
+ ]
+}

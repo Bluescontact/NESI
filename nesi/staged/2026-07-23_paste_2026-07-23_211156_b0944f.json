@@ -1,0 +1,47 @@
+{
+  "id": "2026-07-23_paste_2026-07-23_211156_b0944f",
+  "pile": "paste_2026-07-23_211156.md",
+  "pile_path": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox\\paste_2026-07-23_211156.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-23T21:11:58",
+    "engine": "dark (articulation awaits the engine or Kevin's hand)",
+    "error": null
+  },
+  "object": {
+    "engine": "dark (articulation awaits the engine or Kevin's hand)",
+    "pile": "paste_2026-07-23_211156.md",
+    "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+    "items": [
+      {
+        "item": "WIRING TEST — the face just wrote this straight into NESI's inbox.",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)",
+        "lint": {
+          "nearest": "the_door_as_stack_layer",
+          "dist": 0.638,
+          "read": "PASS"
+        }
+      }
+    ],
+    "restored_count": 1,
+    "articulation_socket": {
+      "awaiting": "articulation",
+      "mode": "metabolize",
+      "note": "[engine dark] scaffold stands; stated language awaits the engine (unlit) or Kevin"
+    }
+  },
+  "lint": {
+    "by": "codex_index (pattern library)",
+    "items_linted": 1,
+    "folds": 0,
+    "holds": 0,
+    "passes": 1
+  },
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-23T21:40:15"
+  }
+}

@@ -1,0 +1,367 @@
+<!doctype html>
+<!-- THE DOOR — beats 1 through 4, playable, no tutorial.
+     Built 2026-08-04 on Kevin's read: "the language so far has been the negative space, and
+     creating a lint... I don't see the build itself... nothing that lets a person play this
+     game without needing a tutorial."
+
+     The system writes no words. Every word on screen after the door is the player's own,
+     verbatim. Nothing is scored, summarised, interpreted, or advised. Open in a browser. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>&nbsp;</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#f4f1ea}
+body{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;color:#2e2820}
+
+/* ---------- the field you write in ---------- */
+#field{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 2.2s ease}
+#water{position:absolute;left:0;right:0;bottom:0;height:0;
+  background:linear-gradient(to top,rgba(96,124,138,.19),rgba(96,124,138,.07));
+  transition:height 1.1s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+#waterline{position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(70,98,112,.28);
+  transition:bottom 1.1s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+#pen{position:relative;width:min(660px,86vw);max-height:76vh;overflow-y:auto;
+  font-size:19px;line-height:2.05;background:transparent;border:0;outline:0;resize:none;
+  color:#2e2820;font-family:inherit;caret-color:#7a5a10}
+#pen::placeholder{color:transparent}
+#pen::-webkit-scrollbar{width:0}
+
+/* ---------- the world past the door ---------- */
+#world{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 2.6s ease}
+#world.here{opacity:1;pointer-events:auto}
+canvas{position:absolute;inset:0;display:block}
+#faces{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;gap:13px;
+  opacity:0;transition:opacity 1.4s ease .8s}
+#world.here #faces{opacity:1}
+.face{width:9px;height:9px;border:1px solid rgba(70,98,112,.5);background:transparent;
+  transform:rotate(45deg);cursor:pointer;transition:background .5s,border-color .5s}
+.face:hover{border-color:rgba(70,98,112,.9)}
+.face.on{background:rgba(70,98,112,.62);border-color:rgba(70,98,112,.62)}
+</style>
+</head>
+<body>
+
+<div id="field">
+  <div id="water"></div><div id="waterline"></div>
+  <textarea id="pen" spellcheck="false" autocomplete="off" autofocus></textarea>
+</div>
+
+<div id="world">
+  <canvas id="c"></canvas>
+  <div id="faces"></div>
+</div>
+
+<script>
+'use strict';
+/* ============================================================================
+   No copy is written by this system. The only text that ever renders after the
+   door is the player's own, character for character.
+   ========================================================================== */
+
+const STORE = 'nesi.door.v1';
+const THRESHOLD = 110;                 // words that open the door
+const pen = document.getElementById('pen');
+const field = document.getElementById('field');
+const water = document.getElementById('water');
+const waterline = document.getElementById('waterline');
+const world = document.getElementById('world');
+const faces = document.getElementById('faces');
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+
+let W = 0, H = 0, DPR = 1;
+function size(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', () => { size(); if (opened) settle(); });
+
+/* ---------------------------------------------------------------- the writing */
+const words = s => (s.trim().match(/\S+/g) || []).length;
+let opened = false;
+
+function rise(){
+  const n = words(pen.value);
+  const frac = Math.min(n / THRESHOLD, 1);
+  // eases in slowly then accelerates — the last stretch is felt, not counted
+  const h = Math.pow(frac, 1.45) * (window.innerHeight * 0.62);
+  water.style.height = h + 'px';
+  waterline.style.bottom = h + 'px';
+  if (frac >= 1 && !opened) open();
+}
+pen.addEventListener('input', () => { save(); rise(); });
+
+/* ------------------------------------------------------- splitting, verbatim */
+function sentences(text){
+  const out = [];
+  text.split(/\n+/).forEach(block => {
+    const parts = block.match(/[^.!?…]+[.!?…]*/g) || [];
+    parts.forEach(p => { const t = p.trim(); if (t.length > 1) out.push(t); });
+  });
+  return out;
+}
+
+const STOP = new Set(('a an the and or but if then so of to in on at by for with from as is are was were be been being it its ' +
+  'this that these those i me my we our you your he she they them his her their not no nor do does did done have has had ' +
+  'will would can could should may might just about into over under out up down more most very really thing things').split(' '));
+
+function keys(s){
+  const set = new Set();
+  (s.toLowerCase().match(/[a-z']{3,}/g) || []).forEach(w => { if (!STOP.has(w)) set.add(w); });
+  return set;
+}
+function shared(a, b){ let n = 0; a.forEach(w => { if (b.has(w)) n++; }); return n; }
+
+/* ------------------------------------------------------------------ the nodes */
+let nodes = [], links = [], face = 0, held = -1;
+let cam = { x: 0, y: 0, z: 1 }, target = { x: 0, y: 0, z: 1 };
+
+function build(text){
+  const ss = sentences(text);
+  nodes = ss.map((t, i) => {
+    const k = keys(t);
+    return { t, k, i, x:0, y:0, vx:0, vy:0, hx:0, hy:0, born: i / Math.max(ss.length - 1, 1) };
+  });
+  links = [];
+  for (let a = 0; a < nodes.length; a++)
+    for (let b = a + 1; b < nodes.length; b++){
+      const n = shared(nodes[a].k, nodes[b].k);
+      if (n > 0) links.push({ a, b, n });
+    }
+  // recurrence: how often each node's words appear elsewhere
+  nodes.forEach(nd => {
+    let echo = 0;
+    nodes.forEach(o => { if (o !== nd) echo += shared(nd.k, o.k); });
+    nd.echo = echo;
+  });
+  const maxEcho = Math.max(1, ...nodes.map(n => n.echo));
+  nodes.forEach(n => { n.echoN = n.echo / maxEcho; });
+  layout();
+}
+
+/* Four expressions of the same material. Same nodes, same words, different ground.
+   Nothing here ranks anything; each is an arrangement, not a verdict. */
+function layout(){
+  const R = Math.min(W, H) * 0.36 || 320;
+  nodes.forEach((n, i) => {
+    const N = nodes.length || 1;
+    let a, r;
+    if (face === 0){                       // as written — a line through time
+      a = -Math.PI / 2 + n.born * Math.PI * 1.86;
+      r = R * (0.28 + n.born * 0.86);
+    } else if (face === 1){                // kinship — let the links pull
+      a = (i / N) * Math.PI * 2; r = R * 0.9;
+    } else if (face === 2){                // recurrence — what echoes draws inward
+      a = (i / N) * Math.PI * 2 + 0.6;
+      r = R * (1.18 - n.echoN * 0.92);
+    } else {                               // solitude — what shares least stands clear
+      a = (i / N) * Math.PI * 2 + 1.2;
+      r = R * (0.34 + (1 - n.echoN) * 1.02);
+    }
+    n.hx = Math.cos(a) * r; n.hy = Math.sin(a) * r;
+    if (!n.placed){ n.x = n.hx; n.y = n.hy; n.placed = true; }
+  });
+}
+
+function settle(){ layout(); }
+
+function step(){
+  const kin = (face === 1);
+  for (const n of nodes){
+    // toward this face's home
+    n.vx += (n.hx - n.x) * (kin ? 0.006 : 0.022);
+    n.vy += (n.hy - n.y) * (kin ? 0.006 : 0.022);
+  }
+  if (kin){
+    for (const l of links){
+      const a = nodes[l.a], b = nodes[l.b];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d = Math.hypot(dx, dy) || 1;
+      const rest = 150 / (1 + l.n * 0.75);
+      const f = (d - rest) * 0.0016 * Math.min(l.n, 4);
+      dx /= d; dy /= d;
+      a.vx += dx * f; a.vy += dy * f;
+      b.vx -= dx * f; b.vy -= dy * f;
+    }
+  }
+  // everything keeps its distance
+  for (let i = 0; i < nodes.length; i++)
+    for (let j = i + 1; j < nodes.length; j++){
+      const a = nodes[i], b = nodes[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d2 = dx*dx + dy*dy;
+      if (d2 < 1) d2 = 1;
+      if (d2 < 30000){
+        const d = Math.sqrt(d2), f = 260 / d2;
+        dx /= d; dy /= d;
+        a.vx -= dx * f; a.vy -= dy * f;
+        b.vx += dx * f; b.vy += dy * f;
+      }
+    }
+  for (const n of nodes){
+    n.vx *= 0.86; n.vy *= 0.86;
+    n.x += n.vx; n.y += n.vy;
+  }
+  cam.x += (target.x - cam.x) * 0.08;
+  cam.y += (target.y - cam.y) * 0.08;
+  cam.z += (target.z - cam.z) * 0.08;
+}
+
+/* -------------------------------------------------------------------- drawing */
+function wrap(text, max){
+  const out = [], w = text.split(' ');
+  let line = '';
+  for (const word of w){
+    const t = line ? line + ' ' + word : word;
+    if (ctx.measureText(t).width > max && line){ out.push(line); line = word; }
+    else line = t;
+  }
+  if (line) out.push(line);
+  return out;
+}
+
+function draw(){
+  ctx.clearRect(0, 0, W, H);
+  ctx.save();
+  ctx.translate(W/2 - cam.x * cam.z, H/2 - cam.y * cam.z);
+  ctx.scale(cam.z, cam.z);
+
+  // the threads — visible, never named
+  ctx.lineWidth = 1 / cam.z;
+  for (const l of links){
+    const a = nodes[l.a], b = nodes[l.b];
+    const lit = (held === l.a || held === l.b);
+    ctx.strokeStyle = lit
+      ? 'rgba(70,98,112,' + Math.min(0.13 + l.n * 0.1, 0.5) + ')'
+      : 'rgba(122,104,64,' + Math.min(0.035 + l.n * 0.022, 0.13) + ')';
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  }
+
+  const fs = 14;
+  ctx.font = fs + 'px "Iowan Old Style", Palatino, Georgia, serif';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < nodes.length; i++){
+    const n = nodes[i];
+    const sx = n.x * cam.z + W/2 - cam.x * cam.z;
+    const sy = n.y * cam.z + H/2 - cam.y * cam.z;
+    const d = Math.hypot(sx - W/2, sy - H/2);
+    // near the centre of your attention it becomes legible; far off it is a shape
+    let near = 1 - Math.min(d / (Math.min(W,H) * 0.52), 1);
+    near = Math.pow(near, 1.5);
+    const on = (held === i);
+    const alpha = on ? 0.94 : 0.13 + near * 0.74;
+
+    const maxW = 250;
+    const lines = wrap(n.t, maxW);
+    ctx.fillStyle = 'rgba(46,40,32,' + alpha.toFixed(3) + ')';
+    const lh = fs * 1.5;
+    const y0 = n.y - (lines.length - 1) * lh / 2;
+    ctx.textAlign = 'center';
+    lines.forEach((ln, k) => ctx.fillText(ln, n.x, y0 + k * lh));
+
+    // a mark for where it sits, so a dim one is still a place
+    ctx.beginPath();
+    ctx.arc(n.x, y0 + (lines.length - 1) * lh / 2 + lh * 0.95, 1.6, 0, 6.284);
+    ctx.fillStyle = 'rgba(122,104,64,' + (0.12 + near * 0.4).toFixed(3) + ')';
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+let raf;
+function loop(){ step(); draw(); raf = requestAnimationFrame(loop); }
+
+/* ------------------------------------------------------------------ the hands */
+let drag = null;
+cv.addEventListener('pointerdown', e => {
+  drag = { x: e.clientX, y: e.clientY, cx: target.x, cy: target.y, moved: 0 };
+  cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove', e => {
+  if (drag){
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.moved += Math.abs(dx) + Math.abs(dy);
+    target.x = drag.cx - dx / cam.z;
+    target.y = drag.cy - dy / cam.z;
+    return;
+  }
+  // what you are closest to becomes readable, and its threads light
+  const wx = (e.clientX - W/2) / cam.z + cam.x;
+  const wy = (e.clientY - H/2) / cam.z + cam.y;
+  let best = -1, bd = 92 / cam.z;
+  nodes.forEach((n, i) => { const d = Math.hypot(n.x - wx, n.y - wy); if (d < bd){ bd = d; best = i; } });
+  held = best;
+});
+cv.addEventListener('pointerup', e => {
+  if (drag && drag.moved < 5 && held >= 0){
+    // stand at it — the field comes to meet you
+    target.x = nodes[held].x; target.y = nodes[held].y;
+  }
+  drag = null;
+});
+cv.addEventListener('wheel', e => {
+  e.preventDefault();
+  target.z = Math.min(2.4, Math.max(0.34, target.z * (e.deltaY > 0 ? 0.9 : 1.111)));
+}, { passive: false });
+
+function setFace(f){
+  face = f;
+  [...faces.children].forEach((el, i) => el.classList.toggle('on', i === f));
+  layout();
+}
+for (let i = 0; i < 4; i++){
+  const b = document.createElement('div');
+  b.className = 'face' + (i === 0 ? ' on' : '');
+  b.addEventListener('click', () => setFace(i));
+  faces.appendChild(b);
+}
+window.addEventListener('keydown', e => {
+  if (!opened) return;
+  if (e.key >= '1' && e.key <= '4') setFace(+e.key - 1);
+});
+
+/* -------------------------------------------------------------------- the door */
+function open(){
+  if (opened) return;
+  opened = true;
+  const text = pen.value;
+  pen.blur();
+  field.style.opacity = '0';
+  setTimeout(() => {
+    field.style.display = 'none';
+    size();
+    build(text);
+    world.classList.add('here');
+    loop();
+    // the ground shifts once on its own, so you can see it has other faces
+    setTimeout(() => { if (face === 0) setFace(1); }, 5200);
+  }, 2000);
+}
+
+/* --------------------------------------------------------------- what is kept */
+function save(){ try { localStorage.setItem(STORE, pen.value); } catch(e){} }
+(function start(){
+  let prior = '';
+  try { prior = localStorage.getItem(STORE) || ''; } catch(e){}
+  if (prior){
+    pen.value = prior;
+    if (words(prior) >= THRESHOLD){
+      // you have been here — nothing is lost and nothing is announced
+      field.style.display = 'none';
+      opened = true;
+      size(); build(prior); world.classList.add('here'); loop();
+      return;
+    }
+  }
+  size();
+  rise();
+  pen.focus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin's own map</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;--card:#fffef9;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#e2ddce;
+  --bdr:#ccc5b0;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g);font-family:Georgia,'Times New Roman',serif;
+  display:flex;flex-direction:column;align-items:center;padding:30px 18px 50px;min-height:100%}
+.top{width:100%;max-width:640px;text-align:center;margin-bottom:10px}
+.eye{font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.name{font-size:24px;color:var(--gb);letter-spacing:1px}
+.tag{font-size:12.5px;color:var(--gd);font-style:italic;margin-top:4px}
+.guard{width:100%;max-width:640px;font-family:'Courier New',monospace;font-size:9.5px;letter-spacing:0.5px;
+  color:var(--gf);text-align:center;border-bottom:1px solid var(--bdr);padding-bottom:16px;margin-bottom:22px;line-height:1.6}
+.sec{width:100%;max-width:640px;background:var(--card);border:1px solid var(--bdr);padding:20px 22px;margin-bottom:14px}
+.sec-h{font-size:18px;color:var(--gb);margin-bottom:3px}
+.sec-say{font-size:11.5px;color:var(--gd);font-style:italic;margin-bottom:14px}
+.row{display:flex;gap:8px;margin-bottom:12px}
+input[type=text]{flex:1;font-family:Georgia,serif;font-size:14px;color:var(--gb);background:var(--bg);
+  border:1px solid var(--bdr);padding:9px 11px;width:100%}
+input:focus{outline:none;border-color:var(--gd)}
+button{font-family:'Courier New',monospace;font-size:10.5px;letter-spacing:1px;color:var(--gb);
+  background:var(--sf);border:1px solid var(--gd);padding:9px 14px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--sf2)}
+.list{display:flex;flex-direction:column;gap:6px}
+.entry{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--bdr);padding:9px 12px}
+.entry-t{flex:1;font-size:14px;color:var(--gb);line-height:1.5}
+.entry-x{font-family:'Courier New',monospace;font-size:11px;color:var(--gf);cursor:pointer;padding:2px 4px}
+.entry-x:hover{color:#8a2010}
+.empty{font-size:12px;color:var(--gf);font-style:italic}
+.foot{width:100%;max-width:640px;margin-top:6px;padding-top:14px;border-top:1px solid var(--bdr);
+  font-family:'Courier New',monospace;font-size:10px;color:var(--gf);letter-spacing:1px;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="eye">DSS · RECOGNITION INFRASTRUCTURE</div>
+  <div class="name">Kevin's own map</div>
+  <div class="tag">a place to hold what's yours, in your own words</div>
+</div>
+
+<div class="guard">nothing here is read by anything else · nothing is scored, ranked, or inferred · you write it, you edit it, you delete it · it only holds what you hand it</div>
+
+<div class="sec" id="sec-needs">
+  <div class="sec-h">Needs</div>
+  <div class="sec-say">What you actually need right now — not a wish, a need.</div>
+  <div class="row"><input type="text" id="in-needs" placeholder="a need, in your own words…"><button data-add="needs">put it down</button></div>
+  <div class="list" id="list-needs"></div>
+</div>
+
+<div class="sec" id="sec-wants">
+  <div class="sec-h">Wants</div>
+  <div class="sec-say">What you want — no need to justify it.</div>
+  <div class="row"><input type="text" id="in-wants" placeholder="a want, in your own words…"><button data-add="wants">put it down</button></div>
+  <div class="list" id="list-wants"></div>
+</div>
+
+<div class="sec" id="sec-gifts">
+  <div class="sec-h">Gifts</div>
+  <div class="sec-say">What you have to give, or already give, without it being a trade.</div>
+  <div class="row"><input type="text" id="in-gifts" placeholder="a gift, in your own words…"><button data-add="gifts">put it down</button></div>
+  <div class="list" id="list-gifts"></div>
+</div>
+
+<div class="sec" id="sec-capacities">
+  <div class="sec-h">Capacities</div>
+  <div class="sec-say">What you can actually carry right now — time, energy, attention, hands.</div>
+  <div class="row"><input type="text" id="in-capacities" placeholder="a capacity, in your own words…"><button data-add="capacities">put it down</button></div>
+  <div class="list" id="list-capacities"></div>
+</div>
+
+<div class="sec" id="sec-boundaries">
+  <div class="sec-h">Boundaries</div>
+  <div class="sec-say">Where the edge actually is — for you, stated once, so it's not felt out through trial.</div>
+  <div class="row"><input type="text" id="in-boundaries" placeholder="a boundary, in your own words…"><button data-add="boundaries">put it down</button></div>
+  <div class="list" id="list-boundaries"></div>
+</div>
+
+<div class="foot">stored only in this browser (localStorage) · no score, no rank, no trend · you hold the whole thing</div>
+
+<script>
+const KEY = "nesi.self_map.v1";
+const SECTIONS = ["needs","wants","gifts","capacities","boundaries"];
+
+function load(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
+    const out = {};
+    SECTIONS.forEach(s => { out[s] = Array.isArray(raw[s]) ? raw[s] : []; });
+    return out;
+  }catch(e){
+    const out = {}; SECTIONS.forEach(s => out[s] = []); return out;
+  }
+}
+function save(data){
+  try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){}
+}
+
+let data = load();
+
+function render(section){
+  const el = document.getElementById("list-" + section);
+  el.innerHTML = "";
+  const items = data[section];
+  if (!items.length){
+    const p = document.createElement("div");
+    p.className = "empty";
+    p.textContent = "nothing here yet";
+    el.appendChild(p);
+    return;
+  }
+  items.forEach((text, i) => {
+    const row = document.createElement("div");
+    row.className = "entry";
+    const t = document.createElement("div");
+    t.className = "entry-t";
+    t.textContent = text;
+    const x = document.createElement("span");
+    x.className = "entry-x";
+    x.textContent = "remove";
+    x.onclick = () => {
+      data[section].splice(i, 1);
+      save(data);
+      render(section);
+    };
+    row.appendChild(t);
+    row.appendChild(x);
+    el.appendChild(row);
+  });
+}
+
+function addEntry(section){
+  const input = document.getElementById("in-" + section);
+  const v = input.value.trim();
+  if (!v) return;
+  data[section].push(v);
+  save(data);
+  input.value = "";
+  input.focus();
+  render(section);
+}
+
+document.querySelectorAll("button[data-add]").forEach(btn => {
+  const section = btn.getAttribute("data-add");
+  btn.onclick = () => addEntry(section);
+});
+SECTIONS.forEach(section => {
+  document.getElementById("in-" + section).addEventListener("keydown", e => {
+    if (e.key === "Enter") addEntry(section);
+  });
+  render(section);
+});
+</script>
+</body>
+</html>

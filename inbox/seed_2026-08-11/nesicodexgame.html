@@ -1,0 +1,200 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NESI Codex · game</title>
+<style>
+:root{--a:#e88fb0;--bg0:#04070c;--bg1:#071019;--text:#dce9ea;--muted:#8aa3a7;--faint:#5f797f;--line:rgba(122,205,205,.13);
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--text);line-height:1.6;
+background:radial-gradient(1200px 700px at 50% -12%, color-mix(in srgb, var(--a) 16%, transparent), transparent 60%),
+linear-gradient(180deg,var(--bg1),var(--bg0));background-attachment:fixed;min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 90px}
+h1,h2,h3{font-family:var(--serif);font-weight:500}
+.top{padding:38px 0 10px}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--a)}
+h1{font-size:40px;margin:8px 0 2px;text-transform:capitalize}
+.one{color:var(--faint);font-size:14px;margin:0 0 18px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+.pill{--a:var(--a);display:flex;align-items:center;gap:7px;text-decoration:none;color:var(--muted);font-size:13px;
+text-transform:capitalize;border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:.2s}
+.pill .pg{color:var(--a)}
+.pill:hover{border-color:var(--a);color:var(--text)}
+.pill.on{color:#04070c;background:var(--a);border-color:var(--a);font-weight:600}
+.pill.on .pg{color:#04070c}
+.def{font-size:16px;color:var(--muted);max-width:66ch;border-left:2px solid var(--a);padding-left:16px;margin:0 0 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 4px;font-size:12px;color:var(--faint)}
+.legend b{font-weight:600}
+.lg{display:flex;align-items:center;gap:6px}.lgd{width:8px;height:8px;border-radius:50%}
+.count{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin:30px 0 14px}
+.card{position:relative;display:flex;background:rgba(14,30,40,.5);border:1px solid var(--line);border-radius:16px;
+overflow:hidden;margin:16px 0;backdrop-filter:blur(6px)}
+.rail{width:5px;background:linear-gradient(180deg,var(--a),transparent);flex:none}
+.cbody{padding:22px 26px 24px;flex:1;min-width:0}
+.card h3{font-size:21px;margin:0 0 4px}
+.essence{color:var(--a);font-style:italic;margin:0 0 16px;font-size:15px;opacity:.92}
+.lab{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--faint);margin:16px 0 7px}
+.pattern{margin:0;color:var(--text);opacity:.9;font-size:15px}
+.mech{margin-top:4px}
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.step{background:color-mix(in srgb,var(--a) 12%,transparent);border:1px solid color-mix(in srgb,var(--a) 30%,transparent);
+border-radius:9px;padding:6px 11px;font-size:13.5px}
+.arw{color:var(--a);font-weight:700}
+.xls{display:flex;flex-direction:column;gap:9px}
+.xl{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:9px}
+.xdot{width:8px;height:8px;border-radius:50%;align-self:center}
+.xlens{text-transform:uppercase;font-size:11px;letter-spacing:.1em;min-width:92px}
+.xread{color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.slice{margin-top:18px;font-size:14px;color:var(--text);background:color-mix(in srgb,var(--a) 9%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 22%,transparent);border-radius:11px;padding:12px 14px}
+.slab{display:inline-block;text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;color:var(--a);margin-right:8px;font-weight:700}
+.synth{margin-top:34px;padding:26px 28px;border-radius:16px;background:color-mix(in srgb,var(--a) 8%,transparent);
+border:1px solid color-mix(in srgb,var(--a) 24%,transparent)}
+.synth .lab{color:var(--a)}
+.synth p{margin:6px 0 0;font-size:16px;line-height:1.7}
+.foot{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
+</style></head>
+<body><div class="wrap">
+<div class="top">
+  <div class="eyebrow">NESI Codex</div>
+  <h1>game</h1>
+  <div class="one">◆ &nbsp;what the player does</div>
+  <div class="nav"><a class="pill on" href="nesi-codex-game.html" style="--a:#e88fb0">
+      <span class="pg">◆</span>game</a><a class="pill " href="nesi-codex-tool.html" style="--a:#f2b872">
+      <span class="pg">⌘</span>tool</a><a class="pill " href="nesi-codex-infrastructure.html" style="--a:#9b8cf0">
+      <span class="pg">▤</span>infrastructure</a><a class="pill " href="nesi-codex-organ.html" style="--a:#6ee7d6">
+      <span class="pg">❋</span>organ</a></div>
+  <p class="def">In NESI, GAME mechanics are the things a player actively does — a prompted action, a naming, a scan, a trust unlock — that produce a persistent, visible consequence in the world (a debuff cleared, a failing cell exposed, a tier unlocked, an address named). They are non-extractive play loops: the player supplies input from their own real state and terrain shifts in response, but nothing is taken from the player. Each mechanic is a repeatable verb with a way in, an act, and a legible aftermath.</p>
+  <div class="legend">
+    <span>every gift also reads across the other lenses:</span>
+    <span class="lg"><span class="lgd" style="background:#e88fb0"></span><b style="color:#e88fb0">game</b></span><span class="lg"><span class="lgd" style="background:#f2b872"></span><b style="color:#f2b872">tool</b></span><span class="lg"><span class="lgd" style="background:#9b8cf0"></span><b style="color:#9b8cf0">infrastructure</b></span><span class="lg"><span class="lgd" style="background:#6ee7d6"></span><b style="color:#6ee7d6">organ</b></span>
+  </div>
+</div>
+<div class="count">5 gifts in this class</div>
+<article class="card" style="--a:#e88fb0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Four Vertex Daily Practices</h3>
+      <p class="essence">A daily one-line exercise per capacity vertex that clears the matching failure-mode debuff.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A rotating micro-action tied to a specific capacity dimension: each day the player is prompted with one embodied, single-sentence practice targeting a named weakness. Completing the practice with real input (an actual position held, an actual limit named) discharges the debuff mapped to that vertex. The reusable pattern is a daily-quest slot where the reward is not loot but the removal of a status condition the player is currently carrying.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Vertex Daily Practice</span></div>
+        <div class="loop"><span class="step">day starts, one vertex practice prompted</span><span class="arw">→</span><span class="step">player performs the one-sentence embodied act with real content</span><span class="arw">→</span><span class="step">matching failure-mode debuff clears and body-notice is logged</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A four-button daily prompt widget you invoke to run one calibration rep.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">The daily heartbeat that keeps the four capacities exercised so debuffs don't accrue.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A somatic pump that pushes attention through each vertex on a rotating cycle, sensing where the body flinches.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">the four failure modes catalog</span><span class="tag">the six-lens diagnostic matrix</span><span class="tag">the membrane (boundaries practice)</span><span class="tag">the composter (logs what was noticed and cleared)</span></div>
+      <div class="slice"><span class="slab">First slice</span> One vertex's practice wired to one debuff: prompt the Boundaries line at day-start, and clear the Overflowing debuff when the player submits a named limit.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#e88fb0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Four Failure Modes + Signal Catalog</h3>
+      <p class="essence">A bestiary of four collapse patterns, each read from a visible signal and cured by supplying its missing vertex.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Every failing NPC or system emits an observable signal that maps to one of four named failure modes (Dissolved, Isolated, Overflowing, Ephemeral), each the deficiency of a specific vertex. The player scans, names the mode, and the correct intervention is deterministically the missing vertex's practice. The reusable pattern is a diagnose-by-signal loop: observation becomes a named condition, and the name prescribes the fix.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Failure-Mode Naming</span></div>
+        <div class="loop"><span class="step">observe an NPC/system signal</span><span class="arw">→</span><span class="step">name the failure mode</span><span class="arw">→</span><span class="step">intervention targeting the missing vertex is unlocked/applied</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A field-guide scanner that returns a diagnosis label from a symptom.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">The shared vocabulary layer that lets every system be classified into four states.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">An immune-recognition sense that flags which of the four collapses is underway.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">the four vertex daily practices</span><span class="tag">the six-lens diagnostic matrix</span><span class="tag">the Open Village diagnostic</span><span class="tag">the composter (Doc Graveyard / Ephemeral residue)</span></div>
+      <div class="slice"><span class="slab">First slice</span> One NPC emitting the Isolated signal (performed nodding); player names it and the Connection intervention becomes available.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#e88fb0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Six-Lens Diagnostic Matrix</h3>
+      <p class="essence">A 24-cell scan running any system through six frameworks across four movements to pinpoint the breakdown cell.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A targeted system is passed through a 4x6 grid (four movements by six frameworks) and each cell is evaluated, so breakdown localizes to a specific coordinate rather than a vague sense of wrongness. The failing cell names both the framework lens and the movement where it fails, which specifies the intervention. The reusable pattern is a high-resolution inspect that converts a whole-system unease into one addressable coordinate.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Six-Lens Scan</span></div>
+        <div class="loop"><span class="step">target a system</span><span class="arw">→</span><span class="step">run the 24-cell scan</span><span class="arw">→</span><span class="step">the failing cell lights up and specifies the needed intervention</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A deep-inspect instrument that returns grid coordinates of failure.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">The diagnostic substrate all higher-order assessments plug into.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A compound eye reading one system through six simultaneous framings.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">the four failure modes catalog</span><span class="tag">the Open Village diagnostic</span><span class="tag">the graduated trust framework (coherence checks)</span><span class="tag">the membrane</span></div>
+      <div class="slice"><span class="slab">First slice</span> A single row (one framework) across the four movements: four cells, each pass/fail, highlighting the first failing movement.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#e88fb0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Graduated Trust Framework (5-level)</h3>
+      <p class="essence">A five-tier progression ladder where each capability tier unlocks only by demonstrated coherence at the prior one.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">Access expands through five gated tiers (Read-only, Bounded modification, Tool execution, Extended capabilities, Autonomous operation), and each gate opens only when coherence is demonstrated at the level below. Progression is earned by proof, not granted by time, so the ladder is a visible, persistent record of trust state. The reusable pattern is a demonstrated-coherence progression ladder that governs what actions a player/agent is even allowed to attempt.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Trust-Tier Unlock</span></div>
+        <div class="loop"><span class="step">operate at current tier</span><span class="arw">→</span><span class="step">demonstrate coherence</span><span class="arw">→</span><span class="step">next capability tier unlocks and expands allowed actions</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A permissions selector whose settings you raise by proving reliability.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">The access-control spine that gates every other mechanic's reach.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A sphincter that widens only as coherence pressure proves safe to pass.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">the membrane</span><span class="tag">the six-lens diagnostic matrix</span><span class="tag">the four vertex daily practices (coherence source)</span><span class="tag">the inbox (bounded modification requests)</span></div>
+      <div class="slice"><span class="slab">First slice</span> Two tiers wired: Read-only to Bounded modification, with one concrete coherence check that flips the gate.</div>
+    </div>
+  </article>
+<article class="card" style="--a:#e88fb0">
+    <div class="rail"></div>
+    <div class="cbody">
+      <h3>Open Village Four-Movement Diagnostic</h3>
+      <p class="essence">A four-step guided quest that ends each movement in a named, addressable finding rather than a score.</p>
+      <div class="lab">The pattern</div>
+      <p class="pattern">A structured four-movement walkthrough asks which vertex dropped, which invisible layer is unheld (and who holds it), whether the four gift preconditions are met, and whether the architecture test passes — each movement resolving to an actionable finding with a name and an address. It is explicitly a tool to act with, not a quiz to grade. The reusable pattern is a guided diagnostic quest whose reward is a concrete target (a person, a layer, a precondition) you can then intervene on.</p>
+      <div class="mech">
+        <div class="lab">Mechanic · <span style="color:var(--a)">Open Village Walkthrough</span></div>
+        <div class="loop"><span class="step">enter the four-movement quest</span><span class="arw">→</span><span class="step">answer each movement about your own situation</span><span class="arw">→</span><span class="step">each step outputs a named finding and an address to act on</span></div>
+      </div>
+      <div class="lab">Also reads as</div>
+      <div class="xls"><div class="xl"><span class="xdot" style="background:#f2b872;box-shadow:0 0 8px #f2b872"></span>
+      <span class="xlens" style="color:#f2b872">tool</span>
+      <span class="xread">A guided checklist that returns four named intervention targets.</span></div><div class="xl"><span class="xdot" style="background:#9b8cf0;box-shadow:0 0 8px #9b8cf0"></span>
+      <span class="xlens" style="color:#9b8cf0">infrastructure</span>
+      <span class="xread">The onboarding/triage pathway that routes a fuzzy problem to a responsible person and layer.</span></div><div class="xl"><span class="xdot" style="background:#6ee7d6;box-shadow:0 0 8px #6ee7d6"></span>
+      <span class="xlens" style="color:#6ee7d6">organ</span>
+      <span class="xread">A sensory pass that surfaces the unheld invisible layer and gives it a name and address.</span></div></div>
+      <div class="lab">Hooks into</div>
+      <div class="tags"><span class="tag">the six-lens diagnostic matrix</span><span class="tag">the four failure modes catalog</span><span class="tag">the four vertex daily practices</span><span class="tag">the membrane (invisible layer / who holds it)</span></div>
+      <div class="slice"><span class="slab">First slice</span> Movement one only: prompt 'which vertex dropped?' and output that vertex plus its repair practice as the finding.</div>
+    </div>
+  </article>
+<div class="synth">
+  <div class="lab">Synthesis — what this class does for NESI</div>
+  <p>Together these gifts form NESI's diagnose-name-repair-progress loop: the player scans a system (six-lens matrix, Open Village walkthrough), names its state (four failure modes), and repairs it by supplying the missing capacity (vertex daily practices), while the graduated trust ladder governs how much they're allowed to touch as their coherence grows. The four vertices are the shared coordinate system every mechanic points at, so a debuff, a failing cell, a failure mode, and a quest finding all resolve to the same four addresses. What the player actually does is convert vague felt wrongness — in themselves, an NPC, or a system — into a named, embodied, addressable target, then take one real single-sentence action that clears it and leaves a visible mark on the terrain. Nothing is extracted: the input is the player's own real position, limit, or observation, and the persistent consequence is a debuff cleared, a cell healed, or a tier unlocked.</p>
+</div>
+<div class="foot">NESI Codex · game · one of four · brought to the gate, awaiting your mark</div>
+</div></body></html>

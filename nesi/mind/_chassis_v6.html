@@ -1,0 +1,393 @@
+<!-- DSS WIDGET CHASSIS v6 — WAYFINDING OVER v5 (candidate, not yet canonical)
+     Built 2026-07-25 on Kevin's mark ("commit"), from the two-turn exchange distinguishing
+     load-of-volume from load-of-navigation. v5 (2026-07-22) solved WHAT is shown at each depth.
+     v6 adds HOW YOU DON'T GET LOST once you're there. v5's mechanics (slider, refuse/NO-verb,
+     hold/deposit, copy-only) are UNCHANGED — carried verbatim. This is an addition, not a rewrite.
+
+     THE DIAGNOSIS THIS ANSWERS: shrinking a widget doesn't remove load — it removes the surface
+     that was holding complexity FOR Kevin, and the complexity doesn't vanish, it becomes something
+     he carries in his head instead (embodied debt). The actual defect in v5 was never size. It was
+     that expansion had no RETURN CONTRACT: no fixed anchor once you scroll past L0, no single
+     collapse gesture (each card closes itself, but nothing closes everything), and no visible line
+     between reading and deciding — so depth compounds procedurally as well as informationally.
+
+     THE FOUR BOUNDARIES v6 makes structural (chassis-level, not per-widget authoring discipline):
+       1. PERSISTENT ANCHOR — every opened card (L2) and every opened depth panel (L3) carries a
+          "◆ back to the ask" link, identical wording, identical position, everywhere. You are never
+          more than one click from the thing you actually came to decide, regardless of how deep
+          you've gone. Deliberately NOT position:sticky/fixed — this file lives in a sandboxed iframe
+          (visualize) and a per-session HTML file; CSS position tricks have broken before (fixed
+          collapses the iframe, 2026-07-22 boundary bug). An explicit DOM link is robust where CSS
+          positioning is not.
+       2. SYMMETRIC EXPAND/COLLAPSE — one additional control, "▲ collapse everything · back to L0",
+          living beside the L0 label. Visible (not just possible) the moment anything is open;
+          hidden/dimmed when nothing is. One gesture closes every open card and every open depth
+          panel in a single click — the reverse of opening N things one at a time.
+       3. LEGIBLE THRESHOLD — inside every opened card and inside L0 itself, a thin labeled divider
+          ("— now choosing —") sits between the plain-words explanation and the control. Reading and
+          deciding are the same block in v5; v6 makes the seam between them visible, so wandering
+          through the explanation never silently becomes standing at the control.
+       4. STATE NEVER SILENTLY RESETS — carried invariant, now explicit: no auto-collapse, no timeout,
+          no card that closes itself when another opens. Already true of v5's JS; v6 states it as a
+          frozen rule so a future edit can't quietly add one.
+
+     STATUS: candidate. Not wired into PROTOCOLS.md as canonical — that is a separate mark. v5 stays
+     the operative chassis until Kevin marks this one to replace it. Working copy mirrored at
+     DSS content\_widgets\_chassis_v6.html.
+
+     FILL ONLY: HEADER · GLANCE-STATE · GLANCE-DECISION · SURFACE-CARDS · CARDDATA. Everything else
+     is chassis — same boundary as v5. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;
+  --red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;
+  --bdr:#ccc5b0;--bdrk:rgba(58,48,32,0.15);
+  --kev:#2a6a1a;--kevbg:#e8f2e4;
+  --anc:#4a5a8a;--anc-bg:#e8ecf5;
+}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.65;padding:20px}
+.wrap{max-width:720px;margin:0 auto;padding-bottom:60px}
+.hd{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--bdr)}
+.hd-eye{font-size:8px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.hd-name{font-size:18px;font-weight:bold;color:var(--gb);letter-spacing:2px;margin-bottom:4px}
+.hd-sub{font-size:10px;color:var(--gd)}
+/* L0 · GLANCE — the one thing, always open, near-zero cost. id="glance-anchor" is the return target. */
+.glance{background:var(--kevbg);border:1px solid var(--kev);border-left:3px solid var(--kev);padding:12px 14px;margin-bottom:20px;scroll-margin-top:16px}
+.glance-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.glance-lab{font-size:8px;letter-spacing:2px;color:var(--kev);font-weight:bold;text-transform:uppercase}
+/* BOUNDARY 2 · SYMMETRIC COLLAPSE — one gesture, closes every open card+depth panel. Dims to nothing when nothing is open. */
+.collapse-all{font-size:8px;letter-spacing:1px;color:var(--anc);background:none;border:none;cursor:pointer;font-family:inherit;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .15s}
+.collapse-all.live{opacity:1;pointer-events:auto}
+.collapse-all:hover{color:var(--gb)}
+.glance-state{font-size:11px;color:var(--g);margin-bottom:10px}
+.glance-state strong{color:var(--gb)}
+.glance-dec{font-size:12px;color:var(--gb);font-weight:bold;line-height:1.5;margin-bottom:9px}
+/* BOUNDARY 3 · LEGIBLE THRESHOLD — the seam between reading and deciding, made visible */
+.threshold{display:flex;align-items:center;gap:8px;margin:11px 0 9px}
+.threshold::before,.threshold::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.threshold-lab{font-size:8px;letter-spacing:2px;color:var(--gf);text-transform:uppercase;white-space:nowrap}
+/* L1 · SURFACE — closed one-line cards */
+.sec{margin-bottom:22px}
+.sec-title{font-size:9px;letter-spacing:3px;color:var(--gb);font-weight:bold;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid var(--bdr);text-transform:uppercase}
+.cards{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.card{border:1px solid var(--bdr);background:var(--sf)}
+.card-hd{padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.card-hd:hover{background:var(--bg)}
+.card.open .card-hd{background:var(--sf2)}
+.card-car{font-size:11px;color:var(--gf);width:12px;padding-top:1px}
+.card.open .card-car{color:var(--gb)}
+.card-main{flex:1}
+.card-one{font-size:12px;color:var(--gb);font-weight:bold;line-height:1.5}
+.card-hint{font-size:9px;color:var(--gf);letter-spacing:0.5px;margin-top:3px}
+.tag{font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--bdr);text-transform:uppercase;white-space:nowrap;margin-top:2px}
+.tag.lt{color:var(--grn);background:var(--grn-bg)}
+.tag.hv{color:var(--yel);background:var(--yel-bg)}
+/* L2 · OPEN — plain words / threshold / the one control */
+.card-bd{display:none;border-top:1px solid var(--bdr);padding:14px}
+.card.open .card-bd{display:block}
+.plain-label{font-size:8px;letter-spacing:1.5px;color:var(--gf);margin-bottom:6px;text-transform:uppercase}
+.plain{font-size:11px;color:var(--g);line-height:1.7}
+.steer-label{font-size:8px;letter-spacing:1.5px;color:var(--gf);margin-bottom:7px;text-transform:uppercase}
+.slider{position:relative;display:flex;border:1px solid var(--bdr);background:#fff;user-select:none}
+.slider-thumb{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--sf2);
+  border-right:1px solid var(--bdr);transition:left .16s ease,width .16s ease,background .16s ease;z-index:0}
+.slider-thumb.go{background:var(--grn-bg)}
+.slider-thumb.drop{background:var(--red-bg)}
+.slider-thumb.hold{background:var(--yel-bg)}
+.slider-thumb.refuse{background:var(--red-bg)}
+.slider-seg{flex:1;position:relative;z-index:1;text-align:center;font-size:10px;padding:7px 4px;
+  cursor:pointer;color:var(--gd);letter-spacing:0.3px;background:transparent;border:none;font-family:inherit;
+  border-right:1px solid var(--bdr)}
+.slider-seg:last-child{border-right:none}
+.slider-seg:hover{color:var(--gb)}
+.slider-seg.active{font-weight:bold;color:var(--gb)}
+.slider-seg.active[data-kind="go"]{color:var(--grn)}
+.slider-seg.active[data-kind="drop"]{color:var(--red)}
+.slider-seg.active[data-kind="hold"]{color:var(--yel)}
+.slider-seg.active[data-kind="refuse"]{color:var(--red)}
+.slider-seg.held{background:var(--yel-bg);color:var(--yel);font-weight:bold}
+.slider-seg.refused{background:var(--red-bg);color:var(--red);font-weight:bold}
+.card.refused{border-color:var(--red)}
+.card.refused .card-one{color:var(--red);text-decoration:line-through}
+.card.refused .card-hd{background:var(--red-bg)}
+.no-writ{display:none;font-size:8px;letter-spacing:1px;color:var(--red);text-transform:uppercase;margin-top:6px}
+.no-writ.on{display:block}
+.glance.refused{border-color:var(--red);border-left-color:var(--red)}
+.glance.refused .glance-dec{color:var(--red);text-decoration:line-through}
+/* L3 · DEPTH — the stakes, revealed on demand */
+.deeper{margin-top:12px}
+.deeper-btn{font-size:9px;letter-spacing:1px;color:var(--gd);background:none;border:none;cursor:pointer;font-family:inherit;padding:2px 0;text-transform:uppercase}
+.deeper-btn:hover{color:var(--gb)}
+.depth{display:none;border:1px solid var(--bdrk);background:var(--bg);padding:11px 13px;margin-top:8px;font-size:10px;line-height:1.7}
+.depth.on{display:block}
+.depth .drow{margin-bottom:6px}
+.depth .drow:last-child{margin-bottom:8px}
+/* BOUNDARY 1 · PERSISTENT ANCHOR — same link, same words, every depth. Robust DOM link, not CSS position. */
+.back-anchor{display:inline-block;font-size:9px;letter-spacing:1px;color:var(--anc);background:var(--anc-bg);
+  border:1px solid var(--anc);padding:4px 9px;cursor:pointer;text-decoration:none;margin-top:4px}
+.back-anchor:hover{background:var(--anc);color:#fff}
+.depth .dk{color:var(--gf);font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-right:6px}
+/* marks ledger + deposit — copy-only, carried verbatim from v5 */
+.type-note{margin-top:22px;padding-top:14px;border-top:1px solid var(--bdr)}
+.marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.chip{background:var(--yel-bg);border:1px solid var(--bdr);color:var(--yel);font-size:9px;padding:2px 8px;cursor:pointer;letter-spacing:0.5px}
+.chip.dep{background:var(--grn-bg);color:var(--grn);border-color:var(--grn);font-weight:bold}
+.status{font-size:8px;color:var(--gf);letter-spacing:1px;margin-top:10px}
+.reveal{display:none;margin-top:10px}
+.reveal.on{display:block}
+.reveal textarea{width:100%;min-height:64px;font-family:inherit;font-size:10px;color:var(--g);background:#fff;border:1px solid var(--yel);padding:8px;resize:vertical}
+.reveal-label{font-size:8px;letter-spacing:1px;color:var(--yel);text-transform:uppercase;margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- SLOT: HEADER -->
+  <div class="hd">
+    <div class="hd-eye">DSS · RECOGNITION INFRASTRUCTURE</div>
+    <div class="hd-name">TITLE HERE</div>
+    <div class="hd-sub">one plain context line — what this moment is</div>
+  </div>
+<!-- /SLOT: HEADER -->
+
+<!-- SLOT: L0 GLANCE — one line of state + the SINGLE ripest decision, fully actionable. Always open.
+     This block IS the anchor every back-link returns to (id="glance-anchor"). -->
+  <div class="glance" id="glance-anchor">
+    <div class="glance-top">
+      <div class="glance-lab">L0 · the one thing</div>
+      <button class="collapse-all" id="collapse-all" onclick="collapseAll()">▲ collapse everything · back to L0</button>
+    </div>
+    <!-- SLOT: GLANCE-STATE -->
+    <div class="glance-state"><strong>System state</strong> in one plain line — where things stand right now.</div>
+    <!-- SLOT: GLANCE-DECISION — the single ripest decision as an always-open mini-card (id 'g0') -->
+    <div class="glance-dec">The single ripest decision, in one plain line.</div>
+    <div class="threshold"><span class="threshold-lab">now choosing</span></div>
+    <div class="steer-label">Mark it — a click copies to your chat box</div>
+    <div class="slider" id="slider-g0">
+      <div class="slider-thumb" id="thumb-g0"></div>
+      <button class="slider-seg" data-kind="go" onclick="pick('g0','go',event)">yes — go</button>
+      <button class="slider-seg" data-kind="hold" onclick="pick('g0','hold',event)">◆ hold</button>
+      <button class="slider-seg" data-kind="drop" onclick="pick('g0','drop',event)">not this</button>
+    </div>
+    <div class="deeper" id="deeper-g0">
+      <button class="deeper-btn" onclick="deeper('g0')">▾ the stakes</button>
+      <div class="depth" id="depth-g0">
+        <div class="drow"><span class="dk">falsifier</span><span id="fx-g0">what would prove it wrong.</span></div>
+        <div class="drow"><span class="dk">why now</span><span id="wy-g0">why this is the ripe one.</span></div>
+      </div>
+    </div>
+  </div>
+<!-- /SLOT: L0 GLANCE -->
+
+<!-- SLOT: L1 SURFACE — the OTHER live decisions as closed cards. Only what is ripe. Never padded.
+     Each card: L2 body (plain / threshold / slider) + optional L3 depth panel with a back-anchor. -->
+  <div class="sec">
+    <div class="sec-title">L1 · the rest — open only what you have capacity for</div>
+    <div class="cards">
+
+      <div class="card" id="c-x1">
+        <div class="card-hd" onclick="toggle('x1')">
+          <span class="card-car">▸</span>
+          <div class="card-main">
+            <div class="card-one">Plain one-line statement of a live decision.</div>
+            <div class="card-hint">click to open</div>
+          </div>
+          <span class="tag lt">light</span>
+        </div>
+        <div class="card-bd">
+          <div class="plain-label">In plain words</div>
+          <div class="plain">Two or three sentences, zero jargon — what this is and what happens if you mark it.</div>
+          <div class="threshold"><span class="threshold-lab">now choosing</span></div>
+          <div class="steer-label">Mark it — a click copies to your chat box</div>
+          <div class="slider" id="slider-x1">
+            <div class="slider-thumb" id="thumb-x1"></div>
+            <button class="slider-seg" data-kind="go" onclick="pick('x1','go',event)">yes — go</button>
+            <button class="slider-seg" data-kind="warm" onclick="pick('x1','warm',event)">warmer</button>
+            <button class="slider-seg" data-kind="plain" onclick="pick('x1','plain',event)">plainer</button>
+            <button class="slider-seg" data-kind="hold" onclick="pick('x1','hold',event)">◆ hold</button>
+            <button class="slider-seg" data-kind="drop" onclick="pick('x1','drop',event)">not this</button>
+          </div>
+          <div class="deeper" id="deeper-x1">
+            <button class="deeper-btn" onclick="deeper('x1')">▾ the stakes</button>
+            <div class="depth" id="depth-x1">
+              <div class="drow"><span class="dk">I'll</span><span id="mf-do-x1"></span></div>
+              <div class="drow"><span class="dk">touches</span><span id="mf-t-x1"></span></div>
+              <div class="drow"><span class="dk">how big</span><span id="mf-s-x1"></span></div>
+              <div class="drow"><span class="dk">falsifier</span><span id="fx-x1"></span></div>
+              <a class="back-anchor" onclick="backToGlance()">◆ back to the ask</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<!-- /SLOT: L1 SURFACE -->
+
+  <div class="type-note">
+    <div class="marks" id="marks"></div>
+    <div class="status" id="status">a mark copies · open a card for depth · paste into your own box with Ctrl+V</div>
+    <div class="reveal" id="reveal"><div class="reveal-label">clipboard blocked here — select all + Ctrl+C, then paste into your chat box</div><textarea id="reveal-t" readonly></textarea></div>
+  </div>
+
+</div>
+<script>
+// SLOT: CARDDATA — unchanged contract from v5. One entry per decision key (g0 = L0; x1… = L1 cards).
+const CARDS = {
+  g0:{ go:'Direction: yes — do this.',
+       drop:'Set this aside — not the one.',
+       refuse:'REFUSE (write to the sink) — I am declining THIS ITEM: run `python tools/refusal_sink.py refuse --item "THIS ITEM"` so it is suppressed-on-sight and cannot come back, then report the withheld count.',
+       depth:{falsifier:'', why:''} },
+  x1:{ go:'Direction: yes — do this.',
+       warm:'Close but not quite — go warmer and show me again.',
+       plain:'Explain this again, even plainer, with a concrete example.',
+       drop:'Set this aside — not the one.',
+       refuse:'REFUSE (write to the sink) — I am declining THIS ITEM: run `python tools/refusal_sink.py refuse --item "THIS ITEM"` so it is suppressed-on-sight and cannot come back, then report the withheld count.',
+       depth:{do:'', touches:'', size:'', falsifier:''} },
+};
+// /SLOT: CARDDATA
+
+// v6 state machine — v5's mechanics carried verbatim (copy-only; a mark copies, the widget never sends)
+// PLUS the three wayfinding additions: collapseAll(), backToGlance(), and openCount() tracking that
+// drives the collapse-all button's visibility. FROZEN RULE: nothing here auto-collapses or times out —
+// state changes only on an explicit Kevin click, never on its own.
+let marks = [];
+let openCards = new Set();   // tracks which L1 cards are open, so collapse-all knows what to close
+function refreshCollapseBtn(){
+  const btn=document.getElementById('collapse-all');
+  const anyOpen = openCards.size>0 || document.querySelectorAll('.depth.on').length>0;
+  if(btn) btn.classList.toggle('live', anyOpen);
+}
+function toggle(id){
+  const c=document.getElementById('c-'+id);const open=c.classList.toggle('open');
+  c.querySelector('.card-car').textContent=open?'▾':'▸';
+  if(open) openCards.add(id); else openCards.delete(id);
+  refreshCollapseBtn();
+}
+function deeper(id){
+  const p=document.getElementById('depth-'+id);if(!p)return;
+  const on=p.classList.toggle('on');
+  const b=document.querySelector('#deeper-'+id+' .deeper-btn');if(b)b.textContent=(on?'▴ hide the stakes':'▾ the stakes');
+  refreshCollapseBtn();
+}
+// BOUNDARY 1 · the return contract — identical destination from anywhere in the widget
+function backToGlance(){
+  const g=document.getElementById('glance-anchor');
+  if(g) g.scrollIntoView({behavior:'smooth', block:'start'});
+}
+// BOUNDARY 2 · one gesture undoes every expansion at once
+function collapseAll(){
+  document.querySelectorAll('.card.open').forEach(c=>{
+    c.classList.remove('open'); const car=c.querySelector('.card-car'); if(car) car.textContent='▸';
+  });
+  document.querySelectorAll('.depth.on').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.deeper-btn').forEach(b=>b.textContent='▾ the stakes');
+  openCards.clear();
+  refreshCollapseBtn();
+  backToGlance();
+}
+function status(t){document.getElementById('status').textContent=t;}
+function fallbackCopy(t){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=t;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    const ok=document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){return false;}
+}
+function revealText(t){
+  const r=document.getElementById('reveal');const ta=document.getElementById('reveal-t');
+  if(r&&ta){ta.value=t;r.classList.add('on');ta.focus();ta.select();}
+}
+function copyMark(t,msg){
+  const done=ok=>{
+    if(ok){document.getElementById('reveal').classList.remove('on');status((msg||'copied')+' — paste into your chat box with Ctrl+V');}
+    else{revealText(t);status('clipboard blocked — select the box below + Ctrl+C');}
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>done(true)).catch(()=>done(fallbackCopy(t)));
+  }else{done(fallbackCopy(t));}
+}
+function steer(key,kind){
+  const d=CARDS[key]; if(!d)return;
+  if(kind==='hold'){hold(key);return;}
+  if(kind==='refuse'){refuse(key);return;}
+  const t=d[kind]; if(t==null)return;
+  const label={go:'copied — go',warm:'copied — warmer',plain:'copied — plainer',drop:'copied — set aside'}[kind]||'copied';
+  copyMark(t,label);
+}
+function refuse(key){
+  const d=CARDS[key]||{};
+  const t=d.refuse||('REFUSE (write to the sink) — run `python tools/refusal_sink.py refuse --item "'+(d.go||d.plain||key)+'"` (suppress-on-sight), then report the withheld count.');
+  const surf=(key==='g0')?document.querySelector('.glance'):document.getElementById('c-'+key);
+  const b=document.querySelector('#slider-'+key+' [data-kind="refuse"]');
+  const writ=document.getElementById('nowrit-'+key);
+  const latched=b&&b.classList.contains('refused');
+  if(latched){
+    if(b)b.classList.remove('refused');
+    if(surf)surf.classList.remove('refused');
+    if(writ)writ.classList.remove('on');
+    status('no lifted — the refusal is withdrawn');
+  }else{
+    if(b)b.classList.add('refused');
+    if(surf)surf.classList.add('refused');
+    if(writ)writ.classList.add('on');
+    copyMark(t,'no written — a refusal is a write, and it stands');
+  }
+}
+function pick(key,kind,ev){
+  ev.stopPropagation();
+  const track=document.getElementById('slider-'+key);
+  const thumb=document.getElementById('thumb-'+key);
+  if(track&&thumb){
+    const segs=Array.from(track.querySelectorAll('.slider-seg'));
+    const idx=segs.indexOf(ev.currentTarget);
+    const n=segs.length;
+    if(idx>=0&&n>0){
+      thumb.style.left=(idx*100/n)+'%';
+      thumb.style.width=(100/n)+'%';
+      thumb.className='slider-thumb'+(kind==='go'?' go':kind==='drop'?' drop':kind==='hold'?' hold':kind==='refuse'?' refuse':'');
+      segs.forEach(s=>s.classList.remove('active'));
+      ev.currentTarget.classList.add('active');
+    }
+  }
+  steer(key,kind);
+}
+function hold(key){
+  const t=CARDS[key].go||CARDS[key].plain||key;
+  const b=document.querySelector('#slider-'+key+' [data-kind="hold"]');
+  const i=marks.indexOf(t);
+  if(i>=0){marks.splice(i,1);if(b)b.classList.remove('held');}
+  else{marks.push(t);if(b)b.classList.add('held');}
+  renderMarks();status(marks.length+' held — ⇩ deposit copies all in one click');
+}
+function renderMarks(){
+  const m=document.getElementById('marks');m.innerHTML='';
+  marks.forEach((t,i)=>{const c=document.createElement('span');c.className='chip';c.textContent='◆ '+(t.length>42?t.slice(0,42)+'…':t);c.title='click to release';c.onclick=()=>{releaseMark(i);};m.appendChild(c);});
+  if(marks.length){const d=document.createElement('span');d.className='chip dep';d.textContent='⇩ DEPOSIT '+marks.length;d.title='copy all as a marks-ledger append';d.onclick=deposit;m.appendChild(d);}
+}
+function releaseMark(i){
+  const t=marks[i];marks.splice(i,1);
+  Object.keys(CARDS).forEach(k=>{const ht=CARDS[k].go||CARDS[k].plain||k;if(ht===t){const b=document.querySelector('#slider-'+k+' [data-kind="hold"]');if(b)b.classList.remove('held');}});
+  renderMarks();
+}
+function deposit(){
+  if(!marks.length)return;
+  copyMark('Mark for later — append these to future_development_queue.md dated today, then confirm the append, nothing else:\n'+marks.map(t=>'- '+t).join('\n'),'copied '+marks.length+' mark(s)');
+  marks=[];document.querySelectorAll('.slider-seg.held').forEach(b=>b.classList.remove('held'));renderMarks();
+}
+</script>
+<!-- DSS STOP — nothing renders after this line -->
+</body>
+</html>

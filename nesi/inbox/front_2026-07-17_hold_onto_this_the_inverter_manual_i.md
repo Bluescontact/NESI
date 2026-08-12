@@ -1,0 +1,1 @@
+hold onto this: the inverter manual is in the gray bin

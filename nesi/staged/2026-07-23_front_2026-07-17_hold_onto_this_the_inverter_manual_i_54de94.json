@@ -1,0 +1,31 @@
+{
+  "id": "2026-07-23_front_2026-07-17_hold_onto_this_the_inverter_manual_i_54de94",
+  "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "pile_path": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox\\front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-23T21:43:29",
+    "engine": "local",
+    "error": null
+  },
+  "object": {
+    "engine": "local",
+    "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+    "summary": "The pile contains a single instruction to hold onto the inverter manual, which was found in the gray bin.",
+    "items": [
+      {
+        "item": "the inverter manual",
+        "kind": "contained",
+        "disposition": "folded-into",
+        "target": "compost ledger",
+        "evidence": "found in the gray bin"
+      }
+    ],
+    "restored_count": 0
+  },
+  "lint": null,
+  "mark": {
+    "verdict": null,
+    "at": null
+  }
+}

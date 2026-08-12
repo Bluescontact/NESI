@@ -1,0 +1,46 @@
+{
+  "test_pile_batch1.md:1784262388030108100": {
+    "detected": "2026-07-16T21:26:28",
+    "staged": null
+  },
+  "test_pile_batch2.md:1784262430322048600": {
+    "detected": "2026-07-16T21:42:38",
+    "staged": "2026-07-16_test_pile_batch2_bd15bb.json"
+  },
+  "test_pile_markcheck.md:1784263479734453900": {
+    "detected": "2026-07-16T21:44:40",
+    "staged": "2026-07-16_test_pile_markcheck_df2651.json"
+  },
+  "test_pile_exe.md:1784264553332016800": {
+    "detected": "2026-07-16T22:02:35",
+    "staged": "2026-07-16_test_pile_exe_b2d82a.json"
+  },
+  "test_pile_A_turbo.md:1784265335011233300": {
+    "detected": "2026-07-16T22:15:36",
+    "staged": "2026-07-16_test_pile_A_turbo_9029d2.json"
+  },
+  "test_pile_B_echo.md:1784265960350715100": {
+    "detected": "2026-07-16T22:26:02",
+    "staged": "2026-07-16_test_pile_B_echo_cf1118.json"
+  },
+  "test_pile_fallback.md:1784268272263272200": {
+    "detected": "2026-07-16T23:04:33",
+    "staged": "2026-07-16_test_pile_fallback_5e5111.json"
+  },
+  "test_pile_native.md:1784269392537358200": {
+    "detected": "2026-07-16T23:23:14",
+    "staged": "2026-07-16_test_pile_native_4ce0d7.json"
+  },
+  "probe_engine_live.md:1784310316882871100": {
+    "detected": "2026-07-17T10:45:18",
+    "staged": "2026-07-17_probe_engine_live_cd8e24.json"
+  },
+  "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md:1784356639737611300": {
+    "detected": "2026-07-17T23:41:57",
+    "staged": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1.json"
+  },
+  "paste_2026-07-23_211156.md:1784866316454675900": {
+    "detected": "2026-07-23T21:11:58",
+    "staged": "2026-07-23_paste_2026-07-23_211156_b0944f.json"
+  }
+}

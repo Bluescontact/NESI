@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="800" y="160" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="52" font-weight="400" letter-spacing="6"
+        fill="#e8dcc4">{{TITLE}}</text>
+
+  <!-- Circuit loop -->
+  <ellipse cx="800" cy="500" rx="280" ry="180"
+           fill="none" stroke="#d4af6a" stroke-width="1.5" stroke-opacity="0.85"/>
+
+  <!-- Four luminous points around the loop -->
+  <circle cx="1080" cy="500" r="40" fill="url(#glow)"/>
+  <circle cx="1080" cy="500" r="5" fill="#f0c674"/>
+  <text x="1180" y="508" font-family="Inter, sans-serif" font-size="18" letter-spacing="3" fill="#9a8d76">{{NODE_1}}</text>
+
+  <circle cx="800" cy="320" r="40" fill="url(#glow)"/>
+  <circle cx="800" cy="320" r="5" fill="#f0c674"/>
+  <text x="800" y="270" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" letter-spacing="3" fill="#9a8d76">{{NODE_2}}</text>
+
+  <circle cx="520" cy="500" r="40" fill="url(#glow)"/>
+  <circle cx="520" cy="500" r="5" fill="#f0c674"/>
+  <text x="420" y="508" text-anchor="end" font-family="Inter, sans-serif" font-size="18" letter-spacing="3" fill="#9a8d76">{{NODE_3}}</text>
+
+  <circle cx="800" cy="680" r="40" fill="url(#glow)"/>
+  <circle cx="800" cy="680" r="5" fill="#f0c674"/>
+  <text x="800" y="740" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" letter-spacing="3" fill="#9a8d76">{{NODE_4}}</text>
+
+  <!-- Subtitle -->
+  <text x="800" y="820" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#9a8d76">{{SUBTITLE}}</text>
+</svg>

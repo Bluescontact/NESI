@@ -1,0 +1,61 @@
+{
+  "id": "2026-07-19_made_id_like_to_build_a_lease_3e1350",
+  "origin": "made",
+  "pile": "bench:id_like_to_build_a_lease.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-19T13:47:17",
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "error": null
+  },
+  "object": {
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "pile": "bench:id_like_to_build_a_lease.md",
+    "summary": "[STUB DRAFT — engine not wired] intent: id like to build a lease · bearing patterns: Build Before Distill, Build Precedes Legible Spine, The Governor\n[STUB REFINE — engine not wired] notes were not applied",
+    "items": [
+      {
+        "item": "bearing pattern: Build Before Distill",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "build_before_distill.md",
+        "evidence": "keyword overlap: build"
+      },
+      {
+        "item": "bearing pattern: Build Precedes Legible Spine",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "substrate_precedes_distillation.md",
+        "evidence": "keyword overlap: build"
+      },
+      {
+        "item": "bearing pattern: The Governor",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "the_governor.md",
+        "evidence": "keyword overlap: build"
+      }
+    ],
+    "restored_count": 0
+  },
+  "bench": {
+    "intent": "id like to build a lease",
+    "history": [
+      {
+        "op": "draft",
+        "at": "2026-07-19T13:47:04",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      },
+      {
+        "op": "refine",
+        "at": "2026-07-19T13:47:11",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      }
+    ],
+    "break_notes": [],
+    "stub": true
+  },
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-23T21:40:32"
+  }
+}

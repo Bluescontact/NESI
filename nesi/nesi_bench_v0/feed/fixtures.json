@@ -1,0 +1,67 @@
+{
+  "_note": "mock object feed for the v0 dry-run surface -- fixture content only, engine dark. positions are chosen to sit inside the matching region rect defined in layout.py (Stage 1); tests/test_layout.py checks that.",
+  "objects": [
+    {
+      "id": "obj-001",
+      "region": "intake",
+      "position": {"x": 60, "y": 200},
+      "content": "eye bolt spec sheet, IUEC jobsite",
+      "links": []
+    },
+    {
+      "id": "obj-002",
+      "region": "staging",
+      "position": {"x": 260, "y": 200},
+      "content": "power trailer wiring notes",
+      "links": []
+    },
+    {
+      "id": "obj-003",
+      "region": "break",
+      "position": {"x": 430, "y": 180},
+      "content": "villager collapse pattern, unresolved fork",
+      "links": [
+        {"type": "coherent-tension", "target": "obj-004", "state": "ratified"}
+      ]
+    },
+    {
+      "id": "obj-004",
+      "region": "break",
+      "position": {"x": 480, "y": 260},
+      "content": "villager collapse pattern, alternate read",
+      "links": [
+        {"type": "coherent-tension", "target": "obj-003", "state": "ratified"}
+      ]
+    },
+    {
+      "id": "obj-005",
+      "region": "gate",
+      "position": {"x": 650, "y": 200},
+      "content": "register audit extraction, ready for the carry",
+      "links": [
+        {"type": "derived-from", "target": "obj-002", "state": "proposed"}
+      ]
+    },
+    {
+      "id": "obj-006",
+      "region": "landing",
+      "position": {"x": 840, "y": 150},
+      "content": "the recursive object, marked",
+      "links": []
+    },
+    {
+      "id": "obj-007",
+      "region": "held-bay",
+      "position": {"x": 120, "y": 560},
+      "content": "open village ideas, unanchored",
+      "links": []
+    },
+    {
+      "id": "obj-008",
+      "region": "compost",
+      "position": {"x": 600, "y": 560},
+      "content": "web scaffold, released 2026-07-19",
+      "links": []
+    }
+  ]
+}

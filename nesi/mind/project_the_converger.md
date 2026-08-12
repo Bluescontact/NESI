@@ -1,0 +1,20 @@
+---
+name: project-the-converger
+description: "THE CONVERGER — the back-of-stack brake, complement to THE GOVERNOR; built 2026-06-06, §6 calibrated 2026-06-14"
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: cf7fb78d-733e-40a4-856b-b4fe93fef7e6
+---
+
+`THE_CONVERGER.md` (DSS root) — the brake the *back* of the stack was missing, built 2026-06-06 on Kevin's mark. Complement to [[project_the_governor]]: the Governor gates the **deposit** (front/intake, a *vertex* standing); the Converger gates **promotion** (back, the tetrahedral **Center** standing). Routes every candidate to one of three terminal states — PROMOTE-READY (prep for felt-read, don't promote), HOLD (with a *named condition* — a hold without one is just the pile), or COMPOST (recommend-not-delete). **Fails toward subtraction** (uncertain → compost), safe because a real pattern survives its own death by recurring. Its stop is **generation-stop** (engines idle when the pile grows faster than it converges); its falsifier is `"The pile grew"` — the converger that generates is the treadmill wearing the converger's clothes (the trap Claude named at commissioning, the back-of-stack mirror of the Governor's `"still paying"`).
+
+The two terminal acts it cannot perform stay Kevin's: **promotion to canon** (the felt-read) and **deletion** (the membrane gate). It only clears the path.
+
+**§6 calibrated 2026-06-14** from past-chat audit (saturation sessions: March generator/shutdown, Feb "Gifts at the boundary," June GATE build; clean-landing sessions: Emundo, daily-rhythm brief, departure-route, seat-bolt build; GATE's own pile-gauge measurement). Two axes — the Converger owns the first; the Governor/GATE watches the second:
+- **Per-presentation pile (Converger's gate):** Hard ceiling 3, strong bias toward 1. 1 = cleanest. 2 = lands only if labeled+separate, merge-resistance required. 3 = Kevin's own designed ceiling. 4+ routes to HOLD/COMPOST. Shape factors override count: (1) unsolicited item stacked on loaded thread; (2) candidates arriving faster than body can land them. Confidence: directional (handful of clean cases + one designed cap), not statistically firm.
+- **Standing backlog (warning line, not Converger's primary gate):** Warning fires at ≈15–20. Measured zero-point = 38 (GATE gauge: 38 staged / 0 marked in 4 days — disposition rate hit and held zero). 38 is the floor of the dead zone, not the warning line. Single hard measurement; unconfirmed as repeatable.
+
+**Design signature, now visible across three instruments:** each is an agent-built *mechanism* with exactly **one human-supplied calibration zero** held open and marked `[KEVIN]` — Governor §4 (felt-markers), `frameworks/register_audit.md` (camber), Converger §6 (pile-legibility threshold). The mechanism is Claude's; the zero is Kevin's body/judgment. Not incompleteness — the architecture. **How to apply:** when building any new instrument in this system, build the mechanism complete and leave the single load-bearing human input open and marked, never frozen from Claude's own read.
+
+**Simplification (2026-06-06, same session):** Kevin corrected the first draft — the substrate accumulates deposits until **sufficient density to simplify into a phase transition**; accumulation is the mechanism, not the disease. The Converger had braked on *volume* ("the pile grew") — wrong variable. Corrected to discriminate two densities: **supersaturation** (approaching a transition — let it crystallize) vs **sprawl** (lateral, hides which is which — compost/stop). This revealed what the Converger *is*: not a fourth instrument but [[project_recognition_stack]]'s `consented_ledger` run on the resource of **generated coherence** — the genus's third species (catalysis = run forward, governor = run inward, converger = run on the pile). circulated→PROMOTE, refused→COMPOST, consented-leak→HOLD, hidden-leak(forbidden)→SPRAWL. **Reaching toward canon, not canon** — a genus-fold awaiting Kevin's felt-read. If it ratifies, the instrument-count *falls* — that fall is the phase transition.

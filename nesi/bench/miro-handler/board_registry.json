@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-06-27",
+  "boards": [
+    {
+      "name": "DSS System Diagram",
+      "url": "https://miro.com/app/board/uXjVHOR5Kfg=/",
+      "purpose": "Electrical-print-style diagram of DSS infrastructure: components, load paths, authority flow. Tree of Life geometry. Primary system map.",
+      "board_type": "system_diagram",
+      "active_frame": "https://miro.com/app/board/uXjVHOR5Kfg=/?moveToWidget=3458764676744256610",
+      "frame_dimensions": { "x": 1400, "y": 0, "w": 7200, "h": 3600 },
+      "item_count": 96,
+      "gate_state_table_url": "https://miro.com/app/board/uXjVHOR5Kfg=/?moveToWidget=3458764676744860685",
+      "session_item_budget": 50,
+      "last_session": "2026-06-27",
+      "last_sync": "2026-06-27",
+      "history": [
+        {
+          "date": "2026-06-27",
+          "action": "v1 built — spine, brakes, I/O, canon paths (37 items)",
+          "items_added": 37
+        },
+        {
+          "date": "2026-06-27",
+          "action": "v2 — four lateral inclusions: mark grammar, gate state snapshot, continuity column, legend strip (+9 items)",
+          "items_added": 9
+        },
+        {
+          "date": "2026-06-27",
+          "action": "LIVE SYNC — GATE STATE table created + 11 rows synced from gate_data.json (+1 table + 1 session log)",
+          "items_added": 2
+        },
+        {
+          "date": "2026-06-27",
+          "action": "Track zones — T1/T2/FIELD color bars + labels + dividers (+9 items). Note: layout_create batch limit ~3 items; larger batches return HTTP 400.",
+          "items_added": 9
+        },
+        {
+          "date": "2026-06-27",
+          "action": "Rhombus tetrahedron frame — 4 vertices (DISPATCHER/GATE+BRAKES/LIBRARY/FIELD) + BODY center + 6 edge connectors + 4 face labels. Frame URL: https://miro.com/app/board/uXjVHOR5Kfg=/?moveToWidget=3458764676745094887",
+          "items_added": 27
+        },
+        {
+          "date": "2026-06-27",
+          "action": "Edge doc widgets — 6 doc_create items, one per edge connector, brief instrument spec; diagram becomes navigation surface (+6 docs + 1 session log = +7 items)",
+          "items_added": 7
+        },
+        {
+          "date": "2026-06-27",
+          "action": "Consensus changes from 4-model design read: W vertex relabeled THE GATE (removed BRAKES); N→S and W→E connectors curved to route around BODY; face labels 9px→14px; muted annotations below W vertex and BODY (+2 TEXT = +2 items, 7 updates)",
+          "items_added": 2
+        }
+      ],
+      "known_components": {
+        "spine": ["BODY", "GATE", "DISPATCHER", "MEMBRANE_CONTROLLER", "LIBRARY", "TRANSMISSION_ENGINE", "PUBLIC_ARTIFACTS"],
+        "brakes": ["THE_GOVERNOR", "THE_CONVERGER", "DECISION_SURFACE", "DEVELOPMENT_MODE"],
+        "io": ["_INTAKE", "METABOLIZER", "SKILLS", "CYCLE_LOG", "PROPAGATION_MAP"],
+        "inclusions": ["mark_grammar", "gate_state_snapshot", "continuity_column", "legend_strip"]
+      },
+      "notes": "Board was formerly Meta Tetrahedron board (extraction saved at _INTAKE/meta_tetrahedron_board_extraction_2026-06-27.md before clearing). Track zones (T1/T2/Field banding) deferred."
+    }
+  ]
+}

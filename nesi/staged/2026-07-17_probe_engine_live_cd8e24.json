@@ -1,0 +1,66 @@
+{
+  "id": "2026-07-17_probe_engine_live_cd8e24",
+  "pile": "probe_engine_live.md",
+  "pile_path": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox\\probe_engine_live.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-17T10:45:25",
+    "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JSON (rc=1): Not logged in · Please run /login)",
+    "error": null
+  },
+  "object": {
+    "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JSON (rc=1): Not logged in · Please run /login)",
+    "pile": "probe_engine_live.md",
+    "summary": "STUB run — 3 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+    "items": [
+      {
+        "item": "Engine probe. Two real items:",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)",
+        "lint": {
+          "nearest": "read_witnessed_by_stake",
+          "dist": 0.65,
+          "read": "PASS"
+        }
+      },
+      {
+        "item": "Motorcycle VIN inspection for NM registration is still pending - the DMV case has been quiet.",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)",
+        "lint": {
+          "nearest": "shadow_in_witnessing",
+          "dist": 0.744,
+          "read": "PASS"
+        }
+      },
+      {
+        "item": "The bus needs its oil change before the next leg out of this property.",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)",
+        "lint": {
+          "nearest": "configure_before_demand",
+          "dist": 0.714,
+          "read": "PASS"
+        }
+      }
+    ],
+    "restored_count": 3
+  },
+  "lint": {
+    "by": "codex_index (pattern library)",
+    "items_linted": 3,
+    "folds": 0,
+    "holds": 0,
+    "passes": 3
+  },
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-17T18:18:19"
+  }
+}

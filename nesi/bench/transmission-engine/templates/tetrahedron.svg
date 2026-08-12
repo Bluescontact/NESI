@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="800" y="130" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="50" font-weight="400" letter-spacing="6"
+        fill="#e8dcc4">{{TITLE}}</text>
+
+  <!-- Tetrahedron edges (apex top, three-point base) -->
+  <!-- Apex: (800, 270), Base: (560, 720), (1040, 720), (800, 620 simulated depth) -->
+  <line x1="800" y1="270" x2="560" y2="720" stroke="#d4af6a" stroke-width="1.5"/>
+  <line x1="800" y1="270" x2="1040" y2="720" stroke="#d4af6a" stroke-width="1.5"/>
+  <line x1="800" y1="270" x2="800" y2="620" stroke="#d4af6a" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="3,3"/>
+  <line x1="560" y1="720" x2="1040" y2="720" stroke="#d4af6a" stroke-width="1.5"/>
+  <line x1="560" y1="720" x2="800" y2="620" stroke="#d4af6a" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="3,3"/>
+  <line x1="1040" y1="720" x2="800" y2="620" stroke="#d4af6a" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="3,3"/>
+
+  <!-- Vertex glows -->
+  <circle cx="800" cy="270" r="40" fill="url(#glow)"/>
+  <circle cx="800" cy="270" r="6" fill="#f0c674"/>
+  <text x="800" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{APEX}}</text>
+
+  <circle cx="560" cy="720" r="40" fill="url(#glow)"/>
+  <circle cx="560" cy="720" r="6" fill="#f0c674"/>
+  <text x="500" y="760" text-anchor="end" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{BASE_LEFT}}</text>
+
+  <circle cx="1040" cy="720" r="40" fill="url(#glow)"/>
+  <circle cx="1040" cy="720" r="6" fill="#f0c674"/>
+  <text x="1100" y="760" text-anchor="start" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{BASE_RIGHT}}</text>
+
+  <circle cx="800" cy="620" r="35" fill="url(#glow)"/>
+  <circle cx="800" cy="620" r="5" fill="#f0c674"/>
+  <text x="800" y="660" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#e8dcc4">{{BASE_REAR}}</text>
+
+  <text x="800" y="840" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#9a8d76">{{SUBTITLE}}</text>
+</svg>

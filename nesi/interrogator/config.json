@@ -1,0 +1,9 @@
+{
+  "_comment": "Interrogator thresholds — Kevin-editable, marked 2026-07-17 ('defaults fine'). Edit by hand; the organ re-reads this file on every run.",
+  "held_weeks_threshold": 3,
+  "held_pile_threshold": 24,
+  "felt_read_threshold": 15,
+  "_comment_open_reach": "Session 2026-07-20, §4 marks — set as defaults so the session didn't stall, both flippable.",
+  "open_aging_days": 14,
+  "open_surface_mode": "one_line"
+}

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <!-- Transmission register: warm off-white field, dark earth geometry -->
+    <linearGradient id="layerline" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7a6840" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#3a3020" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f7f5f0"/>
+
+  <text x="800" y="130" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="50" font-weight="400" letter-spacing="6"
+        fill="#1a1408">{{TITLE}}</text>
+
+  <!-- Layer 1 (surface) -->
+  <line x1="200" y1="310" x2="1400" y2="310" stroke="url(#layerline)" stroke-width="1.2"/>
+  <text x="800" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{LAYER_1}}</text>
+
+  <!-- Layer 2 -->
+  <line x1="200" y1="450" x2="1400" y2="450" stroke="url(#layerline)" stroke-width="1.2" stroke-opacity="0.8"/>
+  <text x="800" y="430" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{LAYER_2}}</text>
+
+  <!-- Layer 3 -->
+  <line x1="200" y1="590" x2="1400" y2="590" stroke="url(#layerline)" stroke-width="1.2" stroke-opacity="0.7"/>
+  <text x="800" y="570" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{LAYER_3}}</text>
+
+  <!-- Layer 4 (substrate) -->
+  <line x1="200" y1="730" x2="1400" y2="730" stroke="url(#layerline)" stroke-width="1.5"/>
+  <text x="800" y="710" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" letter-spacing="4" fill="#1a1408">{{LAYER_4}}</text>
+
+  <text x="800" y="830" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#7a6840">{{SUBTITLE}}</text>
+</svg>

@@ -1,0 +1,19 @@
+---
+name: feedback-open-grammar-surface
+description: "Chassis lineage: v5 RATIFIED 2026-07-22 (the fixed form · four depth-layers L0/L1/L2/L3 · copy-only 'a mark copies' · depth is Kevin's read-time click). v5 ENDS per-widget re-deciding of count/control/disclosure/send-path/depth; reconciles all 23 interface memories (_widgets/CHASSIS_V5_RECONCILIATION.md). PROTOCOLS.md points at _chassis_v5.html. v4 (click-to-open/steer) retired to lineage."
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 68a060c5-1844-4082-8097-c41464c8c048
+  modified: 2026-07-22T23:53:06.079Z
+---
+
+2026-07-22: **chassis v5 — THE FIXED FORM · four depth-layers · copy-only · depth is Kevin's** — ratified at Kevin's mark ("proceed on my mark on all 4 · a mark copies") from the WIDGET INTERFACE RETURN (regather→reimagine→rebuild). v5's boundary: the FORM is a fixed contract, only the FILL varies; the author never re-decides the form; DEPTH is Kevin's read-time click, never an author mode-pick — the same "one authority, everything derives" move that killed the canon-count drift, applied to the interface. Four layers: **L0 GLANCE** (state + the single ripest act, near-zero cost, complete on its own) · **L1 SURFACE** (other live decisions, closed, never padded to a number) · **L2 OPEN** (plain words + the one slider) · **L3 DEPTH** ("▾ the stakes": manifest/falsifier/provenance, on demand). Frozen laws: control = one segmented slider; **send/copy = A MARK COPIES** (robust clipboard→execCommand→reveal fallback; sendPrompt retired — this ends the copy↔send flip); disclosure = the layers. Resolves the 1-vs-3-vs-4 count contradiction (L0=1, L1=live). Canonical: `_widgets/_chassis_v5.html`; full 23-memory reconciliation: `_widgets/CHASSIS_V5_RECONCILIATION.md`. Falsifier: if a future widget makes the author re-decide count/control/disclosure/depth, v5 drifted into a variant.
+
+2026-07-13: **chassis v4 — click-to-open · click-to-steer · keyboard optional** — promoted from built-candidate (held since 2026-07-04) to canonical default. Kevin's mark fired via the ripe-decisions widget's GO/▶ on the "flip chassis v4 to canon" card. Canonical chassis: `_widgets/_chassis_v4.html`. `~/.claude/CLAUDE.md` widget-template section now points at v4; v3, v2, v1 retired to lineage note in the same section.
+
+**What v4 changes from v3:** the unit is a CARD, not an edge — one plain line, click the header to open to plain-words explanation. Steering is a fixed click vocabulary inside each open card: **GO** (yes/commit/run), **WARMER** (nudge in this spirit), **PLAINER** (explain again simpler), **HOLD ◆** (mark for later), **DROP** (set aside). Authors include only the chips that fit a given card. **Keyboard optional** — composer demoted to the very bottom, "only if you'd rather type." Manifests still pre-filled at authoring time; heavy cards still route through Pre-flight before GO fires.
+
+**Prior entry (2026-07-02, preserved for lineage):** two ratifications in one day — morning chassis v2 (open decision surface) replaced the three-button tetra menu; evening chassis v3 (distributed verbs, `marks/2026-07-02_chassis-v3-distributed-verbs.md`) replaced v2 after one session of live use. v3's grammar: no verb bar, verbs lived on the edges (◆ mark / ▶ execute), edge body click armed a manifest, ⇩ DEPOSIT chip on the marks ledger. Trial method that produced v3: candidate file first, live use, Kevin's hands surfaced two bugs pre-ratification. Ratified ≠ frozen — v3 itself got replaced eleven days later.
+
+Supersedes the verb-bar grammar of v3 and v2, and the *menu-as-option-space* of [[feedback_3_options]]; the manifest pattern and pre-fill rule still hold across all versions. See also [[feedback_widget_jurisdiction_boundary]], [[feedback_single_cycle_approval]], [[feedback_multi_button_signal]].

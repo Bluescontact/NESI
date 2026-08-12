@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NESI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#efe9dc;font-family:Georgia,serif}
+#stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column}
+#room{position:relative;height:188px;flex:none;background:#4a4336;transition:background 2s}
+#glass{height:16px;flex:none;background:linear-gradient(#bfb7a2,#d8d2c2);opacity:.85}
+#worldwrap{position:relative;flex:1;background:#e9e2d2}
+#world{position:absolute;inset:0;width:100%;height:100%}
+#field{position:absolute;inset:0;width:100%;height:100%;background:rgba(238,232,220,.80);border:none;outline:none;resize:none;padding:60px 18%;font-family:Georgia,serif;font-size:19px;line-height:1.9;color:#2e2617;display:block;z-index:4}
+#panel{position:absolute;inset:24px;background:rgba(74,67,54,.97);display:none;border:1px solid #2e2a22;z-index:6}
+#panel.on{display:block}
+.station{position:absolute;bottom:24px;width:64px;height:64px;cursor:pointer}
+.station svg{width:100%;height:100%}
+#tank{position:absolute;left:40px;bottom:18px;width:74px;height:140px;cursor:pointer}
+#tetraov{position:absolute;inset:0;z-index:5;background:rgba(238,232,220,.96);display:none}
+#tetraov.on{display:block}
+#netview{position:absolute;inset:0}
+#faceview{position:absolute;inset:0;display:none;background:rgba(238,232,220,.98);padding:26px 8%}
+#faceview.on{display:block}
+#facehost{width:100%;height:calc(100% - 60px);overflow:auto}
+#foldback{position:absolute;top:14px;right:20px;width:34px;height:30px;cursor:pointer;opacity:.55}
+#blindline{width:100%;font-family:Georgia,serif;font-size:19px;line-height:1.9;color:#2e2617;background:transparent;border:none;border-bottom:1px solid #ccc5b0;outline:none;padding:10px 4px;margin-top:18vh}
+.stile{position:relative;font-family:Georgia,serif;font-size:14px;line-height:1.7;color:#3a3020;background:rgba(255,255,255,.5);border:1px solid #ccc5b0;padding:8px 30px 8px 11px;margin:7px 0;cursor:grab}
+.stile.worked{border-left:3px solid #7a6840}
+.stile.tether{outline:2px dashed #4a5a8a}
+.stile .markline{display:block;font-size:11px;color:#7a6840;margin-top:4px;font-style:italic}
+.stile .paneh{position:absolute;top:6px;right:8px;width:14px;height:14px;cursor:pointer;opacity:.45}
+#stonepane{position:absolute;z-index:9;right:6%;top:8%;width:min(420px,80%);background:rgba(240,235,222,.98);border:1px solid #7a6840;padding:16px;font-family:Georgia,serif;display:none}
+#stonepane.on{display:block}
+#stonepane .src{font-size:11px;color:#7a6840;letter-spacing:1px;margin-bottom:8px}
+#stonepane textarea{width:100%;min-height:90px;font-family:Georgia,serif;font-size:14px;line-height:1.7;color:#2e2617;background:#fff;border:1px solid #ccc5b0;padding:8px;resize:vertical}
+#stonepane input{width:100%;font-family:Georgia,serif;font-size:12.5px;color:#3a3020;background:transparent;border:none;border-bottom:1px solid #ccc5b0;outline:none;padding:4px 2px;margin-top:10px}
+#stonepane .lines{font-size:11px;color:#5a5040;margin-top:10px}
+#stonepane .closep{position:absolute;top:8px;right:10px;width:18px;height:18px;cursor:pointer;opacity:.5}
+.chip{position:absolute;width:34px;height:34px;cursor:grab;touch-action:none}
+.chip:active{cursor:grabbing}
+.mouth{position:absolute;width:56px;height:56px;border-radius:50%;border:2px dashed rgba(222,214,196,.5)}
+.plate{position:absolute;width:64px;height:40px;border:2px solid rgba(222,214,196,.55);border-radius:4px}
+#sound{position:absolute;display:none;max-width:340px;font-size:14.5px;line-height:1.7;color:#3a3020;background:rgba(240,235,222,.92);padding:10px 13px;border-left:2px solid #7a6840;pointer-events:none;z-index:7}
+#closer{position:absolute;top:8px;right:12px;width:26px;height:26px;cursor:pointer;opacity:.6}
+#dampanel{position:absolute;display:none;background:rgba(74,67,54,.97);border:1px solid #2e2a22;padding:14px;z-index:6}
+#dampanel div{width:120px;height:44px;margin:6px 0;border:2px solid rgba(222,214,196,.6);cursor:pointer;color:#ddd6c4;font-family:Georgia,serif;font-size:12px;display:flex;align-items:center;justify-content:center;letter-spacing:1px}
+#dampanel .rel{background:rgba(112,146,160,.45)}
+#dampanel .shut{background:transparent}
+#teach{position:absolute;left:0;right:0;bottom:0;z-index:9;padding:8px 20px;font-family:Georgia,serif;font-size:13.5px;line-height:1.6;color:#4a3f2c;background:rgba(238,232,220,.92);border-top:1px solid #ccc5b0;display:none;pointer-events:none}
+.pv-h{font-family:Georgia,serif}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="room">
+    <div id="tank"><svg viewBox="0 0 74 140" style="width:100%;height:100%">
+      <defs><clipPath id="tetraclip"><polygon points="6,6 68,6 37,134"/></clipPath></defs>
+      <rect id="tankwater2" x="0" y="140" width="74" height="0" fill="rgba(112,146,160,.75)" clip-path="url(#tetraclip)"/>
+      <polygon points="6,6 68,6 37,134" fill="none" stroke="#241f16" stroke-width="2"/>
+      <line x1="37" y1="6" x2="37" y2="134" stroke="#241f16" stroke-width=".7" opacity=".5"/>
+      <line x1="21.5" y1="70" x2="52.5" y2="70" stroke="#241f16" stroke-width=".7" opacity=".5"/>
+    </svg></div>
+    <div class="station" id="st0" style="left:220px"><svg viewBox="0 0 64 64"><rect x="8" y="26" width="48" height="8" fill="#8a7f66" transform="rotate(-4 32 30)"/><rect x="28" y="34" width="8" height="20" fill="#6b6250"/></svg></div>
+    <div class="station" id="st1" style="left:340px"><svg viewBox="0 0 64 64"><circle cx="32" cy="26" r="13" fill="none" stroke="#c9b878" stroke-width="3"/><line x1="32" y1="39" x2="32" y2="56" stroke="#6b6250" stroke-width="4"/></svg></div>
+    <div class="station" id="st2" style="left:460px"><svg viewBox="0 0 64 64"><path d="M8 20 Q32 44 56 20" fill="none" stroke="#a89a7c" stroke-width="3"/><circle cx="8" cy="20" r="4" fill="#6b6250"/><circle cx="56" cy="20" r="4" fill="#6b6250"/><circle cx="32" cy="32" r="4" fill="#6b6250"/></svg></div>
+    <div class="station" id="st3" style="left:580px"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="6" fill="#8a7f66"/><rect x="10" y="28" width="44" height="6" fill="#8a7f66"/><rect x="10" y="42" width="44" height="6" fill="#8a7f66"/></svg></div>
+    <div class="station" id="mouth2" style="left:130px;width:44px"><svg viewBox="0 0 64 64"><path d="M18 14 L46 14 L46 50 L18 50 Z" fill="none" stroke="#8a7f66" stroke-width="3" stroke-dasharray="7 4"/><line x1="32" y1="24" x2="32" y2="40" stroke="#8a7f66" stroke-width="3"/><line x1="24" y1="32" x2="40" y2="32" stroke="#8a7f66" stroke-width="3"/></svg></div>
+  </div>
+  <div id="glass"></div>
+  <div id="worldwrap">
+    <svg id="world" viewBox="0 0 1280 596" preserveAspectRatio="xMidYMid meet"></svg>
+    <div id="sound"></div>
+    <div id="dampanel"><div class="fall" style="width:22px;height:70px;border:1px solid rgba(222,214,196,.4);position:relative;margin:2px auto 8px;cursor:ns-resize;background:none"><div class="leaf" style="position:absolute;left:1px;right:1px;bottom:0;background:rgba(157,179,189,.55);height:100%"></div></div><div class="rel">release</div><div class="shut">keep holding</div><div class="bare" style="background:none;border:1.5px dashed rgba(222,214,196,.45)"></div></div>
+    <div id="teach"></div>
+    <div id="panel">
+      <svg id="pv" style="position:absolute;inset:0;width:100%;height:100%"></svg>
+      <div id="closer"><svg viewBox="0 0 26 26"><line x1="5" y1="5" x2="21" y2="21" stroke="#ddd6c4" stroke-width="2"/><line x1="21" y1="5" x2="5" y2="21" stroke="#ddd6c4" stroke-width="2"/></svg></div>
+    </div>
+    <div id="tetraov">
+      <svg id="netview" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="faceview">
+        <div id="facehost"></div>
+      </div>
+      <div id="foldback"><svg viewBox="0 0 34 30"><polygon points="17,4 4,26 30,26" fill="none" stroke="#7a6840" stroke-width="2"/></svg></div>
+      <div id="stonepane">
+        <div class="closep"><svg viewBox="0 0 18 18"><line x1="3" y1="3" x2="15" y2="15" stroke="#7a6840" stroke-width="2"/><line x1="15" y1="3" x2="3" y2="15" stroke="#7a6840" stroke-width="2"/></svg></div>
+        <div class="src"></div>
+        <textarea></textarea>
+        <input type="text">
+        <div class="lines"></div>
+      </div>
+    </div>
+    <textarea id="field" spellcheck="false" style="display:none"></textarea>
+  </div>
+</div>
+<script>
+/* NESI — the 2D deposit. Laws carried from store.gd / look.gd / THE_FLOOR_2D:
+   100 words per interval (THE AUTHORITY) · tank capacity 12, level rendered 0..1 only ·
+   fixed charge composition, never derived from the words · deletion never un-banks ·
+   three fractions: bedload sinks fast→deep, suspended hangs→ground, dissolved passes→lake ·
+   three outputs at every station · hold is the default and costs no click ·
+   set-it-down does nothing, on purpose · the deep never renders · no number reaches the player ·
+   verbatim only · quitting mid-sentence loses nothing · nothing reaches outward. */
+"use strict";
+/* WORDS_PER_INTERVAL removed — superseded by the intake's per-sentence arrival,
+   Kevin's ruling 2026-08-11, verbatim in BUILD_RECORD. Nothing in this file counts
+   words anymore. The sentence is the arrival. TANK_CAPACITY is a rendering ceiling,
+   not a banking limit — nothing is ever swallowed. */
+const TANK_CAPACITY=12, DAM_AT=0.46, GROUND_AT=0.42;
+const DESCENT=3400, RUNOUT=2200, BURN_AT=3400, RELAX=7000, RIM=1.0, REACH=150;
+const APEX=[640,58], LEFT=[350,554], RIGHT=[930,554], CENTER=[(640+350+930)/3,(58+554+554)/3];
+const dayKey=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+/* the machine never writes the live store. The scratch door has two forms:
+   ?scratch=1 / #scratch on the URL, and enterScratch() in-page — the second exists
+   because the browser pane strips BOTH query and hash from file: URLs, found
+   2026-08-11 when a test wrote the live store through the silently-absent door.
+   A harness MUST call enterScratch() and check its return before any write. */
+let KEY=(location.search.indexOf("scratch=1")>=0||location.hash.indexOf("scratch")>=0)?"nesi2d_scratch":"nesi2d";
+function enterScratch(){
+  KEY="nesi2d_scratch";
+  S={banked:0,tank:[],grounds:[0,0,0],lake:0,cycles:0,sediment:[[],[],[]],pools:[[],[],[]],lean:0,scorch:[false,false,false],tornAt:0,writing:{},nextN:1,run:1,standing:[],lensWater:[0,0,0],regionNames:["","",""],regionAsked:[false,false,false],descended:[],watermark:0,working:null,compost:[],forest:[],gateOpen:[1,1,1],life:[0,0,0],
+   wt:{load:0,sorted:0,spin:0,tune:false,warm:false,form:"bed",fog:0}};
+  return KEY;
+}
+let S=null;
+try{S=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){S=null}
+if(!S)S={banked:0,tank:[],grounds:[0,0,0],lake:0,cycles:0,sediment:[[],[],[]],pools:[[],[],[]],lean:0,scorch:[false,false,false],tornAt:0,writing:{}};
+if(!S.writing)S.writing={};
+if(!S.lensWater)S.lensWater=[0,0,0];
+if(!S.nextN)S.nextN=1;
+if(!S.standing)S.standing=[]; /* the standing water: intervals above the brim, queued unseen */
+if(!S.run)S.run=1;
+if(!S.regionNames)S.regionNames=["","",""];
+if(!S.linesList)S.linesList=[]; /* the hand-made ties between stones — {a,b} by n */
+if(!S.regionAsked)S.regionAsked=[false,false,false];
+/* THE SOIL AND THE FOREST (ported from nesi/conductor/soil.py + forest.py, 2026-08-11)
+   — reframed single-player: no "does not obligate the receiver," no second party, no
+   network. What is dropped to the lake (dissolved fraction, the fraction that already
+   "passes through everything") composts. After a further cycle of light has run — the
+   world's own existing clock, not a new wall-clock — a composted line grows into an
+   ember the SAME player can gather back into the tank by clicking the lake. Order is
+   arrival, never worth (forest.py's grove law); no score, rank, or featured field
+   anywhere on a compost or ember record; verbatim text only (law 4/5). */
+if(!S.compost)S.compost=[];   // {text, kind, at: cycles-at-composting} — the bed
+if(!S.forest)S.forest=[];     // {text, kind, grown_at} — grown, arrival-ordered, pickable
+/* THE FALL (ported from nesi/world3d/scripts/dam.gd, 2026-08-11) — release height as a
+   second decision at the dam, riding the existing single-drag grammar (FK2/FK3 honored:
+   all held stones stay visible, one flagged-variant chassis, merge-in-written-order,
+   settling-is-the-taking — none of that chassis is touched). gateOpen[i] in [0,1], 1 by
+   default so untouched saves and an unworked lever behave exactly as before. "Power
+   comes from the fall, not the restriction": nothing is ever lost at release — every
+   held stone still settles and is still recorded — but the SIZE of what the release
+   grows (ground density, lake, lens water) scales with how far the gate was set open.
+   Zero if nothing is moving; holding (never clicking release) is already zero. */
+if(!S.gateOpen)S.gateOpen=[1,1,1];
+/* THE ECOSYSTEM (ported from nesi/world3d/scripts/spire.gd, 2026-08-11) — "each
+   terrain has its own ecosystems... when flow is restored the land fills with
+   life." Source law carried whole: NOTHING HERE DOES LEDGER WORK — no counter,
+   no unlock, no threshold that is better than another, never read as a number.
+   Adaptation named: source drives life continuously from a HELD-OPEN gate
+   (a per-frame release value); this world's dam has no held-open state, only
+   discrete release events, so life is a pure function of RELEASE RATE instead —
+   it grows when a spire's release lands (sized by how far THE FALL's gate was
+   set, exactly like ground/lake already scale) and settles back down when a
+   cycle passes at another spire without this one releasing. Purely visual —
+   three indicator kinds by spire index (timber/reeds/thicket, spire.gd's own
+   _kind() mapping), drawn only as shape, no label, no number. */
+if(!S.life)S.life=[0,0,0];
+/* THE FOUR TOOLS (ported from nesi/world3d/scripts/water_table.gd, 2026-08-11)
+   — STILL/SPIN/TUNE/WARM at the existing water-table station (st0). Source
+   law carried whole: none of load/sorted/form/fog is EVER shown as a number —
+   they are the water's opacity and the shape on the basin floor, nothing else.
+   EVERY TOOL UNDOES STILL: while any tool runs, the load stops settling on its
+   own — STILL is what happens when the hand comes off, not a fourth button
+   beside the other three. Adaptation named: source charges the basin from a
+   continuously-flowing station and steps every physics frame; this basin
+   charges from the same discrete "a charge has arrived" event the tray
+   already uses, and steps only while this exact station's panel is open (an
+   interval gated on panelOn&&curStation===0 — nothing runs, or advances any
+   clock, while the player is elsewhere, so there is no law-8 risk here). */
+if(!S.wt)S.wt={load:0,sorted:0,spin:0,tune:false,warm:false,form:"bed",fog:0};
+/* THE UNCOVERING (ported from nesi/world3d/scripts/weather.gd, 2026-08-11) —
+   asked-for-only, never volunteered; a non-numeric contour reveal that fades
+   and leaves nothing behind unless asked again. Source law carried whole:
+   "the erosion uncovers; it never creates" — it is a contour of a field that
+   is already there. Adaptation named: source exposes hidden bedrock relief
+   under the terrain; this world has no such hidden layer available to expose
+   without touching THE DEEP (law 9: the deep never renders, and staying clear
+   of it rules out the literal port). What IS already there but not normally
+   drawn in this much detail is the spire's own ground density/lens-water —
+   both already-visible state (rendered as the ellipse and the lens glyphs),
+   never raw text, never a number shown. The uncovering here is a temporary,
+   richer contour of THAT same already-shown state, fired only by an explicit
+   ask (a double-click on a spire's ground — never on hover, never
+   volunteered), held in ordinary (non-persisted) JS state so it carries no
+   new wall-clock and never survives a reload — no law-8 risk. */
+let uncover={};
+function askUncover(i){
+  if(uncover[i])return; /* already showing — asking again does not restack it */
+  uncover[i]={start:performance.now()};
+  uncoverTick();
+}
+function uncoverTick(){
+  let any=false;
+  const now=performance.now();
+  for(const k in uncover){
+    if((now-uncover[k].start)/1000>8){delete uncover[k];continue}
+    any=true;
+  }
+  drawWorld();
+  if(any)requestAnimationFrame(uncoverTick);
+}
+/* quarantine ethic: old saves migrate append-shape-only — nothing rewritten, nothing cleaned.
+   THE TANK NOW HOLDS STONES DIRECTLY (the charge is the stone — supersession S3);
+   old interval-charges flatten, their stones intact; the standing water folds in whole. */
+S.sediment=S.sediment.map(arr=>arr.map(x=>typeof x==="string"?{n:0,text:x,kind:"self",stage:"settled"}:x));
+S.tank=S.tank.flatMap(c=>c.n?[c]:(c.stones||(c.s||[]).map(t=>mkStone(t,"self"))));
+S.tank=S.tank.concat((S.standing||[]).flatMap(c=>c.n?[c]:(c.stones||[])));S.standing=[];
+if(S.working){const w=S.working.n?[S.working]:(S.working.stones||[]);S.tank=w.concat(S.tank);S.working=null}
+if(S.watermark===undefined)S.watermark=0;
+/* the stone: one text, one source, machine-immutable kind/who/asked; n is a name, never rendered.
+   worked: set only by a hand-act (edit · merge · line · break · place) — never by time or view. */
+function mkStone(text,kind,who,asked){return{n:S.nextN++,text,kind:kind||"self",who:who||"",asked:asked||"",run:S.run,stage:"held",seams:null,worked:false}}
+if(!S.descended)S.descended=[]; /* below the tetra: the water the stations draw, in descent order */
+S.tank.forEach(st=>{if(st.worked===undefined)st.worked=true}); /* pre-gate stones are grandfathered */
+S.descended.forEach(st=>{if(st.worked===undefined)st.worked=true});
+const field=document.getElementById("field");
+field.value=S.writing[dayKey()]||"";
+/* ---------- persistence: whole text every time; pad → read back → compare → commit.
+   A bad write never destroys a good file. Silently. ---------- */
+function save(){S.writing[dayKey()]=field.value;
+  try{const j=JSON.stringify(S);
+    localStorage.setItem(KEY+".pad",j);
+    if(localStorage.getItem(KEY+".pad")===j){localStorage.setItem(KEY,j);localStorage.removeItem(KEY+".pad")}
+  }catch(e){}}
+setInterval(save,2000);
+window.addEventListener("beforeunload",save);
+window.addEventListener("blur",save);
+/* ---------- intake: words become water ---------- */
+/* THE BAND CUT — the intake's arrival, carried whole (supersession S1/S2, Kevin's
+   ruling 2026-08-11). The cut fires live as you type, scanning only past the WATERMARK —
+   the offset up to which text has already banked. A .!?… completes a sentence and the
+   whole trailing cluster leaves with it; a period between two digits is inside a number;
+   bare punctuation with no letter or digit is not a sentence. The page is NEVER cleared:
+   banked text stays visible and the watermark moves past it. Deletion never un-banks —
+   editing behind the watermark changes the page only; the stone is the water that
+   already left, and the page remains his record. */
+function bandCut(){
+  const v=field.value;
+  if(S.watermark>v.length)S.watermark=v.length; /* the page shrank; the stones already left */
+  const isEnd=c=>".!?…".indexOf(c)>=0;
+  let i=S.watermark, start=S.watermark;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){i++;continue}
+      let j=i;while(j+1<v.length&&isEnd(v[j+1]))j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg))S.tank.push(mkStone(seg,"self"));
+      start=j+1;S.watermark=j+1;i=j+1;
+    } else i++;
+  }
+  renderTank();
+}
+field.addEventListener("input",bandCut);
+field.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    const seg=field.value.slice(S.watermark).trim();
+    if(seg.length>1&&/[A-Za-z0-9]/.test(seg)){
+      S.tank.push(mkStone(seg,"self")); /* the override: banks whole, finished or not */
+      S.watermark=field.value.length;
+    } else if(!seg){S.run++} /* Enter on nothing held closes the run */
+    renderTank();save();
+  }
+});
+function drawStanding(){renderTank()} /* the standing water folded into the tank — S4 */
+function renderTank(){ /* the text itself is the water: held stones + the unbanked band,
+  as mass, derived each frame, never stored, never shown as a number (T3) */
+  const mass=S.tank.reduce((a,s)=>a+s.text.length,0)+Math.max(0,field.value.length-S.watermark);
+  const L=1-Math.exp(-mass/1400);
+  const h=128*L;
+  const r=document.getElementById("tankwater2");
+  if(r){r.setAttribute("y",134-h);r.setAttribute("height",h)}
+  if(typeof drawNet==="function"&&tetraOpen&&!faceOpen)drawNet();
+}
+/* ---------- THE WRITING TETRA (T1–T6, Kevin's design 2026-08-11, Cowan's rulings) ----------
+   The tank IS the tetra seen small; click opens the net — centre THE TABLE, around it
+   BLIND · TILES · SEQUENTIAL (the intake's four faces; no vertex is named). The writer
+   is the bottom node. The text is the water and it rises as he types. A stone is worked
+   only by a hand-act. Only worked stones can be carried down past the bottom node —
+   an unworked stone hangs and will not carry (behaviour as the carrier, law 10). The
+   drag is the decision; the release is the act; descent order is the downstream order. */
+const tetraov=document.getElementById("tetraov"),netv=document.getElementById("netview"),
+      facev=document.getElementById("faceview"),facehost=document.getElementById("facehost");
+let tetraOpen=false,faceOpen=null;
+/* one vertex downward (Kevin's mark 2026-08-11): the writer IS the bottom vertex */
+const TA=[500,630],TB=[130,70],TC=[870,70];
+const MAB=[(TA[0]+TB[0])/2,(TA[1]+TB[1])/2],MAC=[(TA[0]+TC[0])/2,(TA[1]+TC[1])/2],MBC=[(TB[0]+TC[0])/2,(TB[1]+TC[1])/2];
+const NODE=TA; /* the writer — the bottom vertex itself */
+function drawNet(){
+  netv.innerHTML="";
+  const en=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||netv).appendChild(e);return e};
+  /* the water rises inside the tetra as the text mass grows */
+  const mass=S.tank.reduce((a,s)=>a+s.text.length,0)+Math.max(0,field.value.length-S.watermark);
+  const L=1-Math.exp(-mass/1400);
+  en("clipPath",{id:"netclip"}).appendChild(en("polygon",{points:[TA,TB,TC].map(p=>p.join(",")).join(" ")}));
+  en("rect",{x:0,y:630-560*L,width:1000,height:560*L+10,fill:"rgba(112,146,160,.35)","clip-path":"url(#netclip)"});
+  en("polygon",{points:[TA,TB,TC].map(p=>p.join(",")).join(" "),fill:"none",stroke:"#8d8267","stroke-width":3});
+  en("polygon",{points:[MAB,MAC,MBC].map(p=>p.join(",")).join(" "),fill:"rgba(122,104,64,.06)",stroke:"#c6bda6","stroke-width":1.5});
+  en("circle",{cx:NODE[0],cy:NODE[1],r:7,fill:"#7a6840"}); /* the writer, unnamed */
+  /* face hotspots — captions teach, faces open on click */
+  /* vertex-down: SEQUENTIAL sits at the writer's own corner, nearest the hand */
+  const faces=[["seq",[TA,MAB,MAC]],["blind",[TB,MAB,MBC]],["tiles",[TC,MAC,MBC]],["table",[MAB,MAC,MBC]]];
+  faces.forEach(f=>{
+    const h=en("polygon",{points:f[1].map(p=>p.join(",")).join(" "),fill:"rgba(0,0,0,0)","data-face":f[0],style:"cursor:pointer"});
+    h.addEventListener("click",()=>openFace(f[0]));
+    h.addEventListener("mouseenter",()=>say(TEACH["f_"+f[0]]));
+    h.addEventListener("mouseleave",()=>say(""));
+  });
+  /* refusal furniture (R5/E5): the bare plate, present in the tetra too — drop a stone
+     on it and it is set down: no destination, no animation, no confirmation */
+  en("rect",{x:60,y:300,width:74,height:46,rx:4,fill:"none",stroke:"rgba(150,138,110,.5)","stroke-width":1.6,"stroke-dasharray":"5 4",id:"netbare"});
+  /* held stones float in the water; drag one down past the node to send it below.
+     A placed stone keeps its place — the set-down position IS the record (E4). */
+  S.tank.forEach((st,idx)=>{
+    const x=st.px!==undefined?st.px:410+(idx%5)*48, y=st.py!==undefined?st.py:540-Math.floor(idx/5)*42;
+    const g=en("g",{transform:"translate("+x+","+y+")",style:"cursor:grab"});
+    en("circle",{cx:0,cy:0,r:11,fill:st.worked?"rgba(122,104,64,.8)":"rgba(150,138,110,.45)",stroke:st.kind==="self"?"none":"#4a5a8a","stroke-width":st.kind==="self"?0:1.6,"stroke-dasharray":st.kind==="given"?"4 2":(st.kind==="fetched"?"1.5 2":"none")},g);
+    let drag=null,px=x,py=y;
+    g.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY];g.setPointerCapture(e.pointerId);say(st.text.slice(0,90))});
+    g.addEventListener("pointermove",e=>{if(!drag)return;
+      const sc=netv.clientWidth/1000||1;
+      px+=(e.clientX-drag[0])/sc;py+=(e.clientY-drag[1])/sc;drag=[e.clientX,e.clientY];
+      if(!st.worked&&py>600){py=600} /* an unworked stone hangs — it will not carry past the node */
+      g.setAttribute("transform","translate("+px+","+py+")")});
+    g.addEventListener("pointerup",()=>{drag=null;say("");
+      if(px>56&&px<138&&py>296&&py<350){ /* the bare plate: set down, sent nowhere */
+        st.stage="down";S.tank=S.tank.filter(x=>x!==st);save();
+      } else if(st.worked&&py>640){ /* through his own position, which is the point */
+        st.stage="descended";S.descended.push(st);S.tank=S.tank.filter(x=>x!==st);save();
+      } else {st.px=px;st.py=py;save()} /* a placed stone keeps its place — the record */
+      drawNet();renderTank();});
+  });
+}
+function openTetra(){tetraOpen=true;tetraov.classList.add("on");closeFaceInner();drawNet()}
+function closeTetra(){closeFaceInner();tetraOpen=false;tetraov.classList.remove("on")}
+function closeFaceInner(){
+  if(faceOpen==="seq"){field.style.display="none";document.body.appendChild(field)}
+  faceOpen=null;facev.classList.remove("on");facehost.innerHTML="";
+}
+function openFace(f){
+  faceOpen=f;facev.classList.add("on");facehost.innerHTML="";
+  if(f==="seq"){ /* SEQUENTIAL — the page: everything visible as typed; never cleared */
+    facehost.appendChild(field);
+    field.style.cssText="display:block;position:static;width:100%;height:100%;background:transparent;border:none;outline:none;resize:none;padding:20px 4%;font-family:Georgia,serif;font-size:19px;line-height:1.9;color:#2e2617";
+    field.focus();
+  }
+  if(f==="blind"){ /* BLIND — each sentence leaves as finished; nothing accumulates */
+    const b=document.createElement("input");b.id="blindline";b.autocomplete="off";
+    facehost.appendChild(b);b.focus();
+    b.addEventListener("keydown",ev=>ev.stopPropagation());
+    b.addEventListener("input",()=>{
+      const v=b.value;const isEnd=c=>".!?…".indexOf(c)>=0;
+      for(let i=0;i<v.length;i++){
+        if(isEnd(v[i])&&!(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||""))){
+          let j=i;while(j+1<v.length&&isEnd(v[j+1]))j++;
+          const seg=v.slice(0,j+1).trim();
+          if(seg.length>1&&/[A-Za-z0-9]/.test(seg))S.tank.push(mkStone(seg,"self"));
+          b.value=v.slice(j+1);renderTank();save();return;
+        }
+      }});
+  }
+  if(f==="tiles"||f==="table"){ /* TILES — written order · THE TABLE — everything together */
+    const list=S.tank.slice().sort((a,b)=>a.n-b.n);
+    let tetherFirst=null;
+    list.forEach(st=>{
+      const d=document.createElement("div");d.className="stile"+(st.worked?" worked":"");
+      d.textContent=st.text;
+      /* the mark — his own label, by his hand, verbatim (the intake's label act) */
+      if(st.mark){const m=document.createElement("span");m.className="markline";m.textContent=st.mark;d.appendChild(m)}
+      /* the ties — hand-made lines to other stones, shown as the other stone's own words */
+      (S.linesList||[]).forEach(L=>{
+        const other=L.a===st.n?L.b:(L.b===st.n?L.a:null);
+        if(other){const o=findStone(other);
+          if(o){const t=document.createElement("span");t.className="markline";t.textContent="⟝ "+o.text.slice(0,44);d.appendChild(t)}}
+      });
+      /* the pane handle — the stone's own room */
+      const h=document.createElement("span");h.className="paneh";
+      h.innerHTML='<svg viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" fill="none" stroke="#7a6840" stroke-width="1.5"/></svg>';
+      h.addEventListener("click",ev=>{ev.stopPropagation();openPane(st,f)});
+      d.appendChild(h);
+      facehost.appendChild(d);
+      d.addEventListener("click",()=>{ /* the edit — a hand-act; it marks the stone worked */
+        if(d.isContentEditable)return;
+        d.contentEditable="true";d.style.cursor="text";d.focus();
+      });
+      d.addEventListener("keydown",ev=>ev.stopPropagation());
+      d.addEventListener("blur",()=>{if(!d.isContentEditable)return;
+        const t=(d.innerText||"").trim();
+        if(t.length>1&&t!==st.text){st.text=t;st.worked=true}
+        else if(t.length>1&&d.getAttribute("data-touched")){st.worked=true}
+        d.contentEditable="false";save();openFace(f);});
+      d.addEventListener("input",()=>d.setAttribute("data-touched","1"));
+      if(f==="table"){
+        d.draggable=true;
+        d.addEventListener("dragstart",ev=>ev.dataTransfer.setData("n",String(st.n)));
+        d.addEventListener("dragover",ev=>ev.preventDefault());
+        d.addEventListener("drop",ev=>{ev.preventDefault();
+          const n=+ev.dataTransfer.getData("n");if(!n||n===st.n)return;
+          mergeHeld(n,st.n);openFace("table");renderTank()});
+        d.addEventListener("dblclick",()=>{ /* the line — a hand-made tie between two stones */
+          if(tetherFirst===null){tetherFirst=st;d.classList.add("tether")}
+          else if(tetherFirst!==st){
+            if(!S.linesList)S.linesList=[];
+            S.linesList.push({a:tetherFirst.n,b:st.n});
+            tetherFirst.worked=true;st.worked=true;tetherFirst=null;save();openFace("table");
+          }
+        });
+      }
+    });
+  }
+}
+/* THE STONE'S PANE — the writing surface's own detail view, imported (Kevin's ask
+   2026-08-11). His words editable; the source machine-immutable and shown as texture
+   words; THE MARK is a line only his hand writes (the intake's label act — a hand-act,
+   so it marks the stone worked); the ties listed verbatim. Pre-settle only. */
+function findStone(n){
+  let f=null;
+  S.tank.forEach(s=>{if(s.n===n)f=s});
+  S.descended.forEach(s=>{if(s.n===n)f=s});
+  S.pools.forEach(p=>p.forEach(h=>(h.stones||[]).forEach(s=>{if(s.n===n)f=s})));
+  S.sediment.forEach(a=>a.forEach(s=>{if(s.n===n)f=s}));
+  return f;
+}
+function openPane(st,backFace){
+  const pane=document.getElementById("stonepane");
+  pane.classList.add("on");
+  pane.querySelector(".src").textContent=
+    (st.kind==="self"?"written here":st.kind==="given"?"given"+(st.who?" — "+st.who:""):"fetched"+(st.asked?" — "+st.asked:""))
+    +(st.seams?" · carries "+st.seams.length+" seams":"");
+  const ta=pane.querySelector("textarea"),mk=pane.querySelector("input");
+  ta.value=st.text; mk.value=st.mark||"";
+  const settled=st.stage==="settled";
+  ta.readOnly=settled; mk.readOnly=settled; /* settling is the taking */
+  const lines=pane.querySelector(".lines");
+  lines.innerHTML="";
+  (S.linesList||[]).forEach(L=>{
+    const other=L.a===st.n?L.b:(L.b===st.n?L.a:null);
+    if(other){const o=findStone(other);if(o){const d=document.createElement("div");d.textContent="⟝ "+o.text.slice(0,60);lines.appendChild(d)}}
+  });
+  ta.onblur=()=>{const t=ta.value.trim();
+    if(!settled&&t.length>1&&t!==st.text){st.text=t;st.worked=true;save()}};
+  mk.onblur=()=>{if(settled)return;
+    const m=mk.value.trim();
+    if(m!==(st.mark||"")){st.mark=m;if(m)st.worked=true;save()}};
+  ta.addEventListener("keydown",ev=>ev.stopPropagation());
+  mk.addEventListener("keydown",ev=>ev.stopPropagation());
+  pane.querySelector(".closep").onclick=()=>{ta.blur();mk.blur();pane.classList.remove("on");if(backFace&&faceOpen===backFace)openFace(backFace)};
+}
+function mergeHeld(na,nb){
+  const parts=S.tank.filter(s=>s.n===na||s.n===nb).sort((a,b)=>a.n-b.n);
+  if(parts.length!==2)return;
+  const joined=mkStone(parts.map(p=>p.text).join(" "),parts[0].kind);
+  joined.worked=true; /* the merge is a hand-act */
+  joined.seams=parts.map(p=>({n:p.n,text:p.text,kind:p.kind,who:p.who,asked:p.asked}));
+  parts.forEach(p=>{p.stage="merged"});
+  S.tank=S.tank.filter(s=>s.stage!=="merged");
+  S.tank.push(joined);save();
+}
+document.getElementById("tank").addEventListener("click",openTetra);
+document.getElementById("foldback").addEventListener("click",()=>{
+  if(faceOpen){closeFaceInner();drawNet()}else closeTetra();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){e.preventDefault();
+    if(panelOn){closePanel();return}
+    if(faceOpen){closeFaceInner();drawNet();return}
+    if(tetraOpen){closeTetra();return}
+    openTetra();
+  }});
+/* ---------- world ---------- */
+const world=document.getElementById("world");
+const NS="http://www.w3.org/2000/svg";
+function el(n,a,parent){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(parent||world).appendChild(e);return e}
+function lerp(a,b,t){return[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]}
+/* spires: 0 = left edge (apex→left) · 1 = base (left→right, head mid) · 2 = right edge (apex→right) */
+const SP=[{h:APEX,f:LEFT},{h:lerp(LEFT,RIGHT,.5),f:LEFT},{h:APEX,f:RIGHT}];
+SP[1]={h:lerp(LEFT,RIGHT,.5),f:RIGHT};
+function spirePts(i){const e=SP[i];const dam=lerp(e.h,e.f,DAM_AT);const gr=lerp(dam,CENTER,GROUND_AT);return{head:e.h,dam,gr}}
+function drawWorld(){
+  world.innerHTML="";
+  el("polygon",{points:[APEX,LEFT,RIGHT].map(p=>p.join(",")).join(" "),fill:"none",stroke:"#8d8267","stroke-width":3});
+  for(const v of [APEX,LEFT,RIGHT])el("line",{x1:CENTER[0],y1:CENTER[1],x2:v[0],y2:v[1],stroke:"#c6bda6","stroke-width":1});
+  for(let i=0;i<3;i++){
+    const p=spirePts(i);
+    el("line",{x1:p.head[0],y1:p.head[1],x2:p.dam[0],y2:p.dam[1],stroke:"#9db3bd","stroke-width":2,opacity:.6});
+    /* the dam — a bar across; the pool behind it IS the readout */
+    const a=Math.atan2(p.dam[1]-p.head[1],p.dam[0]-p.head[0])+Math.PI/2;
+    const dx=Math.cos(a)*11,dy=Math.sin(a)*11;
+    el("line",{x1:p.dam[0]-dx,y1:p.dam[1]-dy,x2:p.dam[0]+dx,y2:p.dam[1]+dy,stroke:"#4d4436","stroke-width":6,"stroke-linecap":"round",class:"dam","data-i":i,style:"cursor:pointer"});
+    /* threshold read (R3/E3): the held stones are visible through the glass as things
+       lying at the dam — objects, never a count */
+    const held=S.pools[i].flatMap(h=>h.stones||[]);
+    if(held.length||S.pools[i].length)el("ellipse",{cx:p.dam[0]-dx*0.9,cy:p.dam[1]-dy*0.9,rx:8+Math.min(held.length,10)*2,ry:5+Math.min(held.length,10)*1.2,fill:"rgba(112,146,160,.45)"});
+    held.slice(0,8).forEach((st,k)=>{
+      el("circle",{cx:p.dam[0]-dx*0.9+((k*23)%34-17),cy:p.dam[1]-dy*0.9+((k*13)%14-7),r:3,
+        fill:"rgba(74,64,44,.7)","stroke-dasharray":st.kind==="given"?"2 1.5":(st.kind==="fetched"?"1 1.5":"none"),
+        stroke:st.kind==="self"?"none":"#4a5a8a","stroke-width":st.kind==="self"?0:1,class:"dam","data-i":i,style:"cursor:pointer"});
+    });
+    /* ground: density of what has settled — deposit strokes are the words themselves */
+    const g=Math.min(S.grounds[i],1);
+    if(g>0)el("ellipse",{cx:p.gr[0],cy:p.gr[1],rx:36+g*60,ry:16+g*26,fill:"rgba(122,104,64,"+(0.08+g*0.25)+")",class:"ground","data-i":i,style:"cursor:pointer"});
+    /* THE SENTENCE-LENS (Kevin's articulation, 2026-08-11): each settled sentence is a
+       load-bearing node — a linear axis with attachment points at each end; the anchor
+       holds up the vertex of an upward tetra; the four points define a parabolic curve.
+       The lens holds water, grows through nutrient deposition, and stands in the field
+       as part of a heliostat. */
+    const lw=Math.min(S.lensWater[i],1);
+    /* a region's name, in his verbatim words only; nameless is lawful */
+    if(S.regionNames[i])el("text",{x:p.gr[0]-20,y:p.gr[1]-30,fill:"rgba(90,80,56,.5)","font-size":10}).textContent=S.regionNames[i];
+    S.sediment[i].slice(-4).forEach((st,k)=>{
+      const s=st.text;
+      const cx=p.gr[0]+((k%2)*54-27), cy=p.gr[1]-6+k*22;
+      const half=Math.min(16+s.length*0.42,44);
+      const depth=5+g*16; /* grows through nutrient deposition */
+      const ax=cx-half, bx=cx+half, apy=cy-half*0.72;
+      /* the parabolic lens, and the water it holds */
+      if(lw>0.01)el("path",{d:"M"+ax+" "+cy+" Q "+cx+" "+(cy+depth*2)+" "+bx+" "+cy+" Z",fill:"rgba(96,140,160,"+(0.18+lw*0.4)+")",class:"ground","data-i":i,style:"cursor:pointer"});
+      el("path",{d:"M"+ax+" "+cy+" Q "+cx+" "+(cy+depth*2)+" "+bx+" "+cy,fill:"none",stroke:"rgba(90,80,56,.55)","stroke-width":1.4,class:"ground","data-i":i,style:"cursor:pointer"});
+      /* the axis: expansion and contraction, attachment points at each end.
+         Source drawn as texture, colour redundant: self smooth · given banded · fetched stippled */
+      el("line",{x1:ax,y1:cy,x2:bx,y2:cy,stroke:"rgba(64,54,32,.6)","stroke-width":1.6,
+        "stroke-dasharray":st.kind==="given"?"6 3":(st.kind==="fetched"?"2 3":"none"),
+        class:"ground","data-i":i,style:"cursor:pointer"});
+      el("circle",{cx:ax,cy:cy,r:2.4,fill:"rgba(64,54,32,.7)"});
+      el("circle",{cx:bx,cy:cy,r:2.4,fill:"rgba(64,54,32,.7)"});
+      /* the upward tetra the anchor holds */
+      el("line",{x1:ax,y1:cy,x2:cx,y2:apy,stroke:"rgba(90,80,56,.45)","stroke-width":1});
+      el("line",{x1:bx,y1:cy,x2:cx,y2:apy,stroke:"rgba(90,80,56,.45)","stroke-width":1});
+      el("circle",{cx:cx,cy:apy,r:2,fill:"rgba(90,80,56,.6)"});
+      /* a watered lens stands in the heliostat field: light rises from it toward the room */
+      if(lw>0.05)el("line",{x1:cx,y1:apy,x2:cx,y2:-30,stroke:"rgba(230,214,150,"+(0.10+lw*0.25)+")","stroke-width":2});
+      /* the sentence itself, verbatim, faint, along its own axis */
+      el("text",{x:ax+3,y:cy-4,fill:"rgba(64,54,32,.38)","font-size":8,class:"ground","data-i":i,style:"cursor:pointer"}).textContent=s.slice(0,Math.floor(half/3.4));
+    });
+    el("line",{x1:p.gr[0],y1:p.gr[1],x2:CENTER[0],y2:CENTER[1],stroke:"#aebfc6","stroke-width":1.5,opacity:.5});
+    /* THE ECOSYSTEM — indicator life at the outfall, shape only, no label, no number */
+    drawLife(i,p);
+    /* THE UNCOVERING — asked-for-only contour of already-visible ground density,
+       fading over 8s; never shown unless double-clicked, never lingers past it */
+    if(uncover[i]){
+      const tt=(performance.now()-uncover[i].start)/1000;
+      const fadeT=Math.max(0,1-tt/8);
+      const gg=Math.min(S.grounds[i],1);
+      for(let ring=1;ring<=3;ring++){
+        el("ellipse",{cx:p.gr[0],cy:p.gr[1],rx:(36+gg*60)+ring*14,ry:(16+gg*26)+ring*7,fill:"none",
+          stroke:"rgba(90,80,56,"+(0.30*fadeT/ring)+")","stroke-width":1,"stroke-dasharray":"3 4"});
+      }
+    }
+  }
+  const lk=Math.min(S.lake,1);
+  el("circle",{cx:CENTER[0],cy:CENTER[1],r:16+lk*30,fill:"rgba(96,132,148,"+(0.35+lk*0.4)+")",class:"lakecirc",style:"cursor:pointer"});
+  /* terra incognita (R5/E6, FK4 provisional: gaps only) — an unnamed region owns its
+     absence: a dashed empty box where a name could stand. Never a prompt; it waits. */
+  for(let i=0;i<3;i++){
+    if(!S.regionNames[i]){
+      const p=spirePts(i);
+      el("rect",{x:p.gr[0]-34,y:p.gr[1]-44,width:68,height:14,fill:"none",
+        stroke:"rgba(150,138,110,.45)","stroke-width":1,"stroke-dasharray":"4 3"});
+    }
+  }
+  light();renderRoomBand();
+}
+function renderRoomBand(){/* threshold reads (E3): a scorched receiver is legible shut from OUTSIDE the room */
+  const svg=document.querySelector("#st1 svg");if(!svg)return;
+  let g=svg.querySelector(".scorchmarks");
+  if(g)g.remove();
+  g=document.createElementNS(NS,"g");g.setAttribute("class","scorchmarks");
+  S.scorch.forEach((s,k)=>{if(s){const c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",16+k*16);c.setAttribute("cy",54);c.setAttribute("r",3);
+    c.setAttribute("fill","#5a3a30");g.appendChild(c)}});
+  svg.appendChild(g);
+}
+/* THE ECOSYSTEM's kind — spire.gd's own _kind() mapping, by spire index:
+   0 grown/timber (tall, few, dark green) · 1 given/reeds (short, many, thin) ·
+   2 woven/thicket (low, wide, muted). Indicator only — it reads and it does
+   not know the player exists (no label, no number, ever). */
+const LIFE_KIND=[{col:"rgba(92,148,72,",tall:34,wide:5,n:5},{col:"rgba(140,168,86,",tall:19,wide:3,n:8},{col:"rgba(112,142,118,",tall:22,wide:9,n:3}];
+function drawLife(i,p){
+  const L=Math.min(Math.max(S.life[i]||0,0),1);
+  if(L<=0.01)return;
+  const k=LIFE_KIND[i%3];
+  let s=(i+1)*7919; /* deterministic scatter, same shape every render — no randomness that shifts frame to frame */
+  const rng=()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff};
+  for(let n=0;n<k.n;n++){
+    const ang=rng()*Math.PI*2, rad=14+rng()*30;
+    const near=1-rad/44;
+    const t=Math.max(0,Math.min(1,(L-(1-near)*0.45)/0.55));
+    if(t<=0.01)continue;
+    const cx=p.gr[0]+18+Math.cos(ang)*rad*0.6, cy=p.gr[1]+34+Math.sin(ang)*rad*0.35;
+    const h=k.tall*t*(0.55+0.45*near);
+    el("rect",{x:cx-k.wide/2,y:cy-h,width:k.wide,height:h,fill:k.col+(0.35+0.35*t)+")"});
+  }
+}
+function light(){/* light rises: cycles, and the watered lenses standing in the heliostat field */
+  const lens=(S.lensWater||[0,0,0]).reduce((a,b)=>a+b,0);
+  const L=1-Math.exp(-(S.cycles+lens*2)/9);
+  const c=Math.round(74+L*116), c2=Math.round(67+L*98), c3=Math.round(54+L*66);
+  document.getElementById("room").style.background="rgb("+c+","+c2+","+c3+")";
+}
+/* ---------- droplets in flight ---------- */
+const FR={bed:{fall:1.9,draw:d=>el("polygon",{points:"0,-7 6,0 0,7 -6,0",fill:"#3c352a",transform:"translate("+d[0]+","+d[1]+")"})},
+          sus:{fall:0.55,draw:d=>el("circle",{cx:d[0],cy:d[1],r:6,fill:"rgba(150,138,110,.8)"})},
+          dis:{fall:1.15,draw:d=>el("circle",{cx:d[0],cy:d[1],r:6,fill:"none",stroke:"rgba(120,140,150,.9)","stroke-width":2})}};
+function animateAlong(from,to,ms,frac,done){
+  const t0=performance.now();
+  function step(t){
+    const u=Math.min((t-t0)/ms,1);
+    drawWorld();
+    FR[frac].draw(lerp(from,to,u));
+    if(u<1)requestAnimationFrame(step);else{done&&done();drawWorld()}
+  }
+  requestAnimationFrame(step);
+}
+/* ---------- routing: THE THREE DISPOSITIONS, unified on stage ----------
+   sent = a spire · dropped = the lake · down = the bare plate, no destination, ever */
+/* THE SOIL — a dropped stone's own text composts (verbatim, no judgment of it — soil.py
+   law 1: the mechanic never does the recognizing). THE FOREST — once a further cycle of
+   light has passed, the composted line grows into a pickable ember; growForest() is the
+   whole of the growing, called wherever S.cycles can have advanced. */
+function growForest(){
+  const keep=[];
+  S.compost.forEach(c=>{ if(S.cycles>c.at)S.forest.push({text:c.text,kind:c.kind,grown_at:S.cycles}); else keep.push(c); });
+  S.compost=keep;
+}
+/* pick_up(), single-player: gather the oldest-grown ember back into your own tank,
+   verbatim, unworked (T4 — a hand-act still has to work it before it can descend again).
+   Arrival order only (forest.py's grove law — never by worth). No confirmation, no
+   destination text, no debt: clicking the lake either does this or does nothing. */
+function pickEmber(){
+  growForest();
+  if(!S.forest.length)return; /* nothing grown yet — a real, honored empty round */
+  const g=S.forest.shift();
+  S.tank.push(mkStone(g.text,g.kind||"self"));
+  save();renderTank();drawWorld();
+}
+function route(frac,dest,stones){
+  if(dest==="set"){(stones||[]).forEach(st=>st.stage="down");save();return} /* the absence is the feedback */
+  if(dest==="deep"){(stones||[]).forEach(st=>st.stage="deep");save();return} /* has a destination; never renders */
+  if(dest==="lake"){S.lake+=0.04;(stones||[]).forEach(st=>{st.stage="dropped";S.compost.push({text:st.text,kind:st.kind,at:S.cycles})});drawWorld();save();return}
+  const i=dest; const p=spirePts(i);
+  (stones||[]).forEach(st=>st.stage="sent");
+  /* the state lands the moment the hand lets go — quitting mid-flight loses nothing;
+     the descent is display only */
+  S.pools[i].push({frac,stones:stones||[]});save();
+  animateAlong(p.head,p.dam,DESCENT/FR[frac].fall,frac,()=>{drawWorld()});
+}
+/* ---------- the dam: the only place the operator governs ---------- */
+const dampanel=document.getElementById("dampanel");
+let damI=-1;
+/* THE FALL's lever — how far the gate is set open before release. Purely the hand's
+   own act (law 5); the record it scales is unchanged in kind, only in size. */
+const damFall=dampanel.querySelector(".fall"), damLeaf=damFall.querySelector(".leaf");
+function renderFall(){const v=(damI>=0&&S.gateOpen)?S.gateOpen[damI]:1;damLeaf.style.height=(Math.max(0,Math.min(1,v))*100)+"%";}
+let fallDrag=null;
+damFall.addEventListener("pointerdown",e=>{fallDrag=e.clientY;damFall.setPointerCapture(e.pointerId)});
+damFall.addEventListener("pointermove",e=>{
+  if(fallDrag==null||damI<0)return;
+  const dy=fallDrag-e.clientY; fallDrag=e.clientY;
+  S.gateOpen[damI]=Math.max(0,Math.min(1,(S.gateOpen[damI]||0)+dy/80));
+  renderFall();
+});
+damFall.addEventListener("pointerup",()=>{if(fallDrag!=null){fallDrag=null;save()}});
+world.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.getAttribute&&t.classList.contains("dam")){
+    damI=+t.getAttribute("data-i");
+    const p=spirePts(damI);
+    dampanel.style.left=Math.min(p.dam[0],900)+"px";dampanel.style.top=(p.dam[1]+40)+"px";
+    dampanel.style.display="block";
+    renderPoolTiles(damI);renderFall();
+  } else if(t.classList&&t.classList.contains("ground")){
+    sounding(+t.getAttribute("data-i"),e);
+  } else if(t.classList&&t.classList.contains("lakecirc")){
+    pickEmber();
+  } else dampanel.style.display="none";
+});
+/* THE UNCOVERING's ask — a double-click on ground, distinct from the single
+   click that already fires a sounding; never on hover, never volunteered */
+world.addEventListener("dblclick",e=>{
+  const t=e.target;
+  if(t.classList&&t.classList.contains("ground"))askUncover(+t.getAttribute("data-i"));
+});
+/* THE POOL TILES — the table's descendant lives at the dam. Held stones sit visible;
+   drag one onto another and they join, in WRITTEN order by n regardless of pick order,
+   seams kept: every part snapshotted on the merged stone and retained staged "merged".
+   Double-click a coarse rock (given/fetched) and it breaks at the paragraph seam, source kept. */
+function renderPoolTiles(i){
+  let box=document.getElementById("pooltiles");
+  if(!box){box=document.createElement("div");box.id="pooltiles";dampanel.insertBefore(box,dampanel.firstChild)}
+  box.innerHTML="";box.style.maxWidth="260px";
+  const stones=[];S.pools[i].forEach(h=>(h.stones||[]).forEach(st=>stones.push(st)));
+  stones.sort((a,b)=>a.n-b.n);
+  let prevRun=null; /* runs read as spacing — a gap between sittings, no label, no number (S6) */
+  stones.forEach(st=>{
+    const d=document.createElement("div");
+    d.textContent=st.text.slice(0,60);
+    const gap=(prevRun!==null&&st.run!==prevRun)?"16px":"4px";prevRun=st.run;
+    d.style.cssText="width:auto;height:auto;min-height:0;font-size:10px;line-height:1.5;color:#ddd6c4;background:rgba(255,255,255,.06);border:1px "+(st.kind==="given"?"dashed":(st.kind==="fetched"?"dotted":"solid"))+" rgba(222,214,196,.45);padding:5px 7px;margin:"+gap+" 0 4px 0;cursor:grab;font-family:Georgia,serif";
+    d.draggable=true;
+    d.addEventListener("dragstart",ev=>{ev.dataTransfer.setData("n",String(st.n))});
+    d.addEventListener("dragover",ev=>ev.preventDefault());
+    d.addEventListener("drop",ev=>{ev.preventDefault();
+      const n=+ev.dataTransfer.getData("n");if(!n||n===st.n)return;
+      mergeInPool(i,n,st.n);renderPoolTiles(i)});
+    d.addEventListener("dblclick",()=>{if((st.kind==="given"||st.kind==="fetched")&&/\n\s*\n/.test(st.text)){breakRock(i,st);renderPoolTiles(i)}});
+    /* THE EDIT — the intake's by-hand act, the upstream keystone (Kevin's ruling 2026-08-11).
+       Before settle, his hand may edit the stone where it shows; the edit IS the stone.
+       kind/who/asked stay machine-immutable. Settling remains the taking. */
+    d.addEventListener("click",ev=>{
+      if(d.isContentEditable)return;
+      d.textContent=st.text; d.contentEditable="true"; d.draggable=false;
+      d.style.cursor="text"; d.style.whiteSpace="pre-wrap"; d.focus();
+      ev.stopPropagation();
+    });
+    d.addEventListener("keydown",ev=>ev.stopPropagation());
+    d.addEventListener("blur",()=>{
+      if(!d.isContentEditable)return;
+      const t=(d.innerText||"").trim();
+      if(t.length>1)st.text=t; /* his words replace his words; empty is not an erasure path */
+      save(); renderPoolTiles(i);
+    });
+    box.appendChild(d);
+  });
+}
+function mergeInPool(i,na,nb){
+  let found=[];
+  S.pools[i].forEach(h=>{(h.stones||[]).forEach(st=>{if(st.n===na||st.n===nb)found.push({h,st})})});
+  if(found.length!==2)return;
+  const parts=found.map(f=>f.st).sort((a,b)=>a.n-b.n); /* written order, regardless of pick order */
+  const joined=mkStone(parts.map(p=>p.text).join(" "),parts[0].kind);
+  joined.stage="sent";
+  joined.seams=parts.map(p=>({n:p.n,text:p.text,kind:p.kind,who:p.who,asked:p.asked})); /* seams kept */
+  found.forEach(f=>{f.st.stage="merged";f.h.stones=f.h.stones.filter(x=>x!==f.st)});
+  S.pools[i][0].stones.push(joined);
+  save();
+}
+function breakRock(i,rock){
+  const parts=rock.text.split(/\n\s*\n/).map(t=>t.trim()).filter(t=>t.length>1);
+  if(parts.length<2)return;
+  rock.stage="dropped-rock"; /* the rock is marked; its pieces carry the source, kept */
+  S.pools[i].forEach(h=>{h.stones=(h.stones||[]).filter(x=>x!==rock)});
+  parts.forEach(t=>{const st=mkStone(t,rock.kind,rock.who,rock.asked);st.stage="sent";S.pools[i][0].stones.push(st)});
+  save();
+}
+/* THE REGION NAMING — a region is nameless until something lands; the first settle opens
+   one line for his hand, once. Blank stays nameless, lawfully; never re-asked. */
+function askRegionName(i){
+  if(S.regionAsked[i])return;S.regionAsked[i]=true;save();
+  const p=spirePts(i);
+  const inp=document.createElement("input");
+  inp.style.cssText="position:absolute;z-index:7;width:150px;font-family:Georgia,serif;font-size:12px;background:rgba(240,235,222,.92);border:none;border-bottom:1px solid #7a6840;outline:none;color:#3a3020;padding:3px 6px";
+  inp.style.left=(p.gr[0]*worldScaleX()-70)+"px";inp.style.top=(p.gr[1]*worldScaleY()-46)+"px";
+  document.getElementById("worldwrap").appendChild(inp);inp.focus();
+  const done=()=>{S.regionNames[i]=inp.value.trim();inp.remove();save();drawWorld()};
+  inp.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key==="Escape"){ev.stopPropagation();done()}});
+  inp.addEventListener("blur",done);
+}
+dampanel.querySelector(".rel").addEventListener("click",()=>{
+  dampanel.style.display="none";
+  const i=damI; if(i<0)return;
+  const held=S.pools[i]; S.pools[i]=[];
+  /* THE FALL — how far this dam's gate was set open (dam.gd: power comes from the fall,
+     not the restriction). Nothing is ever lost at release regardless: every held stone
+     still settles and is still recorded (settling-is-the-taking, unchanged); this scales
+     only the SIZE of what growing does. Default 1 — an untouched lever changes nothing. */
+  const fall=(S.gateOpen&&S.gateOpen[i]!==undefined)?S.gateOpen[i]:1;
+  /* consequence lands now; the runout is display only */
+  let landed=false;
+  held.forEach(h=>{
+    /* settling is the taking: a settled stone's text is fixed forever — landed never lifts */
+    if(h.frac==="sus"){S.grounds[i]+=0.055*fall;
+      (h.stones||[]).forEach(st=>{st.stage="settled";S.sediment[i].push(st)});landed=true}
+    else if(h.frac==="dis"){S.lake+=0.03*fall;S.lensWater[i]=Math.min((S.lensWater[i]||0)+0.12*fall,1);landed=true; /* the dissolved passing through fills the lenses it passes */
+      (h.stones||[]).forEach(st=>{S.compost.push({text:st.text,kind:st.kind,at:S.cycles})})} /* THE SOIL: composts at the dam too, not only a direct lake-drop */
+    /* bedload continues past the frame to the deep — the deep never renders */
+  });
+  if(landed){
+    S.cycles++;askRegionName(i);growForest();
+    /* THE ECOSYSTEM — life follows this spire's OWN release rate (fall size);
+       a spire that just released grows, a spire that goes a cycle without
+       releasing settles back — the same "follows the gate, nothing else" law
+       spire.gd states, adapted from continuous hold to discrete release. */
+    S.life[i]=Math.min(1,(S.life[i]||0)+0.14+0.22*fall);
+    for(let j=0;j<3;j++)if(j!==i)S.life[j]=Math.max(0,(S.life[j]||0)-0.05);
+  }
+  save();
+  held.forEach((h,k)=>{
+    const p=spirePts(i);
+    setTimeout(()=>{animateAlong(p.dam,h.frac==="sus"?p.gr:(h.frac==="dis"?CENTER:[p.gr[0],590]),RUNOUT/FR[h.frac].fall,h.frac,()=>{drawWorld()})},k*260);
+  });
+  drawWorld();
+});
+dampanel.querySelector(".shut").addEventListener("click",()=>{dampanel.style.display="none"});/* holding is not an action */
+/* the bare plate at the dam (E5): drag a held stone onto it — set down, sent nowhere,
+   and nothing else happens. The absence is the feedback. */
+const damBare=dampanel.querySelector(".bare");
+damBare.addEventListener("dragover",ev=>ev.preventDefault());
+damBare.addEventListener("drop",ev=>{ev.preventDefault();
+  const n=+ev.dataTransfer.getData("n");if(!n||damI<0)return;
+  S.pools[damI].forEach(h=>{const st=(h.stones||[]).find(x=>x.n===n);
+    if(st){st.stage="down";h.stones=h.stones.filter(x=>x!==st)}});
+  save();renderPoolTiles(damI);drawWorld();
+});
+/* ---------- the sounding: you drop a line where you are curious ---------- */
+const sound=document.getElementById("sound");
+let soundT=null;
+function sounding(i,e){
+  const sd=S.sediment[i];
+  const line=el("line",{x1:e.offsetX/worldScaleX(),y1:0,x2:e.offsetX/worldScaleX(),y2:e.offsetY/worldScaleY(),stroke:"#5a5040","stroke-width":1});
+  setTimeout(()=>{line.remove()},900);
+  sound.style.left=Math.min(e.offsetX,window.innerWidth-360)+"px";
+  sound.style.top=Math.max(e.offsetY-20,10)+"px";
+  if(sd.length){sound.textContent=sd[Math.floor(Math.random()*sd.length)].text;}
+  else{sound.textContent="";sound.style.display="none";return} /* no bottom found: dark, and you learn nothing else */
+  sound.style.display="block";
+  clearTimeout(soundT);soundT=setTimeout(()=>{sound.style.display="none"},6000);
+}
+function worldScaleX(){return document.getElementById("worldwrap").clientWidth/1280}
+function worldScaleY(){return document.getElementById("worldwrap").clientHeight/596}
+/* ---------- stations ---------- */
+const panel=document.getElementById("panel"), pv=document.getElementById("pv");
+let panelOn=false, curStation=-1, charge=null, chips=[];
+document.querySelectorAll(".station").forEach((st,i)=>st.addEventListener("click",()=>openStation(i)));
+document.getElementById("closer").addEventListener("click",closePanel);
+function closePanel(){panel.classList.remove("on");panelOn=false;
+  if(charge){S.descended=(charge.stones||[]).concat(S.descended);charge=null;S.working=null} /* an unrouted stone goes back below the node; nothing is lost */
+  renderTank();save()}
+function openStation(i){
+  /* the station opens whether or not water has arrived — an empty tray is a lawful state */
+  curStation=i;
+  /* the charge IS the stone (S3) — drawn from the DESCENDED water only (T4/T6):
+     the order downstream is the order his hand sent things down */
+  charge=S.descended.length?{stones:[S.descended.shift()]}:null;
+  if(charge){S.working=charge;save()} /* the working stone is held durably — quitting mid-station loses nothing */
+  drawStanding();
+  panelOn=true; panel.classList.add("on");
+  buildPanel(i);
+}
+/* every station: the tray of three fractions, already separated by their own physics ·
+   the act chooses WHICH SPIRE · three outputs always: the act → a spire, the lake plate, the bare plate */
+let sel=1, tilting=false, mirror=0.5, beamT=0, beamOn=-1, pull=[0,0];
+/* THE FOUR TOOLS' own step — water_table.gd's step(), carried nearly verbatim
+   (rate constants unchanged) with delta in seconds instead of the engine's
+   physics delta. */
+const WT_SETTLE=0.06,WT_SPIN_STEP=0.34,WT_SPIN_DECAY=0.22,WT_SPIN_LO=0.30,WT_SPIN_HI=1.00,
+      WT_SORT_RATE=0.30,WT_MIX_RATE=1.60,WT_FOG_RATE=0.34,WT_FOG_FADE=0.045;
+function wtStep(dt){
+  const w=S.wt;
+  if(w.spin>0)w.spin=Math.max(0,w.spin-WT_SPIN_DECAY*dt);
+  const running=w.spin>0||w.tune||w.warm;
+  let want=w.form;
+  if(w.spin>WT_SPIN_HI){ /* too fast: homogenizes */
+    w.load=Math.min(1,w.load+WT_MIX_RATE*dt*0.5);
+    w.sorted=Math.max(0,w.sorted-WT_MIX_RATE*dt);
+    want="mixed";
+  } else if(w.tune&&w.warm){ /* tune fights warm — convection tears the nodes apart */
+    w.sorted=Math.max(0,w.sorted-WT_SORT_RATE*dt*0.6);
+    want="mixed";
+  } else if(w.spin>WT_SPIN_LO&&w.warm){ /* spin+warm: the spiral. its output is not in the basin — fog only */
+    want="spiral"; w.fog=Math.min(1,w.fog+WT_FOG_RATE*dt);
+  } else if(w.spin>WT_SPIN_LO){
+    w.sorted=Math.min(1,w.sorted+WT_SORT_RATE*dt); want="ring";
+  } else if(w.tune){
+    w.sorted=Math.min(1,w.sorted+WT_SORT_RATE*dt); want="nodes";
+  } else if(w.warm){
+    w.sorted=Math.min(1,w.sorted+WT_SORT_RATE*dt); want="strata";
+  } else if(!running){ /* STILL — the only tool that works by itself, pulling load out rather than rearranging it */
+    if(w.load>0){w.load=Math.max(0,w.load-WT_SETTLE*dt);w.sorted=Math.min(1,w.sorted+WT_SETTLE*dt*0.5)}
+    want="bed";
+  }
+  if(want!=="spiral"&&w.fog>0)w.fog=Math.max(0,w.fog-WT_FOG_FADE*dt); /* fog thins whenever the spiral isn't turning */
+  w.form=want;
+}
+function wtSpinUp(){S.wt.spin=Math.min(WT_SPIN_HI+WT_SPIN_STEP,S.wt.spin+WT_SPIN_STEP);save()}
+function wtToggleTune(){S.wt.tune=!S.wt.tune;save()}
+function wtToggleWarm(){S.wt.warm=!S.wt.warm;save()}
+function wtDischarge(){S.wt.load=0;S.wt.sorted=0;S.wt.spin=0;S.wt.tune=false;S.wt.warm=false;S.wt.form="bed";S.wt.fog=0;save()}
+let wtLast=null;
+setInterval(()=>{
+  if(!(panelOn&&curStation===0)){wtLast=null;return}
+  const now=performance.now();
+  const dt=wtLast?Math.min((now-wtLast)/1000,0.5):0;
+  wtLast=now;
+  if(dt>0)wtStep(dt);
+  drawBasin();
+},80);
+/* the basin's own small readout, built once per buildPanel(0) and updated in
+   place by the interval above — never rebuilt by pv.innerHTML="" the way the
+   tray is, so drag state on the tray/chips is never disturbed by this ticking. */
+let wtG=null;
+function drawBasin(){
+  if(!wtG)return;
+  wtG.innerHTML="";
+  const w=S.wt;
+  const murk=[0.42,0.44,0.34],clear=[0.62,0.80,0.86];
+  const c=murk.map((m,i)=>clear[i]+(m-clear[i])*w.load);
+  const cx=110,cy=44,r=30;
+  en2(wtG,"circle",{cx,cy,r,fill:"rgba("+Math.round(c[0]*255)+","+Math.round(c[1]*255)+","+Math.round(c[2]*255)+","+(0.30+0.5*w.load)+")",stroke:"rgba(222,214,196,.4)","stroke-width":1});
+  const settled=1-w.load;
+  if(settled>0.02){
+    const fc="rgba(200,190,168,"+(0.35+0.4*settled)+")";
+    if(w.form==="ring")en2(wtG,"circle",{cx,cy,r:r*0.7*settled+4,fill:"none",stroke:fc,"stroke-width":4});
+    else if(w.form==="nodes")for(let i=0;i<3;i++){const a=Math.PI*2*i/3;en2(wtG,"circle",{cx:cx+Math.cos(a)*14,cy:cy+Math.sin(a)*14,r:5*settled+2,fill:fc})}
+    else if(w.form==="strata")for(let i=0;i<3;i++)en2(wtG,"rect",{x:cx-18,y:cy-4+i*4,width:36,height:3,fill:fc});
+    else if(w.form==="spiral"){en2(wtG,"circle",{cx,cy,r:r*0.55,fill:"none",stroke:fc,"stroke-width":3});en2(wtG,"circle",{cx,cy,r:4,fill:fc})}
+    else if(w.form==="mixed")for(let i=0;i<6;i++){const a=(i*37%17)/17*Math.PI*2,rr=(i*13%11)/11*20;en2(wtG,"circle",{cx:cx+Math.cos(a)*rr,cy:cy+Math.sin(a)*rr,r:2.4,fill:fc})}
+    else en2(wtG,"circle",{cx,cy,r:r*0.75*settled+3,fill:fc});
+  }
+  if(w.fog>0.02)en2(wtG,"circle",{cx,cy,r:r+10,fill:"rgba(235,238,240,"+(0.18*w.fog)+")"});
+}
+function en2(parent,n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);parent.appendChild(e);return e}
+function buildPanel(st){
+  pv.innerHTML="";
+  if(st!==0)wtG=null; /* the basin only lives at the water table; elsewhere it is simply not there */
+  const W=panel.clientWidth,H=panel.clientHeight;
+  pv.setAttribute("viewBox","0 0 "+W+" "+H);
+  /* the panel names itself and its act — teaching, never advising */
+  const NAMES=[["THE WATER TABLE","drag the tray to lean it — the lowest spout picks the spire. Too far past level and it slops to the deep."],
+               ["THE HELIOSTAT","drag the mirror — the beam picks the spire. Held too long on one receiver, it scorches shut for good."],
+               ["THE MEMBRANE","drag the sheet toward an anchor — the well picks the spire. Past its reach it tears, then heals on its own."],
+               ["THE FILTERS","drag each fraction where your hand decides — no act chooses for you here."]];
+  el("text",{x:24,y:34,fill:"#e6e0d0","font-size":15,class:"pv-h"},pv).textContent=NAMES[st][0];
+  el("text",{x:24,y:54,fill:"rgba(222,214,196,.75)","font-size":11.5,class:"pv-h"},pv).textContent=NAMES[st][1];
+  el("text",{x:24,y:H*0.56-38,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the three spires — left · middle · right:";
+  el("text",{x:W*0.30+4,y:H*0.78-8,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the lake";
+  el("text",{x:W*0.58+4,y:H*0.78-8,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="set it down";
+  if(charge)el("text",{x:24,y:H*0.70-64,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the charge — sinks · hangs · passes:";
+  /* the act zone (chooses the spire) */
+  const ax=W/2, ay=H*0.32;
+  if(st===0){ /* water table: lean the tray; water leaves by the lowest spout */
+    const g=el("g",{id:"tray"},pv);
+    el("rect",{x:ax-140,y:ay-16,width:280,height:26,fill:"#8a7f66",rx:4},g);
+    for(let k=0;k<3;k++)el("rect",{x:ax-140+k*126,y:ay+10,width:28,height:16,fill:"#6b6250"},g);
+    g.setAttribute("transform","rotate("+(S.lean*14)+" "+ax+" "+ay+")");
+    g.style.cursor="ew-resize";
+    let dragX=null;
+    g.addEventListener("pointerdown",e=>{dragX=e.clientX;g.setPointerCapture(e.pointerId)});
+    g.addEventListener("pointermove",e=>{if(dragX==null)return;S.lean=Math.max(-1.4,Math.min(1.4,S.lean+(e.clientX-dragX)/220));dragX=e.clientX;
+      g.setAttribute("transform","rotate("+(S.lean*14)+" "+ax+" "+ay+")");
+      sel=S.lean<-0.2?0:(S.lean>0.2?2:1)});
+    g.addEventListener("pointerup",()=>{dragX=null;save()});
+    /* THE FOUR TOOLS — a small basin, separate instrument, same station: STILL
+       is not a button (it is what happens when none of these are touched);
+       SPIN/TUNE/WARM are. The basin charges when the water table's own charge
+       arrives, exactly once per arrival (Math.max — idempotent on re-render). */
+    if(charge)S.wt.load=Math.max(S.wt.load,0.85);
+    wtG=el("g",{id:"wtg",transform:"translate("+(W-150)+",18)"},pv);
+    drawBasin();
+    const mkBtn=(x,label,on,fn)=>{
+      const b=el("rect",{x,y:70,width:34,height:20,rx:2,fill:on?"rgba(200,190,168,.55)":"rgba(255,255,255,.06)",stroke:"rgba(222,214,196,.5)",style:"cursor:pointer"},pv);
+      el("text",{x:x+17,y:83,fill:"rgba(222,214,196,.85)","font-size":9,"text-anchor":"middle",style:"pointer-events:none",class:"pv-h"},pv).textContent=label;
+      b.addEventListener("click",fn);
+    };
+    mkBtn(W-150,"SPIN",false,()=>{wtSpinUp()});
+    mkBtn(W-112,"TUNE",S.wt.tune,()=>{wtToggleTune();buildPanel(0)});
+    mkBtn(W-74,"WARM",S.wt.warm,()=>{wtToggleWarm();buildPanel(0)});
+  }
+  if(st===1){ /* heliostat: turn the mirror; the beam picks the spire */
+    for(let k=0;k<3;k++){
+      const rx=ax-170+k*170;
+      el("rect",{x:rx-20,y:ay-70,width:40,height:14,rx:3,fill:S.scorch[k]?"#5a3a30":"#c9b878",opacity:S.scorch[k]?0.9:0.8,"data-r":k},pv);
+    }
+    const m=el("g",{id:"mir"},pv);
+    el("rect",{x:ax-34,y:ay+40,width:68,height:8,fill:"#c9b878"},m);
+    m.setAttribute("transform","rotate("+((mirror-0.5)*70)+" "+ax+" "+(ay+44)+")");
+    m.style.cursor="ew-resize";
+    let dX=null;
+    m.addEventListener("pointerdown",e=>{dX=e.clientX;m.setPointerCapture(e.pointerId)});
+    m.addEventListener("pointermove",e=>{if(dX==null)return;mirror=Math.max(0,Math.min(1,mirror+(e.clientX-dX)/300));dX=e.clientX;
+      m.setAttribute("transform","rotate("+((mirror-0.5)*70)+" "+ax+" "+(ay+44)+")");
+      const k=mirror<0.34?0:(mirror>0.66?2:1);
+      if(k!==beamOn){beamOn=k;beamT=performance.now()}
+      else if(performance.now()-beamT>BURN_AT&&!S.scorch[k]){S.scorch[k]=true;save();buildPanel(1)} /* the receiver closes — scorched */
+      if(!S.scorch[k])sel=k;
+      pv.querySelectorAll(".beam").forEach(b=>b.remove());
+      el("line",{x1:ax,y1:ay+44,x2:ax-170+k*170,y2:ay-56,stroke:"rgba(230,210,140,.7)","stroke-width":3,class:"beam"},pv);
+    });
+    m.addEventListener("pointerup",()=>{dX=null});
+  }
+  if(st===2){ /* membrane: pull the sheet; water rolls into the well */
+    const anchors=[[ax-160,ay-40],[ax,ay+60],[ax+160,ay-40]];
+    anchors.forEach(a=>el("circle",{cx:a[0],cy:a[1],r:6,fill:"#6b6250"},pv));
+    const torn=Date.now()-S.tornAt<RELAX; /* wall clock: a saved tear heals on real time, not session time */
+    const sheet=el("path",{d:"M"+anchors[0]+" Q "+(ax+pull[0])+" "+(ay+pull[1])+" "+anchors[2]+" L "+anchors[1]+" Z",
+      fill:torn?"rgba(168,154,124,.15)":"rgba(168,154,124,.45)",stroke:"#a89a7c","stroke-width":2,"stroke-dasharray":torn?"6 5":"none"},pv);
+    sheet.style.cursor="move";
+    let d0=null;
+    sheet.addEventListener("pointerdown",e=>{d0=[e.clientX,e.clientY];sheet.setPointerCapture(e.pointerId)});
+    sheet.addEventListener("pointermove",e=>{if(!d0)return;
+      pull[0]+=e.clientX-d0[0];pull[1]+=e.clientY-d0[1];d0=[e.clientX,e.clientY];
+      const r=Math.hypot(pull[0],pull[1]);
+      if(r>REACH){S.tornAt=Date.now();pull=[0,0];save();buildPanel(2);return} /* the tear: it opens */
+      sheet.setAttribute("d","M"+anchors[0]+" Q "+(ax+pull[0])+" "+(ay+pull[1])+" "+anchors[2]+" L "+anchors[1]+" Z");
+      let best=0,bd=1e9;anchors.forEach((a,k)=>{const dd=Math.hypot(a[0]-ax-pull[0],a[1]-ay-pull[1]);if(dd<bd){bd=dd;best=k}});
+      sel=best;});
+    sheet.addEventListener("pointerup",()=>{d0=null});
+    if(torn)setTimeout(()=>{if(panelOn&&curStation===2)buildPanel(2)},RELAX-(Date.now()-S.tornAt)+50);
+  }
+  if(st===3){ /* the filters: laid out already separated; which one goes where is entirely the hand's */ }
+  /* the three spire mouths (the act's own output) */
+  for(let k=0;k<3;k++){
+    const mx=W*0.25+k*W*0.25;
+    const m=document.createElementNS(NS,"g");
+    el("circle",{cx:mx,cy:H*0.56,r:26,fill:"none",stroke:(st===1&&S.scorch[k])?"rgba(120,70,60,.5)":"rgba(222,214,196,"+((st===3||sel===k)?0.85:0.28)+")","stroke-width":2,"stroke-dasharray":"5 4",class:"mouth-c","data-dest":k},pv);
+  }
+  /* the lake plate and the bare plate — always on screen */
+  el("rect",{x:W*0.30,y:H*0.78,width:70,height:42,rx:4,fill:"rgba(96,132,148,.4)",stroke:"rgba(222,214,196,.5)","data-dest":"lake"},pv);
+  el("rect",{x:W*0.58,y:H*0.78,width:70,height:42,rx:4,fill:"none",stroke:"rgba(222,214,196,.5)","data-dest":"set"},pv);
+  /* the tray: three fractions by their own behavior — empty if nothing has arrived */
+  chips=[];
+  if(charge){
+    const cy=H*0.70;
+    mkChip("bed",W*0.14,cy,st);mkChip("sus",W*0.14,cy-46,st);mkChip("dis",W*0.14,cy-92,st);
+  }
+}
+function mkChip(frac,x,y,st){
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("transform","translate("+x+","+y+")");g.style.cursor="grab";
+  if(frac==="bed")el("polygon",{points:"0,-9 8,0 0,9 -8,0",fill:"#2e2921"},g);
+  if(frac==="sus")el("circle",{cx:0,cy:0,r:8,fill:"rgba(170,158,128,.85)"},g);
+  if(frac==="dis")el("circle",{cx:0,cy:0,r:8,fill:"none",stroke:"rgba(150,170,180,.95)","stroke-width":2.5},g);
+  pv.appendChild(g);
+  let drag=null,px=x,py=y;
+  /* suspended hangs and wanders; bedload sits; the ring drifts */
+  if(frac==="sus"){let t=0;setInterval(()=>{if(drag||!panelOn)return;t+=0.05;g.setAttribute("transform","translate("+(px+Math.sin(t)*7)+","+(py+Math.cos(t*0.7)*4)+")")},60)}
+  g.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY];g.setPointerCapture(e.pointerId)});
+  g.addEventListener("pointermove",e=>{if(!drag)return;px+=e.clientX-drag[0];py+=e.clientY-drag[1];drag=[e.clientX,e.clientY];
+    g.setAttribute("transform","translate("+px+","+py+")")});
+  g.addEventListener("pointerup",e=>{drag=null;
+    const W=panel.clientWidth,H=panel.clientHeight;
+    let dest=null;
+    if(py>H*0.74&&px>W*0.28&&px<W*0.42)dest="lake";
+    else if(py>H*0.74&&px>W*0.56&&px<W*0.70)dest="set";
+    else if(py>H*0.44&&py<H*0.66){
+      const k=Math.round((px-W*0.25)/(W*0.25));
+      if(k>=0&&k<=2){
+        if(st===3)dest=k; /* the hand routes directly */
+        else dest=sel;    /* the act chose the spire; the mouth is where it leaves */
+        if(st===0&&Math.abs(S.lean)>RIM)dest="deep";       /* slop-over: past the rim, over the edge */
+        if(st===1&&S.scorch[dest])dest="deep";              /* a scorched receiver passes it through, doing nothing it can keep */
+        if(st===2&&Date.now()-S.tornAt<RELAX)dest="deep"; /* a torn membrane holds nothing */
+      }
+    }
+    if(dest!==null){g.remove();
+      const done=chargeTake(frac);
+      /* all three fraction-chips belong to the one charge stone (law 4: composition never
+         derived from the words) — its text rides along regardless of which fraction is
+         dropped, which is what lets a lake-drop compost (soil.py) no matter the fraction */
+      route(frac,dest,charge?charge.stones:null);
+      if(done){if(st===0)wtDischarge();charge=null;closeQuiet()}
+    }});
+}
+let taken={};
+function chargeTake(frac){taken[frac]=true;return taken.bed&&taken.sus&&taken.dis}
+function closeQuiet(){
+  /* the tray refills in an open station: route a charge and the next loads without
+     closing and reopening. Twenty charges become one sitting. The closer still
+     leaves anytime; an empty tank closes quietly on its own. */
+  taken={};S.working=null;
+  drawStanding();
+  if(S.descended.length&&panelOn){
+    charge={stones:[S.descended.shift()]};S.working=charge;save();
+    drawStanding();buildPanel(curStation);return;
+  }
+  panel.classList.remove("on");panelOn=false;save();
+}
+/* ---------- the second mouth: given and fetched enter coarse, by his hand ----------
+   Paste the text; the small line above is who (a given), the one below is asked (a fetched).
+   Whichever carries words decides the kind. One rock, verbatim, source immutable from entry.
+   The file itself never fetches anything — he carried it in. */
+const mouth2=document.getElementById("mouth2");
+mouth2.addEventListener("click",()=>{
+  if(document.getElementById("pastepane"))return;
+  const pane=document.createElement("div");pane.id="pastepane";
+  pane.style.cssText="position:absolute;z-index:8;left:24px;top:24px;right:24px;bottom:24px;background:rgba(74,67,54,.97);border:1px solid #2e2a22;padding:26px;display:flex;flex-direction:column;gap:10px";
+  const who=document.createElement("input");
+  who.style.cssText="width:240px;background:rgba(255,255,255,.08);border:none;border-bottom:1px dashed rgba(222,214,196,.5);color:#ddd6c4;font-family:Georgia,serif;font-size:13px;padding:4px 6px;outline:none";
+  const asked=document.createElement("input");
+  asked.style.cssText=who.style.cssText.replace("dashed","dotted");
+  const ta=document.createElement("textarea");
+  ta.style.cssText="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(222,214,196,.3);color:#e6e0d0;font-family:Georgia,serif;font-size:14px;line-height:1.8;padding:12px;outline:none;resize:none";
+  const row=document.createElement("div");row.style.cssText="display:flex;gap:10px";
+  const inBtn=document.createElement("div");
+  inBtn.style.cssText="width:56px;height:36px;border:2px solid rgba(222,214,196,.6);background:rgba(112,146,160,.35);cursor:pointer";
+  const xBtn=document.createElement("div");
+  xBtn.style.cssText="width:36px;height:36px;border:1px solid rgba(222,214,196,.4);cursor:pointer";
+  row.appendChild(inBtn);row.appendChild(xBtn);
+  pane.appendChild(who);pane.appendChild(asked);pane.appendChild(ta);pane.appendChild(row);
+  document.getElementById("worldwrap").appendChild(pane);ta.focus();
+  pane.addEventListener("keydown",ev=>ev.stopPropagation());
+  xBtn.addEventListener("click",()=>pane.remove());
+  inBtn.addEventListener("click",()=>{
+    const t=ta.value.trim();if(!t){pane.remove();return}
+    const kind=asked.value.trim()?"fetched":"given";
+    S.tank.push(mkStone(t,kind,who.value.trim(),asked.value.trim())); /* one rock, coarse — nothing is ever swallowed */
+    renderTank();save();
+    pane.remove();
+  });
+});
+/* ---------- THE ROOM CHASSIS (the resynthesis, R1/R4 — one species, and the audit
+   is the chassis: a room has one job · is readable before opening (threshold as
+   behaviour) · opens over the world · closes lossless · carries set-down furniture ·
+   has an empty state that costs the absent person nothing (BUILD LAW 13) · and WAITS,
+   never waits FOR you. The dam is the flagged second species: it governs.
+   Registry is the contract; auditRooms() (scratch) walks it. */
+const ROOMS=[
+ {id:"st0",job:"the water table — handling",gov:false},
+ {id:"st1",job:"the heliostat — handling",gov:false},
+ {id:"st2",job:"the membrane — handling",gov:false},
+ {id:"st3",job:"the filters — handling",gov:false},
+ {id:"dam",job:"the dam — GOVERNING (second species, flagged, one chassis)",gov:true},
+ {id:"f_seq",job:"sequential — the page",gov:false},
+ {id:"f_blind",job:"blind — the line",gov:false},
+ {id:"f_tiles",job:"tiles — the held, in written order",gov:false},
+ {id:"f_table",job:"the table — everything together",gov:false}
+];
+function auditRooms(){ /* scratch-only; the two-test audit (spec edit 7) */
+  if(KEY.indexOf("scratch")<0)return "audit runs in scratch only";
+  const r={law13:[],waits:[]};
+  /* law 13: every surface opens on empty state without error or demand */
+  const keep={tank:S.tank,descended:S.descended,pools:S.pools.map(p=>p)};
+  S.tank=[];S.descended=[];S.pools=[[],[],[]];
+  for(let i=0;i<4;i++){openStation(i);r.law13.push("st"+i+":"+(panelOn?"opens-empty":"FAIL"));closePanel()}
+  openTetra();["seq","blind","tiles","table"].forEach(f=>{openFace(f);r.law13.push("f_"+f+":"+(faceOpen===f?"opens-empty":"FAIL"));closeFaceInner()});
+  closeTetra();
+  S.tank=keep.tank;S.descended=keep.descended;S.pools=keep.pools;
+  /* waits-test: static — no notification/alert/timer-driven surfacing exists.
+     Tokens assembled so the audit cannot match its own source. */
+  const src=document.documentElement.outerHTML;
+  const demand=[["new ","Notifi","cation("],["window.","aler","t("],["confir","m("]].some(p=>src.indexOf(p.join(""))>=0);
+  r.waits.push(demand?"FAIL: demand primitive found":"no demand primitives");
+  return JSON.stringify(r);
+}
+/* ---------- THE TEACHING (Kevin's ruling 2026-08-11: "The game can teach the user
+   how to use it"). The captions name the world and its mechanics — they never advise,
+   never score, never read or mention what he wrote. A museum caption, not a coach. */
+const teach=document.getElementById("teach");
+function say(t){if(t){teach.textContent=t;teach.style.display="block"}else teach.style.display="none"}
+const TEACH={
+ tank:"THE WRITING TETRA — the tank is the tetra seen small. Click to open it: four faces, your writing rising inside as water. Only stones your hand has worked can be carried down past the bottom node to the stations.",
+ f_blind:"BLIND — a single line. Finish a sentence and it leaves as a stone; nothing accumulates in view.",
+ f_seq:"SEQUENTIAL — the page. Everything visible as typed; the page is never cleared. Finished sentences bank as stones; Enter banks what you hold; Enter on empty closes the sitting.",
+ f_tiles:"TILES — your held stones in written order. Click one to edit it; the small square opens the stone's own pane — full text, its source, your mark, its ties. An edit or a mark is work, and work is what lets a stone descend.",
+ f_table:"THE TABLE — everything together. Drag a stone onto another to merge them (written order, seams kept). Double-click two stones to tie a line. The small square opens the stone's pane. Every one of these acts is work.",
+ st0:"THE WATER TABLE — a station. Open it, then lean the tray: water leaves by the lowest spout, and the spout picks which spire. Lean too far and it slops over the edge, to the deep.",
+ st1:"THE HELIOSTAT — a station. Turn the mirror: the beam picks the spire. Hold the beam on one receiver too long and it scorches shut — and stays shut.",
+ st2:"THE MEMBRANE — a station. Pull the sheet toward an anchor: a well forms and the water follows it. Pull past its reach and it tears; it heals in its own time.",
+ st3:"THE FILTERS — a station. The three fractions arrive already separated: the dark diamond sinks, the soft disc hangs, the ring passes through. Your hand routes each one.",
+ mouth2:"THE SECOND MOUTH — writing that isn't yours enters here. Paste it, name who gave it (first line) or what you asked for (second line); it arrives as one coarse rock.",
+ dam:"A DAM — water you sent down a spire waits here. Holding is free and asks nothing. Click to see what it holds: drag stones together to merge them, click one to edit it, double-click a rock to break it, or release everything downstream. The small bar above release is the fall — how far the gate is set open; a wider fall grows more, a narrow one grows less, and nothing is ever lost either way.",
+ ground:"THE GROUND — released water settles here as your own sentences. Each one stands as a lens: it holds water, grows with what lands, and sends light back up. Click to drop a sounding line and read one.",
+ lake:"THE LAKE — what was dropped, and what passed through everything, gathers at the center. Below it is the deep, which is never shown. What composts here may grow into something you can click to gather back into the tank — nothing to gather is a lawful, silent state.",
+ field:"THE WRITING FIELD — write; nothing else is asked. Finish a sentence and it becomes water in the tank. Enter banks what you're holding, finished or not; Enter on an empty line closes the sitting. The page is never cleared — your words stay, and their water has already left. Esc lays this sheet aside; Esc brings it back. Nothing you write is read, judged, or rewritten — it only ever becomes ground."
+};
+["tank","st0","st1","st2","st3","mouth2"].forEach(id=>{
+  const n=document.getElementById(id);if(!n)return;
+  n.addEventListener("mouseenter",()=>say(TEACH[id]));
+  n.addEventListener("mouseleave",()=>say(""));
+});
+field.addEventListener("mouseenter",()=>say(TEACH.field));
+field.addEventListener("mouseleave",()=>say(""));
+world.addEventListener("mousemove",e=>{
+  const t=e.target;
+  if(t.classList&&t.classList.contains("dam"))say(TEACH.dam);
+  else if(t.classList&&t.classList.contains("ground"))say(TEACH.ground);
+  else if(t.tagName==="circle"&&t.getAttribute("cx")==String(CENTER[0]))say(TEACH.lake);
+  else say("");
+});
+world.addEventListener("mouseleave",()=>say(""));
+/* ---------- boot: the program opens in a writing field; nothing precedes it.
+   The field is SEQUENTIAL, a face of the tetra — so the tetra opens onto it. ---------- */
+if(S.watermark>field.value.length)S.watermark=field.value.length;
+drawWorld();drawStanding();
+openTetra();openFace("seq");
+</script>
+</body>
+</html>

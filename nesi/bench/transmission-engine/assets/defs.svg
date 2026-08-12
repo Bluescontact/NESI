@@ -1,0 +1,177 @@
+<!--
+  defs.svg — the asset library.
+
+  This is NOT a renderable SVG. It is the canonical set of reusable
+  gradients, filters, and glow definitions that every template inherits.
+
+  The engine inlines the contents of <defs> into each generated SVG at
+  build time, rather than referencing externally — this keeps the output
+  files self-contained and renders correctly in every browser and
+  rasterizer.
+
+  When you change the visual register (color, glow intensity, mist
+  texture), change it here. Templates pull from this single source.
+-->
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+
+    <!-- ============================================ -->
+    <!-- BACKGROUND FIELDS                            -->
+    <!-- ============================================ -->
+
+    <!-- Standard dark field with subtle warm radial center -->
+    <radialGradient id="field" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#1c1611"/>
+      <stop offset="40%" stop-color="#100c08"/>
+      <stop offset="100%" stop-color="#050402"/>
+    </radialGradient>
+
+    <!-- Flat near-black field (used for patterns where the figure carries everything) -->
+    <radialGradient id="field_flat" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+
+    <!-- ============================================ -->
+    <!-- LUMINOUS GLOWS                               -->
+    <!-- ============================================ -->
+
+    <!-- Standard vertex glow — warm gold radiating to transparent -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#d4af6a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bright central point (used for threshold midpoints, source nodes) -->
+    <radialGradient id="point_bright" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff4d6" stop-opacity="1"/>
+      <stop offset="20%" stop-color="#f0c674" stop-opacity="0.8"/>
+      <stop offset="55%" stop-color="#d4af6a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Wide soft halo — for atmospheric headers -->
+    <radialGradient id="halo_wide" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="0.55"/>
+      <stop offset="25%" stop-color="#d4af6a" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#8a6f3f" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Dim emanation glow — for secondary nodes -->
+    <radialGradient id="glow_dim" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============================================ -->
+    <!-- HORIZONTAL & LINEAR GRADIENTS                -->
+    <!-- ============================================ -->
+
+    <!-- Threshold line — fades in from edges, peaks at center -->
+    <linearGradient id="line_threshold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#f0c674" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Strong boundary — for atmospheric header use, with brightest center -->
+    <linearGradient id="line_boundary" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4af6a" stop-opacity="0"/>
+      <stop offset="15%" stop-color="#d4af6a" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#f0c674" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#fff4d6" stop-opacity="1"/>
+      <stop offset="55%" stop-color="#f0c674" stop-opacity="0.95"/>
+      <stop offset="85%" stop-color="#d4af6a" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- ============================================ -->
+    <!-- ATMOSPHERIC FILTERS                          -->
+    <!-- ============================================ -->
+
+    <!-- Subtle film grain overlay -->
+    <filter id="grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0 0 0 0 0.05
+                0 0 0 0 0.045
+                0 0 0 0 0.035
+                0 0 0 0.08 0"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+
+    <!-- Soft mist drift — large-scale organic texture -->
+    <filter id="mist" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="3" seed="3" result="mist"/>
+      <feColorMatrix in="mist" type="matrix"
+        values="0 0 0 0 0.55
+                0 0 0 0 0.45
+                0 0 0 0 0.3
+                0 0 0 0.18 0"/>
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+
+    <!-- Soft blur for bloom effects -->
+    <filter id="softblur">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+
+    <!-- ============================================ -->
+    <!-- VIGNETTE                                     -->
+    <!-- ============================================ -->
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.65"/>
+    </radialGradient>
+
+    <!-- ============================================ -->
+    <!-- TRANSMISSION REGISTER DEFS                   -->
+    <!-- Use when medium declaration = Transmission.  -->
+    <!-- Same IDs with _tx suffix; swap in at Stage 3 -->
+    <!-- ============================================ -->
+
+    <!-- Flat warm off-white field (no gradient needed; use rect fill="#f7f5f0") -->
+
+    <!-- Vertex glow — earth concentration on light field -->
+    <radialGradient id="glow_tx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a3020" stop-opacity="0.14"/>
+      <stop offset="40%" stop-color="#7a6840" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Source node glow — larger, used in source_emanation -->
+    <radialGradient id="source_tx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a3020" stop-opacity="0.16"/>
+      <stop offset="60%" stop-color="#7a6840" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Dim emanation glow — secondary nodes in source_emanation -->
+    <radialGradient id="glow_dim_tx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a3020" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Threshold / layer line — dark earth, fades to edges -->
+    <linearGradient id="line_threshold_tx" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7a6840" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#3a3020" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#7a6840" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Subtle grain filter for transmission atmospheric headers (very low opacity) -->
+    <filter id="grain_tx" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0 0 0 0 0.23
+                0 0 0 0 0.19
+                0 0 0 0 0.13
+                0 0 0 0.04 0"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+
+  </defs>
+</svg>

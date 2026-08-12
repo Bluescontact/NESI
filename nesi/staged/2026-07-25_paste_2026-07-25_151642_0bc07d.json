@@ -1,0 +1,36 @@
+{
+  "id": "2026-07-25_paste_2026-07-25_151642_0bc07d",
+  "pile": "paste_2026-07-25_151642.md",
+  "pile_path": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox\\paste_2026-07-25_151642.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-25T15:51:03",
+    "engine": "dark (articulation awaits the engine or Kevin's hand)",
+    "error": null
+  },
+  "object": {
+    "engine": "dark (articulation awaits the engine or Kevin's hand)",
+    "pile": "paste_2026-07-25_151642.md",
+    "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+    "items": [
+      {
+        "item": "two extra dinners",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)"
+      }
+    ],
+    "restored_count": 1,
+    "articulation_socket": {
+      "awaiting": "articulation",
+      "mode": "metabolize",
+      "note": "[engine dark] scaffold stands; stated language awaits the engine (unlit) or Kevin"
+    }
+  },
+  "lint": null,
+  "mark": {
+    "verdict": null,
+    "at": null
+  }
+}

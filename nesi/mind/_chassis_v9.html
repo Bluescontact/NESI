@@ -1,0 +1,271 @@
+<!-- DSS WIDGET CHASSIS v9 — OPEN SURFACE + REGISTER SPLIT (CANONICAL, 2026-07-28, Kevin's mark
+     "Mark v9 canonical over v8 -- this session's live use is the confirmation it was waiting
+     for.") Built as a candidate 2026-07-25 ("Fold the DECIDE/CROSS control split into the v9
+     chassis candidate, alongside the click-anywhere tile fix.") and sat unused for three days —
+     flagged as a loose thread mid-session on 2026-07-28 during an unrelated falsifier desk-check,
+     then independently reinvented ad hoc the same session before its existence was known, then
+     used live for a real multi-decision pass ("I was able to make 4 decisions in a single pass").
+     That live use is the mark. v8 is retired to lineage per PROTOCOLS.md.
+
+     ADDITION 3, same mark (2026-07-28): the LOCATOR-LINE slot deepens from one-or-two sentences
+     to 4-10 sentences, Kevin's own instruction — "expand the where this thread stands... so i can
+     match the depth of the decision held." The locator's job stops being a one-line pointer and
+     becomes a real, standalone account of the thread: what's been decided, what's still open, what
+     changed since the last widget, at a depth proportional to what the tiles below are asking him
+     to carry. A widget holding a light, reversible decision can still run a short locator; a widget
+     holding something with real stakes needs a locator that actually lets him arrive at the same
+     depth the decision requires, without having to reconstruct it from memory of prior turns.
+
+     TWO CHANGES FROM v8, BOTH FROM KEVIN'S OWN NAMED FRICTION IN LIVE USE (2026-07-25 evening):
+
+     1. NO CAPACITY STRIP. Kevin: "The one decision, few decision or i drive isnt helpful.
+        I want tiles and context to expand when i click anywhere on the widget... without
+        having to trigger a run, until I've made all the decisions relevant to me in the
+        moment." v8's capacity strip pre-gated volume (one/few/drive) — the actual friction
+        was navigation cost, not amount shown (same root as feedback_load_is_navigation_not_
+        volume). v9 drops the strip entirely: every tile is present and independently
+        click-anywhere-to-expand, all the time. Batching survives via the existing hold→
+        deposit mechanism (marks queue locally, one clipboard copy at the end) — Kevin
+        works through as many decisions as he wants in one pass, one send.
+
+     2. DECIDE/CROSS REGISTER SPLIT ON THE CONTROL ITSELF. Kevin: "three options creates
+        loop if all moves are at the same register." v8's slider put go/hold/drop as three
+        visually-equal siblings — no structural signal for which one actually exits versus
+        which one just restates where you already are. VERB_LENSES.md already splits C·DECIDE
+        (mark/hold/drop — reversible, Kevin's-hands, no pressure) from D·CROSS (publish/
+        deposit — the one near-irreversible move, "always waits for an explicit fresh yes").
+        v9 applies that split to the control: hold/drop sit together as a quiet DECIDE-
+        register pair (low visual weight, always available, no exit implied); "go" sits in
+        its own visually distinct CROSS-register zone, so committing reads as crossing a
+        register, not picking a third equal option.
+
+     CARRIED FORWARD, UNCHANGED FROM v8: the locator (regenerated every fill — where the
+     WHOLE thread stands), the fail-safe brake (catch every mark via tools/marks.py BEFORE
+     acting on it), the floor indicator (tools/marks.py status readout in the locator or
+     header), the grounding tag per tile (grounded/reached, binary, never a number), and the
+     hard rule that no card/locator/text may direct Kevin's body.
+
+     ALSO CARRIED FORWARD AS A BEHAVIORAL RULE (not chassis markup — this is on the author,
+     every fill): no ambient recall. A held/untouched item from a prior turn is NOT relisted
+     here as "still open" unless Kevin asks for it by name. Held means parked and inert, per
+     NESI.md's own line ("the held things are parked and don't decay... nothing is waiting
+     on a decision you have to hold in your head") — the chassis cannot enforce this by
+     itself, the author must simply not write those sections.
+
+     FILL ONLY: HEADER · LOCATOR-LINE · NOTE · TILES (one-line + hint + grounding tag +
+     reading + control) · CARDDATA. Everything else is chassis. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;
+  --red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;
+  --bdr:#ccc5b0;--bdrk:rgba(58,48,32,0.15);
+  --anc:#4a5a8a;--anc-bg:#e8ecf5;
+  --read-bg:#f2efe6;--decide-bg:#eee9da;--cross-bg:#f2ece0;
+}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.65;padding:20px}
+.wrap{max-width:760px;margin:0 auto;padding-bottom:40px}
+.hd{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bdr)}
+.hd-eye{font-size:8px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.hd-name{font-size:18px;font-weight:bold;color:var(--gb);letter-spacing:2px;margin-bottom:4px}
+.hd-sub{font-size:10px;color:var(--gd)}
+/* SLOT: LOCATOR-LINE — regenerated every fill. Where the WHOLE thread stands, incl. floor indicator. */
+.locator{font-size:10px;color:var(--gd);background:var(--sf2);border:1px solid var(--bdr);padding:8px 12px;margin-bottom:16px}
+.locator-lab{font-size:8px;letter-spacing:2px;color:var(--gf);font-weight:bold;text-transform:uppercase;margin-bottom:4px}
+.note{font-size:9px;color:var(--gd);font-style:italic;margin-bottom:18px}
+/* ADDITION 1 · TILES — replace v8's cards+capacity-strip. Every tile always present, click-anywhere. */
+.tiles{display:flex;flex-direction:column;gap:10px}
+.tile{border:1px solid var(--bdr);background:var(--sf);cursor:pointer}
+.tile:hover{border-color:var(--gd)}
+.tile.top{border-left:3px solid var(--gb)}
+.tile.open{background:var(--sf2)}
+.t-hd{padding:13px 15px;display:flex;gap:10px;align-items:flex-start}
+.t-car{font-size:11px;color:var(--gf);width:12px;padding-top:1px}
+.tile.open .t-car{color:var(--gb)}
+.t-main{flex:1}
+.t-one{font-size:12.5px;color:var(--gb);font-weight:bold;line-height:1.5}
+.t-hint{font-size:9px;color:var(--gf);letter-spacing:0.3px;margin-top:3px}
+.tag{font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--bdr);text-transform:uppercase;white-space:nowrap;margin-top:2px}
+.tag.grounded{color:var(--anc);background:var(--anc-bg);border-color:var(--anc)}
+.tag.reached{color:var(--yel);background:var(--yel-bg);border-color:var(--yel)}
+.tag-row{display:flex;gap:4px;flex-direction:column;align-items:flex-end}
+.t-bd{display:none;border-top:1px solid var(--bdr);padding:14px 15px;cursor:default}
+.tile.open .t-bd{display:block}
+.zone-read{background:var(--read-bg);border:1px solid var(--bdr);border-left:2px solid var(--gf);padding:9px 11px;margin-bottom:10px}
+.zone-read-lab{font-size:8px;letter-spacing:2px;color:var(--gf);text-transform:uppercase;margin-bottom:5px}
+.plain{font-size:11px;color:var(--g);line-height:1.7}
+/* ADDITION 2 · REGISTER SPLIT — decide (quiet, hold/drop) vs cross (distinct, go) */
+.zone-decide{background:var(--decide-bg);border:1px solid var(--bdr);border-left:2px solid var(--gd);padding:9px 11px}
+.zone-cross{background:var(--cross-bg);border:1px solid var(--gb);border-left:3px solid var(--gb);padding:9px 11px;margin-top:8px}
+.steer-label{font-size:8px;letter-spacing:1.5px;color:var(--gf);margin-bottom:7px;text-transform:uppercase}
+.cross-label{font-size:8px;letter-spacing:1.5px;color:var(--gb);margin-bottom:7px;text-transform:uppercase;font-weight:bold}
+.decide-btns{display:flex;gap:0;border:1px solid var(--bdr);background:#fff}
+.d-btn{flex:1;text-align:center;font-size:10px;padding:8px 4px;cursor:pointer;color:var(--gd);background:transparent;border:none;border-right:1px solid var(--bdr);font-family:inherit}
+.d-btn:last-child{border-right:none}
+.d-btn:hover{color:var(--gb)}
+.d-btn.held{background:var(--yel-bg);color:var(--yel);font-weight:bold}
+.cross-btn{width:100%;text-align:center;font-size:11px;padding:10px 4px;cursor:pointer;color:var(--grn);background:var(--grn-bg);border:1px solid var(--grn);font-family:inherit;font-weight:bold}
+.cross-btn:hover{background:#fff}
+.type-note{margin-top:22px;padding-top:14px;border-top:1px solid var(--bdr)}
+.marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.chip{background:var(--yel-bg);border:1px solid var(--bdr);color:var(--yel);font-size:9px;padding:2px 8px;cursor:pointer;letter-spacing:0.5px}
+.chip.dep{background:var(--grn-bg);color:var(--grn);border-color:var(--grn);font-weight:bold}
+.status{font-size:8px;color:var(--gf);letter-spacing:1px;margin-top:10px}
+.reveal{display:none;margin-top:10px}
+.reveal.on{display:block}
+.reveal textarea{width:100%;min-height:64px;font-family:inherit;font-size:10px;color:var(--g);background:#fff;border:1px solid var(--yel);padding:8px;resize:vertical}
+.reveal-label{font-size:8px;letter-spacing:1px;color:var(--yel);text-transform:uppercase;margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- SLOT: HEADER -->
+  <div class="hd">
+    <div class="hd-eye">DSS · RECOGNITION INFRASTRUCTURE</div>
+    <div class="hd-name">TITLE HERE</div>
+    <div class="hd-sub">one plain context line — what this moment is</div>
+  </div>
+<!-- /SLOT: HEADER -->
+
+<!-- SLOT: LOCATOR-LINE — where the whole thread stands, incl. floor indicator (tools/marks.py status).
+     DEPTH (2026-07-28, Kevin's mark): 4-10 sentences, not one or two — match the depth of the
+     decision the tiles below are holding. Still no ambient recall: depth means a fuller, real
+     account of what's live and what changed, not relisting prior held/untouched items unless
+     Kevin asked for them by name. -->
+  <div class="locator">
+    <div class="locator-lab">◆ where this thread stands</div>
+    <div>4-10 plain sentences: what's been built/decided so far, what changed since the last widget, the floor-indicator readout, and enough of the real shape of the thread that Kevin can arrive at this decision without reconstructing context from memory. Depth proportional to what's being asked of him below — a light reversible tile can carry a shorter locator; real stakes earn the fuller one.</div>
+  </div>
+<!-- /SLOT: LOCATOR-LINE -->
+
+<!-- SLOT: NOTE — optional one-liner orienting how to use this particular surface -->
+  <div class="note">Click anywhere on a closed tile to open it. Nothing here is hidden behind a setting.</div>
+<!-- /SLOT: NOTE -->
+
+<!-- SLOT: TILES — every tile always visible, click-anywhere on the closed header opens it. -->
+  <div class="tiles" id="tiles">
+
+    <div class="tile top" id="c-g0" onclick="toggle('g0', event)">
+      <div class="t-hd">
+        <span class="t-car">▸</span>
+        <div class="t-main">
+          <div class="t-one">The ripest decision, one plain line.</div>
+          <div class="t-hint">short context hint</div>
+        </div>
+        <!-- SLOT: GROUNDING TAG (g0) — pick grounded or reached honestly -->
+        <div class="tag-row"><span class="tag grounded">grounded</span></div>
+      </div>
+      <div class="t-bd">
+        <div class="zone-read">
+          <div class="zone-read-lab">reading</div>
+          <div class="plain">Plain-words explanation — what it is, what happens if marked. Safe to read; nothing here commits.</div>
+        </div>
+        <div class="zone-decide" onclick="event.stopPropagation()">
+          <div class="steer-label">decide — reversible, no pressure</div>
+          <div class="decide-btns">
+            <button class="d-btn" onclick="holdTile('g0','hold',event)" id="hold-g0">◆ hold</button>
+            <button class="d-btn" onclick="steerTile('g0','drop',event)">not this</button>
+          </div>
+        </div>
+        <div class="zone-cross" onclick="event.stopPropagation()">
+          <div class="cross-label">cross — the one that exits</div>
+          <button class="cross-btn" onclick="steerTile('g0','go',event)">yes — go</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<!-- /SLOT: TILES -->
+
+  <div class="type-note">
+    <div class="marks" id="marks"></div>
+    <div class="status" id="status">click any tile to open it · a mark copies · paste into your own box with Ctrl+V</div>
+    <div class="reveal" id="reveal"><div class="reveal-label">clipboard blocked here — select all + Ctrl+C, then paste into your chat box</div><textarea id="reveal-t" readonly></textarea></div>
+  </div>
+
+</div>
+<script>
+// SLOT: CARDDATA — one entry per tile id. go/drop/plain are optional per tile.
+const CARDS = {
+  g0:{ go:'Direction: yes — do this.',
+       drop:'Set this aside — not the one.' },
+};
+// /SLOT: CARDDATA
+
+let marks = [];
+let openTiles = new Set();
+
+function toggle(id, ev){
+  if(ev) ev.stopPropagation();
+  const c=document.getElementById('c-'+id);const open=c.classList.toggle('open');
+  c.querySelector('.t-car').textContent=open?'▾':'▸';
+  if(open) openTiles.add(id); else openTiles.delete(id);
+}
+function status(t){document.getElementById('status').textContent=t;}
+function fallbackCopy(t){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=t;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    const ok=document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){return false;}
+}
+function revealText(t){
+  const r=document.getElementById('reveal');const ta=document.getElementById('reveal-t');
+  if(r&&ta){ta.value=t;r.classList.add('on');ta.focus();ta.select();}
+}
+function copyMark(t,msg){
+  const done=ok=>{
+    if(ok){document.getElementById('reveal').classList.remove('on');status((msg||'copied')+' — paste into your chat box with Ctrl+V');}
+    else{revealText(t);status('clipboard blocked — select the box below + Ctrl+C');}
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>done(true)).catch(()=>done(fallbackCopy(t)));
+  }else{done(fallbackCopy(t));}
+}
+function steerTile(key,kind,ev){
+  if(ev) ev.stopPropagation();
+  const d=CARDS[key]; if(!d)return;
+  const t=d[kind]; if(t==null)return;
+  const label={go:'copied — go',drop:'copied — set aside',plain:'copied — plainer'}[kind]||'copied';
+  copyMark(t,label);
+}
+function holdTile(key,kind,ev){
+  if(ev) ev.stopPropagation();
+  const t=CARDS[key].go||CARDS[key].plain||key;
+  const b=document.getElementById('hold-'+key);
+  const i=marks.indexOf(t);
+  if(i>=0){marks.splice(i,1);if(b)b.classList.remove('held');}
+  else{marks.push(t);if(b)b.classList.add('held');}
+  renderMarks();status(marks.length+' held — ⇩ deposit copies all in one click');
+}
+function renderMarks(){
+  const m=document.getElementById('marks');m.innerHTML='';
+  marks.forEach((t,i)=>{const c=document.createElement('span');c.className='chip';c.textContent='◆ '+(t.length>42?t.slice(0,42)+'…':t);c.title='click to release';c.onclick=(ev)=>{ev.stopPropagation();releaseMark(i);};m.appendChild(c);});
+  if(marks.length){const d=document.createElement('span');d.className='chip dep';d.textContent='⇩ DEPOSIT '+marks.length;d.title='copy all as one batch';d.onclick=(ev)=>{ev.stopPropagation();deposit();};m.appendChild(d);}
+}
+function releaseMark(i){
+  const t=marks[i];marks.splice(i,1);
+  Object.keys(CARDS).forEach(k=>{const ht=CARDS[k].go||CARDS[k].plain||k;if(ht===t){const b=document.getElementById('hold-'+k);if(b)b.classList.remove('held');}});
+  renderMarks();
+}
+function deposit(){
+  if(!marks.length)return;
+  copyMark('Marking all of these at once:\n'+marks.map(t=>'- '+t).join('\n'),'copied '+marks.length+' mark(s)');
+  marks=[];document.querySelectorAll('.d-btn.held').forEach(b=>b.classList.remove('held'));renderMarks();
+}
+</script>
+<!-- DSS STOP — nothing renders after this line -->
+</body>
+</html>

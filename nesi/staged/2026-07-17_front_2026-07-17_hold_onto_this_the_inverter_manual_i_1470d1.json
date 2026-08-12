@@ -1,0 +1,31 @@
+{
+  "id": "2026-07-17_front_2026-07-17_hold_onto_this_the_inverter_manual_i_1470d1",
+  "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "pile_path": "C:\\Users\\KMEAR\\OneDrive\\Desktop\\DSS content\\nesi\\inbox\\front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-17T23:42:01",
+    "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JSON (rc=1): Not logged in · Please run /login)",
+    "error": null
+  },
+  "object": {
+    "engine": "stub-v0 (FALLBACK — claude-cli failed: engine returned no JSON (rc=1): Not logged in · Please run /login)",
+    "pile": "front_2026-07-17_hold_onto_this_the_inverter_manual_i.md",
+    "summary": "STUB run — 1 raw lines held as items, all RESTORE. Object shape is real; the digestion is not.",
+    "items": [
+      {
+        "item": "hold onto this: the inverter manual is in the gray bin",
+        "kind": "contained",
+        "disposition": "RESTORE",
+        "target": "pile",
+        "evidence": "STUB engine — cannot disposition; uncertainty forces RESTORE (metabolizer law)"
+      }
+    ],
+    "restored_count": 1
+  },
+  "lint": null,
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-23T21:40:19"
+  }
+}

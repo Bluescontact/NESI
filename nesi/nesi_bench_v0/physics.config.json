@@ -1,0 +1,17 @@
+{
+  "_note": "tuning defaults only, not marks (v1 Sec 12). Calibrate on-screen without a rebuild.",
+  "staging_base_mass": 1.0,
+  "w_ratified": 0.4,
+  "w_proposed": 0.15,
+  "char_count_weight": 0.001,
+  "tether_spring_stiffness": 120.0,
+  "tether_damping": 8.0,
+  "tether_max_stretch": 240,
+  "break_static_threshold": 6.0,
+  "break_viscous_coeff": 0.85,
+  "gate_shear_threshold": 48,
+  "gate_intersection_padding": 4,
+  "landing_mass_multiplier": 3.0,
+  "intake_friction": 0.02,
+  "intake_inertia": 0.0
+}

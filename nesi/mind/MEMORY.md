@@ -1,0 +1,132 @@
+- [**THE RETIREMENT LEDGER** - the organ for retiring laws (2026-08-06)](project_retirement_ledger.md) - RETIRED.jsonl + dead_check.py wired into close 3b-2; a dead line now survives at most one session
+- [**316 offered, 1 answered** - the run-ahead measured (2026-08-06)](feedback_run_ahead_rate.md) - four laws forbade it, none had a mechanism; the brake is in decisions.py offer and fired on the machine first
+- [COMPOST, not expiry (Kevin's naming 2026-08-06)](project_compost_window.md) - unheld degrades, drops, feeds the tree that made it; 7d window his to set, covers marks and decisions
+- [THE FIELD - the fifth locatable, editable (2026-08-06)](project_the_field.md) - an edge is {to, rel}; the RELATION is the naming; staging only, never writes
+- [Substrate swarm 2026-07-18 (MARKED)](project_substrate_swarm_2026-07-18.md) — 3 promoted hold AT the membrane (crossing withdrawn); 4 holds w/ re-screens; villager collapse confirmed; Nesi seed in _INTAKE
+- [Sacred Mirrors deck format + v2 build](project_sacred_mirrors_deck_format.md) — format at Downloads\sacred_mirrors_generator.html; Essence of the Gift v2 (48 cards) BUILT 2026-07-17 at decks\essence_of_the_gift_v2\; open: 3 visible-line flags, Deck 5 recovery; 2026-07-18 same-quartet mark RATIFIED (deck=assembly order, NESI=standing structure) — substrate write-up owed
+- [Personal-scale frame](project_personal_scale_frame.md) — re-admitted 2026-07-16: infra built by Kevin to support Kevin; every public surface passes the depletion test
+- [Load-test build-gate (CANON 2026-07-23)](feedback_load_test_build_gate.md) — before building anything: if it vanished tomorrow, would Kevin have to carry it in his head again? If no, don't build it. Gates what gets BUILT, never how much Kevin gets. In PROTOCOLS.md, boot-loaded
+- [AI holds direction on close-out (2026-07-23)](feedback_ai_holds_direction_on_closeout.md) — when Kevin's depleted/closing, directing attention is the AI's job, not another decision to shift to him; drive sequencing, park named-not-built as reversible holds autonomously, bring only the few irreversible gates (compost/cross/publish/login)
+- [Claude login-loop fix (2026-07-23)](reference_claude_login_loop_fix.md) — the /login loop = persistent ANTHROPIC_BASE_URL=localhost:8787 (router experiment) hijacking auth; cleared it; log in from a NEW terminal. NESI v1.0 closeout at nesi/NESI_v1.0_CLOSEOUT.md
+- [Kevin's role and project context](user_kevin_mears.md) — author of Recognition Infrastructure; DSS content dir is his working library
+- [Current ground (2026-07-19)](project_current_ground.md) — last day at Brian & Joana's; depart Mon 7-20 to Rosebud w/ leave-in-1-2-weeks intent; HOST POLICY: 1-2 wks/host, F1's 90-day frame composted; PFRC draft staged in _INTAKE; Alana deck gift
+- [Intake triage sweep (CLOSED)](project_intake_triage_2026-07-15.md) — 54/54 marked: 16 composted, 21 promoted, 17 held; side-pile spun off
+- [Substrate brief pattern marks (CLOSED)](project_substrate_brief_pattern_marks.md) — 113 patterns marked: 32 promote, 57 hold, 24 compost
+- [Pattern promotion & holds (OPEN)](project_pattern_promotion_and_holds.md) — 32 PROMOTE patterns need membrane-crossing; 57 HOLDs have re-screen conditions
+- [Chunked sorting, powers of two](feedback_chunked_sorting_powers_of_two.md) — group piles 2/4/8/16/32 into bulk-mark groups; reconcile stale records first
+- [4 cards per widget](feedback_four_cards_per_widget.md) — every widget carries 4 real decision cards, never padding
+- [Cards open + sendPrompt clicks](feedback_widget_cards_open_sendprompt.md) — 2026-07-19: clipboard bridge dead in pane; render cards open, steer buttons fire sendPrompt directly; v4.3 chassis amendment awaits mark
+- [Never direct the body](feedback_never_direct_the_body.md) — widget jurisdiction = the system only; never schedule Kevin's physical day
+- [4 decisions per turn](feedback_triage_batch_pace.md) — Kevin's batch-size preference; types replies directly, doesn't use widget click-copy
+- [Chassis full-copy, not reconstruction](feedback_chassis_full_copy.md) — always copy chassis verbatim, edit only SLOTs (2026-07-15 break)
+- [Toggle slider UI](feedback_widget_toggle_ui.md) — Kevin wants on/off sliders per option, not button rows
+- [Click copies, doesn't send](feedback_click_populates_not_sends.md) — steer buttons copy to clipboard; paste into Kevin's real chat box (v4.2)
+- [Recognition needs real length](feedback_recognition_length.md) — long drops (morning pages) need ~750-word mirrored reflection, not a summary
+- [NESI (2026-07-20)](project_nesi.md) — reach-back arc closed, then bench geometric layer v0 built (cycle 1/3); honest port-finding logged, not smoothed over; engine dark
+- [Substack deletion → compost (CLOSED)](project_substack_deletion_compost.md) — 2 promoted, 12 composted, 5 crossings; canon 86
+- [Widget gate visibility](feedback_widget_gate_visibility.md) — cards with real stakes default open; bare "click to open" hid the decision
+- [Recognition organs](project_recognition_organs.md) — drift_meter + brier_ledger + falsifier_gate in tools/recognition/; wired into daily-cycle
+- [Pace to the felt-read](feedback_pace_to_felt_read.md) — when differentiation outruns naming, subtract: one ripe decision per turn
+- [Let the infrastructure run](feedback_let_infrastructure_run.md) — stop hand-cranking; run the built organs below Kevin's gates
+- [Auto-update state_view after mark](feedback_automate_state_view.md) — run update_state_view.py after every membrane mark; never ask manually
+- [Status Taxonomy v1 (RATIFIED)](project_status_taxonomy.md) — 11 statuses, 10 rules, 3 open edges; governs all DSS material metabolism
+- [Gift-discharge typology](project_gift_discharge_typology.md) — mirror/seed/covenant/unilateral_closure; 4th promoted w/ metabolic_lag
+- [Kevin's architecture lens](user_kevin_architecture_lens.md) — load-path signature, cognitive toolkit, handleless-gift move, no surplus to self
+- [The recursive object (MARKED)](project_recursive_object.md) — invariant body-center (felt safety) recursing across Land&Body·Economy·Framework·Collaboration
+- [RI Kit v1 status](project_ri_kit.md) — `kit/`; 6 substrates, 24 prescriptions, index.html fully wired
+- [Multi-button = development signal](feedback_multi_button_signal.md) — when Kevin fires multiple buttons, surface the tension, never collapse to one
+- [Memory maintenance rule](feedback_memory_maintenance.md) — update MEMORY.md index AND memory file the moment state changes
+- [The tetra menu](feedback_3_options.md) — labels contextual (2-5 words); manifests pre-filled at authoring
+- [Infrastructure over content](feedback_infrastructure_over_content.md) — patterns are navigation instruments, not articles
+- [Voice and register](feedback_voice.md) — direct, geometric, doesn't apologize or pad; naming as structural move
+- [Run the framework on itself](feedback_framework_self_application.md) — apply the audit to kit, library, conversation
+- [Register Audit artifact](project_register_audit.md) — `frameworks/register_audit.md`; vertex-mapped extraction + negative-example registry
+- [Personal OS map](project_personal_os.md) — `_PERSONAL_OS.md`; OSG deployed at v5
+- [Collaboration as gift form](feedback_collaboration_gift_form.md) — lead with structural reading, name limits, no padding
+- [Substrate before artifact](feedback_substrate_before_artifact.md) — don't jump to deliverables when tool layer still composting
+- [SOURCE_LIBRARY and PATTERNS_AND_VOICE](project_source_library_and_patterns.md) — canonical reference docs at `Project Lab/`
+- [Demonstrate, don't describe](feedback_demonstrate_not_describe.md) — structure does the work; cut why-blocks, closers
+- [Single document format](feedback_single_document_format.md) — ALL responses as single HTML widget; tetra menu at bottom; no prose wrapper
+- [No prose after widget](feedback_no_prose_after_widget.md) — widget IS the response; nothing after the show_widget call
+- [No auto-response to notifications](feedback_no_auto_response_to_notifications.md) — task-notifications are not user messages; hold until Kevin speaks
+- [Architecture of Coherence v1.0](project_architecture_of_coherence.md) — manuscript (April 2026, 4-6-4-1); load-bearing seed
+- [Claude dreaming — library deployment](project_claude_dreaming.md) — overnight agents phase-transitioning library into open-source artifacts
+- [Tools, not pages](feedback_tools_not_pages.md) — build interactive tools visitors USE; the tool IS the demonstration
+- [Genesis Seed + OS.html](project_genesis_seed_and_os_view.md) — composting workspace in Library facet + visual infra view at DSS root
+- [Transmission Engine](project_transmission_engine.md) — Claude Code skill; finished article → Substack artifact set
+- [Recycled substrate](feedback_recycled_substrate.md) — extract patterns substrate-independently; don't cite original context as canonical
+- [Publish/delete boundary](feedback_publish_delete_boundary.md) — Kevin holds the membrane gate; nothing pushed/deleted without his mark
+- [Non-transactional mechanism](project_non_transactional_mechanism.md) — labor-as-gift, rent=permission to be, near-zero burn (~30kWh)
+- [Body-first; somatic safety is the threshold](feedback_somatic_threshold.md) — felt safety gates every move
+- [IUEC/DOE safety arc](project_iuec_arc.md) — Sandia jobsite story (eye bolt); closed May 2026; do not reopen
+- [_INTAKE drop-zone workflow](project_intake_dropzone.md) — raw feedstock in, coherent extract out; Kevin holds the gate
+- [Recognition Stack](project_recognition_stack.md) — soma-to-Substack metabolic stack; THE GOVERNOR is its brake
+- [OSG deployment & membrane boundary](reference_osg_deployment_membrane.md) — oursharedgifts.org + github.com/Bluescontact/oursharedgifts
+- [Map both sides; user is the witness](feedback_map_both_sides.md) — AI is decision-surface not decider
+- [Renderer, not verifier](feedback_renderer_not_verifier.md) — AI renders Kevin's grammar, never validates truth; lead with friction
+- [THE GOVERNOR](project_the_governor.md) — brake at `THE_GOVERNOR.html` + `negative_workspace/`; trail LIVE 2026-07-10
+- [THE CONVERGER](project_the_converger.md) — back-of-stack brake; routes PROMOTE-READY/HOLD/COMPOST; fails toward subtraction
+- [No cost-shifting](feedback_no_cost_shifting.md) — AI must not offload cognitive cost onto Kevin; embodiment is final arbiter
+- [Heartland arc (CLOSED)](project_heartland_ground.md) — departed 2026-06-30; close-out in `_INTAKE/`; departure → patterns 56–59
+- [The Dispatcher](project_dispatcher.md) — SCHEDULED daily 8AM Mountain `dss-dispatcher-daily`; DISPATCHER_PROMPT.md
+- [Develop direction, human not framework](feedback_develop_direction_human.md) — storyboard in plain language pointed at Kevin's real life
+- [Composting threshold](feedback_composting_threshold.md) — crosses commons only when abstracted past every trace of the individual
+- [OSG v5 (DEPLOYED)](project_osg_v5_resynthesis.md) — live at www.oursharedgifts.org; door + playbook + two tools
+- [Single-person economy](project_single_person_economy.md) — `KEVINS_ECONOMY.md`; ground/hands/vault/face/mesh/brake/mind
+- [v6 direction (ABSORBED)](project_v6.md) — witness-as-origin promoted to canon; superseded by V7
+- [Canon maturity — 83 patterns](project_canon_maturity.md) — GHOST-GATE: dispatcher reconciles gate/pending against patterns/ each run
+- [Publish instance, not model](feedback_publish_instance_not_model.md) — write Kevin's life first-person as HIS instance
+- [OSG deploy loop](project_osg_deploy_loop.md) — page-by-page rebuild at `DSS content\oursharedgifts-deploy`; push via GCM
+- [Library resynthesis loop](project_library_resynthesis_loop.md) — each library doc screened against June canon
+- [ROS arc — both halves](project_ros_cross_metabolization.md) — cross-metabolization COMPLETE + 49pp edition HELD; pile in `_COMPOST/`
+- [Autonomous infrastructure tools](project_autonomous_tools.md) — Territory Listener + Voice to Substack live in `tools/`
+- [Substrate skill](project_substrate_skill.md) — `~/.claude/skills/substrate/`; extracts→develops→screens→Converger→brief
+- [Widget completion pattern](feedback_widget_completion_pattern.md) — task done = completion widget; MARK→`future_development_queue.md`
+- [Widget fixed positioning breaks iframe](feedback_widget_fixed_positioning.md) — no position:fixed; menu+manifest in-flow at bottom
+- [Widget rendering — fragment only](feedback_widget_rendering.md) — show_widget needs fragment HTML, no DOCTYPE/html/head/body
+- [Per-session widget file](feedback_per_session_widget_file.md) — write latest_<slug>.html, NEVER shared latest.html (clobbering)
+- [No dark backgrounds](feedback_no_dark_backgrounds.md) — light backgrounds only; override to --bg/--surface explicitly
+- [Latent value / Return vertex](feedback_latent_value_return_vertex.md) — publication is not the Return event; library IS Return
+- [Recognition Instrument site build](project_recognition_instrument_site.md) — five-tetrahedra interactive website; source in `genesis_seed_share/`
+- [Village Substack series](project_village_substack_series.md) — 4-part series PUBLISHED 2026-06-20
+- [Regathering, not production](feedback_regathering_not_production.md) — when Kevin names his own life back, hold and gather
+- [The Open Ledger](project_open_ledger.md) — `open_ledger/circuit.html`; gift frame via structural incapacity; Topology A
+- [Complete on giving → compost](feedback_complete_on_giving.md) — handles only on continuing outflow; complete-on-giving has no handle
+- [Make the work support Kevin](project_support_plan.md) — WOKEN 2026-07-10; moneyless extraction DONE (P1–P5); floor + host-funnel work
+- [Felt-read horizon](feedback_felt_read_horizon.md) — felt-read is proximity instrument; keep Kevin at the mark
+- [Codex screen is live](project_codex_screen.md) — `tools/codex_index/` live; run `run.bat` to screen intake against canon
+- [Kevin's circuit — ask and receive](project_kevins_circuit_complete.md) — giving infra complete; receiving form in `_INTAKE/`
+- [Ground is internal](feedback_ground_is_internal.md) — Kevin navigates his own material ground; infer what you can
+- [OSG v6 — trust infrastructure](project_osg_v6_trust_infrastructure.md) — live gift circle; four Stage-0 zeros Kevin-held
+- [THE DECISION SURFACE + instrument format](project_decision_surface.md) — 4 instruments HTML at DSS root; body-question composer
+- [Direction instruments — all four promoted](project_direction_instruments.md) — attractor_currency + holding_mode_ladder + direction_cost_panel + scarcity_interface
+- [Meta-skill learning mechanism](project_meta_skill_learning.md) — 4/4 skills live: mark-record · metabolizer · morning-pages-channel · daily-cycle
+- [Context-window infrastructure](project_context_window_infrastructure.md) — `state_view.html` cold-start fix; open first every session
+- [Floor + four witness reads](project_floor_and_witness_reads.md) — floor NAMED not funded; four AIs asked one question
+- [OSG v6 build spec + swarm](project_osg_v6_build_spec.md) — site IS the Circuit Tool; deploy repo at Desktop\oursharedgifts-deploy
+- [Widget jurisdiction boundary](feedback_widget_jurisdiction_boundary.md) — widget holds, not acts; open edge = the floor condition
+- [Propagation map](project_propagation_map.md) — `propagation_map.md` at DSS root; append-only; fed by metabolizer
+- [Miro system diagram direction](project_miro_system_diagram.md) — Miro via MCP; Tree of Life geometry; System Diagram v2 LIVE
+- [Miro Handler skill](project_miro_handler.md) — `~/.claude/skills/miro-handler/`; read-before-write · cost brake
+- [Open village ideas — open edge](project_open_village_ideas.md) — open village, tesera dome, biochar toilet, IBC, elevator cable
+- [Membrane Controller (LIVE)](project_membrane_controller.md) — exclusive write authority at two crossings; 5 audit breaches await marks
+- [First Transmission Engine crossing](project_first_transmission_crossing.md) — "Setting the Floor" published 2026-06-27
+- [Data discipline rule](feedback_data_discipline.md) — widget stays full (HTML size ≠ data cost); gate only before off-machine calls
+- [AI Constitutional Stack (CANON)](project_ai_constitutional_stack.md) — Threshold·Keeper·Decision Surface; preventing fluency-as-authority
+- [THE CROSSING SPINE](project_crossing_spine.md) — 9th instrument at DSS root; 8-step sovereignty-preserving crossing
+- [V7 direction — Seed→Tree (LIVE)](project_v7.md) — canon as seed, recognition infra as tree; assets at osg7/
+- [Single-cycle approval](feedback_single_cycle_approval.md) — sequential protocol steps need one response per step
+- ["No visible output" is noise](feedback_no_visible_output_noise.md) — system notification fires when chat has no prose; hold, no prose
+- [Chassis lineage — v4 ratified](feedback_open_grammar_surface.md) — v4 RATIFIED 2026-07-13; v3/v2/v1 retired to lineage
+- [No auto-open in browser](feedback_no_auto_open_browser.md) — latest.html written silently; Kevin opens it himself
+- [Body-read is his to hold](feedback_body_read_is_his.md) — NEVER prompt for body-line; slots exist silently, blank = complete
+- [AoC v2 rebuild (CROSSED)](project_aoc_v2_rebuild.md) — DEEPEN+VERIFY; verdict = Deployment is binding constraint
+- [Ari handoff + Cognitive tetra](project_ari_handoff_cognitive_tetra.md) — handoff COMPLETE; K4 vs phase-cycle topology; Cognitive tetra STAGED
+- [Auto-run 2026-06-04 queue](project_auto_run_2026_06_04.md) — staged at `_INTAKE/auto_run_2026-06-04/`; VERIFY before acting
+- [FESA tetra — David Guerin](project_fesa_tetra.md) — SENT, confirmed; gift received; private tetra never crosses; arc closed
+- [Heartland farm engine (LATENT)](project_heartland_tetra.md) — Camp Far West water-constraint model; gated on well pump test + SGMA
+- [LTRB recycle direction](project_ltrb_recycle.md) — recursive tetra-of-tetras wiki; became the MARKED recursive object
+- [Plain-language widgets](feedback_plain_language_widgets.md) — name function in plain words; Kevin's grammar (gate/tray/compost/mark) stays
+- [DSS close-out (SENT, CLOSED)](project_dss_closeout.md) — sent to Malcolm 2026-07-07; do not re-surface ledger work
+- [DMV investigation — Sierra Electric](project_dmv_investigation_sierra_electric.md) — packet SENT 2026-07-13 (case 26O2L23041); awaiting results
+- [Mandate attaches to object, not person](feedback_mandate_object_not_person.md) — falsifier mandate stays on the artifact, not the person

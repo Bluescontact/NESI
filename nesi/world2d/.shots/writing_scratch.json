@@ -1,0 +1,155 @@
+{
+ "held": "",
+ "region_names": {},
+ "sheet": "The page holds everything. Nothing leaves yet",
+ "stone_bank": [
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 0,
+   "pos": null,
+   "region": 0,
+   "run": 0,
+   "stage": "held",
+   "text": "the first stone lands unseen, edited.",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 1,
+   "pos": null,
+   "region": -1,
+   "run": 0,
+   "stage": "merged",
+   "text": "A second stone arrives.",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 2,
+   "pos": null,
+   "region": -1,
+   "run": 0,
+   "stage": "merged",
+   "text": "And a third lands!",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "given",
+   "lines": [],
+   "mark": "",
+   "n": 3,
+   "pos": null,
+   "region": -1,
+   "run": 1,
+   "stage": "dropped",
+   "text": "A coarse rock from a friend.\nIt came in two pieces.",
+   "who": "ren"
+  },
+  {
+   "asked": "",
+   "kind": "given",
+   "lines": [],
+   "mark": "",
+   "n": 4,
+   "pos": null,
+   "region": -1,
+   "run": 2,
+   "stage": "held",
+   "text": "A coarse rock from a friend.",
+   "who": "ren"
+  },
+  {
+   "asked": "",
+   "kind": "given",
+   "lines": [],
+   "mark": "",
+   "n": 5,
+   "pos": null,
+   "region": -1,
+   "run": 2,
+   "stage": "held",
+   "text": "It came in two pieces.",
+   "who": "ren"
+  },
+  {
+   "asked": "tarps",
+   "kind": "fetched",
+   "lines": [],
+   "mark": "",
+   "n": 6,
+   "pos": null,
+   "region": -1,
+   "run": 3,
+   "stage": "held",
+   "text": "What the agent brought back.",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 7,
+   "pos": null,
+   "region": -1,
+   "run": 0,
+   "seams": [
+    {
+     "asked": "",
+     "kind": "self",
+     "n": 1,
+     "text": "A second stone arrives.",
+     "who": ""
+    },
+    {
+     "asked": "",
+     "kind": "self",
+     "n": 2,
+     "text": "And a third lands!",
+     "who": ""
+    }
+   ],
+   "stage": "held",
+   "text": "A second stone arrives.\nAnd a third lands!",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 8,
+   "pos": null,
+   "region": -1,
+   "run": 4,
+   "sheet": true,
+   "stage": "held",
+   "text": "The page holds everything.",
+   "who": ""
+  },
+  {
+   "asked": "",
+   "kind": "self",
+   "lines": [],
+   "mark": "",
+   "n": 9,
+   "pos": null,
+   "region": -1,
+   "run": 4,
+   "sheet": true,
+   "stage": "held",
+   "text": "Nothing leaves yet",
+   "who": ""
+  }
+ ]
+}

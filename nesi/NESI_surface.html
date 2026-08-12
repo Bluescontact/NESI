@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#fffdf8;--sf2:#eeebe3;--sf3:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;--red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;--bdr:#d8d0be;--acc:#2a6a1a;
+  --shadow:0 2px 10px rgba(58,48,32,.08);--shadow2:0 8px 26px rgba(58,48,32,.16);
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:13px;line-height:1.5}
+.app{max-width:900px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.brand{font-size:20px;font-weight:bold;letter-spacing:5px;color:var(--gb)}
+.brand small{font-size:8px;letter-spacing:2px;color:var(--gf);display:block;margin-top:2px;font-weight:normal}
+.modes{display:flex;gap:5px;background:var(--sf2);padding:4px;border-radius:12px;border:1px solid var(--bdr)}
+.mode{font-family:inherit;font-size:11px;letter-spacing:1px;padding:7px 13px;border:none;background:transparent;color:var(--gd);cursor:pointer;border-radius:9px;transition:.18s}
+.mode:hover{color:var(--gb)}
+.mode.on{background:var(--sf);color:var(--gb);font-weight:bold;box-shadow:var(--shadow)}
+.main{flex:1;position:relative}
+.view{display:none;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.feedbar{display:flex;gap:8px;margin-bottom:14px}
+.feedbar textarea{flex:1;font-family:inherit;font-size:13px;color:var(--g);background:var(--sf);border:1px solid var(--bdr);border-radius:12px;padding:12px 14px;resize:none;box-shadow:var(--shadow);min-height:48px;transition:.18s}
+.feedbar textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--grn-bg)}
+.feedbtn{font-family:inherit;font-size:13px;font-weight:bold;letter-spacing:1px;color:#fff;background:var(--acc);border:none;border-radius:12px;padding:0 20px;cursor:pointer;box-shadow:var(--shadow);transition:.15s}
+.feedbtn:hover{background:#22580f}.feedbtn:active{transform:translateY(1px)}
+.hint{font-size:10px;color:var(--gf);text-align:center;margin:2px 0 16px}
+.cards{display:flex;flex-direction:column;gap:9px}
+.empty{text-align:center;color:var(--gf);font-size:11px;padding:40px 20px;line-height:1.8}
+.card{background:var(--sf);border:1px solid var(--bdr);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;transition:.18s}
+.card:hover{box-shadow:var(--shadow2)}
+.card-hd{padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.card-dot{width:8px;height:8px;border-radius:50%;background:var(--gf);margin-top:5px;flex-shrink:0;transition:.18s}
+.card.open .card-dot{background:var(--acc)}
+.card.dig .card-dot{background:var(--grn)}
+.card-txt{flex:1;color:var(--gb);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card.open .card-txt{white-space:normal}
+.card-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.card.open .card-body{max-height:600px}
+.card-inner{padding:2px 14px 13px 32px}
+.card-full{font-size:12px;color:var(--g);line-height:1.65;white-space:pre-wrap;word-break:break-word;margin-bottom:10px}
+.disps{margin:4px 0 12px}
+.disp{display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--gfaint);font-size:10.5px}
+.disp:last-child{border-bottom:none}
+.dtag{font-size:7.5px;letter-spacing:.5px;text-transform:uppercase;padding:1px 6px;border-radius:20px;white-space:nowrap;border:1px solid var(--bdr);color:var(--gd);background:var(--sf2)}
+.dtag.open{color:var(--yel);background:var(--yel-bg)}.dtag.rest{color:var(--gd)}
+.dtag.fold,.dtag.super{color:var(--grn);background:var(--grn-bg)}
+.rowbtns{display:flex;gap:6px;flex-wrap:wrap}
+.mini{font-family:inherit;font-size:10px;letter-spacing:.5px;padding:5px 11px;border-radius:8px;border:1px solid var(--bdr);background:var(--sf2);color:var(--gd);cursor:pointer;transition:.15s}
+.mini:hover{background:var(--sf);color:var(--gb)}
+.mini.go:hover{border-color:var(--grn);color:var(--grn);background:var(--grn-bg)}
+.mini.keep:hover{border-color:var(--grn);color:var(--grn);background:var(--grn-bg)}
+.mini.hold:hover{border-color:var(--yel);color:var(--yel);background:var(--yel-bg)}
+.mini.compost:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+.mini.busy{opacity:.5;pointer-events:none}
+.tagpill{font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px;margin-top:3px;flex-shrink:0}
+.tagpill.keep{color:var(--grn);background:var(--grn-bg)}.tagpill.hold{color:var(--yel);background:var(--yel-bg)}.tagpill.compost{color:var(--red);background:var(--red-bg)}
+.tagpill.held{color:var(--gd);background:var(--sf2)}.tagpill.digested{color:var(--grn);background:var(--grn-bg)}
+.mapwrap{position:relative;height:60vh;min-height:360px;background:var(--sf);border:1px solid var(--bdr);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.maptip{position:absolute;top:10px;left:14px;font-size:9px;color:var(--gf);letter-spacing:.5px;z-index:5;pointer-events:none}
+.links{position:absolute;inset:0;pointer-events:none}
+.link-hit{stroke:transparent;stroke-width:14;pointer-events:stroke;cursor:pointer}
+.mnode{position:absolute;min-width:120px;max-width:190px;background:var(--sf2);border:1px solid var(--bdr);border-radius:11px;padding:9px 11px;box-shadow:var(--shadow);cursor:grab;font-size:11px;color:var(--gb);line-height:1.4;user-select:none;transition:box-shadow .15s,border-color .15s}
+.mnode:hover{box-shadow:var(--shadow2)}
+.mnode.linking{border-color:var(--acc);box-shadow:0 0 0 3px var(--grn-bg)}
+.mnode.dragging{cursor:grabbing;box-shadow:var(--shadow2);z-index:30}
+.mnode .plug{position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:15px;height:15px;border-radius:50%;background:var(--sf);border:2px solid var(--gf);cursor:crosshair;transition:.15s}
+.mnode .plug:hover{border-color:var(--acc);background:var(--grn-bg)}
+.mnode-txt{display:block;max-height:52px;overflow:hidden}
+.chat{display:flex;flex-direction:column;height:64vh;min-height:380px}
+.chat-log{flex:1;overflow-y:auto;padding:6px 2px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:82%;padding:10px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.msg.me{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--sf);border:1px solid var(--bdr);color:var(--g);border-bottom-left-radius:4px}
+.msg.sys{align-self:center;background:var(--yel-bg);border:1px solid var(--yel);color:var(--yel);font-size:10px;text-align:center;max-width:96%;border-radius:10px}
+.msg.sys code{color:var(--gb)}
+.chat-in{display:flex;gap:8px;margin-top:10px}
+.chat-in input{flex:1;font-family:inherit;font-size:13px;color:var(--g);background:var(--sf);border:1px solid var(--bdr);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.chat-in input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--grn-bg)}
+.dotpulse::after{content:'…';animation:dp 1.2s steps(4) infinite}
+@keyframes dp{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+.foot{margin-top:14px;padding-top:10px;border-top:1px solid var(--bdr);font-size:9px;color:var(--gf);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.foot b{color:var(--gd)}
+.wired{color:var(--grn)}.wlocal{color:var(--yel)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">NESI<small>a place to set things down</small></div>
+    <div class="modes">
+      <button class="mode on" data-m="feed" onclick="setMode('feed')">feed</button>
+      <button class="mode" data-m="map" onclick="setMode('map')">map</button>
+      <button class="mode" data-m="chat" onclick="setMode('chat')">chat</button>
+      <button class="mode" data-m="sort" onclick="setMode('sort')">sort</button>
+      <button class="mode" data-m="library" onclick="setMode('library')">library</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="view on" id="v-feed">
+      <div class="feedbar">
+        <textarea id="feedInput" placeholder="Give NESI something — a thought, a paste, a task, a link…" rows="1"></textarea>
+        <button class="feedbtn" onclick="feed()">hold it</button>
+      </div>
+      <div class="hint">press Enter to hold · Shift+Enter for a new line · digest turns a held thing into sorted dispositions</div>
+      <div class="cards" id="feedCards"></div>
+    </div>
+    <div class="view" id="v-map">
+      <div class="mapwrap" id="mapwrap">
+        <div class="maptip">drag to arrange · pull from the ● on a card's edge to another to connect · click a line to sever</div>
+        <svg class="links" id="links"></svg>
+      </div>
+    </div>
+    <div class="view" id="v-chat">
+      <div class="chat">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="chat-in">
+          <input id="chatInput" placeholder="Talk to NESI…" onkeydown="if(event.key==='Enter')send()">
+          <button class="feedbtn" onclick="send()">send</button>
+        </div>
+      </div>
+    </div>
+    <div class="view" id="v-sort">
+      <div class="hint" style="margin-top:2px">digest held things, then give each a gentle verdict — nothing is deleted, compost just steps it aside</div>
+      <div class="cards" id="sortCards"></div>
+    </div>
+    <div class="view" id="v-library">
+      <div class="chat-in" style="margin-bottom:14px">
+        <input id="libSearch" placeholder="search the library…" oninput="renderLibrary()">
+        <span id="libCount" style="align-self:center;font-size:9px;color:var(--gf);white-space:nowrap"></span>
+      </div>
+      <div class="cards" id="libCards"></div>
+    </div>
+  </div>
+  <div class="foot">
+    <span><b id="count">0</b> held · <span id="wireState" class="wlocal">local (browser)</span></span>
+    <span id="engState">NESI · face v1</span>
+  </div>
+</div>
+
+<script>
+let WIRED=false, api=null, booted=false;
+let NODES=[], LAYOUT={pos:{},links:[]}, CHAT=[];
+const LKEY='nesi_surface_v1';
+
+window.addEventListener('pywebviewready', onReady);
+document.addEventListener('DOMContentLoaded', ()=>{ if(window.pywebview&&window.pywebview.api) onReady(); });
+setTimeout(()=>{ if(!booted) bootLocal(); }, 700);
+
+async function onReady(){
+  if(booted) return; booted=true; WIRED=true; api=window.pywebview.api;
+  const ws=document.getElementById('wireState'); ws.textContent='wired to NESI ●'; ws.className='wired';
+  try{ const e=await api.engine(); const h=e.health||{};
+    document.getElementById('engState').textContent='engine: '+(e.engine||'?')+' · '+(h.ollama?('hermes3 '+(h.has_model?'ready':'—')):'ollama off'); }catch(e){}
+  loadChatLocal();
+  await refresh();
+}
+function bootLocal(){
+  if(booted) return; booted=true; WIRED=false;
+  try{const raw=localStorage.getItem(LKEY);if(raw){const S=JSON.parse(raw);NODES=S.nodes||[];LAYOUT=S.layout||{pos:{},links:[]};CHAT=S.chat||[];}}catch(e){}
+  document.getElementById('engState').textContent='NESI · face v1 · local only';
+  render();
+}
+function saveLocal(){ if(WIRED)return; try{localStorage.setItem(LKEY,JSON.stringify({nodes:NODES,layout:LAYOUT,chat:CHAT}));}catch(e){} }
+function loadChatLocal(){ try{const raw=localStorage.getItem(LKEY+'_chat');if(raw)CHAT=JSON.parse(raw);}catch(e){} }
+function saveChat(){ try{localStorage.setItem(LKEY+'_chat',JSON.stringify(CHAT));}catch(e){} }
+
+async function refresh(){
+  if(WIRED){
+    const r=await api.list_nodes();
+    NODES=((r&&r.nodes)||[]).map(n=>({id:n.id,text:n.text||'',held:!n.staged,digested:!!n.staged,items:n.items||[],tag:n.verdict||null,engine:n.engine||null,open:false}));
+    try{const gl=await api.get_links();let L=(gl&&gl.links);if(L&&L.pos)LAYOUT=L;else if(!LAYOUT.pos)LAYOUT={pos:{},links:[]};}catch(e){if(!LAYOUT.pos)LAYOUT={pos:{},links:[]};}
+    if(!LAYOUT.pos)LAYOUT={pos:{},links:[]}; if(!LAYOUT.links)LAYOUT.links=[];
+  }
+  render();
+}
+function render(){ updateCount(); if(mode==='feed')renderCards('feedCards',false); else if(mode==='sort')renderCards('sortCards',true); else if(mode==='map')renderMap(); else if(mode==='chat')renderChat(); else if(mode==='library')renderLibrary(); }
+function updateCount(){document.getElementById('count').textContent=NODES.filter(n=>n.tag!=='compost').length;}
+
+let mode='feed';
+function setMode(m){mode=m;
+  document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('v-'+m).classList.add('on'); render();}
+
+const fi=document.getElementById('feedInput');
+fi.addEventListener('input',()=>{fi.style.height='auto';fi.style.height=Math.min(fi.scrollHeight,160)+'px';});
+fi.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();feed();}});
+async function feed(){
+  const t=fi.value.trim();if(!t)return; fi.value='';fi.style.height='auto';
+  if(WIRED){ await api.feed(t); await refresh(); }
+  else{ NODES.unshift({id:'n'+Date.now(),text:t,held:true,digested:false,items:[],tag:null,open:false}); saveLocal(); render(); }
+}
+
+function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function dtagClass(d){d=(d||'').toLowerCase();if(d.indexOf('still')>=0)return'open';if(d.indexOf('restore')>=0)return'rest';if(d.indexOf('fold')>=0)return'fold';if(d.indexOf('super')>=0)return'super';return'';}
+function cssid(id){return (id||'').replace(/[^a-zA-Z0-9_-]/g,'_');}
+
+function cardHTML(n,sortMode){
+  const first=(n.text||'').split('\n')[0]||'(empty)';
+  const stateTag = n.digested?'<span class="tagpill digested">digested</span>':'<span class="tagpill held">held</span>';
+  const tag = n.tag?`<span class="tagpill ${n.tag}">${n.tag}</span>`:stateTag;
+  let body=`<div class="card-full">${esc(n.text)}</div>`;
+  if(n.digested&&n.items&&n.items.length){
+    body+='<div class="disps">'+n.items.map(it=>`<div class="disp"><span class="dtag ${dtagClass(it.disposition)}">${esc(it.disposition||'?')}</span><span>${esc(it.item||'')}</span></div>`).join('')+'</div>';
+  }
+  let btns='';
+  if(n.held){ btns=`<div class="rowbtns"><button class="mini go" onclick="digest('${n.id}',event)">▸ digest (local engine)</button></div>`; }
+  else if(sortMode||n.digested){ btns=`<div class="rowbtns"><button class="mini keep" onclick="mark('${n.id}','keep',event)">keep</button><button class="mini hold" onclick="mark('${n.id}','hold',event)">◆ hold</button><button class="mini compost" onclick="mark('${n.id}','compost',event)">compost</button></div>`; }
+  return `<div class="card ${n.open?'open':''} ${n.digested?'dig':''}" id="c-${cssid(n.id)}">
+    <div class="card-hd" onclick="toggleCard('${n.id}')"><span class="card-dot"></span>
+      <span class="card-txt">${esc(first)}</span>${tag}</div>
+    <div class="card-body"><div class="card-inner">${body}${btns}</div></div></div>`;
+}
+function renderCards(elId,sortMode){
+  const live=NODES.filter(n=>n.tag!=='compost');
+  const el=document.getElementById(elId);
+  el.innerHTML=live.length?live.map(n=>cardHTML(n,sortMode)).join(''):
+    `<div class="empty">${sortMode?'nothing to sort yet.':'nothing held yet.'}<br>${sortMode?'feed NESI a few things first.':'type something above and press Enter — NESI holds it here.'}</div>`;
+}
+function findNode(id){return NODES.find(n=>n.id===id);}
+function toggleCard(id){const n=findNode(id);if(!n)return;n.open=!n.open;if(!WIRED)saveLocal();
+  const el=document.getElementById('c-'+cssid(id));if(el)el.classList.toggle('open',n.open);}
+async function digest(id,e){e.stopPropagation();const btn=e.target;btn.classList.add('busy');btn.textContent='digesting… (local model, ~a moment)';
+  if(WIRED){ await api.metabolize(id); await refresh(); }
+  else{ const n=findNode(id); n.digested=true;n.held=false;n.items=[{item:(n.text||'').split('\n')[0],disposition:'still-open',evidence:'(local demo — real dispositions come from the engine when wired)'}]; saveLocal(); render(); }
+}
+async function mark(id,verdict,e){e.stopPropagation();
+  if(WIRED){ await api.mark(id,verdict); await refresh(); }
+  else{ const n=findNode(id); n.tag=(n.tag===verdict?null:verdict); saveLocal(); render(); }
+}
+
+const mapwrap=document.getElementById('mapwrap');const linksSvg=document.getElementById('links');
+let linkFrom=null,drag=null;
+function posFor(n,i){ if(LAYOUT.pos[n.id])return LAYOUT.pos[n.id]; const p={x:40+(i%4)*180,y:40+Math.floor(i/4)*120};LAYOUT.pos[n.id]=p;return p; }
+async function saveLayout(){ if(WIRED){try{await api.set_links(LAYOUT);}catch(e){}} else saveLocal(); }
+function renderMap(){
+  [...mapwrap.querySelectorAll('.mnode')].forEach(e=>e.remove());
+  const live=NODES.filter(n=>n.tag!=='compost');
+  live.forEach((n,i)=>{const p=posFor(n,i);
+    const d=document.createElement('div');d.className='mnode';d.id='m-'+cssid(n.id);
+    d.style.left=p.x+'px';d.style.top=p.y+'px';
+    d.innerHTML=`<span class="mnode-txt">${esc((n.text||'').split('\n')[0])}</span><span class="plug"></span>`;
+    mapwrap.appendChild(d);attachDrag(d,n);
+    d.querySelector('.plug').addEventListener('pointerdown',ev=>{ev.stopPropagation();startLink(n,d);});
+    d.addEventListener('pointerup',ev=>{if(linkFrom&&linkFrom.id!==n.id)makeLink(linkFrom.id,n.id);endLink();});});
+  drawLinks();
+}
+function attachDrag(d,n){
+  d.addEventListener('pointerdown',ev=>{if(ev.target.classList.contains('plug'))return;
+    const r=mapwrap.getBoundingClientRect();const p=LAYOUT.pos[n.id]||{x:60,y:60};
+    drag={n,d,ox:ev.clientX-r.left-p.x,oy:ev.clientY-r.top-p.y};d.classList.add('dragging');d.setPointerCapture(ev.pointerId);});
+  d.addEventListener('pointermove',ev=>{if(!drag||drag.n.id!==n.id)return;
+    const r=mapwrap.getBoundingClientRect();
+    const x=Math.max(0,Math.min(ev.clientX-r.left-drag.ox,r.width-d.offsetWidth));
+    const y=Math.max(0,Math.min(ev.clientY-r.top-drag.oy,r.height-d.offsetHeight));
+    LAYOUT.pos[n.id]={x,y};d.style.left=x+'px';d.style.top=y+'px';drawLinks();});
+  d.addEventListener('pointerup',()=>{if(drag){drag.d.classList.remove('dragging');drag=null;saveLayout();}});}
+function startLink(n,d){linkFrom=n;d.classList.add('linking');}
+function endLink(){if(linkFrom){const el=document.getElementById('m-'+cssid(linkFrom.id));if(el)el.classList.remove('linking');}linkFrom=null;}
+mapwrap.addEventListener('pointerup',()=>endLink());
+function makeLink(a,b){if(a===b)return;LAYOUT.links=LAYOUT.links||[];if(LAYOUT.links.some(l=>(l[0]===a&&l[1]===b)||(l[0]===b&&l[1]===a)))return;LAYOUT.links.push([a,b]);saveLayout();drawLinks();}
+function drawLinks(){const live=new Set(NODES.filter(n=>n.tag!=='compost').map(n=>n.id));
+  LAYOUT.links=(LAYOUT.links||[]).filter(l=>live.has(l[0])&&live.has(l[1]));let s='';
+  LAYOUT.links.forEach((l,i)=>{const a=center(l[0]),b=center(l[1]);if(!a||!b)return;const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    s+=`<path d="M${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}" fill="none" stroke="rgba(42,106,26,.55)" stroke-width="2"/>`;
+    s+=`<path class="link-hit" d="M${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}" onclick="sever(${i})"></path>`;});
+  linksSvg.innerHTML=s;}
+function center(id){const d=document.getElementById('m-'+cssid(id));if(!d)return null;return {x:d.offsetLeft+d.offsetWidth/2,y:d.offsetTop+d.offsetHeight/2};}
+function sever(i){LAYOUT.links.splice(i,1);saveLayout();drawLinks();}
+
+function renderChat(){const log=document.getElementById('chatLog');
+  if(!CHAT.length){log.innerHTML=`<div class="msg ai">I'm NESI. Feed me in <b>feed</b>, arrange in <b>map</b>, sort in <b>sort</b>. Here I answer from your local engine — no login, no cloud.</div>`;}
+  else{log.innerHTML=CHAT.map(m=>`<div class="msg ${m.role}">${m.role==='sys'?m.text:esc(m.text)}</div>`).join('');}
+  log.scrollTop=log.scrollHeight;}
+function pushMsg(role,text){CHAT.push({role,text});saveChat();if(!WIRED)saveLocal();renderChat();}
+async function send(){const inp=document.getElementById('chatInput');const t=inp.value.trim();if(!t)return;inp.value='';pushMsg('me',t);
+  const log=document.getElementById('chatLog');const think=document.createElement('div');think.className='msg ai dotpulse';log.appendChild(think);log.scrollTop=log.scrollHeight;
+  const history=CHAT.filter(m=>m.role==='me'||m.role==='ai').slice(-8).map(m=>({role:m.role==='me'?'user':'assistant',content:m.text}));
+  try{
+    let reply;
+    if(WIRED){ const r=await api.chat(history); if(!r||!r.ok)throw new Error((r&&r.error)||'engine error'); reply=r.reply; }
+    else{ const r=await fetch('http://localhost:11434/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'hermes3:8b',stream:false,messages:history})}); if(!r.ok)throw new Error('HTTP '+r.status); reply=((await r.json()).message||{}).content||''; }
+    think.remove(); pushMsg('ai',(reply||'(empty)').trim());
+  }catch(err){ think.remove();
+    pushMsg('sys', WIRED? ('the local engine did not answer: '+esc(err.message||'error')+'. Is Ollama running?') :
+      'local engine unreachable from a loose file (browser security). Open NESI from the app to wire it, or set <code>OLLAMA_ORIGINS=*</code>. Feed / map / sort work here regardless.');
+  }
+}
+
+// ============ library (the real canon patterns, read-only) ============
+let LIB=[];
+async function renderLibrary(){
+  const el=document.getElementById('libCards');
+  if(!WIRED){ el.innerHTML='<div class="empty">the library lives inside NESI.<br>open NESI from the app to browse your patterns.</div>'; document.getElementById('libCount').textContent=''; return; }
+  const q=(document.getElementById('libSearch').value)||'';
+  let r; try{ r=await api.library_list(q); }catch(e){ el.innerHTML='<div class="empty">library unavailable.</div>'; return; }
+  LIB=(r&&r.patterns)||[];
+  document.getElementById('libCount').textContent=(r.shown!=null?r.shown:LIB.length)+' / '+(r.total||LIB.length);
+  el.innerHTML=LIB.length?LIB.map(libCardHTML).join(''):'<div class="empty">no patterns match.</div>';
+}
+function libCardHTML(p){
+  const badge = p.state==='folded'?'<span class="tagpill held">folded</span>':'<span class="tagpill digested">canon</span>';
+  const ext = (p.extends&&p.extends.length)?`<div style="font-size:8.5px;color:var(--gf);margin-top:3px">extends: ${esc(p.extends.join(', '))}</div>`:'';
+  return `<div class="card dig" id="lc-${cssid(p.slug)}">
+    <div class="card-hd" onclick="openLib('${p.slug}')"><span class="card-dot"></span>
+      <div style="flex:1"><div style="color:var(--gb);font-size:12.5px;font-weight:bold;line-height:1.4">${esc(p.title)}</div>
+      ${p.thesis?`<div style="font-size:9.5px;color:var(--gd);margin-top:3px;line-height:1.45">${esc(p.thesis)}</div>`:''}${ext}</div>
+      ${badge}</div>
+    <div class="card-body"><div class="card-inner"><div class="card-full" id="lb-${cssid(p.slug)}" style="max-height:420px;overflow:auto">…</div></div></div></div>`;
+}
+async function openLib(slug){
+  const c=document.getElementById('lc-'+cssid(slug)); const open=c.classList.toggle('open');
+  if(open){ const body=document.getElementById('lb-'+cssid(slug)); if(body.dataset.loaded)return;
+    body.textContent='reading…';
+    try{ const r=await api.library_read(slug); body.textContent=(r&&r.ok)?r.text:('could not read'+(r&&r.error?': '+r.error:'')); body.dataset.loaded='1'; }
+    catch(e){ body.textContent='could not read.'; } }
+}
+</script>
+</body>
+</html>

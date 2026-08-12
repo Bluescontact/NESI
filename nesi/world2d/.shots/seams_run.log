@@ -1,0 +1,58 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+OpenGL API 3.3.0 - Build 32.0.101.8132 - Compatibility - Using Device: Intel - Intel(R) Graphics
+
+WARNING: 2D MSAA is not yet supported for GLES3.
+   at: render_target_set_msaa (drivers/gles3/storage/texture_storage.cpp:3210)
+check: blind — the sample left the band: true
+check: blind — the band is empty again: true
+check: blind — the table is hidden: true
+check: wrote 01_blind.png
+check: tiles — three of the harness's stones are held: true
+check: tiles — the table shows: true
+check: wrote 02_tiles.png
+check: given — the rock is whole, kind given, who carried: true
+check: given — the rock became two gravel stones, source kept: true
+check: fetched — kind and asked carried: true
+check: wrote 03_sources.png
+check: tarp — one stone landed at the rim: true
+check: wrote 04_tarp.png
+check: tarp — folded back to the table: true
+check: wrote 04b_folded.png
+check: hold — the stones are still there after a reload: true
+check: wrote 05_hold.png
+check: merge — written order despite reverse picks: true
+check: merge — the seams held in the data: true
+check: merge — shared source carried whole: true
+check: merge — both parts kept in the bank, staged merged: true
+check: wrote 06_pool.png
+check: seams — opened and the store did not change: true
+check: wrote 06b_the_seams_open.png
+check: sheet — typing fired no cut, nothing left the page: true
+check: wrote 07_sheet.png
+check: sheet — Ctrl+Enter cut the page into two stones: true
+check: sheet — the page is never cleared: true
+check: sheet — a second deposit doubles nothing: true
+check: wrote 08_landed.png
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/world_view.gd:27)
+       [1] _ready (res://scripts/main.gd:41)
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/field_view.gd:28)
+       [1] _ready (res://scripts/main.gd:44)
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/room_view.gd:33)
+       [1] _ready (res://scripts/main.gd:48)
+check: route — the world reached from the intake: true
+check: wrote 09_the_world_reached.png
+check: route — the intake reached back from the world: true
+check: wrote 10_the_intake_again.png
+check: done. shots in res://.shots

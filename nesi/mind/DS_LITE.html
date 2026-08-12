@@ -1,0 +1,124 @@
+<!--DS_LITE — the light daily surface (Kevin's mark 2026-08-07, session 289f75e7).
+     Flat. No board, no rooms, no navigation. Every live decision renders open and
+     markable at depth zero. Only tools/surface.py reads this file; the model never
+     loads it into context. DS_v1.html stays untouched and stays the Deep Review chamber.
+     Placeholders {{...}} are filled by surface.py. TPL: blocks are extracted and stripped.-->
+<style>
+.dsl *,.dsl *::before,.dsl *::after{box-sizing:border-box;margin:0;padding:0}
+.dsl{--bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;--g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;
+ --grn:#2a6a1a;--grn-bg:#e8f2e4;--yel:#7a5a10;--yel-bg:#f5f0e0;--anc:#4a5a8a;--anc-bg:#e8ecf5;
+ --bdr:#ccc5b0;--read-bg:#f2efe6;--decide-bg:#eee9da;--cross-bg:#f2ece0;
+ background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.65;padding:20px}
+.dsl .dsl-wrap{max-width:760px;margin:0 auto;padding-bottom:30px}
+.dsl .dsl-hd{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
+.dsl .dsl-eye{font-size:8px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.dsl .dsl-name{font-size:17px;font-weight:bold;color:var(--gb);letter-spacing:2px;margin-bottom:4px}
+.dsl .dsl-sub{font-size:10px;color:var(--gd)}
+.dsl .dsl-floor{font-size:10px;color:var(--gd);background:var(--sf2);border:1px solid var(--bdr);padding:8px 11px;margin-bottom:14px}
+.dsl .dsl-floor-lab{font-size:8px;letter-spacing:2px;color:var(--gf);font-weight:bold;text-transform:uppercase;margin-bottom:4px}
+.dsl .dsl-tiles{display:flex;flex-direction:column;gap:10px}
+.dsl .dsl-tile{border:1px solid var(--bdr);border-left:3px solid var(--gb);background:var(--sf);padding:12px 14px}
+.dsl .dsl-t-hd{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
+.dsl .dsl-reading{flex:1;font-size:11.5px;color:var(--g);line-height:1.75}
+.dsl .dsl-tag{font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--bdr);text-transform:uppercase;white-space:nowrap}
+.dsl .dsl-tag.grounded{color:var(--anc);background:var(--anc-bg);border-color:var(--anc)}
+.dsl .dsl-tag.reached{color:var(--yel);background:var(--yel-bg);border-color:var(--yel)}
+.dsl .dsl-zone-decide{background:var(--decide-bg);border:1px solid var(--bdr);border-left:2px solid var(--gd);padding:8px 10px}
+.dsl .dsl-zone-cross{background:var(--cross-bg);border:1px solid var(--gb);border-left:3px solid var(--gb);padding:8px 10px;margin-top:7px}
+.dsl .dsl-lab{font-size:8px;letter-spacing:1.5px;color:var(--gf);margin-bottom:6px;text-transform:uppercase}
+.dsl .dsl-lab-x{font-size:8px;letter-spacing:1.5px;color:var(--gb);margin-bottom:6px;text-transform:uppercase;font-weight:bold}
+.dsl .dsl-btns{display:flex;gap:0;border:1px solid var(--bdr);background:#fff;flex-wrap:wrap}
+.dsl .dsl-d-btn{flex:1;min-width:80px;text-align:center;font-size:10px;padding:8px 4px;cursor:pointer;color:var(--gd);background:transparent;border:none;border-right:1px solid var(--bdr);font-family:inherit;line-height:1.4}
+.dsl .dsl-d-btn:last-child{border-right:none}
+.dsl .dsl-d-btn:hover{color:var(--gb);background:var(--sf2)}
+.dsl .dsl-x-btn{width:100%;text-align:center;font-size:11px;padding:10px 6px;cursor:pointer;color:var(--grn);background:var(--grn-bg);border:1px solid var(--grn);font-family:inherit;font-weight:bold;line-height:1.5}
+.dsl .dsl-x-btn:hover{background:#fff}
+.dsl .dsl-gap{display:block;font-size:9px;font-weight:normal;color:var(--yel);letter-spacing:0.3px;margin-top:3px}
+.dsl .dsl-foot{margin-top:18px;padding-top:11px;border-top:1px solid var(--bdr)}
+.dsl .dsl-status{font-size:8px;color:var(--gf);letter-spacing:1px}
+.dsl .dsl-reveal{display:none;margin-top:9px}
+.dsl .dsl-reveal.on{display:block}
+.dsl .dsl-reveal textarea{width:100%;min-height:64px;font-family:inherit;font-size:10px;color:var(--g);background:#fff;border:1px solid var(--yel);padding:8px;resize:vertical}
+.dsl .dsl-reveal-lab{font-size:8px;letter-spacing:1px;color:var(--yel);text-transform:uppercase;margin-bottom:4px}
+</style>
+<div class="dsl">
+<div class="dsl-wrap">
+  <div class="dsl-hd">
+    <div class="dsl-eye">DSS · RECOGNITION INFRASTRUCTURE</div>
+    <div class="dsl-name">{{TITLE}}</div>
+    <div class="dsl-sub">{{CONTEXT}}</div>
+  </div>
+  <div class="dsl-floor">
+    <div class="dsl-floor-lab">&#9670; the floor</div>
+    <div>{{FLOOR}}</div>
+  </div>
+  <div class="dsl-tiles">
+{{TILES}}
+  </div>
+  <div class="dsl-foot">
+    <div class="dsl-status" id="dsl-status">a mark copies to your clipboard &middot; nothing is sent</div>
+    <div class="dsl-reveal" id="dsl-reveal">
+      <div class="dsl-reveal-lab">clipboard blocked here &mdash; select all + Ctrl+C, then paste into your chat box</div>
+      <textarea id="dsl-reveal-t" readonly></textarea>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+const DSL_CARDS = {{CARDS}};
+function dslStatus(t){var e=document.getElementById('dsl-status');if(e)e.textContent=t;}
+function dslFallback(t){
+  try{
+    var ta=document.createElement('textarea');
+    ta.value=t;ta.style.position='absolute';ta.style.top='0';ta.style.left='0';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    var ok=document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){return false;}
+}
+function dslReveal(t){
+  var r=document.getElementById('dsl-reveal'),ta=document.getElementById('dsl-reveal-t');
+  if(r&&ta){ta.value=t;r.classList.add('on');ta.focus();ta.select();}
+}
+function dslCopy(t,msg){
+  var done=function(ok){
+    if(ok){document.getElementById('dsl-reveal').classList.remove('on');
+      dslStatus((msg||'copied')+' — paste into your chat box with Ctrl+V');}
+    else{dslReveal(t);dslStatus('clipboard blocked — select the box below + Ctrl+C');}
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){done(true);}).catch(function(){done(dslFallback(t));});
+  }else{done(dslFallback(t));}
+}
+function dslSteer(id,key){
+  var d=DSL_CARDS[id];if(!d)return;
+  var t=d[key];if(t==null)return;
+  dslCopy(t,key==='cross'?'copied — the crossing mark':'copied');
+}
+</script>
+<!--TPL:TILE
+    <div class="dsl-tile" id="c-{{id}}">
+      <div class="dsl-t-hd">
+        <div class="dsl-reading">{{reading}}</div>
+        <span class="dsl-tag {{grounding}}">{{grounding}}</span>
+      </div>
+      <div class="dsl-zone-decide">
+        <div class="dsl-lab">decide &mdash; reversible, no pressure</div>
+        <div class="dsl-btns">{{exits}}</div>
+      </div>
+{{cross}}
+    </div>
+TPL:TILE-->
+<!--TPL:EXIT
+<button class="dsl-d-btn" onclick="dslSteer('{{id}}','{{key}}')">{{label}}</button>
+TPL:EXIT-->
+<!--TPL:CROSS
+      <div class="dsl-zone-cross">
+        <div class="dsl-lab-x">cross &mdash; the one that exits</div>
+        <button class="dsl-x-btn" onclick="dslSteer('{{id}}','cross')">{{label}}{{gap}}</button>
+      </div>
+TPL:CROSS-->
+<!--TPL:GAP
+<span class="dsl-gap">&#9888; {{gap}}</span>
+TPL:GAP-->

@@ -1,0 +1,49 @@
+# Secrets — never cross the membrane
+gate/data/.gate_token
+gate/data/.gate_daemon
+rhythm/.mail_creds
+tools/dispatcher_bot/.env
+
+# The body's rawest channel — Kevin's delete controls these; they never cross
+rhythm/_pages_gated/
+rhythm/pages_inbox/
+rhythm/outbox/
+rhythm/.last_brief
+
+# Runtime / generated
+**/__pycache__/
+*.pyc
+
+# --- Staged-worktree scoping, 2026-08-11 (Kevin's mark, session 8a8f232e) ---
+# This repo tracks ONLY the open game-development footprint: nesi/, counsel/,
+# inbox/, the four ledger-tool scripts, and the three standing ledgers.
+# Everything else at the DSS root (legal/financial/personal material, other
+# project trees, tools/'s many unrelated subsystems) is ignored by default so
+# a future `git add -A` here can never sweep it in.
+/*
+!/nesi/
+!/counsel/
+!/inbox/
+!/tools/
+/tools/*
+!/tools/marks.py
+!/tools/gates.py
+!/tools/decisions.py
+!/tools/surface.py
+!/MARKS_LOG.jsonl
+!/OPEN_GATES.jsonl
+!/DECISIONS_OFFERED.jsonl
+!/.gitignore
+
+# Within nesi/: exclude the already-independently-gitted 3D tree, binary
+# exports, archival compost, and quarantine — none of these are "open
+# development" in the staged sense.
+/nesi/world3d/
+/nesi/world2d/export/
+/nesi/_compost/
+/nesi/*.exe
+/nesi/*.exe.bak*
+/nesi/_intake_quarantine_2026-08-10/
+
+# Ephemeral widget renders
+/_widgets/

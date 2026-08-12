@@ -1,0 +1,89 @@
+{
+  "id": "2026-07-17_made_an_instrument_for_witnessing_a_gift_with_daf9fe",
+  "origin": "made",
+  "pile": "bench:an_instrument_for_witnessing_a_gift_with.md",
+  "raw_text_inside": true,
+  "run": {
+    "finished": "2026-07-17T23:09:55",
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "error": null
+  },
+  "object": {
+    "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')",
+    "pile": "bench:an_instrument_for_witnessing_a_gift_with.md",
+    "summary": "[STUB DRAFT — engine not wired] intent: an instrument for witnessing a gift without merging with the giver · bearing patterns: Catalysis Without Claim, deliverable_as_self_disclosure, FRAMEWORK AS PERCEPTUAL INSTRUMENT, Gift Specificity — Receiver Known, Inhabitable Without the Author, Extraction Legible Only as Lineage\n[STUB REFINE — engine not wired] notes were not applied",
+    "items": [
+      {
+        "item": "bearing pattern: Catalysis Without Claim",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "catalysis_without_claim.md",
+        "evidence": "keyword overlap: without"
+      },
+      {
+        "item": "bearing pattern: deliverable_as_self_disclosure",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "deliverable_as_self_disclosure.md",
+        "evidence": "keyword overlap: gift"
+      },
+      {
+        "item": "bearing pattern: FRAMEWORK AS PERCEPTUAL INSTRUMENT",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "framework_as_perceptual_instrument.md",
+        "evidence": "keyword overlap: instrument"
+      },
+      {
+        "item": "bearing pattern: Gift Specificity — Receiver Known",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "gift_specificity_receiver_known.md",
+        "evidence": "keyword overlap: gift"
+      },
+      {
+        "item": "bearing pattern: Inhabitable Without the Author",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "inhabitable_without_author.md",
+        "evidence": "keyword overlap: without"
+      },
+      {
+        "item": "bearing pattern: Extraction Legible Only as Lineage",
+        "kind": "contained",
+        "disposition": "applied",
+        "target": "instrument_as_self_portrait.md",
+        "evidence": "keyword overlap: instrument"
+      }
+    ],
+    "restored_count": 0
+  },
+  "bench": {
+    "intent": "an instrument for witnessing a gift without merging with the giver",
+    "history": [
+      {
+        "op": "draft",
+        "at": "2026-07-17T23:09:55",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      },
+      {
+        "op": "break",
+        "at": "2026-07-17T23:09:55",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      },
+      {
+        "op": "refine",
+        "at": "2026-07-17T23:09:55",
+        "engine": "stub-v0 (FALLBACK — claude-cli not wired at the bench: 'claude-cli')"
+      }
+    ],
+    "break_notes": [
+      "[STUB BREAK — engine not wired] no falsification performed; a real reader would attack the draft's claims against the pulled patterns"
+    ],
+    "stub": true
+  },
+  "mark": {
+    "verdict": "compost",
+    "at": "2026-07-23T21:40:30"
+  }
+}

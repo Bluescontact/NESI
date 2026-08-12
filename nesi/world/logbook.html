@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Log Book</title>
+<style>
+  :root{
+    --paper:#faf7f0; --ink:#3a3630; --line:#8a8272; --water:#cfe3e8; --water-line:#7fa8b3;
+    --sand:#efe6cf; --accent:#a8743c; --panel:#fffdf8; --tile:#fffdf8; --tile-line:#c9c0ab;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:"Segoe UI",Verdana,Geneva,sans-serif; padding:18px;}
+  .wrap{max-width:1040px; margin:0 auto;}
+  h1{font-size:1.3em; font-weight:600; letter-spacing:.04em;}
+  .sub{font-size:.85em; color:var(--line); margin:2px 0 14px 0;}
+  .sub a{color:var(--accent);}
+
+  /* ---- surface switch ---- */
+  .switch{display:flex; gap:0; border:1.5px solid var(--line); border-radius:8px; overflow:hidden; margin-bottom:16px; width:fit-content;}
+  .switch button{border:none; background:var(--panel); color:var(--line); font-family:inherit; font-size:.85em;
+    padding:8px 20px; cursor:pointer; letter-spacing:.05em; border-right:1.5px solid var(--line);}
+  .switch button:last-child{border-right:none;}
+  .switch button.on{background:var(--sand); color:var(--ink); font-weight:600;}
+  .surface{display:none;}
+  .surface.on{display:block;}
+
+  /* ---- THE BAR ---- */
+  .barRow{display:flex; gap:10px; align-items:stretch; margin-bottom:8px;}
+  #bar{flex:1; border:2px solid var(--line); border-radius:8px; background:var(--panel); color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif; font-size:1.15em; line-height:1.5; padding:14px 16px;}
+  #bar:focus{outline:none; border-color:var(--water-line);}
+  .barNote{font-size:.8em; color:var(--line); margin-bottom:12px; line-height:1.5;}
+
+  .thought{border:1.5px dashed var(--water-line); border-radius:8px; background:#f4fafb; padding:10px 12px;
+    margin-bottom:12px; font-size:.85em; display:none;}
+  .thought.on{display:block;}
+  .thoughtHd{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .thoughtLab{color:#4a7480; letter-spacing:.05em; font-size:.9em;}
+  .thoughtBtns{display:flex; gap:8px;}
+  .thoughtBtns button{border:1.5px solid var(--water-line); background:var(--panel); color:var(--ink);
+    border-radius:6px; padding:5px 12px; font-size:.9em; cursor:pointer; font-family:inherit;}
+  .thoughtBtns button:hover{background:#eaf4f6;}
+  .thoughtText{color:#55504a; font-family:Georgia,serif; line-height:1.6;}
+
+  .boardBar{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:8px; font-size:.82em; color:var(--line);}
+  .boardBar button{border:1.5px solid var(--line); background:var(--panel); color:var(--ink); border-radius:6px;
+    padding:6px 12px; font-size:1em; cursor:pointer; font-family:inherit;}
+  .boardBar button:hover{background:var(--sand);}
+  .lakeGauge{display:flex; align-items:center; gap:8px;}
+  .lakeBar{width:120px; height:8px; border:1.5px solid var(--water-line); border-radius:5px; background:var(--panel); overflow:hidden;}
+  .lakeFill{height:100%; width:0%; background:var(--water); transition:width .2s;}
+
+  #board{position:relative; border:1.5px solid var(--tile-line); border-radius:8px; background:
+    repeating-linear-gradient(0deg,#f6f2e8 0 1px,transparent 1px 28px),
+    repeating-linear-gradient(90deg,#f6f2e8 0 1px,transparent 1px 28px), var(--paper);
+    height:560px; overflow:auto; margin-bottom:10px;}
+  #boardInner{position:relative; width:2000px; height:1400px;}
+  .tile{position:absolute; max-width:240px; min-width:110px; background:var(--tile); border:1.5px solid var(--tile-line);
+    border-radius:7px; padding:9px 11px; font-family:Georgia,"Times New Roman",serif; font-size:.9em; line-height:1.5;
+    color:var(--ink); cursor:grab; user-select:none; box-shadow:0 1px 0 rgba(0,0,0,.04);}
+  .tile:hover{border-color:var(--line);}
+  .tile.dragging{cursor:grabbing; border-color:var(--water-line); z-index:99;}
+  .tile.whole{border-left:4px solid var(--water-line);}
+  .tile .ts{display:block; font-family:"Segoe UI",sans-serif; font-size:.68em; color:#a89f8c; letter-spacing:.05em; margin-top:5px;}
+  .tile .kill{position:absolute; top:2px; right:5px; font-size:.9em; color:#c9c0ab; cursor:pointer; display:none; line-height:1;}
+  .tile:hover .kill{display:block;}
+  .tile .kill:hover{color:var(--accent);}
+  .emptyBoard{position:absolute; top:24px; left:24px; color:#b8b0a0; font-size:.9em; font-family:"Segoe UI",sans-serif;}
+
+  /* ---- THE PAGE (unchanged path) ---- */
+  textarea{width:100%; min-height:380px; border:2px solid var(--line); border-radius:8px; background:var(--panel);
+    color:var(--ink); font-family:Georgia,"Times New Roman",serif; font-size:1.05em; line-height:1.6; padding:16px; resize:vertical;}
+  textarea:focus{outline:none; border-color:var(--water-line);}
+  .gaugeRow{display:flex; align-items:center; gap:14px; margin:10px 0; flex-wrap:wrap;}
+  .gaugeBar{flex:1; min-width:220px; height:12px; border:1.5px solid var(--line); border-radius:7px; background:var(--panel); overflow:hidden;}
+  .gaugeFill{height:100%; width:0%; background:var(--water); border-right:1.5px solid var(--water-line); transition:width .2s;}
+  .gaugeTxt{font-size:.85em; color:var(--ink); white-space:nowrap;}
+  .target{font-size:.85em; color:var(--line);}
+  .target input{width:70px; border:1.5px solid var(--line); border-radius:5px; background:var(--panel); color:var(--ink); padding:2px 6px; font-size:1em;}
+  .doorRow{margin:14px 0; display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  #generate{border:2px solid var(--accent); background:var(--sand); color:var(--ink); border-radius:8px;
+    padding:10px 26px; font-size:1em; cursor:pointer; letter-spacing:.06em;}
+  #generate:hover{background:#f5ecd6;}
+  #saveTxt, #placeStones{border:1.5px solid var(--line); background:var(--panel); color:var(--ink); border-radius:6px; padding:8px 14px; font-size:.85em; cursor:pointer;}
+  #placeStones{border-color:var(--water-line);}
+  #stepThrough{display:none; font-size:.95em;}
+  #stepThrough a{color:var(--accent); font-weight:600;}
+  .honest{border:1.5px dashed var(--line); border-radius:8px; background:var(--panel); padding:10px 14px; font-size:.83em; color:#55504a; line-height:1.5; margin-top:14px;}
+  #doneNote{display:none; font-size:.85em; color:var(--line); margin-top:6px;}
+  .shared{margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>THE LOG BOOK</h1>
+  <p class="sub">the writing surface · the GENERATE door leads to <a href="index.html">the world</a></p>
+
+  <div class="switch">
+    <button id="tabBar" class="on">THE BAR</button>
+    <button id="tabPage">THE PAGE</button>
+  </div>
+
+  <!-- ============ THE BAR (Level 1 — scatter only) ============ -->
+  <div class="surface on" id="surfaceBar">
+
+    <div class="barRow">
+      <input id="bar" type="text" autocomplete="off" spellcheck="true"
+             placeholder="One sentence. Punctuation drops it.">
+    </div>
+    <p class="barNote">
+      A period, question mark or exclamation drops the sentence into a tile and clears the bar.
+      Sentences dropped in a row are held as one thought — you can drop that whole thought as a single tile instead.
+      Nothing reads you. Tiles are your words, verbatim, and you place them.
+    </p>
+
+    <div class="thought" id="thought">
+      <div class="thoughtHd">
+        <span class="thoughtLab" id="thoughtLab">this thought — 0 sentences</span>
+        <span class="thoughtBtns">
+          <button id="dropWhole">⇩ drop as one thought</button>
+          <button id="newThought">start a new thought</button>
+        </span>
+      </div>
+      <div class="thoughtText" id="thoughtText"></div>
+    </div>
+
+    <div class="boardBar">
+      <button id="scatter">scatter the board</button>
+      <button id="placeStonesBar">place stones in the world</button>
+      <span id="tileCount">0 tiles</span>
+      <span class="lakeGauge">
+        <span>into the intake:</span>
+        <span class="lakeBar"><span class="lakeFill" id="lakeFill"></span></span>
+        <span id="lakeTxt">0 / 1000 words</span>
+      </span>
+    </div>
+
+    <div id="board"><div id="boardInner"><div class="emptyBoard" id="emptyBoard">The board is empty. Write a sentence in the bar and end it with a period.</div></div></div>
+
+    <div class="honest">
+      <strong>What the bar does, honestly:</strong> the sentence you type is stored verbatim as a tile. Punctuation is detected only to know
+      <em>where a sentence ends</em> — no other part of your text is parsed, scored, summarised, grouped, or read. The machine never suggests
+      what to merge and never moves a tile; every position on the board is yours, saved locally so the board is where you left it.
+      Tiles are written to the same local store the Shore already reads, so a sentence written here becomes a stone in the world with no extra step.
+      Everything is retained until processed — nothing expires, nothing is wiped daily. No network calls; nothing leaves the machine.
+    </div>
+  </div>
+
+  <!-- ============ THE PAGE (the original path, unchanged) ============ -->
+  <div class="surface" id="surfacePage">
+    <textarea id="pages" placeholder="Write here. Nothing reads you while you write."></textarea>
+
+    <div class="gaugeRow">
+      <div class="gaugeBar"><div class="gaugeFill" id="fill"></div></div>
+      <span class="gaugeTxt" id="count">0 words</span>
+      <span class="target">target <input type="number" id="target" min="1" step="50" value="750"> words (yours to set)</span>
+    </div>
+
+    <div class="doorRow">
+      <button id="generate">GENERATE</button>
+      <button id="saveTxt">download today's pages (.txt)</button>
+    </div>
+  </div>
+
+  <!-- shared to both surfaces -->
+  <div class="shared">
+    <div class="doorRow">
+      <button id="placeStones">place stones in the world (stones.json)</button>
+      <span id="stepThrough">stones are on the shore — <a href="index.html">step through the door</a></span>
+    </div>
+    <div id="doneNote"></div>
+    <div id="placeNote" class="honest" style="display:none">
+      <strong>stones.json downloaded.</strong> A browser page cannot write into the world's folder itself, so one step is yours:
+      double-click <code>nesi\world\PLACE_STONES.bat</code> (it copies the newest downloaded stones.json into
+      <code>nesi\world3d\export\web\stones.json</code>) — or drop the file there by hand. Then open the 3D world
+      (<code>nesi\world3d\PLAY_WORLD.bat</code>) and the stones lie on the Shore. The file carries your stones
+      verbatim, nothing else.
+    </div>
+
+    <div class="honest">
+      <strong>What GENERATE actually does, honestly:</strong> your text is kept locally in this browser (localStorage) and offered as a .txt download; stones are cut client-side as verbatim paragraph-level fragments — no analysis, no scoring, no reading of you. Metabolizing into seeds happens with NESI in session — paste your pages there when you choose. No hidden processing, no network calls; nothing leaves the machine. Everything is retained until processed — no daily wipe; stones stay until you remove or process them. "Place stones in the world" hands the same retained stones to the world as <code>stones.json</code> — still verbatim, still local. If the world's own server is running (<code>nesi\world3d\PLAY_WORLD.bat</code>) they go straight into it over <code>127.0.0.1</code>, with no file step; if it isn't, they download and the two-step path below applies. Either way the request never leaves this machine, the content is written byte-for-byte, and nothing about it is logged.
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   SHARED STORE — the same one the Shore reads.
+   shore_stones.gd reads {text} from each entry; extra keys (x, y, src) are
+   ignored by it, so the board's positions ride along harmlessly.
+   GUARD, ABSOLUTE: text is stored VERBATIM. Punctuation is inspected only to
+   find where a sentence ends. Nothing else about the writing is parsed,
+   scored, summarised, grouped, or retained beyond the text itself.
+   ========================================================================= */
+var STONE_KEY  = 'nesi_world_stones';
+var TEXT_KEY   = 'nesi_logbook_text';
+var TARGET_KEY = 'nesi_logbook_target';
+var SURF_KEY   = 'nesi_logbook_surface';
+var LAKE_STEP  = 1000;   // THE WHOLE NAMING 7e: the lake updates every 1000 words into the intake
+
+function loadStones(){
+  try{ return JSON.parse(localStorage.getItem(STONE_KEY)) || []; }catch(e){ return []; }
+}
+function saveStones(s){
+  try{ localStorage.setItem(STONE_KEY, JSON.stringify(s)); return true; }catch(e){ return false; }
+}
+function wordsIn(s){ return s.split(/\s+/).filter(Boolean).length; }
+
+/* =========================================================================
+   SURFACE SWITCH
+   ========================================================================= */
+var tabBar = document.getElementById('tabBar');
+var tabPage = document.getElementById('tabPage');
+var surfaceBar = document.getElementById('surfaceBar');
+var surfacePage = document.getElementById('surfacePage');
+function showSurface(which){
+  var isBar = (which !== 'page');
+  surfaceBar.classList.toggle('on', isBar);
+  surfacePage.classList.toggle('on', !isBar);
+  tabBar.classList.toggle('on', isBar);
+  tabPage.classList.toggle('on', !isBar);
+  try{ localStorage.setItem(SURF_KEY, isBar ? 'bar' : 'page'); }catch(e){}
+}
+tabBar.addEventListener('click', function(){ showSurface('bar'); });
+tabPage.addEventListener('click', function(){ showSurface('page'); });
+try{ showSurface(localStorage.getItem(SURF_KEY) || 'bar'); }catch(e){}
+
+/* =========================================================================
+   THE BOARD — tiles the user places. The machine never moves one.
+   ========================================================================= */
+var boardInner = document.getElementById('boardInner');
+var emptyBoard = document.getElementById('emptyBoard');
+var tileCountEl = document.getElementById('tileCount');
+var BOARD_W = 2000, BOARD_H = 1400, TILE_W = 240;
+
+// deterministic-enough spread so a fresh tile does not land on the last one
+function nextSpot(n){
+  var cols = 7;
+  var col = n % cols;
+  var row = Math.floor(n / cols);
+  var jx = ((n * 37) % 41) - 20;
+  var jy = ((n * 53) % 29) - 14;
+  return {
+    x: Math.max(8, Math.min(BOARD_W - TILE_W - 8, 30 + col * 262 + jx)),
+    y: Math.max(8, Math.min(BOARD_H - 90,          30 + row * 120 + jy))
+  };
+}
+
+function renderBoard(){
+  var stones = loadStones();
+  Array.prototype.slice.call(boardInner.querySelectorAll('.tile')).forEach(function(t){ t.remove(); });
+  var placed = 0;
+  stones.forEach(function(s, i){
+    if(!s || !s.text) return;
+    if(typeof s.x !== 'number' || typeof s.y !== 'number'){
+      var p = nextSpot(i); s.x = p.x; s.y = p.y;
+    }
+    var d = document.createElement('div');
+    d.className = 'tile' + (s.whole ? ' whole' : '');
+    d.style.left = s.x + 'px';
+    d.style.top  = s.y + 'px';
+    d.dataset.idx = i;
+    var body = document.createElement('span');
+    body.textContent = s.text;               // VERBATIM — textContent, never innerHTML
+    d.appendChild(body);
+    var ts = document.createElement('span');
+    ts.className = 'ts';
+    ts.textContent = (s.ts || '').slice(11,16) + (s.whole ? ' · whole thought' : '');
+    d.appendChild(ts);
+    var kill = document.createElement('span');
+    kill.className = 'kill'; kill.textContent = '×'; kill.title = 'remove this tile';
+    kill.addEventListener('pointerdown', function(ev){ ev.stopPropagation(); });
+    kill.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var all = loadStones();
+      all.splice(parseInt(d.dataset.idx,10), 1);
+      saveStones(all); renderBoard(); closeThought();
+    });
+    d.appendChild(kill);
+    makeDraggable(d);
+    boardInner.appendChild(d);
+    placed++;
+  });
+  saveStones(stones);   // persist any positions filled in above
+  emptyBoard.style.display = placed ? 'none' : 'block';
+  tileCountEl.textContent = placed + (placed === 1 ? ' tile' : ' tiles');
+  updateLake(stones);
+}
+
+function makeDraggable(el){
+  var sx=0, sy=0, ox=0, oy=0, moved=false;
+  el.addEventListener('pointerdown', function(ev){
+    if(ev.button !== 0) return;
+    moved = false;
+    sx = ev.clientX; sy = ev.clientY;
+    ox = parseFloat(el.style.left) || 0;
+    oy = parseFloat(el.style.top)  || 0;
+    el.setPointerCapture(ev.pointerId);
+    el.classList.add('dragging');
+  });
+  el.addEventListener('pointermove', function(ev){
+    if(!el.classList.contains('dragging')) return;
+    var dx = ev.clientX - sx, dy = ev.clientY - sy;
+    if(Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
+    el.style.left = Math.max(0, Math.min(BOARD_W - 60, ox + dx)) + 'px';
+    el.style.top  = Math.max(0, Math.min(BOARD_H - 40, oy + dy)) + 'px';
+  });
+  function end(ev){
+    if(!el.classList.contains('dragging')) return;
+    el.classList.remove('dragging');
+    try{ el.releasePointerCapture(ev.pointerId); }catch(e){}
+    if(!moved) return;
+    var all = loadStones();
+    var i = parseInt(el.dataset.idx, 10);
+    if(all[i]){
+      all[i].x = parseFloat(el.style.left) || 0;
+      all[i].y = parseFloat(el.style.top)  || 0;
+      saveStones(all);
+    }
+  }
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointercancel', end);
+}
+
+document.getElementById('scatter').addEventListener('click', function(){
+  var all = loadStones();
+  all.forEach(function(s, i){ var p = nextSpot(i); s.x = p.x; s.y = p.y; });
+  saveStones(all); renderBoard();
+});
+
+/* =========================================================================
+   THE LAKE CLOCK — words into the intake, 1000-word step (7e).
+   A readout only. Nothing is computed about the writing.
+   ========================================================================= */
+function updateLake(stones){
+  var n = 0;
+  stones.forEach(function(s){ if(s && s.text) n += wordsIn(s.text); });
+  var into = n % LAKE_STEP;
+  document.getElementById('lakeFill').style.width = (100 * into / LAKE_STEP) + '%';
+  document.getElementById('lakeTxt').textContent =
+    n + ' words · ' + Math.floor(n / LAKE_STEP) + ' lake update' + (Math.floor(n/LAKE_STEP)===1?'':'s');
+}
+
+/* =========================================================================
+   THE BAR — punctuation fires the deposit (Kevin's ruling 2026-08-02):
+   "Each sentence deposits into a tile, punctuation fires the deposit.. so a
+   user could build a paragraph and drop it as a whole thought."
+   Sentences dropped consecutively are held as ONE THOUGHT; the user can
+   collapse that run into a single tile. The machine never proposes a merge.
+   ========================================================================= */
+var bar = document.getElementById('bar');
+var thoughtBox  = document.getElementById('thought');
+var thoughtLab  = document.getElementById('thoughtLab');
+var thoughtText = document.getElementById('thoughtText');
+var run = [];            // indices in the stone store belonging to the open thought
+
+function depositSentence(text){
+  var t = text.trim();
+  if(!t) return null;
+  var all = loadStones();
+  var idx = all.length;
+  var p = nextSpot(idx);
+  all.push({ text: t, ts: new Date().toISOString(), x: p.x, y: p.y, src: 'bar' });
+  if(!saveStones(all)){
+    alert('Local storage is full or blocked — the sentence was NOT saved.');
+    return null;
+  }
+  run.push(idx);
+  renderBoard();
+  renderThought();
+  return idx;
+}
+
+function renderThought(){
+  if(!run.length){ thoughtBox.classList.remove('on'); return; }
+  var all = loadStones();
+  var parts = run.map(function(i){ return all[i] ? all[i].text : ''; }).filter(Boolean);
+  thoughtLab.textContent = 'this thought — ' + parts.length + (parts.length===1?' sentence':' sentences');
+  thoughtText.textContent = parts.join(' ');
+  thoughtBox.classList.add('on');
+}
+function closeThought(){ run = []; thoughtBox.classList.remove('on'); }
+
+// A run is a real sentence only if it carries a letter or a digit — a bare
+// "." or "..." on its own is punctuation, not a thought, and drops nothing.
+function isSentence(s){ return /[a-zA-Z0-9]/.test(s); }
+
+// punctuation fires the deposit.
+// Everything up to and including the LAST punctuation mark in the bar is
+// complete; whatever follows it is still being written and stays in the bar.
+// The complete part is cut at each punctuation mark so every sentence gets
+// its own tile — this holds for fast typing and for pasted text, where more
+// than one sentence can arrive between two input events.
+bar.addEventListener('input', function(){
+  var v = bar.value;
+  var m = v.match(/^([\s\S]*[.!?])([\s\S]*)$/);
+  if(!m) return;
+  var complete = m[1];
+  var remainder = m[2];
+  var sentences = complete.match(/[^.!?]*[.!?]+/g) || [];
+  var dropped = 0;
+  sentences.forEach(function(s){
+    if(isSentence(s)){ if(depositSentence(s) !== null) dropped++; }
+  });
+  if(dropped){ bar.value = remainder.replace(/^\s+/, ''); }
+});
+// Enter drops whatever is in the bar, punctuation or not — the override
+bar.addEventListener('keydown', function(ev){
+  if(ev.key === 'Enter'){
+    ev.preventDefault();
+    if(bar.value.trim()){ if(depositSentence(bar.value) !== null){ bar.value = ''; } }
+  }
+});
+
+// collapse the open thought into ONE tile, verbatim, in order
+document.getElementById('dropWhole').addEventListener('click', function(){
+  if(run.length < 1) return;
+  var all = loadStones();
+  var parts = run.map(function(i){ return all[i] ? all[i].text : ''; }).filter(Boolean);
+  if(!parts.length){ closeThought(); return; }
+  var joined = parts.join(' ');
+  var keep = [];
+  var runSet = {}; run.forEach(function(i){ runSet[i] = true; });
+  var firstPos = all[run[0]] ? {x: all[run[0]].x, y: all[run[0]].y} : nextSpot(0);
+  all.forEach(function(s, i){ if(!runSet[i]) keep.push(s); });
+  keep.push({ text: joined, ts: new Date().toISOString(), x: firstPos.x, y: firstPos.y, src: 'bar', whole: true });
+  saveStones(keep);
+  closeThought();
+  renderBoard();
+  bar.focus();
+});
+document.getElementById('newThought').addEventListener('click', function(){ closeThought(); bar.focus(); });
+
+renderBoard();
+
+/* =========================================================================
+   THE PAGE — original path, unchanged behaviour
+   ========================================================================= */
+var ta = document.getElementById('pages');
+var fill = document.getElementById('fill');
+var countEl = document.getElementById('count');
+var targetEl = document.getElementById('target');
+
+try{
+  var saved = localStorage.getItem(TEXT_KEY);
+  if(saved) ta.value = saved;
+  var st = localStorage.getItem(TARGET_KEY);
+  if(st) targetEl.value = st;
+}catch(e){}
+
+function gauge(){
+  var n = wordsIn(ta.value);
+  var t = parseInt(targetEl.value,10) || 750;
+  countEl.textContent = n + ' words';
+  fill.style.width = Math.min(100, 100*n/t) + '%';
+}
+ta.addEventListener('input', function(){
+  gauge();
+  try{ localStorage.setItem(TEXT_KEY, ta.value); }catch(e){}
+});
+targetEl.addEventListener('input', function(){
+  gauge();
+  try{ localStorage.setItem(TARGET_KEY, targetEl.value); }catch(e){}
+});
+gauge();
+
+document.getElementById('generate').addEventListener('click', function(){
+  var text = ta.value;
+  var note = document.getElementById('doneNote');
+  if(!text.trim()){
+    note.style.display = 'block';
+    note.textContent = 'The page is empty — nothing to carry to the shore.';
+    return;
+  }
+  var chunks = text.split(/\n\s*\n/).map(function(c){ return c.trim(); }).filter(Boolean);
+  var stones = loadStones();
+  var base = stones.length;
+  var ts = new Date().toISOString();
+  chunks.forEach(function(c, k){
+    var p = nextSpot(base + k);
+    stones.push({text:c, ts:ts, x:p.x, y:p.y, src:'page'});
+  });
+  if(!saveStones(stones)){
+    note.style.display='block';
+    note.textContent='Local storage failed — nothing was saved. Use the .txt download.';
+    return;
+  }
+  try{ localStorage.setItem(TEXT_KEY, text); }catch(e){}
+  renderBoard();
+  document.getElementById('stepThrough').style.display = 'inline';
+  note.style.display = 'block';
+  note.textContent = chunks.length + ' stone' + (chunks.length===1?'':'s') + ' carried to the shore, verbatim. Your text stays here too.';
+});
+
+/* =========================================================================
+   PLACE STONES IN THE WORLD — unchanged: direct drop over 127.0.0.1, or
+   download + PLACE_STONES.bat. Localhost only; nothing leaves the machine.
+   ========================================================================= */
+var DROP_URL = 'http://127.0.0.1:8765/stones';
+
+function placeStones(){
+  var note = document.getElementById('doneNote');
+  var stones = loadStones();
+  if(!stones.length){
+    note.style.display = 'block';
+    note.textContent = 'No stones held yet — write a sentence in the bar, or GENERATE from the page.';
+    return;
+  }
+  var payload = {format:'nesi_stones_v1', exported:new Date().toISOString(), stones:stones};
+  var body = JSON.stringify(payload, null, 1);
+
+  note.style.display = 'block';
+  note.textContent = 'placing stones…';
+  var tried = false;
+  function fallbackDownload(why){
+    if(tried) return; tried = true;
+    downloadStones(body, stones.length, why);
+  }
+  try{
+    fetch(DROP_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:body})
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(new Error('HTTP '+r.status)); })
+      .then(function(res){
+        if(tried) return;
+        tried = true;
+        document.getElementById('stepThrough').style.display = 'inline';
+        document.getElementById('placeNote').style.display = 'none';
+        note.textContent = res.stones + ' stone' + (res.stones===1?'':'s') +
+          ' placed directly in the world, verbatim — no file step. Open ' +
+          'nesi\\world3d\\PLAY_WORLD.bat (or reload the world) and they are on the Shore.';
+      })
+      .catch(function(){ fallbackDownload('the world\'s server is not running'); });
+  }catch(e){
+    fallbackDownload('the direct drop is unavailable here');
+  }
+}
+document.getElementById('placeStones').addEventListener('click', placeStones);
+document.getElementById('placeStonesBar').addEventListener('click', placeStones);
+
+function downloadStones(body, count, why){
+  var note = document.getElementById('doneNote');
+  var blob = new Blob([body], {type:'application/json;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'stones.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  document.getElementById('placeNote').style.display = 'block';
+  note.style.display = 'block';
+  note.textContent = count + ' stone' + (count===1?'':'s') + ' written to stones.json, verbatim — ' +
+    why + ', so the two-step path below is the one to use.';
+}
+
+document.getElementById('saveTxt').addEventListener('click', function(){
+  var blob = new Blob([ta.value], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  var d = new Date();
+  a.download = 'logbook_' + d.toISOString().slice(0,10) + '.txt';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+OpenGL API 3.3.0 - Build 32.0.101.8132 - Compatibility - Using Device: Intel - Intel(R) Graphics
+
+WARNING: 2D MSAA is not yet supported for GLES3.
+   at: render_target_set_msaa (drivers/gles3/storage/texture_storage.cpp:3210)
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/world_view.gd:27)
+       [1] _ready (res://scripts/main.gd:41)
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/field_view.gd:28)
+       [1] _ready (res://scripts/main.gd:44)
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/room_view.gd:33)
+       [1] _ready (res://scripts/main.gd:48)
+[shot] res://.shots/00_opens_in_the_field.png
+[tank] charges: 12 (cap 12)
+[shot] res://.shots/01_tank_full.png
+[shot] res://.shots/02_the_world.png
+
+=== the_filters
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/filters_panel.gd:39)
+       [1] _open_station (res://scripts/main.gd:114)
+       [2] _gui_input (res://scripts/room_view.gd:58)
+[shot] res://.shots/03_the_filters_opens.png
+[filters] three outputs taken; tray now 33
+[shot] res://.shots/04_the_filters_three_outputs.png
+
+=== the_water_table
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/station.gd:40)
+       [1] _open_station (res://scripts/main.gd:114)
+       [2] _gui_input (res://scripts/room_view.gd:58)
+[shot] res://.shots/05_the_water_table_opens.png
+[act] pointing at spire 0
+[shot] res://.shots/06_the_water_table_act_aimed.png
+[hand] suspended -> the act (spire 0)
+[act] water reached spire 0: true
+[shot] res://.shots/07_the_water_table_water_sent.png
+[fail] the station is in its fail state: true  (spire now: 0)
+[shot] res://.shots/08_the_water_table_fail_state.png
+[hand] dissolved -> the lake
+[hand] bedload -> set it down
+[shot] res://.shots/09_the_water_table_three_outputs.png
+
+=== the_membrane
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/station.gd:40)
+       [1] _open_station (res://scripts/main.gd:114)
+       [2] _gui_input (res://scripts/room_view.gd:58)
+[shot] res://.shots/10_the_membrane_opens.png
+[act] pointing at spire 0
+[shot] res://.shots/11_the_membrane_act_aimed.png
+[hand] suspended -> the act (spire 0)
+[act] water reached spire 0: true
+[shot] res://.shots/12_the_membrane_water_sent.png
+[fail] the station is in its fail state: true  (spire now: -1)
+[shot] res://.shots/13_the_membrane_fail_state.png
+[hand] dissolved -> the lake
+[hand] bedload -> set it down
+[shot] res://.shots/14_the_membrane_three_outputs.png
+
+=== the_heliostat
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/station.gd:40)
+       [1] _open_station (res://scripts/main.gd:114)
+       [2] _gui_input (res://scripts/room_view.gd:58)
+[shot] res://.shots/15_the_heliostat_opens.png
+[act] beam on spire 0
+[shot] res://.shots/16_the_heliostat_act_aimed.png
+[hand] suspended -> the beam (spire 0)
+[act] water rode the beam to spire 0: true
+[shot] res://.shots/17_the_heliostat_water_sent.png
+[fail] receiver 0 scorched: true — beam now points at -1
+[shot] res://.shots/18_the_heliostat_burnt.png
+[hand] dissolved -> the lake
+[hand] bedload -> set it down
+[shot] res://.shots/19_the_heliostat_three_outputs.png
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/station.gd:40)
+       [1] _open_station (res://scripts/main.gd:114)
+       [2] _gui_input (res://scripts/room_view.gd:58)
+[station] receiver 0 still shut after the panel was closed: true
+[shot] res://.shots/20_the_heliostat_still_shut.png
+[shot] res://.shots/21_the_world_after_four_stations.png
+WARNING: Nodes with non-equal opposite anchors will have their size overridden after _ready(). 
+If you want to set size, change the anchors or consider using set_deferred().
+   at: _set_size (scene/gui/control.cpp:1519)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/dam_choice.gd:25)
+       [1] _open_dam (res://scripts/main.gd:127)
+       [2] _gui_input (res://scripts/world_view.gd:60)
+[shot] res://.shots/22_the_ground_has_changed.png
+
+[state] cycles=4 grounds=[0.22, 0.0, 0.0] lake=0.16 light=0.359
+[persist] heliostat off disk: scorched=[true, false, false] aim=-2.094
+[persist] water table off disk: tilt=[0.0, -1.44999992847443]
+[persist] membrane off disk: torn=6.957115
+[persist] round trip identical: true
+[shot] res://.shots/23_after_reopen.png
+[done] shots in C:/Users/KMEAR/OneDrive/Desktop/DSS content/nesi/world2d/.shots/

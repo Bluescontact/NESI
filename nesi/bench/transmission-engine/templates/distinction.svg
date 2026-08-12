@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <radialGradient id="glowL" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowR" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c674" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#d4af6a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="800" y="160" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="52" font-weight="400" letter-spacing="6"
+        fill="#e8dcc4">{{TITLE}}</text>
+
+  <!-- Vertical separator -->
+  <line x1="800" y1="280" x2="800" y2="700"
+        stroke="#3a3a3a" stroke-width="1"/>
+
+  <!-- Left luminous node -->
+  <circle cx="450" cy="490" r="120" fill="url(#glowL)"/>
+  <circle cx="450" cy="490" r="8" fill="#f0c674"/>
+
+  <!-- Left term -->
+  <text x="450" y="380" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="36" font-weight="400" letter-spacing="5"
+        fill="#e8dcc4">{{LEFT_TERM}}</text>
+
+  <!-- Left description -->
+  <text x="450" y="640" text-anchor="middle"
+        font-family="Inter, Helvetica, sans-serif"
+        font-size="18" font-weight="300" letter-spacing="2"
+        fill="#9a8d76">{{LEFT_DESC}}</text>
+
+  <!-- Right luminous node -->
+  <circle cx="1150" cy="490" r="120" fill="url(#glowR)"/>
+  <circle cx="1150" cy="490" r="8" fill="#f0c674"/>
+
+  <!-- Right term -->
+  <text x="1150" y="380" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="36" font-weight="400" letter-spacing="5"
+        fill="#e8dcc4">{{RIGHT_TERM}}</text>
+
+  <!-- Right description -->
+  <text x="1150" y="640" text-anchor="middle"
+        font-family="Inter, Helvetica, sans-serif"
+        font-size="18" font-weight="300" letter-spacing="2"
+        fill="#9a8d76">{{RIGHT_DESC}}</text>
+
+  <!-- Subtitle -->
+  <text x="800" y="800" text-anchor="middle"
+        font-family="Cormorant Garamond, Garamond, serif"
+        font-size="22" font-style="italic" font-weight="300"
+        fill="#9a8d76">{{SUBTITLE}}</text>
+</svg>

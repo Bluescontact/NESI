@@ -1,0 +1,39 @@
+; NESI — 2D. THE FLOOR, plus the slices of stage one that are not blocked.
+; Engine configuration file.
+
+config_version=5
+
+[application]
+
+config/name="NESI"
+; The intake is the opening surface — nothing precedes it (Kevin's order,
+; 2026-08-10). The world scene stays on disk, untouched, at scenes/main.tscn.
+run/main_scene="res://scenes/writing.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+; Law 1 of the floor: the program opens in a writing field, nothing precedes it.
+boot_splash/show_image=false
+boot_splash/bg_color=Color(0.055, 0.06, 0.075, 1)
+config/quit_on_go_back=false
+
+[autoload]
+
+Store="*res://scripts/store.gd"
+WritingStore="*res://scripts/writing_store.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=800
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.055, 0.06, 0.075, 1)
+anti_aliasing/quality/msaa_2d=2
+
+[gui]
+
+theme/default_font_antialiasing=1

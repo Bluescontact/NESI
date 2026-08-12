@@ -1,0 +1,29 @@
+{
+  "board_state": "settled",
+  "nodes": [
+    {
+      "id": "rosebud-host-window",
+      "content": "Ground: at Rosebud since 7-20, leave-in-1-2-wks intent (host policy)",
+      "region": "self_world",
+      "links": [],
+      "provenance": [
+        {
+          "ts": "2026-07-30T22:23:51",
+          "placed_on": "self_world"
+        }
+      ]
+    },
+    {
+      "id": "ve-gate",
+      "content": "The VE workspace gate held open since 7-30, closing on this batch",
+      "region": "self_time",
+      "links": [],
+      "provenance": [
+        {
+          "ts": "2026-07-30T22:23:51",
+          "placed_on": "self_time"
+        }
+      ]
+    }
+  ]
+}

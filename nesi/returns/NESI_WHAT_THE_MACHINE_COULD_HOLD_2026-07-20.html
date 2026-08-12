@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI — What the Machine Could Hold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f1e8;
+    --ink:#2b2a24;
+    --ink-soft:#4a4840;
+    --muted:#8f8a76;
+    --rule:#cec7b2;
+    --eyebrow:#a08f5f;
+    --olive:#8a985a;
+    --callout:#e9e5d8;
+    --card:#efece0;
+    --green-t:#5f7a3f; --green-b:#e7ecda; --green-br:#aab884;
+    --amber-t:#9c6533; --amber-b:#efe3d0; --amber-br:#cba775;
+    --red-t:#a8492f;   --red-b:#eedacf;   --red-br:#cf9d8a;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'JetBrains Mono','Courier New',monospace;
+    font-size:14px;
+    line-height:1.75;
+    font-weight:400;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:64px 28px 96px;}
+
+  .eyebrow{
+    font-size:11px;letter-spacing:0.32em;text-transform:uppercase;
+    color:var(--eyebrow);font-weight:500;margin:0 0 18px;
+  }
+  h1{
+    font-size:27px;line-height:1.25;letter-spacing:0.01em;text-transform:uppercase;
+    font-weight:700;margin:0 0 14px;color:var(--ink);
+  }
+  .sub{font-size:12.5px;color:var(--muted);margin:0 0 26px;}
+
+  hr.top{border:0;border-top:1px solid var(--rule);margin:0 0 34px;}
+
+  .callout{
+    background:var(--callout);
+    border-left:3px solid var(--olive);
+    padding:22px 26px;
+    margin:0 0 46px;
+    font-size:13.5px;line-height:1.8;color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+
+  h2{
+    font-size:12.5px;letter-spacing:0.26em;text-transform:uppercase;font-weight:700;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--rule);
+    padding:0 0 10px;margin:56px 0 26px;
+  }
+  h2 .n{color:var(--eyebrow);font-weight:500;}
+
+  p{margin:0 0 16px;}
+  .lead{color:var(--ink-soft);font-size:13.5px;}
+
+  ul.plain{list-style:none;margin:0 0 8px;padding:0;}
+  ul.plain > li{
+    position:relative;padding-left:20px;margin-bottom:14px;font-size:13.5px;line-height:1.75;color:var(--ink-soft);
+  }
+  ul.plain > li::before{content:"•";position:absolute;left:2px;color:var(--olive);font-weight:700;}
+  ul.plain b{color:var(--ink);font-weight:700;}
+
+  table{width:100%;border-collapse:collapse;margin:6px 0 20px;}
+  th{
+    text-align:left;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--eyebrow);font-weight:500;padding:0 14px 10px 0;
+    border-bottom:1px solid var(--rule);vertical-align:bottom;
+  }
+  td{
+    padding:14px 14px 14px 0;border-bottom:1px solid var(--rule);
+    font-size:13px;line-height:1.65;color:var(--ink-soft);vertical-align:top;
+  }
+  td.name{color:var(--ink);font-weight:700;white-space:nowrap;padding-right:22px;}
+  td.what{width:56%;}
+  @media(max-width:640px){
+    td.name{white-space:normal;}
+    td.what{width:auto;}
+  }
+
+  .tag{
+    display:inline-block;font-size:10.5px;letter-spacing:0.04em;
+    padding:2px 9px;border-radius:3px;border:1px solid;white-space:nowrap;font-weight:500;
+  }
+  .live,.held,.light{color:var(--green-t);background:var(--green-b);border-color:var(--green-br);}
+  .cand,.hand,.partial{color:var(--amber-t);background:var(--amber-b);border-color:var(--amber-br);}
+  .heavy{color:var(--red-t);background:var(--red-b);border-color:var(--red-br);}
+
+  .discrepancy{
+    font-size:12px;font-style:italic;color:var(--muted);
+    line-height:1.7;margin:2px 0 6px;
+  }
+
+  /* candidate cards */
+  .cards{margin-top:8px;}
+  details.card{
+    background:var(--card);border:1px solid var(--rule);
+    margin-bottom:14px;padding:0;
+  }
+  details.card summary{
+    list-style:none;cursor:pointer;padding:20px 22px;
+    display:flex;align-items:flex-start;gap:14px;
+  }
+  details.card summary::-webkit-details-marker{display:none;}
+  .arrow{color:var(--olive);font-size:13px;line-height:1.5;transition:transform .18s ease;flex:0 0 auto;padding-top:1px;}
+  details[open] .arrow{transform:rotate(90deg);}
+  .sum-body{flex:1 1 auto;}
+  .sum-title{font-weight:700;color:var(--ink);font-size:14.5px;line-height:1.4;}
+  .sum-hint{font-size:11px;color:var(--muted);letter-spacing:0.04em;margin-top:5px;}
+  .sum-tag{flex:0 0 auto;padding-top:2px;}
+  .card-body{
+    padding:2px 22px 22px 50px;font-size:13px;line-height:1.78;color:var(--ink-soft);
+  }
+  .card-body p{margin:0 0 12px;}
+  .card-body .row{margin:0 0 9px;}
+  .card-body .k{color:var(--eyebrow);text-transform:uppercase;letter-spacing:0.12em;font-size:10px;display:block;margin-bottom:1px;}
+  .card-body b{color:var(--ink);}
+  @media(prefers-reduced-motion:reduce){.arrow{transition:none;}}
+
+  .footer{
+    margin-top:60px;padding-top:22px;border-top:1px solid var(--rule);
+    font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;
+  }
+  a{color:var(--olive);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">DSS · Recognition Infrastructure</p>
+  <h1>NESI — What the Machine Could Hold</h1>
+  <p class="sub">candidate holdings · compiled from the year's record · as of 2026-07-20</p>
+  <hr class="top">
+
+  <div class="callout">
+    A companion to the whole-machine artifact. That one reads what NESI <strong>is</strong>.
+    This one reads what NESI <strong>could hold</strong> — the infrastructure, gift patterns,
+    mechanisms, and tools that currently live in your head or scattered across the record,
+    each asked one question: <strong>would it serve if the machine held it instead of you?</strong>
+    To hold a piece is to move it off head and hand, stand it so it runs beneath the surface,
+    and keep it lawful under staging-only and fail-closed. Nothing here is marked. Every piece
+    below is a candidate awaiting <strong>cross / hold / compost</strong>.
+  </div>
+
+  <h2><span class="n">1</span> · The Test For Holding</h2>
+  <p class="lead">A piece earns a place in the machine's hands only when both hold:</p>
+  <ul class="plain">
+    <li><b>It lowers a cost you carry</b> — friction, routing, or coordination. If holding it changes nothing you do, it stays out.</li>
+    <li><b>It leaves the mark on your touch</b> — holding is not automating the cross. The machine may route, stage, tend, and surface; it may never mark. A piece that would decide for you fails the test regardless of how useful it looks.</li>
+  </ul>
+  <p class="lead">Holding is standing, not deciding. The framework doesn't disappear when NESI holds it — it goes under the surface and runs as governance. That's the whole difference between a thing you perform every session and a thing that keeps itself between sessions.</p>
+
+  <h2><span class="n">2</span> · Gift Patterns — The Transferable Moves</h2>
+  <p class="lead">Your moves that worked, already recognized across the record. Held as recognized patterns, they still have to be re-found by hand each time you make. If the bench held them as bearing-patterns, any compose could pull them by name — the move stops being remembered and becomes callable.</p>
+  <table>
+    <thead><tr><th>Pattern</th><th>Status</th><th class="what">What it does</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Pre-funded gift</td><td><span class="tag held">in canon</span></td><td class="what">Contribution structured with no debt handle — the recipient can neither owe nor resist. Pre-removal of the villain. Ran across the safety docs, the wages ask, the recognition cards.</td></tr>
+      <tr><td class="name">Single undeniable ask</td><td><span class="tag held">in canon</span></td><td class="what">After a wholesale gift, one clean request with all personal remedy waived. The force of the ask comes from everything that preceded it, not from the ask itself.</td></tr>
+      <tr><td class="name">Regulatory aikido</td><td><span class="tag held">in canon</span></td><td class="what">Route accountability through the institution's own rules — use its compliance architecture to create the pressure it couldn't generate internally. No one has to be wrong.</td></tr>
+      <tr><td class="name">Sub-threshold node</td><td><span class="tag held">in canon</span></td><td class="what">Operate below the regulatory line so the legal envelope stays intact. Applied to revenue, to the private/public organ split, to the pipeline.</td></tr>
+      <tr><td class="name">Missing-vertex naming</td><td><span class="tag held">in canon</span></td><td class="what">Name what's absent, not what's wrong. The gap does the diagnosis and no one is accused.</td></tr>
+      <tr><td class="name">Complete the frame</td><td><span class="tag cand">unnamed</span></td><td class="what">When receipt is signaled, withdraw the pressure rather than press the advantage. The step that keeps a channel open across a gap that can't be crossed directly. Real, recurring, never formally staged.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="n">3</span> · Mechanisms &amp; Instruments</h2>
+  <p class="lead">The governance you run. Some are standing canon, some the DSS holds, some you still apply by hand — and the ones you apply by hand are the honest candidates for the machine to hold.</p>
+  <table>
+    <thead><tr><th>Instrument</th><th>Held where</th><th class="what">What it does</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Crossing razor</td><td><span class="tag held">canon</span></td><td class="what">"A gift that hasn't held you is a theory." Guards the seed; now also lives inside the make as the bench's break step.</td></tr>
+      <tr><td class="name">load_test_over_elegance</td><td><span class="tag held">canon</span></td><td class="what">Runnable-not-heavier. The falsifier that catches correct-architecture-nobody-picks-up before it ships.</td></tr>
+      <tr><td class="name">The break step</td><td><span class="tag partial">bench spec</span></td><td class="what">Deliberately try to fail the object you just drafted. Falsifier moved inside the forge — what turns a generator into a bench you can trust to emit.</td></tr>
+      <tr><td class="name">Holding-has-a-floor</td><td><span class="tag held">canon</span></td><td class="what">A system built to relieve a human is complete at a floor, not at maximum. The stop condition on the machine's own growth.</td></tr>
+      <tr><td class="name">Escalation rule</td><td><span class="tag partial">in front v0</span></td><td class="what">Daily defaults to conversational; deep review is reserved. Routing between modes is a jurisdiction question, not a discipline one. Partly the front's spine already.</td></tr>
+      <tr><td class="name">Intake note format</td><td><span class="tag hand">by hand</span></td><td class="what">Source / fit / friction / load-bearing caution / disposition. Consistently produced clean routing. Candidate to become a metabolizer template rather than a habit.</td></tr>
+      <tr><td class="name">Multi-model triangulation</td><td><span class="tag hand">by hand</span></td><td class="what">Run out-of-family models against the in-family baseline; findings that survive across models are higher signal. Candidate to become a callable audit pass.</td></tr>
+      <tr><td class="name">DSS gate stack</td><td><span class="tag partial">in DSS</span></td><td class="what">Falsifier gate, metamorphic check, governor trail, Brier ledger, drift meter. Held by the other engine — see §5.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="n">4</span> · Tools &amp; Infrastructure</h2>
+  <p class="lead">The organs and wires. Four are already held — named here so the ledger is honest about what the year already closed. The rest are candidates, each with what holding it would unblock.</p>
+  <table>
+    <thead><tr><th>Piece</th><th>State</th><th class="what">What holding it unblocks</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Shared ledger</td><td><span class="tag held">held · continuity</span></td><td class="what">Stages write to it and read from it instead of to and from you. The first memory outside your head. Built.</td></tr>
+      <tr><td class="name">Cold-start reducer</td><td><span class="tag held">held · continuity</span></td><td class="what">state.json + history + resume board. Answers the most-repeated friction in the whole record — session re-derivation. Built. Open question is whether the board gets read at open, not whether it exists.</td></tr>
+      <tr><td class="name">Plain-language front</td><td><span class="tag held">held · front v0</span></td><td class="what">You say it in your words; the front routes to the right organ. Kills "named a tool, then had to go find it." Built.</td></tr>
+      <tr><td class="name">Composer</td><td><span class="tag held">held · today</span></td><td class="what">Bench object → card / infographic / doc in the locked register. Raised today, unmarked.</td></tr>
+      <tr><td class="name">Queue-tender</td><td><span class="tag cand">candidate</span></td><td class="what">The readiness router you circled as the "Connection Key." Surfaces the next thing to mark and batches the board — the 6 nulls sitting unattended. Lawful because it routes, never crosses.</td></tr>
+      <tr><td class="name">Cycle-close reconciler</td><td><span class="tag cand">candidate</span></td><td class="what">Catches log/disk drift and ages the held queue at close. A live instance is sitting in the machine right now — the two departure-note landings with no matching file, which you caught by hand.</td></tr>
+      <tr><td class="name">Return Metabolizer</td><td><span class="tag cand">candidate</span></td><td class="what">Takes what came back — held things, felt-reads — and re-feeds it as material to make from. The only load in the system that scales with success.</td></tr>
+      <tr><td class="name">Territory Listener</td><td><span class="tag cand">candidate</span></td><td class="what">Reads where flow is stuck and how a demonstrated fix would spread — diagnostic-plus-vector. The breakfast-projects template already carries a propagation-path field to build from.</td></tr>
+      <tr><td class="name">Gift-pattern library</td><td><span class="tag cand">candidate</span></td><td class="what">The §2 moves made callable inside the bench, so a compose pulls "pre-funded gift" by name instead of you re-deriving the move each time.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="n">5</span> · The Coordination Seam</h2>
+  <p class="lead">The one open piece that is a decision, not a build. There are two instrument sets — NESI's organs and the DSS gate stack — and one operator running both. Every day they stay two engines, you pay the coordination cost of holding the seam between them in your head.</p>
+  <p class="lead">If NESI held the DSS instruments — or the DSS held NESI, or one inherits, wraps, or composts the other — that cost collapses to zero. Whether they are two engines or one under two names is flagged unresolved in the record, and one live question sharpens it: the interrogator that reaches back and the DSS gate-delta may be the same check specified twice. This is surfaced, not answered. It's a mark, and it's yours.</p>
+
+  <h2><span class="n">6</span> · Candidate Holdings — Ranked</h2>
+  <p class="lead">Click to open. Ordered by leverage-for-cost, lightest first. Each names what it holds, what it unblocks, what it costs, and whether it's lawful under staging-only and fail-closed. None is marked.</p>
+
+  <div class="cards">
+
+    <details class="card">
+      <summary>
+        <span class="arrow">▸</span>
+        <span class="sum-body">
+          <span class="sum-title">Cycle-close reconciler</span>
+          <span class="sum-hint">click to open · a live instance is already sitting in the machine</span>
+        </span>
+        <span class="sum-tag"><span class="tag light">LIGHT</span></span>
+      </summary>
+      <div class="card-body">
+        <p class="row"><span class="k">Holds</span> The reconcile-at-close move you just ran by hand.</p>
+        <p class="row"><span class="k">Unblocks</span> Log/disk drift caught automatically; the held queue aged so 18 felt-reads and 23 holds don't sit forever "without decay." The two departure-note landings with no matching file are exactly what it would have flagged.</p>
+        <p class="row"><span class="k">Costs</span> Small. One pass over staged/ + the logs at close. No engine needed.</p>
+        <p class="row"><span class="k">Lawful</span> Yes — it flags, it never resolves. The verdict stays yours.</p>
+        <p>Cheapest real leverage on the board, and the only candidate the current machine-state is actively proving the need for.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="arrow">▸</span>
+        <span class="sum-body">
+          <span class="sum-title">Queue-tender / readiness router</span>
+          <span class="sum-hint">click to open · the "Connection Key," built as routing not crossing</span>
+        </span>
+        <span class="sum-tag"><span class="tag light">LIGHT</span></span>
+      </summary>
+      <div class="card-body">
+        <p class="row"><span class="k">Holds</span> The wire between stages, for the part that's lawful to automate: surfacing.</p>
+        <p class="row"><span class="k">Unblocks</span> The marks board tends itself — next-to-mark surfaced, the 6 nulls batched, nothing waiting on you to remember it's waiting. Fires "when X is true" as a routing signal, not a mark.</p>
+        <p class="row"><span class="k">Costs</span> Medium. Needs the firing condition designed as a discrete object — the piece the record names as never actually built.</p>
+        <p class="row"><span class="k">Lawful</span> Yes, with the line held: it routes toward the mark, it does not make it. Auto-crossing would break staging-only; auto-surfacing does not.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="arrow">▸</span>
+        <span class="sum-body">
+          <span class="sum-title">Gift-pattern library into the bench</span>
+          <span class="sum-hint">click to open · makes §2 callable instead of remembered</span>
+        </span>
+        <span class="sum-tag"><span class="tag light">LIGHT</span></span>
+      </summary>
+      <div class="card-body">
+        <p class="row"><span class="k">Holds</span> The six moves in §2, as bench bearing-patterns.</p>
+        <p class="row"><span class="k">Unblocks</span> A compose pulls "pre-funded gift" or "regulatory aikido" by name and drafts against it. The transmission moves stop living in your recall and become part of how the forge works.</p>
+        <p class="row"><span class="k">Costs</span> Low to medium. The patterns are already recognized; this is encoding them as pull-keys, not discovering them.</p>
+        <p class="row"><span class="k">Lawful</span> Yes. The bench emits into the private organ under your mark; possession isn't permission to cross.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="arrow">▸</span>
+        <span class="sum-body">
+          <span class="sum-title">Return Metabolizer</span>
+          <span class="sum-hint">click to open · the only load that scales with success</span>
+        </span>
+        <span class="sum-tag"><span class="tag heavy">HEAVY</span></span>
+      </summary>
+      <div class="card-body">
+        <p class="row"><span class="k">Holds</span> What comes back — held things, felt-reads, returned gifts — as feedstock rather than backlog.</p>
+        <p class="row"><span class="k">Unblocks</span> The system gets stronger as more lands instead of drowning. Named in the record as the highest-leverage organ precisely because its load grows with the machine's reach.</p>
+        <p class="row"><span class="k">Costs</span> Heavy. Its real payoff is engine-dependent — a stubbed loop only exercises the surface. Sequence it behind the engine, not before.</p>
+        <p class="row"><span class="k">Lawful</span> Yes, but gated: it can't do its full work until the engine lights, which is a mark you're holding by choice.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>
+        <span class="arrow">▸</span>
+        <span class="sum-body">
+          <span class="sum-title">DSS ↔ NESI inheritance</span>
+          <span class="sum-hint">click to open · a decision, not a build</span>
+        </span>
+        <span class="sum-tag"><span class="tag heavy">HEAVY</span></span>
+      </summary>
+      <div class="card-body">
+        <p class="row"><span class="k">Holds</span> The seam between two engines that you currently hold in your head.</p>
+        <p class="row"><span class="k">Unblocks</span> One instrument set, one operator, zero cross-engine coordination cost. Resolves whether the interrogator and the DSS gate-delta are one check specified twice.</p>
+        <p class="row"><span class="k">Costs</span> Heavy — but the cost is deciding, not coding. Until it's marked, every session pays the seam tax.</p>
+        <p class="row"><span class="k">Lawful</span> This one <b>is</b> the law question. Surface it; don't let a build quietly answer it.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="footer">
+    nothing here is marked · each piece awaits cross / hold / compost · the mark is your touch
+  </div>
+
+</div>
+</body>
+</html>
