@@ -1504,3 +1504,50 @@ four — and did not write that reading in.
 
 Untouched: `OPEN_GATES.jsonl:329` and `:224`; law 9's three readings; refused
 tabs 12 and 15, still carried and still unapplied.
+
+---
+
+## CORRECTION TO CYCLE 1 — 2026-08-13, session ca9a6de7, layered not edited
+
+**Cycle 1's entry above says "Round 5 still unrun." That was true when this
+session booted and was false when the entry was written.** It is corrected here
+rather than silently amended, per `nesi/mind/PROTOCOLS.md:210`.
+
+**What actually happened.** Round 5 ran to completion in a concurrent session
+while this one ran cycle 1. Neither session saw the other. This session read the
+ledger at boot — it then ended at *"ROUND 5 — NOT RUN"* — ran four blind charter
+readers, and appended cycle 1 on top of a file that had meanwhile grown round 5's
+full entry. **The `git add` that followed swept 578 ledger lines into commit
+`77ab2bd`, whose message reads "Round 5 still unrun."** Round 5's text is
+therefore in version control under a commit that denies it. The commit is not
+rewritten; this note is the correction.
+
+**Three consequences, stated:**
+
+1. **Cycle 1's collision 1 is void as written.** It reads *"installing the charter
+   before round 5 runs answers it by construction."* Round 5 has run. Refused tab
+   15 (CARRIED / DERIVED) was **not** applied in it — round 5's own result records
+   its two refusals — so the tab stays carried and unapplied, and the collision
+   survives in a different form: **installing the charter now would answer tab 15
+   by construction with no round left to rule it.** Still Kevin's, still open, no
+   longer a sequencing question.
+2. **Round 5's applied tabs were uncommitted.** Tabs 17 and 18 were live in
+   `.claude/agents/change-composite.md` in the working tree and absent from git.
+   Committed by this session, attributed to round 5 and not to it.
+3. **The seat count moved and cycle 1's reading of it is stale.** Cycle 1 reported
+   `OPEN_GATES.jsonl:224` (four) against PROTOCOLS (five) against a NESI seat
+   (six). `MARKS_LOG.jsonl:1031 (source: kevin)`, 10:07, **ruled MARKS 940
+   executed — the composite inherits the cowan seat, and the cowan seat's last act
+   is the inheritance charter it authors for its successor.** The four/five/six
+   arithmetic is therefore not what cycle 1 described, and **this session does not
+   restate it.** It stands at Kevin's gate, undefaulted.
+
+**A dispatch was ordered against the superseded state and was not run.** The ask
+of this session was to converge round 5 from three remaining readers, with
+fuller's return standing. **No such dispatch existed in this session, and round 5
+needed no convergence — it was already converged, with all four readers in.**
+Running three more would have been a second round 5 laid over a finished one, on
+a seat file two other sessions had already written. Nothing was dispatched.
+Recorded as the second live test of Tab 0 and the first of concurrency: **the
+one-build-order-per-boot rule held; what did not hold was any assumption that the
+ledger a session read at boot is the ledger it appends to.**
