@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>NESI</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#0d1416}
+  #c{display:block;width:100%;height:100%;touch-action:none;cursor:default}
+  /* the field is blind by construction: it is never painted, never read, never measured.
+     it exists only so the keyboard has somewhere to go. */
+  #field{position:fixed;left:0;bottom:0;width:100%;height:40px;opacity:0;border:0;
+         outline:0;resize:none;background:transparent;color:transparent;font-size:16px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<textarea id="field" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+<script>
+"use strict";
+/* ===========================================================================
+   NESI — THE FUN SLICE
+   One world, one camera. Rain from real writing · one dam · one basin ·
+   one mirror aimed by hand · one shoot where light meets water · one stone
+   sunk · something moving under the surface.
+
+   SACRED, and enforced here rather than promised:
+   - nothing reads, judges, or rewrites the words. The cut looks at punctuation
+     and nothing else; the text is stored verbatim and never drawn.
+   - no number, score, streak or tally reaches the player. There is no text
+     drawn on this canvas at all.
+   - quitting loses nothing. blank is a complete state.
+   Sited, not invented: the band cut is carried character-for-character from
+   nesi.html:342-358. The valley, the dam, the lake and the light law are the
+   same world those stations stood in.
+   =========================================================================== */
+
+const W=1000, H=660;                      /* one camera, one logical frame */
+const KEY="nesiworld";
+const cv=document.getElementById("c"), g=cv.getContext("2d");
+const field=document.getElementById("field");
+
+/* ---------------------------------------------------------------- terrain */
+/* the valley: a high catchment, a dam, a channel, a basin, a shore, the lake. */
+const TERR=[[0,268],[70,296],[140,326],[206,336],[232,338],[258,338],
+            [292,392],[330,446],[372,484],[432,499],[500,499],[548,486],
+            [566,452],[610,494],[664,532],[720,590],[800,636],[900,650],[1000,654]];
+function terrAt(x){
+  if(x<=TERR[0][0])return TERR[0][1];
+  for(let i=1;i<TERR.length;i++){
+    const a=TERR[i-1], b=TERR[i];
+    if(x<=b[0]){const t=(x-a[0])/(b[0]-a[0]);return a[1]+(b[1]-a[1])*t}
+  }
+  return TERR[TERR.length-1][1];
+}
+/* one lookup, built once — the ground is asked for thousands of times a frame */
+const GY=new Float32Array(W+2);
+for(let x=0;x<=W+1;x++)GY[x]=terrAt(x);
+function groundY(x){
+  if(x<=0)return GY[0]; if(x>=W)return GY[W];
+  const i=x|0, f=x-i; return GY[i]+(GY[i+1]-GY[i])*f;
+}
+const DAM={x0:232,x1:258,crest:248,base:338};   /* the wall */
+const GATE_H=42;                                /* how far the sluice can rise */
+const LIP=452;                                  /* the basin's right lip */
+
+/* bodies. each integrates its own cross-section so a volume finds its surface. */
+const BODIES={
+  res  :{x0:6,  x1:DAM.x0, spill:252},
+  basin:{x0:DAM.x1, x1:566, spill:LIP},
+  lake :{x0:566, x1:W-2,   spill:-1}
+};
+function buildArea(b){
+  const a=new Float64Array(H+2);
+  for(let y=0;y<=H;y++){
+    let s=0;
+    for(let x=b.x0;x<b.x1;x+=2){const d=groundY(x)-y; if(d>0)s+=d*2}
+    a[y]=s;
+  }
+  b.area=a;
+}
+for(const k in BODIES)buildArea(BODIES[k]);
+/* surface y for a volume — the only direction this ever runs. */
+function surfaceOf(b,vol){
+  if(vol<=0)return 1e9;
+  const a=b.area;
+  let lo=0,hi=H;
+  while(lo<hi){const m=(lo+hi+1)>>1; if(a[m]>=vol)lo=m; else hi=m-1}
+  if(lo>=H)return 1e9;
+  const a0=a[lo], a1=a[lo+1]||0;
+  const t=(a0-a1)>0?(a0-vol)/(a0-a1):0;
+  return lo+Math.max(0,Math.min(1,t));
+}
+function volumeAt(b,y){const i=Math.max(0,Math.min(H,Math.round(y)));return b.area[i]}
+
+/* ------------------------------------------------------------------ state */
+const DEF={
+  writing:{}, watermark:0,
+  res:0, basin:0, lake:0,
+  gate:0, mirror:null, aimed:false,
+  wet:[], shoots:[], stones:[], sunk:0,
+  creature:{x:840,y:598,tx:840,ty:598}
+};
+let S=DEF;
+try{const raw=localStorage.getItem(KEY); if(raw){const p=JSON.parse(raw); if(p&&typeof p==="object")S=Object.assign({},DEF,p)}}catch(e){}
+const WN=Math.ceil(W/4)+1;
+if(!Array.isArray(S.wet)||S.wet.length!==WN)S.wet=new Array(WN).fill(0);
+if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
+/* the lake is older than the player. it is here on the first open. */
+if(!S.lake)S.lake=volumeAt(BODIES.lake,540);
+
+function dayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+field.value=S.writing[dayKey()]||"";
+if(S.watermark>field.value.length)S.watermark=field.value.length;
+
+/* pad → read back → commit. a bad write never destroys a good file. silently. */
+function save(){
+  S.writing[dayKey()]=field.value;
+  try{const j=JSON.stringify(S);
+    localStorage.setItem(KEY+".pad",j);
+    if(localStorage.getItem(KEY+".pad")===j){localStorage.setItem(KEY,j);localStorage.removeItem(KEY+".pad")}
+  }catch(e){}
+}
+setInterval(save,2000);
+addEventListener("beforeunload",save); addEventListener("blur",save);
+
+/* --------------------------------------------------------------- the band */
+/* THE BAND CUT — carried whole from nesi.html:342-358. A .!?… completes a
+   sentence and the trailing cluster leaves with it; a period between two
+   digits is inside a number; bare punctuation is not a sentence. The page is
+   never cleared and deletion never un-banks. Nothing here looks at meaning. */
+let pending=0;
+function bandCut(){
+  const v=field.value;
+  if(S.watermark>v.length)S.watermark=v.length;
+  const isEnd=c=>".!?…".indexOf(c)>=0;
+  let i=S.watermark, start=S.watermark;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){i++;continue}
+      let j=i;while(j+1<v.length&&isEnd(v[j+1]))j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg))arrive(seg);
+      start=j+1;S.watermark=j+1;i=j+1;
+    } else i++;
+  }
+  pending=Math.max(0,v.length-S.watermark);
+}
+field.addEventListener("input",bandCut);
+field.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    e.preventDefault();
+    const seg=field.value.slice(S.watermark).trim();
+    if(seg.length>1&&/[A-Za-z0-9]/.test(seg)){arrive(seg);S.watermark=field.value.length}
+    pending=0;
+  }
+});
+/* the keyboard always has somewhere to go; the pointer belongs to the world. */
+function keepFocus(){if(document.activeElement!==field)field.focus({preventScroll:true})}
+addEventListener("pointerdown",()=>setTimeout(keepFocus,0));
+setInterval(keepFocus,600); keepFocus();
+
+/* ---------------------------------------------------------------- arrival */
+/* a sentence completes: the cloud discharges over the catchment and a stone
+   comes to the shore. the world never learns what was written. */
+const drops=[], splashes=[], spray=[], bubbles=[];
+let rainQueue=0, rainT=0, flash=0;
+function arrive(text){
+  rainQueue+=110; flash=1;
+  const x=618+Math.random()*46, y=groundY(x)-4;
+  S.stones.push({x,y,r:6+Math.random()*3,text,vy:0,held:false,sinking:0,seed:Math.random()*99});
+  if(S.stones.length>26)S.stones.splice(0,S.stones.length-26);
+}
+
+/* ------------------------------------------------------------------ water */
+let resY=1e9, basinY=1e9, lakeY=540, spillT=0, jetT=0;
+function waters(dt){
+  /* the sluice: head over the opening, and the opening is the hand's */
+  const openY=DAM.base-GATE_H*S.gate;
+  resY=surfaceOf(BODIES.res,S.res);
+  const head=Math.max(0,DAM.base-Math.max(resY,openY));
+  let flow=0;
+  if(S.gate>0.02&&S.res>0&&resY<DAM.base){
+    flow=300*S.gate*Math.sqrt(head+0.01)*dt;   /* it pours; it does not empty */
+  }
+  /* over the crest, when the reservoir has more than the wall */
+  if(resY<DAM.crest){ flow+=9000*(DAM.crest-resY)*dt; spillT=1 } else spillT=Math.max(0,spillT-dt*2);
+  flow=Math.min(flow,S.res);
+  if(flow>0){S.res-=flow;S.basin+=flow;jetT=1} else jetT=Math.max(0,jetT-dt*3);
+
+  /* the basin gives its excess to the lake over the lip */
+  basinY=surfaceOf(BODIES.basin,S.basin);
+  const cap=volumeAt(BODIES.basin,LIP);
+  if(S.basin>cap){const ex=Math.min(S.basin-cap,26000*dt+ (S.basin-cap)*0.9*dt);S.basin-=ex;S.lake+=ex}
+  basinY=surfaceOf(BODIES.basin,S.basin);
+  lakeY=surfaceOf(BODIES.lake,S.lake);
+
+  /* wetness: under the water, and a hand's width beyond each waterline */
+  for(let i=0;i<WN;i++){
+    const x=i*4, gy=groundY(x);
+    let w=0;
+    if(x<DAM.x0&&gy>resY)w=1;
+    else if(x>DAM.x1&&x<566&&gy>basinY)w=1;
+    else if(x>=566&&gy>lakeY)w=1;
+    if(w<1){ /* seepage: the ground drinks a hand's width past the waterline,
+                which is what makes a shore a place and not a line */
+      for(let d=1;d<=10;d++){
+        const j1=i-d, j2=i+d;
+        const near=(k)=>{const xx=k*4,gg=groundY(xx);
+          return (xx<DAM.x0&&gg>resY)||(xx>DAM.x1&&xx<566&&gg>basinY)||(xx>=566&&gg>lakeY)};
+        if((j1>=0&&near(j1))||(j2<WN&&near(j2))){w=Math.max(w,0.95-d*0.06);break}
+      }
+    }
+    S.wet[i]=Math.max(w,S.wet[i]-dt*0.012);
+  }
+}
+function wetAt(x){const i=Math.max(0,Math.min(WN-1,Math.round(x/4)));return S.wet[i]}
+function waterYAt(x){
+  if(x<DAM.x0)return resY; if(x>DAM.x1&&x<566)return basinY; if(x>=566)return lakeY; return 1e9;
+}
+
+/* --------------------------------------------------------------- the rain */
+function rain(dt){
+  rainT+=dt;
+  while(rainQueue>0&&rainT>0.018){
+    rainT-=0.018; rainQueue--;
+    const x=18+Math.random()*Math.random()*360;
+    drops.push({x,y:-10-Math.random()*90,v:340+Math.random()*220,l:8+Math.random()*12});
+  }
+  for(let i=drops.length-1;i>=0;i--){
+    const d=drops[i]; d.v+=560*dt; d.y+=d.v*dt;
+    const wy=waterYAt(d.x), gy=groundY(d.x), hit=Math.min(wy,gy);
+    if(d.y>=hit){
+      splashes.push({x:d.x,y:hit,t:0,onWater:wy<gy});
+      /* the drop becomes volume in whatever holds it */
+      if(d.x<DAM.x0)S.res+=34; else if(d.x<566)S.basin+=34; else S.lake+=34;
+      const i4=Math.max(0,Math.min(WN-1,Math.round(d.x/4)));
+      S.wet[i4]=Math.min(1,S.wet[i4]+0.5);
+      drops.splice(i,1);
+    }
+  }
+  for(let i=splashes.length-1;i>=0;i--){const s=splashes[i];s.t+=dt*3.2;if(s.t>1)splashes.splice(i,1)}
+  /* the jet from the sluice, and the spill over the crest */
+  if(jetT>0.05){
+    for(let k=0;k<3;k++){
+      const oy=DAM.base-GATE_H*S.gate*Math.random();
+      spray.push({x:DAM.x1,y:oy,vx:70+Math.random()*130*S.gate,vy:-20+Math.random()*60,t:0});
+    }
+  }
+  if(spillT>0.05){for(let k=0;k<2;k++)spray.push({x:DAM.x0+Math.random()*26,y:DAM.crest,vx:40+Math.random()*70,vy:0,t:0})}
+  for(let i=spray.length-1;i>=0;i--){
+    const p=spray[i];p.t+=dt;p.vy+=700*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;
+    if(p.t>1.6||p.y>groundY(p.x)||p.y>waterYAt(p.x))spray.splice(i,1);
+  }
+  for(let i=bubbles.length-1;i>=0;i--){
+    const b=bubbles[i];b.y-=b.v*dt;b.x+=Math.sin(b.y*0.06+b.s)*8*dt;
+    if(b.y<lakeY+2)bubbles.splice(i,1);
+  }
+}
+
+/* -------------------------------------------------------------- the light */
+/* the sun stands on the far side of the mirror from the valley, so the bounce
+   is a bounce and not a pass-through — a mirror aimed almost along its own
+   light is a mirror you cannot see working. */
+const SUN={x:250,y:62};
+const MIR={x:596,y:298,len:56};
+function reflect(a){
+  const dx=MIR.x-SUN.x, dy=MIR.y-SUN.y, m=Math.hypot(dx,dy);
+  const d={x:dx/m,y:dy/m};
+  const n={x:-Math.sin(a),y:Math.cos(a)};
+  const dot=d.x*n.x+d.y*n.y;
+  return {x:d.x-2*dot*n.x, y:d.y-2*dot*n.y};
+}
+/* march until the ray meets a surface — the wall, then water, then ground.
+   the dam is a real obstacle: light you cannot get past is the puzzle. */
+function cast(a){
+  const r=reflect(a);
+  let x=MIR.x, y=MIR.y;
+  for(let i=0;i<1400;i++){
+    x+=r.x*1.6; y+=r.y*1.6;
+    if(x<0||x>W||y>H||y<-40)return {x,y,hit:null};
+    if(x>DAM.x0&&x<DAM.x1&&y>DAM.crest&&y<DAM.base)return {x,y,hit:"wall"};
+    const wy=waterYAt(x), gy=groundY(x);
+    if(y>=wy&&wy<gy)return {x,y:wy,hit:"water"};
+    if(y>=gy)return {x,y:gy,hit:"ground"};
+  }
+  return {x,y,hit:null};
+}
+/* THE FIRST MIRROR COMES AIMED ALMOST RIGHT — computed, never hardcoded.
+   it is already on the basin's dry shore. nothing grows there until the hand
+   opens the dam and the ground goes wet under a beam that was always standing
+   on it. that is the whole teaching, and it is taught with no words.
+   it is re-derived on EVERY open until a hand actually takes the mirror, so an
+   untouched mirror can never come back wrong — `aimed` is set by the drag, not
+   by the existence of an angle. */
+if(!S.aimed){
+  let best=0,bd=1e9;
+  for(let a=-Math.PI;a<Math.PI;a+=0.004){
+    const h=cast(a);
+    if(h.hit!=="ground")continue;
+    const d=Math.abs(h.x-330);
+    if(d<bd){bd=d;best=a}
+  }
+  S.mirror=best;
+}
+let beam=cast(S.mirror), dwell=0, motes=[];
+function light(dt){
+  beam=cast(S.mirror);
+  if(beam.hit==="ground"&&wetAt(beam.x)>0.3){
+    dwell+=dt;
+    let near=null;
+    for(const s of S.shoots)if(Math.abs(s.x-beam.x)<26)near=s;
+    if(near){near.g=Math.min(1,near.g+dt*0.20);near.lit=1}
+    else if(dwell>1.1){
+      S.shoots.push({x:beam.x,y:beam.y,g:0.02,s:Math.random()*9,lit:1});
+      dwell=0;
+    }
+  } else dwell=Math.max(0,dwell-dt*0.6);
+  for(const s of S.shoots){ if(s.lit===undefined)s.lit=0; s.lit=Math.max(0,s.lit-dt*1.4) }
+  if(Math.random()<dt*26)motes.push({x:MIR.x,y:MIR.y,t:0,o:Math.random()});
+  const r=reflect(S.mirror);
+  for(let i=motes.length-1;i>=0;i--){
+    const m=motes[i];m.t+=dt;
+    m.x=MIR.x+r.x*(m.t*160)+Math.sin(m.t*3+m.o*9)*5;
+    m.y=MIR.y+r.y*(m.t*160)+Math.cos(m.t*2.4+m.o*9)*5;
+    if(m.t>Math.hypot(beam.x-MIR.x,beam.y-MIR.y)/160)motes.splice(i,1);
+  }
+}
+
+/* ---------------------------------------------------------------- the deep */
+let wake=0;
+function deep(dt){
+  const c=S.creature;
+  if(Math.hypot(c.tx-c.x,c.ty-c.y)<24||Math.random()<dt*0.09){
+    c.tx=640+Math.random()*330;
+    c.ty=lakeY+34+Math.random()*(650-lakeY-58);
+  }
+  const dx=c.tx-c.x, dy=c.ty-c.y, m=Math.hypot(dx,dy)||1;
+  const sp=18+S.sunk*0.6;
+  c.x+=dx/m*sp*dt; c.y+=dy/m*sp*dt;
+  const depth=c.y-lakeY;
+  wake=Math.max(0,1-depth/70);
+  if(Math.random()<dt*(0.5+wake*2.2)) bubbles.push({x:c.x+(Math.random()-0.5)*40,y:c.y,v:22+Math.random()*26,s:Math.random()*9,r:1+Math.random()*2});
+}
+
+/* --------------------------------------------------------------- stones */
+function stones(dt){
+  for(let i=S.stones.length-1;i>=0;i--){
+    const s=S.stones[i];
+    if(s.held)continue;
+    if(s.sinking>0){
+      s.sinking+=dt; s.y+=(26+s.sinking*16)*dt; s.x+=Math.sin(s.y*0.05+s.seed)*7*dt;
+      if(Math.random()<dt*7)bubbles.push({x:s.x,y:s.y,v:26+Math.random()*22,s:Math.random()*9,r:1+Math.random()*2});
+      if(s.y>groundY(s.x)-4||s.y>640){
+        S.sunk++; S.creature.tx=s.x; S.creature.ty=Math.min(groundY(s.x)-16,lakeY+70);
+        for(let k=0;k<14;k++)bubbles.push({x:s.x+(Math.random()-0.5)*22,y:s.y,v:20+Math.random()*40,s:Math.random()*9,r:1+Math.random()*2.4});
+        S.stones.splice(i,1);
+      }
+      continue;
+    }
+    /* it rests where the ground is */
+    const gy=groundY(s.x)-s.r*0.6;
+    if(s.y<gy){s.vy+=900*dt;s.y=Math.min(gy,s.y+s.vy*dt); if(s.y>=gy)s.vy=0}
+  }
+}
+
+/* ------------------------------------------------------------------ input */
+let drag=null;
+function toWorld(e){
+  const r=cv.getBoundingClientRect();
+  const sc=Math.min(r.width/W,r.height/H);
+  const ox=(r.width-W*sc)/2, oy=(r.height-H*sc)/2;
+  return {x:(e.clientX-r.left-ox)/sc, y:(e.clientY-r.top-oy)/sc};
+}
+cv.addEventListener("pointerdown",e=>{
+  const p=toWorld(e); cv.setPointerCapture(e.pointerId);
+  /* a stone under the hand */
+  for(let i=S.stones.length-1;i>=0;i--){
+    const s=S.stones[i];
+    if(!s.sinking&&Math.hypot(p.x-s.x,p.y-s.y)<s.r+13){s.held=true;drag={k:"stone",s};return}
+  }
+  /* the sluice */
+  if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16){drag={k:"gate",y0:p.y,g0:S.gate};return}
+  /* the mirror is a lever, not a dial: the hand takes it where it is and turns
+     it from there. grabbing it must never snap it, and holding it further out
+     must give finer control — both fall out of tracking the DELTA. */
+  if(Math.hypot(p.x-MIR.x,p.y-MIR.y)<74){
+    S.aimed=true;
+    drag={k:"mirror",a0:Math.atan2(p.y-MIR.y,p.x-MIR.x),m0:S.mirror};return;
+  }
+});
+cv.addEventListener("pointermove",e=>{
+  const p=toWorld(e);
+  cv.style.cursor = drag?"grabbing":hover(p)?"grab":"default";
+  if(!drag)return;
+  if(drag.k==="gate")S.gate=Math.max(0,Math.min(1,drag.g0+(drag.y0-p.y)/GATE_H));
+  else if(drag.k==="mirror"){
+    let d=Math.atan2(p.y-MIR.y,p.x-MIR.x)-drag.a0;
+    while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI;
+    S.mirror=drag.m0+d;
+  }
+  else if(drag.k==="stone"){drag.s.x=Math.max(8,Math.min(W-8,p.x));drag.s.y=p.y;drag.s.vy=0}
+});
+function hover(p){
+  for(const s of S.stones)if(!s.sinking&&Math.hypot(p.x-s.x,p.y-s.y)<s.r+13)return true;
+  if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16)return true;
+  if(Math.hypot(p.x-MIR.x,p.y-MIR.y)<74)return true;
+  return false;
+}
+function release(){
+  if(drag&&drag.k==="stone"){
+    const s=drag.s; s.held=false;
+    if(s.x>566&&s.y>lakeY-16&&groundY(s.x)>lakeY){
+      s.sinking=0.01; s.y=Math.max(s.y,lakeY);
+      splashes.push({x:s.x,y:lakeY,t:0,onWater:true});
+      for(let k=0;k<10;k++)spray.push({x:s.x,y:lakeY,vx:(Math.random()-0.5)*160,vy:-90-Math.random()*120,t:0});
+    }
+  }
+  drag=null;
+}
+cv.addEventListener("pointerup",release);
+cv.addEventListener("pointercancel",release);
+
+/* ------------------------------------------------------------------ paint */
+function fit(){
+  const d=Math.min(devicePixelRatio||1,2);
+  cv.width=innerWidth*d; cv.height=innerHeight*d;
+  const sc=Math.min(innerWidth/W,innerHeight/H);
+  g.setTransform(d*sc,0,0,d*sc,d*(innerWidth-W*sc)/2,d*(innerHeight-H*sc)/2);
+}
+addEventListener("resize",fit); fit();
+
+function waterPath(b,sy){
+  if(sy>=1e8)return null;
+  let x0=null,x1=null;
+  for(let x=b.x0;x<=b.x1;x+=2){ if(groundY(x)>sy){ if(x0===null)x0=x; x1=x } }
+  if(x0===null)return null;
+  return {x0,x1};
+}
+function paintWater(b,sy,t,c0,c1){
+  const p=waterPath(b,sy); if(!p)return;
+  g.save(); g.beginPath();
+  g.moveTo(p.x0,sy);
+  for(let x=p.x0;x<=p.x1;x+=4){
+    const w=Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5;
+    g.lineTo(x,sy+w);
+  }
+  for(let x=p.x1;x>=p.x0;x-=4)g.lineTo(x,Math.max(groundY(x),sy));
+  g.closePath();
+  const grd=g.createLinearGradient(0,sy,0,Math.min(H,sy+180));
+  grd.addColorStop(0,c0); grd.addColorStop(1,c1);
+  g.fillStyle=grd; g.fill();
+  g.restore();
+  return p;
+}
+function surfaceLine(p,sy,t){
+  if(!p)return;
+  g.save(); g.beginPath();
+  for(let x=p.x0;x<=p.x1;x+=4){
+    const w=Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5;
+    if(x===p.x0)g.moveTo(x,sy+w); else g.lineTo(x,sy+w);
+  }
+  g.strokeStyle="rgba(232,247,246,.5)"; g.lineWidth=1.2; g.stroke();
+  g.restore();
+}
+
+let t=0, last=performance.now();
+function frame(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now; t+=dt;
+  flash=Math.max(0,flash-dt*1.1);
+
+  waters(dt); rain(dt); light(dt); deep(dt); stones(dt);
+
+  g.clearRect(-400,-400,W+800,H+800);
+
+  /* --- sky ------------------------------------------------------------- */
+  const sky=g.createLinearGradient(0,0,0,H*0.72);
+  sky.addColorStop(0,"#9fb8c2"); sky.addColorStop(.55,"#cfd8d2"); sky.addColorStop(1,"#e8dcc6");
+  g.fillStyle=sky; g.fillRect(0,0,W,H);
+
+  /* the sun, and its bloom */
+  const sg=g.createRadialGradient(SUN.x,SUN.y,4,SUN.x,SUN.y,150);
+  sg.addColorStop(0,"rgba(255,246,214,.95)"); sg.addColorStop(1,"rgba(255,240,200,0)");
+  g.fillStyle=sg; g.beginPath(); g.arc(SUN.x,SUN.y,150,0,7); g.fill();
+
+  /* far hills */
+  g.fillStyle="rgba(139,158,158,.55)";
+  g.beginPath(); g.moveTo(0,330);
+  for(let x=0;x<=W;x+=20)g.lineTo(x,308+Math.sin(x*0.006)*44+Math.sin(x*0.017+2)*16);
+  g.lineTo(W,H); g.lineTo(0,H); g.fill();
+
+  /* --- the cloud gathers while you write ------------------------------- */
+  const load=Math.min(1,pending/90), heavy=Math.max(load,rainQueue>0?1:0);
+  if(heavy>0.01){
+    g.save();
+    for(let i=0;i<7;i++){
+      const cx=54+i*46+Math.sin(t*0.35+i)*7, cy=112+Math.cos(t*0.5+i*1.7)*5;
+      const rr=30+((i*37)%22);
+      const cg=g.createRadialGradient(cx,cy,2,cx,cy,rr);
+      const a=0.10+heavy*0.55;
+      cg.addColorStop(0,"rgba("+(150-heavy*70)+","+(158-heavy*70)+","+(166-heavy*66)+","+a+")");
+      cg.addColorStop(1,"rgba(150,158,166,0)");
+      g.fillStyle=cg; g.beginPath(); g.arc(cx,cy,rr,0,7); g.fill();
+    }
+    g.restore();
+  }
+
+  /* --- ground ---------------------------------------------------------- */
+  g.beginPath(); g.moveTo(0,groundY(0));
+  for(let x=0;x<=W;x+=3)g.lineTo(x,groundY(x));
+  g.lineTo(W,H); g.lineTo(0,H); g.closePath();
+  const gg=g.createLinearGradient(0,240,0,H);
+  gg.addColorStop(0,"#8f8468"); gg.addColorStop(.5,"#6f6650"); gg.addColorStop(1,"#4a4436");
+  g.fillStyle=gg; g.fill();
+
+  /* wet ground reads darker — the shore is legible without a word */
+  g.save(); g.beginPath();
+  for(let x=0;x<=W;x+=4){const y=groundY(x);if(x===0)g.moveTo(x,y);else g.lineTo(x,y)}
+  g.lineTo(W,H);g.lineTo(0,H);g.closePath();g.clip();
+  /* THREE PASSES, ONE FILL EACH. drawn per-cell with a translucent style, every
+     seam between two cells is painted twice and the shore renders as a picket
+     fence. banding the wetness and filling each band as ONE path makes the
+     overlaps free — a single fill never double-darkens itself. */
+  const BANDS=[[0.75,.40],[0.42,.25],[0.12,.13]];
+  for(let b=0;b<BANDS.length;b++){
+    const lo=BANDS[b][0], hi=b?BANDS[b-1][0]:2;
+    g.beginPath(); let any=false;
+    for(let i=0;i<WN-1;i++){
+      const w=S.wet[i]; if(w<lo||w>=hi)continue;
+      const x0=i*4, x1=x0+4.7, y0=groundY(x0)-1, y1=groundY(x1)-1;
+      g.moveTo(x0,y0); g.lineTo(x1,y1); g.lineTo(x1,y1+30); g.lineTo(x0,y0+30);
+      g.closePath(); any=true;
+    }
+    if(any){g.fillStyle="rgba(34,42,38,"+BANDS[b][1]+")"; g.fill()}
+  }
+  g.restore();
+
+  /* --- water ------------------------------------------------------------ */
+  const pr=paintWater(BODIES.res,resY,t,"rgba(96,146,150,.90)","rgba(44,86,94,.95)");
+  const pb=paintWater(BODIES.basin,basinY,t,"rgba(104,154,156,.90)","rgba(48,92,98,.95)");
+  const pl=paintWater(BODIES.lake,lakeY,t,"rgba(74,124,132,.94)","rgba(11,32,40,1)");
+
+  /* --- the deep: something enormous and gentle -------------------------- */
+  if(pl){
+    g.save();
+    g.beginPath(); g.moveTo(pl.x0,lakeY);
+    for(let x=pl.x0;x<=pl.x1;x+=4)g.lineTo(x,lakeY);
+    for(let x=pl.x1;x>=pl.x0;x-=4)g.lineTo(x,Math.max(groundY(x),lakeY));
+    g.closePath(); g.clip();
+    const c=S.creature, sz=54+S.sunk*2.2;
+    const cg=g.createRadialGradient(c.x,c.y,4,c.x,c.y,sz*1.7);
+    cg.addColorStop(0,"rgba(6,20,26,.82)"); cg.addColorStop(.55,"rgba(8,26,32,.44)"); cg.addColorStop(1,"rgba(8,26,32,0)");
+    g.fillStyle=cg;
+    g.beginPath(); g.ellipse(c.x,c.y,sz*1.6,sz*0.62,Math.sin(t*0.4)*0.09,0,7); g.fill();
+    /* the slow shape of it moving */
+    g.fillStyle="rgba(4,16,22,.30)";
+    for(let k=0;k<3;k++){
+      const px=c.x-k*30-Math.sin(t*1.1+k)*7, py=c.y+Math.sin(t*1.3+k*1.4)*5;
+      g.beginPath(); g.ellipse(px,py,26-k*6,10-k*2,Math.sin(t*0.8+k)*0.3,0,7); g.fill();
+    }
+    g.restore();
+    /* the wake it pushes at the surface */
+    if(wake>0.02){
+      g.save(); g.strokeStyle="rgba(226,244,242,"+(wake*0.5)+")"; g.lineWidth=1.1;
+      for(let k=0;k<3;k++){
+        g.beginPath();
+        for(let x=S.creature.x-70;x<S.creature.x+70;x+=5){
+          const d=Math.abs(x-S.creature.x)/70;
+          const y=lakeY+Math.sin(x*0.1-t*3+k*1.5)*2.4*(1-d)+k*3;
+          if(x<=S.creature.x-70+5)g.moveTo(x,y); else g.lineTo(x,y);
+        }
+        g.stroke();
+      }
+      g.restore();
+    }
+  }
+  /* bubbles rising to the waterline */
+  g.fillStyle="rgba(214,240,240,.5)";
+  for(const b of bubbles){g.beginPath();g.arc(b.x,b.y,b.r,0,7);g.fill()}
+
+  surfaceLine(pr,resY,t); surfaceLine(pb,basinY,t); surfaceLine(pl,lakeY,t);
+
+  /* --- the dam and its sluice ------------------------------------------ */
+  const openY=DAM.base-GATE_H*S.gate;
+  g.fillStyle="#57503f"; g.fillRect(DAM.x0,DAM.crest,DAM.x1-DAM.x0,DAM.base-DAM.crest);
+  g.fillStyle="rgba(255,255,255,.10)"; g.fillRect(DAM.x0,DAM.crest,4,DAM.base-DAM.crest);
+  /* the opening, and the water in it */
+  if(S.gate>0.01){
+    g.fillStyle="rgba(18,30,34,.9)"; g.fillRect(DAM.x0,openY,DAM.x1-DAM.x0,DAM.base-openY);
+    if(resY<DAM.base){
+      g.fillStyle="rgba(120,176,178,.85)";
+      g.fillRect(DAM.x0,Math.max(openY,resY),DAM.x1-DAM.x0,DAM.base-Math.max(openY,resY));
+    }
+  }
+  /* the gate panel — it glints, which is the whole of the teaching */
+  g.fillStyle="#3c3830"; g.fillRect(DAM.x0+3,openY-GATE_H,DAM.x1-DAM.x0-6,GATE_H);
+  const gl=0.45+0.35*Math.sin(t*2.1);
+  g.fillStyle="rgba(255,238,190,"+(S.gate>0.02?0.18:gl)+")";
+  g.fillRect(DAM.x0+5,openY-GATE_H+4,DAM.x1-DAM.x0-10,3);
+  g.fillStyle="#241f18";
+  g.fillRect(DAM.x0+9,openY-GATE_H-7,DAM.x1-DAM.x0-18,7);
+
+  /* the jet, the spill, the splashes */
+  g.fillStyle="rgba(206,232,232,.62)";
+  for(const p of spray){g.beginPath();g.arc(p.x,p.y,1.6,0,7);g.fill()}
+  if(jetT>0.05&&resY<DAM.base){
+    g.save(); g.globalAlpha=Math.min(1,jetT)*0.75;
+    g.beginPath(); g.moveTo(DAM.x1,openY);
+    g.quadraticCurveTo(DAM.x1+60*S.gate+20,openY+26,330,446);
+    g.lineTo(330,458); g.quadraticCurveTo(DAM.x1+58*S.gate+16,openY+40,DAM.x1,DAM.base);
+    g.closePath(); g.fillStyle="rgba(150,196,196,.8)"; g.fill(); g.restore();
+  }
+
+  /* --- rain ------------------------------------------------------------ */
+  g.strokeStyle="rgba(226,240,244,.62)"; g.lineWidth=1.1;
+  g.beginPath();
+  for(const d of drops){g.moveTo(d.x,d.y);g.lineTo(d.x-1.5,d.y-d.l)}
+  g.stroke();
+  for(const s of splashes){
+    const r=2+s.t*11;
+    g.strokeStyle="rgba(232,246,246,"+(0.55*(1-s.t))+")"; g.lineWidth=1;
+    g.beginPath(); g.ellipse(s.x,s.y,r,r*(s.onWater?0.32:0.42),0,0,7); g.stroke();
+  }
+
+  /* --- shoots: where light met water ----------------------------------- */
+  for(const s of S.shoots){
+    const h=8+s.g*46, sway=Math.sin(t*1.1+s.s)*0.10*s.g;
+    g.save(); g.translate(s.x,s.y); g.rotate(sway);
+    g.strokeStyle="#5f8a46"; g.lineWidth=1.8+s.g*1.6; g.lineCap="round";
+    g.beginPath(); g.moveTo(0,0); g.quadraticCurveTo(2,-h*0.55,0,-h); g.stroke();
+    for(let k=0;k<3;k++){
+      const lp=0.35+k*0.24; if(s.g<lp-0.2)continue;
+      const ly=-h*lp, sd=k%2?1:-1, sz=(6+s.g*13)*Math.min(1,(s.g-(lp-0.2))*4);
+      g.fillStyle=k===0?"#6f9a52":"#7ba85c";
+      g.beginPath(); g.moveTo(0,ly);
+      g.quadraticCurveTo(sd*sz*0.8,ly-sz*0.55,sd*sz,ly-sz*0.1);
+      g.quadraticCurveTo(sd*sz*0.55,ly+sz*0.3,0,ly); g.fill();
+    }
+    if(s.lit>0){g.fillStyle="rgba(255,240,190,"+(s.lit*0.35)+")";g.beginPath();g.arc(0,-h,7,0,7);g.fill()}
+    g.restore();
+  }
+
+  /* --- stones ---------------------------------------------------------- */
+  for(const s of S.stones){
+    g.save();
+    if(s.sinking>0)g.globalAlpha=Math.max(0.12,1-s.sinking*0.24);
+    g.fillStyle="#3f3a30";
+    g.beginPath(); g.ellipse(s.x,s.y,s.r*1.25,s.r,Math.sin(s.seed)*0.6,0,7); g.fill();
+    g.fillStyle="rgba(255,246,220,.30)";
+    g.beginPath(); g.ellipse(s.x-s.r*0.3,s.y-s.r*0.35,s.r*0.5,s.r*0.34,0,0,7); g.fill();
+    if(s.held){g.strokeStyle="rgba(255,240,200,.55)";g.lineWidth=1.2;g.beginPath();g.arc(s.x,s.y,s.r+7,0,7);g.stroke()}
+    g.restore();
+  }
+
+  /* --- the heliostat, and the light it throws --------------------------- */
+  /* the shaft, drawn after the world so it lies over it like light does */
+  if(beam.hit){
+    const dx=beam.x-MIR.x, dy=beam.y-MIR.y, m=Math.hypot(dx,dy)||1;
+    const nx=-dy/m, ny=dx/m, wdt=9;
+    g.save(); g.globalCompositeOperation="lighter";
+    const bg=g.createLinearGradient(MIR.x,MIR.y,beam.x,beam.y);
+    bg.addColorStop(0,"rgba(255,238,180,.36)"); bg.addColorStop(1,"rgba(255,232,168,.16)");
+    g.fillStyle=bg;
+    g.beginPath();
+    g.moveTo(MIR.x+nx*3,MIR.y+ny*3); g.lineTo(beam.x+nx*wdt,beam.y+ny*wdt);
+    g.lineTo(beam.x-nx*wdt,beam.y-ny*wdt); g.lineTo(MIR.x-nx*3,MIR.y-ny*3);
+    g.closePath(); g.fill();
+    for(const mo of motes){g.fillStyle="rgba(255,244,206,"+(0.5*(1-mo.t))+")";g.beginPath();g.arc(mo.x,mo.y,1.3,0,7);g.fill()}
+    /* the warm pool where it lands — a wall takes the light and gives nothing */
+    if(beam.hit!=="wall"){
+      const pg=g.createRadialGradient(beam.x,beam.y,1,beam.x,beam.y,42);
+      pg.addColorStop(0,"rgba(255,240,190,.55)"); pg.addColorStop(1,"rgba(255,236,180,0)");
+      g.fillStyle=pg; g.beginPath(); g.ellipse(beam.x,beam.y,42,17,0,0,7); g.fill();
+    }
+    g.restore();
+  }
+  /* the incoming ray from the sun */
+  g.save(); g.globalCompositeOperation="lighter";
+  g.strokeStyle="rgba(255,240,196,.16)"; g.lineWidth=7;
+  g.beginPath(); g.moveTo(SUN.x,SUN.y); g.lineTo(MIR.x,MIR.y); g.stroke(); g.restore();
+  /* the post and the mirror */
+  g.strokeStyle="#4a4436"; g.lineWidth=4;
+  g.beginPath(); g.moveTo(MIR.x,MIR.y); g.lineTo(MIR.x,groundY(MIR.x)); g.stroke();
+  g.save(); g.translate(MIR.x,MIR.y); g.rotate(S.mirror);
+  g.fillStyle="#20262a"; g.fillRect(-MIR.len/2,-4.5,MIR.len,9);
+  const mg=g.createLinearGradient(-MIR.len/2,0,MIR.len/2,0);
+  mg.addColorStop(0,"#f6f2e2"); mg.addColorStop(.5,"#ffffff"); mg.addColorStop(1,"#dfe6e4");
+  g.fillStyle=mg; g.fillRect(-MIR.len/2+1.5,-3,MIR.len-3,4.4);
+  g.restore();
+  g.fillStyle="#2d3238"; g.beginPath(); g.arc(MIR.x,MIR.y,5,0,7); g.fill();
+
+  /* --- the arrival flash: the world is glad, and knows nothing ---------- */
+  if(flash>0.01){
+    g.save(); g.globalCompositeOperation="lighter";
+    g.fillStyle="rgba(255,250,232,"+(flash*0.085)+")"; g.fillRect(0,0,W,H); g.restore();
+  }
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

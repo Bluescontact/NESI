@@ -4122,3 +4122,93 @@ the field's tetra as the skeleton that holds the rest.
 ground that did not grow it.
 
 → **WALKABLE for the pre-check. UNWITNESSED as a verdict. Standing down.**
+
+## THE FUN SLICE — built and walked (2026-08-12, session fb66285e)
+
+Kevin's drop: **"a diagram is not a game."** The design *NESI — THE GAME* arrived in
+chat and existed nowhere on disk, so it was written verbatim to
+`nesi/game2d/THE_GAME.md` before anything acted on it — the same move the mechanics
+catalog got six hours earlier. That file is the design of record; the order that came
+with it is at its foot, verbatim.
+
+**One deliverable, and it is a new file: `nesi/game2d/world.html`.** Not an extension of
+`nesi.html`. The design retires stations/fractions/routing *as the core loop*, and
+nesi.html's whole shape — net, faces, panels, a camera per surface — is that loop made
+architecture. Building the slice inside it would have meant fighting it at every line.
+**nesi.html is untouched by this pass and nothing was thrown away.** The two files hold
+different keys (`nesi2d` / `nesiworld`) and cannot reach each other.
+
+### The slice, each beat walked by hand in a real browser
+
+| beat | walked |
+|---|---|
+| rain falls visibly from real writing | typed three sentences → 110 drops per sentence over the catchment, reservoir rose to `resY 302` |
+| one dam opens | dragged the sluice → `gate 0.986`, reservoir 10k → 1.5k |
+| one basin floods | `basin 8382`, pinned at the lip (452) and spilling to the lake |
+| one mirror aims by hand | dragged → mirror 0.857 → 1.043, beam swung from the shore onto open water |
+| one shoot grows where light meets water | **it rose on its own** — the beam was already standing on that ground; the flood made it wet; `shoots[{x:329,g:1}]` |
+| one stone sinks | dragged shore → lake, `sunk 1`, then a second |
+| something visibly moves under the surface | the creature retargeted to the sink point; bubbles rose over it (screenshotted) |
+
+**Sited, not invented.** The band cut is carried character-for-character from
+`nesi.html:342-358`. The valley, the dam, the lake, light-rises and the deep-never-renders
+are the same world the stations stood in. What is new is that the consequence is now the
+thing on screen and the writing is the smallest act in it — the inversion the design asked
+for.
+
+### The teaching, and it uses no words at all
+
+**There is no text drawn on this canvas.** Not a label, not a caption, not a digit. The
+first mirror comes aimed almost right — *computed at boot, never hardcoded*, onto the
+basin's dry floor. Nothing grows there. The player writes, water gathers behind the wall,
+they open it, the shore goes wet **under a beam that was already standing on it**, and a
+shoot rises. Light + water is taught by having already placed the light. The aim is
+re-derived on **every** open until a hand takes the mirror (`S.aimed`), so an untouched
+mirror can never come back wrong.
+
+### Four defects found by looking, not by the harness
+
+1. **The mirror's post plunged through the lake** — the heliostat was sited where it had no
+   ground. Reseated on the ridge between basin and lake.
+2. **The reflection was degenerate.** Sun and target were on the same side, so incident and
+   reflected were near-collinear and the mirror read as a pane of glass, not a mirror. The
+   sun was moved to the far side; the bounce is now ~90° and legible.
+3. **The shore rendered as a picket fence.** A 0.6px overlap between adjacent translucent
+   cells double-darkened every seam. Rebuilt as three wetness bands, each filled as ONE
+   path — a single fill never double-darkens itself.
+4. **The mirror snapped on touch and a 16px drag swung the beam 380px.** It was reading the
+   pointer's absolute angle. Now a relative lever: grabbing never moves it, and holding it
+   further from the pivot gives finer control.
+
+The dam is also a real occluder of light now — aiming past it is a spatial problem.
+
+### The laws, checked against what is drawn
+
+Content-blind: the cut reads punctuation and nothing else; the text is stored verbatim and
+**never painted**. No number, score, streak or tally — there is no text on the canvas at
+all. Quitting loses nothing (whole-state save, pad → read back → commit; walked across
+three real reloads, everything returned). Blank is a complete state — the first open is a
+dry valley that asks for nothing. `node --check` PASS · `node tools/refusal_check.js
+world.html` **PASS, 670 code lines**.
+
+### The edge of what was checked, stated exactly
+
+- **The pointer-drag *feel* is machine-driven, not hand-driven.** Every act was exercised
+  through real pointer/keyboard events in a loaded page, not by calling functions — but a
+  synthetic drag cannot report what the lever feels like under a hand. That is the whole
+  question this slice exists to answer and it is not mine to answer.
+- Not built, and named rather than implied: the overnight build, the jitterbug unfold, the
+  membrane bridge, the twelve mirrors, the second player. The design puts all four *after*
+  the want check.
+- **The live store was written during the walk** and reset to blank afterward, verified by
+  reading it back (`stones 0 · shoots 0 · res 0 · gate 0 · writing empty · aimed false`).
+  Kevin's first open is a blank world. `nesi.html`'s own key was never opened.
+- Light on open water grows nothing — growth is the *shore*, where light and water meet.
+  That is a reading of the design's line, and it is reversible in one condition.
+- Cowan's falsifier: this entry is dated 2026-08-12, so on the gate's own wording it does
+  not start the three-pass count, and it cites no extraction file. Named, not argued.
+
+**The only gate is his.** The mechanism works and is walked; whether he wants tomorrow is
+not something any instrument here can report.
+
+→ **WALKABLE.** Open `nesi/game2d/world.html` and type a sentence.
