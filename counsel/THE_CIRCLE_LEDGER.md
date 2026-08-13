@@ -605,10 +605,328 @@ reader spent its first move refuting a summary.
 
 ---
 
-## ROUNDS 4–5 — NOT RUN, AND RE-AIMED
+## ROUND 4 — kevin-lens at the centre · run 2026-08-13, unseeded
 
-Rounds 4 (kevin-lens) and 5 (change-composite) are unrun.
-Rounds 1 (game-craft) and 2 (buckminster-fuller) have run; both applied two tabs.
+Readers: buckminster-fuller · stuart-cowan · game-craft · change-composite,
+blind to each other, the record only. Four tabs returned, two applied, two
+refused. **The guard for this centre, absolute and stated before the round:** the
+seat CARRIES his words and never SPEAKS them; a tab making it more fluent in
+Kevin is refused whatever it scores. All four readers tested against it first and
+all four returned tabs that move the seat *away* from fluency — three of them by
+making its citations weaker.
+
+### The gradient, derived rather than supplied
+
+**The seat's authority is one sentence form — `.claude/agents/kevin-lens.md:20`,
+*"You may say 'the corpus holds X, verbatim, at path Y'"* — and that sentence
+carries neither of the two facts it needs.** It does not say whether the thing
+still stands, and it does not say whose words they are. Three readers reached
+this independently from three files.
+
+The consequence is in the seat's own library, verified in-session rather than
+asserted. `counsel/kevinlens/GROUND_knowledge.md:7` opens **section zero, "the
+frame over everything: THE FULL FREEZE (2026-08-07, ratified)"** — quoted
+correctly, with paths, in present tense. The library was populated 2026-08-11 at
+19:20 (MARKS 942). The freeze was lifted the same day at 21:34
+(`PROTOCOLS.md:192`). **The seat's own ground document leads with a law that died
+roughly two hours after it was written, and nothing in the file knows.**
+Corpus-wide: 119 occurrences of "freeze" across the five counsel libraries, all
+authored 08-11/08-12.
+
+This is structural, not careless. The corpus supersedes by layering and says so
+— `PROTOCOLS.md:206`, *"Nothing above this line is deleted or edited"*; `:210`,
+*"supersession is a new mark layered on top, never a silent edit."* So
+`PROTOCOLS.md:11–190` still reads **"NO NEW GENERATION… no session may author"**
+in full force above the mark that repealed it. **Grep is 1 of this seat's 3 tools
+and is structurally blind to the mark that kills a line.** A top-down reader sees
+the sequence; a grep for `freeze` returns line 23 and never line 192. The corpus
+already knew this failure and aimed the warning at the wrong party —
+`~/.claude/CLAUDE.md`, *"do not build to a spec line without checking whether it
+is superseded"*, binds the **builder** consuming citations, and nothing binds the
+**seat whose entire output is spec lines.**
+
+### TAB 13 · APPLIED — a verbatim quote is not a claim that it still stands
+
+**Author:** game-craft. **Seam:** the seat's citation form × the corpus's
+supersession-by-layering convention, with `Read, Glob, Grep` as the seat's whole
+toolset. **File:** `.claude/agents/kevin-lens.md`, inside THE FIRST LAW paragraph,
+immediately after the authorized sentence form.
+
+> **A verbatim quote is not a claim that the thing still stands.** This corpus
+> supersedes by layering — *"supersession is a new mark layered on top, never a
+> silent edit"* (`nesi/mind/PROTOCOLS.md:210`) — so dead law sits in place in
+> full-force language, and a grep cannot see the mark that killed it. Every
+> citation carries the date of the line and of the latest mark you found reaching
+> it, or the words `STANDING: UNCHECKED`.
+
+**Gradient.** Today an undated verbatim citation is simultaneously the *cheapest*
+output the seat can produce and the one reading as *maximum* authority — the path
+is the proof. That inversion is what the tab destroys. After it, the cheap outputs
+are "quoted 2026-08-07, lifted 2026-08-11" and `STANDING: UNCHECKED` (seventeen
+characters, halting nothing); what now costs is presenting a grep hit as the
+corpus's standing ground. Same family as tab 2's `WANT-CHECK: none` and tab 10's
+dated licence — repricing an act the seat already performs constantly, never
+adding a duty. Citing an unchecked line stays fully permitted, so LEARNED 20
+holds.
+
+**Guard.** It moves the seat away from fluency in the only direction that
+matters: it hands the seat a way to say *I do not know if this still stands*,
+which is the opposite of standing in for him, and it removes the one route by
+which a dead line of his could be spoken as live law at full apparent authority.
+
+**Stake surrendered:** game-craft gains no read, no veto, no step. Its own note:
+the effect on it is adverse-neutral — the ground seat's citations against its
+proposals now arrive dated, which makes them harder to wave off *and* harder to
+over-claim.
+
+### TAB 14 · APPLIED — a mark is quoted with its source beside it
+
+**Author:** stuart-cowan. **Seam:** the seat's first law × the record's
+attribution field. **File:** `.claude/agents/kevin-lens.md`, Hard limits, as the
+bullet immediately after *"NEVER speak as Kevin… the only Kevin in your output."*
+— it is the operating definition of that bullet's word *verbatim*.
+
+> - **A mark is quoted with its `source` value written beside it** —
+>   `MARKS_LOG.jsonl:N (source: kevin)`. That field is machine-written and
+>   `tools/marks.py:313` defaults it to `kevin`; it records that a mark was caught
+>   on his behalf, never that the words in it are his.
+
+**Verified in-session, not taken on the reader's word:** `tools/marks.py:313` and
+`:328` both carry `default="kevin"`, and `:82` writes `source or "kevin"` — three
+independent places where an unnamed caller is attributed to the human. The log is
+mixed authorship and says so nowhere: ~885 lines stamped `kevin`, at least 120
+carrying `claude`, `counsel`, `system`, `dispatcher`, `organ-drop`, `test`. And
+`source: kevin` does not mean the words are his — `MARKS_LOG.jsonl:809, 813,
+823–826` are machine-composed prose *about* what he said, with only a fragment in
+inner quotes, every one stamped `kevin`. Grep: the field is discussed in **zero**
+of the five agent files; the only `nesi/mind/` hit is `PROTOCOLS.md:671`, which
+hardcodes `--source kevin` into the brake ritual and deepens the conflation.
+
+**This is round 1's correction one layer down.** Round 1's readers had to
+hand-check `"source": "counsel"` on `MARKS_LOG.jsonl:1014–1019` to establish that
+the six manifests were not the game-craft seat's acts. **That check exists in no
+file.** It was performed because four readers happened to be careful on one day.
+
+**Gradient.** No labour is added — paths are already mandatory in every citation
+this seat makes, so the source token rides in the same string. What is destroyed
+is the *silent* currency of machine-composed prose passing as his voice: the bare
+quote stops being the cheapest citation that looks like the strongest one, and a
+citation resolving to `(source: claude)` now fails in the open. Exactly tab 10's
+shape — a licence spent with its date beside it — applied to attribution instead
+of age.
+
+**Guard.** It moves the seat in the only safe direction: it **shrinks** the
+seat's supply of Kevin. 885 entries become provisional, none forbidden.
+
+**Stake surrendered:** routes nothing to stuart-cowan. Its own disclosure,
+unprompted: the single executed Cowan instrument in the record,
+`MARKS_LOG.jsonl:907`, is quoted as verbatim in this ledger and in its own agent
+file, and must henceforth be cited `(source: kevin)` like anything else.
+
+**Why these two together.** They close one seam from its two ends — the seat's
+one authorized sentence now carries its two missing facts: *does it still stand*
+and *whose words are these*. Round 3 established that pair as the cleanest unit.
+
+### TAB 15 · REFUSED — CARRIED and DERIVED
+
+**Author:** buckminster-fuller. Proposed appending to the YAML `description:`
+scalar: *"Two kinds of line come back, marked: CARRIED (his words, with a path)
+and DERIVED (the lens's own reading). Only a CARRIED line is corpus ground; a
+DERIVED line never grounds a ruling made in his absence."*
+
+**Refused on the two-tab cap and on smallest-unit — explicitly NOT as a
+duplicate, and not on defect.** It is a third qualifier on the same sentence, and
+the two applied tabs already close that seam from both ends; a third in the same
+round is the shape round 3 declined for good reason. **Its axis is genuinely
+distinct and its finding is the round's second-sharpest, kept here in full:** the
+seat invented this exact label *inside its own library and nowhere else* —
+`counsel/kevinlens/SHAPE_nutrients_and_gifts.md:122`, *"**Derived. Not Kevin's,
+not ruled.**"*, repeated at `SHAPE_mechanisms_and_systems.md:92,100`,
+`CUT_collisions.md:213`, summarized at `INDEX.md:60`. Grep: `Derived. Not
+Kevin's` appears in `counsel/kevinlens/` and in **zero** files under
+`.claude/agents/`. **The convention exists in the library, is absent from the
+definition, and is absent from the only text a caller reads.** The consequence is
+on the record in the shape the seam predicts: `BUILD_RECORD.md:2322–2324`,
+*"kevin-lens found the teaching ruling settles CONTENT and has never settled
+SALIENCE"* — a derived reading, unlabelled, entering the record as a finding —
+and `:2349–2351`, *"ROUTED (kevin-lens + composite) … if it holds, **rule
+salience**"*, a ruling made conditional on a lens read with no line between what
+the corpus says and what the lens concluded. And the instrument that catches it
+is this seat's own, never run on itself: `nesi/game2d/MANDATE.md:60–63` —
+*"a disclaimed text in a law-named file is still wearing the law's coat —
+location argues even when the text disclaims."* **Eligible in round 5 with no
+argument needed**, where its author's own note — *"my returns are the same
+mixture; if it is right here it is right on Fuller"* — makes it the natural
+whole-counsel question.
+
+### TAB 16 · REFUSED — the walk's retention clause
+
+**Author:** change-composite. Proposed appending to seam S4 in
+`~/.claude/CLAUDE.md`: *"The copy is scratch, and it is read for MECHANISM ONLY.
+Walk artifacts carrying his water — PNGs, dumps, fixtures — go where his delete
+reaches and never into git; and no report, commit message, or finding restates,
+lists, or characterizes what his water says…"*
+
+**Refused as escalation, not as defect — this is Kevin's to rule and the round
+had no authority to settle it.** The NESI.EXE amendment lets this session rule
+design/naming/mechanic forks and escalates *sovereignty, body, and gifts at the
+gate*. His writing is the first of those. **Two other readers found the same
+collision independently and both declined it for the same reason** — cowan:
+*"every version I could write either loosened the morning-pages guard or assigned
+who may look at his water"*; game-craft: *"the permissive resolution weakens the
+guard; the restrictive one narrows Kevin's own seam, written yesterday."* Three
+of four readers at one seam, one proposing, two refusing, is the round's
+strongest signal and it points at a gate, not a tab. **Opened as
+`OPEN_GATES.jsonl`, not defaulted.**
+
+**The collision, stated plainly and kept:** S4 (`~/.claude/CLAUDE.md`,
+Verification) now requires every walk to run on **a copy of his real poured
+water**, and four lines above it the same section requires the walker to
+*"actually read the PNGs it writes."* The guard those two run into is on no
+walking session's path — `~/.claude/skills/morning-pages-channel/SKILL.md:25–28`,
+*"no retention of raw text outside a gated zone his delete controls… the pages
+feed the system; the system never reads the writer"*, whose own words call a
+breach *"the same class of failure as adding an approve button to the gate."* The
+three laws that look like they cover it do not: `~/.claude/CLAUDE.md` law 4
+governs *the player path*, `refusals.md` governs what *the world* does to his
+text, and the kevin-lens hard limit binds one read-only lens — the one seat that
+never walks. **Nothing governs the walk report, the walk artifact, or the repo,
+and as of S4 that is where his water goes.** The mechanism has already fired:
+`BUILD_RECORD.md:927` transcribes five of his misspellings into a permanent build
+record as fidelity evidence (*"jounral · unmutable · heloistat · freqency"*), and
+`:936–952` records a pour test run against the **live** store, with the record's
+own verdict — *"Nothing of Kevin's was destroyed. But that is luck, not
+procedure."*
+
+**One correction to that tab, checked rather than taken:** its claim that
+`nesi/world3d/.walk/` PNGs are already tracked in version control is **false** —
+`git check-ignore` resolves them to `.gitignore:47`, which ignores the whole
+`/nesi/world3d/` tree. The git half of the concern is already closed; the disk
+half (artifacts persisting outside a zone his delete reaches) stands.
+
+### The two standing items this round was to meet
+
+**The trim tab as a complete return (refused tab 12, held toward this seat):
+NOT PROPOSED, and that is the ruling.** Four readers with the whole ledger in
+front of them, blind to each other, and none brought it back. It stays where
+round 3 left it — finding intact, eligible, no argument needed — and it was not
+applied by default merely because it was carried forward.
+
+**The tab-5 equivalent (the seat's pointer to its own library): FOUND BY ALL
+FOUR, TABBED BY NONE, and the reason is specific rather than fatigue.**
+`.claude/agents/kevin-lens.md` carries no pointer to `counsel/kevinlens/` (ten
+files, INDEX present, populated 08-11 under a ~454k-token pass), which is the
+clone of tabs 5 and 9 arriving on schedule at the third seat. **But the ledger's
+own formula does not hold here, and this is a correction to it:** unlike Fuller
+(zero boot-path mentions) and unlike Cowan (a pointer aimed at composted
+Downloads), *this* library **is** on the boot path — `nesi/mind/PROTOCOLS.md:122`
+cites `counsel/kevinlens/SHAPE_nutrients_and_gifts.md` by name — and it appears
+there **only as a warning label**, preserving *"the candidate reading that
+preceded this mark, and the caution around inferring it."* The single boot-path
+appearance of this seat's own work is an example of the seat inferring wrongly.
+game-craft's ruling on it is the decisive one and is adopted as this round's
+sequencing: **the pointer is downstream of tab 13.** Handing this seat its own
+library uncorrected imports `GROUND_knowledge.md:7` — a two-hours-dead law
+introduced as *"the frame over everything"* — as boot-level ground. *"If a later
+round applies the pointer, apply it with tab 13 already in, or it is a licence to
+cite repealed law from a trusted source."*
+
+**The post-hoc gradient was not seeded, and the readers found its structure
+themselves.** Nobody was told the standing law had twice been located after the
+act. Three readers independently found that this seat's citations carry no tense
+— and tab 13 is exactly the inversion asked for: standing is now checked at
+citation time, upstream of any act built on it.
+
+### Corrections to this ledger, from the readers
+
+1. **`ROUNDS 4–5` line 611 was stale** — it read *"Rounds 1 and 2 have run"* with
+   round 3 documented at length 180 lines above it. Fixed by this entry.
+2. **The "zero boot-path files" formula is false for kevin-lens** —
+   `PROTOCOLS.md:122` cites its library by name. The seam here is half-open, not
+   open, and is worse rather than better for it (see above).
+3. **The libraries-disagree-with-their-own-indexes defect is corpus-wide, not
+   Cowan's.** `counsel/kevinlens/INDEX.md:12` announces *"The eight documents"*
+   and lists eight; the directory holds **nine** non-INDEX files —
+   `READ_reference_shelf_2026-08-12.md` was appended a day later by another
+   session and no INDEX knows. Third of three libraries checked. Round 3's
+   generalization is confirmed: **these libraries are appended by sessions and
+   read by none of their seats, and their own indexes are the first casualty.**
+4. **The licence-surface count holds at a third seat:** `counsel/kevinlens/` shows
+   30 LAWFUL-NOW occurrences across 5 files, of which 2 are INDEX summary prose —
+   ~28 standing tags, matching Cowan's ~28 and Fuller's ~26. Three near-identical
+   surfaces, all issued 08-11/12, all pre-rejection. Tab 10 covers spending them;
+   nothing covers issuing them.
+5. **`LEARNED.md` violates its own admission rule** — `:10`, *"a line with no
+   provenance does not belong here"* — at laws **13** (HELD IS LAWFUL) and **20**
+   (NO LAW BECOMES A LEVER), neither carrying a mark, date, or path; law 20 is the
+   guard clause the other nineteen lean on. Law 16 cites a seat but no file. Not
+   tabbed: supplying citations is bookkeeping, not a gradient. Law 20's source is
+   live at `PROTOCOLS.md:435` if a session wants to close it.
+
+### Held, not ruled — surfaced in round 4 and left where it was
+
+- **The `description:` scalar, and the recommendation that it stay thin.** Two
+  readers examined it and both declined. It is the only wholly negative scalar of
+  the five — three of its four sentences say what the seat is not — so a session
+  shopping the scalars for *has this already been decided · where does this
+  already live · what did he refuse and when* is not routed here, though
+  `## In counsel` names exactly that as the seat's jurisdiction. Both refusals
+  cite the guard: every affirmative wording advertises what the seat can produce
+  *about Kevin's mind* and makes standing in for him marginally cheaper. **The
+  disclaimer-heavy scalar is doing load-bearing work.** A later round weighing the
+  fork-return against that cost must do it explicitly rather than treating this
+  scalar like the other four.
+- **`counsel/kevinlens/CUT_what_must_not_enter.md` — the only counsel library
+  carrying refusals pre-applied to the other four seats by name** (§3 bars, from
+  cowan, *"'sensing' the material — theme-as-species, sentiment-as-water-quality"*;
+  from game-craft, *"adaptive anything… feel may read the HAND, never the WORDS"*;
+  from fuller, *"any 'total inventory' instinct applied to his corpus"*; from any
+  seat, *"proposals whose evidence requires his live writing"*). A document
+  governing four seats, in the boot path of none, unread since 08-11. Its author
+  refused to tab it on stake **and** on the guard: pointing four seats at the
+  library of the seat wearing Kevin's name routes standing authority toward this
+  centre. *"If a later round takes it, take it as bars this seat already
+  published, never as what Kevin would say."* Note §3's own line 95: *"This seat
+  itself is bound first."*
+- **`counsel/kevinlens/CUT_collisions.md`** — the floor indicator's mandatory
+  *"N marks · M gates open"* against law 2's absolute no-number bar, lawful today
+  only because the surfaces are separate files, with the 08-11 keystone ruling
+  predicting they converge. This seat's own held fork; no reader touched it.
+- **`counsel/kevinlens/DREAM_recognitions.md`** — the wall-clock heal timer at
+  `nesi.html:741`, *"the correction is three lines"*, still uncorrected.
+- **`BUILD_RECORD.md:2564`** — kevin-lens declining fork F4, *"ruling it means
+  declaring which of his written words are law and which are preference."* Tab 13
+  does not tier anything; it requires the date, which is a fact on the record, and
+  leaves F4 exactly as unruled.
+- **`OPEN_GATES.jsonl:329`** (the want-check on the rebuilt world — KEVIN HAS NOT
+  PLAYED IT) and **`OPEN_GATES.jsonl:224`** (the Cowan contested standing held by
+  round 3), both exactly as found. Noted by a reader: line 224 is also the
+  record's only enumeration of the four seats, so it is doing double duty as
+  evidence in two unrelated disputes.
+
+### Round 4 result
+
+Two applied, closing one seam from both ends — the seat's single authorized
+sentence now carries its tense and its authorship. Two refused, neither on
+defect: one on the cap with the round's second-sharpest finding kept and made
+round 5's natural question, one escalated to Kevin as a gate because it touches
+his writing. **No reader spent a move refuting a summary; three of the four
+found the same structural fact from three different files; one found the seam
+that had to leave the circle entirely.** The unseeded method has now produced the
+two most exact rounds of the four.
+
+---
+
+## ROUND 5 — NOT RUN
+
+Round 5 (change-composite) is unrun. Rounds 1 (game-craft), 2
+(buckminster-fuller), 3 (stuart-cowan) and 4 (kevin-lens) have run; each applied
+two tabs.
+
+**Carried into round 5, with no argument needed:** refused tab 15 (CARRIED /
+DERIVED), whose author's own stake note makes it a whole-counsel question rather
+than a one-seat one. Still carried and still not applied by default: refused tab
+12 (the trim tab as a complete return), unproposed in round 4.
 
 **Seeded gradients are retired as of round 2.** They were wrong in round 1 and
 wrong again in round 2, both times in the same direction — charging a read-only
