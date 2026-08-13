@@ -100,17 +100,71 @@ const DEF={
   res:0, basin:0, lake:0,
   gate:0, mirror:null, aimed:false,
   wet:[], shoots:[], stones:[], sunk:0,
-  creature:{x:840,y:598,tx:840,ty:598}
+  creature:{x:840,y:598,tx:840,ty:598},
+  /* M1 · THE DAY. the land remembers: `silt` is the bed's own deviation from
+     the profile it was born with — positive where water stood and dropped its
+     load, negative where the sluice cut. `hiNow`/`hiPast` are the highest each
+     body has stood, this day and every day before it — a LEVEL, not a place,
+     because a flood mark is a ring around a bowl and not a stain on one stone. */
+  silt:[], hiNow:{}, hiPast:{}, lastDay:""
 };
+const NOMARK=1e9;
 let S=DEF;
 try{const raw=localStorage.getItem(KEY); if(raw){const p=JSON.parse(raw); if(p&&typeof p==="object")S=Object.assign({},DEF,p)}}catch(e){}
 const WN=Math.ceil(W/4)+1;
-if(!Array.isArray(S.wet)||S.wet.length!==WN)S.wet=new Array(WN).fill(0);
+const fitArr=(a,v)=>(Array.isArray(a)&&a.length===WN)?a:new Array(WN).fill(v);
+S.wet=fitArr(S.wet,0); S.silt=fitArr(S.silt,0);
+for(const k of ["res","basin","lake"]){
+  if(typeof S.hiNow[k]!=="number")S.hiNow[k]=NOMARK;
+  if(typeof S.hiPast[k]!=="number")S.hiPast[k]=NOMARK;
+}
 if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
+
+function dayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+
+/* THE DAY BOUNDARY. crossing it moves this day's marks into the past, where
+   they render fainter. nothing announces it; the land is simply older. This is
+   the boundary M2's deep will work across — established here, used by nothing
+   yet. No absence is simulated: crossing the boundary advances no water. */
+if(S.lastDay&&S.lastDay!==dayKey()){
+  for(const k of ["res","basin","lake"]){
+    S.hiPast[k]=Math.min(S.hiPast[k],S.hiNow[k]);
+    S.hiNow[k]=NOMARK;
+  }
+}
+S.lastDay=dayKey();
+
+/* THE GROUND IS NO LONGER A CONSTANT. `GY` and every body's area table were
+   baked once from the birth profile; silt makes them derived state. Rebuilding
+   is the whole of the cost — a stale area table would not throw, it would put
+   the waterline on the wrong ground, which is the quietest way to be wrong. */
+function siltAt(x){
+  const fx=Math.max(0,Math.min(WN-1.001,x/4)), i=fx|0, t=fx-i;
+  return S.silt[i]*(1-t)+S.silt[Math.min(WN-1,i+1)]*t;
+}
+function rebuildGround(){
+  /* MINUS, and the sign is the whole of it: y grows downward, so a bed that has
+     been silted stands HIGHER on the screen and holds LESS. Adding here would
+     dig the basin out every time water stood in it — the exact silent wrong a
+     stale area table gives you, arrived at from the other direction. */
+  for(let x=0;x<=W+1;x++)GY[x]=terrAt(x)-siltAt(x);
+  for(const k in BODIES)buildArea(BODIES[k]);
+}
+rebuildGround();
 /* the lake is older than the player. it is here on the first open. */
 if(!S.lake)S.lake=volumeAt(BODIES.lake,540);
 
-function dayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+/* --------------------------------------------------------------- THE STILLING
+   Carried from nesi.html's sixth pass (2026-08-11) and sited here at the scale
+   of a whole valley. `lastStir` is NEVER PERSISTED — that is the free half of
+   the mechanic: re-entry always opens on still water and the first keystroke
+   moves it. The day starts when the hand does, and nothing says so. */
+let lastStir=-1e9, running=false, frameQueued=false;
+function calm(){return Math.exp(-(performance.now()-lastStir)/22000)}
+function stir(){
+  lastStir=performance.now();
+  if(!running&&!frameQueued){frameQueued=true;last=performance.now();requestAnimationFrame(frame)}
+}
 field.value=S.writing[dayKey()]||"";
 if(S.watermark>field.value.length)S.watermark=field.value.length;
 
@@ -132,6 +186,7 @@ addEventListener("beforeunload",save); addEventListener("blur",save);
    never cleared and deletion never un-banks. Nothing here looks at meaning. */
 let pending=0;
 function bandCut(){
+  stir();                      /* the writing hand moves the water */
   const v=field.value;
   if(S.watermark>v.length)S.watermark=v.length;
   const isEnd=c=>".!?…".indexOf(c)>=0;
@@ -150,7 +205,7 @@ function bandCut(){
 field.addEventListener("input",bandCut);
 field.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
-    e.preventDefault();
+    e.preventDefault(); stir();
     const seg=field.value.slice(S.watermark).trim();
     if(seg.length>1&&/[A-Za-z0-9]/.test(seg)){arrive(seg);S.watermark=field.value.length}
     pending=0;
@@ -175,7 +230,20 @@ function arrive(text){
 
 /* ------------------------------------------------------------------ water */
 let resY=1e9, basinY=1e9, lakeY=540, spillT=0, jetT=0;
+/* the bed changes continuously and is committed on a slow tick — rebuilding the
+   area tables every frame would be honest and wasteful in equal measure. */
+let siltT=0, siltDirty=false;
+const SILT_CAP=16, CUT_CAP=14;
+/* SEDIMENT ARRIVES WITH WATER — it is not a property of water being present.
+   `load` is what each body is currently carrying: raised by rain landing, by
+   the sluice's flow, by the spill over the lip; it settles out in a few
+   seconds. Without this a standing lake buries itself for as long as the page
+   is open, and the land would drift with no hand on it — which is the opposite
+   of the land being the save file. Never persisted: what is in suspension when
+   you close is not simulated while you are gone. */
+const load={res:0,basin:0,lake:0};
 function waters(dt){
+  if(siltDirty){siltT+=dt; if(siltT>2.5){siltT=0;siltDirty=false;rebuildGround()}}
   /* the sluice: head over the opening, and the opening is the hand's */
   const openY=DAM.base-GATE_H*S.gate;
   resY=surfaceOf(BODIES.res,S.res);
@@ -187,22 +255,48 @@ function waters(dt){
   /* over the crest, when the reservoir has more than the wall */
   if(resY<DAM.crest){ flow+=9000*(DAM.crest-resY)*dt; spillT=1 } else spillT=Math.max(0,spillT-dt*2);
   flow=Math.min(flow,S.res);
-  if(flow>0){S.res-=flow;S.basin+=flow;jetT=1} else jetT=Math.max(0,jetT-dt*3);
+  if(flow>0){S.res-=flow;S.basin+=flow;jetT=1;load.basin+=flow*0.00022} else jetT=Math.max(0,jetT-dt*3);
 
   /* the basin gives its excess to the lake over the lip */
   basinY=surfaceOf(BODIES.basin,S.basin);
   const cap=volumeAt(BODIES.basin,LIP);
-  if(S.basin>cap){const ex=Math.min(S.basin-cap,26000*dt+ (S.basin-cap)*0.9*dt);S.basin-=ex;S.lake+=ex}
+  if(S.basin>cap){const ex=Math.min(S.basin-cap,26000*dt+ (S.basin-cap)*0.9*dt);S.basin-=ex;S.lake+=ex;load.lake+=ex*0.00022}
   basinY=surfaceOf(BODIES.basin,S.basin);
   lakeY=surfaceOf(BODIES.lake,S.lake);
 
-  /* wetness: under the water, and a hand's width beyond each waterline */
+  /* THE LAND IS THE SAVE FILE.
+     Where water STANDS it drops what it carries and the bed rises; where it
+     RUNS it takes the bed with it and the channel deepens. Both are capped, so
+     a valley can be shaped but never erased. And the highest the water reaches
+     is remembered as a mark on the ground — that is what makes an open show
+     yesterday's valley rather than only today's water. */
+  const cal=calm();
+  /* what is carried settles out — and settles ALL THE WAY. an exponential that
+     only approaches zero would re-dirty the bed every frame forever, and the
+     valley could never finish going still. it reaches nothing, and stops. */
+  const set=Math.exp(-dt*0.30);
+  for(const k in load){load[k]*=set; if(load[k]<0.0015)load[k]=0}
+  if(resY<S.hiNow.res)S.hiNow.res=resY;            /* the flood marks — a level */
+  if(basinY<S.hiNow.basin)S.hiNow.basin=basinY;
+  if(lakeY<S.hiNow.lake)S.hiNow.lake=lakeY;
   for(let i=0;i<WN;i++){
     const x=i*4, gy=groundY(x);
-    let w=0;
-    if(x<DAM.x0&&gy>resY)w=1;
-    else if(x>DAM.x1&&x<566&&gy>basinY)w=1;
-    else if(x>=566&&gy>lakeY)w=1;
+    let w=0, sy=NOMARK;
+    if(x<DAM.x0&&gy>resY){w=1;sy=resY}
+    else if(x>DAM.x1&&x<566&&gy>basinY){w=1;sy=basinY}
+    else if(x>=566&&gy>lakeY){w=1;sy=lakeY}
+    if(w===1){
+      /* standing water drops what it CARRIES — stiller settles faster, which is
+         why a held pool silts and a torrent carries straight through */
+      const k=x<DAM.x0?"res":(x<566?"basin":"lake");
+      const dep=dt*1.9*load[k]*(0.3+0.7*cal)*Math.min(1,(gy-sy)/40);
+      if(dep>1e-5&&S.silt[i]<SILT_CAP){S.silt[i]=Math.min(SILT_CAP,S.silt[i]+dep);siltDirty=true}
+    }
+    /* the cut: the sluice's own water takes the channel down with it */
+    if(jetT>0.05&&x>DAM.x1&&x<344&&S.gate>0.02){
+      const cut=dt*0.30*S.gate;
+      if(S.silt[i]>-CUT_CAP){S.silt[i]=Math.max(-CUT_CAP,S.silt[i]-cut);siltDirty=true}
+    }
     if(w<1){ /* seepage: the ground drinks a hand's width past the waterline,
                 which is what makes a shore a place and not a line */
       for(let d=1;d<=10;d++){
@@ -234,7 +328,9 @@ function rain(dt){
     if(d.y>=hit){
       splashes.push({x:d.x,y:hit,t:0,onWater:wy<gy});
       /* the drop becomes volume in whatever holds it */
-      if(d.x<DAM.x0)S.res+=34; else if(d.x<566)S.basin+=34; else S.lake+=34;
+      const bk=d.x<DAM.x0?"res":(d.x<566?"basin":"lake");
+      if(bk==="res")S.res+=34; else if(bk==="basin")S.basin+=34; else S.lake+=34;
+      load[bk]+=0.010;                 /* rain arrives carrying the hillside */
       const i4=Math.max(0,Math.min(WN-1,Math.round(d.x/4)));
       S.wet[i4]=Math.min(1,S.wet[i4]+0.5);
       drops.splice(i,1);
@@ -311,7 +407,10 @@ function light(dt){
     dwell+=dt;
     let near=null;
     for(const s of S.shoots)if(Math.abs(s.x-beam.x)<26)near=s;
-    if(near){near.g=Math.min(1,near.g+dt*0.20);near.lit=1}
+    /* dwell is the SEEDING clock and nothing else. left running once a shoot
+       stands there it never returns to zero, and a valley with one grown shoot
+       under the beam could never finish going still. */
+    if(near){near.g=Math.min(1,near.g+dt*0.20);near.lit=1;dwell=0}
     else if(dwell>1.1){
       S.shoots.push({x:beam.x,y:beam.y,g:0.02,s:Math.random()*9,lit:1});
       dwell=0;
@@ -337,11 +436,13 @@ function deep(dt){
     c.ty=lakeY+34+Math.random()*(650-lakeY-58);
   }
   const dx=c.tx-c.x, dy=c.ty-c.y, m=Math.hypot(dx,dy)||1;
-  const sp=18+S.sunk*0.6;
+  /* it slows as the valley stills and comes to rest with it. the deep is quiet
+     while you are quiet; it does its own work in your ABSENCE, not your idleness. */
+  const sp=(18+S.sunk*0.6)*swell;
   c.x+=dx/m*sp*dt; c.y+=dy/m*sp*dt;
   const depth=c.y-lakeY;
-  wake=Math.max(0,1-depth/70);
-  if(Math.random()<dt*(0.5+wake*2.2)) bubbles.push({x:c.x+(Math.random()-0.5)*40,y:c.y,v:22+Math.random()*26,s:Math.random()*9,r:1+Math.random()*2});
+  wake=Math.max(0,1-depth/70)*swell;
+  if(Math.random()<dt*(0.5+wake*2.2)*swell) bubbles.push({x:c.x+(Math.random()-0.5)*40,y:c.y,v:22+Math.random()*26,s:Math.random()*9,r:1+Math.random()*2});
 }
 
 /* --------------------------------------------------------------- stones */
@@ -374,7 +475,7 @@ function toWorld(e){
   return {x:(e.clientX-r.left-ox)/sc, y:(e.clientY-r.top-oy)/sc};
 }
 cv.addEventListener("pointerdown",e=>{
-  const p=toWorld(e); cv.setPointerCapture(e.pointerId);
+  const p=toWorld(e); cv.setPointerCapture(e.pointerId); stir();
   /* a stone under the hand */
   for(let i=S.stones.length-1;i>=0;i--){
     const s=S.stones[i];
@@ -394,6 +495,7 @@ cv.addEventListener("pointermove",e=>{
   const p=toWorld(e);
   cv.style.cursor = drag?"grabbing":hover(p)?"grab":"default";
   if(!drag)return;
+  stir();
   if(drag.k==="gate")S.gate=Math.max(0,Math.min(1,drag.g0+(drag.y0-p.y)/GATE_H));
   else if(drag.k==="mirror"){
     let d=Math.atan2(p.y-MIR.y,p.x-MIR.x)-drag.a0;
@@ -429,8 +531,12 @@ function fit(){
   const sc=Math.min(innerWidth/W,innerHeight/H);
   g.setTransform(d*sc,0,0,d*sc,d*(innerWidth-W*sc)/2,d*(innerHeight-H*sc)/2);
 }
-addEventListener("resize",fit); fit();
+/* resizing resets the backing store, which CLEARS it — a still world would sit
+   blank until the hand moved. one frame is owed, and it is not a stir. */
+addEventListener("resize",()=>{fit(); if(!running&&!frameQueued){frameQueued=true;requestAnimationFrame(frame)}});
+fit();
 
+const MARKRANGE={res:[0,DAM.x0],basin:[DAM.x1,566],lake:[566,W]};
 function waterPath(b,sy){
   if(sy>=1e8)return null;
   let x0=null,x1=null;
@@ -443,7 +549,7 @@ function paintWater(b,sy,t,c0,c1){
   g.save(); g.beginPath();
   g.moveTo(p.x0,sy);
   for(let x=p.x0;x<=p.x1;x+=4){
-    const w=Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5;
+    const w=(Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5)*swell;
     g.lineTo(x,sy+w);
   }
   for(let x=p.x1;x>=p.x0;x-=4)g.lineTo(x,Math.max(groundY(x),sy));
@@ -458,16 +564,18 @@ function surfaceLine(p,sy,t){
   if(!p)return;
   g.save(); g.beginPath();
   for(let x=p.x0;x<=p.x1;x+=4){
-    const w=Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5;
+    const w=(Math.sin(x*0.045+t*1.6)*1.1+Math.sin(x*0.017-t*1.1)*1.5)*swell;
     if(x===p.x0)g.moveTo(x,sy+w); else g.lineTo(x,sy+w);
   }
   g.strokeStyle="rgba(232,247,246,.5)"; g.lineWidth=1.2; g.stroke();
   g.restore();
 }
 
-let t=0, last=performance.now();
+let t=0, last=performance.now(), swell=1;
 function frame(now){
+  frameQueued=false; running=true;
   const dt=Math.min(0.05,(now-last)/1000); last=now; t+=dt;
+  swell=calm();
   flash=Math.max(0,flash-dt*1.1);
 
   waters(dt); rain(dt); light(dt); deep(dt); stones(dt);
@@ -533,6 +641,18 @@ function frame(now){
       g.closePath(); any=true;
     }
     if(any){g.fillStyle="rgba(34,42,38,"+BANDS[b][1]+")"; g.fill()}
+  }
+  /* THE FLOOD MARKS. A horizontal level, still clipped to the ground — so it
+     paints only where there is hillside at that height and vanishes across the
+     empty bowl. That is what makes it read as a ring and not a floating line.
+     Yesterday's marks are fainter than today's; nothing says which is which. */
+  for(const L of [["hiPast",0.17],["hiNow",0.30]]){
+    for(const k in MARKRANGE){
+      const lv=S[L[0]][k]; if(lv>=NOMARK)continue;
+      const r=MARKRANGE[k];
+      g.fillStyle="rgba(48,38,22,"+L[1]+")";
+      g.fillRect(r[0],lv-0.9,r[1]-r[0],1.9);
+    }
   }
   g.restore();
 
@@ -696,9 +816,26 @@ function frame(now){
     g.fillStyle="rgba(255,250,232,"+(flash*0.085)+")"; g.fillRect(0,0,W,H); g.restore();
   }
 
-  requestAnimationFrame(frame);
+  /* THE LOOP ENDS ITSELF. Not a throttle and not a pause — when nothing in the
+     valley is still changing, the page genuinely stops asking for frames, and
+     the next act of the hand starts it again. That quiet IS the mechanic. */
+  const stonesMoving=S.stones.some(s=>s.held||s.sinking>0||Math.abs(s.vy)>0.4||s.y<groundY(s.x)-s.r*0.6-0.5);
+  const draining=(S.gate>0.02&&S.res>0&&resY<DAM.base)||S.basin>volumeAt(BODIES.basin,LIP)+1;
+  /* light is not the hand — a shoot keeps growing while the valley stills, and
+     only stops the loop once it has nothing left to grow into */
+  const growing=beam.hit==="ground"&&wetAt(beam.x)>0.3
+    &&(dwell>0||S.shoots.some(s=>s.g<1&&Math.abs(s.x-beam.x)<26));
+  /* 0.05 is not a taste: nesi.html's stilling quiets at amplitude 0.3 of a
+     swell whose full height is 6, and this is that same fraction, so the two
+     surfaces fall quiet on the same clock. ~66s after the last act. */
+  const busy = swell>0.05 || drag || siltDirty || rainQueue>0 || flash>0.01
+            || drops.length || splashes.length || spray.length || bubbles.length
+            || jetT>0.05 || spillT>0.05 || draining || stonesMoving || growing;
+  if(busy)requestAnimationFrame(frame); else running=false;
 }
-requestAnimationFrame(frame);
+/* the first frame is a KICK, not a stir: the valley paints itself once and then
+   holds still, because `lastStir` starts before time. The hand starts the day. */
+frameQueued=true; requestAnimationFrame(frame);
 </script>
 </body>
 </html>

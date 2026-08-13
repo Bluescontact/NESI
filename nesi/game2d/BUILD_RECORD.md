@@ -4212,3 +4212,92 @@ world.html` **PASS, 670 code lines**.
 not something any instrument here can report.
 
 → **WALKABLE.** Open `nesi/game2d/world.html` and type a sentence.
+
+## MANIFEST 1 · THE DAY — the valley learns time (2026-08-12, session fb66285e)
+
+Kevin's ladder (`THE_SIX_MANIFESTS.md`) filed earlier this pass; he then said
+**"build manifest 1."** Built into `nesi/game2d/world.html` only — no doorway was
+opened to `nesi.html`, so **the base fork (port vs doorway) stays open and untouched.**
+
+### What is new in the world
+
+- **THE STILLING, sited at valley scale.** Carried from `nesi.html`'s sixth pass. Every
+  act of the hand stirs; the swell decays on the same clock (`exp(−Δt/22000)`), and when
+  nothing in the valley is still changing **the page stops asking for frames.** Not a
+  throttle — the loop genuinely ends and the next act restarts it. `lastStir` is never
+  persisted, so **re-entry always opens on still water and the first keystroke moves it.**
+  The creature slows and rests with the valley: the deep is quiet while you are quiet, and
+  works in your *absence* (M2's ground), not your idleness.
+- **THE LAND IS THE SAVE FILE.** `S.silt` is the bed's own deviation from the profile it
+  was born with. Where water **stands** it drops what it carries and the bed rises; where
+  the sluice **runs** it takes the channel down with it. Both capped, so a valley can be
+  shaped and never erased. `GY` and all three area tables are rebuilt from it — the exact
+  cost the reading named before the build started.
+- **THE FLOOD MARKS.** The highest each body has stood, kept as a **level**, drawn clipped
+  to the ground so it paints only where there is hillside at that height — a ring around
+  the bowl, not a line in the air. **Yesterday's are fainter than today's, and nothing
+  says which is which.**
+- **THE DAY BOUNDARY.** Crossing it rolls today's marks into the past and clears today's.
+  Established here and used by nothing yet; it is what M2's deep will work across. **No
+  absence is simulated** — crossing the boundary advances no water (law 8 intact).
+
+### Two instruments built, because the browser could not answer
+
+**The preview pane pins a single JS realm.** `location.reload()`, a forced navigate, and
+even opening the same code at a **different URL** all reuse it. So the module-level boot
+path could not be observed running: every probe reported the *previous* session's mutated
+state and looked like a boot that did nothing. Several confusing readings earlier in this
+pass were that, not the code. An instrument that cannot see should not report, so it was
+replaced rather than trusted.
+
+- **`tools/boot_check.js`** cold-boots the real `<script>` in Node against a stub DOM with
+  rAF disabled, from a save standing at a previous day with a silted bed. **8/8 PASS.**
+- **`tools/still_check.js`** drives the real `frame()` against a synthetic clock and a
+  recording rAF, and asks the one question a screenshot cannot answer: *does the queue
+  ever come up empty?* A world that never stills and a world that stilled correctly render
+  the same still picture. **6/6 PASS**, quiet ~65.9 s after the last act.
+
+### Three defects the instruments caught — every one silent
+
+1. **The silt sign was inverted.** `GY = born + silt` moves the bed **down** the screen,
+   so every pool *dug itself deeper* the longer water stood in it. Nothing would have
+   thrown; the basin would simply have grown. Caught by B4/B5 (capacity must be *lost*).
+2. **The valley could never finish going still.** Sediment load decayed exponentially and
+   never reached zero, so it re-dirtied the bed every frame and the loop ran forever.
+   Caught by S2 (still running after 6,000 frames). Load now reaches nothing and stops.
+3. **`dwell` never returned to zero** once a shoot stood under the beam, so a valley with
+   one grown shoot could never quiet either. `dwell` is the seeding clock and nothing else.
+
+**And one design defect found before any instrument:** the first version deposited
+sediment wherever water was *present*, so **the standing lake silted itself up for as long
+as the page was open** — the land drifting with no hand on it, which is the opposite of the
+land being the save file. Sediment now **arrives with water** (rain, the sluice's flow, the
+spill) and settles out in seconds. Never persisted: what is in suspension when you close is
+not simulated while you are gone.
+
+### Walked in the browser, driven by real events
+
+Typed two sentences → rain fell → the reservoir filled and **`hiNow.res` tracked it up**
+→ load arrived and **21 cells silted** → dragged the sluice to 0.96 → **the channel cut,
+21 cells across x 260–340** → the basin filled to 487 and **recorded its own mark** →
+36 cells of deposition, deepest cut −0.15. Screenshotted a valley staged to have lived two
+days: the jet pouring, the channel visibly notched, flood-mark rings on the hillsides at
+two strengths, silt in the basin.
+
+`node --check` PASS · `refusal_check.js` PASS (762 code lines) · no numbers reach the
+player; there is still **no text drawn on the canvas at all.**
+
+### The edge of what was checked
+
+- **A true two-session walk was not performed.** The pane will not cold boot and the date
+  cannot be advanced, so "close, come back tomorrow" was proven in **two halves**: the day
+  roll against the real boot code in Node (B1–B3), and the *rendering* of a two-day valley
+  by staging that state and reading the frame. **Neither half is the whole walk**, and the
+  join between them is asserted, not observed.
+- The drag feel is still machine-driven. Unchanged from the slice, and still the question.
+- The store was written during the walk and **reset to blank, read back clean** — his first
+  open is a dry valley with no marks and no silt.
+- `nesi.html` untouched. The port-vs-doorway fork untouched. Law 9's wording still adrift
+  and still his.
+
+→ **WALKABLE** for the mechanism. The want-check is his and has not happened.
