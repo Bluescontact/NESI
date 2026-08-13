@@ -1647,3 +1647,137 @@ unverified. One ledger citation corrected by layering. She is not seated;
 `.claude/agents/nesi.md` does not exist. **Nothing at the gate moved** — the
 sixth-seat count, tabs 19, 15 and 16, gate 329, the emphasis collision and law 9's
 three readings all stand exactly as they stood.
+
+---
+
+# THE CLOSING — the two tails joined, 2026-08-13, session b84f29c8
+
+**Ledger fingerprint at append:** 1649 lines, md5 `5892e9434095`, HEAD `d921735`,
+working tree clean — verified immediately before writing, per the discipline
+cycle 2 introduced. This is the ledger this session closed.
+
+Kevin's ask: *"converge the four and close the circle."* Round 5's four readers
+were already converged (`:969` above, two applied and two refused). **What was
+never converged is this file's two tails** — five rounds ending at a witness read
+that could not see the cycles, and three cycles opening on a ledger that said
+round 5 was unrun. Both are correct records of what their session could see.
+Neither is the circle. This section is the join, and it rules nothing.
+
+## 1 · The arc, as one thing
+
+**Five rounds turned inward** — each seat at the centre, the other four reading at
+its interfaces. Twenty tabs, ten applied, ten refused with findings kept.
+**Three cycles turned outward** — the same seats reading at a seat that does not
+exist. A charter written and deliberately not installed, its own falsifiers run
+against it, one clause amended and marked unverified.
+
+The two halves found the same fault from opposite directions, and this is the
+single strongest result in the file:
+
+> **Round 1:** *disclosure sited downstream of the act is free — a placement
+> property, not a disposition.*
+> **Cycle 2, inside the seat the circle chartered:** both readings **declared the
+> register change first and crossed anyway.**
+
+Six seats' worth of reading, two sessions, eight passes — and the fault the circle
+opened on is the fault it closed on. **The instruments were sharpened ten times,
+and the placement law was proven again by the thing built last.**
+
+## 2 · The counsel as it now stands — four seats, per Kevin's 10:07 ruling
+
+| Seat | Carries after the circle |
+|---|---|
+| **buckminster-fuller** | its own library reachable (tab 5) · the wrong-system return on its menu (tab 6) |
+| **game-craft** | UNWITNESSED as the default third word (tab 1) · the want-check sited before the build (tab 2) · S2, the want-question with an owner |
+| **kevin-lens** | a quote is not a claim it still stands (tab 13) · a mark carries its source (tab 14) · its scalar ruled load-bearingly thin |
+| **change-composite** | the person-read off its menu (tab 17) · composted material barred as ground (tab 18) · **and the cowan seat, inherited** |
+
+**stuart-cowan is retiring, not deleted.** Kevin's ruling: the boundary is written
+by the seat that is retiring. Its charter is the outstanding act of the
+inheritance and **is not written by this closing** — cycle 1's
+`counsel/nesi/CHARTER.md` is NESI's charter, a different document for a different
+seat, and the two must not be conflated by a later reader.
+
+**A sixth seat is chartered and unseated.** `.claude/agents/` holds five files;
+`nesi.md` does not exist, by Kevin's order *"do not seat her yet."* Cycle 2's own
+condition stands: **falsifier (c) must be re-run against the amended charter
+before installation**, and its fix is explicitly *"not claimed to work."*
+
+## 3 · What the circle did to the record itself
+
+Nine corrections, nearly every one found by a reader running an instrument the
+circle had just installed on it:
+
+- The libraries' INDEX disagrees with its own directory — **four of four**,
+  identical file, identical cause.
+- Two of four libraries **lead with law that died hours after they were written**.
+- **~107 standing build licences**, undated, pre-rejection, spendable by a build
+  agent and unreachable by the seats that issued them. Tab 10 prices the spending;
+  **nothing prices the issuing** — said by three separate rounds.
+- The circle's own closing marks **fail tab 14 inside the ledger that installed
+  it**: `MARKS_LOG.jsonl:1025–1029` are machine-composed round summaries stamped
+  `source: kevin`.
+- Round 3's citation of `counsel/cowan/CUT_collisions.md:56` **points at the wrong
+  file** (cycle 2) — caught by one reading of two, while the other carried the
+  ledger's own citation whole and unchecked. **Byte-exactness is not
+  truth-of-citation.** Tab 13's instrument exists for exactly this and fired at a
+  50% rate on its first live test.
+- Commit `77ab2bd` carries 578 lines of round 5 under a message that says round 5
+  is unrun.
+- Round 3's *"31 LAWFUL-NOW tags"* was an occurrence count; *"issued write-once
+  08-11"* was wrong for that library; `OPEN_GATES:224`'s body names cowan where
+  its `seats =` clause does not.
+
+## 4 · The circle's last finding, which is about the circle
+
+**Two sessions ran this on the same files at the same time, and neither knew.**
+Round 5 and cycle 1 ran concurrently; the round-5 tabs went into version control
+under the other session's commit; a witness read composed at 11:46 called a
+document outstanding that had existed since 10:35; a commit message denies the 578
+lines it carries.
+
+**Nothing was lost, and that is luck rather than procedure** — the same sentence
+the build record used about the live store on 08-12, which is the second time this
+corpus has written it in two days.
+
+**What held:** Tab 0 held in both sessions — each completed one build order.
+Supersession-by-layering held; every stale line above was struck and dated, never
+edited away. Cycle 2's fingerprint discipline, invented mid-collision, is the only
+thing in the file that would have *prevented* the collision rather than recorded
+it.
+
+**What did not hold, and it is unowned:** *the ledger a session reads at boot is
+not the ledger it appends to.* Tab 0 governs how much one session does. **Nothing
+governs two.** The circle found this by suffering it, in its own last hour, and
+closes **without** a tab for it — because a tab for it would be authored by a
+session that caused half the collision, and that is the one thing twenty tabs
+never did.
+
+## 5 · Standing at Kevin's gate — one list, both tails merged, nothing defaulted
+
+1. **Tab 19** — B1 reaching the gate ledger. 193 gates opened, zero exits on their
+   face; the intake free, the discharge priced. *The answer has to cost less than
+   the question.* The circle's largest finding, refused as too large to be a tab.
+2. **Tab 16** — S4 × the morning-pages guard. Opened round 4, unruled, and cycle 1
+   found it *directly upstream of a carriage seat.*
+3. **Tab 15** — CARRIED / DERIVED. Still carried, still unapplied — and cycle 1's
+   collision, restated by its own correction: **installing NESI would answer tab 15
+   by construction, with no round left to rule it.**
+4. **The inheritance charter** — the retiring cowan seat's last act.
+5. **Seating NESI** (cycle 3) — gated on re-running falsifier (c). Not this
+   session's to do, and not done.
+6. **The issuing side of the licence surface** — ~107 undated tags.
+7. **No organ scans the agent definitions for held forks** — one instance
+   deposited by hand; the general fault open.
+8. **The seat count** — four, five, or six depending which file is read. Cycle 1's
+   arithmetic is stale post-ruling; **no session has restated it, deliberately.**
+9. **`OPEN_GATES.jsonl:329`** — *KEVIN HAS NOT PLAYED IT.* Opened before the
+   circle, untouched by all twenty tabs and eight passes.
+
+**Item 9 is the closing sentence of this ledger.** The circle made the counsel
+honest about what it cannot see, what it may not stand on, what it may not be
+asked, and how old its licences are. **It did not put a hand on the game.** That
+was true when the circle opened and it is true now, and no instrument in this file
+changes it.
+
+**THE FULL CIRCLE IS CLOSED.** Kevin's act on all of it remains STRIKE.
