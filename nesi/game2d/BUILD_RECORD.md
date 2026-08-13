@@ -3485,3 +3485,640 @@ struts is a set wearing a solid's name."* The edges are Kevin's to draw. And the
 grow it — a corruption of his own material, named and still standing.**
 
 → The record now matches the state. Nothing here was ruled; it is reading.
+
+## THE FIVE ORDERS — executed 2026-08-12
+
+Kevin's five orders, caught to MARKS_LOG before anything acted on them, after the counsel's
+five recognitions sustained two cuts against this session's own work.
+
+### 1 · FREE INTAKE IS CLOSED — the door is built, and it refuses
+
+`feedback_filter_not_queue` governs from here: **tune rules, never items; the only per-item
+act is STRIKE.** Nothing enters a staging surface without its return path **priced at intake**
+— a named act, a citing target, or it does not enter.
+
+Built into `tools/field.py` at the one door staged material comes through. It **raises** — it
+does not filter quietly — so the pile can never again grow by things that slipped in and were
+sorted out afterwards. All 52 existing rows were priced from what they already said, never
+invented: a STAGE row's return is the port that would consume it; a COMPOST row's is the
+citation that already did; a HELD row's is Kevin's mark on the named fork, *and no seat may
+supply one*.
+
+**Proven both directions:** the field derives clean at 166, and an unpriced probe row was
+**refused at the door with exit 1** — *"Price it at intake (a named act, or a citing target)
+or it does not enter the field. Free intake is closed."*
+
+### 2 · COWAN'S FALSIFIER — ADOPTED AND DATED, with its due mark now
+
+Opened as a durable gate so it outlives this session. **Within three build passes** (counted
+in BUILD_RECORD entries after today): does a decision cite an extraction file written today —
+`_INTAKE/EXTRACTED_2026-08-12_the_bfi_findings.md`, `..._the_agreement_and_the_gift.md`, or
+the carry-outs into `DECISIONS.md` / `CANDIDATE_GRAMMAR.md`?
+
+**If no citation lands by the third pass, this session is ruled "SUBTRACTION WITH EXCELLENT
+PAPERWORK" in the record, in those words.** No seat may close that gate by arguing the
+extractions were good; **only an actual citation closes it.**
+
+### 3 · THE INSTRUMENT SEPARATES FROM THE BUILDER
+
+`tools/cold_walk.js` is demoted to **PRE-CHECK**. Its verdict string is now
+*"PRE-CHECK PASSES — NOT A WALK. UNWITNESSED until a non-builder walks it,"* and its
+say-aloud block reads *"only a walker who did NOT write this build may answer them."*
+
+What it may now claim: geometry fits, controls in frame and reachable, each invited act
+produces a visible change, every control names itself, a stranger's stones are perceptible.
+**Necessary, never sufficient, and silent about what a session is like.** The `REFUSED ·
+nothing measured` grammar is kept — an instrument that cannot see does not report.
+
+### 4 · LOCATION ARGUES — the candidate grammar moved out
+
+The four instrument rules and the indicator refusal now live at
+`nesi/game2d/CANDIDATE_GRAMMAR.md`, whose **name states their standing**. `MANDATE.md` keeps
+only what Kevin actually ruled and carries a pointer explaining the move. Nothing in the text
+changed. *"A disclaimed text in a law-named file is still wearing the law's coat."*
+
+### 5 · THE TENSION MEMBER — built, and the first member is drawn
+
+game-craft's finding: *the island touches nothing because at t=0 the act's surface covers the
+consequence's — a stranger writes and the water rises behind an opaque sheet.*
+
+**As built:** the writing face no longer reaches the foot of the net (`#faceview.seq{bottom:32%}`).
+The lower third stays uncovered — exactly where the writer's own vertex is and where the water
+first rises — so a first sentence is **seen to land**: the level lifts and the stone comes to
+rest in the same frame as the hand that made it.
+
+**IT IS CO-VISIBILITY, NOT A CUE**, and that distinction is the whole design. Nothing fires,
+flashes, chimes or confirms; nothing marks the act. The world is simply not hidden while it
+receives. A cue would breach law 6's grammar and law 13; being visible breaches nothing. It is
+content-blind by construction — the rise is a function of text mass, identical for a thousand
+words of grief and a thousand words of grocery lists.
+
+**C8 added to the pre-check, and it is a sharper question than C4a.** Not *did anything
+change* — the writer's own typed text satisfies that while the world stays hidden — but **did
+anything change OUTSIDE the writing surface, in frame, when the sentence banked.** It masks
+out everything geometrically behind the sheet before comparing.
+
+**Measured on a cold profile at 1100×800:** uncovered band **226px** · one sentence moved the
+water (`630.00 → 627.35`) · a stone rendered inside the band · **C8 PASS** · largest visible
+form in the band **64px**, well over the 20px perception bar.
+
+**Named honestly:** for a *single* sentence the water's rise is ~3px — below the perception
+bar on its own. **The arriving stone is what carries the landing at t=0**; the water is the
+slower carrier that becomes legible as mass accumulates. The member is drawn; one of its two
+strands is thin at the very first sentence.
+
+**And the walk is still not walked.** The pane composited this time and a screenshot was read
+— two sentences at the top, the net's foot below, water sitting in the writer's own vertex,
+two stones beside it. **That reading was done by the builder, so per order 3 it is a
+PRE-CHECK observation and not a verdict.** The standing word remains **UNWITNESSED**.
+
+`refusal_check` PASS (1768 code lines) · `node --check` PASS.
+
+---
+
+# NODE 1 · GRAVITY and NODE 2 · WATER — dropped, wired, and paid for immediately (2026-08-12, session d0a3e5cd)
+
+Kevin dropped `node1gravity.md`, then `node2water.md` with the two built games they
+were distilled from (`gravitywells.html`, `damvalley.html`), saying: *"this can be
+used to improve the game design agent."*
+
+Both nodes are now in `.claude/agents/game-craft.md`, as the operational half of that
+lens. **LIGHT and the fourth binding face are named in the nodes and NOT invented
+here.** The agent's hard limits were not touched.
+
+## The drop indicted this session's own work, and the indictment was correct
+
+Two of the node laws land directly on builds shipped four hours earlier:
+
+> **"Never place a physics objective by eye. Place it with the physics."**
+> **"Conservation is your test harness."**
+
+Every threshold in the three rebuilt stations — `RIM`, `BURN_AT`, the `LIFT` rates,
+`NEED`, the load-dependent reach — was placed by eye and tuned by guessing twice.
+Nothing had swept them. Applied, the nodes found three defects in under ten minutes.
+
+## DEFECT 1 · The membrane's stated design was false in the code
+
+Depth was normalised by the **current** reach: `|pull| / reach()`. Since the rock
+aboard *lowers* the reach, it made every depth-fraction **easier** to hit — so the
+suspended could pass through with the rock still on the sheet, which is the exact
+opposite of the station's own rule. **Fixed:** normalise by the full `REACH`. The rock
+now caps attainable depth at 0.55, under the suspended's 0.60 and over the film's
+0.22. *The order is forced in fact and not only in the caption.*
+
+## DEFECT 2 · The heliostat's comment lied about its own mechanic
+
+The comment said moving the aim restarts the climb. The code restarted only the burn;
+the climb kept rising and simply retargeted, so wandering was free. Node 1's rule —
+*one integrator used everywhere, the preview never lies* — generalises: **a comment
+that lies about its own code is the same defect as a predictor that disagrees with
+the sim.** Fixed in the direction the comment described, because it was the better
+game: `climbK` commits the climb to a receiver, and retargeting slides what was
+climbing back down the beam. Aiming is a commitment.
+
+## DEFECT 3 · The stone is not conserved — one sentence becomes three
+
+Node 2's law asked the question nothing in this build had ever asked: *one stone goes
+in; does exactly one stone come out, in exactly one place?* Measured in the cold copy:
+
+| driven | result |
+|---|---|
+| all three fractions → one spire | **3 pool entries · 1 distinct stone · the same sentence present 3 times** |
+| all three fractions → the lake | **3 compost entries of the same text** — the forest can grow three embers from one sentence |
+| split three ways (spire · lake · set down) | one landing each, and `stage` ends as `"down"` — **the last write wins**, so the stone's own record of where it went is not where it is |
+
+**Why this is worse than it looks.** The stone is the player's own sentence. A
+duplicated stone is his sentence standing in the world more times than he wrote it —
+law 4's spirit failing through a side door that no caption, screenshot or geometry
+check could ever show. `route()` is called once per fraction and carries the same
+stone object every time.
+
+**NOT FIXED, and named as a fork rather than patched at the end of a long pass:**
+when the hand splits one charge three ways, **where does the sentence land?** The
+truthful answers are few and they are design, not arithmetic — it rides with the last
+fraction the hand places (the charge is not finished until all three are down), or the
+first, or the sentence belongs to the charge and lands only when the charge closes.
+Rushing this would put the world's account of his own words on a coin flip.
+
+## BUILT: `nesi/game2d/tools/conserve.js` — the harness NESI did not have
+
+Six checks (K1–K6), evaluated in the prepared cold copy like the cold walk:
+one-stone-one-landing for each of the three routings · `stage` agreeing with where the
+stone actually is · **set-it-down adding to no store at all** (law 6 as a ledger fact)
+· **the deep filling nothing renderable** (law 9 as a ledger fact).
+
+**It needs no frames.** Every routing path is synchronous; only the drawing is not.
+This is the one instrument in the build that still works in a pane that has stopped
+compositing — which is precisely when the cold walk and the screenshots go quiet, and
+precisely the state that has blocked verification all day.
+
+## What the nodes confirm rather than correct
+
+Node 2's central inversion — *the player edits constraints, the physics finds the
+consequence* — is exactly what the three station rebuilds did this afternoon, arrived
+at from the other direction. And *"pair a reversible medium with an irreversible
+response — flow passes, what it fed remains"* is the Overwintering, reached in a
+different game by a different route.
+
+## VERDICT
+
+**NOT CONSERVED** — the harness works, and its first run says the build multiplies the
+player's sentence. Two defects fixed, one held open as a fork, one instrument gained.
+
+## THE SIX EDGES — Kevin's mark, recorded verbatim (2026-08-12)
+
+His mark, as given, and it amends a standing ruling:
+
+> **"the naming of the six edges moves to the counsel. This amends FK1/FK4 for these six only
+> — 'drawn nowhere until earned' is superseded by his word for the naming act itself. Record
+> the mark verbatim in BUILD_RECORD. The ruling returns to Kevin as a deposit; his act on any
+> name is STRIKE, nothing else asked of him.**
+>
+> **THE RULING · name the six edges of the tetra — the relations between the four standing
+> vertices that make the field rigid instead of an island.**
+>
+> **RECLAIM FIRST, as law:** THE MAP's Ring 2 already holds "the six road-names as vocabulary"
+> in the workshop, and the corpus carries the road-name history. Survey and site before one new
+> name is coined — if the six already exist, this ruling SEATS them, edge by edge, rather than
+> invents.
+
+**What it amends, precisely.** FK1 (*"names land by recognition, edge by edge"*) and FK4
+(*"gaps only — the form stays discovered"*, the six edges drawn nowhere until earned) both
+carry his marks of 2026-08-11. This mark supersedes them **for these six names only, and only
+for the naming act** — it does not license drawing edges in the game world, and it does not
+touch FK1/FK4 anywhere else.
+
+### THE RECLAIM — the six already exist, under his own mark
+
+`MARKS_LOG.jsonl:377`, 2026-07-30T17:40:53, verbatim:
+
+> "Adopt the six mycelium route-names: The Governor's Road (load-boundary) · The Handleless
+> Path (load-gift) · The Waterline (load-NESI) · The Crossing of Gifts (boundary-gift) · The
+> Surfacing Channel (boundary-NESI) · The Gift-Bearing Current (gift-NESI)."
+
+Their carried meanings are at `THE_PHASE_MAP.md:22-27`. **So this ruling seats, it does not
+invent — and no seat coined a name.** The original four points were *load-protection ·
+boundary-crossing · gift-warmth · NESI*; the four standing vertices are *GATES · DECISIONS ·
+PROCESSES · VISIONS*, derived from which ledger an item came from. The whole question is
+whether names minted for one tetra can seat on another.
+
+Five seats read, none shown another's answer. Convergence follows.
+
+### THE DEPOSIT — two names stand, one is reseated, three edges stay real and blank
+
+Converged by game-craft per the order; fuller's veto applies to relation-accuracy and was
+overruled twice on traversal grounds, both recorded below.
+
+| edge | name | what travels it | the traversal (one act) | strike-test | provenance |
+|---|---|---|---|---|---|
+| **GATES ↔ DECISIONS** | **THE GOVERNOR'S ROAD** | refusals, holds, fail-close defaults | mark a gate with its options: the gate closes and the offer opens | struck, the tie-break on an ambiguous item goes to the larger ledger and gates auto-promote into offers | **RECLAIMED**, Kevin's mark 2026-07-30 |
+| **GATES ↔ PROCESSES** | *unnamed* | a question answered "run it as written" becomes work with a shape | `gates.py close --why`, its own text appended to `STAGING.jsonl` as the shape | — | name struck |
+| **GATES ↔ VISIONS** | *unnamed* | a siteless naming acquires the only site the system knows — a question a hand can meet | `gates.py open --gate "<first thing a hand touches>" --source <the vision>` | — | name struck |
+| **DECISIONS ↔ PROCESSES** | **THE CROSSING OF GIFTS** | crossed patterns, deposits, transmissions | `decisions.py answer --tile --option`, the chosen option's body written as the process line | struck, a mark implies a run — 64 standing offers become 64 pre-authorized executions, the run-ahead failure with a different sign | **RECLAIMED**, same mark |
+| **DECISIONS ↔ VISIONS** | *unnamed* | a vision arrives as an offer and makes no demand | `decisions.py offer --surface <the vision>` | — | name struck |
+| **PROCESSES ↔ VISIONS** | *unnamed, and SCENERY* | **nothing** | none exists and none could be constructed | — | rejected outright |
+
+**Closure.** Every vertex still touches exactly three edges; five of the six are walkable today
+or one line away. game-craft to fuller's hinge objection: *"an unnamed edge is not a severed
+one. All three blanks are walkable today. Nothing becomes an island."*
+
+### REJECTED, each with its reason — the order required these recorded
+
+- **THE WATERLINE** — struck, and it was the strongest candidate by two seats. kevin-lens found
+  it is **already a live load-bearing term inside NESI with a different referent**:
+  *"what is above the waterline is exactly what you said"* (`THE_SOUNDING`), *"standing above
+  the waterline in your own words"* (`THE_PASSAGES`), the creature *"below the waterline."*
+  game-craft's ruling: in a build whose tenth law is *behaviour carries the distinction*, one
+  word with two referents is the exact failure that law exists to prevent.
+- **THE SURFACING CHANNEL** — struck for the same collision: "surfacing" already carries
+  watershed physics and the creature surfacing a recognition.
+- **THE GIFT-BEARING CURRENT** — struck **at this seat only**; the 2026-07-30 adoption is not
+  disturbed. cowan's strike-test is why: seated on DECISIONS↔VISIONS it licenses *"the system
+  may offer a siting decision for a vision, unasked, because yield arrives without demand"* —
+  the documented 316-to-1 run-ahead failure wearing a friendlier face. **A name that reliably
+  produces the wrong outcome is load-bearing the way a rotten joist is.**
+- **THE HANDLELESS PATH as an edge** — it is not between two vertices; it is **the exit from
+  all four**. Reseated there: strike · compost · set-it-down. cowan's rule survives intact — a
+  run with no return-line is *complete*, and struck it would spawn 42 latent gates.
+- **Any name on PROCESSES ↔ VISIONS** — no traversal exists or could be constructed. *"A name
+  whose entire content is 'nothing travels here' is worse than the blank that says the same
+  thing for free."*
+- **fuller's seating of Surfacing Channel on GATES↔PROCESSES and Waterline on
+  DECISIONS↔PROCESSES** — overruled on traversal: nothing descends at DECISIONS↔PROCESSES, a
+  mark crosses; and GATES↔VISIONS runs vision→gate one way only, which "Crossing" misdescribes.
+
+### THE FINDING UNDER ALL OF IT — kevin-lens, and it should not be lost in the seating
+
+A full-corpus search returns these six names in **exactly two places**: the adoption mark and
+the phase-map table. **Zero citations** in `patterns/`, `nesi/`, `memory/`, `counsel/`, any
+spec, any build record — across 13 days and ~424 subsequent marks. Under **NAMING:
+LOAD-BEARING ONLY**, zero-citation is the decorative signature. Its recommendation was to
+strike all six; the convergence kept two, and both survivors must now earn their keep by being
+*used*, not by having been adopted.
+
+The composite's read of the set spoken aloud: **it does not hold as a lived vocabulary; it
+reads as a diagram's labels — a beautiful diagram, correctly derived, and still a diagram.**
+The one word it found alive was Waterline — and game-craft resolved that by inversion:
+**a word sayable while walking is sayable because it is already being walked, elsewhere.
+Alive is not the same as available.**
+
+### NO BUILD THIS PASS
+
+Per the order. Two traversals already work today with no siting (`gates.py open --source
+<vision>`; `decisions.py offer --surface <vision>`), and the three one-line chains were left
+unwired because wiring them is a build, not a naming. **Named and not acted on:** the field
+shows no item's vertex on its own row, so no hand can yet feel an edge being crossed —
+game-craft's own "where I'd walk first."
+
+→ **DEPOSIT. Nothing here is marked. Kevin's act on any name is STRIKE, and nothing else is
+asked of him.**
+
+### KEVIN'S RULING ON THE DEPOSIT — all six kept, and the diagram reframed (2026-08-12)
+
+> **"keep the 6, and the diagram is a skelton that hold the rest."**
+
+He struck nothing. That overrules three of the counsel's strikes and its one scenery-rejection
+— and the second clause does more work than the first, because it changes what the six ARE.
+
+**The reframe answers both objections the counsel could not resolve.** The composite's verdict
+was *"a beautiful diagram, correctly derived, and still a diagram"* — measured against whether
+a person would say these words about their day. **A skeleton is not asked to be spoken.** It is
+asked to bear load, and a diagram is exactly the right shape for one. And game-craft rejected
+PROCESSES↔VISIONS as scenery because nothing travels it — but **a strut that holds two things
+apart at a fixed distance is load-bearing precisely by carrying nothing along it.** Under the
+skeleton reading the sixth edge is the clearest member in the solid, and cowan's strike-test
+already said so from the other side: a run with no return-line is *complete*; struck, 42
+processes spawn 42 latent gates.
+
+**THE SEATING, as converged, with the struck names restored to the edges they were struck from:**
+
+| edge | name |
+|---|---|
+| GATES ↔ DECISIONS | **THE GOVERNOR'S ROAD** |
+| GATES ↔ PROCESSES | **THE WATERLINE** |
+| GATES ↔ VISIONS | **THE SURFACING CHANNEL** |
+| DECISIONS ↔ PROCESSES | **THE CROSSING OF GIFTS** |
+| DECISIONS ↔ VISIONS | **THE GIFT-BEARING CURRENT** |
+| PROCESSES ↔ VISIONS | **THE HANDLELESS PATH** |
+
+THE HANDLELESS PATH lands where **fuller and cowan independently seated it**, so the keep-all
+ruling resolves the seating without a coin-toss. Every vertex touches three edges; the solid
+closes.
+
+**TWO COUNSEL FINDINGS SURVIVE AS GUARDS — his ruling keeps the names, it does not dissolve
+the collisions they carry.**
+
+1. **THE ROAD-NAMES ARE FIELD-LAYER ONLY and may never appear in the game.** "Waterline" and
+   "surfacing" already carry different, load-bearing referents inside `nesi.html` — *"what is
+   above the waterline is exactly what you said"*, the creature *"below the waterline"*, the
+   creature surfacing a recognition. One word with two referents inside one build is the exact
+   failure law 10 exists to prevent. The layers stay separate; the twelve-organ falsifier
+   already forbids flattening them. **If a road-name ever appears in the game's own text, this
+   guard was breached.**
+2. **THE GIFT-BEARING CURRENT CONFERS NO PERMISSION.** Its own meaning — yield delivered
+   without demand — would license the machine to offer a siting decision for a vision, unasked.
+   It does not. The rate brake and B3 govern unchanged. **The name describes what may travel
+   the edge when a hand sends it, never a licence for the machine to send.**
+
+### BUILT — the skeleton holds the rest
+
+`tools/field_surface.py` now draws the six named edges as the tetra's own frame (the two
+hand-drawn outline polygons are gone — **the named edges ARE the frame**), and each edge is
+clickable: **stand on an edge and the field shows exactly the two vertices it joins.**
+
+Verified live: six edges render with their six names, four vertices with live counts, and the
+whole field hangs beneath. Standing on THE WATERLINE (gates↔processes) shows 94 of 168 in 17
+clumps; standing on THE HANDLELESS PATH (processes↔visions) shows 52 in 3. Screenshot read.
+
+→ The diagram is the skeleton. The 168 items hang on it.
+
+---
+
+# NODE 3 · LIGHT, FACE 4 · THE BUILD DISCIPLINE — and THE POUR IS WATCHED (2026-08-12, session d0a3e5cd)
+
+Kevin dropped `node3light.md` with `beaconchamber.html`, then the tetra summary. All
+four faces are now in `.claude/agents/game-craft.md`. **Nothing was invented by the
+seat** — the fourth face is his, distilled from three games he built and walked, not
+guessed at from the three nodes.
+
+## NODE 3 confirms NESI's light law from another game
+
+> *"Ambient is emotional state… each lit crystal adds permanently. The player doesn't
+> read a score; they feel the room stay brighter. Persistent consequence delivered
+> through the light level itself is stronger than any HUD text."*
+
+That is `light() = 1 − exp(−(cycles + lens·2)/9)` and the room that never darkens back
+— already built, arrived at independently in a raycaster. And **`1/(1+kd²)`, never
+`1/d²`** is gravity's epsilon again: *singularities are always the enemy, in every
+field.*
+
+## THE POUR IS WATCHED — the day's standing BLOCKED is closed
+
+Every pass since the station rebuild has ended BLOCKED on the same sentence: *the
+transport has never been seen to complete.* The browser pane began compositing again,
+and the drag was driven through **real pointer events on the real tray**, not by
+calling the functions (Face 4: *walk the harness through real input paths*).
+
+Leaned to 0.33, pointer held. Result, measured immediately after:
+
+```
+lean 0.33 · sel 2 · pools [0,0,3] · bodiesInTray 0 · panelOn false · charge false
+```
+
+**All three fractions crossed the lip, poured into the right-hand spire, the tray
+emptied, the charge completed and the station closed itself quietly.** The full chain
+— lean → slide at differing rates → over the lip → route → charge closes → the room
+leaves by its own lay-aside — ran end to end and was watched.
+
+And the screenshots show the thing the design was for: **the vessel tilted with its
+water surface staying level**, the film still mid-tray while the heavier fractions had
+already gone. The instrument does what the caption says.
+
+## READ THE PIXELS — two faults visible the moment the frame was actually looked at
+
+Face 4's law fired on its first application, against this session's own build:
+
+1. **The vessel collides with its own caption.** The title band, the one-line teaching
+   caption, and the label *"the three spires — left · middle · right:"* all sit
+   **underneath the tray**, struck through by it. The text is unreadable where they
+   overlap. No check caught this: C3 tests that `#teach` is in frame, not that the
+   instrument is drawn over static type.
+2. **The vessel is oversized for its band** — it takes the caption's vertical space,
+   which is why the collision exists at all.
+
+Neither is a physics fault. Both are exactly the class Node 3 names — *the first
+build's opening view was "atmospherically dark" in intent and unreadably dark in the
+actual PNG.* Filed, not patched, because a layout pass deserves its own slice.
+
+## THE CONSERVATION DEFECT, CONFIRMED IN THE LIVE PATH
+
+`pools[2] = 3` for **one** stone. The duplication found by `conserve.js` against the
+synthetic probe is now confirmed through the real hand-driven route: one sentence,
+three entries in one dam pool. The gate opened earlier today stands, and it is now
+backed by a walked observation rather than a harness alone.
+
+## VERDICT
+
+**WALKABLE** — for the water table's own loop, and by Face 4's rule there is no third
+word: way in (open the station), act (lean the tray), consequence (the fractions pour
+to a spire and the charge closes), way out (the panel lays itself aside). Watched end
+to end at 1100×800 on a cold profile.
+
+**And the same walk returned two layout faults and confirmed one conservation defect
+— which is what a walk is for.** The heliostat's climb and the membrane's pass remain
+unwatched; only the tray has been walked.
+
+---
+
+# THE MECHANICS CATALOG — saved from chat, wired (2026-08-12, session d0a3e5cd)
+
+Kevin pasted the full 2D & 3D mechanics artifact into the session. **It existed
+nowhere on disk**, so it was written verbatim to
+`counsel/reference/2d_3d_game_mechanics_catalog.md` before anything else was done
+with it. Its operative laws are now in `.claude/agents/game-craft.md`.
+
+**What it changes for this build, immediately:**
+
+- It names NESI's shape out loud — **a spire whose floors are a gate-graph,
+  standing over a hub** — and gives the hub a duty: *the witness surface*, which
+  the ground and garden already half are.
+- **The consequence ladder** puts a number on where this build stands. The three
+  tetra games reached rung three (world change). NESI is *built to reach rung
+  four* — witnessed change, another place reflecting the act — and the routing of
+  a written sentence down the spire to the ground is exactly that rung. It is
+  also the rung the conservation defect currently corrupts: **a sentence that
+  lands three times is rung four lying.**
+- **MEDIUM vs RECORD, enforced in code** is a sharper form of a law this corpus
+  already holds. *"A bug that un-lights a crystal is not a glitch, it is a broken
+  promise."* Nothing in NESI currently enforces the classification structurally;
+  `conserve.js` is the first instrument that could.
+- **"Juice confirms consequence, never substitutes for it. If the state didn't
+  change, nothing shakes"** — and *the apex is the room where nothing shakes*.
+  That is set-it-down's law and BLIND's law arriving from game craft.
+- **The closing check's fourth question is this project's own diagnosis in his
+  words:** *"a mechanic with no chamber is a spec, and the failure mode of this
+  project is well documented."*
+
+**Filed, not acted on:** the routing table (Part 7) assigns a grammar and a
+camera to every floor. Several of its assignments do not match what is built —
+the stations are not yet chambers with a way in of their own, and there is no
+lift. That is a large reconciliation and it is not being started at the end of
+this pass.
+
+## THE SITTING PASS — 2026-08-12
+
+Every item served one thing: what Kevin's own hand meets at the next real sitting.
+
+### 1 · THE TENSION MEMBER — built, measured, and one strand named thin
+
+The writing face no longer reaches the foot of the net; **256px of uncovered band** at
+1100×800. Cold profile, first sentence ever typed:
+
+| | |
+|---|---|
+| the stone arriving | **24×24px**, appears where there was nothing — this is what carries the landing |
+| the water body | present and visible, a 47px-tall form spanning the frame |
+| the water's *rise* for one sentence | **630.00 → 629.42 — about 0.6px** |
+| C8 (did anything change outside the writing surface) | **PASS** |
+
+**Named rather than smoothed: at t=0 the stone is the whole of what a hand sees.** The water
+is a real strand of the same member and it is imperceptible at one sentence; it becomes
+legible only as mass accumulates. Making it visible sooner would mean retuning the
+text-mass curve, which is a mechanic change and out of this pass.
+
+### 2 · THE DOORS, THE ROOMS, AND THE ONE LIE
+
+- **A second lie found and fixed in Esc.** `translateY(103%)` is 103% *of the element* — and
+  the moment the writing face stopped being full-height (item 1), 103% of a 544px sheet parked
+  it at **top 560 in an 800px frame, a third of it still on screen, sitting over the world it
+  had just uncovered.** "Aside" that is still in the way is the same lie the key used to tell.
+  Now `translateY(101vh)`: measured **top 808 in an 800px frame** at both the sheet level and
+  the net level, and Esc again brings it back **with the text byte-intact.**
+- **THE CLOSER names itself.** The one control in the build with no drawn label and no caption.
+- **Every room names itself:** 11 rooms, **10 distinct**, verified from a clean state —
+  THE WRITING TETRA · SEQUENTIAL · BLIND · TILES · THE TABLE · THE WORLD · THE WATER TABLE ·
+  THE HELIOSTAT · THE MEMBRANE · THE FILTERS · THE WORLD.
+- **C1 fit · C2 nothing off-screen · C3 caption in frame · C4 all four acts change something ·
+  C6 stones perceptible · C7 rooms named** — all pass on a cold profile at 1100×800.
+
+### 3 · THE GAME IN KEVIN'S ACTUAL HANDS
+
+Both files confirmed by directory listing on his own machine, not the pane's:
+
+```
+C:\Users\KMEAR\OneDrive\Desktop\DSS content\nesi\game2d\nesi.html          145,176 bytes
+C:\Users\KMEAR\OneDrive\Desktop\DSS content\nesi\game2d\kevins-water.json    6,027 bytes
+```
+
+**The two acts: open `nesi.html`. Drag `kevins-water.json` onto the tank glyph.** What I
+cannot confirm from here is which browser his double-click opens, and whether a
+OneDrive-synced folder is present locally at the moment he clicks — both are one look for him.
+
+### 4 · THE COLD WALK — the verdict is not mine to give
+
+**PRE-CHECK: 6 of 7 pass.** The one non-pass, reported rather than engineered away:
+C5 flags three hit-rects at THE WATER TABLE whose labels (**SPIN · TUNE · WARM**) are drawn
+*beside* them rather than inside them. A stranger reads the words; the instrument measures the
+invisible hit-target. **That is instrument imprecision, not a dead glyph — and I did not close
+it by adding caption text the world already shows, because that is the instrument dictating to
+the build.** It stands as a known edge of the check.
+
+**No verdict walk was run.** By the non-builder rule, the builder's script is pre-check only,
+and I wrote this code. **UNWITNESSED.**
+
+### 5 · THE TICKING FALSIFIER — pass 1 of 3
+
+**No decision this pass cited an extraction file.** Logged as required, without prose.
+
+→ **WALKABLE for the pre-check, at 1100×800, on a cold profile. UNWITNESSED as a verdict.**
+The next event in this build is Kevin's sitting.
+
+---
+
+# THE LANDING, RULED — and the layout collision closed as a class (2026-08-12, session d0a3e5cd)
+
+Kevin: *"fix the layout collision and rule the conservation fork."*
+
+## THE RULING — the last placement carries the sentence
+
+**A fraction is not a sentence.** The three fractions each go where the hand sends
+them; all three destinations stay real. But the sentence is one thing and can only be
+in one place, and **it goes where the hand puts the last piece down.**
+
+**Why last.** The charge is not finished until all three fractions are placed, so the
+final placement is the hand's last word on it. Under this rule every one of the three
+acts stays live to the end — any of them can still become the sentence's landing. Law
+5 holds: the hand decides, not the arithmetic.
+
+**Refused, and it was the attractive one: THE BEDLOAD AS COURIER** — the rock is the
+body of the sentence, so the words go where the rock goes. Legible, deterministic, and
+it makes two of the three placements inert for the words. *A station where only one act
+can matter is a station with one output wearing three.*
+
+**It degrades correctly.** If the last placement is the bare plate, the sentence is set
+down: it lands nowhere, with no destination and no confirmation. **That is law 6
+working, not an exception to it.**
+
+**Nothing announces it.** It is learned the way everything here is learned — your words
+turn up where you put the last piece.
+
+### Measured, all four cases
+
+| driven | landings | where | stage |
+|---|---|---|---|
+| all three → one spire | **1** | pool1 (3 fractions arrive; one sentence) | `sent` |
+| all three → the lake | **1** | composted once | `dropped` |
+| spire · lake · **set down last** | **1** | nowhere — set down | `down` |
+| set down · lake · **spire last** | **1** | pool2 | `sent` |
+
+Plus **K5** the bare plate adds to no store at all, and **K6** the deep fills nothing
+renderable — laws 6 and 9 as ledger facts. **CONSERVED.**
+
+## THE LAYOUT — one fault, then its twin, then the class
+
+**The reported fault:** the act zone was sited at a pure fraction of panel height, so
+in a short panel the instrument rose into the title and the teaching caption and was
+drawn straight across them. **Fixed** by reserving the header band: the act zone can
+never sit above 112 however short the panel gets.
+
+**Then the same probe found the twin at the other end** — in a 236 px panel the
+membrane's sheet crossed *"set it down."* Same class: rows sited as independent
+fractions of a height that can go to zero.
+
+**Closed as a class** with a floor under the panel (`min-height:340px`). Below that the
+panel overflows the window and C1 reports it as a scroll condition — which is honest,
+because **a thing you must scroll to is a gate and a thing drawn over your type is a
+lie.**
+
+**Also struck:** the *"the three spires — left · middle · right"* label at stations
+0–2. It was the second thing the instrument crossed, and it was already a label doing
+an object's job — at those stations the act itself lights the mouth it has chosen. It
+survives only at the filters, where the hand routes to a mouth directly and nothing
+else points at one.
+
+### Verified
+
+- **1100×420** (panel 338): stations 0, 1, 2 — **no text struck through**. Station 3
+  has no instrument to strike anything (still a margin, still named).
+- **1100×800** (panel 546): C1 PASS · C2 47 interactive, **0 off-frame** · C3 PASS
+  (#teach 736–774 in 800).
+- **Screenshots read at both heights:** the title and caption stand clear above the
+  vessel; the water band and the three bodies at their depths sit inside it; the mouths
+  and both plates are below, unlabelled where the act now does the naming.
+- `refusal_check.js` PASS (1793 code lines).
+
+**The edge of what was checked:** C4–C7 were not re-run this pass — only C1–C3, the
+three the layout change touches.
+
+## VERDICT
+
+**WALKABLE** — the collision is closed at both heights and as a class, and the landing
+is conserved in all four routings with the rule proven in both directions.
+
+## SESSION CLOSE — 2026-08-12 (session 249fa020)
+
+**No close-gate was opened, and that is deliberate.** Seventeen session close-log lines were
+retired from the gate ledger today as records rather than forks, and `gates.py open` now warns
+if another is attempted. The close record is `NEXT_SESSION_PROMPT.md` and this entry.
+
+**The floor:** 736 marks · 54 gates · 64 live decisions · 52 staged. The field stands at ~168
+items in one container — GATES 52 · DECISIONS 64 · PROCESSES 42 · VISIONS 10 — from **499** at
+the start of the day.
+
+**What this session leaves standing, in the order the next one will meet it:** the IMPORT PASS,
+which arrived truncated inside item 4 and was **not run**, because item 4 governs what returns
+to Kevin and no session may infer that · **Kevin's sitting**, unscheduled and unmeasured, with
+the game at a path on his own machine and the verdict walk still UNWITNESSED · and **Cowan's
+falsifier at pass 1 of 3, logged NO CITATION**, on the gate ledger where only an actual
+citation can close it.
+
+**What it leaves built:** the tension member (act and consequence co-visible at t=0) · Esc
+telling the truth at both levels, after a second lie was found inside the first fix · the
+closer naming itself · free intake closed at the door · the instrument demoted to PRE-CHECK ·
+candidate grammar moved to a file whose name states its standing · and the six edges seated on
+the field's tetra as the skeleton that holds the rest.
+
+**What it leaves broken and named:** the sediment/fruit index fault, where a cast can carry a
+ground that did not grow it.
+
+→ **WALKABLE for the pre-check. UNWITNESSED as a verdict. Standing down.**

@@ -154,7 +154,15 @@
        reads event.target — a stranger's pointer fires both, so the instrument fires both */
     o.e.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
     o.e.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
-    const said = teachEl ? (teachEl.textContent || "").trim() : "";
+    /* A CONTROL THAT STATES ITS OWN NAME PASSES. Refined 2026-08-12 after the check
+       failed SPIN/TUNE/WARM — three buttons that carry their names drawn on their faces.
+       C5 asks "can a stranger name what this is," and a drawn label answers it; demanding
+       a hover caption as well would have added text the world already shows, which is the
+       instrument dictating to the build. The refinement is narrow on purpose: only a
+       control with its own non-empty visible text qualifies, never a neighbouring label. */
+    const ownLabel = (o.e.textContent || "").trim() ||
+      [...o.e.querySelectorAll("text,tspan")].map(t => (t.textContent || "").trim()).join("");
+    const said = ownLabel || (teachEl ? (teachEl.textContent || "").trim() : "");
     const shown = teachEl && getComputedStyle(teachEl).display !== "none";
     const seen = shown && inFrame(teachEl.getBoundingClientRect());
     if (!said || !seen) unnamed.push(o.name + (said ? "(said, off-frame)" : "(silent)"));

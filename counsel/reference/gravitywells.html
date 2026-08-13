@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Wells — Cycle 1: The Gravity Node</title>
+<style>
+  html,body{margin:0;padding:0;background:#0a0e1a;color:#cfd8ea;font-family:Georgia,serif;
+    display:flex;flex-direction:column;align-items:center;min-height:100vh}
+  h1{font-size:20px;font-weight:normal;letter-spacing:2px;margin:14px 0 2px;color:#e8dfc8}
+  #sub{font-size:13px;color:#7a8499;margin-bottom:10px}
+  #wrap{position:relative}
+  canvas{display:block;background:radial-gradient(ellipse at 50% 40%, #101a30 0%, #0a0e1a 70%);
+    border:1px solid #24304a;border-radius:6px;cursor:crosshair}
+  #hud{display:flex;gap:10px;margin:10px 0 20px;align-items:center;font-size:14px}
+  .btn{background:#16203a;border:1px solid #2c3c60;color:#cfd8ea;padding:6px 14px;border-radius:4px;
+    cursor:pointer;font-family:inherit;font-size:13px}
+  .btn:hover{background:#213052}
+  .btn.done{border-color:#c9a84c;color:#e8d48a}
+  .btn.active{background:#2a3c66;border-color:#5a74ab}
+  #msg{min-width:260px;color:#9fb0cc}
+</style>
+</head>
+<body>
+<h1>GRAVITY WELLS</h1>
+<div id="sub">drag from the ring · release to launch · gravity does the rest · R clears a probe in flight</div>
+<div id="wrap"><canvas id="c" width="960" height="600"></canvas></div>
+<div id="hud">
+  <span>Fields:</span>
+  <button class="btn" id="b0"></button>
+  <button class="btn" id="b1"></button>
+  <button class="btn" id="b2"></button>
+  <span id="msg"></span>
+</div>
+<script>
+'use strict';
+// ============================================================
+// GRAVITY WELLS — from-scratch 2D gravity, no libraries.
+// Physics core: semi-implicit (symplectic) Euler with fixed dt,
+// inverse-square attraction with softening. See the node doc.
+// ============================================================
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+const DT = 1/120;            // fixed physics timestep (s) — stability over elegance
+const SUBSTEPS = 2;          // physics steps per render frame at 60fps
+const G = 90000;             // tuned gravitational constant (px^3/s^2 per mass unit)
+
+// ---------- Level data ----------
+// planets: x,y,r (collision radius), m (mass), hue
+// beacons: x,y  — lit persists in memory for the whole session
+function makeLevels(){ return [
+  { name:'I · One Well',
+    launch:{x:110,y:300},
+    planets:[{x:480,y:300,r:46,m:1.0,hue:28}],
+    beacons:[{x:850,y:300,lit:false},{x:480,y:80,lit:false}] },
+  { name:'II · The Pass',
+    launch:{x:90,y:520},
+    planets:[{x:400,y:360,r:38,m:0.85,hue:200},{x:640,y:180,r:30,m:0.55,hue:280}],
+    beacons:[{x:870,y:90,lit:false},{x:530,y:270,lit:false},{x:820,y:430,lit:false}] },
+  { name:'III · Binary Ground',
+    launch:{x:80,y:110},
+    planets:[{x:430,y:280,r:34,m:0.8,hue:10},{x:590,y:380,r:34,m:0.8,hue:150}],
+    beacons:[{x:880,y:520,lit:false},{x:470,y:365,lit:false},{x:300,y:470,lit:false},{x:760,y:160,lit:false}] },
+];}
+const levels = makeLevels();
+let cur = 0;
+
+// ---------- Simulation state ----------
+let probe = null;          // {x,y,vx,vy,trail:[]}
+let drag = null;           // {x,y} current mouse while dragging
+let flashes = [];          // beacon-lit ripples
+const LAUNCH_R = 26;       // grab ring radius
+const MAX_SPEED = 520;     // clamp launch speed
+const PROBE_R = 5;
+
+// ---------- The physics (the whole node in 14 lines) ----------
+function accel(x, y, planets){
+  let ax=0, ay=0;
+  for(const p of planets){
+    const dx=p.x-x, dy=p.y-y;
+    const d2=dx*dx+dy*dy + 400;          // +eps^2 softening: no singularity
+    const inv=1/Math.sqrt(d2);
+    const a=G*p.m/d2;                    // |a| = G m / r^2
+    ax+=a*dx*inv; ay+=a*dy*inv;          // direction: unit vector toward planet
+  }
+  return [ax,ay];
+}
+function step(b, planets){               // semi-implicit Euler: v first, then x
+  const [ax,ay]=accel(b.x,b.y,planets);
+  b.vx+=ax*DT; b.vy+=ay*DT;
+  b.x+=b.vx*DT; b.y+=b.vy*DT;
+}
+
+// ---------- Game rules ----------
+function launchFrom(lv, vx, vy){
+  const s=Math.hypot(vx,vy);
+  if(s>MAX_SPEED){ vx*=MAX_SPEED/s; vy*=MAX_SPEED/s; }
+  probe={x:lv.launch.x, y:lv.launch.y, vx, vy, trail:[]};
+}
+function update(){
+  const lv=levels[cur];
+  if(!probe) return;
+  for(let s=0;s<SUBSTEPS;s++){
+    step(probe, lv.planets);
+    // planet collision → probe burns up
+    for(const p of lv.planets){
+      if(Math.hypot(probe.x-p.x,probe.y-p.y) < p.r+PROBE_R){ probe=null; return; }
+    }
+    // beacon strike → lit, and it STAYS lit (the consequence)
+    for(const b of lv.beacons){
+      if(!b.lit && Math.hypot(probe.x-b.x,probe.y-b.y) < 14+PROBE_R){
+        b.lit=true; flashes.push({x:b.x,y:b.y,t:0});
+        refreshHud();
+      }
+    }
+    // far out of bounds → gone
+    if(probe.x<-200||probe.x>W+200||probe.y<-200||probe.y>H+200){ probe=null; return; }
+  }
+  probe.trail.push([probe.x,probe.y]);
+  if(probe.trail.length>400) probe.trail.shift();
+}
+
+// ---------- Trajectory preview: run the SAME integrator ahead ----------
+function preview(lv, vx, vy){
+  const s=Math.hypot(vx,vy);
+  if(s>MAX_SPEED){ vx*=MAX_SPEED/s; vy*=MAX_SPEED/s; }
+  const b={x:lv.launch.x,y:lv.launch.y,vx,vy};
+  const pts=[];
+  for(let i=0;i<260;i++){
+    step(b, lv.planets);
+    if(i%3===0) pts.push([b.x,b.y]);
+    for(const p of lv.planets) if(Math.hypot(b.x-p.x,b.y-p.y)<p.r) return pts;
+    if(b.x<-100||b.x>W+100||b.y<-100||b.y>H+100) break;
+  }
+  return pts;
+}
+
+// ---------- Rendering ----------
+const stars=[]; for(let i=0;i<140;i++) stars.push([Math.random()*W,Math.random()*H,Math.random()*1.4+0.3]);
+function draw(){
+  const lv=levels[cur];
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(210,220,255,0.5)';
+  for(const [x,y,r] of stars){ ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); }
+
+  // gravity field hint: faint rings
+  for(const p of lv.planets){
+    for(let rr=p.r+30; rr<260; rr+=42){
+      ctx.beginPath(); ctx.arc(p.x,p.y,rr,0,7);
+      ctx.strokeStyle=`hsla(${p.hue},60%,60%,${0.10*(1-rr/280)})`; ctx.stroke();
+    }
+  }
+  // planets
+  for(const p of lv.planets){
+    const g=ctx.createRadialGradient(p.x-p.r*0.3,p.y-p.r*0.3,2,p.x,p.y,p.r);
+    g.addColorStop(0,`hsl(${p.hue},55%,62%)`); g.addColorStop(1,`hsl(${p.hue},60%,22%)`);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
+  }
+  // beacons
+  for(const b of lv.beacons){
+    if(b.lit){
+      const g=ctx.createRadialGradient(b.x,b.y,2,b.x,b.y,26);
+      g.addColorStop(0,'rgba(255,236,160,0.95)'); g.addColorStop(1,'rgba(255,200,60,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(b.x,b.y,26,0,7); ctx.fill();
+      ctx.fillStyle='#ffe9a8';
+    } else ctx.fillStyle='#3a4763';
+    ctx.beginPath(); ctx.arc(b.x,b.y,10,0,7); ctx.fill();
+    ctx.strokeStyle=b.lit?'#fff3c8':'#576a92';
+    ctx.lineWidth=2; ctx.beginPath(); ctx.arc(b.x,b.y,14,0,7); ctx.stroke(); ctx.lineWidth=1;
+  }
+  // flashes
+  flashes=flashes.filter(f=>f.t<1);
+  for(const f of flashes){
+    f.t+=0.03;
+    ctx.strokeStyle=`rgba(255,225,130,${1-f.t})`;
+    ctx.beginPath(); ctx.arc(f.x,f.y,14+f.t*60,0,7); ctx.stroke();
+  }
+  // launch ring
+  const L=lv.launch;
+  ctx.strokeStyle='#8fa3c8'; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.arc(L.x,L.y,LAUNCH_R,0,7); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#b9c7e2'; ctx.beginPath(); ctx.arc(L.x,L.y,4,0,7); ctx.fill();
+
+  // drag aim + preview
+  if(drag){
+    const vx=(L.x-drag.x)*3.2, vy=(L.y-drag.y)*3.2;   // pull back to fling forward
+    ctx.strokeStyle='rgba(190,205,235,0.5)';
+    ctx.beginPath(); ctx.moveTo(L.x,L.y); ctx.lineTo(drag.x,drag.y); ctx.stroke();
+    ctx.fillStyle='rgba(220,230,250,0.8)';
+    for(const [x,y] of preview(lv,vx,vy)){ ctx.beginPath(); ctx.arc(x,y,1.6,0,7); ctx.fill(); }
+  }
+  // probe + trail
+  if(probe){
+    ctx.strokeStyle='rgba(140,220,255,0.55)';
+    ctx.beginPath();
+    probe.trail.forEach(([x,y],i)=> i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+    ctx.stroke();
+    ctx.fillStyle='#cfeeff'; ctx.beginPath(); ctx.arc(probe.x,probe.y,PROBE_R,0,7); ctx.fill();
+  }
+  // level name + status
+  ctx.fillStyle='#93a2c0'; ctx.font='15px Georgia';
+  ctx.fillText(lv.name, 18, 28);
+  const lit=lv.beacons.filter(b=>b.lit).length;
+  ctx.fillText(`beacons ${lit}/${lv.beacons.length}`, 18, 50);
+  if(lit===lv.beacons.length){
+    ctx.fillStyle='#e8d48a';
+    ctx.fillText(cur<levels.length-1 ? 'Field complete — next field is open.' : 'All fields lit. The well is walked.', 18, 74);
+  }
+}
+
+// ---------- Input ----------
+function evtPos(e){ const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top}; }
+cv.addEventListener('mousedown', e=>{
+  const p=evtPos(e), L=levels[cur].launch;
+  if(Math.hypot(p.x-L.x,p.y-L.y)<LAUNCH_R+18 && !probe) drag=p;
+});
+cv.addEventListener('mousemove', e=>{ if(drag) drag=evtPos(e); });
+window.addEventListener('mouseup', e=>{
+  if(!drag) return;
+  const L=levels[cur].launch, p=drag; drag=null;
+  const vx=(L.x-p.x)*3.2, vy=(L.y-p.y)*3.2;
+  if(Math.hypot(vx,vy)>25) launchFrom(levels[cur], vx, vy);
+});
+window.addEventListener('keydown', e=>{ if(e.key==='r'||e.key==='R') probe=null; });
+
+// ---------- Level select (the way out — and back in; lit persists) ----------
+function levelDone(i){ return levels[i].beacons.every(b=>b.lit); }
+function levelOpen(i){ return i===0 || levelDone(i-1); }
+function refreshHud(){
+  for(let i=0;i<3;i++){
+    const b=document.getElementById('b'+i);
+    const lit=levels[i].beacons.filter(x=>x.lit).length;
+    b.textContent=`${['I','II','III'][i]}  ${lit}/${levels[i].beacons.length}`;
+    b.className='btn'+(levelDone(i)?' done':'')+(i===cur?' active':'');
+    b.disabled=!levelOpen(i);
+    b.style.opacity=levelOpen(i)?1:0.35;
+  }
+  document.getElementById('msg').textContent =
+    levelDone(2) ? '◆ all beacons lit — state persists; leave and return, they stay' :
+    levelOpen(cur+1) && !levelDone(cur+1) ? '→ next field is open' : '';
+}
+for(let i=0;i<3;i++) document.getElementById('b'+i).addEventListener('click',()=>{
+  if(levelOpen(i)){ cur=i; probe=null; drag=null; refreshHud(); }
+});
+refreshHud();
+
+// ---------- Loop ----------
+function frame(){ update(); draw(); requestAnimationFrame(frame); }
+frame();
+
+// Exposed for the walk-test harness (same code path as a mouse launch).
+window.__walk = { launchFrom:(vx,vy)=>launchFrom(levels[cur],vx,vy),
+                  state:()=>({cur, lit:levels.map(l=>l.beacons.map(b=>b.lit))}),
+                  setLevel:(i)=>{ if(levelOpen(i)){cur=i;probe=null;refreshHud();} },
+                  // dry-run a launch through the REAL integrator; report beacon indices it would hit
+                  sim:(vx,vy)=>{
+                    const lv=levels[cur];
+                    const s=Math.hypot(vx,vy);
+                    if(s>MAX_SPEED){ vx*=MAX_SPEED/s; vy*=MAX_SPEED/s; }
+                    const b={x:lv.launch.x,y:lv.launch.y,vx,vy};
+                    const hits={};
+                    for(let i=0;i<2400;i++){
+                      step(b, lv.planets);
+                      for(const p of lv.planets) if(Math.hypot(b.x-p.x,b.y-p.y)<p.r+PROBE_R) return hits;
+                      lv.beacons.forEach((bc,j)=>{ if(hits[j]===undefined && Math.hypot(b.x-bc.x,b.y-bc.y)<14+PROBE_R) hits[j]=i; });
+                      if(b.x<-200||b.x>W+200||b.y<-200||b.y>H+200) break;
+                    }
+                    return hits;
+                  } };
+</script>
+</body>
+</html>

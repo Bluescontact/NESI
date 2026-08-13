@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beacon Chamber — Cycle 3: The Light Node</title>
+<style>
+  html,body{margin:0;padding:0;background:#08080c;color:#cfd2e0;font-family:Georgia,serif;
+    display:flex;flex-direction:column;align-items:center;min-height:100vh}
+  h1{font-size:20px;font-weight:normal;letter-spacing:2px;margin:14px 0 2px;color:#ded6c0}
+  #sub{font-size:13px;color:#7d8296;margin-bottom:10px;text-align:center}
+  canvas{display:block;border:1px solid #23263a;border-radius:6px}
+  #hud{margin:10px 0 20px;font-size:14px;color:#a7adc4;min-height:20px}
+</style>
+</head>
+<body>
+<h1>BEACON CHAMBER</h1>
+<div id="sub">W/S walk · A/D turn · E turns the mirror you face · route the beam through both crystals</div>
+<canvas id="c" width="880" height="520"></canvas>
+<div id="hud"><span id="msg">the chamber is dark · a beam dies against the north wall</span></div>
+<script>
+'use strict';
+// ============================================================
+// BEACON CHAMBER — from-scratch 3D via grid raycasting (DDA),
+// with a real lighting model: torch falloff, beam glow,
+// persistent crystal light. No libraries, no WebGL.
+// ============================================================
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=cv.width, H=cv.height, HALF=H/2;
+const FOV=Math.PI/3;
+
+// ---------- The chamber ----------
+// '#' wall  '.' floor  S beam source (emits EAST)  M mirror  C crystal
+const MAPS=[
+'################',
+'#..............#',
+'#..............#',
+'S......m.......#',
+'#..............#',
+'#....##...##...#',
+'#..............#',
+'#......c.......#',
+'#..............#',
+'#....##...##...#',
+'#..............#',
+'#......n....k..#',
+'#..............#',
+'#..............#',
+'#..............#',
+'################'];
+const GW=16, GH=16;
+const cell=(x,y)=> (x<0||y<0||x>=GW||y>=GH)?'#':MAPS[y][x];
+const isWall=(x,y)=> cell(x|0,y|0)==='#'||cell(x|0,y|0)==='S';
+
+// entities parsed from map letters
+const mirrors=[]; const crystals=[]; let source=null;
+for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+  const ch=MAPS[y][x];
+  if(ch==='m') mirrors.push({x:x+0.5,y:y+0.5,gx:x,gy:y,slash:true});   // '/' start (wrong)
+  if(ch==='n') mirrors.push({x:x+0.5,y:y+0.5,gx:x,gy:y,slash:true});
+  if(ch==='c'||ch==='k') crystals.push({x:x+0.5,y:y+0.5,gx:x,gy:y,lit:false});
+  if(ch==='S') source={gx:x,gy:y,dx:1,dy:0};
+}
+
+// ---------- Beam: cell-walk from source, reflect at mirrors ----------
+let beamCells=[];   // [{x,y}] cell centers the beam crosses
+function traceBeam(){
+  beamCells=[];
+  let x=source.gx, y=source.gy, dx=source.dx, dy=source.dy;
+  for(let i=0;i<128;i++){
+    x+=dx; y+=dy;
+    if(cell(x,y)==='#') break;
+    beamCells.push({x:x+0.5,y:y+0.5});
+    const m=mirrors.find(m=>m.gx===x&&m.gy===y);
+    if(m){ const [ndx,ndy]= m.slash ? [-dy,-dx] : [dy,dx]; dx=ndx; dy=ndy; }
+    const c=crystals.find(c=>c.gx===x&&c.gy===y);
+    if(c && !c.lit){ c.lit=true; refreshMsg(); }   // IRREVERSIBLE — the consequence
+  }
+}
+
+// ---------- Lighting model (the whole node) ----------
+// brightness at a world point = torch (inverse-square from player)
+//   + each lit crystal (inverse-square, warm)
+//   + beam proximity glow (nearest beam cell)
+//   + permanent ambient raised by lit crystals
+function lightAt(px,py, playerX,playerY){
+  const ambient = 0.09 + 0.10*crystals.filter(c=>c.lit).length;
+  let L = ambient;
+  const dт=(px-playerX)**2+(py-playerY)**2;
+  L += 1.25/(1+dт*0.28);                                 // torch
+  for(const c of crystals) if(c.lit)
+    L += 0.9/(1+((px-c.x)**2+(py-c.y)**2)*0.5);          // crystal light
+  let bd=1e9;
+  for(const b of beamCells){ const d=(px-b.x)**2+(py-b.y)**2; if(d<bd)bd=d; }
+  L += 0.35/(1+bd*2.5);                                  // beam glow
+  return Math.min(L,1.35);
+}
+
+// ---------- Player ----------
+const player={x:2.5,y:8.5,ang:0};
+const keys={};
+window.addEventListener('keydown',e=>{ keys[e.key.toLowerCase()]=true; if(e.key==='e'||e.key==='E') interact(); });
+window.addEventListener('keyup',e=>{ keys[e.key.toLowerCase()]=false; });
+function tryMove(nx,ny){
+  const pad=0.22;
+  if(!isWall(nx+pad*Math.sign(nx-player.x),player.y) && !isWall(nx-pad,player.y) && !isWall(nx+pad,player.y)) player.x=nx;
+  if(!isWall(player.x,ny+pad*Math.sign(ny-player.y)) && !isWall(player.x,ny-pad) && !isWall(player.x,ny+pad)) player.y=ny;
+}
+function updatePlayer(dt){
+  const sp=2.6*dt, ts=2.2*dt;
+  if(keys['a']) player.ang-=ts;
+  if(keys['d']) player.ang+=ts;
+  const c=Math.cos(player.ang), s=Math.sin(player.ang);
+  if(keys['w']) tryMove(player.x+c*sp, player.y+s*sp);
+  if(keys['s']) tryMove(player.x-c*sp, player.y-s*sp);
+}
+function facingMirror(){
+  // nearest mirror within 1.6 cells and roughly ahead
+  let best=null,bd=1e9;
+  for(const m of mirrors){
+    const dx=m.x-player.x, dy=m.y-player.y, d=Math.hypot(dx,dy);
+    if(d<1.7){
+      const da=Math.abs(Math.atan2(Math.sin(Math.atan2(dy,dx)-player.ang),Math.cos(Math.atan2(dy,dx)-player.ang)));
+      if(da<0.9 && d<bd){bd=d;best=m;}
+    }
+  }
+  return best;
+}
+function interact(){
+  const m=facingMirror();
+  if(m){ m.slash=!m.slash; traceBeam(); }
+}
+
+// ---------- Raycast render ----------
+const zbuf=new Float32Array(W);
+function castColumn(colAng){
+  // DDA
+  const dx=Math.cos(colAng), dy=Math.sin(colAng);
+  let mapX=player.x|0, mapY=player.y|0;
+  const ddx=Math.abs(1/dx), ddy=Math.abs(1/dy);
+  let stepX,sideX, stepY,sideY;
+  if(dx<0){stepX=-1; sideX=(player.x-mapX)*ddx;} else {stepX=1; sideX=(mapX+1-player.x)*ddx;}
+  if(dy<0){stepY=-1; sideY=(player.y-mapY)*ddy;} else {stepY=1; sideY=(mapY+1-player.y)*ddy;}
+  let side=0;
+  for(let i=0;i<64;i++){
+    if(sideX<sideY){ sideX+=ddx; mapX+=stepX; side=0; } else { sideY+=ddy; mapY+=stepY; side=1; }
+    const ch=cell(mapX,mapY);
+    if(ch==='#'||ch==='S'){
+      const dist = side===0 ? sideX-ddx : sideY-ddy;
+      // exact hit point for lighting
+      const hx=player.x+dx*dist, hy=player.y+dy*dist;
+      return {dist, side, hx, hy, src: ch==='S'};
+    }
+  }
+  return {dist:64, side:0, hx:player.x, hy:player.y, src:false};
+}
+function render(){
+  // floor & ceiling: vertical gradients scaled by overall ambient
+  const amb=0.10+0.13*crystals.filter(c=>c.lit).length;
+  let g=ctx.createLinearGradient(0,0,0,HALF);
+  g.addColorStop(0,`rgb(${14+amb*40|0},${14+amb*36|0},${20+amb*40|0})`);
+  g.addColorStop(1,'#060608');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,HALF);
+  g=ctx.createLinearGradient(0,HALF,0,H);
+  g.addColorStop(0,'#050507');
+  g.addColorStop(1,`rgb(${20+amb*60|0},${18+amb*52|0},${16+amb*40|0})`);
+  ctx.fillStyle=g; ctx.fillRect(0,HALF,W,HALF);
+
+  // walls
+  for(let x=0;x<W;x++){
+    const colAng=player.ang + Math.atan((x/W-0.5)*2*Math.tan(FOV/2));
+    const r=castColumn(colAng);
+    const corr=r.dist*Math.cos(colAng-player.ang);   // fisheye correction
+    zbuf[x]=corr;
+    const h=Math.min(H*1.6, H/corr);
+    let L=lightAt(r.hx,r.hy,player.x,player.y);
+    if(r.side===1) L*=0.78;                          // N/S faces darker (form)
+    if(r.src) { // the emitter wall glows
+      ctx.fillStyle=`rgb(${140+80*L|0},${200+40*L|0},${230|0})`;
+    } else {
+      const base=[92,84,72];                          // warm stone
+      ctx.fillStyle=`rgb(${base[0]*L|0},${base[1]*L|0},${base[2]*L|0})`;
+    }
+    ctx.fillRect(x, HALF-h/2, 1, h);
+  }
+
+  // sprites: beam nodes, mirrors, crystals — depth sorted
+  const sprites=[];
+  for(const b of beamCells) sprites.push({x:b.x,y:b.y,type:'beam'});
+  for(const m of mirrors)  sprites.push({x:m.x,y:m.y,type:'mirror',m});
+  for(const c of crystals) sprites.push({x:c.x,y:c.y,type:'crystal',c});
+  for(const s of sprites){
+    const dx=s.x-player.x, dy=s.y-player.y;
+    s.dist=Math.hypot(dx,dy);
+    let a=Math.atan2(dy,dx)-player.ang;
+    a=Math.atan2(Math.sin(a),Math.cos(a));
+    s.vis=Math.abs(a)<FOV/2+0.4;
+    s.sx=(0.5 + Math.tan(a)/(2*Math.tan(FOV/2)))*W;
+    s.h=H/(s.dist*Math.cos(a)||0.001);
+  }
+  sprites.sort((p,q)=>q.dist-p.dist);
+  for(const s of sprites){
+    if(!s.vis||s.dist<0.3) continue;
+    const x0=s.sx, sc=s.h;
+    if(x0<-sc||x0>W+sc) continue;
+    const occluded = zbuf[Math.max(0,Math.min(W-1,x0|0))] < s.dist-0.15;
+    if(occluded) continue;
+    if(s.type==='beam'){
+      const r=sc*0.06+2;
+      const gg=ctx.createRadialGradient(x0,HALF,0,x0,HALF,r*3);
+      gg.addColorStop(0,'rgba(150,230,255,0.55)'); gg.addColorStop(1,'rgba(150,230,255,0)');
+      ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(x0,HALF,r*3,0,7); ctx.fill();
+    } else if(s.type==='mirror'){
+      const w=sc*0.34, h=sc*0.62;
+      ctx.fillStyle='rgba(150,170,200,0.9)';
+      ctx.fillRect(x0-w/2, HALF-h/2, w, h);
+      ctx.strokeStyle='#2b3346'; ctx.strokeRect(x0-w/2, HALF-h/2, w, h);
+      ctx.strokeStyle='#0e1420'; ctx.lineWidth=Math.max(1.5,sc*0.03);
+      ctx.beginPath();
+      if(s.m.slash){ ctx.moveTo(x0-w/2+2, HALF+h/2-2); ctx.lineTo(x0+w/2-2, HALF-h/2+2); }
+      else         { ctx.moveTo(x0-w/2+2, HALF-h/2+2); ctx.lineTo(x0+w/2-2, HALF+h/2-2); }
+      ctx.stroke(); ctx.lineWidth=1;
+    } else { // crystal
+      const r=sc*0.22;
+      if(s.c.lit){
+        const gg=ctx.createRadialGradient(x0,HALF,0,x0,HALF,r*2.6);
+        gg.addColorStop(0,'rgba(255,236,150,0.9)'); gg.addColorStop(1,'rgba(255,200,60,0)');
+        ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(x0,HALF,r*2.6,0,7); ctx.fill();
+      }
+      ctx.fillStyle=s.c.lit?'#ffe9a0':'#4a5570';
+      ctx.beginPath();
+      ctx.moveTo(x0,HALF-r); ctx.lineTo(x0+r*0.7,HALF); ctx.lineTo(x0,HALF+r); ctx.lineTo(x0-r*0.7,HALF);
+      ctx.closePath(); ctx.fill();
+      ctx.strokeStyle=s.c.lit?'#fff6d8':'#6a7898'; ctx.stroke();
+    }
+  }
+
+  // crosshair + prompt
+  ctx.strokeStyle='rgba(220,225,240,0.5)';
+  ctx.beginPath(); ctx.moveTo(W/2-6,HALF); ctx.lineTo(W/2+6,HALF);
+  ctx.moveTo(W/2,HALF-6); ctx.lineTo(W/2,HALF+6); ctx.stroke();
+  if(facingMirror()){
+    ctx.fillStyle='rgba(8,8,14,0.6)'; ctx.fillRect(W/2-80,HALF+30,160,26);
+    ctx.fillStyle='#cfe0f0'; ctx.font='14px Georgia'; ctx.textAlign='center';
+    ctx.fillText('E — turn the mirror', W/2, HALF+48); ctx.textAlign='left';
+  }
+  // minimap (small, honest)
+  const ms=5, ox=W-GW*ms-12, oy=12;
+  ctx.fillStyle='rgba(5,6,10,0.65)'; ctx.fillRect(ox-4,oy-4,GW*ms+8,GH*ms+8);
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const ch=cell(x,y);
+    if(ch==='#'){ctx.fillStyle='#2c3040';ctx.fillRect(ox+x*ms,oy+y*ms,ms,ms);}
+    if(ch==='S'){ctx.fillStyle='#7ec8e8';ctx.fillRect(ox+x*ms,oy+y*ms,ms,ms);}
+  }
+  ctx.fillStyle='rgba(140,220,255,0.8)';
+  for(const b of beamCells) ctx.fillRect(ox+(b.x-0.5)*ms+1,oy+(b.y-0.5)*ms+1,ms-2,ms-2);
+  for(const m of mirrors){ctx.fillStyle='#b8c4d8';ctx.fillRect(ox+m.gx*ms,oy+m.gy*ms,ms,ms);}
+  for(const c of crystals){ctx.fillStyle=c.lit?'#ffe9a0':'#565f7a';ctx.fillRect(ox+c.gx*ms,oy+c.gy*ms,ms,ms);}
+  ctx.fillStyle='#e8e0c8';
+  ctx.beginPath(); ctx.arc(ox+player.x*ms, oy+player.y*ms, 2.2,0,7); ctx.fill();
+
+  // status line
+  const lit=crystals.filter(c=>c.lit).length;
+  ctx.fillStyle='rgba(8,8,14,0.6)'; ctx.fillRect(12,12,190,26);
+  ctx.fillStyle='#cfd2e0'; ctx.font='14px Georgia';
+  ctx.fillText(`crystals lit  ${lit} / ${crystals.length}`, 22, 30);
+}
+function refreshMsg(){
+  const lit=crystals.filter(c=>c.lit).length;
+  document.getElementById('msg').textContent =
+    lit===0 ? 'the chamber is dark · a beam dies against a wall' :
+    lit<crystals.length ? `${lit} crystal lit — it will not go dark again · the chamber holds the light` :
+    '◆ both crystals lit · the chamber is bright and stays bright · walk anywhere — nothing undoes this';
+}
+
+// ---------- Loop ----------
+let last=performance.now();
+function frame(t){
+  const dt=Math.min(0.05,(t-last)/1000); last=t;
+  updatePlayer(dt);
+  render();
+  requestAnimationFrame(frame);
+}
+traceBeam(); refreshMsg();
+requestAnimationFrame(frame);
+
+// Walk-test harness — reads pose/state; all ACTION goes through real key events.
+window.__walk={
+  pose:()=>({x:player.x,y:player.y,ang:player.ang}),
+  state:()=>({lit:crystals.map(c=>c.lit), mirrors:mirrors.map(m=>m.slash),
+              beamLen:beamCells.length, facing:!!facingMirror()})
+};
+</script>
+</body>
+</html>

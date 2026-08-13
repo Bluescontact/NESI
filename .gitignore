@@ -47,3 +47,6 @@ rhythm/.last_brief
 
 # Ephemeral widget renders
 /_widgets/
+
+# Cold-walk artifacts are regenerated per run with a fresh store key (2026-08-12)
+nesi/game2d/coldwalk/

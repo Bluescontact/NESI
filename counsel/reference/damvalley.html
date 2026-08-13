@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dam &amp; Valley — Cycle 2: The Water Node</title>
+<style>
+  html,body{margin:0;padding:0;background:#141a1e;color:#d8e0dc;font-family:Georgia,serif;
+    display:flex;flex-direction:column;align-items:center;min-height:100vh}
+  h1{font-size:20px;font-weight:normal;letter-spacing:2px;margin:14px 0 2px;color:#e6ddc4}
+  #sub{font-size:13px;color:#8b968f;margin-bottom:10px;text-align:center;max-width:900px}
+  canvas{display:block;border:1px solid #2a3438;border-radius:6px;cursor:crosshair}
+  #hud{display:flex;gap:14px;margin:10px 0 20px;font-size:14px;align-items:center}
+  .btn{background:#1d272b;border:1px solid #35444a;color:#d8e0dc;padding:6px 14px;border-radius:4px;
+    cursor:pointer;font-family:inherit;font-size:13px}
+  .btn:hover{background:#28353b}
+  .btn.on{background:#2c4a3e;border-color:#5a8a70;color:#cdeeda}
+  #msg{color:#a9b8ae;min-width:240px}
+</style>
+</head>
+<body>
+<h1>DAM &amp; VALLEY</h1>
+<div id="sub">G or button: open/close the gate · D: open the drain at valley&rsquo;s end · drag on ground: dig · five seeds wait in the dry valley</div>
+<canvas id="c" width="960" height="540"></canvas>
+<div id="hud">
+  <button class="btn" id="gate">GATE: closed</button>
+  <button class="btn" id="drain">DRAIN: closed</button>
+  <span id="msg"></span>
+</div>
+<script>
+'use strict';
+// ============================================================
+// DAM & VALLEY — from-scratch 1D shallow water ("pipe model"
+// with momentum) over an editable heightfield. No libraries.
+// World is N columns; ground[i] is terrain height, water[i] is
+// water depth on top, flow[i] is momentum at the i|i+1 interface.
+// ============================================================
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=cv.width, H=cv.height;
+const N=240;                       // columns
+const CW=W/N;                      // column width px
+const GRAV=9.8, FLOW_K=0.28, DAMP=0.994;
+const PASSES=3;                    // sim passes per frame
+
+// ---------- Terrain: reservoir high on left, valley with basins ----------
+const ground=new Float32Array(N), water=new Float32Array(N), flow=new Float32Array(N);
+(function buildTerrain(){
+  for(let i=0;i<N;i++){
+    const t=i/N;
+    let g = 150 - 40*t;                                   // gentle downhill
+    g += 26*Math.exp(-((t-0.52)**2)/0.0026)*-1;           // basin 1 (dip)
+    g += -20*Math.exp(-((t-0.74)**2)/0.0016);             // basin 2
+    g += -14*Math.exp(-((t-0.90)**2)/0.0009);             // basin 3
+    g += 6*Math.sin(t*40)*0.4;                            // texture
+    ground[i]=Math.max(14,g);
+  }
+  // reservoir bed & rim on the far left
+  for(let i=0;i<28;i++) ground[i]=118;
+  // the DAM: columns 30..33 tall
+  for(let i=29;i<=33;i++) ground[i]=232;
+  // reservoir filled at start
+  for(let i=0;i<29;i++) water[i]=95;
+})();
+const DAM_LO=29, DAM_HI=33;
+let gateOpen=false, gateLift=0;    // gateLift animates 0..GATE_MAX
+const GATE_MAX=70;                 // how much wall height the gate removes
+let drainOpen=false;
+
+// ---------- Seeds: sprout after enough wet time; sprouts PERSIST ----------
+const seeds=[{i:125,wet:0,grown:0},{i:150,wet:0,grown:0},{i:178,wet:0,grown:0},
+             {i:196,wet:0,grown:0},{i:216,wet:0,grown:0}];
+const WET_NEEDED=150;              // frames of depth>1.5 to sprout
+
+// effective wall height at column i (dam minus gate lift)
+function wall(i){
+  if(i>=DAM_LO&&i<=DAM_HI) return Math.max(ground[i]-gateLift, 122);
+  return ground[i];
+}
+
+// ---------- The water physics (the whole node in ~20 lines) ----------
+function simStep(){
+  for(let p=0;p<PASSES;p++){
+    // momentum update from surface-height difference
+    for(let i=0;i<N-1;i++){
+      const hL=wall(i)+water[i], hR=wall(i+1)+water[i+1];
+      flow[i]=(flow[i]+FLOW_K*(hL-hR)*GRAV*0.016)*DAMP;
+    }
+    // clamped transport: can't move more water than a column holds
+    for(let i=0;i<N-1;i++){
+      let f=flow[i];
+      if(f>0) f=Math.min(f, water[i]*0.45);
+      else    f=Math.max(f,-water[i+1]*0.45);
+      water[i]-=f; water[i+1]+=f;
+    }
+    // drain at the far end
+    if(drainOpen){ water[N-1]=Math.max(0,water[N-1]-2.4); water[N-2]=Math.max(0,water[N-2]-1.2); }
+  }
+  // gate animation
+  gateLift += ((gateOpen?GATE_MAX:0)-gateLift)*0.06;
+  // seeds: wet time accumulates; sprouting is IRREVERSIBLE (the consequence)
+  for(const s of seeds){
+    if(water[s.i]>1.5) s.wet++;
+    if(s.wet>=WET_NEEDED) s.grown=Math.min(1, s.grown+0.01);
+  }
+}
+
+// ---------- Digging: drag lowers terrain (not the dam) ----------
+let digging=false;
+function digAt(px){
+  const i=Math.floor(px/CW);
+  for(let k=-2;k<=2;k++){
+    const j=i+k;
+    if(j<0||j>=N||j>=DAM_LO-1&&j<=DAM_HI+1) continue;
+    ground[j]=Math.max(10, ground[j]-1.6*(1-Math.abs(k)/3));
+  }
+}
+cv.addEventListener('mousedown',e=>{digging=true;digAt(e.offsetX);});
+cv.addEventListener('mousemove',e=>{if(digging)digAt(e.offsetX);});
+window.addEventListener('mouseup',()=>digging=false);
+
+// ---------- Controls ----------
+const gateBtn=document.getElementById('gate'), drainBtn=document.getElementById('drain');
+function setGate(v){ gateOpen=v; gateBtn.textContent='GATE: '+(v?'OPEN':'closed'); gateBtn.className='btn'+(v?' on':''); }
+function setDrain(v){ drainOpen=v; drainBtn.textContent='DRAIN: '+(v?'OPEN':'closed'); drainBtn.className='btn'+(v?' on':''); }
+gateBtn.addEventListener('click',()=>setGate(!gateOpen));
+drainBtn.addEventListener('click',()=>setDrain(!drainOpen));
+window.addEventListener('keydown',e=>{
+  if(e.key==='g'||e.key==='G') setGate(!gateOpen);
+  if(e.key==='d'||e.key==='D') setDrain(!drainOpen);
+});
+
+// ---------- Rendering ----------
+function draw(){
+  // dawn sky
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#2b3a4a'); sky.addColorStop(0.55,'#5a6a72'); sky.addColorStop(1,'#8a8577');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+  // sun
+  ctx.fillStyle='rgba(235,215,170,0.9)'; ctx.beginPath(); ctx.arc(W*0.82,86,26,0,7); ctx.fill();
+  ctx.fillStyle='rgba(235,215,170,0.15)'; ctx.beginPath(); ctx.arc(W*0.82,86,52,0,7); ctx.fill();
+
+  const Y=h=>H-h*1.9;   // world height → screen y
+
+  // water (behind terrain edges, translucent)
+  ctx.fillStyle='rgba(90,150,190,0.72)';
+  ctx.beginPath(); ctx.moveTo(0,H);
+  for(let i=0;i<N;i++){ const surf=wall(i)+water[i]; ctx.lineTo(i*CW, Y(water[i]>0.15?surf:wall(i))); }
+  ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+  // water surface glint
+  ctx.strokeStyle='rgba(220,240,255,0.5)';
+  ctx.beginPath(); let pen=false;
+  for(let i=0;i<N;i++){
+    if(water[i]>0.15){ const y=Y(wall(i)+water[i]); pen?ctx.lineTo(i*CW,y):ctx.moveTo(i*CW,y); pen=true; }
+    else pen=false;
+  }
+  ctx.stroke();
+
+  // terrain
+  ctx.fillStyle='#4a4136';
+  ctx.beginPath(); ctx.moveTo(0,H);
+  for(let i=0;i<N;i++) ctx.lineTo(i*CW, Y(ground[i]));
+  ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+  // grass line on dry ground
+  ctx.strokeStyle='#7a8a5a'; ctx.lineWidth=2;
+  ctx.beginPath(); pen=false;
+  for(let i=0;i<N;i++){
+    if(water[i]<0.3&&(i<DAM_LO||i>DAM_HI)){ const y=Y(ground[i]); pen?ctx.lineTo(i*CW,y):ctx.moveTo(i*CW,y); pen=true; }
+    else pen=false;
+  }
+  ctx.stroke(); ctx.lineWidth=1;
+
+  // dam + gate
+  ctx.fillStyle='#6b6258';
+  ctx.fillRect(DAM_LO*CW, Y(232), (DAM_HI-DAM_LO+1)*CW, H-Y(232));
+  ctx.fillStyle='#8a7f6f';
+  const gx=DAM_LO*CW, gw=(DAM_HI-DAM_LO+1)*CW;
+  ctx.fillRect(gx, Y(232-gateLift), gw, 12);   // gate lintel showing lift
+  ctx.strokeStyle='#3a352e'; ctx.strokeRect(gx,Y(232),gw,H-Y(232));
+
+  // seeds & sprouts
+  for(const s of seeds){
+    const x=s.i*CW, y=Y(ground[s.i]);
+    if(s.grown<=0){
+      ctx.fillStyle= s.wet>0 ? '#c9b46a' : '#9a8a5a';
+      ctx.beginPath(); ctx.arc(x,y-3,3,0,7); ctx.fill();
+    } else {
+      const g=s.grown;
+      ctx.strokeStyle='#5f9a4e'; ctx.lineWidth=2+g*1.5;
+      ctx.beginPath(); ctx.moveTo(x,y);
+      ctx.quadraticCurveTo(x-4*g, y-16*g, x, y-30*g); ctx.stroke();
+      ctx.fillStyle='#6fae58';
+      for(let l=0;l<3;l++){
+        const ly=y-(10+l*8)*g, side=l%2?1:-1;
+        ctx.beginPath(); ctx.ellipse(x+side*7*g, ly, 8*g, 3.5*g, side*0.5, 0, 7); ctx.fill();
+      }
+      if(g>=1){ ctx.fillStyle='#e8d478'; ctx.beginPath(); ctx.arc(x,y-32,4.5,0,7); ctx.fill(); }
+      ctx.lineWidth=1;
+    }
+  }
+
+  // HUD text
+  const grown=seeds.filter(s=>s.grown>=1).length;
+  ctx.fillStyle='rgba(20,26,30,0.55)'; ctx.fillRect(12,12,220,54);
+  ctx.fillStyle='#d8e0dc'; ctx.font='14px Georgia';
+  const vol=water.reduce((a,b)=>a+b,0)|0;
+  ctx.fillText(`sprouted  ${grown} / ${seeds.length}`, 24, 33);
+  ctx.fillText(`water in valley  ${vol}`, 24, 53);
+  if(grown===seeds.length){
+    ctx.fillStyle='rgba(20,26,30,0.55)'; ctx.fillRect(W/2-170,14,340,30);
+    ctx.fillStyle='#cdeeda'; ctx.font='15px Georgia'; ctx.textAlign='center';
+    ctx.fillText('The valley is green. Drain it — the green remains.', W/2, 34);
+    ctx.textAlign='left';
+  }
+  document.getElementById('msg').textContent =
+    grown===seeds.length ? '◆ all five sprouted — this cannot be undone' :
+    grown>0 ? `${grown} sprouted…` : '';
+}
+
+// ---------- Loop ----------
+function frame(){ simStep(); draw(); requestAnimationFrame(frame); }
+frame();
+
+// Walk-test harness: same code paths as the buttons/keys.
+window.__walk={
+  setGate, setDrain,
+  state:()=>({ gateOpen, drainOpen,
+               volume: water.reduce((a,b)=>a+b,0),
+               grown: seeds.map(s=>s.grown),
+               wet: seeds.map(s=>s.wet) })
+};
+</script>
+</body>
+</html>

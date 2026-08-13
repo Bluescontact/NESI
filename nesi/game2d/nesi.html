@@ -16,7 +16,14 @@ html,body{height:100%;overflow:hidden;background:#efe9dc;font-family:Georgia,ser
 #worldwrap{position:relative;flex:1;background:#e9e2d2}
 #world{position:absolute;inset:0;width:100%;height:100%}
 #field{position:absolute;inset:0;width:100%;height:100%;background:rgba(238,232,220,.80);border:none;outline:none;resize:none;padding:60px 18%;font-family:Georgia,serif;font-size:19px;line-height:1.9;color:#2e2617;display:block;z-index:4}
-#panel{position:absolute;inset:24px;background:rgba(74,67,54,.97);display:none;border:1px solid #2e2a22;z-index:6}
+/* A MINIMUM WORKING HEIGHT — 2026-08-12. Reserving the header band stopped the
+   instrument being drawn over the title; the same probe then caught the fault's twin
+   at the other end, the membrane sheet crossing "set it down" in a 236px panel. Both
+   are one class: rows sited as independent fractions of a height that can go to zero.
+   A floor under the panel fixes the class. Below it the panel overflows the window and
+   the cold walk C1 reports it as a scroll condition - which is honest, because a thing
+   you must scroll to is a gate and a thing drawn over your type is a lie. */
+#panel{position:absolute;inset:24px;min-height:340px;background:rgba(74,67,54,.97);display:none;border:1px solid #2e2a22;z-index:6}
 #panel.on{display:block}
 .station{position:absolute;bottom:24px;width:64px;height:64px;cursor:pointer}
 .station svg{width:100%;height:100%}
@@ -29,8 +36,13 @@ html,body{height:100%;overflow:hidden;background:#efe9dc;font-family:Georgia,ser
 /* ESC — ruled 2026-08-12: one meaning, and the promise is kept by a visible motion.
    The sheet goes ASIDE, downward, and the thing beneath it is seen. Esc brings it back. */
 .aside{pointer-events:none}
-#tetraov.aside{transform:translateY(103%)}
-#faceview.aside{transform:translateY(103%)}
+/* 103% of the ELEMENT was wrong the moment the writing face stopped being full-height:
+   the seq sheet is 68% tall, so 103% of itself parked it over the world band with a third
+   of it still on screen — "aside" that is still in the way is the same lie the key used to
+   tell. Measured 2026-08-12: top at 560px in an 800px frame. Viewport units instead, so a
+   sheet of any height goes fully out of the frame and what it uncovers is actually seen. */
+#tetraov.aside{transform:translateY(101vh)}
+#faceview.aside{transform:translateY(101vh)}
 /* ONE REVEAL VERB — ruled 2026-08-12 (gamecraft F1, the reference-shelf pass).
    Every surface in the world leaves by the same motion: it goes ASIDE, downward,
    visibly, and the world under it is seen. The grammar is the sheet's, generalised:
@@ -996,16 +1008,57 @@ function pickEmber(){
   S.tank.push(mkStone(g.text,g.kind||"self"));
   save();renderTank();drawWorld();
 }
+/* ============================ THE LANDING ============================
+   RULED 2026-08-12 (Kevin: "rule the conservation fork"), after tools/conserve.js
+   measured the defect: route() was called once per fraction carrying the SAME stone,
+   so one sentence landed three times — three entries in a dam pool, three composts of
+   one text, and a `stage` that was only ever the last write. The stone is the player's
+   own sentence; a duplicated stone is his sentence standing in the world more times
+   than he wrote it. That is law 4 failing through a side door no screenshot can see.
+
+   THE RULING: a fraction is not a sentence. The three fractions each go where the hand
+   sends them — that is unchanged, and all three destinations are real. But the SENTENCE
+   is one thing and can only be in one place, and it goes where the hand puts the LAST
+   piece down.
+
+   WHY LAST. The charge is not finished until all three fractions are placed, so the
+   final placement is the hand's last word on it. Under this rule every one of the three
+   acts stays live to the end: any of them can still become the sentence's landing.
+
+   REFUSED, and it was the attractive one: THE BEDLOAD AS COURIER — the rock is the body
+   of the sentence, so the words go where the rock goes. Legible, deterministic, and it
+   makes two of the three placements inert for the words. A station where only one act
+   can matter is a station with one output wearing three.
+
+   IT DEGRADES CORRECTLY. If the last placement is the bare plate, the sentence is set
+   down — it lands nowhere, has no destination and no confirmation. That is law 6
+   working, not an exception to it.
+
+   NOTHING ANNOUNCES THIS. It is learned the way everything here is learned: your words
+   turn up where you put the last piece. ==================================== */
+let lastEntry=null;   /* the pool entry the finishing fraction made, if it made one */
 function route(frac,dest,stones){
-  if(dest==="set"){(stones||[]).forEach(st=>st.stage="down");save();return} /* the absence is the feedback */
-  if(dest==="deep"){(stones||[]).forEach(st=>st.stage="deep");save();return} /* has a destination; never renders */
-  if(dest==="lake"){S.lake+=0.04;(stones||[]).forEach(st=>{st.stage="dropped";S.compost.push({text:st.text,kind:st.kind,at:S.cycles})});drawWorld();save();return}
-  const i=dest; const p=spirePts(i);
-  (stones||[]).forEach(st=>st.stage="sent");
-  /* the state lands the moment the hand lets go — quitting mid-flight loses nothing;
-     the descent is display only */
-  S.pools[i].push({frac,stones:stones||[]});save();
-  animateAlong(p.head,p.dam,DESCENT/FR[frac].fall,frac,()=>{drawWorld()});
+  const st=(stones&&stones[0])||null;
+  /* ---- the FRACTION goes, always. Water is a medium; it is not the record. ---- */
+  if(dest==="lake")S.lake+=0.04;
+  let entry=null;
+  if(dest!=="set"&&dest!=="deep"&&dest!=="lake"){
+    const p=spirePts(dest);
+    entry={frac,stones:[]};                       /* the fraction arrives carrying no words */
+    S.pools[dest].push(entry);
+    animateAlong(p.head,p.dam,DESCENT/FR[frac].fall,frac,()=>{drawWorld()});
+  }
+  /* ---- the SENTENCE lands once, with the last piece the hand puts down ---- */
+  const finishing = taken.bed&&taken.sus&&taken.dis;   /* chargeTake already ran */
+  if(st&&finishing){
+    if(dest==="set")st.stage="down";                                  /* nowhere, and lawful */
+    else if(dest==="deep")st.stage="deep";
+    else if(dest==="lake"){st.stage="dropped";S.compost.push({text:st.text,kind:st.kind,at:S.cycles})}
+    else {st.stage="sent"; if(entry)entry.stones=[st]}
+  }
+  lastEntry=entry;
+  if(dest==="lake")drawWorld();
+  save();
 }
 /* ---------- the dam: the only place the operator governs ---------- */
 const dampanel=document.getElementById("dampanel");
@@ -1663,14 +1716,26 @@ function buildPanel(st){
                ["THE FILTERS","drag each fraction where your hand decides — no act chooses for you here."]];
   el("text",{x:24,y:34,fill:"#e6e0d0","font-size":15,class:"pv-h"},pv).textContent=NAMES[st][0];
   el("text",{x:24,y:54,fill:"rgba(222,214,196,.75)","font-size":11.5,class:"pv-h"},pv).textContent=NAMES[st][1];
-  el("text",{x:24,y:H*0.56-38,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the three spires — left · middle · right:";
+  /* the spires label was the second thing the instrument struck through, and it was
+     already a label doing an object own job: at stations 0-2 the act itself lights the
+     mouth it has chosen, so the label named what the world was already showing. It
+     survives only at the filters, where the hand routes to a mouth directly and nothing
+     else points at one. */
+  if(st===3)el("text",{x:24,y:H*0.56-38,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the three spires — left · middle · right:";
   el("text",{x:W*0.30+4,y:H*0.78-8,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the lake";
   el("text",{x:W*0.58+4,y:H*0.78-8,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="set it down";
   /* at the water table the fractions are IN the vessel and their behaviour names them;
      a margin label doing the object own job is the placeholder, not the tool. */
   if(charge&&st===3)el("text",{x:24,y:H*0.70-64,fill:"rgba(222,214,196,.6)","font-size":11,class:"pv-h"},pv).textContent="the charge — sinks · hangs · passes:";
   /* the act zone (chooses the spire) */
-  const ax=W/2, ay=H*0.32;
+  /* THE HEADER BAND IS RESERVED — fixed 2026-08-12 on Face 4's "read the pixels".
+     The act zone was sited at a pure fraction of panel height, so in any short panel the
+     instrument rose into the title and the teaching caption and was drawn straight over
+     them: the type was struck through and unreadable, and no instrument could see it
+     (C3 tests that the caption is IN FRAME, never that something is painted across it).
+     The band 0..76 belongs to the type; the instrument's own half-height is 34, so the
+     act zone can never sit above 112 no matter how short the panel gets. */
+  const ax=W/2, ay=Math.max(112, H*0.32);
   if(st===0){
     /* ================= THE WATER TABLE, AS AN INSTRUMENT =================
        Kevin read the face on 2026-08-12: "none hit the mark of being a useable tool...
@@ -1868,7 +1933,7 @@ function buildPanel(st){
     el("rect",{x:ax-34,y:ay+40,width:68,height:8,fill:"#c9b878"},m);
     const aim=()=>{m.setAttribute("transform","rotate("+((mirror-0.5)*70)+" "+ax+" "+(ay+44)+")")};
     aim(); m.style.cursor="ew-resize";
-    let holding=false, climbT=0;
+    let holding=false, climbT=0, climbK=-1;   /* which receiver the climb is actually committed to */
     function beamPaint(k){
       pv.querySelectorAll(".beam").forEach(b=>b.remove());
       if(!holding)return;
@@ -1884,12 +1949,20 @@ function buildPanel(st){
         for(const fr in bodies)bodies[fr].t=0;           /* what was climbing falls back */
         holding=false;beamPaint(k);paintBodies();buildPanel(1);return;
       }
+      /* THE COMMENT AND THE CODE DISAGREED, and the comment was the better game.
+         Moving the aim used to restart only the BURN while the climb kept rising and
+         simply retargeted - so wandering was free. It now costs what it always said
+         it cost: retarget and what was climbing slides back down the beam. Aiming is
+         a commitment. (Caught by NODE 1's rule that the preview must never lie; a
+         comment that lies about its own mechanic is the same defect.) */
+      const settling=S.scorch[k]||k!==climbK;
       let any=false;
       for(const fr in bodies){const b=bodies[fr];if(b.el.dataset.lifted)continue;
-        const rate=S.scorch[k]?0:LIFT[fr]*CLIMB;
+        const rate=settling?0:LIFT[fr]*CLIMB;
         if(rate>0){b.t=Math.min(1,b.t+rate*dt);any=true}
-        else if(b.t>0){b.t=Math.max(0,b.t-1.6*dt);any=true}   /* aim moved off it: it slides back */
+        else if(b.t>0){b.t=Math.max(0,b.t-1.6*dt);any=true}   /* it slides back down */
       }
+      if(!S.scorch[k]&&k!==climbK&&!Object.keys(bodies).some(fr=>bodies[fr].t>0))climbK=k;
       paintBodies();
       const arrived=[];
       for(const fr in bodies)if(bodies[fr].t>=1)arrived.push(fr);
@@ -1901,6 +1974,7 @@ function buildPanel(st){
     m.addEventListener("pointerdown",e=>{dX=e.clientX;m.setPointerCapture(e.pointerId);
       const k=mirror<0.34?0:(mirror>0.66?2:1);
       beamOn=k;beamT=performance.now();sel=S.scorch[k]?sel:k;
+      if(climbK<0)climbK=k;
       holding=true;climbT=0;beamPaint(k);requestAnimationFrame(climb)});
     m.addEventListener("pointermove",e=>{if(dX==null)return;mirror=Math.max(0,Math.min(1,mirror+(e.clientX-dX)/300));dX=e.clientX;
       aim();
@@ -1985,7 +2059,15 @@ function buildPanel(st){
     let d0=null, wellT=0, welling=false;
     function well(ts){
       const dt=wellT?Math.min((ts-wellT)/1000,0.12):0; wellT=ts;
-      const depth=Math.hypot(pull[0],pull[1])/reach();
+      /* NORMALISED BY THE FULL REACH, NOT THE CURRENT ONE. Found by sweeping the
+         input space rather than by reading the code (NODE 1 - GRAVITY, "never place
+         a physics objective by eye"). Dividing by reach() made the rock aboard make
+         every depth EASIER to hit, so the suspended could pass with the rock still
+         on the sheet - the exact opposite of this station's stated design. Against
+         the full reach, the rock caps attainable depth at 0.55, which is under the
+         suspended's 0.60 and over the film's 0.22. The order is now forced in fact
+         and not only in the caption. */
+      const depth=Math.hypot(pull[0],pull[1])/REACH;
       let k=0,bd=1e9;anchors.forEach((a,j)=>{const dd=Math.hypot(a[0]-ax-pull[0],a[1]-ay-pull[1]);if(dd<bd){bd=dd;k=j}});
       if(!torn()){
         for(const fr in bodies){const b=bodies[fr];if(b.el.dataset.lifted)continue;
@@ -2178,6 +2260,7 @@ const TEACH={
  growth:"GROWTH — it stands where a sentence settled, on ground fed again on a later day.",
  ground:"THE GROUND — released water settles here as your own sentences. Each one stands as a lens: it holds water, grows with what lands, and sends light back up. Click to drop a sounding line and read one.",
  lake:"THE LAKE — what was dropped, and what passed through everything, gathers at the center. Below it is the deep, which is never shown. What composts here may grow into something you can click to gather back into the tank — nothing to gather is a lawful, silent state.",
+ closer:"THE CLOSER — shut the room and go back to the world. What you have not routed goes back below the node; nothing is lost by leaving.",
  foldback:"THE FOLD — the net folds back to the room, or a face folds back to the net. Esc does the same thing with one visible motion, and brings back what it laid aside.",
  stone:"A STONE — one sentence you finished. Work it by your own hand — edit it, mark it, merge it, tie it — and only then will it carry down past your own position to the stations. An unworked stone hangs there; that is lawful and nothing hurries it.",
  field:"THE WRITING FIELD — writing is the only thing here, and nothing else is asked. Finish a sentence and it becomes water in the tank. Enter banks what you're holding, finished or not; Enter on an empty line closes the sitting. The page is never cleared — your words stay, and their water has already left. Esc lays this sheet aside; Esc brings it back. Nothing you write is read, judged, or rewritten — it only ever becomes ground."
@@ -2201,7 +2284,7 @@ function locate(){
   const k=roomKey(), t=(TEACH[k]||"").split("—")[0].trim();
   hereEl.textContent=t||"THE WORLD";
 }
-["tank","st0","st1","st2","st3","mouth2","foldback"].forEach(id=>{
+["tank","st0","st1","st2","st3","mouth2","foldback","closer"].forEach(id=>{
   const n=document.getElementById(id);if(!n)return;
   n.addEventListener("mouseenter",()=>say(TEACH[id]));
   n.addEventListener("mouseleave",()=>say(""));
