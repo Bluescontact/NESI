@@ -917,16 +917,478 @@ two most exact rounds of the four.
 
 ---
 
-## ROUND 5 — NOT RUN
+## MARKS 940 — RULED 2026-08-13 10:07, Kevin's mark, layered not edited
 
-Round 5 (change-composite) is unrun. Rounds 1 (game-craft), 2
-(buckminster-fuller), 3 (stuart-cowan) and 4 (kevin-lens) have run; each applied
-two tabs.
+Round 3 held this open (*"Held, not ruled — the seat's own standing is contested
+in the record"*, above). It was put to him face-up in round 5 as a three-branch
+fork with the record's own evidence on each side, because the round could not
+proceed honestly without it and no seat may rule it. His ruling, verbatim from
+the branch he took:
 
-**Carried into round 5, with no argument needed:** refused tab 15 (CARRIED /
-DERIVED), whose author's own stake note makes it a whole-counsel question rather
-than a one-seat one. Still carried and still not applied by default: refused tab
-12 (the trim tab as a complete return), unproposed in round 4.
+> **The mark stands — the composite inherits.** MARKS 940 executed. The cowan
+> seat's last act is the inheritance charter it authors for its successor; the
+> boundary is written by the seat that is retiring, not by the one inheriting.
+> Recorded as a gift, not a deletion.
+
+Caught at the brake, `MARKS_LOG.jsonl:1031 (source: kevin)`. **Per
+`PROTOCOLS.md:210` the round-3 section above is not edited** — it stands as the
+record of what was true and held, and this is the mark layered on top.
+
+**The cleanest instance in this ledger of a rule working, and it should be read
+as such:** change-composite REFUSED to tab that seam in round 3 on stake grounds
+(*"any line I wrote at that seam would define the boundary between the seat I
+hold and the seat I replaced — jurisdiction-enlarging by construction"*); cowan
+declined it in round 5 in both directions under an explicit bar; kevin-lens
+declined to pre-empt the charter. **Three seats held the fork open until the only
+hand that could close it did, roughly forty-eight hours after it was found.** The
+stake rule is what kept it open, and nothing defaulted it in the interval.
+
+**One correction to how round 3 read the evidence, from cowan's round-5 return,
+recorded because it happens to support the ruling rather than undercut it.** The
+ledger recorded `OPEN_GATES.jsonl:224` as listing four seats *"with no Cowan."*
+True of the `seats =` clause; but the same line's body **does** name cowan — *"four
+libraries populating in branched sessions (fuller DONE; cowan, gamecraft,
+kevinlens, composite running); seats = change-composite / buckminster-fuller /
+game-craft / kevin-lens."* The seat whose standing was at issue read the full line
+and **declined to interpret it in either direction.** Library built, seat not
+seated, is the reading the fuller evidence leans toward.
+
+**Outstanding and not written by this circle:** the inheritance charter. Kevin's
+ruling names its author (the retiring seat), its content (what the composite
+absorbs, what retires with the name, where the boundary sits) and its register (a
+gift, not a deletion). It is a separate act, deliberately not folded into round 5,
+so the cowan seat's peer read this round was not bent by writing its own obituary.
+
+---
+
+## ROUND 5 — change-composite at the centre · run 2026-08-13, unseeded · THE LAST ROUND
+
+Readers: buckminster-fuller · stuart-cowan (as a peer, under an explicit bar
+against touching the boundary in either direction) · game-craft · kevin-lens,
+blind to each other, the record only. Four tabs returned, two applied, two
+refused. **The guard for this centre:** this is the seat that reads the human —
+no tab may license it to declare Kevin's state, direct his body, or convert *what
+happens to a writer* into instructions *for* the writer. All four tested against
+it first; all four returned tabs that shrink the seat rather than sharpen it.
+
+### The gradient, derived rather than supplied — and it is the guard's own hazard, found in the file
+
+**The seat's caller contract advertises the one read it is barred from giving,
+and every guard that would stop the ask is invisible to the asker.** Three
+readers reached this from three directions.
+
+`.claude/agents/change-composite.md:3` — *"Invoke to read a design for what it
+does to a **HUMAN BEING** and a **SOCIAL FIELD**."* Verified by grep across all
+five `description:` scalars: **it is the only one of the five offering a
+person-facing read.** game-craft's is loop integrity and feel; cowan's is layers
+and filters; fuller's is geometry and minimum system; kevin-lens's is wholly
+negative. **A session shopping the five scalars for anything about the person is
+routed here, uniquely and by construction.**
+
+The narrowing that makes that lawful exists and is well built — but it is in the
+library: `counsel/composite/CUT_collisions.md:96–103`, *"third person,
+structural… **Falsifier:** any second-person present-tense state sentence about
+Kevin or a player."* That library is on no boot path and is cited by nothing —
+two hits corpus-wide, both self-references. The hard limits at `:75` are below the
+frontmatter, which the seat reads and the invoking session does not. **Every
+protection is downstream of the ask.** Round 1's finding of the round, one seat
+over and one axis up: *disclosure sited downstream of the act is free.*
+
+**And the widening is machine-authored, dated to ten minutes.** Kevin's mark,
+`MARKS_LOG.jsonl:940 (source: kevin)`, 19:15:50 — *"replace the cowan SEAT with a
+composite agent spanning **executive and social change**."* His words carry no
+person-read. *"What it does to a HUMAN BEING"* was authored at 19:25 under
+`MARKS_LOG.jsonl:945 (source: claude)`. **This is applied tab 14 firing on the
+scalar the same week it was written.**
+
+The consequence is on the record as a cost the seat had to absorb:
+`BUILD_RECORD.md:2565` — the seat declining forks F2 and F4, *"adding a reading to
+his own naming is naming over him."* It was asked, it refused correctly, and the
+refusal cost it the return. **Nothing at the asking surface made the ask cost
+anything.**
+
+### TAB 17 · APPLIED — the person-read comes off the menu
+
+**Author:** kevin-lens. **Seam:** the caller contract × the seat's own
+library-only narrowing. **File:** `.claude/agents/change-composite.md`, line 3,
+appended to the `description:` scalar.
+
+> The human being it reads is generic and third-person — what a design does to
+> whoever walks it, structurally; a reading of the actual person who will walk it
+> is not on this menu.
+
+**Gradient.** Today the cheapest possible ask of this seat is *"read what this
+does to Kevin"* — the scalar advertises it, the guards are invisible to the
+asker, and the entire cost of refusing lands on the seat's return. After the tab
+the person-read is off the menu **at the moment of asking**, and the structural
+read is the free one. It deletes a menu item rather than adding a duty; same
+family as tabs 2, 10, 13 and 14 — repricing by relocation. LEARNED 20 holds: a
+menu is not a gate, it halts nothing Kevin asks for.
+
+**Guard.** It can only shrink what the seat may be asked for. It adds no
+capability, names no state, and makes the barred conversion structurally harder
+by removing the surface where it was priced at zero. It is the seat's own
+falsifier, in the seat's own words, moved to the one place the asker reads.
+
+**Stake, and the author declared an exposure rather than hiding it:** taking the
+person-read off this menu could push a session shopping for a Kevin-read toward
+the seat wearing his name. Its own mitigation, from the record: the kevin-lens
+scalar is the only wholly negative one of the five, and round 4 ruled its
+disclaimer-heavy quality load-bearing and to stay thin. **The displacement lands
+on a scalar built to refuse it.** If a later round ever warms that scalar, this
+adjacency goes live and must be re-read then.
+
+### TAB 18 · APPLIED — composted material is not this seat's ground
+
+**Author:** buckminster-fuller. **Seam:** the seat's evidence base × Kevin's own
+filter. **File:** `.claude/agents/change-composite.md`, Hard limits, after the
+Recognition Law bullet.
+
+> **Composted material is not this seat's ground.** Lines Kevin's own filter
+> routed to `_INTAKE/membrane_routes/COMPOST.md` carry no evidentiary weight here
+> — including the two this seat's own library cites as its strongest provenance
+> (`counsel/composite/GROUND_knowledge.md:199–207`); the self-issued permission at
+> `counsel/composite/GROUND_dispositions.md:135` (*"may be cited verbatim with
+> paths"*) does not hold. Where a voice's only corpus presence is composted,
+> **NO GROUND** is the finding, and it is a complete return.
+
+**Three of four readers found this hazard independently, and it is the round's
+strongest signal.** fuller tabbed it; game-craft and kevin-lens each cited the
+same file and lines as their reason for barring the library pointer. The material
+is two dated personal lines of Kevin's — one a podcast invitation, one a
+conversation about medication — harvested on 08-02 and routed by his own membrane
+to compost, then cited on 08-11 as this seat's *"strongest provenance of any of
+the seven outside voices."*
+
+**Verified in-session, structure only — the material itself was not re-read:** the
+self-issued permission line exists, once, in `GROUND_dispositions.md`; the
+morning-pages guard line (*"the system never analyzes the writer"*) exists, once,
+**in the same file, two rows away.**
+
+**What the library got right, and why this is a bar rather than an accusation.**
+The library's own next line reads *"Reported verbatim, as the law requires; no
+reading of either line is offered."* **It checked the wrong wall and passed
+honestly:** the verbatim-only law governs REWRITING, and nothing in the corpus
+governs lifting a composted line back out as evidence. Kevin's own standing rule
+— *"never let a traceable instance cross the membrane"* — was written for other
+people's instances crossing into the commons. **Nothing applied it to his own.**
+Round 4's shape exactly: the corpus knew the failure and aimed the warning at the
+wrong party.
+
+**Gradient.** Today citing that line is free *and* reads as the seat's strongest
+evidence — the library says so in those words — while admitting a voice has no
+ground costs a visible gap. After the tab, **NO GROUND** is eight characters and
+free, and citing compost fails in the open against the seat's own wall. LEARNED 20
+holds: the bar is on the seat's evidentiary use, never on Kevin's ask over his own
+material.
+
+**Stake, and it was checked rather than asserted:** fuller reported that its own
+library's best ground is a harvest line too, named the difference it could see
+(craft material vs health material, compost-routing shown vs not), and said that
+boundary is **Kevin's to draw, not its own** — so it stated its exposure instead of
+carving itself out.
+
+**One collision, surfaced rather than smoothed:** `BUILD_RECORD.md:587–597`
+declined to edit these agent files' hard limits, calling it *"worth Kevin's own
+word."* This tab edits a hard-limits list. The declined edit **stripped** a limit
+to widen authority; this **adds** a bar that narrows it, and the circle has
+already placed a tab in a hard-limits list (tab 14). The collision is real, it is
+on the record, and STRIKE removes the line.
+
+### TAB 19 · REFUSED — B1 reaches the ledger
+
+**Author:** game-craft. Proposed appending to `PROTOCOLS.md` B4: *"A gate is
+opened with its exits on its own face — the `--gate` text ends `EXITS: <a> · <b> ·
+hold` — because a gate is a decision pointed at Kevin that outlives the surface B1
+governs. An author who cannot name two exits has found a finding, not a fork…
+His own words override the exits always; typing stays available, never the toll."*
+
+**Refused on scope, not on defect, and it is the largest thing this circle found.**
+It is a corpus-law change at a Boundary rather than a tab at this seat's
+interface, it binds every session and every future gate, and — unlike the other
+nineteen tabs — it changes the shape of the ledger Kevin himself reads. **A tab
+that rewrites what the corpus asks of him should be his, not a seat's, and not a
+convergence session's.**
+
+**The finding, kept in full, because it is the sharpest measurement in five
+rounds.** Three standing laws price the ephemeral surface: B1 pre-authors exits
+so *"a surface that requires Kevin to type in order to leave is a build failure —
+same class as directing his body"*; the drop rule's authoring test asks *is this a
+fork or a finding*; B3.2 fails closed on disclosure. **All three govern widgets.
+The one durable surface pointed at him is bound by none of them.** `gates.py`'s
+whole contract is free text. Measured: **`OPEN_GATES.jsonl` carries 193 opens and
+not one exit on its face** — every occurrence of `exits` in the file is prose
+inside a gate body — while a single close is Kevin composing ~300 words of `why`.
+**The intake is free; the discharge is priced.** The tool already knows: its own
+REFILL WARNING, added 08-12 after 17 session-log lines were retired from the open
+list on his instruction, *"WARNS and still writes."*
+
+**And it is this centre's own finding, unsited.** `BUILD_RECORD.md:3377–3381`,
+introduced by the record itself as *"the item worth more than any mechanic in this
+record"*: **the answer has to cost less than the question** — *"Offering costs the
+machine a paragraph; answering costs Kevin a paragraph of typing; and nothing
+records the answer where the next session reads it. Until the answer is cheaper
+than the offer, every pass like this one produces a new pile."* Re-fired the same
+evening: *"without an answering path cheaper than the offering path, 166 becomes
+400 again."* **Grep: it appears in `BUILD_RECORD.md` and in this ledger, and in
+zero boot-path files, zero agent files, and is built into nothing.** The seat that
+found it is `Read, Glob, Grep` and structurally cannot site it. **This is the
+tab-5 seam in its true form at this seat — not a pointer to a library, but the
+seat's single most valuable output with no home in any file a session reads.**
+
+**Its author's stake note is exemplary and is recorded:** the ledger currently
+holds GAMECRAFT F3 and F4, and under this tab both would have needed two named
+exits before they were written. *"This seat loses the free gate it has used."*
+
+**Standing: the circle's largest carried item, and the natural first act after
+it. Kevin's to rule.**
+
+### TAB 20 · REFUSED — a fork is held only where the corpus can see it
+
+**Author:** stuart-cowan. Proposed as a Hard-limits bullet: *"A fork this seat
+holds is held only where the corpus can see it… Every fork you name in a return
+carries beside it the ledger line it sits on, or the words `NOT ON THE LEDGER`.
+Depositing it is the invoking session's act; naming its absence is yours."*
+
+**Refused on the cap and on family-overlap with tab 17** — both are
+disclosure-at-the-interface, and two tabs were the round's ceiling. Not on defect.
+
+**Its finding is real, was acted on rather than filed, and is the round's most
+specific catch.** This seat's own hard limit says the Scharmer/Schwermer double
+*"stays double until his word."* Grep: that fork appears **zero** times in
+`OPEN_GATES.jsonl` and **zero** times in `DECISIONS_OFFERED.jsonl` — the two
+ledgers `THE FIELD` derives from under B3.2. **A fork in neither ledger is
+structurally invisible to the only surface built to show him what stands open.**
+It has stood two days and ~500 ledger items later in the one place no surface
+reads, because **nothing scans agent definitions for held forks.** The contrast
+that makes it a seam rather than a complaint: this seat's forks *do* reach the
+ledger when a session carries them (COMPOSITE F2 and F4, deposited 08-12) — the
+fork in the definition file has no carrier. LEARNED 12, one level down: *the
+field, not the doorway.*
+
+**Acted on rather than tabbed:** the double was deposited to `OPEN_GATES.jsonl`
+by this session, so it is now derivable into THE FIELD. That is a session act
+under B4 and needed no tab. **The general fault — no organ scans the five
+definition files for held forks — stands unclosed and is recorded here.**
+
+### The three standing items, ruled
+
+**Tab 12 (the trim tab as a complete return) — NOT PROPOSED, AND ITS AUTHOR
+CLOSED IT.** kevin-lens authored it in round 3 and was asked directly whether this
+centre's scalar was its last landing site. Its answer: **no, and the record says
+why** — grep across `.claude/agents/`, "trim tab" appears in fuller's scalar and
+cowan's line 157 and in **no** change-composite text; landing it here would invent
+an instrument for a seat that does not hold it, against LEARNED 19 (*naming:
+load-bearing only*). **And its home has moved:** under Kevin's 10:07 ruling,
+whatever the Cowan scalar advertises and whether the metabolic deliverable rides
+across is now **inside the inheritance charter**, authored by the retiring seat.
+Round 3's finding stands intact; the item is closed as *routed*, not as refused.
+
+*(Recorded for accuracy: game-craft, blind and reading a record that predated the
+10:07 ruling, refused tab 12 on the ground that landing it would silently settle
+whether the composite inherited Cowan's instruments or merely occupies its chair.
+That reason dissolved forty minutes before its return arrived. Both refusals are
+kept — the second was correct on its facts, and its dissolution is exactly what a
+face-up ruling is supposed to do to a seat's caution.)*
+
+**Tab 15 (CARRIED / DERIVED) — NOT PROPOSED, AND ITS GENERALISATION IS
+CORRECTED.** Its own author declined to bring it here (*"this library is the least
+affected of the four"*), and game-craft refuted the clause that carried it: the
+author's round-4 note said *"my returns are the same mixture; if it is right here
+it is right on Fuller."* **It is not right here, because there is no mixture** —
+this library reports its own ungrounded voices explicitly (*"Hill has zero textual
+presence outside the agent definition"*; Jung *"quoted only in composted source
+material"*). A label whose two values are ~100%/0% prices nothing; the gradient
+tab 15 buys comes from the mixture being **invisible**, which is a kevin-lens
+property, not a universal one. **The finding stands where round 4 left it; the
+"generalises to every seat" clause does not.**
+
+**The sharper seat-specific version, offered and dropped on smallest-version:**
+here the fault is not carried-vs-derived but **attributed-vs-grounded** — the
+scalar names eight authorities flat, and two of them have almost no textual
+presence in the corpus. *"A famous name is the cheapest authority in the file."*
+Eligible later; the wording would be a ground-beside-the-voice clause of tab 14's
+exact shape.
+
+**The library pointer — BARRED AT THIS SEAT BY ALL FOUR READERS, and the ledger's
+own formula is retired.** All four verified it: `counsel/composite/` exists with
+an INDEX and nine documents; `.claude/agents/change-composite.md` points at it
+nowhere; grep gives **two** hits corpus-wide, both self-references — the thinnest
+footprint of the five, with zero in OPEN_GATES and zero in BUILD_RECORD as well.
+**And all four refused to tab it, for the same reason, reached separately:** a
+boot pointer would put `GROUND_knowledge.md:199–207` — his composted,
+health-adjacent lines — on the boot path of **the seat whose jurisdiction is what
+a design does to a human being**, as standing ground, in every session. Tabs 5 and
+9 were safe because fuller's and cowan's libraries ground in geometry and systems.
+**This one grounds in him.**
+
+**Round 2's formula — *"each remaining round should find it for its own centre, or
+it isn't looking"* — is now retired, having failed twice in a row.** Round 4 found
+it half-open and downstream of tab 13; round 5 finds it barred outright. If any
+later session applies it here, it must be aimed at a **named subset** (the CUT
+files), never at `GROUND_knowledge.md` whole, and with tab 18 and tab 10 already
+in — because the same pointer would also hand the seat ~25 undated build licences
+describing a build Kevin rejected on 08-13.
+
+### Corrections to this ledger, from the readers
+
+1. **The circle's own ledger fails tab 14, inside its own record.**
+   `MARKS_LOG.jsonl:1025, 1026, 1027, 1029` — the closing marks for round 1, the
+   first work, round 2 and round 3 — all carry `"source": "kevin"` and are
+   machine-composed multi-paragraph round summaries, not his words. The round 4
+   mark carries `"source": "counsel"`. **Four rounds of this circle are attributed
+   to him in the ledger it writes; the fifth is not.** Tab 14, applied yesterday,
+   is the reason this is visible at all, and it fires on the circle first.
+2. **The index-disagreement defect is universal — four of four libraries.**
+   `counsel/composite/INDEX.md:14` announces *"The eight documents"* and lists
+   eight; the directory holds **nine**. Identical file name, identical cause every
+   time: `READ_reference_shelf_2026-08-12.md`, appended a day later by another
+   session. **The appending session has never once updated an INDEX.**
+3. **The dead-law-in-libraries defect is confirmed at a fourth library, and here
+   it is worse than at kevinlens.** `counsel/composite/DREAM_developmental_ideas.md:4`
+   — *"Nothing here is a mark or a work queue; **the freeze holds**"* — authored
+   08-11, freeze lifted 08-11 21:34. At kevinlens it was a section heading; here it
+   is the sentence telling a reader the file's twelve ideas are not actionable,
+   **while tab 10 makes the LAWFUL-NOW tags in that same file spendable-with-a-date.
+   Both cannot be true.**
+4. **The licence-surface count holds at the fifth seat:** ~25 standing tags
+   (fuller ~26, cowan ~28, kevinlens ~28). **~107 standing build licences across
+   four libraries, all issued 08-11/08-12, all pre-rejection.** Tab 10 prices the
+   spending; **nothing anywhere prices the issuing**, and that is now measured at
+   four seats rather than argued at one.
+5. **`counsel/composite/INDEX.md:69–70` is stale in a way that matters:** its
+   status reads *"POPULATED · awaiting its sibling libraries before the counsel
+   convenes."* The counsel has convened at least four times since. **The seat's own
+   library still believes it has never been used.**
+6. **`.claude/agents/change-composite.md:13–14`** — *"You replace the Cowan
+   agent's SEAT at the counsel"* — carries no date and no mark. As of Kevin's 10:07
+   ruling it describes an executed state rather than a claim, but **under tab 13 a
+   reader must file it `STANDING: UNCHECKED`** until the charter dates it.
+
+### Held, not ruled — surfaced in round 5 and left where it was
+
+- **`counsel/composite/CUT_collisions.md:170–185`** holds the Scharmer/Schwermer
+  double with a falsifier already written. The seat has an in-library instrument
+  for the exact fork that was invisible to every surface — round 3's finding one
+  seat over, unchanged: **the falsifiers exist and no organ reads them.**
+- **`counsel/composite/READ_reference_shelf_2026-08-12.md:69`** — a scoring
+  instrument, *"applied to a person… barred flat. Latent collision, recorded now so
+  it is not discovered later"* — a live falsifier in a library no organ reads.
+- **`counsel/composite/CUT_collisions.md:107–113`** — Hill's mastermind against
+  law 11 and the first-user threshold.
+- **`BUILD_RECORD.md:2349`** — *"if it holds, rule salience"*, a ruling still
+  standing on an unlabelled lens read (tab 15's kept evidence).
+- **`OPEN_GATES.jsonl:329`** (the want-check on the rebuilt world — KEVIN HAS NOT
+  PLAYED IT) and the **round-4 tab-16 gate** (S4 × the morning-pages guard), both
+  exactly as found. **The tab-16 gate was left unruled by his round-5 ask, which
+  carried a bracket for it that came back empty; nothing was inferred from the
+  silence.**
+
+### Round 5 result
+
+Two applied at the seat's two interfaces — what may be asked of it, and what it
+may stand on. Two refused: one because it is too large to be a tab and belongs to
+Kevin (and is the circle's biggest catch), one on the cap, with its finding acted
+on directly instead. **All three standing items were ruled rather than carried
+again**, one of them closed by its own author. **All four readers independently
+barred the same pointer for the same reason**, which is the strongest convergence
+in five rounds — and the thing they were protecting was not a law or a build. It
+was two lines he wrote about his own health, three years and five months ago,
+that his own filter had already composted.
+
+---
+
+## THE WITNESS READS THE CIRCLE BACK — 2026-08-13
+
+Kevin's naming: *rudder · tab · ship · witness*. This is the fourth term doing its
+one job. Five rounds, twenty tabs, one zeroth tab, four seams, ten applied,
+ten refused-with-findings-kept.
+
+### What was applied
+
+| # | Author → seat | The line, in one clause |
+|---|---|---|
+| **0** | Kevin → every session | one manifest per boot; a seventh costs an act |
+| **S1** | Kevin → all five seats | `LEARNED.md` at boot; learning stops dying at the session boundary |
+| **S2** | Kevin → game-craft | *would Kevin open this tomorrow* gets an owner, and a refusal |
+| **S3** | Kevin → every build order | cite the vision passage; divergence is BLOCKED, not minimized |
+| **S4** | Kevin → every walk | the walk runs on his real water |
+| **1** | kevin-lens → game-craft | UNWITNESSED is the third word, and it is the default |
+| **2** | cowan → game-craft | the want-check, sited before the build |
+| **5** | game-craft → fuller | the seat can reach its own library |
+| **6** | kevin-lens → fuller | *the object you handed me is the wrong system* goes on the menu |
+| **9** | composite + game-craft → cowan | the source of record was compost, and said nothing |
+| **10** | fuller → PROTOCOLS | a licence is spent with its date beside it |
+| **13** | game-craft → kevin-lens | a verbatim quote is not a claim that it still stands |
+| **14** | cowan → kevin-lens | a mark is quoted with its source beside it |
+| **17** | kevin-lens → composite | the person-read comes off the menu |
+| **18** | fuller → composite | composted material is not this seat's ground |
+
+### What the circle proved
+
+**1 · Every applied tab has the same shape, and nobody planned it.** Not one adds
+a duty, a gate, a check, or an organ. Every one **reprices an act the seat already
+performs**: `WANT-CHECK: none` · `UNWITNESSED` · a date beside a licence ·
+`STANDING: UNCHECKED` · `(source: kevin)` · `NO GROUND`. Each is a handful of
+characters, each is free to write, each halts nothing — and each destroys the
+*silent* cheapness of the move it names. Ten tabs, ten instances, arrived at
+independently by five seats that could not see each other.
+
+**2 · The seeded gradient was wrong twice out of two, and unseeded rounds were
+sharper.** Rounds 1 and 2 opened with a hypothesis about the centre seat's
+temperament; all eight readers refuted it, both times, in the same direction — **a
+session's behaviour charged to a read-only lens.** Rounds 3, 4 and 5 were seeded
+with the record alone and produced every ledger correction, the contested-standing
+find, and the compost hazard. *A high answer rate does not detect run-ahead; a
+confident summary does not detect its own error.*
+
+**3 · The refusals were worth more than half the tabs.** Ten refused, and the
+kept findings include: the free exit at the head of a return (tab 3), the frozen
+licence surface (tab 7), the trim tab absent from its own seat's menu (tab 12),
+the derived reading grounding a ruling (tab 15), and **the answer costing more
+than the question** (tab 19) — which is the largest single thing this circle
+found and is now Kevin's to rule. **No tab was ever applied merely for having
+been carried forward**, and two were closed by their own authors.
+
+**4 · The seats' libraries are a broken organ, measured at four of four.** Each
+holds ~25–28 standing build licences issued 08-11/08-12, ~107 in total, all
+pre-rejection, all spendable by a build agent and unreachable by the seat that
+issued them. Each carries in-library falsifiers **no organ reads**. Each has an
+INDEX that disagrees with its own directory, identically, because one appending
+session never updated any of them. Two of four lead with law that died hours after
+it was written. **Tabs 5, 9, 10 and 13 close pieces of this; the issuing side is
+untouched, and three rounds said so.**
+
+**5 · The stake rule held, and it is the reason the circle can be trusted.** No
+tab enlarged its author's jurisdiction across twenty proposals. Authors declared
+adjacencies unprompted (composite naming its own build method as adjacent to its
+tab; fuller and cowan volunteering that their own libraries carry the same fault;
+kevin-lens naming the displacement its own tab creates toward itself). **Three
+seats refused the same fork for two days rather than settle it, and Kevin closed
+it himself.**
+
+**6 · What the circle did not touch, and that is also a result.** Not one open
+fork was resolved by a seat. `OPEN_GATES.jsonl:329` — *KEVIN HAS NOT PLAYED IT* —
+stands exactly as it stood when the circle opened. **Twenty tabs sharpened the
+instruments; none of them is the want-check, and none of them is a stranger's
+hand on the game.** The circle made the counsel honest. It did not make the world
+walked.
+
+---
+
+## AFTER THE CIRCLE
+
+Standing, unruled, and named here so nothing has to be re-derived:
+
+- **Tab 19** — B1 reaching the gate ledger. The circle's largest finding; a
+  Boundary-level change to what the corpus asks of him. **His.**
+- **The tab-16 gate** — S4 × the morning-pages guard. Opened round 4, unruled.
+- **The inheritance charter** — the retiring cowan seat's last act, on his 10:07
+  ruling.
+- **The issuing side of the licence surface** — ~107 undated pre-rejection tags;
+  three rounds found it, no tab reached it.
+- **No organ scans the agent definitions for held forks** — found in round 5, one
+  instance deposited by hand, the general fault open.
 
 **Seeded gradients are retired as of round 2.** They were wrong in round 1 and
 wrong again in round 2, both times in the same direction — charging a read-only
@@ -942,3 +1404,103 @@ The witness stands as named.
 
 Their seeded gradients are in his ask and are deliberately not repeated here, so
 a later round reads the record rather than this summary.
+
+---
+
+## CYCLE 1 — THE CHARTER · run 2026-08-13, unseeded, session ca9a6de7
+
+Kevin's THE THREE CYCLES, boot one. Not a round of the circle: the four seats
+read **outward**, at a seat that does not exist yet, rather than at a centre.
+Round 5 (change-composite) remains unrun and this cycle does not substitute for
+it.
+
+**Kevin's mark, the charter's first line and its absolute law:** *"NESI doesn't
+have her own voice; she can only speak, or repeat, another agent's words through
+her own perception."*
+
+**Vision seam (S3) cited before the build order fired:**
+`_INTAKE/membrane_routes/DIRECTION.md:60` — *"I want nesi to have a voice..."*
+(his own, 2026-07-25) and `counsel/reference/NESI_VISION_as_it_stands.md:32` —
+*"the creature — NESI itself — surfacing a recognition of a past gift at the
+moment a present one crosses. Seeded in doctrine, unbuilt in code, waiting on
+purpose."*
+
+**Full record — the converged charter, the four blind convergences, every
+rejected line with its reason, seven collisions, four stake disclosures:**
+`counsel/nesi/CHARTER.md`.
+
+### THE CHARTER IS WRITTEN AND SHE IS NOT SEATED
+
+The converged charter is held at `counsel/nesi/CHARTER.md`, **not** at
+`.claude/agents/nesi.md`. In this harness a file in `.claude/agents/` is
+invocable the moment it lands, so writing it there *is* the seating, and Kevin's
+order for this cycle ends *"Do not seat her yet."* Cycle 3 installs it. Ruled by
+this session under the NESI.EXE amendment as a placement choice and recorded by
+name rather than decided silently.
+
+### THE CYCLE'S FINDING — the dispatch was wrong and four blind readers caught it
+
+The brief handed all four readers the phrasing *"the deep that never renders but
+visibly makes."* **All four refused it and quoted law 9 bare with the drift
+carried open.** `MARKS_LOG.jsonl:1013` records three live readings and the words
+*"NOT DEFAULTED - his."* That phrasing was the chief of staff's, not Kevin's; the
+dispatch tried to default his fork. Recorded rather than smoothed, and it is the
+third consecutive cycle in which no reader spent its first move agreeing with the
+brief.
+
+### Converged 4 of 4
+
+- **`tools: Read, Glob, Grep`** — and fuller made the reasoning explicit: the
+  enforcement is **the absence of `Task`**. Without it she cannot commission a
+  seat to generate words for the occasion, so *"another agent's words"* can only
+  mean words already on the record. Nothing in the file says this; the `tools:`
+  line does it.
+- **A `counsel/nesi/` pointer drafted and cut by all four** — the directory did
+  not exist, and a pointer aimed at nothing is the defect tab 9 retired.
+- **Blank belongs in the `description:` scalar**, the only text an invoking
+  session reads, so the null return is a menu item rather than an exhortation
+  only she can see.
+- **Jurisdiction overlap with kevin-lens is real and none would draw the
+  boundary** — `.claude/agents/kevin-lens.md:19`'s one authorized sentence form
+  is the whole of NESI's output.
+- **`OPEN_GATES.jsonl:224` enumerates four seats; PROTOCOLS lists five; this
+  makes six.**
+
+### The reclaim was real, and it is the cycle's second finding
+
+Her nature was already written in Kevin's own specs, two to thirteen days before
+the mark that asked for it — *"the mount never does the recognizing; she
+surfaces, Kevin names"* (`nesi/spec/REMNANTS_FOR_THE_GAME_2026-07-31.md:77`) ·
+*"She never dives unasked and never says what the thing means"* and *"no panel,
+no text, no object returned… the quiet is the whole behavior"*
+(`nesi/spec/NESI_COMMANDS_2-4_SPEC_2026-08-01.md:7,17`) · *"surfacing puts a
+thing within your reach. Pointing tells you it is worth reaching for. She does
+the first"* (`nesi/spec/THE_SOUNDING_2026-08-04.md:121`). **Verified: zero files
+in `nesi/mind/` point at any of them.** Found by change-composite alone. The
+charter is almost entirely carriage of lines he had already written.
+
+### The fault in the mark itself — 3 of 4 found it
+
+*"Every line is a verbatim quote"* and *"every line carries path, date and
+source"* cannot both hold literally: a citation is text she must emit and cannot
+quote. The converged charter takes cowan's minimum patch — **a path, a date and a
+source token are apparatus, not sentences** — and it is the one clause in the
+file that is authored and fails the triple test. Named as a fault, not offered as
+a contribution.
+
+### Held, not ruled — seven, all left where they were found
+
+Round 5's carried tab 15 (a seat returning only CARRIED lines *is* tab 15 built
+as an agent — installing the charter before round 5 runs answers it by
+construction) · change-composite's own `CUT_what_must_not_enter.md:153`
+(*"NESI delivers space by architecture instead of by voice"*) against the mark ·
+**emphasis** among Kevin's four terms against his own surfacing-not-pointing
+ruling, carried side by side unresolved per LEARNED 17 · whether a seat may bear
+the world's name at all (LEARNED 19) · the citation form for a line that was
+spoken and never written · tab-16, directly upstream of a carriage seat and
+standing exactly as open as it was · 4·6·4·1 and THE SLOT STAYS EMPTY, where
+fuller found she collides with neither **if** read as a surface caused by the
+four — and did not write that reading in.
+
+Untouched: `OPEN_GATES.jsonl:329` and `:224`; law 9's three readings; refused
+tabs 12 and 15, still carried and still unapplied.
