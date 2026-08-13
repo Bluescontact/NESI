@@ -272,11 +272,169 @@ plainly rather than find it later.
 
 ---
 
-## ROUNDS 2–5 — NOT RUN, AND RE-AIMED
+## ROUND 2 — buckminster-fuller at the centre · run 2026-08-13, re-aimed
 
-Rounds 2 (buckminster-fuller), 3 (stuart-cowan), 4 (kevin-lens) and 5
-(change-composite) are unrun. Round 1 stays game-craft — it ran, and its two tabs
-stand.
+Readers: game-craft · stuart-cowan · kevin-lens · change-composite, blind to each
+other, hunting at the seat's **interfaces**. Four tabs returned, two applied, two
+refused.
+
+### The hypothesis was refuted again — and this time on dates
+
+The round opened with the loose claim that this seat's gradient is *"exactness
+arrives late, and run-ahead — the 331,776-tree day that birthed the drop rule."*
+All four readers refuted it independently and identically:
+
+- **The seat did not exist on the tree day.** That computation is session
+  87c5c4fc, 2026-08-09 (`PROTOCOLS.md:75–99`). Kevin first asked for a Fuller
+  agent at MARKS 937, **2026-08-11T18:44**; the library dates to 08-11. Two days
+  after the fact. This is round 1's structural correction repeating one seat over
+  — a session's behaviour charged to a read-only lens.
+- **"Exactness arrives late" is contradicted by the record.** On the tree day
+  exactness arrived *front-loaded to the point of run-ahead* — Kirchhoff
+  determinant exact over rationals, all four cupola splits verified at exactly six
+  edges, a planar unfold overlap-tested across all 91 non-adjacent face pairs, and
+  the cost recorded face-up rather than smoothed. And `counsel/fuller/`'s own
+  ground file is adversarial to its own patron: the popular one-DOF jitterbug
+  *"is false for the bare frame"*, Fuller's own collapse language *"does not check
+  out — corrected on record."*
+- **What actually changed between MARKS 1011 and 1021 was the member list, not
+  the rigor.** Handed eleven world systems on 08-12, the seat correctly found them
+  tightly bound and returned *"the bedload is the minimum system doing the most."*
+  After the rejection supplied the twelfth node, the same lens on the same files
+  returned the day's sharpest finding — out-degree eleven, in-degree zero, *"the
+  island was the world, relative to the hand that fed it"* — and read
+  `refusal_check` as *"an instrument converting an incapacity into a passing
+  grade — compression wearing tension's name."* Both readings were available at
+  1011. **Not blind. Not consulted.**
+- **The gradient the record forces:** every instrument this seat owns —
+  synergy, tensegrity, the minimum system, ephemeralization — takes *the parts*
+  as an input, and **nothing audits who drew the boundary.** The boundary is
+  chosen by the pass that issues the certificate, costs nothing, and is never
+  stated.
+
+### TAB 5 · APPLIED — the seat can now reach its own library
+
+**Author:** game-craft. **Seam:** the seat's definition × `counsel/fuller/` ×
+the build mandate's LAWFUL-NOW surface. **File:**
+`.claude/agents/buckminster-fuller.md`, under the LEARNED boot line.
+
+> **Read `counsel/fuller/INDEX.md` at boot — your own library, built 2026-08-11.
+> It holds this seat's standing collisions, its barred material, and its live
+> LAWFUL-NOW items; nothing else on the boot path points at it.**
+
+**Why this is the round's finding.** Verified by grep: `counsel/fuller` appears
+in MARKS_LOG, OPEN_GATES, BUILD_RECORD, DECISIONS_OFFERED and four sibling
+libraries — and in **zero** boot-path files. The build mandate reads *from* the
+libraries; the seats never read *into* them. And the consequence is exact:
+`counsel/fuller/DREAM_developmental_ideas.md` line 9, written **08-11**, holds as
+its first item *"the returning edge… returns what reaches it. Status:
+LAWFUL-NOW — the floor spec's own clause, currently unenacted."* On 08-13 the
+build was rejected and the union finding was *the world stored every word in five
+places and returned none, ever* — now LEARNED law 15, credited to this seat's
+read. **The seat had written the law down two days early and could not carry it,
+because its definition contains no pointer to its own file.** A finding that cost
+~365k tokens was re-purchased by a rejection.
+
+**This is S1's other half.** S1 gave the seats what the corpus *learned*. Nothing
+gave a seat what it had *already produced*.
+
+**Generalizes, and is deliberately not generalized yet:** the same seam exists for
+all five seats. Smallest version only — one line, one seat. Each remaining round
+should find it for its own centre, or it isn't looking.
+
+### TAB 6 · APPLIED — the wrong-object return, made sayable
+
+**Author:** kevin-lens. **Seam:** the seat's caller-facing contract × the
+dispatching session. **File:** `.claude/agents/buckminster-fuller.md`, appended to
+the YAML `description:` scalar.
+
+> A lawful return may also name the object handed in as the wrong system, and say
+> what the diagram left outside it.
+
+**Gradient.** The scalar is the only text in the file read by the *invoking*
+session, and it is a menu of what may be asked for. Today that menu carries three
+positive deliverables about a handed object — *what the geometry rules, what the
+minimum system is, where the design does more with less.* **"The system you
+handed me has the wrong boundary" is not on it,** which is exactly the return
+that arrived late. After: the boundary finding is pre-priced and free; reading a
+wrong-boundary system as if it were the system is what now costs.
+
+**The guard is load-bearing and was authored as such:** *"may also"* — permissive,
+never a substitute for the reading asked for, so it cannot become the lever
+LEARNED law 20 forbids.
+
+**Symmetry worth recording:** round 1 REFUSED a description-scalar tab on
+game-craft as a duplicate. Round 2 APPLIES one on Fuller. Same location, opposite
+verdict — because in round 1 a smaller tab bought the same gradient, and here
+nothing else does.
+
+### TAB 7 · REFUSED — dating the LAWFUL-NOW licences
+
+**Author:** stuart-cowan. Proposed appending to `counsel/fuller/INDEX.md`'s Status
+section: *"Every LAWFUL-NOW tag in this library was issued 2026-08-11, before the
+build of 2026-08-12/13 and Kevin's rejection of it; a build citing one carries
+that date with the word."*
+
+**Refused as the same seam as tab 5, taken from the other side**, and tab 5 is
+upstream of it: a seat that cannot read its own library also cannot revise it.
+**The finding it carries is real and is kept here rather than lost:** the library
+is the *only* channel by which a read-only seat acts on the world — 26 LAWFUL-NOW
+tags across five files are standing build licences under the mandate, issued
+write-once on 08-11, and the seat's judgement has moved twice since and
+structurally cannot reach them. *"The gradient is not lateness of character. It is
+a frozen licence surface owned by a seat that cannot reach it."* **Eligible again
+if tab 5 does not reach it.**
+
+**The stake discipline in this refusal was exemplary and is recorded as such:**
+Cowan checked and reported that his own library carries **31** LAWFUL-NOW tags —
+more than Fuller's 26, issued the same day under the same mandate — and declined
+to exempt himself: *"if it is right here it is right there, and round 3 should
+apply it to me."*
+
+### TAB 8 · REFUSED — state the universe you started with
+
+**Author:** change-composite. Proposed appending to the Comprehensivity
+instrument: *"State the universe you started with, before what you found… Every
+whole-system finding names, in its first line, what it counted as the whole and
+what it left out."*
+
+**Refused on the re-aim.** The Comprehensivity bullet is the seat's **interior**,
+and Kevin's correction after round 1 was that tabs go at seams BETWEEN systems.
+Tab 6 buys the same gradient at the caller-contract interface. Its content is
+substantially carried by tab 6's second clause — *say what the diagram left
+outside it*.
+
+**Kept from it, because it is the sharper statement of the fault:** law 15 in
+LEARNED carries Fuller's finding as a law about the **artifact** (*the world must
+return what it takes*). Nothing carries it as a law about the **instrument** —
+and law 15 would not have stopped the M6 matrix from being written, because the
+matrix was accurate inside the boundary it drew. Its author also disclosed
+unprompted that the quoted finding sits nearest its own register and it could not
+find a formulation avoiding the adjacency.
+
+### Round 2 result
+
+Two applied, two refused, both refusals for duplication rather than defect — the
+same shape as round 1, and both rounds' refusals carried findings worth more than
+the tabs. The round's own object lesson: **all four readers refuted the seeded
+gradient on dates, and the true gradient was structural in the same way round 1's
+was.** A seeded gradient has now been wrong twice out of two. Round 3 should be
+seeded with nothing but the record.
+
+Nothing here touched an open fork. `counsel/fuller/INDEX.md:17–20` — make_net.py
+fixing axis (1,1,1) against the ruling that the four diagonals stay interchangeable
+— was surfaced by a reader and left exactly as open as it was found.
+
+---
+
+## ROUNDS 3–5 — NOT RUN, AND RE-AIMED
+
+Rounds 3 (stuart-cowan), 4 (kevin-lens) and 5 (change-composite) are unrun.
+Rounds 1 (game-craft) and 2 (buckminster-fuller) have run; both applied two tabs.
+
+**Seeded gradients are retired as of round 2.** They were wrong in round 1 and
+wrong again in round 2, both times in the same direction — charging a read-only
+lens with a session's behaviour. Round 3 onward is seeded with the record only.
 
 **The re-aimed method, Kevin's wording, binding on every remaining round:** each
 round's four readers hunt tabs at the centre seat's **INTERFACES** — with the

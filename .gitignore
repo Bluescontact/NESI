@@ -30,6 +30,12 @@ rhythm/.last_brief
 !/tools/gates.py
 !/tools/decisions.py
 !/tools/surface.py
+# The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
+# The trim tabs change how the five seats read and had no version history at all.
+# Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
+!/.claude/
+/.claude/*
+!/.claude/agents/
 !/MARKS_LOG.jsonl
 !/OPEN_GATES.jsonl
 !/DECISIONS_OFFERED.jsonl
