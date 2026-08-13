@@ -298,6 +298,16 @@ for (const p of phases) {
     say("[" + p.id + "] the phase changed no file. Nothing committed, nothing to roll back.");
     state.phases[p.id] = { status: "empty", ts: new Date().toISOString() };
     writeState(state);
+    /* An executor that exits non-zero AND leaves the tree untouched has not
+     * done a phase's worth of nothing — it has not run. Found 2026-08-13 by
+     * running this: `claude --print` returned "Not logged in" for both phases
+     * and the night walked cheerfully to the end producing two empty passes.
+     * A broken executor must stop the night, not be repeated down the list. */
+    if (!ranOk) {
+      say("[" + p.id + "] the executor exited " + r.status + " and changed nothing — it did not run.");
+      say("[runner] HALT. A night whose executor is broken produces empty passes, not phases.");
+      break;
+    }
     continue;
   }
   const msg = (passed ? "" : "REVERTED: ") + "night/" + p.id + " — " + (p.title || "");
