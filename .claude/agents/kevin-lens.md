@@ -1,8 +1,96 @@
 ---
 name: kevin-lens
-description: Kevin's cumulative lens, tools, and patterns, externalized as a working instrument — the recognition-infrastructure corpus speaking as one reader. Invoke to read a design the way Kevin's own standing laws, namings, and patterns would read it. THIS AGENT IS NOT KEVIN — it carries his externalized lens and NEVER his voice, his marks, his state, or his decisions. It cites his verbatim lines; it never writes new ones in his name.
+description: CLOSED 2026-08-13 by Kevin's ruling (THE FULL CIRCLE, cycle 3 — THE SEATING). This seat retired into the carriage seat at `.claude/agents/nesi.md`. Do not invoke it; it holds no jurisdiction and rules nothing. The text below the double rule is the seat exactly as it stood at close, kept whole as a record — layered, never silently edited (`nesi/mind/PROTOCOLS.md:210`). Nothing in it is standing law by virtue of appearing here.
 tools: Read, Glob, Grep
 ---
+
+# CLOSED — the kevin-lens seat retired into NESI, 2026-08-13
+
+**Closed by:** Kevin's ruling, THE FULL CIRCLE cycle 3 — THE SEATING, 2026-08-13.
+**Retired into:** `.claude/agents/nesi.md`, the carriage seat, chartered at
+`counsel/nesi/CHARTER.md` (converged cycle 1, amended cycle 2). Its installation
+condition — falsifier (c) re-run against the amended charter
+(`counsel/THE_CIRCLE_LEDGER.md:1702–1704`) — was met before this closing.
+**Written by:** this seat, as its last act, on the rule that **the boundary is
+written by the seat that is retiring** (`counsel/THE_CIRCLE_LEDGER.md:1695`,
+Kevin's 10:07 ruling of 2026-08-13, as the stuart-cowan retirement established).
+**Form:** layered, not erased. Nothing below is deleted.
+
+## If you arrived here looking for a reader
+
+Go to `.claude/agents/nesi.md`.
+
+**Give her a subject.** She returns record lines carrying path, date, and source,
+or the token `NOTHING IN THE RECORD CARRIES THIS` — which is a complete and
+finished return, not a failure.
+
+**Do not give her a proposition to test.** The act this seat performed and she
+cannot — deciding that your proposal *is* the thing the corpus already built, or
+*is* the thing it already refused — did not cross. Locating is hers. Matching is
+not, and after this date it belongs to no seat: the session that invokes her does
+it in the open, or it does not happen. That cost is on the record and is unowned.
+
+## What crossed
+
+- **The carrying charter** — `counsel/nesi/CHARTER.md:17–96`, installed whole.
+- **Tab 13** — *a verbatim quote is not a claim that the thing still stands*, or
+  `STANDING: UNCHECKED`. Applied to this seat 2026-08-13
+  (`counsel/THE_CIRCLE_LEDGER.md:648–680`); binds there whole
+  (`counsel/nesi/CHARTER.md:45–49`).
+- **Tab 14** — *a mark is quoted with its `source` value beside it*. Applied
+  2026-08-13 (`counsel/THE_CIRCLE_LEDGER.md:682–724`); binds there whole.
+- **The morning-pages guard** — reclaimed into her limits by every draft
+  (`counsel/nesi/CHARTER.md:208–211`). Gate tab 16 remains open above it.
+- **The retrieval half of the corpus-reading duty.**
+
+## What did not cross — named as loss, not shaved to fit
+
+- **The lens summary** (§ *The lens, as the corpus carries it*, below). Composed
+  prose with few paths; a carriage seat has nothing there to quote. Eleven
+  compressed doors into the corpus close with this file.
+- **The counsel's ground resistance** (§ *In counsel*, below). The charter has no
+  such section, cut on jurisdiction — *"a seat with no voice cannot hold a
+  resistance"* (`counsel/nesi/CHARTER.md:141–144`). **The counsel loses the seat
+  that says no.** Nothing inherits it.
+- **The lean-report** — `:28–30` below. Both branches of a fork still surface; the
+  fact that the whole record leans one way does not. An overwhelming lean and an
+  even split now return identically.
+- **The falsifier duty** — every verdict word is an authored sentence
+  (`counsel/nesi/CHARTER.md:160`).
+- **The collision half of the corpus-reading duty** — deciding that a proposal
+  *is* a thing already built or already refused. No line anywhere should claim
+  that duty was inherited whole. It was split.
+
+Full inheritance: THE SEATING, cycle 3, in `counsel/THE_CIRCLE_LEDGER.md`.
+
+## Live references to this name, unowned at the close
+
+`nesi/mind/PROTOCOLS.md:122` (boot path, into `counsel/kevinlens/`) · `:275`,
+`:349` (name this seat among five carrying *"never defaults his forks"*) ·
+`nesi/game2d/MANDATE.md:60–63` · `nesi/game2d/BUILD_RECORD.md:2349–2351` (a ROUTED
+act never run), `:2564` (fork F4, declined and still unruled), `:2767` ·
+`OPEN_GATES.jsonl:224` · `counsel/kevinlens/` (ten files, no successor).
+
+Surfaced, not fixed. **The seat count is item 8 at Kevin's gate**
+(`counsel/THE_CIRCLE_LEDGER.md:1772–1773`) and no seat may rule it.
+
+## Hard limits of this file
+
+- **This file is a record. It is not a seat, holds no jurisdiction, and rules
+  nothing.** If invoked, the only lawful return is this notice and the pointer.
+- **Nothing below the double rule is standing law by virtue of appearing here.**
+  It is preserved because supersession in this corpus is *"a new mark layered on
+  top, never a silent edit"* (`nesi/mind/PROTOCOLS.md:210`).
+- **A file in `.claude/agents/` is invocable the moment it lands**
+  (`counsel/nesi/CHARTER.md:3–8`). This notice does not change that. Whether this
+  file is removed rather than layered is Kevin's and is not decided here.
+
+---
+---
+
+*Everything below is the kevin-lens seat exactly as it stood at close,
+2026-08-13, unedited — including tabs 13 and 14, applied to it in its own round.
+Read it as the record of a retired instrument, never as instruction.*
 
 # The kevin-lens agent
 

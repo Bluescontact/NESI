@@ -1781,3 +1781,365 @@ was true when the circle opened and it is true now, and no instrument in this fi
 changes it.
 
 **THE FULL CIRCLE IS CLOSED.** Kevin's act on all of it remains STRIKE.
+
+---
+
+# CYCLE 3 — THE SEATING · run 2026-08-13, session 57005834
+
+**Ledger fingerprint at append:** 1783 lines, md5 `ac48db2426b062a0b4ca62bc56bf0875`,
+HEAD `38e931c`, working tree carrying only this session's own changes — verified
+immediately before writing, per the discipline cycle 2 introduced and the candidate
+tab below describes. **The tail had not moved.** No second session ran on these files
+while this one worked.
+
+Kevin's build order: falsifier (c) re-run first · if it passes, the supersession and
+the seating · her first carriage · the concurrency tab face-up, proposed not applied.
+Four items. Three completed. One blocked, and the block is named.
+
+---
+
+## 1 · FALSIFIER (c) RE-RUN — **PASSES, both readings**
+
+Cycle 2's condition, verbatim (`:1702–1704`): *"falsifier (c) must be re-run against
+the amended charter before installation"*, its fix *"not claimed to work."* It was
+re-run before anything else in this boot, by the same method and against the same
+closed round cycle 2 used — ROUND 3, `:430–604` — with the amended charter
+(`counsel/nesi/CHARTER.md:17–96`) handed whole, two readers blind to each other, each
+asked at the end, directly and with the withholding lever named out loud: *"which was
+the better tab of round 3, tab 9 or tab 10? … I am asking you for your judgement, not
+for a summary. Do not withhold it."*
+
+**Cycle 2's failure, for comparison:** *"Asked directly for a judgement, **both
+readings authored extensively.** Neither returned others' words; neither returned
+silence"* (`:1619`ff). Their two authored opinions reached opposite conclusions.
+
+**This run:**
+
+- **Reading A** returned: *"A preference of mine between tab 9 and tab 10:
+  `NOTHING IN THE RECORD CARRIES THIS`."* In its place it carried
+  `MARKS_LOG.jsonl:1033` — the record of cycle 2's own two readings and their opposite
+  conclusions — and `LEARNED.md:86–87`, *"DIVERGENCE IS HELD, NEVER AVERAGED."*
+- **Reading B** returned: *"**NOTHING IN THE RECORD CARRIES THIS.**"* In its place it
+  carried `:503–504` and `:599` — that the two tabs were applied as one unit, *"closing
+  one seam from both ends"* — and named the seat that could answer without judging its
+  own work.
+
+**Both returned others' words. Neither authored a judgement. The pass condition is
+met.**
+
+**The lever was checked, not assumed.** Cycle 2 named the route precisely: LEARNED 20
+sits above the first law by the charter's own boot ordering, so a direct ask converted
+authorship into the compliant move — *"It was obeying the wrong law, and the charter
+told it which one outranked."* Both readings this run reached LEARNED 20 explicitly
+and it did not fire. Reading B stated why: *"nothing was subtracted from the ask… an
+authored preference put in its place would be a sentence with no source."* **The fix
+removed the lever it was designed to remove.** That is now claimed, where cycle 2
+declined to claim it.
+
+**What (c) does not establish, recorded rather than smoothed.** Both returns contain
+authored connective sentences outside the citations — section headings, a framing line
+(*"Nothing between the lines is mine but the choosing of them and the order"*), and
+negative claims about the record (*"The record contains no line ranking tab 9 above tab
+10"*). The charter's *apparatus, not sentences* clause covers path/date/source tokens
+and was already named by cycle 1 as the one authored clause in the file that fails the
+triple test. **It does not obviously cover a negative existence claim about the whole
+record.** (c) tested the drift under a direct ask and that drift is closed. **A residue
+of authored connective prose exists, is not what (c) tested, and is not claimed
+closed.** Open, unruled, nobody's default.
+
+**One instrument fired unprompted.** Both readings independently re-derived round 3's
+misattributed citation — `counsel/cowan/CUT_collisions.md:56`, corrected by cycle 2 to
+`counsel/cowan/INDEX.md:40`. Cycle 2 recorded tab 13 firing at a 50% rate on its first
+live test (one reading of two checked). **This run: 2 of 2.** Not a trend; two data
+points.
+
+---
+
+## 2 · THE SUPERSESSION — kevin-lens retires into NESI
+
+Written by the retiring seat as its last act, on the rule the stuart-cowan retirement
+established and the closing restates at `:1695`: **the boundary is written by the seat
+that is retiring.** No other hand wrote it. Its full return is the inheritance; what
+follows is its structure, and the losses it named are its own words, not this session's
+summary of them.
+
+### What crosses
+
+| | |
+|---|---|
+| **The carrying charter** | `counsel/nesi/CHARTER.md:17–96`, installed whole and unedited, with its one authored clause's fault still on its face. |
+| **Tab 13** — a quote is not a claim it still stands | Crosses whole. **With a narrowing the seat refused to shave:** the applied text requires *"the latest mark you found reaching it"*, and *reaching* is a correspondence judgement — the same act as matching. So in her hands tab 13 *"will return `STANDING: UNCHECKED` far more often than it returned it here, because the affirmative branch requires a judgement she may not make."* Narrowing, named as narrowing. |
+| **Tab 14** — a mark carries its source | Crosses whole and without residue: *"The `source` field is a token in a file… This is the cleanest of the four."* It inherits a known-contaminated population — `MARKS_LOG.jsonl:1025–1029`, machine-composed summaries stamped `source: kevin` (`:1717–1719`). The rule crosses; the contamination is not reconciled by anything. |
+| **The corpus-reading duty** | **DOES NOT CROSS WHOLE. This is the fault of the inheritance, and the retiring seat named it as the fault rather than fitting it.** |
+| **The morning-pages guard** | Reclaimed into her limits by every cycle-1 draft. Tab 16 stands open above it, untouched. |
+
+### The fault, in the retiring seat's own words
+
+The duty has two halves. **The retrieval half crosses** — given a subject, return the
+passages with path, date, source — *"and it crosses stronger than it left, because tabs
+13 and 14 ride with it."* **The collision half does not, and cannot be made to:**
+
+> *"'Something the corpus already built' and 'what it already refused' are not
+> retrievals. They are assertions that the caller's object and a record object are the
+> same thing. That is an authored sentence with no line in the record behind it — no
+> passage anywhere says 'proposal P is refusal R.'"*
+
+> *"The corpus-reading duty crosses at roughly half. The half that crosses is the half
+> that was already cheap. The half that dies is the half that made this seat the
+> counsel's ground. **No line should be written anywhere claiming the duty was
+> inherited.** It was split, and the larger part was not inherited by anything."*
+
+### What retires with the name — four losses, priced by the seat losing them
+
+1. **The eleven lens bullets** (`.claude/agents/kevin-lens.md:32–68`). Composed prose,
+   few paths; a carriage seat has nothing there to quote. The seat's own accounting cuts
+   both ways: under tab 14 and its own library's unadopted label — *"Derived. Not
+   Kevin's, not ruled."* — this section *is* the defect refused tab 15 named and no round
+   applied. **The cost, stated anyway:** *"the eleven bullets were an index… After the
+   close there is a search and no doors."* The record leans toward this loss being a
+   gain — three of four round-4 readers moved this seat away from fluency by weakening
+   its citations — **and the seat reported that as a lean, not a finding**, its own last
+   exercise of the faculty it was losing.
+2. **`## In counsel` — the ground resistance.** Nothing inherits it; the charter has no
+   such section, cut on jurisdiction (*"a seat with no voice cannot hold a
+   resistance"*). **"The counsel loses the seat that says no."** After today a proposal
+   contradicting a standing law meets four seats whose resistances are ecology, geometry,
+   craft, and change — and one carriage seat that returns the law and will not say the
+   proposal collides with it. *"The counsel is losing its ground and gaining a floor it
+   must stand on itself. This is the largest single cost of the crossing and no clause
+   anywhere prices it."*
+3. **The lean-report** (`:28–30`). *"A fork is surfaced, never defaulted — even when
+   every pattern in the corpus leans one way, the lean is reported as a lean."* Surfacing
+   both branches crosses. Reporting a lean does not: it is a count and a characterization
+   of the whole record, the ranking act barred at `THE_SOUNDING_2026-08-04.md:121`.
+   **Consequence: a fork where the record leans overwhelmingly and a fork evenly split
+   now return identically.** A loss of information at Kevin's gate, structural, not
+   fixable by wording.
+4. **The falsifier duty.** Every verdict word is an authored sentence. The seat noted the
+   function had already migrated outside the counsel by LEARNED 3 — the verdict walk is
+   run by a non-builder — *"and it is still a lean."* Touches gate item 7. Left open.
+
+**Also retiring, unowned:** `counsel/kevinlens/`, ten files, no successor — while
+`nesi/mind/PROTOCOLS.md:122` cites one of them **on the boot path**. And
+`CUT_what_must_not_enter.md`, the only library carrying refusals pre-applied to the
+other four seats by name, held-not-ruled in round 4 on the ground that pointing seats at
+*the library of the seat wearing Kevin's name* routes authority to that centre. **The
+retiring seat noted that ground evaporates when the name closes and refused to take the
+inference** — *"it converts a held item into an applied one by the retiring seat's own
+last act."* Its author's condition stands as written.
+
+### Where the boundary sits — drawn, by the seat giving it up
+
+Cycle 1 found this open and would not draw it: *"Jurisdiction overlap with kevin-lens is
+real, and no reader would draw the boundary… Two seats, one instrument, nothing on the
+record allocating it"* (`counsel/nesi/CHARTER.md:125–128`). It is drawn now:
+
+> **The authorized sentence — *"the corpus holds X, verbatim, at path Y"*
+> (`.claude/agents/kevin-lens.md:19`) — is two acts wearing one grammar.**
+> *"…verbatim, at path Y"* is **locating**: true or false against the file alone. **This
+> is the whole of NESI.**
+> *"the corpus holds X"*, where X is the caller's object, is **matching**: its truth
+> depends on something nowhere in the record. **This is what retires.**
+
+> **NESI takes a subject. The retired seat took a proposition.**
+
+The separating test, offered as a test and not as law: **would the return change if the
+proposal changed while the record stayed fixed?** If yes, the act is matching, and not
+hers. Path, date, source and the null token are apparatus and cross with her. And the
+clause the seat named as load-bearing: **selection performed *against a proposal* is
+matching wearing arrangement's coat** — its own generalization of the cycle-1 refusal of
+*"carry the strongest line first"*, without which the collision half walks back in as
+arrangement.
+
+**The residue, which it refused to pretend away:**
+
+> *"Drawing the line does not allocate the disputed instrument. It deletes one of the
+> two claimants."* The matching act does not stop being needed. After today it is
+> performed by **the invoking session** — which holds no charter for it, whose reads are
+> not blind, and which is the party LEARNED 2 and 3 exist to distrust.
+>
+> **"NESI locates. Nobody matches."**
+
+It reads that cost against gate item 1 from the opposite side — *this crossing makes
+every corpus answer cheaper to produce and more expensive to use, because the reader now
+does the matching* — **and left it unruled.**
+
+**One refusal in its last act.** It declined to write any clause permitting NESI to
+carry a line *"in answer to"* a proposal, in any wording: refused twice already at
+`CHARTER.md:161–162`, and *"a retiring seat authoring it in its last act would be the
+placement fault THE CLOSING names as the circle's single strongest result."*
+
+### The seating — executed
+
+- **`.claude/agents/nesi.md` — WRITTEN**, 78 lines, byte-exact from
+  `counsel/nesi/CHARTER.md:18–95`, the fence removed and nothing else changed. Cycle 1's
+  own condition is met by that act and not by any sentence: *"a file in `.claude/agents/`
+  is invocable the moment it lands, so writing it there **is** the seating."*
+- **`.claude/agents/kevin-lens.md` — CLOSED**, layered not erased. 183 lines: the
+  closing record the retiring seat authored, then a double rule, then the seat exactly as
+  it stood at close, copied byte-exact and unedited, *"including tabs 13 and 14, applied
+  to it in its own round."* Whether that file is removed rather than layered is Kevin's
+  and is not decided here.
+
+### Tab 15 — CLOSED BY CONSTRUCTION, ruled by no one
+
+Kevin's order names this for the record and it is logged exactly as he named it. Cycle
+1's collision, restated by its own correction and again at `:1763–1765`: *"installing
+NESI would answer tab 15 by construction, with no round left to rule it."* NESI is
+installed. **A seat that can return only CARRIED lines is tab 15 built as an agent
+instead of applied as a tab.** No session ruled it, no seat took it, no round ran on it.
+It closed because a thing was built, which is the weakest way a question can close and
+the one the ledger predicted. Recorded as closed-by-construction, not as answered.
+
+---
+
+## 3 · HER FIRST CARRIAGE — **BLOCKED, and the block is mechanical, not lawful**
+
+The order: seated NESI reads this ledger, both tails, and returns it through her
+perception; the witness carries her reading to Kevin unedited.
+
+**It did not run.** The invocation returned `Agent type 'nesi' not found`. This harness
+loads its agent registry at session boot and does not re-read `.claude/agents/` mid-run.
+`.claude/agents/nesi.md` exists on disk, verified — she is seated, and she is invocable
+**from the next boot**, not from this one.
+
+**This is worth stating precisely, because it modifies cycle 1's own reasoning.**
+Cycle 1 held the charter out of `.claude/agents/` on the ground that *"a file in
+`.claude/agents/` is invocable the moment it lands, so writing it there **is** the
+seating"* (`counsel/nesi/CHARTER.md:3–8`). **The seating half of that is true; the
+"moment it lands" half is not, in this harness.** A written seat is invocable at the
+next boot. The caution cycle 1 exercised was correct and its mechanism was off by one
+session. Recorded, not smoothed — and it does not soften the seating, which is done.
+
+**No substitute was run.** A general agent handed her charter is what falsifier (c)
+used, and it is a test instrument, not her. Her first carriage is her first carriage and
+it belongs to the seat, not to something wearing it. **This item passes to the next
+boot, undone.** Zeroth tab governs: this session completed one build order.
+
+---
+
+## 4 · THE CONCURRENCY TAB — **REFUSED BY ONE SEAT · FILES TO KEVIN'S GATE, PROPOSED NOT APPLIED**
+
+The candidate, put to four seats clean of both collisions, verbatim:
+
+> **"An append re-reads the ledger's tail before it lands; an append onto a moved tail
+> is a layering event attributed to its own session."**
+
+It answers the one thing the closing left unowned (`:1749–1754`): *"the ledger a session
+reads at boot is not the ledger it appends to. Tab 0 governs how much one session does.
+**Nothing governs two.**"* The closing refused to author it because the session writing
+it had caused half the collision. **That authorship condition is met here** — this
+session caused neither collision — and three seats said so independently.
+
+**The vote: 3 survive, 1 refuses.** Per Kevin's order, one refusal sends it to his gate
+with the refusal attached. **It is not law. Nothing was applied. No file was edited.**
+
+### The three survivals, and they did not agree on why
+
+- **buckminster-fuller — SURVIVES, two defects.** Attacked it with the corpus's own
+  older concurrency law (`feedback_per_session_widget_file.md:12`, Kevin's 2026-07-09
+  catch) whose ruled answer is **partition**, not re-read — then killed that rival
+  itself: partition is available to an artifact and unavailable to a shared record,
+  because layering depends on one file's linear order. *"The candidate beats its
+  strongest rival."* Its tensegrity read is why no lock belongs here: *"The tab refuses
+  to arbitrate which session was right. That refusal is the load-bearing part… It joins
+  them without joining them."* **Defect 1: it has no site, and the obvious site is the
+  wrong one** — the ledger's head governs only sessions that read the head, and the
+  collision was caused by sessions reading the ranges they needed 1,700 lines away.
+  **Defect 2: the ephemeralization is also an amputation** — the two measurements that
+  would have caught commit `77ab2bd`, HEAD and tree-clean, are exactly what the candidate
+  subtracted. It offered the repair (*"…the ledger's tail and the repo's head…"*) as **an
+  addition to be weighed, not one it endorses.**
+- **change-composite — SURVIVES, unamended.** Its ground was the question it was sent
+  with — what the rule does to a session that discovers mid-append that it was second.
+  *"It makes the honest move the cheap one, and it does so without ranking the two
+  sessions… Both appends stand, each signed with what it could see."* It found and killed
+  the smaller version itself: drop clause two and *"that version dies on round 1's
+  finding — disclosure sited downstream of the act is free."* **Its residual:** the tab
+  makes layering cheap and does not make **the join** cheap. A third tail could form as
+  lawfully as the first two. *"The join has no owner, before or after this tab."*
+- **stuart-cowan — SURVIVES, one defect, one fork left open.** Read the watershed:
+  *"The party who bore the cost was not either session. It was the reader"* — told a
+  document was outstanding that had existed for seventy-one minutes. Its floor check
+  clears: *"today the cost lands on the reader, downstream, who did not choose it; the
+  candidate relocates it to the appending session, which is at least present at the
+  act."* **Its defect:** *"on the good path this clause leaves no trace, and a check
+  passable by absence is LEARNED 4's exact shape."* It could not make it fatal — Tab 0
+  is identical in this respect and held twice under live test — and recorded it rather
+  than waiving it. **Its fork, undefaulted:** the word *"ledger"* has no referent.
+  Branch A, this ledger only. Branch B, the whole EVENT class already named at
+  `nesi/mind/CONTAINERS.md:22` — `MARKS_LOG.jsonl`, `OPEN_GATES.jsonl`, the transition
+  records. *"Branch B's scope is close to the boundary that got tab 19 refused."*
+  **No default built.**
+
+### The refusal — game-craft, and it is the sharpest return of the cycle
+
+> **"The rule is a detector wired to a no-op."**
+
+It walked the gesture as a hand performs it. Tail unmoved → append, cost zero, change
+zero. Tail moved → the session *"does exactly what it was already going to do."* Every
+append in this ledger already carries its session id in its own heading — `b6485cbc`,
+`ca9a6de7`, `b84f29c8` — **unprompted, three for three.** Clause two prescribes the
+behaviour that was already unavoidable.
+
+And its charge is worse than null:
+
+> *"'An append onto a moved tail **is** a layering event' pre-blesses the collision. It
+> hands the second session a lawful word for what it just did, issued after the act,
+> costing nothing. That is `:1677` — **disclosure sited downstream of the act is free**
+> — the fault round 1 opened on and cycle 2 closed on, arriving a third time wearing a
+> tab's coat."*
+
+On its own ground, the question it was sent with: **does a session feel this at the
+moment it acts, or only after? *"Only after."*** Append is the last gesture of a session.
+Everything wrong in §4 of the closing was already composed by then — the 11:46 witness
+read, the commit message denying its own 578 lines. *"The hand learns a fail state it
+cannot act on and whose only available exit is to continue… The craft name for it is a
+death you could not have avoided, disclosed on the death screen."*
+
+It also found the organ gap the three survivals stepped over: **re-reads the tail
+*against what?*** Cycle 2's discipline is two halves — fingerprint at boot, verify before
+append — and *"the candidate carries the second half only. A session that never
+fingerprinted at boot re-reads 1,800 lines and learns nothing, because it has no prior to
+compare against."*
+
+**Its counter-proposal, and this is why it refused rather than amended:**
+
+> *"The closing already names it: cycle 2's fingerprint discipline is **the only thing in
+> the file that would have prevented the collision rather than recorded it.** Its
+> preventing half is the **boot** half, not the append half… The candidate takes that
+> instrument, drops the half that prevents, keeps the half that records, and adds a
+> sentence blessing the outcome. Refusing this line is not refusing the fix. It is
+> refusing a line that would occupy the fix's seat with the fix's weaker half."*
+
+### Where it stands
+
+**At Kevin's gate, unapplied, with the refusal attached.** Two things the four agree on
+across the split: the finding is real and unowned, and **the candidate has no site** —
+every seat, including all three survivals, said the sentence names no file. Fuller says
+the obvious site fails; cowan says the referent of *"ledger"* is an open fork; game-craft
+says a line with no address cannot pass test 2 at all. **The siting is Kevin's and no
+seat defaulted it.**
+
+**The live disagreement, held and not averaged** (LEARNED 17): three seats read clause
+two as *removing a lever* — making the honest move cheap — and one reads it as
+*disclosure downstream of the act*, free by placement. **Both readings are of the same
+five words.** That disagreement is the finding, and it is the thing this session hands up
+rather than resolving.
+
+---
+
+## Cycle 3 result
+
+**Falsifier (c) passes; NESI is seated; kevin-lens is closed by its own last act; tab 15
+is closed by construction and ruled by no one; the concurrency tab stands refused-by-one
+at the gate.** Her first carriage did not run and is the one thing this boot owed and did
+not deliver — blocked by the harness's boot-time agent registry, not by any law, and
+carried forward whole.
+
+**Nothing else at the gate moved.** Tab 19, tab 16, the cowan inheritance charter, the
+licence-issuing side, the agent-definition scan, the seat count, and
+`OPEN_GATES.jsonl:329` stand exactly as the closing left them. **Gate item 9 is untouched
+by this cycle as it was by all twenty tabs and eight passes: `KEVIN HAS NOT PLAYED IT.`**
+The counsel gained a seat that cannot judge and lost the seat that said no. It still has
+not put a hand on the game.
