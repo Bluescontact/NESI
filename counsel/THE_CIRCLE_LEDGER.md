@@ -427,9 +427,187 @@ fixing axis (1,1,1) against the ruling that the four diagonals stay interchangea
 
 ---
 
-## ROUNDS 3–5 — NOT RUN, AND RE-AIMED
+## ROUND 3 — stuart-cowan at the centre · run 2026-08-13, unseeded
 
-Rounds 3 (stuart-cowan), 4 (kevin-lens) and 5 (change-composite) are unrun.
+Readers: game-craft · buckminster-fuller · kevin-lens · change-composite, blind
+to each other. **The first round run with no seeded gradient** — the record only.
+Four tabs returned, two applied, two refused.
+
+### The gradient, derived rather than supplied
+
+Three of the four converged on the same reading, and it is not a temperament:
+**this seat's characteristic act is SUBTRACTION, and subtraction leaves no
+artifact a later session can trip over.** The corpus's single *executed* Cowan
+instrument is Kevin's 08-11 trim tab — MARKS 907, verbatim: *"run the trim tab -
+file the ledger as existing (sounding + ambient allowed-list); source reading
+section 10 superseded."* One annotation dissolved the source reading's whole
+build queue. The reference-shelf return is the same shape at scale: ~200
+propositions in, nine already built under other names, four crossing as
+nutrients, the rest barred — *"the shelf's real gift is §3, not §4."* A lens
+whose output is *nothing needs building* produces nothing anyone later stumbles
+over, which is exactly why its own material composted silently through two days
+of heavy traffic.
+
+The record shows no lateness signature and no run-ahead signature. It shows five
+acts, every one a siting or a dating: round 1's finding of the round (*disclosure
+sited downstream of the act is free — a placement property, not a disposition*),
+applied tab 2 (relocating a sentence the seat already writes), refused tab 7 (a
+date on existing tags), the 08-11 annotation, and the dated falsifier now carried
+as LEARNED 18. **Its own floor law — nothing that can take something from the
+participant may be invisible at the moment of the choice — has never been run
+against its own licence surface, and cannot be, from inside.**
+
+### TAB 9 · APPLIED — the source of record was compost, and said nothing
+
+**Authors:** change-composite and game-craft, **independently, in the same
+location.** **File:** `.claude/agents/stuart-cowan.md`, the Source of record
+paragraph.
+
+> **That document was composted on 2026-08-11 by Kevin's own trim-tab mark
+> (`MARKS_LOG.jsonl:907`, §2.2 and §10 annotated); what stands in its place is
+> your own library — read `counsel/cowan/INDEX.md` at boot and cite it, not
+> Downloads.**
+
+**Why this is worse than the seam tab 5 closed, and both readers said so.** The
+Fuller seat had *no* pointer to its library. This seat has one pointer, and it
+aims at a path in `Downloads` — outside the repo, outside git, in the one folder
+on this machine that gets cleared — with a live instruction to *arbitrate against
+it out loud*. The agent file was written on the morning of 08-11 under MARKS 905;
+Kevin composted that document the same day; the library that superseded it was
+populated at 19:20 under MARKS 942. **Nothing amends an agent definition when its
+cited source composts** — there is no organ for it, and `RETIRED.jsonl` /
+`dead_check.py` watch laws, not agent citations. Grep confirms `counsel/cowan`
+appears in MARKS_LOG, OPEN_GATES, BUILD_RECORD and four sibling libraries, and in
+**zero** boot-path files.
+
+Deliberately not a clone of tab 5: tab 5 added a pointer where there was none;
+this one retires a live wrong pointer, and the redirect is the second half of the
+same sentence, because a supersession with no successor named is a hole.
+
+*(Checked before applying, and it is why the wording says "cite it, not
+Downloads" rather than declaring the file a phantom: kevin-lens read the
+Downloads file, found it present with its supersessions annotated inside it at
+§2.2 and §10, and cleared it as not a phantom authority. The tab retires it as
+the seat's source of record, not as a nonexistent file.)*
+
+### TAB 10 · APPLIED — a licence is spent with its date beside it
+
+**Author:** buckminster-fuller. **Seam:** `counsel/<seat>/*.md` (issuance) ×
+PROTOCOLS' counsel mandate (spending). **File:** `nesi/mind/PROTOCOLS.md`, the
+mandate's "What this authorizes" paragraph.
+
+> **A LAWFUL-NOW tag is spent with the date it was issued written beside it** —
+> the date of the library file it sits in, on the same line as the citation,
+> before the build. It is a licence with a date on it, not a standing fact.
+
+**Why both halves were needed.** Tab 9 closes the *issuer's* half: the seat can
+now reach what it issued. This closes the *consumer's* half, which the pointer
+does not touch — under the mandate a build agent may act on any LAWFUL-NOW tag
+*"without pausing to ask first"*, and typically never invokes the seat at all.
+kevin-lens named this same gap independently while declining to propose it:
+*"the licence surface is readable by the consumer and unreachable by the
+issuer."* The seam is unowned in three directions at once — the issuing seat is
+`Read, Glob, Grep` and cannot revise a tag; the mandate's word *"already"*
+carries no tense; and nothing in the boot path reads a tag's age.
+
+**Gradient.** Writing the date is ten characters and halts nothing — spending an
+old licence stays fully permitted, so LEARNED 20 holds. What is destroyed is the
+*silent* currency of a pre-rejection licence.
+
+**It resurrects refused tab 7 in the correct location, and fixes its error.**
+Tab 7 would have stamped *"every tag in this library was issued 2026-08-11"* on
+the library — and that sentence is **false for 5 of Cowan's tags**, which live in
+`READ_reference_shelf_2026-08-12.md`, dated 08-12. The date belongs at the
+citation, not on the library. Fuller's stake note stands as written: this burdens
+`counsel/fuller/`'s own tags on identical terms.
+
+### TAB 11 · REFUSED — the boot pointer, second copy
+
+**Author:** game-craft. Proposed the same redirect as tab 9, in the same
+paragraph of the same file, with the library's contents enumerated. **Refused as
+the duplicate of an applied tab, not as a defect** — two readers finding the same
+seam blind is the round's strongest signal, and it is recorded as convergence
+rather than as one tab beating another.
+
+**Kept from it, and it sharpens tab 7's obituary:** *"the library is not frozen —
+it is appended by other sessions and read by none of its seat, which is a
+strictly worse shape than frozen."* Also its distribution finding: Cowan's tags
+concentrate in `SHAPE_mechanisms_and_systems.md` (12), not the dream file — the
+reverse of Fuller's case.
+
+### TAB 12 · REFUSED — the trim tab as a complete return
+
+**Author:** kevin-lens. Proposed appending to the YAML `description:` scalar:
+*"A lawful return may be a single trim tab — the smallest intervention with the
+largest downstream effect — and it may subtract work rather than add it."*
+
+**Refused on smallest-version and on axis.** Two tabs were already the round's
+cap, and the two applied close a single seam from its two ends, which is a
+cleaner unit than three tabs on two axes. **The finding it carries is real and is
+kept here in full, because it is the sharpest statement of what this seat costs
+the corpus:** the scalar's advertised return list is *"layers, filters fired,
+nutrients named, and forks held open"* — four enumerations — and the **trim tab
+is not on it**, though it is item 5 of the seat's own seven-step procedure, one
+of its five named instruments, and the only Cowan instrument ever executed. Grep
+across `.claude/agents/`: "trim tab" appears in Fuller's scalar and **only in
+Cowan's line 157**, so a session shopping the scalars for *who finds the smallest
+intervention* is routed to Fuller. *"Subtraction with excellent paperwork is
+currently what the scalar literally advertises: four kinds of paperwork, and the
+metabolic deliverable absent from the menu."* **Eligible in a later round with no
+argument needed.**
+
+### Three corrections to this ledger, from the readers
+
+1. **"31 LAWFUL-NOW tags" is an occurrence count, not a tag count.** Verified two
+   ways: 31 occurrences across five files in `counsel/cowan/`, but 2 are summary
+   prose in INDEX and one is the status *legend*. The real standing-licence
+   surface is roughly **28**, and Fuller's "26" is the same kind of count. The
+   substance of round 2's refusal — *a licence surface owned by a seat that
+   cannot reach it* — survives intact; the number does not.
+2. **Round 2's "issued write-once on 08-11" is wrong for this library.** Five of
+   Cowan's tags are dated 08-12. The library is appended by other sessions and
+   read by none of its seat.
+3. **The library disagrees with itself:** `DREAM_developmental_ideas.md` carries
+   8 status tags against INDEX's own summary of 7.
+
+### Held, not ruled — the seat's own standing is contested in the record
+
+Two readers found this independently and both declined to settle it. **MARKS 940,
+2026-08-11T19:15, Kevin's mark: "replace the cowan SEAT with a composite agent
+spanning executive and social change."** `OPEN_GATES.jsonl:224`, written five
+minutes later, lists the four counsel seats as change-composite / fuller /
+game-craft / kevin-lens — **with no Cowan.** Five minutes after *that*, MARKS 942
+populated a Cowan library calling itself *"the seat's preparation for the counsel
+of four"*; the 08-12 metabolize names stuart-cowan among the readers;
+`PROTOCOLS.md` now lists all five side by side; and this circle just seated it at
+the centre for a full round. **The record holds this lens as both replaced and
+consulted, and nothing reconciles the two.** Whether MARKS 940 was executed as a
+replacement, an addition, or was superseded is nowhere on the record.
+
+change-composite refused to tab this seam on stake grounds and said why, and the
+reasoning is worth keeping: *"any line I wrote at that seam would define the
+boundary between the seat I hold and the seat I replaced — jurisdiction-enlarging
+by construction, whichever way it read."* **Kevin's to rule. Untouched.**
+
+Also left open exactly as found: `counsel/cowan/CUT_collisions.md:56` —
+channel-latency vs law 2, *"Cowan's best instrument is one step from the spire
+comparison the law bars even as a stub"* — and the ten in-library falsifiers that
+**no organ reads**, which is round 2's finding one seat over, aggravated here
+because the watch condition *is* the output.
+
+### Round 3 result
+
+Two applied, closing one seam from both ends. Two refused — one as convergence,
+one held for a later round with its finding intact. **The unseeded round produced
+the most exact reading of the three:** three corrections to this ledger, one
+contested-standing finding neither earlier round could have surfaced, and no
+reader spent its first move refuting a summary.
+
+---
+
+## ROUNDS 4–5 — NOT RUN, AND RE-AIMED
+
+Rounds 4 (kevin-lens) and 5 (change-composite) are unrun.
 Rounds 1 (game-craft) and 2 (buckminster-fuller) have run; both applied two tabs.
 
 **Seeded gradients are retired as of round 2.** They were wrong in round 1 and

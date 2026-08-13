@@ -290,7 +290,13 @@ LAWFUL-NOW in a counsel library (`counsel/<seat>/*.md`) or already directly
 authorized by one of Kevin's own marks (e.g. the 2026-08-11 mark to wire the
 retired-3D salvage cluster) **without pausing to ask first.** The ask-first
 manifest step that governed every heavy operation earlier in this session is
-lifted specifically for this class of already-cleared work.
+lifted specifically for this class of already-cleared work. **A LAWFUL-NOW tag
+is spent with the date it was issued written beside it** — the date of the
+library file it sits in, on the same line as the citation, before the build. It
+is a licence with a date on it, not a standing fact. *(THE FULL CIRCLE round 3,
+2026-08-13: the tags are issued by seats whose tools are `Read, Glob, Grep` and
+who therefore cannot revise them; ~28 of them across two libraries were issued
+2026-08-11/12, before the build of 08-12/13 and before Kevin rejected it.)*
 
 **What this does not authorize, and never will by inference.** Nothing here
 lets any seat or build agent:
