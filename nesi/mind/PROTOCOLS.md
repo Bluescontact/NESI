@@ -121,6 +121,15 @@ what stands finds new form in it. Nothing else is the destination.
   preceded this mark, and the caution around inferring it, is preserved at
   `counsel/kevinlens/SHAPE_nutrients_and_gifts.md` and this session's own
   MARKS_LOG entries — the naming above is his word, not a machine inference.)*
+  *(LAYERED 2026-08-13, session 92c7b392, on Kevin's mark **"run the live
+  pointers"** — not an edit; the line above stands. `counsel/kevinlens/` is the
+  library of the kevin-lens seat, CLOSED 2026-08-13. Ten files, no successor,
+  unowned: `counsel/THE_CIRCLE_LEDGER.md:1922–1923` records it retiring
+  "unowned … while `nesi/mind/PROTOCOLS.md:122` cites one of them **on the boot
+  path**." The pointer is kept because the reading it names is still at that
+  path and is still the provenance of the tetra-menu naming. Nothing inherited
+  the directory, and no session should read a citation into it as a live seat's
+  authority.)*
 
 **READING (1) IS CALLED: THE WORLD IS THE PASSAGE** (Kevin's mark 2026-08-09,
 session 87c5c4fc). The collision reading is dropped. Pattern 4 stands unamended —
@@ -275,7 +284,20 @@ touches DECIDE — the verb-lens table above, all four counsel agents' own hard
 limits (`.claude/agents/{buckminster-fuller,stuart-cowan,game-craft,kevin-lens}.md`),
 the FULL FREEZE's own carve-out — says the same thing: DECIDE is Kevin's hands
 alone, no seat scores him, defaults his forks, or rules in his place. This
-mandate does not repeal that. It answers a narrower, practical question: while
+mandate does not repeal that.
+
+**(LAYERED 2026-08-13, session 92c7b392, on Kevin's mark "run the live
+pointers." The citation above is not edited and its law is untouched — this
+says what its roster means now.)** That four-file list is the bench as it stood
+2026-08-11. Since then: **`kevin-lens` is CLOSED** (2026-08-13, Kevin's ruling,
+THE FULL CIRCLE cycle 3) and rules nothing — its file is kept whole as a record
+and "nothing in it is standing law by virtue of appearing here"
+(`.claude/agents/kevin-lens.md:3`). **`change-composite` was seated 2026-08-11**
+and carries the same hard limit; it was already missing from this list.
+**`nesi` was seated 2026-08-13** and is not in the class at all: she cannot
+default a fork because she cannot author a sentence. The live seats carrying
+the DECIDE bar are therefore **buckminster-fuller · stuart-cowan · game-craft ·
+change-composite**. It answers a narrower, practical question: while
 he is not available to gate every already-lawful build step, does the counsel
 sit idle, or does it keep moving on the ground it has already legitimately
 cleared?
@@ -350,6 +372,16 @@ buckminster-fuller/stuart-cowan/game-craft/kevin-lens/change-composite still
 carries "never defaults his forks" as its own hard limit and will still
 decline to rule if asked directly. They remain lens-readers under this
 amendment; the session converges their reads into a ruling and logs it.
+
+**(LAYERED 2026-08-13, session 92c7b392, Kevin's mark "run the live pointers."
+The amendment above is unedited and still governs.)** Of the five names in that
+sentence, **`kevin-lens` closed 2026-08-13** and is not invocable as a lens; the
+statement "still carries … and will still decline to rule if asked directly"
+was true when written and is no longer true of that seat. The other four still
+carry it as written, and their definition files remain unedited, exactly as the
+amendment says. **`nesi`, seated 2026-08-13, is not a sixth lens**: she returns
+carriage — verbatim quotes with path, date and source — never a read, and a
+blank return is complete. Nothing routes a lens question to her.
 
 **What still escalates to Kevin, unchanged:** anything touching his
 sovereignty, his body, or a gift for his mark at the gate — same three

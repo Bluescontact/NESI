@@ -56,3 +56,6 @@ rhythm/.last_brief
 
 # Cold-walk artifacts are regenerated per run with a fresh store key (2026-08-12)
 nesi/game2d/coldwalk/
+
+# the runner's own night scratch (run copies, state, the morning walk)
+nesi/game2d/.night/

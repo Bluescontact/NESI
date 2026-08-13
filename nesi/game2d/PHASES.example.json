@@ -1,0 +1,33 @@
+{
+  "_what_this_is": "AN EXAMPLE OF THE SHAPE, NOT A CHOSEN PATH. Written 2026-08-13 alongside tools/runner.js so the file format is legible without a document. The counsel split two-two on what six phases should be about — fuller and change-composite would build MANIFEST 2 (the night); game-craft and stuart-cowan would not go above the fun slice until it has been wanted on two lived days. That fork is Kevin's and nothing here resolves it. The two phases below are the shape, both drawn from the branch that touches no game direction beyond an affordance already found twice.",
+
+  "_the_fields": {
+    "id": "short, unique. The runner refuses a phase whose cost_of_no names another id.",
+    "title": "one line, for the commit and the morning receipt.",
+    "cites": "S3, THE VISION SEAM: file + line of the articulation passage this serves. The runner opens the file and reads the line. Unresolvable or empty = the whole run is BLOCKED, not minimized.",
+    "cost_of_no": "cowan's line, declared BEFORE it builds: what a NO on this phase costs. If it names another phase, this is a rung and does not belong in an unattended run.",
+    "order": "the build instruction, given to the executor verbatim. It may not ask the night to decide, choose, resolve or rule — a night that spends a fork bills the morning.",
+    "checks": "presence-asserting checks in tools/. Must be non-empty: a phase with no checks cannot pass, because a blank screen passes every refusal."
+  },
+
+  "executor": "claude --print",
+
+  "phases": [
+    {
+      "id": "sounding-handle",
+      "title": "the sounding gets the affordance every other object already has",
+      "cites": { "file": "counsel/reference/NESI_VISION_as_it_stands.md", "line": 14 },
+      "cost_of_no": "one cursor state on settled deposits. Nothing else in the world moves, and reverting it is one commit.",
+      "order": "In nesi/game2d/world.html, hover() at line 995 tests stones, the dam gate, the mirror seats and fruit. It does not test S.settled, so the one act that returns his own sentence to him is the only interactive object in the world whose cursor never changes. Add the settled-deposit branch to hover() so the cursor answers over a settled deposit exactly as it does over a stone. Change nothing else: no new text, no label, no hint, no message. The mark's drawn size is a separate matter and is not part of this phase. Verify with node tools/reach_check.js and node tools/refusal_check.js.",
+      "checks": ["reach_check.js", "refusal_check.js", "hold_check.js"]
+    },
+    {
+      "id": "night-check-presence",
+      "title": "the night check asserts presence instead of passing on absence",
+      "cites": { "file": "nesi/game2d/THE_GAME.md", "line": 33 },
+      "cost_of_no": "one check file is left as it was. No game code is touched by this phase at all.",
+      "order": "Read nesi/game2d/tools/night_check.js. For every assertion in it that can be satisfied by something being absent, rewrite that assertion so it must find its subject to pass, and so that failing to find its subject is a FAIL rather than a silent skip. Do not add assertions about anything the file does not already cover, and do not touch world.html. Verify by running node tools/night_check.js before and after and reporting both outputs.",
+      "checks": ["night_check.js", "refusal_check.js"]
+    }
+  ]
+}
