@@ -4662,3 +4662,96 @@ and after, and read the committed state rather than trusting the picture.
 - Store reset to blank and read back clean — stage 0, one seat, nothing fruited.
 
 → **WALKABLE** for the mechanism. The want-check is yours and has not happened.
+
+## MANIFEST 6 · THE CROSSWIRING — everything touches everything (2026-08-13, session fb66285e)
+
+The integration pass. **No new mechanic — only relations**, exactly two of which turned out
+to be missing, and both were ones earlier passes had named and deliberately deferred.
+
+### The two wires M6's own chain names, now built
+
+- **CAST → DEEP.** *"casts whose pulls leave gaps the deep answers."* Pulling a cast now
+  puts what the stand gave up into the deep's queue, and the deep builds with it on a later
+  day. **It carries no word** — a cast never had one; the deep receives the **giving**, not
+  a sentence. *Nothing you release is wasted* now includes the act of releasing.
+- **DEEP → LIGHT.** *"structures that change the light paths."* What the deep built is a
+  solid thing standing at the shoreline, so **it shadows what is behind it.** Held as a
+  per-column top/bottom rather than block-by-block, because aiming a mirror sweeps ~3,140
+  rays and the honest version has to be affordable; columns are contiguous by construction,
+  so the span is exact rather than approximate.
+
+### THE MEMBRANE, at the world's edge
+
+Named, visible, and **closed**. A band at the frame's right edge with a tensioned surface
+that stills with the rest of the world. **A place rather than a feature:** nothing answers
+the hand there, nothing crosses it, nothing behind it is implied or hinted at. **It has no
+hit test anywhere in the file**, and `wire_check` R5 asserts that. The fork about who else
+might ever stand on the other side is **Kevin's, still gated, and not built** — this is the
+seam that fork is about, drawn so that it exists rather than being a blank edge.
+
+### THE AUDIT — every pair, wire or refusal
+
+Eleven systems. **W = a wire that carries · R = a lawful refusal · ↔ = both directions.**
+
+| | soil | weather | water | terrain | light | green | cast | deep | bloom | still |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **writing** | **W** stone→settle | via soil | via weather | via water | R not made of words | via water | via green | **W** sink→queue | via green | **W** typing stirs |
+| **soil** | — | **W** place+seams→rain | via weather | R deposits don't cut | R | R | R | R | via green | R |
+| **weather** | — | — | **W** rain→bodies | **W** rain brings load | R | via water | R | R | R | R |
+| **water** | — | — | — | **W↔** silt/cut ⇄ area tables | R | **W** wet ground | via green | **W** spill feeds it | R | **W** stilling slows settling |
+| **terrain** | — | — | — | — | **W** beam stops on ground | via water | via green | **W** the bed blocks stand on | R | R |
+| **light** | — | — | — | — | — | **W** rooting only under a beam | via green | R | via green | **W** seeding halts when still |
+| **green** | — | — | — | — | — | — | **W** rooted→fruit | **W** *new* | **W** fruit arms it | R |
+| **cast** | — | — | — | — | — | — | — | **W** *new* | via green | R |
+| **deep** | — | — | — | — | — | — | — | — | **W** stacks re-seated | **W** creature rests |
+| **bloom** | **W** carried+re-derived | **W** rebuilt | **W** re-sited | **W** resampled | **W** seats moved | **W** carried | R | **W** re-stacked | — | R |
+
+**Nothing is an island.** Every system reaches every other by some chain a hand can cause.
+The refusals are not gaps: *light is not made of words* · *a settled sentence moves the sky,
+never the ground under it* · *growth does not drink* · *the deep does not touch the weather*
+· *the cast does not reach back into the world it left.*
+
+### `tools/wire_check.js` — 16/16 PASS
+
+M6's walk test is that a chain crosses **every wire in one sitting**. The check walks M6's
+own sentence, link by link, in one accumulating world across seven returns — asserting each
+transition **actually moved the next thing along**. A wire that is merely present in the
+source is not a wire.
+
+| | |
+|---|---|
+| W1 | writing → soil: a sentence set down stays there, verbatim |
+| W2 | soil → weather: settling *and then working* moves the sky both times (mean x 193→244) |
+| W3 | weather → water: the rain the soil shaped raises the water it falls into |
+| W4 | water → terrain: 166 cells silted by rain, 21 cut by the sluice |
+| W5 | terrain → water: the same volume stands **higher** on a silted bed (470.0 → 465.1) |
+| W6 | water + light → green: a beam on wet ground seeds |
+| W7 | light + returns → cast: seven returns hang one |
+| W8 | **cast → deep**: the gap goes down, carrying no word |
+| W9 | deep → shoreline: what you released rose while you were gone |
+| W10 | **deep → light**: a tower stops 77 angles; ground beyond it drops 133 → 97 |
+| W11 | green → bloom: the fruit that ripened is what arms the unfold |
+| R1–R5 | the refusals, asserted as non-effects — including that **no text primitive exists in the file at all**, and that the membrane has no handler |
+
+`boot` 8/8 · `still` 6/6 · `night` 10/10 · `green` 10/10 · `head` 10/10 · `bloom` 12/12 ·
+`refusal_check` PASS (1166 code lines) · `node --check` PASS.
+
+### Walked in the browser
+
+Built a seven-block tower from the deep at the shoreline and aimed a mirror into it: **the
+shaft ends at its face with no warm pool beyond, and the water behind it lies in shadow.**
+The membrane was verified by sampling the canvas rather than by squinting — the sky
+lightens by 25 units at the world's edge and fades to nothing 12px inward.
+
+### The edge
+
+- **The join is now six passes deep and unchanged.** Nobody has closed this world and
+  opened it on a real tomorrow.
+- **The chain was walked by a machine, not a stranger.** M6's walk test says *the stranger
+  walk crosses every wire in one sitting's chain* — `wire_check` proves the chain carries;
+  it does not prove a person can find it. That half is not done and cannot be done here.
+- The drag feel is still machine-driven.
+- Store reset to blank and read back clean.
+
+→ **WALKABLE** for the mechanism. **The ladder's six rungs are built.** What remains is the
+only verdict the ladder ever pointed at, and it is not mine: *do I want tomorrow?*

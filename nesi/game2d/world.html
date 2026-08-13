@@ -212,6 +212,23 @@ M=S.stage;
 if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
 if(!Array.isArray(S.queue))S.queue=[];
 if(!Array.isArray(S.built))S.built=[];
+/* M6 · WIRE — WHAT THE DEEP BUILT STANDS IN THE LIGHT'S WAY.
+   A structure is a solid thing at the shoreline, so it shadows what is behind it.
+   Kept as a per-column top/bottom rather than tested block by block, because
+   aiming a mirror sweeps three thousand rays and the honest version has to be
+   affordable. Columns are contiguous by construction — each block sits on the
+   last — so the span is exact rather than an approximation. */
+const BTOP=new Float32Array(WN), BBOT=new Float32Array(WN);
+function rebuildBlocks(){
+  BTOP.fill(1e9); BBOT.fill(-1e9);
+  for(const b of S.built){
+    const i0=Math.max(0,Math.floor((b.x-b.w/2)/4)), i1=Math.min(WN-1,Math.ceil((b.x+b.w/2)/4));
+    for(let i=i0;i<=i1;i++){
+      if(b.y<BTOP[i])BTOP[i]=b.y;
+      if(b.y+b.h>BBOT[i])BBOT[i]=b.y+b.h;
+    }
+  }
+}
 /* one mirror becomes many, and a save from before M3 keeps its aim */
 if(!Array.isArray(S.settled))S.settled=[];
 if(typeof S.nn!=="number")S.nn=0;
@@ -294,6 +311,7 @@ function theNight(nights){
   }
 }
 theNight(NIGHTS);
+rebuildBlocks();
 
 /* ------------------------------------------------------------------ THE BLOOM
    ALL-OR-NOTHING, per Fuller's invariant: the world does not half-unfold. It
@@ -345,6 +363,7 @@ function commitBloom(){
     for(const o of S.built)if(Math.abs(o.x-bl.x)<30&&o.y<base){base=o.y;col=o}
     bl.x=col?col.x:bl.x; bl.y=base-bl.h; S.built.push(bl);
   }
+  rebuildBlocks();          /* the light must know where they stand now */
   S.creature.x=Math.max(BODIES.lake.x0+30,Math.min(BODIES.lake.x1-30,S.creature.x));
   S.creature.y=Math.min(groundY(S.creature.x)-20,540+40);
   S.creature.tx=S.creature.x; S.creature.ty=S.creature.y;
@@ -642,6 +661,8 @@ function cast(a,si){
     x+=r.x*1.6; y+=r.y*1.6;
     if(x<0||x>W||y>H||y<-40)return {x,y,hit:null};
     if(x>DAM.x0&&x<DAM.x1&&y>DAM.crest&&y<DAM.base)return {x,y,hit:"wall"};
+    const bi=x/4|0;
+    if(bi>=0&&bi<WN&&y>=BTOP[bi]&&y<=BBOT[bi])return {x,y,hit:"wall"};
     const wy=waterYAt(x), gy=groundY(x);
     if(y>=wy&&wy<gy)return {x,y:wy,hit:"water"};
     if(y>=gy)return {x,y:gy,hit:"ground"};
@@ -734,6 +755,12 @@ function pullCast(s){
   /* the stand spends what it grew. it can hang another, across further
      returns, and nothing says so. */
   s.rooted=Math.max(0,s.rooted-0.18);
+  /* M6 · WIRE — THE GAP THE PULL LEAVES GOES TO THE DEEP.
+     What the stand gave up does not evaporate: it goes down with everything else
+     you have released, and the deep builds with it on a later day. It carries no
+     word, because a cast never had one — the deep receives the GIVING, not a
+     sentence. Nothing you release is wasted. */
+  S.queue.push({text:"",x:s.x,seed:(s.s||0)/9});
 }
 
 function light(dt){
@@ -1283,6 +1310,27 @@ function frame(now){
     g.strokeStyle="rgba(255,240,200,.5)"; g.lineWidth=1.2;
     g.beginPath(); g.arc(drag.x,drag.y,fr+7,0,7); g.stroke();
   }
+
+  /* --- THE MEMBRANE, at the world's edge -------------------------------- */
+  /* Named, visible, and CLOSED. A PLACE rather than a feature: nothing here
+     answers the hand, nothing crosses it, and nothing behind it is implied or
+     hinted at. The fork about who else might ever stand on the other side is
+     Kevin's and is not built — this is the seam that fork is about, drawn so
+     that it exists rather than being a blank edge where a wall should be.
+     It has no hit test anywhere in this file, and that is deliberate. */
+  g.save();
+  const mem=g.createLinearGradient(W-26,0,W,0);
+  mem.addColorStop(0,"rgba(214,232,236,0)");
+  mem.addColorStop(0.72,"rgba(214,232,236,.09)");
+  mem.addColorStop(1,"rgba(228,242,246,.20)");
+  g.fillStyle=mem; g.fillRect(W-26,0,26,H);
+  g.strokeStyle="rgba(232,244,246,.30)"; g.lineWidth=1;
+  g.beginPath();
+  for(let y=0;y<=H;y+=6){
+    const xx=W-1.5+Math.sin(y*0.035+t*0.5)*1.1*swell;
+    if(y===0)g.moveTo(xx,y); else g.lineTo(xx,y);
+  }
+  g.stroke(); g.restore();
 
   /* --- the arrival flash: the world is glad, and knows nothing ---------- */
   if(flash>0.01){
