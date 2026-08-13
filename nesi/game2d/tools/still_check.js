@@ -30,10 +30,13 @@ const ctx = new Proxy({}, { get: (_, k) =>
 const el = () => ({ value: "", style: {}, width: 0, height: 0,
   addEventListener: noop, focus: noop, setPointerCapture: noop,
   getContext: () => ctx,
+    appendChild: noop, removeChild: noop, click: noop, href: "", firstChild: null, insertBefore: noop,
+    className: "", textContent: "", scrollTop: 0,
+    classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
   getBoundingClientRect: () => ({ left: 0, top: 0, width: 1000, height: 700 }) });
 
 const sandbox = {
-  document: { getElementById: el, activeElement: null, addEventListener: noop },
+  document: { getElementById: el, createElement: el, createTextNode: () => ({}), activeElement: null, addEventListener: noop },
   localStorage: { getItem: () => null, setItem: noop, removeItem: noop },
   performance: { now: () => clock },
   requestAnimationFrame: cb => { queue.push(cb); return queue.length },

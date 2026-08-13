@@ -31,10 +31,13 @@ function boot(prior) {
   const el = () => ({ value: "", style: {}, width: 0, height: 0,
     addEventListener: noop, focus: noop, setPointerCapture: noop,
     getContext: () => ctx,
+    appendChild: noop, removeChild: noop, click: noop, href: "", firstChild: null, insertBefore: noop,
+    className: "", textContent: "", scrollTop: 0,
+    classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
     getBoundingClientRect: () => ({ left: 0, top: 0, width: 1000, height: 700 }) });
   let clock = 1e6, queue = [];
   const sandbox = {
-    document: { getElementById: el, activeElement: null, addEventListener: noop },
+    document: { getElementById: el, createElement: el, createTextNode: () => ({}), activeElement: null, addEventListener: noop },
     localStorage: { getItem: k => store.get(k) ?? null,
                     setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k) },
     performance: { now: () => clock },
@@ -121,9 +124,13 @@ T("N7 four sunk ALONG the shore stand as a reef, not a tower",
 X = boot(store({ lastDay: dayAgo(1), queue: [{ text: "The lake keeps it.", x: 800, seed: 0.4 }] }));
 X.run(5);
 const kept = X.S.built[0] && X.S.built[0].text === "The lake keeps it.";
-const drawsText = /fillText|strokeText/.test(SRC);
-T("N8 the sentence rides inside the block, verbatim, and nothing can draw it",
-  kept && !drawsText, kept ? "carried verbatim; no text primitive in the file" : "LOST");
+/* the deep's work is recognizable in SHAPE and never in words — so a block's own
+   text must be reachable by nothing. `own()` resolves only the page and the soil;
+   there is no path from a built block to the screen. */
+const blockReadable = /own\([^)]*\{\s*k\s*:\s*["']built/.test(SRC);
+T("N8 the sentence rides inside the block, verbatim, and nothing can show it",
+  kept && !blockReadable,
+  kept ? "carried verbatim; no door resolves a block's text" : "LOST");
 
 /* ---- N9 · law 8 for the valley: the water did not move while you were gone ---- */
 const prior = store({ lastDay: dayAgo(6), queue: sank(3, 800) });

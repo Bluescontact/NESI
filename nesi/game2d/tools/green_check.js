@@ -30,6 +30,9 @@ function boot(prior, fakeToday) {
   const el = () => ({ value: "", style: {}, width: 0, height: 0,
     addEventListener: noop, focus: noop, setPointerCapture: noop,
     getContext: () => ctx,
+    appendChild: noop, removeChild: noop, click: noop, href: "", firstChild: null, insertBefore: noop,
+    className: "", textContent: "", scrollTop: 0,
+    classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
     getBoundingClientRect: () => ({ left: 0, top: 0, width: 1000, height: 700 }) });
   let clock = 1e6, q = [];
   /* the world asks `new Date()` for today; hand it a different day when a
@@ -41,7 +44,7 @@ function boot(prior, fakeToday) {
   } : RealDate;
   D.UTC = RealDate.UTC; D.now = RealDate.now; D.parse = RealDate.parse;
   const sandbox = {
-    document: { getElementById: el, activeElement: null, addEventListener: noop },
+    document: { getElementById: el, createElement: el, createTextNode: () => ({}), activeElement: null, addEventListener: noop },
     localStorage: { getItem: k => store.get(k) ?? null,
                     setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k) },
     performance: { now: () => clock },

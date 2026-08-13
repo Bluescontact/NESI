@@ -31,6 +31,9 @@ function boot(prior, fakeToday) {
   const el = () => ({ value: "", style: {}, width: 0, height: 0,
     addEventListener: noop, focus: noop, setPointerCapture: noop,
     getContext: () => ctx,
+    appendChild: noop, removeChild: noop, click: noop, href: "", firstChild: null, insertBefore: noop,
+    className: "", textContent: "", scrollTop: 0,
+    classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
     getBoundingClientRect: () => ({ left: 0, top: 0, width: 1000, height: 700 }) });
   let clock = 1e6, q = [];
   const RD = Date;
@@ -39,7 +42,7 @@ function boot(prior, fakeToday) {
   D.UTC = RD.UTC; D.now = RD.now; D.parse = RD.parse;
   const sandbox = {
     document: { getElementById: el, activeElement: null, addEventListener: noop,
-                createElement: () => ({ click: noop }) },
+                createElement: el, createTextNode: () => ({}) },
     localStorage: { getItem: k => store.get(k) ?? null,
                     setItem: (k, v) => store.set(k, String(v)), removeItem: k => store.delete(k) },
     performance: { now: () => clock },
@@ -207,10 +210,21 @@ const siltUnderDeposit = X.S.silt[75];
 T("R3 a settled sentence does not move the ground it sits on, only the sky",
   siltUnderDeposit >= 0, "no cell was cut by a deposit");
 
-/* the one that matters most: nothing in this file can put a word outside it */
-const canWrite = /fillText|strokeText|innerHTML|document\.write/.test(SRC);
-T("R4 the world cannot write a word anywhere — no text primitive exists in it",
-  !canWrite, "no fillText, strokeText, innerHTML or document.write");
+/* THE ONE THAT MATTERS MOST — and it is the reverse of what stood here before.
+   This check used to assert that NO text primitive existed in the file, and
+   called that the strongest guarantee in the suite. It was the fault, locked in
+   by a test: a world that cannot draw a character cannot hold the writing
+   anywhere the writer can meet it. The silence law reads "the only text on
+   screen is the player's own" — it has a subject, and a mute world satisfies it
+   vacuously. What is asserted now is the law itself: one door, and nothing but
+   his words can come through it. The full set lives in tools/hold_check.js. */
+const oneDoor = /function own\(el,src\)/.test(SRC) &&
+                !/innerHTML|outerHTML|document\.write|insertAdjacentHTML/.test(SRC);
+const ownBody = (SRC.match(/function own\(el,src\)\{[\s\S]*?\n\}/) || [""])[0];
+const outside = SRC.split("createTextNode").length - (ownBody.split("createTextNode").length);
+T("R4 the only text that reaches the screen is his own, and it comes through one door",
+  oneDoor && outside === 0 && ownBody.includes("S.writing") && ownBody.includes("S.settled"),
+  "own() takes a reference and resolves it; " + outside + " text nodes made anywhere else");
 T("R5 the membrane is a place, not a feature — nothing in the file hit-tests it",
   !/W-26[^\n]*hypot|membrane[^\n]*click|seam[^\n]*pointer/i.test(SRC),
   "drawn only; no hit test, no handler");

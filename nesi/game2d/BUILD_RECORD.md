@@ -4755,3 +4755,82 @@ lightens by 25 units at the world's edge and fades to nothing 12px inward.
 
 → **WALKABLE** for the mechanism. **The ladder's six rungs are built.** What remains is the
 only verdict the ladder ever pointed at, and it is not mine: *do I want tomorrow?*
+
+## THE REBUILD — holding the writing (2026-08-13, session fb66285e)
+
+**On Kevin's rejection of the six-manifest build, the counsel's brief, and his instruction:
+*"rebuild it holding the writing."*** One pass, then stopped for his gate — per the
+counsel's unanimous finding that the want-check `THE_SIX_MANIFESTS.md:11` requires was
+skipped six times.
+
+### What changed
+
+- **THE PAGE.** The blind `opacity:0` textarea is gone. A visible sheet lies over the sky
+  band carrying the day's writing in ink. **It is never cleared**; what the world has
+  already taken goes **quiet** behind what is being written now, and nothing is removed.
+  It sits above every control the valley has, so the whole world below stays workable
+  **with no mode to be in**. Esc lays it aside and brings it back.
+- **THE NEWLINE LANDS.** Enter still banks what is held, but no longer swallows the line
+  break — a visible record with no paragraphs is not a record.
+- **THE SOUNDING**, carried from `nesi.html`. Click the ground where a sentence was set
+  down and **it comes back up, verbatim**, because the hand asked. Nothing surfaces on its
+  own; a sounding that finds nothing shows nothing; it is checked **last** among hit tests,
+  so anything the hand could pick up is picked up first.
+- **`own()` — the only door.** Every character that reaches the screen goes through one
+  function, and **`own()` takes no string.** It takes a reference into the store and
+  resolves the text itself, so a caller cannot hand it a label, a count, or a machine's
+  sentence — because a caller cannot hand it text at all.
+
+### The law, restored to its own wording
+
+The silence law reads *"the only text on screen is the player's own."* **That law has a
+subject.** The rejected build satisfied it by being unable to draw a character, which
+satisfied it vacuously and cost the writing its way home — and `wire_check` R4 asserted
+that incapacity as the strongest guarantee in the suite, locking the fault in with a test.
+
+**R4 is inverted.** It now asserts the law itself: one door, nothing but his words through
+it, and no `innerHTML` / `document.write` / `insertAdjacentHTML` path by which anything
+else could arrive. `night_check` N8 was narrowed to what it actually meant — a built
+block's text is reachable by nothing, because the deep's work is recognizable in shape and
+never in words.
+
+### `tools/hold_check.js` — 11/11 PASS
+
+Written against a DOM stub that **remembers text**, so the page can be read back:
+what you write appears as you write it · the page is never cleared and the taken part goes
+quiet · deleting past the watermark un-banks nothing · a returning day opens showing the
+writing it left · the sounding returns a settled sentence verbatim · a sounding that finds
+nothing shows nothing · `own()` takes a reference and never a string · **0 text nodes are
+created anywhere else in the file** · none of the five smuggling paths exist · nothing
+surfaces unbidden · the page is painted in a colour a person can read.
+
+All seven prior instruments still pass. Their DOM stubs were widened (they predated the
+page existing) — that is the harness's job, not the world's. `refusal_check` PASS, 1,249
+code lines.
+
+### Walked by hand, which is the thing the counsel said never to skip
+
+Typed one sentence into a blank world. **It appeared on the page, in ink, over a valley
+that stayed visible and workable.** It banked, rained, and came to the shore as a stone.
+Dragged it into the basin — it settled. **Clicked the ground where it went in, and the
+sentence rose back out of it, verbatim.**
+
+**One thing checked rather than assumed:** junk characters appeared in the page during the
+walk. A controlled trial — set a known line, click the world, compare — returned
+`changed: false`. **The stray keystrokes came from the automation, not the build.** The
+sounding also fired correctly afterwards, returning the deposit's own sentence unaffected
+by the page having been edited since: the soil holds what was set down, independent of what
+the page says now.
+
+### What this pass did NOT do
+
+- **It did not touch the M4 doorway ruling**, which four seats said should stay dead. The
+  question the counsel left open — whether the sounding is enough, or whether SEQUENTIAL,
+  the full visible page with its faces, has to come back — **is Kevin's and is untouched.**
+- It did not resume the ladder. It did not rebuild manifests. **It is one pass and it stops
+  here**, because the gate is his and the counsel's finding was that six passes ran without
+  it.
+- `nesi.html` untouched.
+
+→ **The writing is held: visible as you write it, and reachable back out of the ground.**
+The want-check is his and has not happened.

@@ -8,15 +8,44 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden;background:#0d1416}
   #c{display:block;width:100%;height:100%;touch-action:none;cursor:default}
-  /* the field is blind by construction: it is never painted, never read, never measured.
-     it exists only so the keyboard has somewhere to go. */
-  #field{position:fixed;left:0;bottom:0;width:100%;height:40px;opacity:0;border:0;
-         outline:0;resize:none;background:transparent;color:transparent;font-size:16px}
+
+  /* ------------------------------------------------------------- THE PAGE
+     THE WORLD HOLDS THE WRITING, AND THE FIRST PLACE IT HOLDS IT IS HERE.
+     The page lies over the sky and is never cleared. What you have written
+     stays on it; the watermark — everything the world has already taken —
+     goes quiet behind what you are writing now, and nothing is removed.
+     It sits in the sky band only, so the whole valley below stays workable
+     with no mode to be in. Esc lays it aside; Esc brings it back.
+     Two layers, one text: #pagebg PAINTS the words, #field carries the caret
+     and the keystrokes. Their metrics must match exactly or the caret drifts
+     off the letters — that is why every font property is repeated. */
+  #sheet{position:fixed;overflow:hidden;transition:opacity .3s,transform .3s;
+         border-radius:2px}
+  #sheet.aside{opacity:0;transform:translateY(-14px);pointer-events:none}
+  #pagebg,#field{position:absolute;inset:0;width:100%;height:100%;
+         font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.62;
+         padding:14px 18px;border:0;outline:0;resize:none;white-space:pre-wrap;
+         word-wrap:break-word;overflow-y:auto;letter-spacing:.1px}
+  #pagebg{background:rgba(247,244,236,.80);color:#2a2419;pointer-events:none}
+  #pagebg .gone{color:#9a9382}   /* what the world has already taken */
+  #field{background:transparent;color:transparent;caret-color:#2a2419}
+  #field::selection{background:rgba(120,150,150,.30)}
+
+  /* ---------------------------------------------------------- THE SOUNDING
+     One settled sentence, brought back up out of the ground it went into,
+     verbatim, because the hand asked for it. */
+  #sound{position:fixed;max-width:340px;font-family:Georgia,'Times New Roman',serif;
+         font-size:13.5px;line-height:1.6;color:#22201a;
+         background:rgba(247,244,236,.94);padding:9px 12px;border-radius:2px;
+         box-shadow:0 2px 14px rgba(0,0,0,.28);opacity:0;transition:opacity .28s;
+         pointer-events:none}
+  #sound.up{opacity:1}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
-<textarea id="field" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+<div id="sheet"><div id="pagebg"></div><textarea id="field" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea></div>
+<div id="sound"></div>
 <script>
 "use strict";
 /* ===========================================================================
@@ -389,8 +418,44 @@ function stir(){
   lastStir=performance.now();
   if(!running&&!frameQueued){frameQueued=true;last=performance.now();requestAnimationFrame(frame)}
 }
+/* ---------------------------------------------------------- THE ONLY WAY IN
+   EVERY CHARACTER THAT REACHES THE SCREEN COMES THROUGH HERE — and `own` TAKES
+   NO STRING. It takes a reference into the store and resolves the text itself,
+   so a caller cannot hand it a label, a count, or a sentence the machine wrote,
+   because a caller cannot hand it text at all.
+   The silence law says the only text on screen is the player's own. The old
+   build satisfied that by being unable to draw a character, which satisfied it
+   vacuously and cost the writing its way home. This is the same law made
+   structural instead: not "no text", but "no text that is not his". */
+const sheetEl=document.getElementById("sheet");
+const pagebg=document.getElementById("pagebg");
+const soundEl=document.getElementById("sound");
+function own(el,src){
+  while(el.firstChild)el.removeChild(el.firstChild);
+  if(src.k==="page"){
+    const v=S.writing[dayKey()]||"";
+    const w=Math.max(0,Math.min(S.watermark|0,v.length));
+    const gone=document.createElement("span");
+    gone.className="gone";                       /* what the world already took */
+    gone.appendChild(document.createTextNode(v.slice(0,w)));
+    el.appendChild(gone);
+    el.appendChild(document.createTextNode(v.slice(w)));
+    return true;
+  }
+  if(src.k==="settled"){
+    const d=S.settled[src.i];
+    if(!d||!d.text)return false;                 /* finds nothing, shows nothing */
+    el.appendChild(document.createTextNode(d.text));
+    return true;
+  }
+  return false;
+}
+function paintPage(){own(pagebg,{k:"page"})}
+
 field.value=S.writing[dayKey()]||"";
 if(S.watermark>field.value.length)S.watermark=field.value.length;
+paintPage();                 /* you open on what you wrote, not on a blank pane */
+field.addEventListener("scroll",()=>{pagebg.scrollTop=field.scrollTop});
 
 /* pad → read back → commit. a bad write never destroys a good file. silently. */
 function save(){
@@ -411,6 +476,7 @@ addEventListener("beforeunload",save); addEventListener("blur",save);
 let pending=0;
 function bandCut(){
   stir();                      /* the writing hand moves the water */
+  S.writing[dayKey()]=field.value;   /* the page is the store's, not the box's */
   const v=field.value;
   if(S.watermark>v.length)S.watermark=v.length;
   const isEnd=c=>".!?…".indexOf(c)>=0;
@@ -425,14 +491,29 @@ function bandCut(){
     } else i++;
   }
   pending=Math.max(0,v.length-S.watermark);
+  paintPage();
+  pagebg.scrollTop=field.scrollTop;
 }
 field.addEventListener("input",bandCut);
 field.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){e.preventDefault();sheetEl.classList.toggle("aside");return}
   if(e.key==="Enter"){
-    e.preventDefault(); stir();
+    /* THE NEWLINE LANDS. Enter banks what is held, as it always did — but it is
+       no longer swallowed, because the page is visible now and a record with no
+       line breaks is not a record. Bank after the break has gone in. */
+    stir();
     const seg=field.value.slice(S.watermark).trim();
-    if(seg.length>1&&/[A-Za-z0-9]/.test(seg)){arrive(seg);S.watermark=field.value.length}
-    pending=0;
+    setTimeout(()=>{
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg))arrive(seg);
+      S.watermark=field.value.length;
+      S.writing[dayKey()]=field.value;
+      pending=0; paintPage(); pagebg.scrollTop=field.scrollTop;
+    },0);
+  }
+});
+addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&document.activeElement!==field){
+    e.preventDefault(); sheetEl.classList.toggle("aside");
   }
 });
 /* the keyboard always has somewhere to go; the pointer belongs to the world. */
@@ -863,6 +944,7 @@ function toWorld(e){
 cv.addEventListener("pointerdown",e=>{
   if(bloom)return;          /* nothing reaches the world while it is unfolding */
   const p=toWorld(e); cv.setPointerCapture(e.pointerId); stir();
+  soundEl.classList.remove("up");     /* the hand moves on; the line closes */
   /* a ripe cast under the hand — the one thing that leaves */
   for(const s of S.shoots){
     const f=fruitAt(s);
@@ -884,6 +966,15 @@ cv.addEventListener("pointerdown",e=>{
       S.aimedM[i]=true;
       drag={k:"mirror",si:i,a0:Math.atan2(p.y-st.y,p.x-st.x),m0:S.mirrors[i]};return;
     }
+  }
+  /* THE SOUNDING — carried from nesi.html, and the whole of why this build
+     exists again. Click the ground where a sentence was set down and it comes
+     back up, VERBATIM, because the hand asked for it. Nothing surfaces on its
+     own; a sounding that finds nothing shows nothing; and it is checked last,
+     so anything the hand could pick up is picked up first. */
+  for(let i=S.settled.length-1;i>=0;i--){
+    const d=S.settled[i];
+    if(Math.abs(p.x-d.x)<20&&Math.abs(p.y-groundY(d.x))<24){sound(i,e);return}
   }
 });
 cv.addEventListener("pointermove",e=>{
@@ -907,6 +998,12 @@ function hover(p){
   for(let i=0;i<S.seated;i++)if(Math.hypot(p.x-SEATS[i].x,p.y-SEATS[i].y)<74)return true;
   for(const s of S.shoots){const f=fruitAt(s); if(f&&Math.hypot(p.x-f.x,p.y-f.y)<f.r+13)return true}
   return false;
+}
+function sound(i,e){
+  if(!own(soundEl,{k:"settled",i}))return;   /* found nothing; shows nothing */
+  soundEl.classList.add("up");
+  soundEl.style.left=Math.max(8,Math.min(innerWidth-352,e.clientX-150))+"px";
+  soundEl.style.top=Math.max(8,e.clientY-78)+"px";
 }
 function release(){
   if(drag&&drag.k==="stone"){
@@ -943,11 +1040,23 @@ cv.addEventListener("pointerup",release);
 cv.addEventListener("pointercancel",release);
 
 /* ------------------------------------------------------------------ paint */
+const SHEET={x0:44,x1:956,y0:14,y1:190};
 function fit(){
   const d=Math.min(devicePixelRatio||1,2);
   cv.width=innerWidth*d; cv.height=innerHeight*d;
   const sc=Math.min(innerWidth/W,innerHeight/H);
   g.setTransform(d*sc,0,0,d*sc,d*(innerWidth-W*sc)/2,d*(innerHeight-H*sc)/2);
+  /* THE PAGE SITS IN THE SKY BAND AND NOWHERE ELSE. Above every control the
+     world has, so the whole valley below stays workable with no mode to be in —
+     and low enough that the water it makes is visible under it while you write. */
+  const ox=(innerWidth-W*sc)/2, oy=(innerHeight-H*sc)/2;
+  sheetEl.style.left=(ox+SHEET.x0*sc)+"px";
+  sheetEl.style.top=(oy+SHEET.y0*sc)+"px";
+  sheetEl.style.width=((SHEET.x1-SHEET.x0)*sc)+"px";
+  sheetEl.style.height=((SHEET.y1-SHEET.y0)*sc)+"px";
+  const fs=Math.max(11,Math.min(19,15*sc));
+  pagebg.style.fontSize=field.style.fontSize=fs+"px";
+  pagebg.style.padding=field.style.padding=(10*sc)+"px "+(14*sc)+"px";
 }
 /* resizing resets the backing store, which CLEARS it — a still world would sit
    blank until the hand moved. one frame is owed, and it is not a stir. */
