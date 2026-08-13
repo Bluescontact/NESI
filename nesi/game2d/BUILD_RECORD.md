@@ -4301,3 +4301,80 @@ player; there is still **no text drawn on the canvas at all.**
   and still his.
 
 → **WALKABLE** for the mechanism. The want-check is his and has not happened.
+
+## MANIFEST 2 · THE NIGHT — the deep works while you're away (2026-08-12, session fb66285e)
+
+Built into `world.html` on M1's day boundary. `nesi.html` untouched; the
+port-vs-doorway fork untouched.
+
+### What is new
+
+- **Sinking queues, it does not spend.** A stone reaching the bottom goes into
+  `S.queue` carrying its **verbatim sentence** and **the place it went in**. Nothing is
+  built while you are there to watch.
+- **One block per night.** On a return across a day boundary the deep raises one block
+  per night away, drawn from what is waiting, set at the shoreline **nearest where that
+  stone went in**. Capped at twelve nights, and it can never take more than you gave it.
+- **The shape is your hand's doing, not a chosen form.** Blocks stack on each other's
+  shoulders, so sinking repeatedly into one place builds **a stair** and sinking along the
+  shore builds **a reef**. Traceable by **count and place** — never by content.
+- **It breaks the surface eventually.** Structures paint once beneath the water as a
+  shadow of themselves, then again clipped above the waterline. The day a stack finally
+  stands out of the lake is the day it stops being a rumour, and nothing announces it.
+- **The worker is still never shown.** The creature keeps to whatever is waiting — it
+  attends the queue's own place and bubbles over it — but it does not build while you are
+  present. Wake and bubbles are all you ever get.
+- **A missed week is a bigger reveal, never a penalty.** Nights are the multiplier. Away a
+  month with nothing sunk: nothing rises, and nothing complains.
+
+### The law this rests on, named rather than assumed
+
+Law 8 says the world does not advance while you are gone. **The sacred list says "absence
+is productive by design."** Those meet exactly here, and the line taken is: **the water
+does not move while you are away; the deep builds.** Crossing the boundary advances no
+flow, no level, no silt — verified, not asserted (N9). Nothing else in the valley catches
+up on load.
+
+### `tools/night_check.js` — 10/10 PASS
+
+M2 happens entirely at boot, across a boundary that cannot be reached by waiting, so the
+browser cannot be made to look at it. The real `<script>` is cold-booted once per scenario
+with the store standing at a chosen number of days ago:
+
+| | |
+|---|---|
+| N1 | reopening the same day builds nothing |
+| N2 | one night raises one block from four waiting |
+| N3 | a week raises seven — bigger reveal, nothing lost |
+| N4 | nine nights over two stones raises two, and waits |
+| N5 | a month away with nothing sunk raises nothing, and does not complain |
+| N6 | four sunk in ONE place stand as a stack, each on the last one's shoulders |
+| N7 | four sunk ALONG the shore stand as a reef, not a tower |
+| N8 | the sentence rides inside the block verbatim, and **no text primitive exists in the file to draw it** |
+| N9 | six nights advanced the deep and **not** the water |
+| N10 | four hundred frames of being present build nothing |
+
+### Walked in the browser
+
+Typed a sentence, dragged the stone into the lake. It sank, **queued with its verbatim
+text and its sink place (x 803)**, `built` stayed **0**, the creature turned to it and
+bubbles rose. Then a shoreline staged across eleven nights and the frame read: a stack
+standing clear of the water, the rest of the reef still shadows beneath it.
+
+`boot_check` 8/8 · `still_check` 6/6 · `refusal_check` PASS (812 code lines) ·
+`node --check` PASS. Still **no text drawn on the canvas at all.**
+
+### The edge
+
+- **Day one was walked in a browser; day two was walked in Node.** Same store, same code,
+  but the join is still the thing no instrument here can perform, because the date cannot
+  be advanced and the pane cannot cold boot. **This is the same gap M1 left, unchanged and
+  not narrowed** — the first genuinely new thing is what you find tomorrow.
+- **Deliberately not built:** structures do not occlude the beam. That is M6's wire
+  (structures changing light paths), and building it here would have been M2 reaching into
+  M3's business.
+- The drag feel is still machine-driven.
+- Store reset to blank and read back clean — your first open is a dry valley with an empty
+  lake floor.
+
+→ **WALKABLE** for the mechanism. The want-check is yours and has not happened.

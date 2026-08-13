@@ -106,7 +106,11 @@ const DEF={
      load, negative where the sluice cut. `hiNow`/`hiPast` are the highest each
      body has stood, this day and every day before it — a LEVEL, not a place,
      because a flood mark is a ring around a bowl and not a stain on one stone. */
-  silt:[], hiNow:{}, hiPast:{}, lastDay:""
+  silt:[], hiNow:{}, hiPast:{}, lastDay:"",
+  /* M2 · THE NIGHT. what you sink is not spent — it waits in `queue`, in the
+     dark, carrying its own words verbatim and unread. `built` is what the deep
+     has made of it while you were gone. */
+  queue:[], built:[]
 };
 const NOMARK=1e9;
 let S=DEF;
@@ -119,14 +123,24 @@ for(const k of ["res","basin","lake"]){
   if(typeof S.hiPast[k]!=="number")S.hiPast[k]=NOMARK;
 }
 if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
+if(!Array.isArray(S.queue))S.queue=[];
+if(!Array.isArray(S.built))S.built=[];
 
 function dayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function daysBetween(a,b){
+  const p=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s);return m?Date.UTC(+m[1],+m[2]-1,+m[3]):NaN};
+  const d=(p(b)-p(a))/86400000;
+  return isFinite(d)?Math.max(0,Math.round(d)):0;
+}
 
 /* THE DAY BOUNDARY. crossing it moves this day's marks into the past, where
-   they render fainter. nothing announces it; the land is simply older. This is
-   the boundary M2's deep will work across — established here, used by nothing
-   yet. No absence is simulated: crossing the boundary advances no water. */
-if(S.lastDay&&S.lastDay!==dayKey()){
+   they render fainter. nothing announces it; the land is simply older.
+   NO ABSENCE IS SIMULATED FOR THE WATER — crossing advances no flow, no level,
+   no silt. Law 8 stands for the valley. What crossing DOES advance is the deep,
+   and that is not an exception smuggled in: "absence is productive by design"
+   is one of the four sacred lines, and it is about exactly this. */
+const NIGHTS=(S.lastDay&&S.lastDay!==dayKey())?Math.min(12,daysBetween(S.lastDay,dayKey())||1):0;
+if(NIGHTS>0){
   for(const k of ["res","basin","lake"]){
     S.hiPast[k]=Math.min(S.hiPast[k],S.hiNow[k]);
     S.hiNow[k]=NOMARK;
@@ -153,6 +167,30 @@ function rebuildGround(){
 rebuildGround();
 /* the lake is older than the player. it is here on the first open. */
 if(!S.lake)S.lake=volumeAt(BODIES.lake,540);
+
+/* ------------------------------------------------------------------ THE NIGHT
+   The deep works only while you are away. ONE BLOCK PER NIGHT rises from what
+   you sank, set at the shoreline nearest where it went in — so what stands
+   there is traceable by COUNT and by PLACE and never by a word. The words ride
+   along inside it, verbatim and unread, because nothing here is spent.
+   A week away is a bigger reveal, never a penalty: nights are the multiplier
+   and an empty queue simply means nothing rose. Blocks stack on each other's
+   shoulders, so sinking into one place builds a stair and sinking all along the
+   shore builds a reef — the shape is your hand's doing, not a chosen form. */
+function theNight(nights){
+  if(nights<=0||!S.queue.length)return;
+  let n=Math.min(nights,S.queue.length);
+  while(n-->0){
+    const q=S.queue.shift();
+    const sd=Math.abs(Math.floor((q.seed||0)*1000));
+    const x=Math.max(690,Math.min(944,q.x||820));
+    let base=groundY(x), col=null;
+    for(const b of S.built){ if(Math.abs(b.x-x)<30&&b.y<base){ base=b.y; col=b } }
+    const h=13+sd%7;
+    S.built.push({x:col?col.x:x, y:base-h, w:24+sd%15, h:h, seed:sd%997, text:q.text});
+  }
+}
+theNight(NIGHTS);
 
 /* --------------------------------------------------------------- THE STILLING
    Carried from nesi.html's sixth pass (2026-08-11) and sited here at the scale
@@ -432,8 +470,17 @@ let wake=0;
 function deep(dt){
   const c=S.creature;
   if(Math.hypot(c.tx-c.x,c.ty-c.y)<24||Math.random()<dt*0.09){
-    c.tx=640+Math.random()*330;
-    c.ty=lakeY+34+Math.random()*(650-lakeY-58);
+    /* it keeps to whatever is waiting for it. it does not BUILD while you are
+       here — it attends. the wake and the bubbles over that place are the only
+       thing you ever get of the worker. */
+    if(S.queue.length&&Math.random()<0.72){
+      let mx=0; for(const q of S.queue)mx+=q.x; mx/=S.queue.length;
+      c.tx=Math.max(660,Math.min(958,mx+(Math.random()-0.5)*70));
+      c.ty=Math.min(groundY(c.tx)-18,lakeY+50+Math.random()*46);
+    }else{
+      c.tx=640+Math.random()*330;
+      c.ty=lakeY+34+Math.random()*(650-lakeY-58);
+    }
   }
   const dx=c.tx-c.x, dy=c.ty-c.y, m=Math.hypot(dx,dy)||1;
   /* it slows as the valley stills and comes to rest with it. the deep is quiet
@@ -442,7 +489,7 @@ function deep(dt){
   c.x+=dx/m*sp*dt; c.y+=dy/m*sp*dt;
   const depth=c.y-lakeY;
   wake=Math.max(0,1-depth/70)*swell;
-  if(Math.random()<dt*(0.5+wake*2.2)*swell) bubbles.push({x:c.x+(Math.random()-0.5)*40,y:c.y,v:22+Math.random()*26,s:Math.random()*9,r:1+Math.random()*2});
+  if(Math.random()<dt*(0.5+wake*2.2)*(S.queue.length?1.8:1)*swell) bubbles.push({x:c.x+(Math.random()-0.5)*40,y:c.y,v:22+Math.random()*26,s:Math.random()*9,r:1+Math.random()*2});
 }
 
 /* --------------------------------------------------------------- stones */
@@ -454,6 +501,9 @@ function stones(dt){
       s.sinking+=dt; s.y+=(26+s.sinking*16)*dt; s.x+=Math.sin(s.y*0.05+s.seed)*7*dt;
       if(Math.random()<dt*7)bubbles.push({x:s.x,y:s.y,v:26+Math.random()*22,s:Math.random()*9,r:1+Math.random()*2});
       if(s.y>groundY(s.x)-4||s.y>640){
+        /* it reaches the bottom and WAITS there. nothing is spent, and nothing
+           is built while you are here to watch it. */
+        S.queue.push({text:s.text,x:s.x,seed:s.seed});
         S.sunk++; S.creature.tx=s.x; S.creature.ty=Math.min(groundY(s.x)-16,lakeY+70);
         for(let k=0;k<14;k++)bubbles.push({x:s.x+(Math.random()-0.5)*22,y:s.y,v:20+Math.random()*40,s:Math.random()*9,r:1+Math.random()*2.4});
         S.stones.splice(i,1);
@@ -537,6 +587,19 @@ addEventListener("resize",()=>{fit(); if(!running&&!frameQueued){frameQueued=tru
 fit();
 
 const MARKRANGE={res:[0,DAM.x0],basin:[DAM.x1,566],lake:[566,W]};
+/* WHAT THE DEEP MADE. The deep itself is never drawn — this is. Cut faces and a
+   shadowed underside, so it reads as placed rather than grown, and so a stack
+   reads as a stair. Painted once beneath the water, then again clipped above the
+   surface, which is what lets a structure BREAK the waterline as it grows. */
+function paintBuilt(){
+  for(const b of S.built){
+    const x0=b.x-b.w/2;
+    g.fillStyle="#2c2922"; g.fillRect(x0,b.y,b.w,b.h);
+    g.fillStyle="rgba(198,188,160,.20)"; g.fillRect(x0,b.y,b.w,3);
+    g.fillStyle="rgba(0,0,0,.30)"; g.fillRect(x0,b.y+b.h-2.5,b.w,2.5);
+    g.fillStyle="rgba(0,0,0,.18)"; g.fillRect(x0,b.y,2,b.h);
+  }
+}
 function waterPath(b,sy){
   if(sy>=1e8)return null;
   let x0=null,x1=null;
@@ -657,6 +720,7 @@ function frame(now){
   g.restore();
 
   /* --- water ------------------------------------------------------------ */
+  paintBuilt();                       /* under the water, it is a shadow of itself */
   const pr=paintWater(BODIES.res,resY,t,"rgba(96,146,150,.90)","rgba(44,86,94,.95)");
   const pb=paintWater(BODIES.basin,basinY,t,"rgba(104,154,156,.90)","rgba(48,92,98,.95)");
   const pl=paintWater(BODIES.lake,lakeY,t,"rgba(74,124,132,.94)","rgba(11,32,40,1)");
@@ -700,6 +764,11 @@ function frame(now){
   for(const b of bubbles){g.beginPath();g.arc(b.x,b.y,b.r,0,7);g.fill()}
 
   surfaceLine(pr,resY,t); surfaceLine(pb,basinY,t); surfaceLine(pl,lakeY,t);
+  /* and again above the line — the day a stack finally stands out of the water
+     is the day it stops being a rumour, and nothing announces that either */
+  if(S.built.length){
+    g.save(); g.beginPath(); g.rect(0,0,W,lakeY+0.5); g.clip(); paintBuilt(); g.restore();
+  }
 
   /* --- the dam and its sluice ------------------------------------------ */
   const openY=DAM.base-GATE_H*S.gate;
