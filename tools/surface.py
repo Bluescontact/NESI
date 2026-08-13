@@ -23,8 +23,11 @@ THREE BOUNDARIES ARE SCHEMA CONSTRAINTS HERE, NOT INSTRUCTIONS:
   B2-ext a cross must be `verified: true` or carry a non-empty `gap` that renders on
          the button face. A wall visible from the door is a gate; one found after
          walking is a dead end.
-  B3     the payload may not carry fewer tiles than this session's live open
+  B3.1   the payload may not carry fewer tiles than this session's live open
          decisions. Fewer shown than live is a breach, so it is a crash.
+  B3.2   the WHOLE ledger is read on every render, the entire field is written to
+         _widgets/THE_FIELD.html, and the floor line states how much stands open
+         corpus-wide. Unrenderable field = refused surface. (2026-08-12, below.)
 
 CARRYING IS NOT ASKING (Kevin's mark, 2026-08-07). B3 governs DISCLOSURE; the rate brake
 in decisions.py governs ASKING. Both were implemented on the tiles array, so a tile that
@@ -34,7 +37,22 @@ are IDENTICAL to a live unanswered offer on the same surface is now a CARRY: it 
 it stays markable at depth zero, and it does not deposit. Change one word and it is a
 revision, which is an ask, which deposits and faces the brake. B3 itself is unaltered.
 
-WHY B3 IS SESSION-SCOPED (Kevin's ruling, 2026-08-07). Read whole-ledger, "live" was
+B3 NOW READS THE WHOLE LEDGER (Kevin's instruction, 2026-08-12: "fix B3 so it reads the
+whole ledger, not just the session"). The paragraph below still holds for CLAUSE 1 and its
+reasoning is untouched — whole-ledger-as-tiles really would be a dead tool. What it missed
+is that B3 was carrying two jobs on one array. Split:
+  · CLAUSE 1 · ASKING — a tile is a demand on his attention. Session-scoped, capped,
+    braked, exactly as ruled in 2026-08-07. Unchanged.
+  · CLAUSE 2 · DISCLOSURE — nothing live may be invisible. Whole-ledger, every render:
+    tools/field.py derives every open gate and every live decision (through the same
+    open-derivation gates.py uses, so the two can never disagree), field_surface.py
+    renders all of them flat and markable at depth zero, and the floor line states the
+    total. It adds no tiles, so it cannot deadlock the brake. It fails closed.
+The hole it closes, measured: three surfaces in a row carried 3, then 1, then 0 decisions
+while 499 items stood open across the corpus — and every one of them PASSED B3. His words:
+"you've guided and gated me to a single decision… I navigate a map, not a doorway."
+
+WHY CLAUSE 1 IS SESSION-SCOPED (Kevin's ruling, 2026-08-07). Read whole-ledger, "live" was
 97 open gates plus 305 unanswered offers against a 4-tile cap in decisions.py — a
 crash that fires on every possible payload is not a boundary, it is a dead tool. The
 breach B3 was written against is an author quietly showing 2 of the 5 things he found
@@ -73,6 +91,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
 import decisions  # noqa: E402  — imported, not shelled out (Phase 1 finding 1)
+import field  # noqa: E402  — B3 clause 2 reads the whole ledger through the same
+import field_surface  # noqa: E402    derivation gates.py uses, never a second one
 
 CHASSIS = ROOT / "nesi" / "mind" / "DS_LITE.html"
 GATES_LOG = ROOT / "OPEN_GATES.jsonl"
@@ -188,7 +208,47 @@ def session_live(session: str) -> list[tuple[str, str]]:
     return live
 
 
-def check_b3(payload: dict, session: str) -> None:
+def whole_ledger(session: str) -> dict:
+    """B3 CLAUSE 2 — read the WHOLE ledger and render it. Kevin's instruction, 2026-08-12:
+    "fix B3 so it reads the whole ledger, not just the session."
+
+    THE OLD HOLE, PRECISELY. B3 clause 1 is session-scoped by his own 2026-08-07 ruling,
+    and that ruling was right about the mechanism: whole-ledger-as-TILES meant ~500 required
+    tiles against a 4-tile cap, i.e. a crash on every possible payload, i.e. a dead tool.
+    But it left B3 with no opinion whatsoever about what stands open across the corpus —
+    so three surfaces in a row carried 3, then 1, then 0 decisions while 499 items stood
+    open, and every one of them PASSED. Measured 2026-08-12; his words: "you've guided and
+    gated me to a single decision… I navigate a map, not a doorway."
+
+    THE FIX IS NOT MORE TILES. It separates the two jobs B3 was carrying at once:
+      · DISCLOSURE — nothing live may be invisible. Whole-ledger. Satisfied by rendering
+        the entire field to a surface that always exists and is regenerated here, on every
+        single render, so it can never go stale behind a daily surface.
+      · ASKING — a tile is a demand on his attention, and that is what the 4-tile cap and
+        the rate brake govern. Unchanged. Still session-scoped. Still capped.
+    A count is not an ask; a map is not a doorway. This clause adds no tiles and cannot
+    deadlock the brake.
+
+    FAILS CLOSED (B2's own discipline). If the field cannot be derived or written, the
+    surface is refused — a daily surface that cannot say what stands open does not ship."""
+    try:
+        items = field.derive()
+        target = ROOT / "_widgets" / "THE_FIELD.html"
+        field_surface.write(items, target, floor="")
+        (ROOT / "_widgets" / "field.json").write_text(
+            json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as exc:                     # noqa: BLE001 — fail closed, name the cause
+        raise SurfaceError(
+            f"B3 CLAUSE 2 — the whole ledger could not be read or rendered ({exc}). "
+            f"A surface that cannot state what stands open across the corpus does not "
+            f"ship. Fix tools/field.py / tools/field_surface.py, then re-render.")
+    gates_n = sum(1 for i in items if i["kind"] == "gate")
+    return {"total": len(items), "gates": gates_n, "decisions": len(items) - gates_n,
+            "path": "_widgets/THE_FIELD.html",
+            "mine": sum(1 for i in items if str(i.get("src", "")).find(session) >= 0)}
+
+
+def check_b3(payload: dict, session: str) -> dict:
     shown = {t["id"] for t in payload["tiles"]}
     missing = [(i, w) for i, w in session_live(session) if i not in shown]
     if missing:
@@ -199,6 +259,7 @@ def check_b3(payload: dict, session: str) -> None:
             f"shown than live is a breach. Omitted:\n{lines}\n"
             f"  Carry each as a tile with that exact id, or resolve it first "
             f"(decisions.py answer / supersede, gates.py close).")
+    return whole_ledger(session)
 
 
 # ---------------------------------------------------- the mark text, computed ONCE
@@ -333,15 +394,22 @@ def _first_line(cmd: list[str]) -> str:
     return "(no output)"
 
 
-def floor_line() -> str:
+def floor_line(field_state: dict | None = None) -> str:
     """Derived live, every render. Never stored, never a payload field. Kevin never
-    guesses whether a mark took."""
+    guesses whether a mark took — and, since 2026-08-12, never has to guess how much is
+    standing open beyond whatever this one surface happens to be about. The field figure
+    and its path come from B3 clause 2, so the line cannot claim a map that wasn't written."""
     py = sys.executable or "python"
     marks = _first_line([py, "tools/marks.py", "status"])
     gates = _first_line([py, "tools/gates.py", "status"])
     marks = re.sub(r"^\[floor\]\s*", "", marks)
     gates = re.sub(r"^\[gates\]\s*", "", gates)
-    return html.escape(f"{marks} · {gates}")
+    line = f"{marks} · {gates}"
+    if field_state:
+        line += (f" · {field_state['total']} standing open corpus-wide "
+                 f"({field_state['decisions']} decisions · {field_state['gates']} gates) — "
+                 f"the whole field, markable at depth zero: {field_state['path']}")
+    return html.escape(line)
 
 
 # -------------------------------------------------------------------------- 4. render
@@ -402,9 +470,10 @@ def build(payload: dict, session: str, out: str | None = None) -> tuple[str, Pat
         target = ROOT / target
     surface_rel = decisions.rel(str(target))
 
-    check_b3(payload, session)          # derived, before anything is written
+    field_state = check_b3(payload, session)  # derived, before anything is written —
+                                              # clause 1 session-scoped, clause 2 whole-ledger
     deposit(payload, surface_rel, session)   # deposit precedes render, always
-    fragment = render(payload, floor_line())
+    fragment = render(payload, floor_line(field_state))
 
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(fragment, encoding="utf-8")

@@ -11,7 +11,7 @@ body-question unanswered, a surface awaiting marks. Sessions die; gates don't.
 Same append-only discipline as marks.py: close never deletes, it appends a
 closure line; status derives, never stores (derive-don't-store).
 """
-import argparse, json, sys, io
+import argparse, json, sys, io, re
 from datetime import datetime
 from pathlib import Path
 
@@ -73,6 +73,16 @@ def main():
     now = datetime.now().isoformat(timespec="seconds")
 
     if a.cmd == "open":
+        # THE REFILL WARNING, added 2026-08-12 after 17 session close-log lines were
+        # retired from the open list on Kevin's instruction. B4 was written so an open
+        # QUESTION would outlive its session; it had drifted into an append-only session
+        # log, and a 100+ item list cannot function as a list of things waiting on a hand.
+        # This WARNS and still writes — it is not a refusal, because deciding what counts
+        # as a fork is not this script's call. Strike these five lines to silence it.
+        if re.match(r"\s*SESSION \w{8} CLOSED", a.gate or ""):
+            print("[gate] NOTE — this reads as a session close-log line, not a question "
+                  "waiting on a hand. 17 of these were retired 2026-08-12. Writing it "
+                  "anyway; consider a close record instead.")
         _append({"ts": now, "event": "open", "gate": a.gate, "source": a.source,
                  "blocks": _parse_edges(getattr(a, "blocks", None))})
         print(f"[gate] open: {a.gate[:70]}")

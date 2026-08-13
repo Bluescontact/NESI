@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift-Based Exchange · Knowledge Register</title>
+<style>
+  :root {
+    --bg: #faf8f4;
+    --ink: #2a2620;
+    --muted: #6f675c;
+    --accent: #8a5a2b;
+    --accent-soft: #f0e6d8;
+    --card: #ffffff;
+    --line: #e5ddd0;
+    --code-bg: #201c17;
+    --code-ink: #e8e2d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1713;
+      --ink: #ece6da;
+      --muted: #a89d8c;
+      --accent: #d9a05f;
+      --accent-soft: #2b241b;
+      --card: #221e18;
+      --line: #383127;
+      --code-bg: #14110d;
+      --code-ink: #ddd6c8;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.65;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+  h1 { font-size: 2.1rem; margin: 0 0 .4rem; line-height: 1.2; }
+  .subtitle { color: var(--muted); font-size: 1.05rem; margin: 0; }
+  .meta { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .78rem; color: var(--muted); margin-top: 1rem; letter-spacing: .02em; }
+  nav.toc {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.1rem 1.4rem; margin-bottom: 2.5rem; font-size: .95rem;
+  }
+  nav.toc strong { display: block; margin-bottom: .5rem; font-family: ui-monospace, Menlo, monospace; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  nav.toc a { color: var(--accent); text-decoration: none; display: inline-block; margin-right: 1.2rem; }
+  nav.toc a:hover { text-decoration: underline; }
+  h2 {
+    font-size: 1.45rem; margin: 3rem 0 1rem; padding-top: .5rem;
+    border-top: 1px solid var(--line);
+  }
+  h2 .num { color: var(--accent); font-family: ui-monospace, Menlo, monospace; font-size: 1rem; margin-right: .5rem; }
+  h3 { font-size: 1.08rem; margin: 1.8rem 0 .6rem; color: var(--accent); }
+  p { margin: .7rem 0; }
+  .principle {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: .9rem 1.2rem; border-radius: 0 8px 8px 0; margin: .8rem 0;
+  }
+  .principle strong { display: block; margin-bottom: .15rem; }
+  .principle span { color: var(--muted); font-size: .95rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+  }
+  .card h4 { margin: 0 0 .5rem; font-size: 1rem; }
+  .card ul { margin: 0; padding-left: 1.1rem; font-size: .93rem; color: var(--muted); }
+  .card li { margin: .25rem 0; }
+  .flow { counter-reset: step; margin: 1.2rem 0; }
+  .flow .step {
+    display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.1rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem;
+  }
+  .flow .step::before {
+    counter-increment: step; content: counter(step);
+    flex: 0 0 auto; width: 2rem; height: 2rem; border-radius: 50%;
+    background: var(--accent); color: var(--bg); font-family: ui-monospace, Menlo, monospace;
+    display: flex; align-items: center; justify-content: center; font-size: .95rem; font-weight: bold;
+  }
+  .flow .step strong { display: block; margin-bottom: .2rem; }
+  .flow .step span { color: var(--muted); font-size: .93rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .93rem; }
+  th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--line); }
+  th { font-family: ui-monospace, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  details.code { margin: 1.2rem 0; }
+  details.code summary {
+    cursor: pointer; font-family: ui-monospace, Menlo, monospace; font-size: .85rem;
+    color: var(--accent); padding: .5rem 0;
+  }
+  pre {
+    background: var(--code-bg); color: var(--code-ink); padding: 1.2rem; border-radius: 10px;
+    overflow-x: auto; font-size: .78rem; line-height: 1.5;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  .note {
+    font-size: .88rem; color: var(--muted); border: 1px dashed var(--line);
+    border-radius: 8px; padding: .7rem 1rem; margin: 1rem 0;
+  }
+  footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; font-family: ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Gift-Based Exchange</h1>
+  <p class="subtitle">Platform design philosophy, architecture, process framework, and interface prototype — the complete project register in one document.</p>
+  <p class="meta">SOURCE: Project "Gift-Based Exchange: Platform Design Philosophy" · CONSOLIDATED 2026-08-12 · CONTENTS: doctrine + 1 prototype (Dec 2024)</p>
+</header>
+
+<nav class="toc">
+  <strong>Contents</strong>
+  <a href="#principles">1 · Core Principles</a>
+  <a href="#elements">2 · Platform Elements</a>
+  <a href="#process">3 · Exchange Process</a>
+  <a href="#metrics">4 · Success Metrics</a>
+  <a href="#prototype">5 · Interface Prototype</a>
+</nav>
+
+<h2 id="principles"><span class="num">§1</span>Core Exchange Principles</h2>
+<p>Five commitments govern every design decision. They are constraints, not aspirations — a feature that violates one does not ship.</p>
+
+<div class="principle"><strong>Every transaction is story-based</strong><span>No value moves without a narrative attached. The story is the transaction record; the exchange is legible only through it.</span></div>
+<div class="principle"><strong>No direct purchasing of one's own items</strong><span>You cannot buy for yourself. Value reaches you only through another person's act of giving — this structurally forces relationship into every exchange.</span></div>
+<div class="principle"><strong>Relationship over commodity</strong><span>The platform optimizes for connections formed, not units moved. Commodity logic is the failure mode to design against.</span></div>
+<div class="principle"><strong>Presence and intention</strong><span>Exchanges begin with intention-setting and are marked by attention, not speed. Friction that creates presence is kept; friction that merely delays is removed.</span></div>
+<div class="principle"><strong>Digital and physical integrated</strong><span>Physical objects (bills, gifts, QR-tagged items) carry digital stories, and digital journeys point back to physical acts and places.</span></div>
+
+<h2 id="elements"><span class="num">§2</span>Platform Elements</h2>
+<p>Four subsystems, each with its own concerns. Story collection is the front door; gift flow is the engine; experience design is the surface; the technical layer is the substrate.</p>
+
+<div class="grid">
+  <div class="card">
+    <h4>Story Collection &amp; Sharing</h4>
+    <ul>
+      <li>Voice note / video submission guidelines</li>
+      <li>Story categorization system</li>
+      <li>Journey tracking mechanisms</li>
+      <li>Geographic visualization</li>
+      <li>Connection threading</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Gift Flow Architecture</h4>
+    <ul>
+      <li>Sponsorship mechanisms</li>
+      <li>Community funding pools</li>
+      <li>Value circulation patterns</li>
+      <li>Reciprocity frameworks</li>
+      <li>Sustainability measures</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>User Experience Design</h4>
+    <ul>
+      <li>Non-transactional interfaces</li>
+      <li>Story-centered navigation</li>
+      <li>Relationship-building features</li>
+      <li>Trust-building elements</li>
+      <li>Community engagement tools</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Technical Requirements</h4>
+    <ul>
+      <li>QR code systems</li>
+      <li>Media hosting</li>
+      <li>Security measures</li>
+      <li>Mobile responsiveness</li>
+      <li>Integration points</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="process"><span class="num">§3</span>Exchange Process Framework</h2>
+<p>The lifecycle of a single exchange, from first contact to the point where value re-enters circulation. Each stage feeds the next; the loop closing at stage four is what makes the system a gift economy rather than a donation funnel.</p>
+
+<div class="flow">
+  <div class="step"><div><strong>Initial Contact</strong><span>Story submission · intention setting · community connection. A participant arrives by telling, not by buying.</span></div></div>
+  <div class="step"><div><strong>Gift Flow</strong><span>Sponsorship matching · resource allocation · story amplification. The community routes value toward the story.</span></div></div>
+  <div class="step"><div><strong>Ongoing Engagement</strong><span>Journey documentation · impact tracking · community building. The gift's life is recorded as it moves.</span></div></div>
+  <div class="step"><div><strong>Value Circulation</strong><span>Reciprocity opportunities · community support · sustainable giving. Receivers become givers; the loop closes.</span></div></div>
+</div>
+
+<h2 id="metrics"><span class="num">§4</span>Success Metrics</h2>
+<table>
+  <tr><th>Metric</th><th>What it measures</th></tr>
+  <tr><td>Story depth &amp; authenticity</td><td>Whether narratives are real accounts of meaning, not captions on transactions</td></tr>
+  <tr><td>Community engagement levels</td><td>Active participation in responding, sponsoring, and threading connections</td></tr>
+  <tr><td>Gift flow sustainability</td><td>Whether value keeps circulating without continual external injection</td></tr>
+  <tr><td>Relationship formation</td><td>New connections created per exchange — the platform's true unit of output</td></tr>
+  <tr><td>Transformative impact</td><td>Evidence that exchanges change participants' circumstances or orientation</td></tr>
+</table>
+
+<h2 id="prototype"><span class="num">§5</span>Interface Prototype — Gift Exchange Journey</h2>
+<p>The project contains one working artifact: a React interface (Dec 2024) demonstrating the story-centered navigation principle. There is no shop, no cart, no price. The unit of the interface is the <em>story card</em>.</p>
+
+<h3>What the prototype establishes</h3>
+<p><strong>Data model.</strong> Each story carries: a serial number tying it to a physical object (e.g. a currency bill — <code>AB12345678</code>), an affirmation ("I am grateful for the abundance in my life"), a narrative of what the gift did ("This bill helped fund a community garden project…"), an audio recording URL, a connection count, and a geographic location (Portland OR, Austin TX in the samples).</p>
+<p><strong>Interaction pattern.</strong> A feed of story cards → tap to open a story detail view → two actions: <em>Record Response</em> (voice, continuing the story thread) and <em>Add to Journey</em> (attaching the story to your own path). Plus <em>Share Story</em> for amplification. Every action deepens the story; none is a purchase.</p>
+<p><strong>Physical–digital bridge.</strong> The serial number is the join key between a physical object in circulation and its accumulating digital story — the mechanism behind the QR/serial technical requirement in §2.</p>
+
+<div class="note">Header copy from the prototype, which doubles as the platform's thesis: <em>"Share stories, build connections, create change."</em></div>
+
+<details class="code">
+<summary>▸ Full prototype source — Gift Exchange Platform Interface.tsx</summary>
+<pre>import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Gift, Heart, MessageCircle, Share2, Users } from 'lucide-react';
+
+const GiftExchangePlatform = () =&gt; {
+  const [activeStory, setActiveStory] = useState(null);
+  const [selectedAffirmation, setSelectedAffirmation] = useState(null);
+
+  // Sample data - in production this would come from your backend
+  const stories = [
+    {
+      id: 1,
+      serialNumber: "AB12345678",
+      affirmation: "I am grateful for the abundance in my life",
+      story: "This bill helped fund a community garden project...",
+      audioUrl: "/story-1-audio.mp3",
+      connections: 3,
+      location: "Portland, OR"
+    },
+    {
+      id: 2,
+      serialNumber: "CD87654321",
+      affirmation: "Together we create positive change",
+      story: "Used to support a local food bank...",
+      audioUrl: "/story-2-audio.mp3",
+      connections: 5,
+      location: "Austin, TX"
+    }
+  ];
+
+  const StoryCard = ({ story }) =&gt; (
+    &lt;Card
+      className="mb-4 cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={() =&gt; setActiveStory(story)}
+    &gt;
+      &lt;CardHeader&gt;
+        &lt;CardTitle className="flex items-center gap-2"&gt;
+          &lt;Gift className="h-5 w-5" /&gt;
+          &lt;span className="text-lg"&gt;Story #{story.id}&lt;/span&gt;
+        &lt;/CardTitle&gt;
+      &lt;/CardHeader&gt;
+      &lt;CardContent&gt;
+        &lt;div className="space-y-4"&gt;
+          &lt;p className="text-sm text-gray-600"&gt;{story.affirmation}&lt;/p&gt;
+          &lt;div className="flex items-center gap-4 text-sm text-gray-500"&gt;
+            &lt;span className="flex items-center gap-1"&gt;
+              &lt;Users className="h-4 w-4" /&gt;
+              {story.connections} connections
+            &lt;/span&gt;
+            &lt;span className="flex items-center gap-1"&gt;
+              &lt;MessageCircle className="h-4 w-4" /&gt;
+              {story.location}
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/CardContent&gt;
+    &lt;/Card&gt;
+  );
+
+  const StoryDetail = ({ story }) =&gt; (
+    &lt;Card className="mb-4"&gt;
+      &lt;CardHeader&gt;
+        &lt;CardTitle className="flex items-center justify-between"&gt;
+          &lt;span className="flex items-center gap-2"&gt;
+            &lt;Heart className="h-5 w-5 text-red-500" /&gt;
+            Affirmation #{story.id}
+          &lt;/span&gt;
+          &lt;button
+            className="text-blue-500 flex items-center gap-1"
+            onClick={() =&gt; setActiveStory(null)}
+          &gt;
+            &lt;Share2 className="h-4 w-4" /&gt;
+            Share Story
+          &lt;/button&gt;
+        &lt;/CardTitle&gt;
+      &lt;/CardHeader&gt;
+      &lt;CardContent&gt;
+        &lt;div className="space-y-6"&gt;
+          &lt;div className="bg-gray-50 p-4 rounded-lg"&gt;
+            &lt;p className="text-lg font-medium text-gray-800"&gt;{story.affirmation}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;h3 className="text-sm font-medium text-gray-700 mb-2"&gt;Story&lt;/h3&gt;
+            &lt;p className="text-gray-600"&gt;{story.story}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div className="flex items-center gap-4"&gt;
+            &lt;button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"&gt;
+              Record Response
+            &lt;/button&gt;
+            &lt;button className="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50"&gt;
+              Add to Journey
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/CardContent&gt;
+    &lt;/Card&gt;
+  );
+
+  return (
+    &lt;div className="max-w-2xl mx-auto p-6"&gt;
+      &lt;div className="mb-8"&gt;
+        &lt;h1 className="text-3xl font-bold mb-2"&gt;Gift Exchange Journey&lt;/h1&gt;
+        &lt;p className="text-gray-600"&gt;Share stories, build connections, create change&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div className="space-y-6"&gt;
+        {activeStory ? (
+          &lt;StoryDetail story={activeStory} /&gt;
+        ) : (
+          stories.map(story =&gt; (
+            &lt;StoryCard key={story.id} story={story} /&gt;
+          ))
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default GiftExchangePlatform;</pre>
+</details>
+
+<footer>
+GIFT-BASED EXCHANGE · KNOWLEDGE REGISTER · SELF-CONTAINED · Nothing in this document requires the original project to remain legible.
+</footer>
+
+</div>
+</body>
+</html>

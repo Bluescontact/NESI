@@ -189,6 +189,49 @@ freeze is still in force until that condition is actually met. Read exactly:
 
 ---
 
+# ■ THE FREEZE IS LIFTED — 2026-08-11 21:34, Kevin's ruling, session 8a8f232e
+
+**This supersedes the lift condition immediately above ("THE LIFT CONDITION IS NOW
+NAMED," 21:18 the same session).** The condition stood roughly 40 minutes before
+he overrode it himself, in his own words, put to him face-up as a named
+collision first (the surface showed both readings — hold the condition, or the
+words stand as new — and he picked the second):
+
+> "i'm going to call an unfreeze.. because the process of phase transition
+> instantiated by the freeze didnt produce the desired output."
+
+His mark on the collision tile, verbatim: **"the words stand as a new ruling —
+supersede this morning's condition."**
+
+**Nothing above this line in the FULL FREEZE section is deleted or edited.**
+The ratification, the geometry, the six-cupola-net reasoning, the lift condition
+he named 40 minutes earlier — all of it stands as the record of what was true
+and ruled, in sequence, on 2026-08-07 through 2026-08-11 21:18. This is the
+corpus's own convention: supersession is a new mark layered on top, never a
+silent edit of what came before. A reader working this file top-down will hit
+the FULL FREEZE, then the lift condition, then this — read in order, that is
+the actual sequence of what happened, not a contradiction to resolve.
+
+**What is actually true from here forward:** the FULL FREEZE ratified 2026-08-07
+is no longer in force. New generation — patterns, namings, organs, laws,
+rulings, boundaries, gates, verbs, lenses, specs, briefs, tools, skills,
+chassis, widgets, builds, slices, features, scenes, directories — is no longer
+categorically barred. **This does not touch any other standing law, gate, or
+open fork.** In particular:
+- The 21:18 gate on `nesi/game2d/nesi.html` (996→1188 undocumented lines,
+  unverified) is a build-integrity gate, not a freeze gate. It stays open.
+  "Nothing further will touch nesi.html until that gate is read" still holds —
+  the freeze lifting does not read it for him.
+- Every other open fork this session's own counsel-of-four pass surfaced (the
+  T1-T6/Tank collision, the vertex-confirmation-vs-T6 collision, the
+  entry-tetra/seam collision, the four-vs-three-station question) stays exactly
+  as open as it was. Lifting the freeze is not a ruling on any of them.
+- The COUNSEL'S STANDING BUILD MANDATE below still governs how the counsel
+  builds once it does build — LAWFUL-NOW without asking, NEEDS-KEVIN opened as
+  a durable gate, never defaulted.
+
+---
+
 # ■ THE DROP RULE — standing, from 2026-08-09 (Kevin's instruction, session 87c5c4fc)
 
 > **"file drops against the corpus, then stop"**
@@ -273,6 +316,44 @@ picked, a fifth naming, anything a seat's own library still marks
 NEEDS-KEVIN — this mandate was breached regardless of how much progress it
 produced. Progress under this mandate is measured by LAWFUL-NOW ground
 covered and NEEDS-KEVIN gates opened cleanly, never by features shipped.
+
+## ■ AMENDMENT — THE NESI.EXE COUNSEL BUILD ORDER, 2026-08-11 21:48 (Kevin's mark, session 8a8f232e)
+
+**Superseded for the scope named below only.** Everything above this
+amendment in the mandate stands as written and governs everywhere this
+amendment doesn't reach — this is a narrower carve-out, not a repeal.
+
+Kevin dropped a build order (verbatim, filed to MARKS_LOG 21:46) whose own
+words directly contradict the mandate above: *"The counsel decides... does
+NOT hand naming, articulation, or design chores back to Kevin. Kevin is not
+a decision input to this loop... If you are about to ask Kevin to decide,
+decide it yourselves."* The collision was surfaced face-up — his own ratified
+law from an hour earlier, quoted against the order's own words — and he
+confirmed it anyway: **"confirm the override — counsel rules autonomously
+per this order, escalating only sovereignty/body/gift-at-gate, going forward
+from now."**
+
+**What changes:** for the specific work of building NESI.exe toward a
+daily-playable Level 1 (the Tank/writing tetra) and the ascent above it, open
+forks that are pure design/naming/mechanic choices — not Kevin's sovereignty,
+not his body, not a gift surfaced at the gate — are now RULED rather than
+gated. The ruling authority sits with this session acting as convergence
+point (chief-of-staff / game-design-lead role the order describes), because
+**no individual counsel agent's own definition file was changed** — each of
+buckminster-fuller/stuart-cowan/game-craft/kevin-lens/change-composite still
+carries "never defaults his forks" as its own hard limit and will still
+decline to rule if asked directly. They remain lens-readers under this
+amendment; the session converges their reads into a ruling and logs it.
+
+**What still escalates to Kevin, unchanged:** anything touching his
+sovereignty, his body, or a gift for his mark at the gate — same three
+exceptions the order itself named. Also unchanged: every ruling made under
+this amendment gets recorded in `nesi/game2d/BUILD_RECORD.md` by name, so
+nothing is decided silently even though it's no longer asked.
+
+**Not touched by this amendment:** the FULL FREEZE (already lifted, above,
+by separate mark), the four/five agents' own definition files (unedited),
+any fork outside the L1-Tank-and-ascent build scope.
 
 ---
 
@@ -455,6 +536,20 @@ one is refused with the specific reason; nothing is written.
   Kevin never has to type to leave.
 - **B2-ext · no dead-end crosses.** A `cross` must carry `"verified": true` or a
   non-empty `"gap"`; the gap renders on the button face.
+- **B3.2 · THE WHOLE LEDGER, added 2026-08-12 (Kevin's instruction: *"fix B3 so it reads
+  the whole ledger, not just the session"*).** The paragraph above stays exactly as ruled
+  and now governs **asking** only. A second clause governs **disclosure**: on every render
+  `surface.py` derives EVERY open gate and EVERY live decision across the corpus, writes
+  all of them to `_widgets/THE_FIELD.html` — flat, faceted, unranked, markable at depth
+  zero — and puts the total in the floor line. It adds no tiles, so it cannot deadlock the
+  brake the way the original whole-ledger reading would have. **It fails closed:** a
+  surface that cannot state what stands open does not ship. The hole it closes, measured
+  the same day: three surfaces in a row carried 3, then 1, then 0 decisions while **499
+  items stood open**, and every one of them passed B3. His words: *"you've guided and
+  gated me to a single decision… I navigate a map, not a doorway."* This is the same law
+  [[Depth-Zero Decisions]] already stated — every live decision open and markable at depth
+  zero — restored at corpus scale rather than session scale.
+
 - **B3 · derived, never authored.** Before rendering, `surface.py` reads this session's
   own live open decisions — its unanswered offers on the ledger and the gates it opened —
   and refuses if the payload carries fewer, naming exactly what was omitted.

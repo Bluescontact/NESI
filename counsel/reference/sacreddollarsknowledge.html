@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sacred Dollars — Complete Knowledge Artifact</title>
+<style>
+  :root {
+    --ink: #2b2620;
+    --ink-soft: #6b6156;
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --gold: #a5852e;
+    --gold-soft: #f0e6cc;
+    --green: #4a6b52;
+    --green-soft: #e4ede6;
+    --line: #e2dbcf;
+    --accent: #7a5c3e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  header.hero {
+    background: linear-gradient(135deg, #2f3d33 0%, #4a6b52 60%, #5d7a63 100%);
+    color: #f3efe6;
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  header.hero .kicker {
+    text-transform: uppercase; letter-spacing: 0.25em; font-size: 12px;
+    color: #cfc49a; margin-bottom: 14px;
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+  }
+  header.hero h1 { font-size: 42px; font-weight: 500; letter-spacing: 0.02em; }
+  header.hero .sub {
+    max-width: 680px; margin: 18px auto 0; font-style: italic;
+    color: #ddd6c2; font-size: 17px;
+  }
+  nav.toc {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,247,242,0.96); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+    padding: 10px 16px;
+    font-family: -apple-system, 'Segoe UI', sans-serif; font-size: 13px;
+  }
+  nav.toc a {
+    color: var(--accent); text-decoration: none; padding: 5px 12px;
+    border-radius: 999px; transition: background 0.15s;
+  }
+  nav.toc a:hover { background: var(--gold-soft); }
+  main { max-width: 900px; margin: 0 auto; padding: 48px 24px 96px; }
+  section { margin-bottom: 72px; scroll-margin-top: 70px; }
+  h2 {
+    font-size: 26px; font-weight: 500; color: var(--green);
+    border-bottom: 2px solid var(--gold-soft); padding-bottom: 10px; margin-bottom: 8px;
+  }
+  .section-note {
+    font-size: 13px; color: var(--ink-soft); margin-bottom: 24px;
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+  }
+  h3 { font-size: 19px; font-weight: 600; color: var(--accent); margin: 28px 0 10px; }
+  h4 { font-size: 15px; font-weight: 700; margin: 18px 0 6px; color: var(--ink); }
+  p { margin-bottom: 12px; }
+  ul, ol { margin: 0 0 14px 24px; }
+  li { margin-bottom: 5px; }
+  .inquiry {
+    background: var(--card); border-left: 4px solid var(--gold);
+    padding: 22px 26px; margin: 20px 0; font-size: 18px; font-style: italic;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05); border-radius: 0 8px 8px 0;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 20px 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card h4 { margin-top: 0; }
+  table {
+    width: 100%; border-collapse: collapse; background: var(--card);
+    border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    font-size: 15px; margin: 14px 0 24px;
+  }
+  th {
+    background: var(--green); color: #f3efe6; text-align: left;
+    padding: 10px 14px; font-weight: 600; font-size: 13px;
+    font-family: -apple-system, 'Segoe UI', sans-serif; letter-spacing: 0.04em;
+  }
+  td { padding: 9px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  td.num { color: var(--ink-soft); width: 34px; text-align: right; font-size: 13px; }
+  tr:nth-child(even) td { background: #fcfaf6; }
+  .arrow { color: var(--gold); padding: 0 4px; }
+  .badge {
+    display: inline-block; background: var(--gold-soft); color: var(--accent);
+    border-radius: 999px; padding: 2px 12px; font-size: 12px; font-weight: 600;
+    font-family: -apple-system, 'Segoe UI', sans-serif; margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .badge.green { background: var(--green-soft); color: var(--green); }
+  code, .mono {
+    font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13px;
+    background: #f1ece2; padding: 1px 6px; border-radius: 4px;
+  }
+  pre {
+    background: #2f2b24; color: #e8e0cf; padding: 16px 20px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 12px 0 20px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+  }
+  .spec-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px; margin: 14px 0 20px;
+  }
+  .spec {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .spec .label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--ink-soft); font-family: -apple-system, 'Segoe UI', sans-serif;
+  }
+  .spec .value { font-size: 15px; font-weight: 600; margin-top: 2px; }
+  .status-open {
+    background: #fdf6e7; border: 1px dashed var(--gold); border-radius: 8px;
+    padding: 14px 18px; margin: 14px 0; font-size: 14.5px;
+  }
+  footer {
+    text-align: center; padding: 32px; color: var(--ink-soft); font-size: 13px;
+    border-top: 1px solid var(--line);
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+  }
+  .flow {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    margin: 12px 0 20px; font-family: -apple-system, 'Segoe UI', sans-serif;
+    font-size: 13.5px;
+  }
+  .flow .step {
+    background: var(--green-soft); color: var(--green); border-radius: 8px;
+    padding: 8px 14px; font-weight: 600;
+  }
+  .flow .fa { color: var(--gold); font-size: 16px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">Sacred Dollars · The Gift Model</div>
+  <h1>Complete Knowledge Artifact</h1>
+  <p class="sub">Everything in the project, in one place: the framework, the affirmation architecture, all four content sets, and the production system for transforming dollar bills into carriers of awakening.</p>
+</header>
+
+<nav class="toc">
+  <a href="#framework">Framework</a>
+  <a href="#principles">Principles</a>
+  <a href="#architecture">Affirmation Architecture</a>
+  <a href="#pairs">Trust &amp; Presence Pairs</a>
+  <a href="#tp-stickers">Trust &amp; Presence Set</a>
+  <a href="#cr-stickers">Connection &amp; Resonance Set</a>
+  <a href="#istatements">Original "I" Set</a>
+  <a href="#production">Production Specs</a>
+  <a href="#status">Status &amp; Open Threads</a>
+</nav>
+
+<main>
+
+<!-- ============ FRAMEWORK ============ -->
+<section id="framework">
+  <h2>1 · The Gift Model Framework</h2>
+  <p class="section-note">Source: project description ("The Gift Model: A Framework for Transformative Currency")</p>
+
+  <div class="inquiry">"How might we transform ordinary currency into carriers of inner awakening, creating a network of meaningful exchanges that ripple through individual consciousness and collective systems?"</div>
+
+  <h3>The Physical Artifact</h3>
+  <p>A dollar bill becomes a multi-layered artifact of meaning. A <strong>white sticker</strong> carries a visible affirmation — accessible, action-oriented, an invitation to first engagement. A <strong>clear sticker</strong> carries a hidden affirmation, a deeper truth revealed only when the bill is held up to light. A <strong>handwritten personal signature</strong> commits the giver to the gift economy, an <strong>invitation</strong> asks the recipient to consider their own gifts, and a <strong>QR code</strong> opens deeper engagement.</p>
+
+  <div class="flow">
+    <span class="step">Visible truth</span><span class="fa">→</span>
+    <span class="step">Backlit revelation</span><span class="fa">→</span>
+    <span class="step">Personal signature</span><span class="fa">→</span>
+    <span class="step">Invitation to give</span><span class="fa">→</span>
+    <span class="step">QR / deeper journey</span>
+  </div>
+
+  <h3>The Transformative Journey</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Personal Layer</h4>
+      <ul>
+        <li>From self-discovery to spiritual awareness</li>
+        <li>Building inner resources and resilience</li>
+        <li>Cultivating authentic expression and presence</li>
+        <li>Developing emotional wisdom and peace</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Collective Layer</h4>
+      <ul>
+        <li>Creating networks of meaningful exchange</li>
+        <li>Building gift-based relationships</li>
+        <li>Transforming transactions into spiritual practice</li>
+        <li>Seeding new possibilities in existing systems</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Experience Architecture</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Discovery Elements</h4>
+      <ul>
+        <li>Physical revelation through backlighting</li>
+        <li>Progressive deepening through paired messages</li>
+        <li>Personal connection through handwritten signature</li>
+        <li>Invitation to participate through questioning</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Integration Patterns</h4>
+      <ul>
+        <li>From visible to hidden truths</li>
+        <li>From personal to universal wisdom</li>
+        <li>From receiving to giving</li>
+        <li>From individual to collective transformation</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Gift Economy Integration</h3>
+  <p>Currency serves as both literal and metaphorical carrier of value. Dollar bills — familiar objects — become sacred artifacts. Giving is anonymous and ritual: strategic placement, natural discovery, ripples of possibility, and an invitation for every recipient to become a giver themselves.</p>
+
+  <h3>Desired Outcomes</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Individual</h4>
+      <ul>
+        <li>Moments of insight and revelation</li>
+        <li>Invitation to the inner journey</li>
+        <li>Tools for personal growth</li>
+        <li>Connection to larger purpose</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Collective &amp; Systemic</h4>
+      <ul>
+        <li>Networks of meaningful exchange</li>
+        <li>New patterns of economic relationship</li>
+        <li>Currency transformed into teacher</li>
+        <li>Bridges between material and spiritual value</li>
+        <li>Demonstration of alternative economic models</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Core Questions for Evolution</h3>
+  <ol>
+    <li>How does this understanding want to grow through individual experiences?</li>
+    <li>What patterns might emerge through collective participation?</li>
+    <li>How can the system learn and adapt through implementation?</li>
+    <li>What becomes possible when ordinary objects become carriers of awakening?</li>
+    <li>How might these small acts create lasting transformation?</li>
+  </ol>
+  <p><em>This is a living framework meant to evolve through practice and collective wisdom. Let each implementation be guided by deep listening and authentic emergence.</em></p>
+</section>
+
+<!-- ============ PRINCIPLES ============ -->
+<section id="principles">
+  <h2>2 · Guiding Principles</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>Authentic Expression</h4>
+      <p>Each element embodies genuine care and intention. The signature creates direct connection; affirmations arise from lived wisdom; design supports natural discovery.</p>
+    </div>
+    <div class="card">
+      <h4>Fractal Design</h4>
+      <p>Each piece contains the essence of the whole. Individual experiences connect to collective transformation; micro actions reflect macro possibilities; personal awakening serves systemic change.</p>
+    </div>
+    <div class="card">
+      <h4>Emergent Evolution</h4>
+      <p>The framework grows organically. Recipients become co-creators; the system learns through implementation; patterns emerge through collective participation.</p>
+    </div>
+    <div class="card">
+      <h4>Sacred Economics</h4>
+      <p>Ordinary currency becomes spiritual teaching — new possibilities within existing systems, bridging material and spiritual value, demonstrating gift economy principles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section id="architecture">
+  <h2>3 · Affirmation Architecture</h2>
+  <p class="section-note">The content system behind every sticker set</p>
+  <p>The full vision is <strong>96 paired affirmations organized as 8 categories of 12 pairs</strong>, forming a complete cycle of transformation. Each pair works on multiple levels:</p>
+  <div class="grid2">
+    <div class="card"><h4>Visible</h4><p>Accessible, action-oriented statements that invite initial engagement — printed on the white sticker.</p></div>
+    <div class="card"><h4>Hidden</h4><p>Deeper truths revealed through intentional discovery — printed on the clear sticker, seen through backlighting.</p></div>
+    <div class="card"><h4>Progressive</h4><p>Building from self-discovery toward spiritual connection across the sequence.</p></div>
+    <div class="card"><h4>Fractal</h4><p>Each pair contains the essence of the whole journey.</p></div>
+  </div>
+  <p style="margin-top:16px;">Two named categories exist so far — <strong>Trust &amp; Presence</strong> and <strong>Connection &amp; Resonance</strong> — each developed as a 24-affirmation sticker set. Trust &amp; Presence also has a complete set of 24 visible→hidden pairs and a print layout organized in two movements (Foundation and Deepening). An earlier 20-affirmation "I"-statement set predates the "Your…" voice.</p>
+</section>
+
+<!-- ============ PAIRS ============ -->
+<section id="pairs">
+  <h2>4 · Trust &amp; Presence — The 24 Affirmation Pairs</h2>
+  <p class="section-note">Source: "Trust &amp; Presence - Affirmation Pairs.md" · visible statement → hidden truth</p>
+  <table>
+    <tr><th style="width:34px;">#</th><th>Visible (white sticker)</th><th>Hidden (clear sticker, revealed by light)</th></tr>
+    <tr><td class="num">1</td><td>Your heart recognizes the good in others</td><td>Wisdom flows through gentle experience</td></tr>
+    <tr><td class="num">2</td><td>Your inner knowing guides with clarity</td><td>Trust illuminates the path ahead</td></tr>
+    <tr><td class="num">3</td><td>Your boundaries create sacred space</td><td>Life flows in with natural ease</td></tr>
+    <tr><td class="num">4</td><td>Your breath releases, moment by moment</td><td>New ways emerge through letting go</td></tr>
+    <tr><td class="num">5</td><td>Open hands receive life's gifts</td><td>Nature flows through quiet acceptance</td></tr>
+    <tr><td class="num">6</td><td>Your presence invites unexpected grace</td><td>Each moment brings what's truly needed</td></tr>
+    <tr><td class="num">7</td><td>Your authentic self transforms patterns</td><td>Being present creates lasting change</td></tr>
+    <tr><td class="num">8</td><td>Gratitude opens every doorway</td><td>Quiet appreciation fills each space</td></tr>
+    <tr><td class="num">9</td><td>Trust deepens with each breath taken</td><td>Time unfolds in natural rhythm</td></tr>
+    <tr><td class="num">10</td><td>Your heart connects beyond bounds</td><td>Connection flows through everything</td></tr>
+    <tr><td class="num">11</td><td>Warmth creates welcoming space</td><td>Kindness moves through simple moments</td></tr>
+    <tr><td class="num">12</td><td>Your being radiates natural light</td><td>Brightness flows where attention rests</td></tr>
+    <tr><td class="num">13</td><td>Patience allows deeper knowing</td><td>Hidden patterns reveal themselves</td></tr>
+    <tr><td class="num">14</td><td>Curiosity opens quiet doors</td><td>Questions light the path forward</td></tr>
+    <tr><td class="num">15</td><td>Silence creates space for insight</td><td>Quiet moments bring clear vision</td></tr>
+    <tr><td class="num">16</td><td>Your smile bridges hearts</td><td>Joy flows in genuine connection</td></tr>
+    <tr><td class="num">17</td><td>Presence brings calm to chaos</td><td>Steadiness ripples outward gently</td></tr>
+    <tr><td class="num">18</td><td>Listening creates room to grow</td><td>New possibilities emerge in silence</td></tr>
+    <tr><td class="num">19</td><td>Touch carries natural healing</td><td>Connection flows through gentle contact</td></tr>
+    <tr><td class="num">20</td><td>Voice finds strength in softness</td><td>Gentle words carry deeper truth</td></tr>
+    <tr><td class="num">21</td><td>Your witness holds space for change</td><td>Clear seeing transforms everything</td></tr>
+    <tr><td class="num">22</td><td>Breath finds its own rhythm</td><td>Each cycle brings fresh beginning</td></tr>
+    <tr><td class="num">23</td><td>Feet ground scattered thoughts</td><td>Earth steadies the racing mind</td></tr>
+    <tr><td class="num">24</td><td>The heart knows its way forward</td><td>Inner wisdom shows each step</td></tr>
+  </table>
+</section>
+
+<!-- ============ TP STICKERS ============ -->
+<section id="tp-stickers">
+  <h2>5 · Trust &amp; Presence — Sticker Set (24)</h2>
+  <p class="section-note">Sources: "Untitled.html" (Trust &amp; Presence print sheet) and "Trust &amp; Presence Affirmations Layout.tsx" (React layout with Foundation / Deepening movements)</p>
+  <p>The set exists in two closely related editions. The <strong>print sheet</strong> version is what's laid out for sticker paper; the <strong>React layout</strong> version organizes 24 affirmations into two movements — <em>Foundation</em> (1–12) and <em>Deepening</em> (13–24) — with slightly different wording. Both are preserved below.</p>
+
+  <h3>Print sheet edition (tagline: "Trust &amp; Presence")</h3>
+  <table>
+    <tr><th style="width:34px;">#</th><th>Affirmation</th><th style="width:34px;">#</th><th>Affirmation</th></tr>
+    <tr><td class="num">1</td><td>Your heart recognizes the good in others</td><td class="num">13</td><td>Your patience allows deeper understanding</td></tr>
+    <tr><td class="num">2</td><td>Your inner knowing guides you with clarity</td><td class="num">14</td><td>Your curiosity opens unexpected doors</td></tr>
+    <tr><td class="num">3</td><td>Your boundaries create space for connection</td><td class="num">15</td><td>Your silence creates space for insight</td></tr>
+    <tr><td class="num">4</td><td>Your breath releases the need to control</td><td class="num">16</td><td>Your smile invites genuine connection</td></tr>
+    <tr><td class="num">5</td><td>Your hands remain open to receiving gifts</td><td class="num">17</td><td>Your presence brings calm to chaos</td></tr>
+    <tr><td class="num">6</td><td>Your presence invites unexpected offerings</td><td class="num">18</td><td>Your listening creates room for growth</td></tr>
+    <tr><td class="num">7</td><td>Your authentic self transforms daily patterns</td><td class="num">19</td><td>Your touch carries natural healing</td></tr>
+    <tr><td class="num">8</td><td>Your gratitude opens doors to possibility</td><td class="num">20</td><td>Your voice finds strength in gentleness</td></tr>
+    <tr><td class="num">9</td><td>Your trust in life grows each moment</td><td class="num">21</td><td>Your witness holds space for change</td></tr>
+    <tr><td class="num">10</td><td>Your heart connects beyond familiar bounds</td><td class="num">22</td><td>Your breath finds rhythm with life</td></tr>
+    <tr><td class="num">11</td><td>Your warmth creates welcome for others</td><td class="num">23</td><td>Your feet ground scattered thoughts</td></tr>
+    <tr><td class="num">12</td><td>Your being radiates natural brightness</td><td class="num">24</td><td>Your heart knows the next step</td></tr>
+  </table>
+
+  <h3>React layout edition (two movements)</h3>
+  <span class="badge green">First Movement · Foundation (1–12)</span>
+  <table>
+    <tr><td class="num">1</td><td>Your heart recognizes the good in each being</td><td class="num">7</td><td>Your patience allows trust to blossom</td></tr>
+    <tr><td class="num">2</td><td>Your presence creates safety for others</td><td class="num">8</td><td>Your authenticity creates safe harbors</td></tr>
+    <tr><td class="num">3</td><td>Your boundaries dance with perfect timing</td><td class="num">9</td><td>Your gentleness dissolves ancient fears</td></tr>
+    <tr><td class="num">4</td><td>Your openness invites genuine connection</td><td class="num">10</td><td>Your presence bridges separate worlds</td></tr>
+    <tr><td class="num">5</td><td>Your listening holds space for truth</td><td class="num">11</td><td>Your trust illuminates hidden paths</td></tr>
+    <tr><td class="num">6</td><td>Your vulnerability carries quiet strength</td><td class="num">12</td><td>Your being radiates quiet strength</td></tr>
+  </table>
+  <span class="badge green">Second Movement · Deepening (13–24)</span>
+  <table>
+    <tr><td class="num">13</td><td>Your smile welcomes trust to deepen</td><td class="num">19</td><td>Your breath restores natural trust</td></tr>
+    <tr><td class="num">14</td><td>Your silence holds worlds of presence</td><td class="num">20</td><td>Your eyes meet others in truth</td></tr>
+    <tr><td class="num">15</td><td>Your body knows who to trust</td><td class="num">21</td><td>Your heart creates room for all</td></tr>
+    <tr><td class="num">16</td><td>Your attention weaves fields of safety</td><td class="num">22</td><td>Your being anchors storms of change</td></tr>
+    <tr><td class="num">17</td><td>Your trust opens doors within doors</td><td class="num">23</td><td>Your trust ripples far beyond sight</td></tr>
+    <tr><td class="num">18</td><td>Your presence witnesses without judgment</td><td class="num">24</td><td>Your presence illuminates the way</td></tr>
+  </table>
+</section>
+
+<!-- ============ CR STICKERS ============ -->
+<section id="cr-stickers">
+  <h2>6 · Connection &amp; Resonance — Sticker Set (24)</h2>
+  <p class="section-note">Source: "Untitled.html" (Connection &amp; Resonance print sheet) · tagline: "Connection &amp; Resonance"</p>
+  <table>
+    <tr><th style="width:34px;">#</th><th>Affirmation</th><th style="width:34px;">#</th><th>Affirmation</th></tr>
+    <tr><td class="num">1</td><td>Your presence creates room for understanding</td><td class="num">13</td><td>Your touch communicates beyond words</td></tr>
+    <tr><td class="num">2</td><td>Your listening opens unexpected doorways</td><td class="num">14</td><td>Your voice carries notes of understanding</td></tr>
+    <tr><td class="num">3</td><td>Your eyes find beauty in differences</td><td class="num">15</td><td>Your acceptance creates safe harbors</td></tr>
+    <tr><td class="num">4</td><td>Your words carry seeds of connection</td><td class="num">16</td><td>Your breath synchronizes with others naturally</td></tr>
+    <tr><td class="num">5</td><td>Your silence invites deeper knowing</td><td class="num">17</td><td>Your laughter dissolves artificial boundaries</td></tr>
+    <tr><td class="num">6</td><td>Your patience allows truth to surface</td><td class="num">18</td><td>Your questions open unexplored territories</td></tr>
+    <tr><td class="num">7</td><td>Your smile breaks through old barriers</td><td class="num">19</td><td>Your witness holds space for growth</td></tr>
+    <tr><td class="num">8</td><td>Your gentleness makes space for others</td><td class="num">20</td><td>Your presence steadies stormy waters</td></tr>
+    <tr><td class="num">9</td><td>Your curiosity opens closed doors</td><td class="num">21</td><td>Your empathy builds invisible bridges</td></tr>
+    <tr><td class="num">10</td><td>Your welcome creates lasting bonds</td><td class="num">22</td><td>Your authenticity invites real connection</td></tr>
+    <tr><td class="num">11</td><td>Your attention weaves invisible threads</td><td class="num">23</td><td>Your attention illuminates hidden gifts</td></tr>
+    <tr><td class="num">12</td><td>Your wonder invites shared discovery</td><td class="num">24</td><td>Your heart recognizes kindred spirits</td></tr>
+  </table>
+</section>
+
+<!-- ============ I STATEMENTS ============ -->
+<section id="istatements">
+  <h2>7 · Original "I"-Statement Set (20)</h2>
+  <p class="section-note">Source: "Affirmation Stickers Layout.html" — the earliest set, first-person voice, 8.5"×11" portrait layout (2 × 10 grid of 4"×1" stickers)</p>
+  <table>
+    <tr><th style="width:34px;">#</th><th>Affirmation</th><th style="width:34px;">#</th><th>Affirmation</th></tr>
+    <tr><td class="num">1</td><td>I am aligned with my truth.</td><td class="num">11</td><td>I give love freely and unconditionally.</td></tr>
+    <tr><td class="num">2</td><td>I navigate life with clarity.</td><td class="num">12</td><td>I attract prosperity with ease.</td></tr>
+    <tr><td class="num">3</td><td>I am safe to express myself fully.</td><td class="num">13</td><td>I am the architect of my reality.</td></tr>
+    <tr><td class="num">4</td><td>I trust the unfolding of my journey.</td><td class="num">14</td><td>My authenticity is my strength.</td></tr>
+    <tr><td class="num">5</td><td>Abundance flows freely to me.</td><td class="num">15</td><td>I am resilient and adaptable.</td></tr>
+    <tr><td class="num">6</td><td>I embrace the unknown with courage.</td><td class="num">16</td><td>I listen to the whispers of my soul.</td></tr>
+    <tr><td class="num">7</td><td>I share my unique light with confidence.</td><td class="num">17</td><td>I learn and evolve with each experience.</td></tr>
+    <tr><td class="num">8</td><td>I celebrate my strengths and embrace my shadows.</td><td class="num">18</td><td>Everything happens in perfect order.</td></tr>
+    <tr><td class="num">9</td><td>I am guided by a loving intelligence.</td><td class="num">19</td><td>I am connected to a community of like-minded souls.</td></tr>
+    <tr><td class="num">10</td><td>I am part of a beautiful tapestry.</td><td class="num">20</td><td>I attract positive experiences into my life.</td></tr>
+  </table>
+  <p><em>Voice evolution: the project moved from first-person "I…" declarations to second-person "Your…" recognitions — the sticker speaks to the finder rather than for them.</em></p>
+</section>
+
+<!-- ============ PRODUCTION ============ -->
+<section id="production">
+  <h2>8 · Production Specifications</h2>
+  <p class="section-note">Sources: "Affirmation Sticker Text Guidelines.md" and the print-sheet HTML layouts</p>
+
+  <h3>Typography</h3>
+  <div class="spec-grid">
+    <div class="spec"><div class="label">Font</div><div class="value">Bree Serif (Google Fonts)</div></div>
+    <div class="spec"><div class="label">Size</div><div class="value">14px (guidelines) / 16px (layouts)</div></div>
+    <div class="spec"><div class="label">Line height</div><div class="value">1.2</div></div>
+    <div class="spec"><div class="label">Letter spacing</div><div class="value">0.03em (0.08em on landscape sheets)</div></div>
+    <div class="spec"><div class="label">Weight</div><div class="value">500 medium / 600 on sheets</div></div>
+    <div class="spec"><div class="label">Line length</div><div class="value">~40–45 chars max</div></div>
+  </div>
+
+  <h3>Writing Guidelines (original "I" voice)</h3>
+  <ol>
+    <li>Start each affirmation with "I" or "My" for personal connection</li>
+    <li>Keep statements in present tense</li>
+    <li>Use positive affirmations (avoid negatives)</li>
+    <li>One clear statement per sticker</li>
+    <li>Length: ideally 20–40 characters for optimal readability (49 chars is the observed maximum)</li>
+  </ol>
+  <h4>Format patterns</h4>
+  <pre>I am [quality/state].
+I [verb] with [noun].
+I [verb] my [noun].
+My [noun] is [quality].</pre>
+
+  <h3>Print Layouts</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Portrait sheet (original set)</h4>
+      <ul>
+        <li>Letter, 8.5" × 11" portrait</li>
+        <li>Grid: 2 columns × 10 rows</li>
+        <li>Sticker: 4" × 1", 0.12in × 0.15in padding</li>
+        <li>Page padding: 0.5in top/bottom, 0.25in sides</li>
+        <li>Number bottom-right, 10px gray</li>
+        <li>Dashed borders as cut guides</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Landscape sheets (category sets)</h4>
+      <ul>
+        <li>Letter landscape, 11" × 8.5", print on sticker paper</li>
+        <li>Grid: 2 columns (5.25in) × 6 rows (1.29in), 0.1in gap</li>
+        <li>Page padding: 0.375in / 0.25in; 12 stickers per page, 24 per set</li>
+        <li>Each sticker: affirmation (2 lines, centered left-of-middle), number bottom-left ("n of 24"), category tagline bottom-right, 0.6in QR placeholder right-center</li>
+        <li>Instructions block hidden on print; page-break between sheets</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Template Substitution Workflow</h3>
+  <ol>
+    <li>Copy the HTML template</li>
+    <li>Replace the text between <code>&lt;div class="sticker"&gt;</code> and the number span</li>
+    <li>Keep the number spans unchanged</li>
+    <li>Test print to ensure text fits within sticker boundaries</li>
+  </ol>
+</section>
+
+<!-- ============ STATUS ============ -->
+<section id="status">
+  <h2>9 · Status &amp; Open Threads</h2>
+  <p class="section-note">Where the build stands, read from the artifacts themselves</p>
+
+  <h3>Built so far</h3>
+  <ul>
+    <li><strong>Framework:</strong> complete Gift Model doctrine (inquiry, principles, journey design, outcomes)</li>
+    <li><strong>Content:</strong> 2 of 8 categories drafted — Trust &amp; Presence (24 pairs + 2 sticker editions) and Connection &amp; Resonance (24 stickers, visible layer only)</li>
+    <li><strong>Production:</strong> two working print-sheet templates, typography spec, writing guidelines, substitution workflow</li>
+    <li><strong>Voice:</strong> settled into second-person "Your…" recognitions after the original first-person set</li>
+  </ul>
+
+  <h3>Open threads</h3>
+  <div class="status-open"><strong>QR destination undecided.</strong> Every category sticker carries a <code>QR?</code> placeholder — the deeper-engagement destination (site, story-collection, invitation page) has not been built or chosen.</div>
+  <div class="status-open"><strong>Hidden layer incomplete.</strong> Connection &amp; Resonance has visible affirmations only; its 24 hidden counterparts (clear-sticker layer) are not yet written. Trust &amp; Presence is the only category with full pairs.</div>
+  <div class="status-open"><strong>6 of 8 categories unnamed.</strong> The 96-pair / 8-category cycle needs six more categories (72 more pairs) to complete.</div>
+  <div class="status-open"><strong>Two Trust &amp; Presence editions diverge.</strong> The print sheet and the Foundation/Deepening React layout carry different wordings — one canonical set hasn't been chosen.</div>
+  <div class="status-open"><strong>Impact measurement unbuilt.</strong> The framework calls for tracking ripples, gathering stories, and documenting emergent patterns; no mechanism exists yet.</div>
+</section>
+
+</main>
+
+<footer>
+  Sacred Dollars · Complete Knowledge Artifact · compiled August 12, 2026<br>
+  Consolidates: project framework · Trust &amp; Presence pairs · Trust &amp; Presence layouts (HTML + React) · Connection &amp; Resonance sheet · original sticker layout · text guidelines
+</footer>
+
+</body>
+</html>
