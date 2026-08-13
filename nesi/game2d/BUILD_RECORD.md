@@ -4556,3 +4556,109 @@ from the automation dispatching two press/release pairs, not from the build.
 - Store reset to blank and read back clean — one seat, no soil, no marks, birth weather.
 
 → **WALKABLE** for the mechanism. The want-check is yours and has not happened.
+
+## MANIFEST 5 · THE BLOOM — the jitterbug is the progression (2026-08-13, session fb66285e)
+
+Built into `world.html`. The largest pass so far: the world stopped being one fixed
+valley and became a valley **at a stage**.
+
+### The move that made it affordable
+
+**The whole unfold is one number.** `M` is 0 for the world as built and 1 for the world
+unfolded; terrain, the dam's site, every water body's range and every mirror seat are
+**derived from it**. Every value between is the motion itself — which is why the bloom
+needs no second geometry, only a number moving.
+
+At `M=0` every formula reproduces the **original terrain exactly** — verified to
+5.7×10⁻¹⁴ across the whole width (L1). That check is not about M5 at all: it is the guard
+that four passes of verified work did not quietly move underneath this one.
+
+### What is new
+
+- **THE BLOOM, all-or-nothing per Fuller's invariant.** The world does not half-unfold. It
+  fires **at a day boundary, once the valley has actually carried fruit** — accumulation no
+  single day can reach, so the trigger is lived and **there is no button anywhere that
+  produces it.** Nothing announces it: you open the world and the world opens, over 3.4 s.
+- **While it moves, nothing is simulated.** No water flows, no light feeds, no stone falls,
+  and **the hand cannot reach the world**. The motion is the whole of it.
+- **Everything the hand ever placed rides the fold.** Stands, settled sentences, loose
+  stones, the deep's built stacks and the creature are all carried through **one map**,
+  which is the identity at `M=0` so the motion starts without anything jumping.
+- **A second valley across the water**, with its own water table that fills from rain and
+  spills to the deep over its own lip — and **no second dam**, which is what the manifest
+  asked for and no more.
+- **The deep becomes the world's centre.** The lake now sits between two valleys. Its water
+  stands **higher** afterwards, because the same water is held in a narrower bowl — a
+  consequence of the fold, not a rule added to it.
+- **A third seat**, and the new valley's bowl is its own: measured across a full circle,
+  the first valley's two seats reach that bowl at **10 and 0 angles**; the new seat reaches
+  it at **274**.
+
+**Named and NOT built:** stage 2 (the star, faces-lit) and stage 3 (all twelve seated, the
+equilibrium, the water going glass-clear once and NESI seen whole). The ascent's 4/8/12 is
+the ladder; this is the first rung.
+
+### `tools/bloom_check.js` — 12/12 PASS
+
+The bloom is a boot-time event across a boundary that cannot be reached by waiting, running
+for three seconds during which nothing is simulated. A browser can show that it *looks*
+like something; what matters is what is **true on the far side**.
+
+| | |
+|---|---|
+| L1 | at M=0 the stage machinery reproduces the **original** terrain — worst error 5.7e-14 |
+| L2 | four nights away with nothing ever fruited does **not** unfold the world |
+| L3 | nor does reopening on the same day |
+| L4 | a return, after the valley has carried fruit, starts it |
+| L5 | it runs to completion and commits — **no half-open world persists** |
+| L6 | every stand and settled sentence rode the fold and still sits on the ground |
+| L7 | the deep's stack came through **as a stack**, none of it buried in the bed |
+| L8 | **no silt was invented** on ground the world never had |
+| L9 | the second valley holds a water table of its own and spills to the deep |
+| L10 | the new valley's bowl is the new seat's own — 10 and 0 against 274 |
+| L11b | a mirror the unfold seats is aimed onto its own valley, **whatever flag it inherited** |
+| L11 | a further return does not unfold it again — the rung is climbed once |
+
+`boot_check` 8/8 · `still_check` 6/6 · `night_check` 10/10 · `green_check` 10/10 ·
+`head_check` 10/10 · `refusal_check` PASS (1132 code lines). Still **no text drawn on the
+canvas at all.**
+
+### Three defects, each caught by a different instrument
+
+1. **`siteStage` replaced the `BODIES` container**, so any reference held across a stage
+   change kept a **stale area table** — the waterline would have sat on a bed that no longer
+   existed. Caught by `boot_check` B5, which reported *capacity lost 0*. Bodies are now
+   mutated in place, never replaced.
+2. **A parameter named `xp`** tripped `refusal_check` — it reads as experience points, which
+   is precisely what that check exists to catch. **Renamed, not exempted.**
+3. **The third mirror came up pointing back into the first valley**, because something had
+   left its aimed flag standing. Found in a real walk, not by a check. **A seat that did not
+   exist a moment ago has never been aimed by a hand**, so the unfold now clears those flags
+   rather than trusting them — and L11b was added so it cannot come back.
+
+Also corrected: **L10's first claim was too strong and the measurement said so.** The old
+seats *can* graze the second valley's upper slopes across the water. What they cannot light
+is its **bowl** — the only ground over there where water gathers. The check was rewritten to
+the truth rather than the assertion, and a test-hygiene fault was fixed with it (an earlier
+check's water-pouring was leaking into the measurement).
+
+### Walked in the browser
+
+Set up a lived stage-0 valley — two stands (one fruiting), two settled deposits, a
+three-block stair in the deep, a silted bed, water in reservoir and basin — and fired the
+fold. The world folded: valley A compressed with everything still on it, the deep became a
+central bowl with the stair still standing in it as a column, a second valley opened on the
+right, and a third mirror came up **lighting its own bowl** at x=750. Screenshotted before
+and after, and read the committed state rather than trusting the picture.
+
+### The edge
+
+- **The missing join is now five passes deep.** Nobody has closed this world and opened it
+  on a real tomorrow — and M5's trigger, like M2's and M3's, lives exactly there.
+- **The bloom was fired by hand in the browser, not by a boot.** The arming condition is
+  covered by L2/L3/L4 against the real boot path; the *motion* was walked by setting `bloom`
+  directly. Those are two halves again, and the join between them is asserted.
+- **Deliberately not built:** stages 2 and 3; structures still do not occlude the beam.
+- Store reset to blank and read back clean — stage 0, one seat, nothing fruited.
+
+→ **WALKABLE** for the mechanism. The want-check is yours and has not happened.

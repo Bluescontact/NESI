@@ -42,35 +42,99 @@ const cv=document.getElementById("c"), g=cv.getContext("2d");
 const field=document.getElementById("field");
 
 /* ---------------------------------------------------------------- terrain */
-/* the valley: a high catchment, a dam, a channel, a basin, a shore, the lake. */
-const TERR=[[0,268],[70,296],[140,326],[206,336],[232,338],[258,338],
-            [292,392],[330,446],[372,484],[432,499],[500,499],[548,486],
-            [566,452],[610,494],[664,532],[720,590],[800,636],[900,650],[1000,654]];
-function terrAt(x){
-  if(x<=TERR[0][0])return TERR[0][1];
-  for(let i=1;i<TERR.length;i++){
-    const a=TERR[i-1], b=TERR[i];
-    if(x<=b[0]){const t=(x-a[0])/(b[0]-a[0]);return a[1]+(b[1]-a[1])*t}
-  }
-  return TERR[TERR.length-1][1];
+/* THE VALLEY'S OWN PROFILE, in its own coordinates 0..566: a high catchment, a
+   dam, a channel, a basin, and the lip it spills over. One shape, placed as many
+   times as the world has unfolded. */
+const VALLEY=[[0,268],[70,296],[140,326],[206,336],[232,338],[258,338],
+              [292,392],[330,446],[372,484],[432,499],[500,499],[548,486],[566,452]];
+const VW=566;
+/* stage 0's lake, kept EXACTLY as it was built, so nothing four passes deep can
+   regress: at M=0 every formula below reproduces the original terrain to the byte */
+const LAKE0=[[566,452],[610,494],[664,532],[720,590],[800,636],[900,650],[1000,654]];
+function lerpPts(P,x){
+  if(x<=P[0][0])return P[0][1];
+  for(let i=1;i<P.length;i++){const a=P[i-1],b=P[i];
+    if(x<=b[0]){const t=(x-a[0])/(b[0]-a[0]);return a[1]+(b[1]-a[1])*t}}
+  return P[P.length-1][1];
 }
-/* one lookup, built once — the ground is asked for thousands of times a frame */
+const valleyY=sx=>lerpPts(VALLEY,sx);
+/* the second valley is not a mirror of the first — it is a bowl with a ridge at
+   the world's edge, so it holds its own water table without needing a second dam */
+function valleyBY(u){
+  return lerpPts([[0,452],[.12,470],[.30,500],[.50,506],[.70,494],[.85,420],[1,300]],u);
+}
+
+/* ------------------------------------------------------------------ THE ASCENT
+   Stage 0 is one valley beside the deep. THE BLOOM folds it and opens a second
+   across the water, with its own water table and its own seat. `M` is the one
+   parameter: 0 is the world as built, 1 is the world unfolded, and every value
+   between is the motion itself — which is why the bloom needs no second
+   geometry, only a number moving.
+   NAMED AND NOT BUILT: stage 2 (the star, faces-lit) and stage 3 (all twelve
+   seated, the equilibrium, the water going glass-clear once). The ascent's own
+   4/8/12 is the ladder; this manifest builds the first rung of it. */
+let M=0;
+function bounds(m){return {aR:VW+(430-VW)*m, lR:W+(690-W)*m}}
+function profileAt(m,x){
+  const b=bounds(m);
+  if(x<=b.aR)return valleyY(x*VW/b.aR);
+  if(x<=b.lR){
+    const u=(x-b.aR)/(b.lR-b.aR);
+    const open=lerpPts(LAKE0,566+u*434);                 /* the lake as built */
+    const bowl=452+205*Math.pow(Math.sin(Math.PI*u),0.6);/* a bowl between two valleys */
+    return open+(bowl-open)*m;
+  }
+  return valleyBY((x-b.lR)/(W-b.lR));
+}
+function terrAt(x){return profileAt(M,x)}
+/* one lookup, rebuilt when the ground changes — it is asked for thousands of
+   times a frame */
 const GY=new Float32Array(W+2);
-for(let x=0;x<=W+1;x++)GY[x]=terrAt(x);
 function groundY(x){
   if(x<=0)return GY[0]; if(x>=W)return GY[W];
   const i=x|0, f=x-i; return GY[i]+(GY[i+1]-GY[i])*f;
 }
-const DAM={x0:232,x1:258,crest:248,base:338};   /* the wall */
 const GATE_H=42;                                /* how far the sluice can rise */
-const LIP=452;                                  /* the basin's right lip */
-
-/* bodies. each integrates its own cross-section so a volume finds its surface. */
-const BODIES={
-  res  :{x0:6,  x1:DAM.x0, spill:252},
-  basin:{x0:DAM.x1, x1:566, spill:LIP},
-  lake :{x0:566, x1:W-2,   spill:-1}
-};
+const LIP=452;                                  /* the basin's own lip */
+let DAM={}, LAKE_L=VW, BODIES={};
+const BODYK=["res","basin","lake","basin2"];
+/* the seats, at each end of the fold. the third slides in from the world's edge
+   as the second valley opens — it is the unfold's own gift and cannot exist
+   before there is ground for it to light. */
+const SEAT0=[{x:596,y:298,len:56,aimAt:330},{x:150,y:206,len:50,aimAt:196}];
+const SEAT1=[{x:421,y:300,len:52,aimAt:251},{x:114,y:214,len:48,aimAt:149},
+             {x:820,y:300,len:52,aimAt:750}];
+let SEATS=[];
+/* every site the valley has is derived from where the valley currently stands */
+function siteStage(m){
+  const b=bounds(m), mx=(a,c)=>a+(c-a)*m;
+  DAM={x0:232*b.aR/VW, x1:258*b.aR/VW, crest:248, base:338};
+  LAKE_L=b.aR;
+  /* the bodies are MUTATED, never replaced. a stage change that handed out fresh
+     objects would silently orphan every reference already holding one — and the
+     thing it holds is the area table, so the waterline would sit on a bed that
+     no longer exists. */
+  const R={res:[6,DAM.x0,252], basin:[DAM.x1,b.aR,LIP],
+           lake:[b.aR,b.lR,-1], basin2:[b.lR,W-2,LIP]};
+  for(const k of BODYK){
+    if(!BODIES[k])BODIES[k]={};
+    BODIES[k].x0=R[k][0]; BODIES[k].x1=R[k][1]; BODIES[k].spill=R[k][2];
+  }
+  SEATS=[0,1].map(i=>({x:mx(SEAT0[i].x,SEAT1[i].x), y:mx(SEAT0[i].y,SEAT1[i].y),
+                       len:mx(SEAT0[i].len,SEAT1[i].len), aimAt:mx(SEAT0[i].aimAt,SEAT1[i].aimAt)}));
+  if(m>0)SEATS.push({x:mx(W,SEAT1[2].x), y:SEAT1[2].y, len:SEAT1[2].len,
+                     aimAt:mx(W,SEAT1[2].aimAt)});
+}
+/* THE MAP THAT CARRIES EVERYTHING THE HAND PLACED THROUGH THE FOLD. At m=0 it is
+   the identity, which is what lets the motion start without anything jumping. */
+function mapX(x,m){
+  const b=bounds(m);
+  return x<=VW ? x*b.aR/VW : b.aR+(x-VW)*(b.lR-b.aR)/(W-VW);
+}
+function invMapX(wx,m){
+  const b=bounds(m);
+  return wx<=b.aR ? wx*VW/b.aR : VW+(wx-b.aR)*(W-VW)/(b.lR-b.aR);
+}
 function buildArea(b){
   const a=new Float64Array(H+2);
   for(let y=0;y<=H;y++){
@@ -80,6 +144,11 @@ function buildArea(b){
   }
   b.area=a;
 }
+/* the ground as it stands right now: the profile at M, plus the silt the water
+   has laid down. `light` skips the area tables, which is what makes the bloom
+   affordable — during the motion nothing is simulated, only shown. */
+function rebuildGY(){for(let x=0;x<=W+1;x++)GY[x]=terrAt(x)-siltAt(x)}
+siteStage(0); for(let x=0;x<=W+1;x++)GY[x]=terrAt(x);
 for(const k in BODIES)buildArea(BODIES[k]);
 /* surface y for a volume — the only direction this ever runs. */
 function surfaceOf(b,vol){
@@ -120,7 +189,11 @@ const DEF={
      `n`, and how many seams it has — a merge is the work, and a worked deposit
      draws the weather harder. The rain's distribution is derived from these and
      from nothing else. */
-  settled:[], nn:0
+  settled:[], nn:0,
+  /* M5 · THE BLOOM. `stage` is how far the world has unfolded; `everFruited` is
+     the accumulation that earns the next unfold, and it is remembered even after
+     a cast is pulled, because giving must not undo an ascent. */
+  stage:0, everFruited:false, basin2:0
 };
 const NOMARK=1e9;
 let S=DEF;
@@ -128,10 +201,14 @@ try{const raw=localStorage.getItem(KEY); if(raw){const p=JSON.parse(raw); if(p&&
 const WN=Math.ceil(W/4)+1;
 const fitArr=(a,v)=>(Array.isArray(a)&&a.length===WN)?a:new Array(WN).fill(v);
 S.wet=fitArr(S.wet,0); S.silt=fitArr(S.silt,0);
-for(const k of ["res","basin","lake"]){
+for(const k of BODYK){
   if(typeof S.hiNow[k]!=="number")S.hiNow[k]=NOMARK;
   if(typeof S.hiPast[k]!=="number")S.hiPast[k]=NOMARK;
 }
+if(typeof S.stage!=="number")S.stage=0;
+if(typeof S.basin2!=="number")S.basin2=0;
+if(typeof S.everFruited!=="boolean")S.everFruited=false;
+M=S.stage;
 if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
 if(!Array.isArray(S.queue))S.queue=[];
 if(!Array.isArray(S.built))S.built=[];
@@ -141,7 +218,7 @@ if(typeof S.nn!=="number")S.nn=0;
 if(!Array.isArray(S.mirrors))S.mirrors=[];
 if(!Array.isArray(S.aimedM))S.aimedM=[];
 if(typeof S.mirror==="number"&&typeof S.mirrors[0]!=="number"){S.mirrors[0]=S.mirror;S.aimedM[0]=!!S.aimed}
-for(let i=0;i<2;i++){
+for(let i=0;i<3;i++){
   if(typeof S.mirrors[i]!=="number")S.mirrors[i]=0;
   if(typeof S.aimedM[i]!=="boolean")S.aimedM[i]=false;
 }
@@ -167,7 +244,7 @@ function daysBetween(a,b){
    is one of the four sacred lines, and it is about exactly this. */
 const NIGHTS=(S.lastDay&&S.lastDay!==dayKey())?Math.min(12,daysBetween(S.lastDay,dayKey())||1):0;
 if(NIGHTS>0){
-  for(const k of ["res","basin","lake"]){
+  for(const k of BODYK){
     S.hiPast[k]=Math.min(S.hiPast[k],S.hiNow[k]);
     S.hiNow[k]=NOMARK;
   }
@@ -187,7 +264,7 @@ function rebuildGround(){
      been silted stands HIGHER on the screen and holds LESS. Adding here would
      dig the basin out every time water stood in it — the exact silent wrong a
      stale area table gives you, arrived at from the other direction. */
-  for(let x=0;x<=W+1;x++)GY[x]=terrAt(x)-siltAt(x);
+  siteStage(M); rebuildGY();
   for(const k in BODIES)buildArea(BODIES[k]);
 }
 rebuildGround();
@@ -217,6 +294,70 @@ function theNight(nights){
   }
 }
 theNight(NIGHTS);
+
+/* ------------------------------------------------------------------ THE BLOOM
+   ALL-OR-NOTHING, per Fuller's invariant: the world does not half-unfold. It
+   fires at a day boundary once the valley has actually carried fruit — an
+   accumulation no single day can reach, so the trigger is LIVED and there is no
+   button anywhere that produces it. Nothing announces it: you open the world and
+   the world opens.
+   While it moves, NOTHING IS SIMULATED — no water flows, no light feeds, no
+   stone falls. The motion is the whole of it, and it takes everything the hand
+   ever placed with it through one map. */
+let bloom=null;
+const BLOOM_T=3.4;
+function snapshot(){
+  return {settled:S.settled.map(d=>d.x), shoots:S.shoots.map(s=>s.x),
+          stones:S.stones.map(s=>s.x), built:S.built.map(b=>b.x),
+          creature:S.creature.x};
+}
+function carry(m){
+  const sn=bloom.snap;
+  S.settled.forEach((d,i)=>{d.x=mapX(sn.settled[i],m);d.y=groundY(d.x)});
+  S.shoots.forEach((s,i)=>{s.x=mapX(sn.shoots[i],m);s.y=groundY(s.x)});
+  S.stones.forEach((s,i)=>{s.x=mapX(sn.stones[i],m);s.y=groundY(s.x)-s.r*0.6});
+  S.built.forEach((b,i)=>{b.x=mapX(sn.built[i],m);b.y=Math.min(b.y,groundY(b.x)-b.h)});
+  S.creature.x=mapX(sn.creature,m);
+}
+/* resample a per-cell array through the fold — cells that land on ground the
+   world did not have before start empty, because nothing has happened there */
+function refold(arr,fill){
+  const out=new Array(WN).fill(fill), b=bounds(1);
+  for(let i=0;i<WN;i++){
+    const wx=i*4;
+    if(wx>b.lR)continue;
+    const src=invMapX(wx,1)/4, j=Math.max(0,Math.min(WN-1,Math.round(src)));
+    out[i]=arr[j];
+  }
+  return out;
+}
+function commitBloom(){
+  S.silt=refold(S.silt,0); S.wet=refold(S.wet,0);
+  S.stage=1; M=1; siteStage(1); rebuildGround(); rebuildWeather();
+  S.settled.forEach(d=>d.y=groundY(d.x));
+  S.shoots.forEach(s=>s.y=groundY(s.x));
+  S.stones.forEach(s=>{s.y=groundY(s.x)-s.r*0.6;s.vy=0});
+  /* the deep's work is re-seated on the bed it now stands on, keeping its
+     columns — a stair that was a stair is still a stair */
+  const blocks=S.built.slice().sort((p,q)=>p.x-q.x); S.built.length=0;
+  for(const bl of blocks){
+    let base=groundY(bl.x), col=null;
+    for(const o of S.built)if(Math.abs(o.x-bl.x)<30&&o.y<base){base=o.y;col=o}
+    bl.x=col?col.x:bl.x; bl.y=base-bl.h; S.built.push(bl);
+  }
+  S.creature.x=Math.max(BODIES.lake.x0+30,Math.min(BODIES.lake.x1-30,S.creature.x));
+  S.creature.y=Math.min(groundY(S.creature.x)-20,540+40);
+  S.creature.tx=S.creature.x; S.creature.ty=S.creature.y;
+  S.seated=Math.max(S.seated,SEATS.length);
+  /* a seat the unfold has just created has, BY DEFINITION, never been aimed by a
+     hand — so its aimed flag is cleared rather than trusted. Without this a stray
+     flag from anywhere could leave a brand-new mirror pointing at nothing, and
+     the world would open with a seat that does nothing and says nothing. */
+  for(let i=SEAT0.length;i<SEATS.length;i++)S.aimedM[i]=false;
+  for(let i=0;i<SEATS.length;i++)if(!S.aimedM[i])S.mirrors[i]=autoAim(i);
+  bloom=null;
+}
+if(NIGHTS>0&&S.stage===0&&S.everFruited)bloom={t:0,snap:snapshot()};
 
 /* --------------------------------------------------------------- THE STILLING
    Carried from nesi.html's sixth pass (2026-08-11) and sited here at the scale
@@ -294,7 +435,21 @@ function arrive(text){
 }
 
 /* ------------------------------------------------------------------ water */
-let resY=1e9, basinY=1e9, lakeY=540, spillT=0, jetT=0;
+let resY=1e9, basinY=1e9, lakeY=540, basin2Y=1e9, spillT=0, jetT=0;
+/* WHICH WATER A PLACE BELONGS TO — one answer, so that nothing in the world can
+   disagree with itself about where a shore is. Every branch that used to carry
+   its own copy of the lake's left edge now asks here instead, which is why the
+   valley can move at all. */
+function bodyAt(x){
+  if(x<DAM.x0)return "res";
+  if(x>DAM.x1&&x<LAKE_L)return "basin";
+  if(x>=LAKE_L&&x<BODIES.lake.x1)return "lake";
+  if(x>=BODIES.basin2.x0&&x<W)return "basin2";
+  return null;
+}
+function surfOf(k){
+  return k==="res"?resY:k==="basin"?basinY:k==="lake"?lakeY:k==="basin2"?basin2Y:1e9;
+}
 /* the bed changes continuously and is committed on a slow tick — rebuilding the
    area tables every frame would be honest and wasteful in equal measure. */
 let siltT=0, siltDirty=false;
@@ -327,6 +482,13 @@ function waters(dt){
   const cap=volumeAt(BODIES.basin,LIP);
   if(S.basin>cap){const ex=Math.min(S.basin-cap,26000*dt+ (S.basin-cap)*0.9*dt);S.basin-=ex;S.lake+=ex;load.lake+=ex*0.00022}
   basinY=surfaceOf(BODIES.basin,S.basin);
+  /* the second valley holds its own water table and gives its excess to the deep
+     the same way — over its own lip, with no wall in between */
+  basin2Y=surfaceOf(BODIES.basin2,S.basin2);
+  const cap2=volumeAt(BODIES.basin2,LIP);
+  if(S.basin2>cap2){const ex=Math.min(S.basin2-cap2,26000*dt+(S.basin2-cap2)*0.9*dt);
+    S.basin2-=ex;S.lake+=ex;load.lake+=ex*0.00022}
+  basin2Y=surfaceOf(BODIES.basin2,S.basin2);
   lakeY=surfaceOf(BODIES.lake,S.lake);
 
   /* THE LAND IS THE SAVE FILE.
@@ -341,19 +503,16 @@ function waters(dt){
      valley could never finish going still. it reaches nothing, and stops. */
   const set=Math.exp(-dt*0.30);
   for(const k in load){load[k]*=set; if(load[k]<0.0015)load[k]=0}
-  if(resY<S.hiNow.res)S.hiNow.res=resY;            /* the flood marks — a level */
-  if(basinY<S.hiNow.basin)S.hiNow.basin=basinY;
-  if(lakeY<S.hiNow.lake)S.hiNow.lake=lakeY;
+  for(const k of BODYK)if(surfOf(k)<S.hiNow[k])S.hiNow[k]=surfOf(k);  /* flood marks — a level */
   for(let i=0;i<WN;i++){
     const x=i*4, gy=groundY(x);
+    const bk=bodyAt(x), sfy=bk?surfOf(bk):NOMARK;
     let w=0, sy=NOMARK;
-    if(x<DAM.x0&&gy>resY){w=1;sy=resY}
-    else if(x>DAM.x1&&x<566&&gy>basinY){w=1;sy=basinY}
-    else if(x>=566&&gy>lakeY){w=1;sy=lakeY}
+    if(bk&&gy>sfy){w=1;sy=sfy}
     if(w===1){
       /* standing water drops what it CARRIES — stiller settles faster, which is
          why a held pool silts and a torrent carries straight through */
-      const k=x<DAM.x0?"res":(x<566?"basin":"lake");
+      const k=bk;
       const dep=dt*1.9*load[k]*(0.3+0.7*cal)*Math.min(1,(gy-sy)/40);
       if(dep>1e-5&&S.silt[i]<SILT_CAP){S.silt[i]=Math.min(SILT_CAP,S.silt[i]+dep);siltDirty=true}
     }
@@ -366,8 +525,8 @@ function waters(dt){
                 which is what makes a shore a place and not a line */
       for(let d=1;d<=10;d++){
         const j1=i-d, j2=i+d;
-        const near=(k)=>{const xx=k*4,gg=groundY(xx);
-          return (xx<DAM.x0&&gg>resY)||(xx>DAM.x1&&xx<566&&gg>basinY)||(xx>=566&&gg>lakeY)};
+        const near=(k)=>{const xx=k*4,gg=groundY(xx),b2=bodyAt(xx);
+          return !!b2&&gg>surfOf(b2)};
         if((j1>=0&&near(j1))||(j2<WN&&near(j2))){w=Math.max(w,0.95-d*0.06);break}
       }
     }
@@ -375,9 +534,7 @@ function waters(dt){
   }
 }
 function wetAt(x){const i=Math.max(0,Math.min(WN-1,Math.round(x/4)));return S.wet[i]}
-function waterYAt(x){
-  if(x<DAM.x0)return resY; if(x>DAM.x1&&x<566)return basinY; if(x>=566)return lakeY; return 1e9;
-}
+function waterYAt(x){const b=bodyAt(x);return b?surfOf(b):1e9}
 
 /* ------------------------------------------------ THE HAND SHAPES THE WEATHER
    The rain's own distribution is derived from where sentences have been settled
@@ -429,8 +586,9 @@ function rain(dt){
     if(d.y>=hit){
       splashes.push({x:d.x,y:hit,t:0,onWater:wy<gy});
       /* the drop becomes volume in whatever holds it */
-      const bk=d.x<DAM.x0?"res":(d.x<566?"basin":"lake");
-      if(bk==="res")S.res+=34; else if(bk==="basin")S.basin+=34; else S.lake+=34;
+      const bk=bodyAt(d.x)||"lake";
+      if(bk==="res")S.res+=34; else if(bk==="basin")S.basin+=34;
+      else if(bk==="basin2")S.basin2+=34; else S.lake+=34;
       load[bk]+=0.010;                 /* rain arrives carrying the hillside */
       const i4=Math.max(0,Math.min(WN-1,Math.round(d.x/4)));
       S.wet[i4]=Math.min(1,S.wet[i4]+0.5);
@@ -468,7 +626,6 @@ const SUN={x:250,y:62};
    reach, and the second seat stands on the high ridge above it. Each mirror
    owns ground the other cannot light. That is the puzzle, and it fell out of
    the geometry rather than being arranged. */
-const SEATS=[{x:596,y:298,len:56,aimAt:330},{x:150,y:206,len:50,aimAt:196}];
 function reflect(a,st){
   const dx=st.x-SUN.x, dy=st.y-SUN.y, m=Math.hypot(dx,dy);
   const d={x:dx/m,y:dy/m};
@@ -601,6 +758,9 @@ function light(dt){
      It stands there the moment anything in the valley has actually rooted —
      which cannot happen inside a single day. Nothing announces it. */
   if(S.seated<SEATS.length&&S.shoots.some(s=>s.rooted>0.0001))S.seated=SEATS.length;
+  /* the accumulation that earns the next unfold. remembered even after the cast
+     is pulled: giving must not undo an ascent. */
+  if(!S.everFruited&&S.shoots.some(s=>s.rooted>0.72))S.everFruited=true;
   for(const s of S.shoots){ if(s.lit===undefined)s.lit=0; s.lit=Math.max(0,s.lit-dt*1.4) }
   if(Math.random()<dt*26){
     const i=Math.floor(Math.random()*S.seated);
@@ -674,6 +834,7 @@ function toWorld(e){
   return {x:(e.clientX-r.left-ox)/sc, y:(e.clientY-r.top-oy)/sc};
 }
 cv.addEventListener("pointerdown",e=>{
+  if(bloom)return;          /* nothing reaches the world while it is unfolding */
   const p=toWorld(e); cv.setPointerCapture(e.pointerId); stir();
   /* a ripe cast under the hand — the one thing that leaves */
   for(const s of S.shoots){
@@ -723,7 +884,7 @@ function hover(p){
 function release(){
   if(drag&&drag.k==="stone"){
     const s=drag.s; s.held=false;
-    if(s.x>566&&s.y>lakeY-16&&groundY(s.x)>lakeY){
+    if(s.x>LAKE_L&&s.x<BODIES.lake.x1&&s.y>lakeY-16&&groundY(s.x)>lakeY){
       s.sinking=0.01; s.y=Math.max(s.y,lakeY);
       splashes.push({x:s.x,y:lakeY,t:0,onWater:true});
       for(let k=0;k<10;k++)spray.push({x:s.x,y:lakeY,vx:(Math.random()-0.5)*160,vy:-90-Math.random()*120,t:0});
@@ -766,7 +927,10 @@ function fit(){
 addEventListener("resize",()=>{fit(); if(!running&&!frameQueued){frameQueued=true;requestAnimationFrame(frame)}});
 fit();
 
-const MARKRANGE={res:[0,DAM.x0],basin:[DAM.x1,566],lake:[566,W]};
+function markRange(k){
+  return k==="res"?[0,DAM.x0]:k==="basin"?[DAM.x1,LAKE_L]
+       :k==="lake"?[LAKE_L,BODIES.lake.x1]:[BODIES.basin2.x0,W];
+}
 /* WHAT THE DEEP MADE. The deep itself is never drawn — this is. Cut faces and a
    shadowed underside, so it reads as placed rather than grown, and so a stack
    reads as a stair. Painted once beneath the water, then again clipped above the
@@ -821,7 +985,18 @@ function frame(now){
   swell=calm();
   flash=Math.max(0,flash-dt*1.1);
 
-  waters(dt); rain(dt); light(dt); deep(dt); stones(dt);
+  if(bloom){
+    /* the motion, and nothing else. all-or-nothing: it cannot stop half-open,
+       and no act of the hand reaches the world while it is moving. */
+    bloom.t=Math.min(1,bloom.t+dt/BLOOM_T);
+    const e=bloom.t<0.5?4*bloom.t*bloom.t*bloom.t
+                       :1-Math.pow(-2*bloom.t+2,3)/2;      /* ease in and out */
+    M=e; siteStage(M); rebuildGY(); carry(M);
+    for(let i=0;i<SEATS.length;i++)beams[i]=cast(S.mirrors[i],i);
+    if(bloom.t>=1)commitBloom();
+  } else {
+    waters(dt); rain(dt); light(dt); deep(dt); stones(dt);
+  }
 
   g.clearRect(-400,-400,W+800,H+800);
 
@@ -892,9 +1067,9 @@ function frame(now){
      empty bowl. That is what makes it read as a ring and not a floating line.
      Yesterday's marks are fainter than today's; nothing says which is which. */
   for(const L of [["hiPast",0.17],["hiNow",0.30]]){
-    for(const k in MARKRANGE){
+    for(const k of BODYK){
       const lv=S[L[0]][k]; if(lv>=NOMARK)continue;
-      const r=MARKRANGE[k];
+      const r=markRange(k);
       g.fillStyle="rgba(48,38,22,"+L[1]+")";
       g.fillRect(r[0],lv-0.9,r[1]-r[0],1.9);
     }
@@ -1127,7 +1302,7 @@ function frame(now){
   /* 0.05 is not a taste: nesi.html's stilling quiets at amplitude 0.3 of a
      swell whose full height is 6, and this is that same fraction, so the two
      surfaces fall quiet on the same clock. ~66s after the last act. */
-  const busy = swell>0.05 || drag || siltDirty || rainQueue>0 || flash>0.01
+  const busy = bloom || swell>0.05 || drag || siltDirty || rainQueue>0 || flash>0.01
             || drops.length || splashes.length || spray.length || bubbles.length
             || jetT>0.05 || spillT>0.05 || draining || stonesMoving || growing;
   if(busy)requestAnimationFrame(frame); else running=false;
