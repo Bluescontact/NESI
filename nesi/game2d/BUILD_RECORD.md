@@ -4460,3 +4460,99 @@ from state.
 - Store reset to blank and read back clean — one seat, no shoots, no marks, no silt.
 
 → **WALKABLE** for the mechanism. The want-check is yours and has not happened.
+
+## MANIFEST 4 · THE HEADWATER — the writing rejoined (2026-08-13, session fb66285e)
+
+### RULING — the port-vs-doorway fork, closed
+
+**This fork has stood open since the fun slice and M4 is the first manifest that
+touches it.** Ruled here under the NESI.EXE counsel build order (2026-08-11), which makes
+pure design/architecture forks this session's to rule and to record by name rather than to
+gate.
+
+> **The headwater is built IN `world.html`. One world, one camera, one store.
+> `nesi.html` stays untouched as a closed lineage — not deleted, not merged, not
+> doorwayed.**
+
+Three reasons, in order of weight. **(1) M4's own first line** — *"the writing stops being
+elsewhere"* — is an argument against crossing to another file, which is the most literal
+form of elsewhere there is. **(2) M6's condition** is *one world, one camera, one store*,
+and a seam between two localStorage keys makes "one world" a promise neither file owns.
+**(3)** The siting line — *nesi.html's working faces, sited as the headwater's chambers,
+**not rebuilt*** — is satisfied by carrying the **acts** (the table's merge in written
+order with its seam; the soil's settling) onto the stones that already exist here, rather
+than by re-implementing four faces or by reaching across a doorway for them.
+
+**What this ruling does not do:** it does not delete, edit, or deprecate `nesi.html`, which
+is untouched and still holds its own key. It does not claim the two ever merge. If you want
+the doorway instead, this is the entry to overturn.
+
+### What is new
+
+- **THE HAND'S WORK UPSTREAM IS THE WEATHER DOWNSTREAM.** The rain's distribution is
+  derived from where sentences have been settled in the soil and how hard they have been
+  worked — **and from nothing else.** With nothing settled the valley keeps the weather it
+  was born with (the high catchment falling away east), so an untouched world behaves
+  exactly as it always did.
+- **The cloud gathers over where it will fall**, so the work is visible in the sky *before*
+  a drop lands. Read off the weather, never off a word.
+- **THE SOIL AND THE TABLE, IN ONE GESTURE.** Setting a sentence down in the ground is the
+  act; setting one down **on another** is the work — they join in **written order**, the
+  **seam is kept**, and a worked deposit draws the weather harder. Where your hand lets go
+  decides which, and **there is no mode to be in**.
+- **THE CAST — the one thing that leaves the world, and it leaves by hand.** Drag a ripe
+  fruit off a stand and it writes an SVG of that stand's **silhouette and the ground it
+  grew out of**. Nothing textual is reachable from it: the only inputs are a rooting, a
+  place, and the terrain.
+- **The stand spends what it grew** — pulling costs 0.18 of its rooting and drops it below
+  fruiting. It can hang another across further returns, and nothing says so.
+
+### `tools/head_check.js` — 10/10 PASS
+
+M4's walk test is a claim about a **probability distribution**, which is precisely what a
+person watching rain cannot verify and a screenshot cannot show. `rebuildWeather()` and
+`rainX()` are driven and sampled 40,000 times per scenario.
+
+| | |
+|---|---|
+| H1 | with nothing settled, **89%** of rain still falls on the catchment, mean x=115 |
+| H2 | four sentences settled in the basin move it: basin **2% → 53%**, mean **115 → 302** |
+| H3 | a worked deposit pulls harder than an unworked one at the same place — 7,022 vs 14,101 drops |
+| H4 | setting one sentence down ON another joins them in written order, with a seam |
+| H5 | picking them up in the **wrong** order does not put them down in it |
+| H6 | the weather is derived from the soil — adding to it moves the sky |
+| H7 | **the cast carries no word from anywhere in the world** — checked against sentences planted in the writing, the soil, the deep's queue and a loose stone |
+| H8 | the cast has no text element and no font: paths and one circle |
+| H9 | pulling spends the stand's rooting and drops it below fruiting |
+| H10 | an unripe stand offers no cast to the hand at all |
+
+`boot_check` 8/8 · `still_check` 6/6 · `night_check` 10/10 · `green_check` 10/10 ·
+`refusal_check` PASS (999 code lines) · `node --check` PASS. Still **no text drawn on the
+canvas at all.**
+
+### Walked in the browser, by hand
+
+Typed two sentences. Dragged the first into the basin: it settled verbatim at x=460 and
+**the weather's mean moved 113 → 191**. Dragged the second **onto it**: one deposit,
+`seams: 1`, text joined in written order — *"The work upstream is the weather downstream.
+Where my hand lets go decides."* — and **the mean moved again, 191 → 240**. The reservoir
+then overtopped its crest and fed the basin, and the deposit stood in it as a small
+seamed dome. Staged a ripe stand and pulled its cast by hand.
+
+**One thing checked rather than assumed:** the first pull appeared to spend the stand
+twice. Driven deterministically with a single dispatched pointer sequence, it spends
+**exactly once** (0.90 → 0.72) and a following `pointercancel` is a no-op — the double came
+from the automation dispatching two press/release pairs, not from the build.
+
+### The edge
+
+- **The missing join is now four passes deep and unchanged.** Nobody has closed this world
+  and opened it on a real tomorrow.
+- **The cast's file was never opened.** The SVG string is verified (bytes, structure, and
+  that no sentence from four different stores appears in it); the actual download was
+  exercised through `pullCast` but **no saved file has been opened and looked at.**
+- **Deliberately not built:** structures still do not occlude the beam (M6's wire).
+- The drag feel is still machine-driven, including the pull.
+- Store reset to blank and read back clean — one seat, no soil, no marks, birth weather.
+
+→ **WALKABLE** for the mechanism. The want-check is yours and has not happened.
