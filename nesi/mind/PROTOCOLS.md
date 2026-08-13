@@ -355,9 +355,31 @@ nothing is decided silently even though it's no longer asked.
 by separate mark), the four/five agents' own definition files (unedited),
 any fork outside the L1-Tank-and-ascent build scope.
 
+## ■ THE VISION SEAM — 2026-08-13 (THE FULL CIRCLE, seam S3, Kevin's order)
+
+**No build order executes without citing the articulation passage it serves;
+divergence from the cited vision is BLOCKED, not minimized.**
+
+Binding on every build order from here, this mandate's and any other's. The
+citation is written before the build, not after it, and names the passage —
+file and line — not the theme. A build that cannot find a passage to cite has
+found something worth saying out loud rather than a formality to satisfy.
+"Minimized" is the specific failure this closes: six passes in one night each
+satisfied the letter of a manifest while the thing the articulations describe
+was absent, and every pass was individually lawful. Divergence is now a stop,
+not a delta to shrink.
+
 ---
 
 # Pre-flight Protocol
+
+**THE ZEROTH TAB — applied 2026-08-13 on Kevin's direct ask (THE FULL CIRCLE, tab 0):
+a session may complete at most one manifest, slice, or build order; continuation
+requires a fresh boot.** Placed here, in the boot path, because this is the seam the
+six-manifest run-through crossed. It is a trim tab, not a rudder: it costs one line, it
+is irreversible in practice once a session reads it, and it changes what is CHEAP —
+a seventh manifest now requires an act (a fresh boot) rather than merely continuing.
+It does not exhort any session to restrain itself.
 
 Before any heavy operation, write a manifest block and pause. Kevin's next message is the consent — no auto-execution.
 
