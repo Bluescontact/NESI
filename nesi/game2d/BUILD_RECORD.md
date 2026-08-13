@@ -4378,3 +4378,85 @@ standing clear of the water, the rest of the reef still shadows beneath it.
   lake floor.
 
 → **WALKABLE** for the mechanism. The want-check is yours and has not happened.
+
+## MANIFEST 3 · THE GREEN — light and water make an ecology (2026-08-12, session fb66285e)
+
+Built into `world.html` on M2's returns. `nesi.html` untouched; the port-vs-doorway
+fork untouched.
+
+### What is new
+
+- **THE OVERWINTERING, carried in its grammar.** A stand roots only on a day **later
+  than the last day it was fed**. Nothing a single day contains can produce it, the step
+  is asymptotic, and there is no threshold to aim at. **Feeding is idempotent within a day
+  on purpose:** hold the beam on a shoot from dawn to dusk and it roots exactly as much as
+  touching it once. Volume is not a substitute for return, and there is no way to spend
+  more and get more.
+- **Standing is made of returns, not hours.** What a stand looks like is its rooting.
+  The first day's sprout appears immediately where beam meets wet ground — that beat from
+  the fun slice is intact and still teaches — but it **stays a sprout** until you come
+  back. `standing() = 0.16 + 0.84·rooted`.
+- **A SECOND SEAT, and it is not a spare.** The dam's crest stands at y=248 and the first
+  mirror sits at y=298 — **below it** — so every leftward ray it can throw meets the wall.
+  **The reservoir's own shore is a dark pool the first mirror cannot reach at any angle**,
+  and the second seat stands on the ridge above it. Each mirror owns ground the other
+  cannot light. This fell out of geometry that was already there; it was not arranged.
+- **The seat is earned by a return.** It appears the moment anything in the valley has
+  actually rooted — which cannot happen inside a single day. Nothing announces it.
+- **FRUIT BEGINS.** A stand lit and wet across enough returns (six, by the curve) hangs
+  one. **Taking it is not built here** — that is M4's, and hanging it is M3's.
+- **Bare ground stays bare without representation.** Unchanged: there is no empty state,
+  no hint, no marker for ground that has nothing on it.
+
+### `tools/green_check.js` — 10/10 PASS
+
+M3's falsifier is a claim about what a **long session cannot buy**, and a long session is
+exactly what no hand at this keyboard and no screenshot can sit through. So `light()` is
+driven for thousands of frames against a synthetic clock, and the world is reopened on
+explicit consecutive days by handing the sandbox a different `Date`.
+
+| | |
+|---|---|
+| G1 | **a hundred seconds of unbroken light roots NOTHING** |
+| G2 | the sprout stands at its first-day height and no higher |
+| G3 | three returns root it, each step smaller than the last — 0.220 → 0.392 → 0.525 |
+| G4 | asymptotic: two hundred returns reach 0.999999999984 and never 1 |
+| G5 | a valley that has never rooted anything still has one seat |
+| G6 | the first rooting seats the second mirror, and nothing announces it |
+| G7 | **the first mirror lands nowhere in the reservoir — 0 of ~3140 angles**, leftmost landing x=258, the dam's own face |
+| G8 | the second mirror lands there freely — 578 angles reach that shore |
+| G9 | fruit is six returns away and no day can buy it |
+| G10 | light on dry ground for fifty seconds grows nothing, and says nothing |
+
+`boot_check` 8/8 (B7 updated to the seat model, B7b added) · `still_check` 6/6 ·
+`night_check` 10/10 · `refusal_check` PASS (874 code lines) · `node --check` PASS.
+Still **no text drawn on the canvas at all.**
+
+### Two test faults and one real boundary error, named
+
+Three checks failed first run. **Two were my own scenarios, not the build:** G3 carried a
+shoot forward but reopened the world on a day it had already been fed, so the second step
+correctly did nothing. **One was a real error in my assertion** — G7 demanded the first
+mirror land strictly right of x=258, but 258 *is* the dam's face and landing there is
+already a fail-to-reach. The claim was right and the boundary was off by one surface.
+
+### Walked in the browser
+
+Staged a valley of four stands at different rootings under two seats: both beams throw,
+each lands its own warm pool — one on the **reservoir** shore past the dam, one on the
+basin shore — a tall stand carries a hanging fruit, a mid stand carries leaves, and a
+first-day sprout stands beside it at a fraction of the height. Read from the frame, not
+from state.
+
+### The edge
+
+- **The same join is still missing, and it is now three passes deep.** Rooting is a
+  boundary event; every one of its steps here was produced by handing the sandbox a
+  different date. **Nobody has yet closed this world and opened it on a real tomorrow.**
+  Unchanged from M1 and M2, not narrowed, and it is the whole of what M3 is about.
+- **Deliberately not built:** structures do not occlude the beam (M6's wire), and fruit
+  cannot be taken (M4's).
+- The drag feel is still machine-driven, including the second mirror's.
+- Store reset to blank and read back clean — one seat, no shoots, no marks, no silt.
+
+→ **WALKABLE** for the mechanism. The want-check is yours and has not happened.

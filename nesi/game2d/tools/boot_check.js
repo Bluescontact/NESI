@@ -78,7 +78,7 @@ vm.createContext(sandbox);
 /* top-level let/const live in the script's declarative scope, not on the global
    object — one appended line hands them out without altering a byte above it */
 vm.runInContext(
-  src + "\n;globalThis.__X={S,groundY,terrAt,volumeAt,surfaceOf,BODIES,calm,cast,rebuildGround,LIP};",
+  src + "\n;globalThis.__X={S,groundY,terrAt,volumeAt,surfaceOf,BODIES,calm,cast,rebuildGround,LIP,SEATS};",
   sandbox, { filename: "world.html<script>" });
 
 /* ---- what the boot actually produced ---- */
@@ -116,11 +116,13 @@ const checks = [
           B5.expect + "), volume→surface round-trip err " + B5.round.toFixed(3)],
   ["B6 the world opens STILL (calm ~ 0)",
     X.calm() < 0.001, X.calm().toExponential(2)],
-  ["B7 the mirror re-derived itself onto the basin floor",
-    S.aimed === false && typeof S.mirror === "number" &&
-      Math.abs(X.cast(S.mirror).x - 330) < 8,
-    "mirror " + (typeof S.mirror === "number" ? S.mirror.toFixed(3) : S.mirror) +
-      " lands x=" + (typeof S.mirror === "number" ? X.cast(S.mirror).x.toFixed(1) : "-")],
+  ["B7 the first mirror re-derived itself onto the basin floor",
+    S.aimedM[0] === false && typeof S.mirrors[0] === "number" &&
+      Math.abs(X.cast(S.mirrors[0], 0).x - 330) < 8,
+    "mirror " + S.mirrors[0].toFixed(3) + " lands x=" + X.cast(S.mirrors[0], 0).x.toFixed(1)],
+  ["B7b a valley that has never rooted anything has ONE seat",
+    S.seated === 1 && X.SEATS.length === 2,
+    "seated " + S.seated + " of " + X.SEATS.length],
   ["B8 a missing-field save migrates without loss",
     Array.isArray(S.wet) && S.wet.length === 251 && S.silt.length === 251,
     "wet " + S.wet.length + " silt " + S.silt.length]

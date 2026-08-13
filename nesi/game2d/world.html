@@ -110,7 +110,11 @@ const DEF={
   /* M2 · THE NIGHT. what you sink is not spent — it waits in `queue`, in the
      dark, carrying its own words verbatim and unread. `built` is what the deep
      has made of it while you were gone. */
-  queue:[], built:[]
+  queue:[], built:[],
+  /* M3 · THE GREEN. `mirrors`/`aimedM` are per-seat; `seated` is how many seats
+     the valley has earned. A shoot carries `rooted` (asymptotic, never rendered
+     as itself) and `lastFed` (the dayKey of the last day light stood on it). */
+  mirrors:[], aimedM:[], seated:1
 };
 const NOMARK=1e9;
 let S=DEF;
@@ -125,6 +129,20 @@ for(const k of ["res","basin","lake"]){
 if(!S.creature)S.creature={x:840,y:598,tx:840,ty:598};
 if(!Array.isArray(S.queue))S.queue=[];
 if(!Array.isArray(S.built))S.built=[];
+/* one mirror becomes many, and a save from before M3 keeps its aim */
+if(!Array.isArray(S.mirrors))S.mirrors=[];
+if(!Array.isArray(S.aimedM))S.aimedM=[];
+if(typeof S.mirror==="number"&&typeof S.mirrors[0]!=="number"){S.mirrors[0]=S.mirror;S.aimedM[0]=!!S.aimed}
+for(let i=0;i<2;i++){
+  if(typeof S.mirrors[i]!=="number")S.mirrors[i]=0;
+  if(typeof S.aimedM[i]!=="boolean")S.aimedM[i]=false;
+}
+if(typeof S.seated!=="number")S.seated=1;
+/* a shoot grown under the old rule keeps what it had, read as rooting */
+for(const s of S.shoots){
+  if(typeof s.rooted!=="number")s.rooted=Math.max(0,Math.min(1,s.g||0));
+  if(typeof s.lastFed!=="string")s.lastFed="";
+}
 
 function dayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function daysBetween(a,b){
@@ -398,9 +416,16 @@ function rain(dt){
    is a bounce and not a pass-through — a mirror aimed almost along its own
    light is a mirror you cannot see working. */
 const SUN={x:250,y:62};
-const MIR={x:596,y:298,len:56};
-function reflect(a){
-  const dx=MIR.x-SUN.x, dy=MIR.y-SUN.y, m=Math.hypot(dx,dy);
+/* TWO SEATS — and the second is not a spare of the first, it is the answer to a
+   wall. The dam's crest stands at y=248 and the first mirror sits at y=298,
+   BELOW it, so every leftward ray it can throw meets the wall at any angle.
+   The reservoir's own shore is therefore a dark pool the first mirror cannot
+   reach, and the second seat stands on the high ridge above it. Each mirror
+   owns ground the other cannot light. That is the puzzle, and it fell out of
+   the geometry rather than being arranged. */
+const SEATS=[{x:596,y:298,len:56,aimAt:330},{x:150,y:206,len:50,aimAt:196}];
+function reflect(a,st){
+  const dx=st.x-SUN.x, dy=st.y-SUN.y, m=Math.hypot(dx,dy);
   const d={x:dx/m,y:dy/m};
   const n={x:-Math.sin(a),y:Math.cos(a)};
   const dot=d.x*n.x+d.y*n.y;
@@ -408,9 +433,9 @@ function reflect(a){
 }
 /* march until the ray meets a surface — the wall, then water, then ground.
    the dam is a real obstacle: light you cannot get past is the puzzle. */
-function cast(a){
-  const r=reflect(a);
-  let x=MIR.x, y=MIR.y;
+function cast(a,si){
+  const st=SEATS[si||0], r=reflect(a,st);
+  let x=st.x, y=st.y;
   for(let i=0;i<1400;i++){
     x+=r.x*1.6; y+=r.y*1.6;
     if(x<0||x>W||y>H||y<-40)return {x,y,hit:null};
@@ -421,47 +446,75 @@ function cast(a){
   }
   return {x,y,hit:null};
 }
-/* THE FIRST MIRROR COMES AIMED ALMOST RIGHT — computed, never hardcoded.
-   it is already on the basin's dry shore. nothing grows there until the hand
-   opens the dam and the ground goes wet under a beam that was always standing
-   on it. that is the whole teaching, and it is taught with no words.
-   it is re-derived on EVERY open until a hand actually takes the mirror, so an
-   untouched mirror can never come back wrong — `aimed` is set by the drag, not
-   by the existence of an angle. */
-if(!S.aimed){
+/* A MIRROR COMES AIMED ALMOST RIGHT — computed, never hardcoded. The first is
+   already on the basin's dry shore; nothing grows there until the hand opens
+   the dam and the ground goes wet under a beam that was always standing on it.
+   Re-derived on EVERY open until a hand actually takes that mirror, so an
+   untouched mirror can never come back wrong — `aimedM` is set by the drag,
+   never by the existence of an angle. */
+function autoAim(si){
   let best=0,bd=1e9;
   for(let a=-Math.PI;a<Math.PI;a+=0.004){
-    const h=cast(a);
+    const h=cast(a,si);
     if(h.hit!=="ground")continue;
-    const d=Math.abs(h.x-330);
+    const d=Math.abs(h.x-SEATS[si].aimAt);
     if(d<bd){bd=d;best=a}
   }
-  S.mirror=best;
+  return best;
 }
-let beam=cast(S.mirror), dwell=0, motes=[];
+for(let i=0;i<SEATS.length;i++)if(!S.aimedM[i])S.mirrors[i]=autoAim(i);
+
+let beams=SEATS.map((_,i)=>cast(S.mirrors[i],i)), dwell=[0,0], motes=[];
+
+/* ------------------------------------------------------------ THE OVERWINTERING
+   Carried in its grammar from nesi.html's seventh pass, per M3's own siting:
+   a stand roots only on a day LATER than the last day it was fed. Nothing a
+   single day contains can produce it, and there is no threshold to aim at —
+   the step is asymptotic and never completes.
+   Feeding is idempotent within a day ON PURPOSE: hold the beam on it from dawn
+   to dusk and it roots exactly as much as touching it once. Volume is not a
+   substitute for return, and there is no way to spend more and get more. */
+function feed(s){
+  const d=dayKey();
+  if(s.lastFed&&s.lastFed!==d)s.rooted=Math.min(1,s.rooted+(1-s.rooted)*0.22);
+  s.lastFed=d;
+}
+/* what a stand LOOKS like is its rooting, not its hours under a lamp. the first
+   day's sprout is small and stays small; standing is made of returns. */
+function standing(s){return 0.16+0.84*(s.rooted||0)}
+
 function light(dt){
-  beam=cast(S.mirror);
-  if(beam.hit==="ground"&&wetAt(beam.x)>0.3){
-    dwell+=dt;
-    let near=null;
-    for(const s of S.shoots)if(Math.abs(s.x-beam.x)<26)near=s;
-    /* dwell is the SEEDING clock and nothing else. left running once a shoot
-       stands there it never returns to zero, and a valley with one grown shoot
-       under the beam could never finish going still. */
-    if(near){near.g=Math.min(1,near.g+dt*0.20);near.lit=1;dwell=0}
-    else if(dwell>1.1){
-      S.shoots.push({x:beam.x,y:beam.y,g:0.02,s:Math.random()*9,lit:1});
-      dwell=0;
-    }
-  } else dwell=Math.max(0,dwell-dt*0.6);
+  for(let i=0;i<SEATS.length;i++)beams[i]=cast(S.mirrors[i],i);
+  for(let i=0;i<S.seated;i++){
+    const b=beams[i];
+    if(b.hit==="ground"&&wetAt(b.x)>0.3){
+      dwell[i]+=dt;
+      let near=null;
+      for(const s of S.shoots)if(Math.abs(s.x-b.x)<26)near=s;
+      /* dwell is the SEEDING clock and nothing else. left running once a shoot
+         stands there it never returns to zero, and a valley with one grown
+         shoot under the beam could never finish going still. */
+      if(near){near.lit=1;feed(near);dwell[i]=0}
+      else if(dwell[i]>1.1){
+        S.shoots.push({x:b.x,y:b.y,rooted:0,lastFed:dayKey(),s:Math.random()*9,lit:1});
+        dwell[i]=0;
+      }
+    } else dwell[i]=Math.max(0,dwell[i]-dt*0.6);
+  }
+  /* THE SECOND SEAT IS EARNED BY A RETURN, not by a count and not by a clock.
+     It stands there the moment anything in the valley has actually rooted —
+     which cannot happen inside a single day. Nothing announces it. */
+  if(S.seated<SEATS.length&&S.shoots.some(s=>s.rooted>0.0001))S.seated=SEATS.length;
   for(const s of S.shoots){ if(s.lit===undefined)s.lit=0; s.lit=Math.max(0,s.lit-dt*1.4) }
-  if(Math.random()<dt*26)motes.push({x:MIR.x,y:MIR.y,t:0,o:Math.random()});
-  const r=reflect(S.mirror);
-  for(let i=motes.length-1;i>=0;i--){
-    const m=motes[i];m.t+=dt;
-    m.x=MIR.x+r.x*(m.t*160)+Math.sin(m.t*3+m.o*9)*5;
-    m.y=MIR.y+r.y*(m.t*160)+Math.cos(m.t*2.4+m.o*9)*5;
-    if(m.t>Math.hypot(beam.x-MIR.x,beam.y-MIR.y)/160)motes.splice(i,1);
+  if(Math.random()<dt*26){
+    const i=Math.floor(Math.random()*S.seated);
+    motes.push({x:SEATS[i].x,y:SEATS[i].y,t:0,o:Math.random(),i:i});
+  }
+  for(let k=motes.length-1;k>=0;k--){
+    const m=motes[k], st=SEATS[m.i], r=reflect(S.mirrors[m.i],st); m.t+=dt;
+    m.x=st.x+r.x*(m.t*160)+Math.sin(m.t*3+m.o*9)*5;
+    m.y=st.y+r.y*(m.t*160)+Math.cos(m.t*2.4+m.o*9)*5;
+    if(m.t>Math.hypot(beams[m.i].x-st.x,beams[m.i].y-st.y)/160)motes.splice(k,1);
   }
 }
 
@@ -536,9 +589,12 @@ cv.addEventListener("pointerdown",e=>{
   /* the mirror is a lever, not a dial: the hand takes it where it is and turns
      it from there. grabbing it must never snap it, and holding it further out
      must give finer control — both fall out of tracking the DELTA. */
-  if(Math.hypot(p.x-MIR.x,p.y-MIR.y)<74){
-    S.aimed=true;
-    drag={k:"mirror",a0:Math.atan2(p.y-MIR.y,p.x-MIR.x),m0:S.mirror};return;
+  for(let i=0;i<S.seated;i++){
+    const st=SEATS[i];
+    if(Math.hypot(p.x-st.x,p.y-st.y)<74){
+      S.aimedM[i]=true;
+      drag={k:"mirror",si:i,a0:Math.atan2(p.y-st.y,p.x-st.x),m0:S.mirrors[i]};return;
+    }
   }
 });
 cv.addEventListener("pointermove",e=>{
@@ -548,16 +604,17 @@ cv.addEventListener("pointermove",e=>{
   stir();
   if(drag.k==="gate")S.gate=Math.max(0,Math.min(1,drag.g0+(drag.y0-p.y)/GATE_H));
   else if(drag.k==="mirror"){
-    let d=Math.atan2(p.y-MIR.y,p.x-MIR.x)-drag.a0;
+    const st=SEATS[drag.si];
+    let d=Math.atan2(p.y-st.y,p.x-st.x)-drag.a0;
     while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI;
-    S.mirror=drag.m0+d;
+    S.mirrors[drag.si]=drag.m0+d;
   }
   else if(drag.k==="stone"){drag.s.x=Math.max(8,Math.min(W-8,p.x));drag.s.y=p.y;drag.s.vy=0}
 });
 function hover(p){
   for(const s of S.stones)if(!s.sinking&&Math.hypot(p.x-s.x,p.y-s.y)<s.r+13)return true;
   if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16)return true;
-  if(Math.hypot(p.x-MIR.x,p.y-MIR.y)<74)return true;
+  for(let i=0;i<S.seated;i++)if(Math.hypot(p.x-SEATS[i].x,p.y-SEATS[i].y)<74)return true;
   return false;
 }
 function release(){
@@ -812,19 +869,32 @@ function frame(now){
     g.beginPath(); g.ellipse(s.x,s.y,r,r*(s.onWater?0.32:0.42),0,0,7); g.stroke();
   }
 
-  /* --- shoots: where light met water ----------------------------------- */
+  /* --- shoots: where light met water, ACROSS RETURNED DAYS --------------- */
   for(const s of S.shoots){
-    const h=8+s.g*46, sway=Math.sin(t*1.1+s.s)*0.10*s.g;
+    const gg=standing(s);
+    const h=8+gg*46, sway=Math.sin(t*1.1+s.s)*0.10*gg;
     g.save(); g.translate(s.x,s.y); g.rotate(sway);
-    g.strokeStyle="#5f8a46"; g.lineWidth=1.8+s.g*1.6; g.lineCap="round";
+    g.strokeStyle="#5f8a46"; g.lineWidth=1.8+gg*1.6; g.lineCap="round";
     g.beginPath(); g.moveTo(0,0); g.quadraticCurveTo(2,-h*0.55,0,-h); g.stroke();
     for(let k=0;k<3;k++){
-      const lp=0.35+k*0.24; if(s.g<lp-0.2)continue;
-      const ly=-h*lp, sd=k%2?1:-1, sz=(6+s.g*13)*Math.min(1,(s.g-(lp-0.2))*4);
+      const lp=0.35+k*0.24; if(gg<lp-0.2)continue;
+      const ly=-h*lp, sd=k%2?1:-1, sz=(6+gg*13)*Math.min(1,(gg-(lp-0.2))*4);
       g.fillStyle=k===0?"#6f9a52":"#7ba85c";
       g.beginPath(); g.moveTo(0,ly);
       g.quadraticCurveTo(sd*sz*0.8,ly-sz*0.55,sd*sz,ly-sz*0.1);
       g.quadraticCurveTo(sd*sz*0.55,ly+sz*0.3,0,ly); g.fill();
+    }
+    /* FRUIT. A stand that has been lit and wet across enough returns hangs one.
+       It cannot be reached by a long day — only by many. Taking it is not built
+       here; that is M4's, and hanging it is M3's. */
+    if(s.rooted>0.72){
+      const fy=-h*0.80, fr=3.4+(s.rooted-0.72)*13;
+      g.strokeStyle="#5f8a46"; g.lineWidth=1.1;
+      g.beginPath(); g.moveTo(0,fy); g.lineTo(5,fy+3); g.stroke();
+      g.fillStyle="#9c5a34";
+      g.beginPath(); g.arc(6,fy+3+fr*0.7,fr,0,7); g.fill();
+      g.fillStyle="rgba(255,232,190,.34)";
+      g.beginPath(); g.arc(6-fr*0.3,fy+3+fr*0.45,fr*0.42,0,7); g.fill();
     }
     if(s.lit>0){g.fillStyle="rgba(255,240,190,"+(s.lit*0.35)+")";g.beginPath();g.arc(0,-h,7,0,7);g.fill()}
     g.restore();
@@ -842,20 +912,21 @@ function frame(now){
     g.restore();
   }
 
-  /* --- the heliostat, and the light it throws --------------------------- */
-  /* the shaft, drawn after the world so it lies over it like light does */
-  if(beam.hit){
-    const dx=beam.x-MIR.x, dy=beam.y-MIR.y, m=Math.hypot(dx,dy)||1;
+  /* --- the heliostats, and the light they throw ------------------------- */
+  /* the shafts, drawn after the world so they lie over it like light does */
+  for(let i=0;i<S.seated;i++){
+    const st=SEATS[i], beam=beams[i];
+    if(!beam.hit)continue;
+    const dx=beam.x-st.x, dy=beam.y-st.y, m=Math.hypot(dx,dy)||1;
     const nx=-dy/m, ny=dx/m, wdt=9;
     g.save(); g.globalCompositeOperation="lighter";
-    const bg=g.createLinearGradient(MIR.x,MIR.y,beam.x,beam.y);
+    const bg=g.createLinearGradient(st.x,st.y,beam.x,beam.y);
     bg.addColorStop(0,"rgba(255,238,180,.36)"); bg.addColorStop(1,"rgba(255,232,168,.16)");
     g.fillStyle=bg;
     g.beginPath();
-    g.moveTo(MIR.x+nx*3,MIR.y+ny*3); g.lineTo(beam.x+nx*wdt,beam.y+ny*wdt);
-    g.lineTo(beam.x-nx*wdt,beam.y-ny*wdt); g.lineTo(MIR.x-nx*3,MIR.y-ny*3);
+    g.moveTo(st.x+nx*3,st.y+ny*3); g.lineTo(beam.x+nx*wdt,beam.y+ny*wdt);
+    g.lineTo(beam.x-nx*wdt,beam.y-ny*wdt); g.lineTo(st.x-nx*3,st.y-ny*3);
     g.closePath(); g.fill();
-    for(const mo of motes){g.fillStyle="rgba(255,244,206,"+(0.5*(1-mo.t))+")";g.beginPath();g.arc(mo.x,mo.y,1.3,0,7);g.fill()}
     /* the warm pool where it lands — a wall takes the light and gives nothing */
     if(beam.hit!=="wall"){
       const pg=g.createRadialGradient(beam.x,beam.y,1,beam.x,beam.y,42);
@@ -864,20 +935,31 @@ function frame(now){
     }
     g.restore();
   }
-  /* the incoming ray from the sun */
   g.save(); g.globalCompositeOperation="lighter";
+  for(const mo of motes){
+    if(mo.i>=S.seated)continue;
+    g.fillStyle="rgba(255,244,206,"+(0.5*(1-mo.t))+")";
+    g.beginPath(); g.arc(mo.x,mo.y,1.3,0,7); g.fill();
+  }
+  /* the incoming rays from the sun */
   g.strokeStyle="rgba(255,240,196,.16)"; g.lineWidth=7;
-  g.beginPath(); g.moveTo(SUN.x,SUN.y); g.lineTo(MIR.x,MIR.y); g.stroke(); g.restore();
-  /* the post and the mirror */
-  g.strokeStyle="#4a4436"; g.lineWidth=4;
-  g.beginPath(); g.moveTo(MIR.x,MIR.y); g.lineTo(MIR.x,groundY(MIR.x)); g.stroke();
-  g.save(); g.translate(MIR.x,MIR.y); g.rotate(S.mirror);
-  g.fillStyle="#20262a"; g.fillRect(-MIR.len/2,-4.5,MIR.len,9);
-  const mg=g.createLinearGradient(-MIR.len/2,0,MIR.len/2,0);
-  mg.addColorStop(0,"#f6f2e2"); mg.addColorStop(.5,"#ffffff"); mg.addColorStop(1,"#dfe6e4");
-  g.fillStyle=mg; g.fillRect(-MIR.len/2+1.5,-3,MIR.len-3,4.4);
+  for(let i=0;i<S.seated;i++){
+    g.beginPath(); g.moveTo(SUN.x,SUN.y); g.lineTo(SEATS[i].x,SEATS[i].y); g.stroke();
+  }
   g.restore();
-  g.fillStyle="#2d3238"; g.beginPath(); g.arc(MIR.x,MIR.y,5,0,7); g.fill();
+  /* the posts and the mirrors */
+  for(let i=0;i<S.seated;i++){
+    const st=SEATS[i];
+    g.strokeStyle="#4a4436"; g.lineWidth=4;
+    g.beginPath(); g.moveTo(st.x,st.y); g.lineTo(st.x,groundY(st.x)); g.stroke();
+    g.save(); g.translate(st.x,st.y); g.rotate(S.mirrors[i]);
+    g.fillStyle="#20262a"; g.fillRect(-st.len/2,-4.5,st.len,9);
+    const mg=g.createLinearGradient(-st.len/2,0,st.len/2,0);
+    mg.addColorStop(0,"#f6f2e2"); mg.addColorStop(.5,"#ffffff"); mg.addColorStop(1,"#dfe6e4");
+    g.fillStyle=mg; g.fillRect(-st.len/2+1.5,-3,st.len-3,4.4);
+    g.restore();
+    g.fillStyle="#2d3238"; g.beginPath(); g.arc(st.x,st.y,5,0,7); g.fill();
+  }
 
   /* --- the arrival flash: the world is glad, and knows nothing ---------- */
   if(flash>0.01){
@@ -890,10 +972,10 @@ function frame(now){
      the next act of the hand starts it again. That quiet IS the mechanic. */
   const stonesMoving=S.stones.some(s=>s.held||s.sinking>0||Math.abs(s.vy)>0.4||s.y<groundY(s.x)-s.r*0.6-0.5);
   const draining=(S.gate>0.02&&S.res>0&&resY<DAM.base)||S.basin>volumeAt(BODIES.basin,LIP)+1;
-  /* light is not the hand — a shoot keeps growing while the valley stills, and
-     only stops the loop once it has nothing left to grow into */
-  const growing=beam.hit==="ground"&&wetAt(beam.x)>0.3
-    &&(dwell>0||S.shoots.some(s=>s.g<1&&Math.abs(s.x-beam.x)<26));
+  /* light is not the hand — a seed still forming under a beam keeps the loop
+     alive. ROOTING never does: it is a single step taken on a day change, so
+     there is nothing to wait out and nothing a longer session can add. */
+  const growing=beams.some((b,i)=>i<S.seated&&b.hit==="ground"&&wetAt(b.x)>0.3&&dwell[i]>0);
   /* 0.05 is not a taste: nesi.html's stilling quiets at amplitude 0.3 of a
      swell whose full height is 6, and this is that same fraction, so the two
      surfaces fall quiet on the same clock. ~66s after the last act. */
