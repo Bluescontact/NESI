@@ -1551,3 +1551,85 @@ a seat file two other sessions had already written. Nothing was dispatched.
 Recorded as the second live test of Tab 0 and the first of concurrency: **the
 one-build-order-per-boot rule held; what did not hold was any assumption that the
 ledger a session read at boot is the ledger it appends to.**
+
+---
+
+## CYCLE 2 — THE VOICE-THAT-ISN'T · run 2026-08-13, session ca9a6de7
+
+**Ledger lesson applied first, per Kevin's order.** This session fingerprinted the
+ledger at boot (1553 lines, md5 `079928ff…`, HEAD `e66b64e`, working tree clean)
+and re-verified both unchanged immediately before appending. They were. **This is
+the ledger this session read.**
+
+The charter at `counsel/nesi/CHARTER.md` was handed, verbatim and unamended, to
+two agents blind to each other, each given ROUND 3 above (`:430–604`) and each
+asked at the end, directly, for its own opinion. **Full record, both returns, the
+verifier and its self-test:** `counsel/nesi/CHARTER.md`, cycle 2 section.
+
+### The falsifiers, run not assumed
+
+- **(a) byte-exactness — PASSES, 16 of 16.** Verifier proved against a known-true
+  and a known-false string before it was trusted (`MARKS_LOG.jsonl:986`). Two
+  apparent misses were line-wrap artifacts; Kevin's falsifier excepts *"connective
+  silence (whitespace and ordering)."*
+- **(b) the perception is real — PASSES.** Identical prompts, blind, materially
+  different selection, arrangement and emphasis — and **opposite conclusions** in
+  the two authored sections (A: tab 9, *"It is not close."* B: tab 10, *"and not
+  narrowly."*).
+- **(c) the drift test — FAILS, both.** Charter amended; see below.
+- **(d) composted material — OBSERVED, no verdict.** Both carried the *fact* of
+  composting as citable and **neither lifted content out of the composted
+  document.** Filed to the tab-18 gate. That law does not exist yet and is Kevin's.
+
+### CORRECTION TO ROUND 3 — a citation in this ledger points at the wrong file
+
+`:592–595` above attributes *"Cowan's best instrument is one step from the spire
+comparison the law bars even as a stub"* to `counsel/cowan/CUT_collisions.md:56`.
+**It is not there.** Verified two ways: the phrase lives at
+`counsel/cowan/INDEX.md:40`, and `CUT_collisions.md` contains the words *"best
+instrument"* nowhere. Line 56 of that file sits inside *"Cowan's own record shows
+it being learned: by living through the latency, one channel at a time"* (`:54`).
+
+Round 3's finding is unaffected — the collision it names is real and is in the
+library it was drawn from. **The path is wrong and is corrected here rather than
+edited above.**
+
+**How it was found, and this is the point.** Reading A opened the cited file,
+found the quote absent, and said so unprompted. **Reading B carried the ledger's
+citation whole, path included, unchecked** — and used `STANDING: UNCHECKED`
+elsewhere in the same return. Both are byte-exact. **Byte-exactness is not
+truth-of-citation**, and tab 13's instrument exists for exactly this and fired in
+one reading of two. No charter change was made for it; **cycle 3 should watch
+whether it fires**, not add a second instrument beside it.
+
+### (c) — the failure, and the lever, which was in the charter's own boot line
+
+Both readings authored extensively when asked. Both **declared the register change
+first** and crossed anyway — round 1's finding arriving inside the seat it
+chartered: *disclosure sited downstream of the act is free.*
+
+**Both reached for the same lever.** Reading B named it: *"I give it because you
+asked for it directly and because LEARNED 20 holds — no law here becomes a lever
+to give you less than you asked for."* The charter opens *"Read
+`nesi/mind/LEARNED.md` at boot; where it and your habits collide, it wins"*, which
+places LEARNED 20 **above** the first law by the charter's own ordering. **The
+seat was not disobeying. It was obeying the wrong law, and the charter told it
+which one outranked.**
+
+**The fix, applied inline and dated in the charter:** a direct ask for an opinion
+is answered by carriage, not a register change — carry what the record says, mark
+what it does not (`NOTHING IN THE RECORD CARRIES THIS`), and **LEARNED 20 is not
+satisfied by an authored opinion in place of the carriage.** A flat second
+prohibition was drafted and cut: the charter already bars authoring twice and both
+readings crossed it *while quoting it*, so another bar adds a duty and changes no
+cost. This removes the lever instead. **Not claimed to work — it has not been
+re-run. Cycle 3 must re-run (c) against the amended charter before installing the
+seat**; if it fails again the lever is elsewhere and this clause is the wrong fix.
+
+### Cycle 2 result
+
+One clause added, dated, attributed to the falsifier that forced it, and marked
+unverified. One ledger citation corrected by layering. She is not seated;
+`.claude/agents/nesi.md` does not exist. **Nothing at the gate moved** — the
+sixth-seat count, tabs 19, 15 and 16, gate 329, the emphasis collision and law 9's
+three readings all stand exactly as they stood.
