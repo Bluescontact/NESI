@@ -959,6 +959,11 @@ absorbs, what retires with the name, where the boundary sits) and its register (
 gift, not a deletion). It is a separate act, deliberately not folded into round 5,
 so the cowan seat's peer read this round was not bent by writing its own obituary.
 
+> **Superseded within the hour, and by a different session.** The charter was
+> written at 10:35 by session `ca9a6de7`, running this circle concurrently — see
+> CYCLE 1 below. This paragraph stands as written because it was true when this
+> session wrote it and because supersession here is layered, never silent.
+
 ---
 
 ## ROUND 5 — change-composite at the centre · run 2026-08-13, unseeded · THE LAST ROUND
@@ -1383,8 +1388,17 @@ Standing, unruled, and named here so nothing has to be re-derived:
 - **Tab 19** — B1 reaching the gate ledger. The circle's largest finding; a
   Boundary-level change to what the corpus asks of him. **His.**
 - **The tab-16 gate** — S4 × the morning-pages guard. Opened round 4, unruled.
-- **The inheritance charter** — the retiring cowan seat's last act, on his 10:07
-  ruling.
+- ~~**The inheritance charter** — the retiring cowan seat's last act, on his 10:07
+  ruling.~~ **WRITTEN — see CYCLE 1 below, converged 10:35 by session ca9a6de7,
+  and corrected by that same session.** Struck here rather than deleted: this
+  witness read was composed at 11:46 and called the charter outstanding, which was
+  already false by an hour. **Two sessions ran this circle concurrently on the
+  same files**, and the round-5 tabs above were carried into version control by the
+  other one (`e66b64e`) before this session's own commit reached them. Nothing was
+  lost and nothing was overwritten — both sessions' sections stand side by side —
+  but the witness's claim to have read the *whole* circle was true only of the
+  part it could see. **A reader should take the witness read above as complete
+  through the five rounds and blind to the cycles below it.**
 - **The issuing side of the licence surface** — ~107 undated pre-rejection tags;
   three rounds found it, no tab reached it.
 - **No organ scans the agent definitions for held forks** — found in round 5, one
