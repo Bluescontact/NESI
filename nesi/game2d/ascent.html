@@ -150,12 +150,24 @@ const LEVELS = [
 ];
 
 /* THE ASCENT is no longer levels. It is what the twelve seed, reached from the
-   water once the water has something to give it. */
+   water once the water has something to give it.
+
+   THE DOOR — built 2026-08-14 on Kevin's mark, "build the door into the ascent."
+   Until then this array was declared and read by NOTHING: enter(n) took
+   LEVELS[n-1] and there was no node, no click and no path to any of the three.
+   They were reachable only from a console, which by the slice rule means they
+   were not in the world at all.
+
+   Each run carries its own id as `n`, a string. S.done then holds numbers for
+   the twelve and these three names for the ascent, in one map — finish() needs
+   no branch and no second registry is created. */
 const ASCENT = [
-  {key:"lens",      name:"THE LENS",      mech:"the hand works the material", cap:250},
-  {key:"seating",   name:"THE SEATING",   mech:"the frame is fed, never filled", cap:500},
-  {key:"heliostat", name:"THE HELIOSTAT", mech:"twelve mirrors, twelve lenses"}
+  {n:"lens",      key:"lens",      name:"THE LENS",      mech:"the hand works the material", cap:250},
+  {n:"seating",   key:"seating",   name:"THE SEATING",   mech:"the frame is fed, never filled", cap:500},
+  {n:"heliostat", key:"heliostat", name:"THE HELIOSTAT", mech:"twelve mirrors, twelve lenses"}
 ];
+const isAscent = n => typeof n === "string";
+const runOf = n => isAscent(n) ? ASCENT.find(a=>a.n===n) : LEVELS[n-1];
 
 /* ── state ────────────────────────────────────────────────────────────────── */
 const SCHEMA="ascent.2", KEY="nesi.ascent";   // .2 — water became a body, not a number
@@ -223,7 +235,17 @@ function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return; const d=
   if(!d||d.schema!==SCHEMA) return; Object.keys(S).forEach(k=>{ if(k in d) S[k]=d[k]; }); }catch(e){} }
 load();
 const today = () => new Date().toISOString().slice(0,10);
-const unlocked = n => n===1 || !!S.done[n-1];
+/* THE THREE OPEN TOGETHER, on the condition this file already stated for them
+   and on no other: "what the twelve seed, REACHED FROM THE WATER ONCE THE WATER
+   HAS SOMETHING TO GIVE IT" (the ASCENT comment above). That is seeded()>=1 —
+   the water has produced a first lens's worth of trace.
+
+   No progression is invented among the three. Nothing in the corpus orders them,
+   and the heliostat's own note says a mirror may be aimed by hand with no seat
+   fed at all — "held is lawful; permanence is earned by seating, never by
+   holding harder." Gating it behind THE SEATING would have contradicted that.
+   So: one condition, three runs, and which you walk first is yours. */
+const unlocked = n => isAscent(n) ? seeded()>=1 : (n===1 || !!S.done[n-1]);
 
 /* ── canvas ───────────────────────────────────────────────────────────────── */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
@@ -284,7 +306,8 @@ let view="map", cur=null, L={};   // L = the running level's scratch
 
 function enter(n){
   if(!unlocked(n)) return;
-  cur=LEVELS[n-1]; view="level"; L={t:0}; S.at=n; save();
+  cur=runOf(n); if(!cur) return;
+  view="level"; L={t:0}; S.at=n; save();
   const f=SET[cur.key]; if(f&&f.enter) f.enter();
 }
 function finish(){ S.done[cur.n]=true; save(); view="map"; }
@@ -1121,6 +1144,26 @@ function mapNodes(){
   return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2 - Math.PI/2;
     return {x:W/2+R*Math.cos(a)*1.24, y:cy2+R*Math.sin(a)}; });
 }
+/* THE UPPER TETRA, DRAWN THE SAME WAY THE CIRCUIT IS — three joints, three runs
+   between them, the level at each run's midpoint. Nothing new was invented for
+   it: the twin tetrahedra meeting face to face are RULED
+   (THE_FOUR_RULINGS_2026-08-07.md:44), the lower one is already the twelve-edge
+   circuit around the lake, and ASCENT already held exactly three. Three runs is
+   what three entries on a closed figure ARE — the same arithmetic the twelve
+   came from, one ring up.
+
+   It sits ABOVE the water because light rises and water falls, which is the
+   world's own direction and not a layout choice. */
+function ascentNodes(){
+  const r=Math.min(W,H)*0.115, cy2=H*0.175;
+  return [-90,30,150].map(d=>{ const a=d*Math.PI/180;
+    return {x:W/2+r*Math.cos(a)*1.35, y:cy2+r*Math.sin(a)}; });
+}
+function ascentPts(){
+  const N=ascentNodes();
+  return ASCENT.map((l,i)=>{ const a=N[i], b=N[(i+1)%3];
+    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2, a, b, l}; });
+}
 /* Edge i runs from joint i to joint i+1, and the level sits at its midpoint. */
 function mapPts(){
   const N=mapNodes();
@@ -1165,11 +1208,33 @@ function drawMap(){
     if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
       g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
 
+  // THE UPPER TETRA. Its three runs are drawn in the same hand as the twelve —
+  // walked runs carry light, unwalked ones are the dry bed they are, and a run
+  // the water cannot yet reach is drawn faint with no name on it. Nothing says
+  // "locked" here either.
+  const AN=ascentNodes(), AP=ascentPts(), up=unlocked("lens");
+  AP.forEach(p=>{ const done=!!S.done[p.l.n];
+    g.strokeStyle= done ? "rgba(200,185,138,.85)" : up ? "rgba(90,84,74,.55)" : "rgba(90,84,74,.18)";
+    g.lineWidth= done ? 5 : 2;
+    g.beginPath(); g.moveTo(p.a.x,p.a.y); g.lineTo(p.b.x,p.b.y); g.stroke(); });
+  AN.forEach(n=>{ g.beginPath(); g.arc(n.x,n.y,3,0,7);
+    g.fillStyle= up ? "rgba(60,54,44,.45)" : "rgba(90,84,74,.18)"; g.fill(); });
+  AP.forEach(p=>{ const out = p.y<H*0.175 ? -18 : 22;
+    if(up){
+      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif"; g.textAlign="center";
+      g.fillText(p.l.name, p.x, p.y+out);
+      g.fillStyle="rgba(90,84,74,.85)"; g.font="10px Georgia,serif";
+      g.fillText(p.l.mech, p.x, p.y+out+(out<0?-12:12)); }
+    if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
+      g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
+
   // WHAT THE TWELVE HAVE SEEDED — one lens per three edges that left a trace.
   // Nothing counts them out loud; there are simply more of them, or there are not.
-  const s=seeded();
-  for(let i=0;i<4;i++){ const x=W/2+(i-1.5)*32, y=44;
-    g.beginPath(); g.arc(x,y,7,0,7);
+  // They sit at the centre of the upper tetra because that is what they are: the
+  // thing the twelve send up, standing inside the figure it opens.
+  const s=seeded(), acx=(AN[0].x+AN[1].x+AN[2].x)/3, acy=(AN[0].y+AN[1].y+AN[2].y)/3;
+  for(let i=0;i<4;i++){ const x=acx+(i-1.5)*22, y=acy;
+    g.beginPath(); g.arc(x,y,6,0,7);
     if(i<s){ g.fillStyle="#c8b98a"; g.fill(); }
     g.strokeStyle= i<s ? "rgba(60,54,44,.7)" : "rgba(90,84,74,.25)"; g.lineWidth=1.5; g.stroke(); }
 
@@ -1179,8 +1244,9 @@ function drawMap(){
   g.textAlign="right"; g.fillStyle="rgba(118,102,52,.9)";
   g.fillText("what the water seeds", W*0.94, 32);
 }
-function hovered(){ const P=mapPts();
-  for(const p of P){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
+function hovered(){
+  for(const p of ascentPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
+  for(const p of mapPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
   return 0; }
 
 /* ═══ THE 3D WINDOWS ════════════════════════════════════════════════════════

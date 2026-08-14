@@ -4957,3 +4957,74 @@ list. Gate opened.
 is the edited one, the clear case reads `water read-only · model no call ·
 network no request`. `reach_check.js` R5 still fails — pre-existing, and it reads
 `world.html`, which this pass did not touch.
+
+---
+
+# KEVIN'S SIXTEEN MARKS ON THE DECISION SURFACE — 2026-08-14
+
+`decisions.html` carried seventeen forks at depth zero. He marked sixteen and
+left one — BLIND's door — open. His wordings are verbatim below. Caught to the
+brake (`tools/marks.py catch --source kevin`) before any of it was built.
+
+## Built tonight, all in `daily.html`
+
+| his mark | what it is now |
+|---|---|
+| *"deleting a banked sentence should also withdraw it from the line"* | A banked sentence taken off the page is staged `withdrawn`: still banked, never un-banked, never deleted — the line simply no longer hands it back. Type it back and it returns. |
+| *"a merge may be undone, by hand"* | Click any part in the seams panel and the merge comes apart. The parts stand again exactly as written; the fused stone leaves by its own stage, `unmerged`. Nothing is deleted, and nothing undoes a merge for you. |
+| *"the tank gets three outputs like every other station"* | Where your hand lets go on the table decides: onto another tile → merge · at the bottom edge → to the lake · at the top edge → set down · anywhere else → it stays. One gesture, no button, no label, no confirmation on any of them. |
+| *"build a door out that carries the writing itself"* | A sill along the top of the world. One click writes your writing — today's page, every stone with its day, every seam of every merge, and every past day, verbatim — to a plain text file on your own disk. No network, no service, no account. Nothing here is removed by it and nothing is counted on the way out. |
+| *"build the internal open loop"* | Dropping a stone to the lake now **leaves `nesi.water` and arrives in `nesi.ascent`.** Two stores, one member between them, real loss at this end. Answers THE_SHAPE_OF_THE_WHOLE.md:138 and obeys :140 — not a shared store, which would be "one island made bigger". The arrival is written first: if the far store cannot take it, the stone does not leave. Water is never in flight and never nowhere. |
+
+**Two faults found while building and fixed, neither of them his marks:**
+
+- **The watermark retreated to a character, not a sentence.** Editing behind the
+  mark clamped it to the raw new length, leaving it mid-sentence — the next thing
+  banked was the tail of one (`"hree sentence here."`). It now pulls back to
+  where the edit began, then back again to the last completed sentence at or
+  before it.
+- **Retyping a withdrawn sentence banked it twice** — the stone returned *and* a
+  duplicate landed. Today's bank is now checked before a sentence banks.
+
+## Ruled, and needing no build
+
+- *"the world never offers; the reach is always yours"* — already true; the quiet
+  offers nothing and now never will.
+- *"they stand — form, not a figure"* — the bands and the marks stay as they are.
+- *"the question is wrong"* — on shape-or-contents of the twelve-level ascent.
+- *"no — the ground is one hand's only"* — another person's words never change
+  how ground behaves.
+- *"the member exists but costs something to walk"* — the short circuit stands.
+
+- *"the hand cuts where it wants"* — **already standing.** `ascent.html` THE
+  SEATING lost `Math.ceil(w.length/2)` earlier the same day; the cut is now a
+  seam between words that the hand puts where it likes, with no midpoint drawn
+  and no default if the hand does nothing (`ascent.html:1005-1058`). His mark
+  confirms the build rather than asking for one.
+
+## HIS, AND NOT TO BE INFERRED
+
+Three marks name a direction and reserve the naming. **Nothing here may guess
+them**, and the code is built so each stays possible:
+
+- *"a trace, and I will say what kind"* — a set-down leaves a trace. What kind is
+  his. The stone is kept whole and staged, so any trace he names can still be
+  built on it.
+- *"both, and I will say which is which"* — hand and site both route a writing to
+  a colour. Which is which is his.
+- **BLIND's door** — left unmarked on the surface. Still open.
+
+## Held
+
+- *"hold — not tonight"* — `index.html`'s routing.
+- *"hold — not tonight"* — what departs when the fruit departs.
+
+## The structural one
+
+> **What is `nesi/world2d`? → LIVE TREE, IT IS THE REAL BUILD**
+
+This overrules line 2215 of this file, which counted three world2d gates as
+concerning "the retired 3D tree, also retired." **`world2d` was never retired by
+any mark of his** — the retirement named `world3d` — and it is now ruled live by
+name. That line is superseded, not edited: it stands where it is, wrong, with
+this above it.

@@ -91,19 +91,16 @@ const sandbox = {
 };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
-/* THE WAY IN IS MISSING, AND THIS SAYS SO RATHER THAN HIDING IT.
-   enter(n) reads LEVELS[n-1] — the twelve. THE SEATING lives in ASCENT, which is
-   declared at ascent.html:154 and read by nothing: there is no node, no click,
-   no enter() path to it. So this harness opens the level the only way that
-   currently exists, by calling its own enter() directly.
-   That is a REAL GAP in the slice rule ("if reaching the new thing requires a
-   console command, the slice is not done") and it is NOT fixed here — building a
-   door into the ascent would settle the twelve-level shape and which-surface-is-
-   the-game, both of which are on Kevin's own untouched-fork list. Named, gated,
-   not built. What is verified below is the mechanic, not its reachability. */
+/* THE WAY IN NOW EXISTS, AND THIS USES IT. Until 2026-08-14 THE SEATING lived in
+   ASCENT, an array enter() never read — no node, no click, no path — so this
+   harness had to reach in and set `cur` itself, and said so here rather than
+   hiding it. Kevin's mark "build the door into the ascent" closed that: the
+   three ascent runs are drawn on the map above the water and enter() resolves
+   them by name. So the walk below opens THE SEATING the way a hand does. The
+   door itself is walked by tools/door_check.js. */
 vm.runInContext(
   src + "\n;globalThis.__X={SET,S,mouse,commitWrite,cutLayout,nearestSeam," +
-        "openSeating(){cur=ASCENT[1];view='level';L={t:0};SET.seating.enter();}," +
+        "enter,reading,seeded," +
         "get L(){return L;},get view(){return view;},get typing(){return typing;}};",
   sandbox, { filename: "ascent.html<script>" });
 
@@ -112,9 +109,13 @@ const wt = byId("wt");
 const results = [];
 const ok = (name, pass, note) => results.push({ name, pass: !!pass, note: note == null ? "" : String(note) });
 
+/* The water is given something to give, by the game's own reading() — the same
+   call the twelve make. Without it the door is shut, which is the point of it. */
+X.reading(1, "written"); X.reading(2, "received"); X.reading(3, "released");
+
 /* ── the walk ─────────────────────────────────────────────────────────────── */
 function openLevel9() {
-  X.openSeating();                              /* the writing panel opens itself */
+  X.enter("seating");                           /* through the real door, by name */
   wt.value = POURED;                            /* his water, into the field */
   X.commitWrite();                              /* the way the game itself commits */
   return X.L;

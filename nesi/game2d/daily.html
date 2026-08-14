@@ -106,6 +106,12 @@
     box-shadow:0 16px 44px rgba(0,0,0,.2)}
   #seams .part{padding:8px 0;border-top:1px solid rgba(90,84,74,.22);white-space:pre-wrap}
   #seams .part:first-child{border-top:none}
+  /* THE DOOR OUT — a sill along the top of the world, above the water and above
+     the writing. It is the only way anything leaves. It is always there and it
+     never says anything. */
+  #sill{position:fixed;left:0;right:0;top:0;height:22px;cursor:pointer;
+    background:linear-gradient(to bottom,rgba(20,22,26,.14),transparent)}
+  #sill:hover{background:linear-gradient(to bottom,rgba(20,22,26,.26),transparent)}
   @media (max-width:640px){ #bg,#page{font-size:17px;padding:6vh 20px 46vh} }
 </style>
 
@@ -115,6 +121,8 @@
 <div id="up"></div>
 <div id="table"></div>
 <div id="seams"></div>
+<div id="sill" title="the door out"></div>
+<a id="carry" style="display:none"></a>
 
 <script>
 "use strict";
@@ -141,6 +149,7 @@ function load(){
           S.mark=S.text.length;
         }
       }
+      S.lastSeen=S.text;      /* the page as it stands is what the next edit is against */
       return;
     }
   }catch(e){}
@@ -245,6 +254,33 @@ function paint(){
 function bandCut(){
   const v=page.value;
   S.text=v; quiet=0; still=false;
+  /* DELETION WITHDRAWS FROM THE LINE — Kevin's mark, 2026-08-14. The stone is
+     never un-banked and is never removed; it simply stops being something the
+     water can hand back. A sentence you wrote and then took off the page is not
+     one the world should return to you later. Checked against the page as it
+     now stands: a banked sentence no longer present is withdrawn, and one you
+     type back returns to the reach. */
+  if(v!==S.lastSeen){
+    /* THE WATERMARK RETREATS TO A SENTENCE, NEVER TO A CHARACTER. It used to be
+       clamped to the raw new length, so editing anywhere behind it left the mark
+       standing in the MIDDLE of a sentence — and the next thing banked was the
+       tail of one: "hree sentence here." Pull back to where the edit began, then
+       back again to the last completed sentence at or before it. */
+    const old=S.lastSeen||"";
+    let p=0; while(p<old.length && p<v.length && old[p]===v[p]) p++;
+    if(p<S.mark){
+      let b=0, k=0;
+      while(k<p){ if(isEnd(v[k])){ while(k+1<p&&isEnd(v[k+1])) k++; b=k+1; } k++; }
+      S.mark=b;
+    }
+    S.lastSeen=v;
+    S.stones.forEach(s=>{
+      if(s.d!==S.today || s.seams) return;         /* today's plain stones only */
+      const there = v.indexOf(s.t)>=0;
+      if(!there && s.stage===undefined) s.stage="withdrawn";
+      else if(there && s.stage==="withdrawn") delete s.stage;
+    });
+  }
   if(S.mark>v.length) S.mark=v.length;
   let i=S.mark, start=S.mark;
   while(i<v.length){
@@ -252,7 +288,13 @@ function bandCut(){
       if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){ i++; continue; }
       let j=i; while(j+1<v.length&&isEnd(v[j+1])) j++;
       const seg=v.slice(start,j+1).trim();
-      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) S.stones.push({n:S.n++, t:seg, d:S.today});
+      /* Retyping a sentence you had taken off the page returns THAT stone (the
+         withdrawal above already lifted its stage). Banking it again would put
+         the same words in the water twice, which is the duplicate-banking fault
+         all over again in another door. Today's bank is checked first. */
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)
+         && !S.stones.some(s=>s.d===S.today && !s.seams && s.t===seg))
+        S.stones.push({n:S.n++, t:seg, d:S.today});
       start=j+1; S.mark=j+1; i=j+1;
     } else i++;
   }
@@ -460,8 +502,20 @@ addEventListener("keydown", e=>{
    nothing happens. */
 const tableEl=document.getElementById("table"), seamsEl=document.getElementById("seams");
 let tableOpen=false, carried=null, grabDX=0, grabDY=0;
+const EDGE=64;                       /* the two edges of the table — see pointerup */
 
-const held = () => S.stones.filter(s=>s.stage!=="merged");
+/* WHAT THE LINE CAN REACH. A stone leaves the reach four ways, and only one of
+   them destroys anything (nothing does):
+     merged   — its words live in the merged stone now, so it would double
+     withdrawn— you deleted it from the page after it banked (Kevin's mark,
+                2026-08-14: "deleting a banked sentence should also withdraw it
+                from the line"). It is STILL BANKED — deletion never un-banks —
+                it simply is not handed back to you.
+     lake     — you dropped it to the lake at the table
+     set      — you set it down, and set-it-down has no feedback
+   Nothing is ever removed from S.stones. Every one of these is a stage. */
+const OUT = ["merged","withdrawn","lake","set","unmerged"];
+const held = () => S.stones.filter(s=>OUT.indexOf(s.stage)<0);
 
 function layout(){
   /* Tiles begin where they fall, in WRITTEN ORDER, and never move again unless a
@@ -475,6 +529,14 @@ function closeTable(){ tableOpen=false; tableEl.style.display="none"; seamsEl.st
 
 function paintTable(){
   tableEl.textContent="";
+  /* the two edges, drawn as edges and named by nothing */
+  ["top","bottom"].forEach(side=>{
+    const e=document.createElement("div");
+    e.style.cssText="position:absolute;left:0;right:0;height:"+EDGE+"px;"+side+":0;"+
+      "background:linear-gradient(to "+(side==="top"?"bottom":"top")+
+      ",rgba(90,84,74,.13),transparent);pointer-events:none";
+    tableEl.appendChild(e);
+  });
   held().forEach(s=>{
     const el=document.createElement("div");
     el.className="tile" + (s.arrival?" arr":"") + (s.seams?" seamed":"");
@@ -501,11 +563,62 @@ function paintTable(){
       el.classList.remove("drag");
       const t=targetUnder(s);
       carried=null;
-      if(t) merge(s,t); else { dirty=true; save(); paintTable(); }
+      /* THREE OUTPUTS AT EVERY STATION, and the tank is a station now — Kevin's
+         mark, 2026-08-14. Where your hand lets go decides which:
+           on another tile      → they merge
+           at the bottom edge   → dropped to the lake
+           at the top edge      → SET DOWN, and set-it-down has no destination,
+                                  no animation and no confirmation. It simply is
+                                  not there. Whether it leaves a trace, and of
+                                  what kind, is his and is NOT INVENTED HERE —
+                                  the stone is kept whole so any trace he names
+                                  can still be built.
+           anywhere else        → it stays where you put it
+         One gesture, four ends, no button and no label on any of them. */
+      const c=centreOf(s);
+      if(t){ merge(s,t); }
+      else if(c.y > innerHeight-EDGE){ toTheLake(s); }
+      else if(c.y < EDGE){ s.stage="set"; dirty=true; save(); paintTable(); }
+      else { dirty=true; save(); paintTable(); }
     });
     tableEl.appendChild(el);
   });
 }
+/* ═══ THE INTERNAL OPEN LOOP ════════════════════════════════════════════════
+   Kevin's mark, 2026-08-14: "build the internal open loop." The articulation it
+   answers, THE_SHAPE_OF_THE_WHOLE.md:138 —
+
+     "The sea of tension is an internal open loop: water leaving one store and
+      arriving in another. There is not one. That is the missing member, named."
+
+   and :140, which rules out the easy version: "A shared store would be one
+   island made bigger. An open loop between them is tension."
+
+   So this is not a shared store and not a join. Dropping a stone to the lake is
+   a real departure: the water LEAVES nesi.water — it is out of the reach here,
+   the line will not bring it up again — and ARRIVES in nesi.ascent, where the
+   ascent's own soundings can reach it. Two stores, one member between them,
+   loss at one end and arrival at the other. That is the tension.
+
+   THE ARRIVAL IS WRITTEN FIRST. If the far store cannot take it, the stone does
+   not leave. Water is never in flight and never nowhere. */
+function toTheLake(s){
+  const K="nesi.ascent";
+  let d=null;
+  try{ const r=localStorage.getItem(K); d=r?JSON.parse(r):null; }catch(e){ d=null; }
+  if(!d || typeof d!=="object") d={ schema:"ascent.2", kept:[] };
+  if(!Array.isArray(d.kept)) d.kept=[];
+  d.kept.push(s.t);                                    /* VERBATIM. Nothing else. */
+  const j=JSON.stringify(d);
+  try{
+    localStorage.setItem(K+".pad", j);
+    if(localStorage.getItem(K+".pad")!==j) return;     /* it did not arrive: it does not leave */
+    localStorage.setItem(K, j); localStorage.removeItem(K+".pad");
+  }catch(e){ return; }
+  s.stage="lake";                                      /* now, and only now, it is gone from here */
+  dirty=true; save(); paintTable();
+}
+
 /* CENTRE-IN IS THE GUARD AGAINST A GRAZE (writing_table.gd:96). A tile merges
    only when its own centre is inside another — brushing past does nothing. */
 function centreOf(s){ return {x:s.x+115, y:s.y+50}; }
@@ -515,7 +628,9 @@ function targetUnder(s){
 }
 function markTarget(s){
   const t=targetUnder(s);
-  [...tableEl.children].forEach((el,i)=>{ el.classList.toggle("over", held()[i]===t && !!t); });
+  /* tiles only — the two edges are children of the table too, and are not tiles */
+  const tiles=[...tableEl.querySelectorAll(".tile")];
+  tiles.forEach((el,i)=>{ el.classList.toggle("over", held()[i]===t && !!t); });
 }
 
 /* THE MERGE. Written order by number, never by which tile was carried. */
@@ -530,17 +645,71 @@ function merge(a,b){
   dirty=true; save(); paintTable();
 }
 
-/* READING ONLY. Opening changes nothing, records nothing, says nothing. */
+/* THE SEAMS — and now the way back out of a merge.
+   Kevin's mark, 2026-08-14: "a merge may be undone, by hand." The source kept
+   every part in the bank staged 'merged' precisely so this answer stayed
+   possible; it is now taken. The parts come back exactly as they were, in
+   written order, and the merged stone leaves the reach the same way everything
+   else does — by a stage, never by deletion. Click a part to take the merge
+   apart. Nothing does it for you and nothing suggests it. */
 function showSeams(s){
   seamsEl.textContent="";
   (s.seams||[]).slice().sort((x,y)=>x.n-y.n).forEach(p=>{
     const d=document.createElement("div"); d.className="part";
     d.appendChild(document.createTextNode(p.t));
+    d.style.cursor="pointer";
+    d.addEventListener("click", ()=>unmerge(s));
     seamsEl.appendChild(d);
   });
   seamsEl.style.display="block";
 }
+function unmerge(m){
+  if(!m.seams) return;
+  m.seams.forEach(p=>{ const part=S.stones.find(x=>x.n===p.n);
+    if(part && part.stage==="merged") delete part.stage; });   /* they stand again */
+  /* its own stage, not "set" — setting down is an act of your hand at the top
+     edge and should not be manufactured by an unmerge. Nothing is deleted. */
+  m.stage="unmerged";
+  seamsEl.style.display="none";
+  dirty=true; save(); paintTable();
+}
 tableEl.addEventListener("pointerdown", ()=>{ seamsEl.style.display="none"; });
+
+/* ═══ THE DOOR OUT ══════════════════════════════════════════════════════════
+   Kevin's mark, 2026-08-14: "build a door out that carries the writing itself."
+   Not a backup, not a format, not a report — the writing. Everything you have
+   written, verbatim, in the order you wrote it, in a file you can open with
+   anything and read with your eyes. It leaves; nothing here is removed, and
+   nothing is counted on the way out.
+
+   It goes to your own disk, by your own click. Nothing reaches outward: no
+   network, no service, no account. The file is built in this page and handed to
+   your browser's own save. */
+function carriedText(){
+  const L=[], line=s=>L.push(s);
+  line("NESI · the writing · " + S.today);
+  line("");
+  if(S.text.trim()){ line("── today ──"); line(""); line(S.text); line(""); }
+  const bank=S.stones.slice().sort((a,b)=>a.n-b.n);
+  if(bank.length){
+    line("── what the water holds ──");
+    bank.forEach(s=>{
+      line("");
+      line(s.t);                                        /* verbatim, never touched */
+      line("    " + s.d + (s.stage ? " · " + s.stage : ""));
+      if(s.seams) s.seams.slice().sort((x,y)=>x.n-y.n)
+        .forEach(p=> line("    seam · " + p.d + " · " + p.t));
+    });
+  }
+  (S.past||[]).forEach(p=>{ line(""); line("── " + p.d + " ──"); line(""); line(p.text); });
+  return L.join("\n");
+}
+document.getElementById("sill").addEventListener("click", ()=>{
+  const a=document.getElementById("carry");
+  const url=URL.createObjectURL(new Blob([carriedText()],{type:"text/plain;charset=utf-8"}));
+  a.href=url; a.download="nesi-writing-"+(S.today||"today")+".txt";
+  a.click(); setTimeout(()=>URL.revokeObjectURL(url), 4000);
+});
 
 /* ═══ the surface ═══════════════════════════════════════════════════════════ */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
