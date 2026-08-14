@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NESI · what stands open</title>
+<!--
+  THE DECISION SURFACE. Every fork this build is standing on, flat, unranked, and
+  markable where it lies. No depth, no wizard, no next.
+
+  BUILT TO THE CHASSIS LAWS, and they are not decoration:
+  · A MARK COPIES. Nothing is sent, nothing is submitted, no path leaves this
+    page. navigator.clipboard, falling back to execCommand, falling back to a
+    box you can select by hand.
+  · READING IS NEVER GATED BEHIND THE ACT. Every fork's whole object — what it
+    is, where it is live in the code, and what each branch costs — renders above
+    its own control, before any mark is asked for.
+  · PRE-AUTHORED EXITS. Every fork carries its branches AND "hold — not tonight",
+    written at authoring time. Nothing here requires typing in order to leave.
+  · DEPTH ZERO. All of them are on one surface, open, at once. This is the field,
+    not a doorway — his line, 2026-08-12: "you've guided and gated me to a single
+    decision… I navigate a map, not a doorway."
+  · YOUR MARKS SURVIVE. localStorage, key nesi.marks. Every seat that read THE
+    CRYSTAL named its no-storage as the fault that made marking pointless.
+  · NOTHING IS DEFAULTED. No fork opens with an option chosen, none is
+    recommended, and the order is the order they arose — never a ranking.
+
+  Nothing on this page directs a body, a day, or a schedule.
+-->
+<style>
+  :root{ --bg:#f7f5f0; --sf:#fffdf8; --sf2:#f1ede4; --g:#6f6a5e; --gb:#8d8578;
+         --gd:#2a2822; --gf:#17171a; --bdr:#d8d2c5; --mk:#4f7a63; --op:#a8564a; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--gf);
+    font:15px/1.6 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+    padding:34px 22px 90px;}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:22px;font-weight:normal;letter-spacing:.01em;margin-bottom:4px}
+  .sub{color:var(--g);font-size:13px;margin-bottom:20px}
+  .floor{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--g);
+    border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);
+    padding:9px 0;margin-bottom:26px}
+  h2{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--g);
+    font-weight:normal;margin:30px 0 10px}
+  .f{background:var(--sf);border:1px solid var(--bdr);padding:16px 18px;margin-bottom:12px}
+  .f.marked{border-left:3px solid var(--mk)}
+  .f.open{border-left:3px solid var(--op)}
+  .f .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .f h3{font-size:16px;font-weight:normal;margin-bottom:8px;letter-spacing:.01em}
+  .f p{font-size:13.5px;line-height:1.68;color:var(--gd);margin-bottom:8px}
+  .f .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    background:var(--sf2);padding:6px 9px;margin-bottom:9px;display:block;
+    overflow-x:auto;white-space:pre-wrap}
+  .f .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
+    padding-left:11px;margin-bottom:10px}
+  .opts{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+  .opt{text-align:left;border:1px solid var(--bdr);background:transparent;
+    font:inherit;font-size:13.5px;color:var(--gf);padding:9px 13px;cursor:pointer;
+    transition:.12s}
+  .opt:hover{border-color:var(--gb);background:var(--sf2)}
+  .opt.on{border-color:var(--mk);color:var(--mk);background:#f2f7f3}
+  .opt.hold{color:var(--g)}
+  .bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--bdr);
+    padding:12px 0 4px;margin-top:30px;display:flex;gap:10px;align-items:center;
+    flex-wrap:wrap}
+  .bar button{border:1px solid var(--gb);background:transparent;font:inherit;
+    font-size:13px;color:var(--gf);padding:8px 14px;cursor:pointer}
+  .bar button:hover{border-color:var(--gf)}
+  .bar span{font-size:12px;color:var(--g)}
+  #reveal{width:100%;margin-top:10px;min-height:120px;font:12.5px/1.5 ui-monospace,Consolas,monospace;
+    border:1px solid var(--bdr);background:var(--sf);padding:11px;display:none;
+    white-space:pre-wrap;color:var(--gd)}
+  .note{font-size:12px;color:var(--g);margin-top:16px;line-height:1.6}
+</style>
+
+<div class="wrap">
+  <h1>What stands open</h1>
+  <div class="sub">Every fork this build is standing on. Flat, unranked, markable where it lies.</div>
+  <div class="floor" id="floor">—</div>
+  <div id="list"></div>
+
+  <div class="bar">
+    <button id="copyall">copy every mark</button>
+    <button id="clear">unmark everything</button>
+    <span id="status">a mark copies to your clipboard · nothing is sent</span>
+  </div>
+  <textarea id="reveal" readonly></textarea>
+
+  <p class="note">Nothing here is recommended and nothing opens chosen. “Hold — not
+  tonight” is a complete answer and is recorded as one. Your marks stay in this
+  browser; unmarking is a click on the same option.</p>
+</div>
+
+<script>
+"use strict";
+
+/* Every fork below is live somewhere in the build. Reading first, control after.
+   Nothing is ranked; the order is the order they arose. */
+const FORKS = [
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"BLIND's door",
+  q:"Fuller ruled that BLIND is the fourth face of this same tetra, not the first face of another — and that it is already built: it is the backdrop not painting, one CSS property, because the watermark's two-layer construction put the mechanism there as a side-effect. He then stopped, because what gesture turns the ink off is the entry to a named face.",
+  cite:"daily.html:74-80  (#bg carries the words, #page is already transparent)\nFuller: \"Blind is #bg{color:transparent}. The words still bank, the water still rises, the stones are byte-identical.\"",
+  cost:"He also noted the file has three depths and spends two — daily.html:325, `if(e.clientY < wy) return;` — the sky above the writing does nothing at all.",
+  o:["the sky is the door — reach up and the ink goes out",
+     "a key holds it off while held",
+     "BLIND is not entered by a gesture; it is how the page opens and the ink arrives later",
+     "not this — BLIND stays in level_one"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"May a merge be undone",
+  q:"Two sentences become one, in written order, and every part is snapshotted on the merged stone and kept in the bank staged 'merged'. There is no unmerge control. The source is explicit that this was left open on purpose: preserving the option costs nothing, deciding it is not the file's.",
+  cite:"daily.html:436-445  ·  writing_store.gd:232-238",
+  cost:"Composite's reading: the intermediate state is the worst of the three — an act that FEELS irreversible with a substrate that is reversible reads as an authority holding your material and declining to hand it back. The two clean answers are 'let it be weather' or 'let the hand take it apart'.",
+  o:["a merge may be undone, by hand",
+     "a merge is weather — take the seams pane out and let it be final",
+     "leave it exactly as it is: reversible in the data, no control"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"May the quiet offer, unasked",
+  q:"The six-second quiet fires and its whole consequence today is that the water goes flat. The return mechanism — the line, the panel — is fully built and requires a click into a band of water. Fuller: letting the quiet DELIVER a sentence rather than requiring the reach would cost one line inside the existing condition.",
+  cite:"daily.html:472  (if(quiet>6000) still=true)",
+  cost:"Against it: law 7 and LEARNED 13 — never prompt a return, never build a re-engagement hook. For it: LEARNED 15 — the world must return what it takes, and today it returns only when asked in a place a first hand may never find.",
+  o:["the world may offer when the page falls quiet",
+     "the world never offers; the reach is always yours",
+     "it may offer only on a day you have already written"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"Does the tank get a second and third output",
+  q:"Your own station law is three outputs at every station — sent on, dropped to the lake, set down with no feedback at all. The tank has ONE: a finished sentence banks and cannot be un-banked. Composite's finding: the only move left to someone writing something they are unsure about is to withhold the full stop.",
+  cite:"daily.html:236-265  (banks on .!?… and on Enter; there is no third path)",
+  cost:"Predicted and testable: a person writing hot material in this surface drifts toward comma splices, dashes and unpunctuated runs. Falsifier — watch punctuation density fall as the material gets harder.",
+  o:["the tank gets three outputs like every other station",
+     "one output is correct here — the tank is not a station",
+     "a second output only: something that lets a sentence go unkept"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"Are the bands and the marks countable registers",
+  q:"The ground draws one band per day written, and up to forty discrete standing marks, one per day you came back. Both are visible, discrete, and countable at a glance. Your own ruling retired mark-count as a mechanic: 'the same shape wearing a different unit.'",
+  cite:"daily.html:488-507  ·  DECISIONS.md:64-75",
+  cost:"Composite also notes S.returns increments on OPENING, not on writing — so opening without writing grows the world, which points the one incentive in the file at the door rather than the page.",
+  o:["they stand — form, not a figure",
+     "they are a tally in a costume; render accumulation without discrete units",
+     "they stand, but only writing may grow them"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"The watermark's unpriced consequence",
+  q:"The dimming discloses THAT a sentence was taken. Cowan's finding is that it does not disclose the consequence a journal-writer would actually care about: a sentence you complete and then delete is still in the bank, and the line will later hand it back to you.",
+  cite:"daily.html:221-235  ·  BUILD_RECORD.md:2334 — \"the only irreversible transfer in the game\"",
+  cost:"The dimming meets the letter of the floor law. Whether the return of banked-then-deleted text needs its own disclosure, at the keystroke, is the open part.",
+  o:["the dimming is enough",
+     "the return of deleted text must be visible when it happens",
+     "deleting a banked sentence should also withdraw it from the line"] },
+
+{ g:"THE DAILY SURFACE — live in daily.html today", n:"Does the daily surface get a door out",
+  q:"There is no export, no download, no link anywhere in daily.html. Everything a person writes lives in one browser's localStorage on one machine. The vision names exactly one door out — the cast, carrying shape and not one character of text.",
+  cite:"daily.html — no export path exists  ·  NESI_VISION_as_it_stands.md:30",
+  cost:"Composite: 'a gift that cannot be carried has not yet been given.' Against: building it opens the question of what departs, and the cast as built elsewhere carries counts of your acts, which is the one place the build breaks law 2.",
+  o:["build a door out that carries the writing itself",
+     "build the cast — shape only, no text, no counts",
+     "no door out; the writing stays where it was written",
+     "a plain export is not the cast — build the plain one now, the cast later"] },
+
+{ g:"THE TREES", n:"What is nesi/world2d",
+  q:"It ships an exported executable of the four writing faces, walked 26 of 26 with screenshots read, on 2026-08-10. When the 3D tree was retired on your mark, that mark named world3d BY NAME. world2d was never covered by it and its status has never been ruled.",
+  cite:"nesi/world2d/export/NESI.exe — 104 MB, packed 2026-08-10 20:59\nsix writing scripts, 47 KB",
+  cost:"It is the nearest complete thing to what you asked for, and it is a Godot build. Leaving it unruled means the corpus has two live answers to where the writing faces are.",
+  o:["live tree — it is the real build",
+     "retired, like world3d",
+     "salvage source — mine it, do not run it"] },
+
+{ g:"THE TREES", n:"Does index.html's routing stand",
+  q:"I made daily.html the door under the counsel mandate, and Cowan named it: that is a build session ruling its own base fork, which is exactly the shape LEARNED 25 says must stay dead. The ruling is one line in a redirect file and it currently decides which surface is the world.",
+  cite:"index.html:5-6  ·  LEARNED.md:25",
+  cost:"I do not think a session should get to keep this one by default just because it already shipped. Reverting costs one line.",
+  o:["it stands — daily.html is the door",
+     "revert it; the door is something else",
+     "the door is a choice screen, not a surface"] },
+
+{ g:"THE SHAPE — opened in THE SHAPE OF THE WHOLE § VII", n:"Is the twelve-level ascent the shape or the contents",
+  q:"The solid is three members across and every level lies on two closed hexagonal loops, each of which runs three falling then three rising and closes. The geometry offers, as reading and not ruling, that the ascent behaves like a table of contents while the shape is four loops that each close.",
+  cite:"THE_SHAPE_OF_THE_WHOLE.md § VII.1",
+  cost:"If it is the shape, the map supersedes 'intake is the opening screen.' If it is a contents page, it is a menu wearing a world.",
+  o:["the ascent is the shape",
+     "the ascent is the contents; the loops are the shape",
+     "the question is wrong"] },
+
+{ g:"THE SHAPE — opened in THE SHAPE OF THE WHOLE § VII", n:"The short circuit",
+  q:"↓TANK and ↑CAST are joined by a real edge. The shortest path from intake to departure is one member; the twelve-level ascent is eleven steps. Nothing structural forbids taking the short way.",
+  cite:"THE_SHAPE_OF_THE_WHOLE.md § VII.2",
+  cost:"Cutting it makes the solid lie about itself. Leaving it means the whole ascent is optional.",
+  o:["the short way is legitimate and stays",
+     "the member is cut",
+     "the member exists but costs something to walk"] },
+
+{ g:"THE SHAPE — opened in THE SHAPE OF THE WHOLE § VII", n:"What routes a writing to a colour",
+  q:"The display law forbids the machine choosing an appearance by reading the words. That leaves the hand or the site. Nothing routes any colour to any state today, and the palette exists.",
+  cite:"THE_SHAPE_OF_THE_WHOLE.md § V and § VII.3",
+  cost:"Whichever answer, the machine never infers it — that part is settled and is not what is being asked.",
+  o:["the hand colours it",
+     "the site colours it — the light at that place",
+     "both, and I will say which is which"] },
+
+{ g:"THE SHAPE — opened in THE SHAPE OF THE WHOLE § VII", n:"The missing internal open loop",
+  q:"Both designed open loops point outward — to a file, to another person. Neither points sideways. Water leaving one store and arriving in another does not exist anywhere in the build.",
+  cite:"THE_SHAPE_OF_THE_WHOLE.md § IV and § VII.4",
+  cost:"Fuller was explicit that the one store adopting two others is a swallow, not a join: it copies once at first boot and nothing reads the others afterward. 'One island made bigger' is not a sea of tension.",
+  o:["build the internal open loop",
+     "the stores stay islands",
+     "not yet — name it and hold"] },
+
+{ g:"STANDING, and older than tonight", n:"Does a set-down leave a trace",
+  q:"The set-down's entire content is that it leaves none — no destination, no animation, no confirmation. And the cast counts them.",
+  cite:"game2d/DECISIONS.md — re-seated 2026-08-12  ·  ascent.html emit()",
+  cost:"If a thing appears at the rim it is a tally; if nothing appears the site is nominal. Both halves are your own marks, hours apart.",
+  o:["no trace, and the count goes",
+     "a trace, and I will say what kind",
+     "the count is the trace and that is wrong"] },
+
+{ g:"STANDING, and older than tonight", n:"May another person's words change how ground behaves",
+  q:"The five outputs — self recognition, capacity, amplification, grounding, support — have agreement across three regatherings and zero implementation. Composite's structural reading: agreement with zero implementation is the signature of an item nothing is downstream of, and the reason is that the field between people is an open loop the world does not have.",
+  cite:"game2d/DECISIONS.md — GATED  ·  THE_SHAPE_OF_THE_WHOLE.md § VI",
+  cost:"Composite also named the asymmetry: level one's guarantee that nothing reads your words is a property of the code. A second human being breaks it without touching a line. Whatever crosses between two people may have to be a thing that cannot be read.",
+  o:["yes — the field is between people",
+     "no — the ground is one hand's only",
+     "yes, but only after a cast"] },
+
+{ g:"STANDING, and older than tonight", n:"What departs when the fruit departs",
+  q:"The cast sets a flag, the file downloads, and nothing leaves the world — the stand still stands and the ground under it is unchanged. This is the one mechanic that takes something irreversible.",
+  cite:"ascent.html — S.cast=true  ·  crystal.html:246",
+  cost:"A cost claimed and not charged is the unread clause inverted. The cost must be visible at the pull, before the pull completes.",
+  o:["the fruit only",
+     "the stand and its ground go too",
+     "not this"] },
+
+{ g:"STANDING, and older than tonight", n:"The 500 halved by the machine",
+  q:"THE SEATING splits one writing into two lenses with Math.ceil(w.length/2), directly beneath a comment quoting your own design: 'One writing, halved BY THE HAND into two lenses.' Filed as a stop, not a fork.",
+  cite:"ascent.html — const half=Math.ceil(w.length/2)",
+  cost:"The machine is currently making the cut the design says the hand makes.",
+  o:["the hand cuts where it wants",
+     "some other way I will name",
+     "leave it as it is"] }
+];
+
+/* ── the marks. Yours, kept here, never sent. ─────────────────────────────── */
+const KEY="nesi.marks";
+let M={};
+try{ M=JSON.parse(localStorage.getItem(KEY)||"{}") || {}; }catch(e){ M={}; }
+const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(M)); }catch(e){} };
+
+const list=document.getElementById("list");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function render(){
+  list.textContent="";
+  let group="";
+  FORKS.forEach((f,i)=>{
+    if(f.g!==group){ group=f.g;
+      const h=document.createElement("h2"); h.textContent=group; list.appendChild(h); }
+    const marked=M[i]!==undefined;
+    const el=document.createElement("div");
+    el.className="f "+(marked?"marked":"open");
+    el.innerHTML =
+      '<div class="n">'+(marked?"marked · click again to unmark":"open · nothing defaulted")+'</div>'+
+      '<h3>'+esc(f.n)+'</h3>'+
+      '<p>'+esc(f.q)+'</p>'+
+      '<span class="cite">'+esc(f.cite)+'</span>'+
+      '<div class="cost">'+esc(f.cost)+'</div>';
+    const opts=document.createElement("div"); opts.className="opts";
+    f.o.concat(["hold — not tonight"]).forEach(o=>{
+      const b=document.createElement("button");
+      b.className="opt"+(M[i]===o?" on":"")+(o.indexOf("hold —")===0?" hold":"");
+      b.textContent=o;
+      b.addEventListener("click", ()=>mark(i,o));
+      opts.appendChild(b);
+    });
+    el.appendChild(opts);
+    list.appendChild(el);
+  });
+  const n=Object.keys(M).length;
+  document.getElementById("floor").textContent =
+    FORKS.length+" open · "+n+" marked · "+(FORKS.length-n)+" still standing";
+}
+
+function mark(i,o){
+  if(M[i]===o){ delete M[i]; status("unmarked"); }
+  else { M[i]=o; copy("NESI · MARK\n"+FORKS[i].n+"\n→ "+o+"\n"); status("marked · copied"); }
+  save(); render();
+}
+
+function status(t){ const s=document.getElementById("status");
+  s.textContent=t+" · nothing is sent"; clearTimeout(status._t);
+  status._t=setTimeout(()=>{ s.textContent="a mark copies to your clipboard · nothing is sent"; },2600); }
+
+/* clipboard → execCommand → a box you can select by hand. Never a send. */
+function copy(text){
+  if(navigator.clipboard && navigator.clipboard.writeText)
+    return navigator.clipboard.writeText(text).catch(()=>fallback(text));
+  fallback(text);
+}
+function fallback(text){
+  const t=document.createElement("textarea");
+  t.value=text; t.style.position="fixed"; t.style.opacity="0";
+  document.body.appendChild(t); t.select();
+  let ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+  t.remove();
+  if(!ok){ const r=document.getElementById("reveal");
+    r.style.display="block"; r.value=text; r.select(); }
+}
+
+document.getElementById("copyall").addEventListener("click", ()=>{
+  const ks=Object.keys(M);
+  if(!ks.length){ status("no marks yet"); return; }
+  const lines=ks.map(k=>FORKS[k].n+"\n  → "+M[k]);
+  copy("NESI · MARKS · "+new Date().toISOString().slice(0,10)+"\n\n"+lines.join("\n\n")+"\n");
+  status(ks.length+" marks copied");
+});
+document.getElementById("clear").addEventListener("click", ()=>{
+  M={}; save(); render(); status("all unmarked");
+});
+
+render();
+</script>
