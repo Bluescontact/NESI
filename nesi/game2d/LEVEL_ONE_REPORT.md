@@ -107,7 +107,11 @@ three are read, walk to the middle and hold **E** · type · **Ctrl+Enter** to h
 the lens · walk into the centre to drain, or south past the line to leave.
 
 To re-pour after writing more: `node tools/pour.js`
-To walk it fresh: clear `localStorage` key `nesi.level_one` (schema 2).
+> **⚠ DO NOT CLEAR `nesi.level_one` TO REPLAY IT.** That key holds **`S.kept` —
+> your writing, verbatim**, and there is no second copy. This line used to say
+> "clear it to walk fresh" with no warning. To replay clean, open a **private
+> window** — same file, separate store, nothing lost. Corrected 2026-08-14 on the
+> Cowan seat's floor check.
 
 **Nothing in `nesi.html` was touched.** Its integrity gate stands.
 

@@ -135,7 +135,17 @@ click to catch, route, sound and let go · drag to aim the mirror and to pull th
 cast · **Ctrl+Enter** to commit writing · **Esc** back to the map.
 
 Re-pour after writing more: `node tools/pour.js`
-Walk it fresh: clear `localStorage` key `nesi.ascent`.
+
+> **⚠ DO NOT CLEAR `nesi.ascent` TO REPLAY IT.** This file used to say "walk it
+> fresh: clear localStorage key `nesi.ascent`" with no warning attached. That key
+> holds **`S.kept` — your writing, verbatim**, which this world exists to keep and
+> of which there is no second copy: `kevins-water.json` is a one-way upstream pour
+> and does not receive. Clearing it burns the tank.
+>
+> Corrected 2026-08-14 on the Cowan seat's floor check — *nothing which can take
+> something from the participant may be invisible at the moment of the choice.*
+> To replay from a clean state, use a **private window** or a different browser
+> profile: same file, separate store, your writing untouched.
 
 ---
 

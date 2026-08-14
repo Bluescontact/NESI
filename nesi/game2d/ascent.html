@@ -675,7 +675,16 @@ stilling:{ enter(){ L.q=0; L.ripple=1; },
 sounding:{ enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
   step(){ if(!mouse.clicked) return; mouse.clicked=false;
     if(mouse.y < H*0.24) return;
-    const i = keptAtX(mouse.x), found = i>=0 && Math.random() < 0.35+0.65*L.clear;
+    // THE GROUND DECIDES, AND SO DOES THE WATER — but neither of them is a coin.
+    // This line used to read `i>=0 && Math.random() < 0.35+0.65*L.clear`, which
+    // re-introduced the exact die the corpus had just removed from THE DEEP.
+    // Clarity now sets HOW FAR THE LINE REACHES, deterministically: turbid water
+    // reaches only the shallows, so the newest writing is found and the oldest —
+    // which lies deepest — is out of reach until the water is stilled. Sort at
+    // THE FILTER or wait at THE STILLING and the same spot gives up more.
+    const i = keptAtX(mouse.x);
+    const reach = 70 + 190*L.clear;
+    const found = i>=0 && keptDepth(i) <= reach;
     L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
     if(found) L.up=i;
     S.soundings.push(found?"floor":"deep");

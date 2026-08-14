@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NESI · THE CRYSTAL</title>
+<!--
+  SAVED TO DISK 2026-08-14, session fde322ba, on Kevin's ask that the counsel
+  read it. It was pasted into chat and existed NOWHERE on disk — a grep of the
+  whole DSS tree for its own title returned nothing. The counsel seats hold only
+  Read/Glob/Grep, so a thing that lives in a chat window is a thing they cannot
+  be asked about. Filed verbatim, unaltered, not one character changed.
+
+  Authored by another session. Nothing in it is this session's work, and its
+  findings about this session's files are quoted against it, not softened:
+  the WALKABLE overclaim and the trapped writing panel were both real and both
+  are now corrected in THE_ASCENT.md, LEVEL_ONE_REPORT.md and level_one.html.
+-->
+<style>
+  :root{
+    --ground:#080C11; --panel:#0C1219; --panel2:#0A0F15;
+    --line:#1A2632; --line2:#243444;
+    --ink:#E4EAF0; --dim:#7C8B9B; --dimmer:#4A5765;
+    --fall:#5FA8D3; --rise:#E0B15C;
+    --brace:#7FB89A; --fork:#C97064; --mark:#F0F4F8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--ground); color:var(--ink);
+    font:13px/1.55 ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    overflow:hidden;
+  }
+  #app{display:grid; grid-template-columns:25% 50% 25%; height:100vh}
+  .col{overflow:hidden; display:flex; flex-direction:column; min-width:0}
+  .col + .col{border-left:1px solid var(--line)}
+
+  /* ── column head ── */
+  .head{padding:12px 14px 10px; border-bottom:1px solid var(--line); flex:0 0 auto}
+  .head h2{font-size:10px; letter-spacing:.22em; font-weight:500; color:var(--dim); text-transform:uppercase}
+  .head .sub{font-size:10px; color:var(--dimmer); margin-top:3px; letter-spacing:.04em}
+
+  /* ── crystal ── */
+  #stage{flex:1 1 auto; position:relative; min-height:0}
+  canvas{display:block; width:100%; height:100%; cursor:grab; touch-action:none}
+  canvas.drag{cursor:grabbing}
+  #readout{
+    position:absolute; left:0; right:0; bottom:0; padding:8px 14px 10px;
+    background:linear-gradient(to top,var(--ground) 55%,transparent);
+    font-size:10px; color:var(--dim); letter-spacing:.04em; pointer-events:none;
+  }
+  #readout b{color:var(--ink); font-weight:500}
+  .ctrl{padding:10px 14px 12px; border-top:1px solid var(--line); flex:0 0 auto}
+  .ctrl label{display:flex; justify-content:space-between; font-size:10px;
+    letter-spacing:.14em; color:var(--dim); text-transform:uppercase; margin-bottom:6px}
+  .ctrl label span{color:var(--fork); letter-spacing:.02em; text-transform:none}
+  .ctrl label span.locked{color:var(--brace)}
+  input[type=range]{width:100%; -webkit-appearance:none; appearance:none; height:2px;
+    background:var(--line2); outline:none; border-radius:2px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:11px; height:11px;
+    border-radius:50%; background:var(--ink); cursor:pointer; border:0}
+  input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;
+    background:var(--ink);cursor:pointer;border:0}
+  input[type=range]:disabled::-webkit-slider-thumb{background:var(--brace);cursor:default}
+  input[type=range]:disabled::-moz-range-thumb{background:var(--brace);cursor:default}
+  .phase{font-size:10px; color:var(--dimmer); margin-top:7px; letter-spacing:.03em}
+
+  /* ── context, located within the tetra ── */
+  #ctxwrap{flex:1 1 auto; position:relative; overflow:hidden; min-height:0}
+  #tetraframe{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+  #ctx{position:absolute; inset:0; overflow-y:auto; padding:26px 44px 40px}
+  #ctx::-webkit-scrollbar{width:6px}
+  #ctx::-webkit-scrollbar-thumb{background:var(--line2)}
+
+  .kind{font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--dim)}
+  .kind i{font-style:normal}
+  h1{font-size:23px; font-weight:400; letter-spacing:.03em; margin:9px 0 2px; line-height:1.2}
+  .bearing{font-size:10px; color:var(--dimmer); letter-spacing:.09em; margin-bottom:22px}
+
+  .face{border-top:1px solid var(--line); padding:15px 0 16px}
+  .face-n{font-size:9px; letter-spacing:.2em; color:var(--dimmer); text-transform:uppercase; margin-bottom:7px}
+  .face p{color:#BFCAD6; font-size:12.5px; line-height:1.72}
+  .face p + p{margin-top:9px}
+  .verbatim{border-left:2px solid var(--line2); padding-left:13px; color:var(--ink)}
+  .derived{color:var(--dim); font-size:11.5px}
+  .derived b{color:var(--ink); font-weight:500}
+
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:11px}
+  .chip{border:1px solid var(--line2); background:transparent; color:var(--dim);
+    font:inherit; font-size:11px; padding:4px 10px; cursor:pointer; letter-spacing:.02em;
+    border-radius:2px; transition:.12s}
+  .chip:hover{border-color:var(--ink); color:var(--ink)}
+  .chip.on{border-color:var(--brace); color:var(--brace)}
+  .chip.fallc{color:var(--fall); border-color:#26485e}
+  .chip.risec{color:var(--rise); border-color:#5a4626}
+
+  .gate{border:1px solid var(--line2); padding:15px 17px; margin-top:19px; border-radius:2px}
+  .gate .lbl{font-size:9px; letter-spacing:.2em; color:var(--fork); text-transform:uppercase}
+  .gate .lbl.marked{color:var(--brace)}
+  .gate p{margin-top:9px; font-size:12px; color:#BFCAD6; line-height:1.7}
+  .opts{display:flex; flex-direction:column; gap:5px; margin-top:13px}
+  .opt{text-align:left; border:1px solid var(--line); background:transparent; color:var(--ink);
+    font:inherit; font-size:11.5px; padding:8px 12px; cursor:pointer; border-radius:2px; transition:.12s}
+  .opt:hover{border-color:var(--dim); background:#0E1620}
+  .opt.on{border-color:var(--brace); color:var(--brace); background:#0C1613}
+  .note{font-size:10px; color:var(--dimmer); margin-top:10px; letter-spacing:.03em}
+
+  /* ── register ── */
+  #reg{flex:1 1 auto; overflow-y:auto; min-height:0}
+  #reg::-webkit-scrollbar{width:6px}
+  #reg::-webkit-scrollbar-thumb{background:var(--line2)}
+  .grp{padding:13px 14px 5px; font-size:9px; letter-spacing:.2em; color:var(--dimmer); text-transform:uppercase}
+  .row{display:flex; gap:9px; align-items:baseline; padding:5px 14px; cursor:pointer;
+    border-left:2px solid transparent; font-size:11.5px; color:var(--dim); transition:.1s}
+  .row:hover{background:#0D141C; color:var(--ink)}
+  .row.sel{border-left-color:var(--ink); background:#0F1720; color:var(--ink)}
+  .row .ix{color:var(--dimmer); font-size:10px; width:20px; flex:0 0 auto}
+  .row.f .ix{color:var(--fall)} .row.r .ix{color:var(--rise)}
+  .row .nm{flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .row .tag{font-size:9px; letter-spacing:.1em; color:var(--dimmer); flex:0 0 auto}
+  .row.open .tag{color:var(--fork)} .row.done .tag{color:var(--brace)}
+  .foot{padding:11px 14px 14px; border-top:1px solid var(--line); font-size:10px;
+    color:var(--dimmer); letter-spacing:.03em; flex:0 0 auto}
+  .foot button{width:100%; margin-bottom:8px; border:1px solid var(--line2); background:transparent;
+    color:var(--ink); font:inherit; font-size:11px; padding:7px; cursor:pointer; border-radius:2px}
+  .foot button:hover{border-color:var(--ink)}
+  #toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%);
+    background:#111A24; border:1px solid var(--line2); padding:8px 16px; font-size:11px;
+    color:var(--ink); border-radius:2px; opacity:0; transition:.25s; pointer-events:none; z-index:9}
+  #toast.on{opacity:1}
+
+  @media (max-width:1000px){
+    body{overflow:auto}
+    #app{grid-template-columns:1fr; height:auto}
+    .col + .col{border-left:0; border-top:1px solid var(--line)}
+    #stage{height:56vh}
+    #ctxwrap{height:auto; position:static}
+    #ctx{position:static; padding:22px 20px 34px}
+    #tetraframe{display:none}
+    #reg{max-height:none}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ ONE QUARTER · THE CRYSTAL ═══ -->
+  <div class="col">
+    <div class="head">
+      <h2>The Crystal</h2>
+      <div class="sub">cuboctahedron · vector equilibrium<br>double-stacked tetrahedra within</div>
+    </div>
+    <div id="stage">
+      <canvas id="cv"></canvas>
+      <div id="readout">drag to turn · click a <b>vertex</b>, an <b>edge</b>, or a <b>face</b></div>
+    </div>
+    <div class="ctrl">
+      <label>The fold <span id="foldlbl">6 of 6 unbraced</span></label>
+      <input type="range" id="fold" min="0" max="1000" value="0">
+      <div class="phase" id="phase">equilibrium · 12 vertices · 24 edges · 14 faces</div>
+    </div>
+  </div>
+
+  <!-- ═══ ONE HALF · CONTEXT, LOCATED WITHIN THE TETRA ═══ -->
+  <div class="col">
+    <div id="ctxwrap">
+      <svg id="tetraframe" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      <div id="ctx"></div>
+    </div>
+  </div>
+
+  <!-- ═══ ONE QUARTER · THE REGISTER ═══ -->
+  <div class="col">
+    <div class="head">
+      <h2>The Register</h2>
+      <div class="sub" id="regsub">every member, markable</div>
+    </div>
+    <div id="reg"></div>
+    <div class="foot">
+      <button id="copyall">copy every mark</button>
+      a mark copies to your clipboard · nothing is sent
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ══════════════════════════════════════════════════════════════════════
+   NESI · THE CRYSTAL
+   No server. No network. No model call. No storage. One file.
+
+   THE GEOMETRY IS NOT DECORATION:
+     12 vertices  = the twelve levels. Six fall, six rise, in six
+                    antipodal pairs. Mirror i is seat i — the pair IS
+                    the join, and bearing is derived from the axis,
+                    never stored.
+     24 edges     = the relations. Each joins exactly two levels.
+      8 triangles = braced. The eight things built and walked. Each
+                    triangular face is pierced by one point of the
+                    double-stacked tetrahedra — 8 points, 8 faces.
+      6 squares   = unbraced. The open forks. In the vector equilibrium
+                    the squares are the only places the structure can
+                    fold; each square is crossed at its centre by one
+                    fall member and one rise member that do not touch.
+                    A fork marked is a square braced. Six marks and the
+                    equilibrium can no longer fold.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────── the twelve, in six antipodal pairs ─────────────── */
+const V0 = [
+  [ 1, 1, 0], [-1, 1, 0], [-1,-1, 0], [ 1,-1, 0],   // 0..3   z = 0 square
+  [ 1, 0, 1], [-1, 0, 1], [-1, 0,-1], [ 1, 0,-1],   // 4..7   y = 0 square
+  [ 0, 1, 1], [ 0,-1, 1], [ 0,-1,-1], [ 0, 1,-1]    // 8..11  x = 0 square
+];
+const ANTI = {0:2,2:0, 1:3,3:1, 4:6,6:4, 5:7,7:5, 8:10,10:8, 9:11,11:9};
+
+const LEVELS = [
+ {i:0, dir:'fall', n:1, name:'THE TANK', held:
+  'S.kept — every sentence committed here is held verbatim. Appended, never trimmed, never reordered, never read for content, never counted at any door. It is not in the cast and never will be.',
+  walked:'92 words of your real water typed through beforeinput. No corruption. 9 sentences kept, verbatim.'},
+ {i:1, dir:'fall', n:2, name:'THE DAM', held:
+  'The head holds while the hand holds. Release is not the same gesture as hold, and the wheel knows the difference.',
+  walked:'head 1.00 while held; the wheel turned 8.4 only after release.'},
+ {i:4, dir:'fall', n:3, name:'THE FILTER', held:
+  'Three fractions — film, suspended, bedload. What is caught is caught by hand.',
+  walked:'6 caught by hand across film / suspended / bedload.'},
+ {i:5, dir:'fall', n:4, name:'THE STATIONS', held:
+  'Spire, lake, set-down. The set-down is the one act whose entire content is that it leaves no trace.',
+  walked:'spire 2 · lake 2 · set-down 2. The set-down produced nothing. That is not a failure; that is the act.'},
+ {i:8, dir:'fall', n:5, name:'THE GROUND', held:
+  'What settles, settles along the width in the order it came. Oldest lies deepest. The order is derived from arrival, never stored as a rank.',
+  walked:'14 settled. unlocked(6)=true — walked, not edited.'},
+ {i:9, dir:'fall', n:6, name:'THE DEEP', held:
+  'The sounding. A line dropped over settled ground brings one sentence back verbatim, unlabelled, with nothing saying why that one. A line where nothing settled runs out — a deep. Nothing records where the deeps are, because a deep is an absence.',
+  walked:'a line came up with "buckminster fuller, The first tetra and level is the tank." A line 38px away, over nothing, ran out. Nothing shown. Before tonight this was Math.random()<0.25.'},
+
+ {i:2, dir:'rise', n:1, name:'THE LENS', held:
+  'One writing held. The tetra drains when the centre opens; what remains held is the lens.',
+  walked:'one writing per store, ever.'},
+ {i:3, dir:'rise', n:2, name:'THE HELIOSTAT', held:'', walked:''},
+ {i:6, dir:'rise', n:3, name:'THE SEATING',  held:'', walked:''},
+ {i:7, dir:'rise', n:4, name:'OVERWINTERING',held:'', walked:''},
+ {i:10,dir:'rise', n:5, name:'THE GARDEN',   held:'', walked:''},
+ {i:11,dir:'rise', n:6, name:'THE CAST', held:
+  'What the world loses when it gives. nesi_cast.json leaves; today nothing actually departs — the stand still stands, the ground under it unchanged.',
+  walked:'S.cast=true, the file downloads, and the world is not lighter by one gram.'}
+];
+const byV = {}; LEVELS.forEach(l => byV[l.i] = l);
+
+/* ─────────────── the eight braced · one per triangular face ───────────────
+   Each triangle sits under one point of the double-stacked tetrahedra.
+   Sign product +1 → the RISE tetra. −1 → the FALL tetra.                  */
+const TRI = [
+  {s:[ 1, 1, 1], t:'rise', name:'THE JOIN',        what:'mirror i is seat i — one index, two places, bearing derived and never stored.'},
+  {s:[ 1,-1,-1], t:'rise', name:'THE MEMBRANE',    what:'tools/pour.js — one-way, hash-verified. Opens kevins-water.json read-only and emits the stones the world stands on. Your store: SHA256 928F860E…A70D59BB before and after · UNTOUCHED.'},
+  {s:[-1, 1,-1], t:'rise', name:'drawKept(i,x,y)', what:'takes an index into the store, never a string. Machine wording cannot reach the screen through it.'},
+  {s:[-1,-1, 1], t:'rise', name:'PERSISTENCE',     what:'full page navigation, fresh JS context, byte-identical.'},
+  {s:[-1, 1, 1], t:'fall', name:'S.KEPT',          what:'the tank keeps the writing. Until today the hundred words became a pool height and were discarded — in the file built the day after you wrote "notice how what was built never actually held the writing."'},
+  {s:[-1,-1,-1], t:'fall', name:'THE SOUNDING',    what:'the ground decides, not Math.random(). Oldest lies deepest — derived, never displayed.'},
+  {s:[ 1,-1, 1], t:'fall', name:'THE DOOR OUT',    what:'Escape closes the writing panel without committing. Before tonight every key but Ctrl+Enter was swallowed and the panel had no close control — a first hand was trapped in the game’s first gesture with no exit but the tab.'},
+  {s:[ 1, 1,-1], t:'fall', name:'THE FIRST FRAME', what:'Level One spawned 50px outside its own exit threshold, so the leave-fade ran from boot. 2 distinct colours before, 20 after.'}
+];
+
+/* ─────────────── the six unbraced · one per square face ─────────────── */
+const SQ = [
+ {ax:0, s: 1, name:'WHICH SURFACE IS THE GAME',
+  q:'Four surfaces exist. ascent.html runs, level_one.html runs, world.html is unreachable from the door, nesi.html is gated since 08-11. Which one is the game, and what happens to the other three?',
+  opts:['ascent is the game','level_one is the game','world is the game','they are one surface and I will name the join']},
+ {ax:0, s:-1, name:'SHAPE OR TABLE OF CONTENTS',
+  q:'Is the twelve-level ascent the world’s shape, or its table of contents? If it is the shape, the map supersedes "intake is the opening screen." If it is a contents page, it is a menu wearing a world.',
+  opts:['the shape','the table of contents','both, and the map supersedes']},
+ {ax:1, s: 1, name:'WHAT LEVEL TWO IS',
+  q:'Is level two the three workshops, or THE DAM?',
+  opts:['the three workshops','THE DAM','neither — I will name it']},
+ {ax:1, s:-1, name:'WHETHER A SET-DOWN TRACES',
+  q:'Does a set-down leave a trace of any kind? Its whole content is that it leaves none — and yet nesi_cast.json counts them.',
+  opts:['no trace, and the count goes','a trace, and I will say what kind','the count is the trace and that is wrong']},
+ {ax:2, s: 1, name:'WHERE YOU ACTUALLY WRITE',
+  q:'Which surface do you write into daily? Not which should be — which is. Fuller: subtraction has never once made anyone open a game tomorrow.',
+  opts:['ascent','level_one','world','none of them yet, and that is the finding']},
+ {ax:2, s:-1, name:'ANOTHER PERSON’S WORDS',
+  q:'May another person’s words change how ground behaves? The five outputs — self recognition, capacity, amplification, grounding, support — have perfect agreement across three regatherings and zero implementation. The one with nothing pointing at it is the field between human beings.',
+  opts:['yes — the field is between people','no — the ground is one hand’s only','yes, but only after a cast']}
+];
+
+/* ─────────────── three already at your gate ─────────────── */
+const GATE = [
+ {name:'THE CAST CARRIES COUNTS',
+  q:'nesi_cast.json carries seven tallies of your acts — lenses, ground, shoots, rooted, soundings, routed, sank — including a count of set-downs. The canon says the cast carries "the shape your returning made… not one character of your text." A cast of counts is a scoreboard that happens to be outside the game.',
+  opts:['the cast may carry counts','the shape must be geometric','the question is wrong']},
+ {name:'WHAT DEPARTS WHEN THE FRUIT DEPARTS',
+  q:'ascent.html:548 sets S.cast=true, the file downloads, and nothing leaves the world. This is the one mechanic in NESI that takes something irreversible, so the cost must be visible at the pull, before the pull completes.',
+  opts:['the fruit only','the stand and its ground go too','not this']},
+ {name:'THE 500 IS HALVED BY THE MACHINE',
+  q:'ascent.html:455 reads const half=Math.ceil(w.length/2), directly beneath a comment quoting your own design: "One writing, halved BY THE HAND into two lenses." Filed as a STOP, not a fork.',
+  opts:['the hand cuts where it wants','some other way I will name','leave it as it is']}
+];
+
+const SURFACES = [
+ ['index.html','one line: a redirect to ascent.html','the door'],
+ ['ascent.html','twelve levels, two directions. 723 lines, no server, no network, no model call','runs'],
+ ['level_one.html','the Tank as one writing tetra — three faces, hold E to read, the centre opens','runs'],
+ ['world.html','1,495 lines. The stilling, flood-marks, the bloom, the creature, the sounding, the cast','unreachable'],
+ ['nesi.html','held behind its integrity gate since 08-11','gated'],
+ ['tools/pour.js','one-way hash-verified membrane, read-only','runs']
+];
+
+/* ══════════════ derived structure ══════════════ */
+const EDGES = [];
+for(let a=0;a<12;a++) for(let b=a+1;b<12;b++){
+  const d = V0[a].map((v,k)=>v-V0[b][k]).reduce((s,v)=>s+v*v,0);
+  if(Math.abs(d-2)<1e-9) EDGES.push([a,b]);
+}
+// triangular faces: the three vertices whose coords agree in sign with s
+const TRIF = TRI.map(t=>{
+  const vs=[];
+  for(let i=0;i<12;i++){
+    const v=V0[i];
+    if(v.every((c,k)=> c===0 || Math.sign(c)===t.s[k])) vs.push(i);
+  }
+  return vs; // always 3
+});
+// square faces: the four vertices with coord[ax] === s, in cyclic order
+const SQF = SQ.map(f=>{
+  const vs=[];
+  for(let i=0;i<12;i++) if(V0[i][f.ax]===f.s) vs.push(i);
+  const o=[(f.ax+1)%3,(f.ax+2)%3];
+  vs.sort((a,b)=>Math.atan2(V0[a][o[1]],V0[a][o[0]])-Math.atan2(V0[b][o[1]],V0[b][o[0]]));
+  return vs;
+});
+// the two tetra members crossing each square, deriving from the face centre
+const SQCROSS = SQ.map(f=>{
+  const c=[0,0,0]; c[f.ax]=f.s;
+  const out={fall:[],rise:[]};
+  TRI.forEach((t,i)=>{ // a tetra edge midpoint equals c  ⇔ the two points differ only where c is 0
+    TRI.forEach((u,j)=>{
+      if(j<=i||u.t!==t.t) return;
+      const mid=t.s.map((v,k)=>(v+u.s[k])/2);
+      if(mid.every((v,k)=>Math.abs(v-c[k])<1e-9)) out[t.t].push([i,j]);
+    });
+  });
+  return out;
+});
+
+/* ══════════════ state ══════════════ */
+const marks = {};                 // key -> chosen option
+let sel = {type:'intro'};
+let ax=-0.22, ay=0.72, drift=0.0022, u=0, dragging=false, hover=null;
+
+const clampTilt=t=> TILT>1e-4 ? Math.max(-TILT,Math.min(TILT,t))
+                               : Math.max(-1.5,Math.min(1.5,t));
+const cv=document.getElementById('cv'), g=cv.getContext('2d');
+let W=0,H=0,DPR=1, P=[];         // projected screen points
+
+/* ══════════════ geometry at fold parameter u ══════════════ */
+function verts(){
+  const c=Math.cos(u), s=Math.sin(u)/Math.SQRT2/Math.sqrt(1.5); // sin(u)/√3
+  const p=c+s, q=c-s;
+  const V=new Array(12);
+  for(let i=0;i<12;i++){
+    const [x,y,z]=V0[i];
+    if(z===0)      V[i]=[x*p, y*q, 0];
+    else if(y===0) V[i]=[x*q, 0,   z*p];
+    else           V[i]=[0,   y*p, z*q];
+  }
+  return V;
+}
+function tetraPts(V){   // 8 points, each riding the centroid of its triangle
+  return TRIF.map(f=>{
+    const c=[0,1,2].map(k=>(V[f[0]][k]+V[f[1]][k]+V[f[2]][k])/3);
+    return c.map(v=>v*1.5);
+  });
+}
+const TETEDGES=(()=>{ const e=[];
+  for(let i=0;i<8;i++) for(let j=i+1;j<8;j++) if(TRI[i].t===TRI[j].t) e.push([i,j]);
+  return e; })();
+
+/* THE BEARING AXIS.
+   No symmetry axis of the cuboctahedron separates the six falling from the
+   six rising — not the 4-folds, not the 3-folds, not the 2-folds. Exactly one
+   direction does: (0,1,2), tilted 18.43° off the equator, unique up to the
+   solid's own symmetry, and privileged by nothing in the shape itself.
+   The crystal is stood on that axis and spun about it, so falling reads below
+   and rising above. At 30° of fold — exactly halfway to the octahedron — the
+   separation reaches zero and inverts. The fold destroys the direction.      */
+const UP=[0,-1,-2].map(v=>v/Math.sqrt(5));          // screen up
+const E1=[1,0,0];                                   // ⊥ UP, since UP.x = 0
+const E2=[0, -2/Math.sqrt(5), 1/Math.sqrt(5)];      // = UP × E1
+const dot3=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+function bearing(p){ return [dot3(p,E1), dot3(p,UP), dot3(p,E2)]; }
+function sepMargin(){                               // >0 while the two stay apart
+  const V=verts();
+  return Math.min(...LEVELS.filter(l=>l.dir==='fall').map(l=>dot3(V[l.i],UP.map(v=>-v))));
+}
+/* How far the view may tilt before the PICTURE would lie about the bearing.
+   Derived, not chosen: the largest tilt at which, from every yaw, every falling
+   vertex still projects below every rising one. It shrinks as the crystal folds
+   and reaches zero at 30°, where the bearing itself is gone.                  */
+let TILT=0.30;
+function tiltLimit(){
+  const V=verts(), F=[], R=[];
+  LEVELS.forEach(l=>(l.dir==='fall'?F:R).push(V[l.i]));
+  // screen y under the same projection the canvas uses, at tilt t and yaw a
+  const sy=(p0,t,a)=>{
+    const p=bearing(p0);
+    const cy=Math.cos(a), sn=Math.sin(a), cx=Math.cos(t), sx=Math.sin(t);
+    const z1=-p[0]*sn+p[2]*cy;
+    const y1=p[1]*cx - z1*sx, z2=p[1]*sx + z1*cx;
+    const d=3.6; return -y1*(d/(d-z2));           // screen y grows downward
+  };
+  const ok=t=>{
+    for(let k=0;k<72;k++){
+      const a=k*Math.PI/36;
+      let fmin=1e9, rmax=-1e9;
+      for(const p of F) fmin=Math.min(fmin, sy(p,t,a));   // ALL falling must be
+      for(const p of R) rmax=Math.max(rmax, sy(p,t,a));   // below ALL rising
+      if(!(fmin > rmax + 1e-9)) return false;
+    }
+    return true;
+  };
+  if(!ok(0)) return 0;
+  let lo=0, hi=1.5;
+  for(let i=0;i<26;i++){ const m=(lo+hi)/2; ok(m)?lo=m:hi=m; }
+  return lo;
+}
+
+
+function rot(p0){
+  const p=bearing(p0);
+  const cy=Math.cos(ay), sy=Math.sin(ay), cx=Math.cos(ax), sx=Math.sin(ax);
+  let [x,y,z]=p;
+  let x1= x*cy + z*sy, z1= -x*sy + z*cy;
+  let y1= y*cx - z1*sx, z2= y*sx + z1*cx;
+  return [x1,y1,z2];
+}
+function proj(p){
+  const d=3.6, R=rot(p), k=d/(d-R[2]), sc=Math.min(W,H*0.86)*0.245;
+  return {x:W/2 + R[0]*sc*k, y:H/2 - R[1]*sc*k, z:R[2], k};
+}
+
+/* ══════════════ paint ══════════════ */
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  const r=cv.parentElement.getBoundingClientRect();
+  W=r.width; H=r.height;
+  cv.width=W*DPR; cv.height=H*DPR;
+  g.setTransform(DPR,0,0,DPR,0,0);
+}
+const CSS=getComputedStyle(document.documentElement);
+const C=n=>CSS.getPropertyValue(n).trim();
+
+function draw(){
+  if(!W) resize();
+  g.clearRect(0,0,W,H);
+  const V=verts(), T=tetraPts(V);
+  P = V.map(proj); const TP = T.map(proj);
+
+  const items=[];
+  TRIF.forEach((f,i)=>items.push({t:'tri',i,z:avg(f.map(v=>P[v].z))}));
+  SQF .forEach((f,i)=>items.push({t:'sq', i,z:avg(f.map(v=>P[v].z))}));
+  EDGES.forEach((e,i)=>items.push({t:'edge',i,z:(P[e[0]].z+P[e[1]].z)/2}));
+  TETEDGES.forEach((e,i)=>items.push({t:'tedge',i,z:(TP[e[0]].z+TP[e[1]].z)/2}));
+  items.sort((a,b)=>a.z-b.z);
+
+  for(const it of items){
+    const near=(it.z+1.6)/3.2;
+    if(it.t==='tri'){
+      const f=TRIF[it.i], on=isSel('brace',it.i), hv=isHov('brace',it.i);
+      poly(f.map(v=>P[v]));
+      g.fillStyle=rgba(C('--brace'), on?0.20:hv?0.13:0.055*near+0.02); g.fill();
+      g.strokeStyle=rgba(C('--brace'), on?0.85:0.22+0.2*near); g.lineWidth=on?1.4:0.7; g.stroke();
+    }
+    else if(it.t==='sq'){
+      const f=SQF[it.i], mk=!!marks['sq'+it.i], on=isSel('fork',it.i), hv=isHov('fork',it.i);
+      const col=mk?C('--brace'):C('--fork');
+      poly(f.map(v=>P[v]));
+      g.fillStyle=rgba(col, on?0.20:hv?0.13:0.05*near+0.015); g.fill();
+      g.strokeStyle=rgba(col, on?0.9:0.3+0.2*near); g.lineWidth=on?1.4:0.8; g.stroke();
+      if(mk){ // a fork marked is a square braced — the brace is drawn
+        g.beginPath(); g.moveTo(P[f[0]].x,P[f[0]].y); g.lineTo(P[f[2]].x,P[f[2]].y);
+        g.strokeStyle=rgba(C('--brace'),0.75); g.lineWidth=1.3; g.stroke();
+      }
+    }
+    else if(it.t==='edge'){
+      const e=EDGES[it.i], on=isSel('rel',it.i), hv=isHov('rel',it.i);
+      const mixed=byV[e[0]].dir!==byV[e[1]].dir;
+      g.beginPath(); g.moveTo(P[e[0]].x,P[e[0]].y); g.lineTo(P[e[1]].x,P[e[1]].y);
+      g.strokeStyle= on?C('--ink') : rgba(mixed?'#8FA3B8':'#5E7185', hv?0.9:0.25+0.45*near);
+      g.lineWidth= on?2:hv?1.6:0.7+0.7*near; g.stroke();
+    }
+    else {
+      const e=TETEDGES[it.i], t=TRI[e[0]].t;
+      g.beginPath(); g.moveTo(TP[e[0]].x,TP[e[0]].y); g.lineTo(TP[e[1]].x,TP[e[1]].y);
+      g.strokeStyle=rgba(t==='fall'?C('--fall'):C('--rise'), 0.13+0.32*near);
+      g.lineWidth=0.6+0.5*near; g.stroke();
+    }
+  }
+
+  // the join: selected vertex through the centre to its mirror
+  if(sel.type==='level'){
+    const a=P[sel.i], b=P[ANTI[sel.i]];
+    g.save(); g.setLineDash([2,4]);
+    g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(b.x,b.y);
+    g.strokeStyle=rgba(C('--ink'),0.5); g.lineWidth=1; g.stroke(); g.restore();
+  }
+
+  // tetra points
+  TP.forEach((p,i)=>{
+    const on=isSel('brace',i), hv=isHov('brace',i);
+    g.beginPath(); g.arc(p.x,p.y, on?4:hv?3.4:2.2, 0, 6.284);
+    g.fillStyle= on||hv ? C('--brace') : rgba(C('--brace'),0.42+0.3*(p.z+1.6)/3.2); g.fill();
+  });
+
+  // the twelve
+  const order=[...Array(12).keys()].sort((a,b)=>P[a].z-P[b].z);
+  for(const i of order){
+    const p=P[i], L=byV[i], on=isSel('level',i), hv=isHov('level',i);
+    const mir = sel.type==='level' && ANTI[sel.i]===i;
+    const col = L.dir==='fall'?C('--fall'):C('--rise');
+    const near=(p.z+1.6)/3.2;
+    g.beginPath(); g.arc(p.x,p.y, on?6:hv||mir?5:3.3+1.4*near, 0, 6.284);
+    g.fillStyle= on?col : rgba(col, hv||mir?0.95:0.45+0.4*near); g.fill();
+    if(on||mir){ g.beginPath(); g.arc(p.x,p.y,9.5,0,6.284);
+      g.strokeStyle=rgba(col,0.5); g.lineWidth=1; g.stroke(); }
+    if(on||hv||mir){
+      g.font='500 10px ui-monospace,Menlo,monospace'; g.textAlign='center';
+      g.fillStyle=C('--ink'); g.fillText(L.name, p.x, p.y-14);
+      g.fillStyle=rgba(C('--dim'),0.9);
+      g.fillText((L.dir==='fall'?'↓':'↑')+L.n, p.x, p.y+20);
+    }
+  }
+}
+const avg=a=>a.reduce((s,v)=>s+v,0)/a.length;
+function poly(pts){ g.beginPath(); pts.forEach((p,i)=>i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.closePath(); }
+function rgba(hex,a){
+  hex=hex.replace('#','');
+  if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+  const n=parseInt(hex,16);
+  return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;
+}
+const isSel=(t,i)=> sel.type===t && sel.i===i;
+const isHov=(t,i)=> hover && hover.type===t && hover.i===i;
+
+/* ══════════════ pick ══════════════ */
+function pick(mx,my){
+  const V=verts(), T=tetraPts(V), TP=T.map(proj);
+  let best=null, bd=1e9;
+  P.forEach((p,i)=>{ const d=Math.hypot(p.x-mx,p.y-my); if(d<15&&d<bd){bd=d;best={type:'level',i};} });
+  if(best) return best;
+  TP.forEach((p,i)=>{ const d=Math.hypot(p.x-mx,p.y-my); if(d<13&&d<bd){bd=d;best={type:'brace',i};} });
+  if(best) return best;
+  bd=9;
+  EDGES.forEach((e,i)=>{ const d=segDist(mx,my,P[e[0]],P[e[1]]); if(d<bd){bd=d;best={type:'rel',i};} });
+  if(best) return best;
+  // faces, front-most first
+  const fs=[];
+  SQF .forEach((f,i)=>fs.push({type:'fork', i,z:avg(f.map(v=>P[v].z)),pts:f.map(v=>P[v])}));
+  TRIF.forEach((f,i)=>fs.push({type:'brace',i,z:avg(f.map(v=>P[v].z)),pts:f.map(v=>P[v])}));
+  fs.sort((a,b)=>b.z-a.z);
+  for(const f of fs) if(inPoly(mx,my,f.pts)) return {type:f.type,i:f.i};
+  return null;
+}
+function segDist(px,py,a,b){
+  const dx=b.x-a.x, dy=b.y-a.y, L=dx*dx+dy*dy;
+  let t=L? ((px-a.x)*dx+(py-a.y)*dy)/L : 0; t=Math.max(0,Math.min(1,t));
+  return Math.hypot(px-(a.x+t*dx), py-(a.y+t*dy));
+}
+function inPoly(x,y,pts){
+  let c=false;
+  for(let i=0,j=pts.length-1;i<pts.length;j=i++){
+    if((pts[i].y>y)!==(pts[j].y>y) &&
+       x < (pts[j].x-pts[i].x)*(y-pts[i].y)/(pts[j].y-pts[i].y)+pts[i].x) c=!c;
+  }
+  return c;
+}
+
+/* ══════════════ the tetra frame · half the page ══════════════ */
+function frame(){
+  const s=document.getElementById('tetraframe');
+  s.setAttribute('viewBox','0 0 100 100');
+  s.innerHTML=`
+    <g fill="none" stroke="${C('--line')}" stroke-width="0.13" vector-effect="non-scaling-stroke"
+       opacity="0.62">
+      <path d="M50 2 L98 97 L2 97 Z"/>
+      <path d="M50 2 L50 68"/><path d="M98 97 L50 68"/><path d="M2 97 L50 68"/>
+      <circle cx="50" cy="68" r="0.7" fill="${C('--line2')}" stroke="none"/>
+    </g>
+    <g fill="${C('--dimmer')}" font-size="1.5" font-family="ui-monospace,Menlo,monospace"
+       letter-spacing="0.4" opacity="0.34">
+      <text x="50" y="5.4" text-anchor="middle">FACE I</text>
+      <text x="3.4" y="99.3">FACE II</text>
+      <text x="96.6" y="99.3" text-anchor="end">FACE III</text>
+    </g>`;
+}
+
+/* ══════════════ context ══════════════ */
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function context(){
+  const el=document.getElementById('ctx');
+  let h='';
+
+  if(sel.type==='intro'){
+    h=`<div class="kind">The shape of NESI</div>
+       <h1>The crystal is the continuous member</h1>
+       <div class="bearing">cuboctahedron · Fuller's vector equilibrium · the only polyhedron whose edge equals its radius</div>
+       <div class="face"><div class="face-n">Face I · what the geometry is holding</div>
+         <p>Twelve vertices. Six fall, six rise, in six antipodal pairs — and the pair <i>is</i> the join.
+            Mirror i is seat i because they are one axis, seen from two ends. The bearing is derived
+            from where you stand on the axis. Nothing stores it.</p>
+         <p class="derived">Twenty-four edges are the relations. Eight triangular faces are braced —
+            each is pierced by one point of the double-stacked tetrahedra, eight points to eight faces,
+            exactly. Six square faces are unbraced.</p></div>
+       <div class="face"><div class="face-n">Face II · why the squares are the forks</div>
+         <p>In the vector equilibrium the squares are the <b>only</b> places the structure can fold.
+            The triangles are rigid; the squares are where it gives. Each square is crossed at its centre
+            by one member of the fall tetrahedron and one of the rise tetrahedron —
+            <b>crossing without touching.</b></p>
+         <p>That is what an open fork is, structurally: a place where a descent member and an ascent
+            member pass through the same point and are not joined there.</p></div>
+       <div class="face"><div class="face-n">Face III · the consequence, which is not decorative</div>
+         <p>Marking a fork draws its brace. Watch the fold slider: its range is the count of unbraced
+            squares. Six marks and the range is zero — the equilibrium can no longer jitterbug.
+            <b>Your marks are the bracing.</b></p>
+         <p class="derived">This answers Fuller's objection directly. He said: every one of these repairs
+            is right and not one of them joins anything; until one continuous member runs through it,
+            nesi/game2d/ is a pile with excellent paperwork. The continuous member is the axis. There
+            are six of them and they all pass through one centre.</p></div>
+       <div class="face"><div class="face-n">The centre · two found facts, neither of them designed</div>
+         <p class="derived"><b>One.</b> No symmetry axis of the cuboctahedron separates the six falling
+            from the six rising — not the three 4-folds, not the four 3-folds, not the six 2-folds.
+            Exactly one direction does: <b>(0,1,2)</b>, tilted 18.43° off the equator, unique up to the
+            solid's own symmetry and privileged by nothing in the shape. The crystal is stood on that
+            axis and spun about it, which is why falling reads below and rising above. <b>The bearing
+            axis is real, and the solid does not point at it.</b></p>
+         <p class="derived"><b>Two.</b> Drag the fold past 30° — exactly halfway to the octahedron — and
+            that margin reaches zero and inverts. Falling vertices cross to the rising side.
+            <b>The fold destroys the direction.</b> Which means: leaving the squares open is what permits
+            the world to fold until descending and ascending are no longer distinguishable. That is not
+            a metaphor laid over the geometry. It is the geometry, and it is printed live under the
+            slider.</p>
+         <p class="derived"><b>Three, which follows.</b> The view is not free to tilt. It is clamped to
+            the largest angle at which every falling vertex still <i>renders</i> below every rising one —
+            found by search, not chosen, and it comes out at exactly <b>18.43°</b>, the same number as the
+            axis's own tilt off the equator. Fold the crystal and that budget shrinks: 11.4° at a fifth,
+            4.0° at two fifths, zero at 30°. <b>The more of the world is left unbraced, the less you are
+            permitted to look around inside it.</b></p>
+         <p class="note">Drag the crystal. Click a vertex for a writing, an edge for a relationship,
+            a face for a tool or a fork. Escape returns here.</p></div>`;
+  }
+
+  else if(sel.type==='level'){
+    const L=byV[sel.i], M=byV[ANTI[sel.i]];
+    const touching=EDGES.filter(e=>e.includes(sel.i)).map(e=>byV[e[0]===sel.i?e[1]:e[0]]);
+    const tri=TRIF.map((f,i)=>f.includes(sel.i)?i:-1).filter(i=>i>=0);
+    const sq =SQF .map((f,i)=>f.includes(sel.i)?i:-1).filter(i=>i>=0);
+    h=`<div class="kind"><i>${L.dir==='fall'?'↓ falling':'↑ rising'}</i> · seat ${L.n} · a writing</div>
+       <h1>${esc(L.name)}</h1>
+       <div class="bearing">vertex ${sel.i} · mirror of ${esc(M.name)} · one axis, two places · bearing derived</div>
+       <div class="face"><div class="face-n">Face I · what is held here</div>
+         ${L.held?`<p class="verbatim">${esc(L.held)}</p>`
+                 :`<p class="derived">Not yet written. This face is blank, and <b>blank is a complete state</b> —
+                    it is not a placeholder and nothing has been invented to fill it.</p>`}</div>
+       <div class="face"><div class="face-n">Face II · what the walk saw</div>
+         ${L.walked?`<p class="verbatim">${esc(L.walked)}</p>
+                     <p class="note">Standing: UNWITNESSED. Read off the canvas buffer — stronger than state, weaker than sight.</p>`
+                   :`<p class="derived">Not walked.</p>`}</div>
+       <div class="face"><div class="face-n">Face III · what it touches — derived from the edges, not stored</div>
+         <p class="derived">Four relations run from this vertex:</p>
+         <div class="chips">${touching.map(t=>
+           `<button class="chip ${t.dir==='fall'?'fallc':'risec'}" data-go="level:${t.i}">${esc(t.name)}</button>`).join('')}</div>
+         <p class="derived" style="margin-top:13px">It bounds
+            <b>${tri.length}</b> braced faces and <b>${sq.length}</b> open forks:</p>
+         <div class="chips">
+           ${tri.map(i=>`<button class="chip" data-go="brace:${i}">${esc(TRI[i].name)}</button>`).join('')}
+           ${sq .map(i=>`<button class="chip" data-go="fork:${i}">${esc(SQ[i].name)}</button>`).join('')}
+         </div></div>
+       <div class="face"><div class="face-n">The centre · the join</div>
+         <p>${esc(L.name)} and ${esc(M.name)} are the same axis. The dashed line through the centre of
+            the crystal is that axis, and it is the whole of what "mirror i is seat i" means.
+            <b>Nothing stores which end you are at.</b></p>
+         <div class="chips"><button class="chip" data-go="level:${ANTI[sel.i]}">cross to ${esc(M.name)}</button></div></div>`;
+  }
+
+  else if(sel.type==='rel'){
+    const [a,b]=EDGES[sel.i], A=byV[a], B=byV[b];
+    const mixed=A.dir!==B.dir;
+    const faces=[];
+    TRIF.forEach((f,i)=>{ if(f.includes(a)&&f.includes(b)) faces.push(['brace',i,TRI[i].name]); });
+    SQF .forEach((f,i)=>{ if(f.includes(a)&&f.includes(b)) faces.push(['fork', i,SQ[i].name]); });
+    h=`<div class="kind">edge ${sel.i} · a relationship</div>
+       <h1>${esc(A.name)} — ${esc(B.name)}</h1>
+       <div class="bearing">${mixed?'a crossing · one falling, one rising':
+          A.dir==='fall'?'both falling · a descent member':'both rising · an ascent member'} · length √2 · equal to the radius</div>
+       <div class="face"><div class="face-n">Face I · what this member does</div>
+         <p>${mixed
+            ? 'This edge joins a fall level directly to a rise level. It is a real member: the two are adjacent in the structure and not merely mirrored through the centre. A crossing edge is the shortest path between the two directions that does not pass through the middle.'
+            : 'Both ends lie in the same direction of travel. This is a member of the '+(A.dir==='fall'?'descent':'ascent')+' — the structure holding one direction together along its own length.'}</p>
+         <p class="derived">In the vector equilibrium every edge is exactly as long as the distance to the
+            centre. There is no member under more tension than any other. That is the entire meaning of
+            the word <b>equilibrium</b> here, and it is the reason this shape and not another.</p></div>
+       <div class="face"><div class="face-n">Face II · the two ends</div>
+         <div class="chips">
+           <button class="chip ${A.dir==='fall'?'fallc':'risec'}" data-go="level:${a}">${esc(A.name)}</button>
+           <button class="chip ${B.dir==='fall'?'fallc':'risec'}" data-go="level:${b}">${esc(B.name)}</button>
+         </div></div>
+       <div class="face"><div class="face-n">Face III · the faces this edge borders</div>
+         <div class="chips">${faces.map(f=>`<button class="chip" data-go="${f[0]}:${f[1]}">${esc(f[2])}</button>`).join('')}</div></div>
+       <div class="face"><div class="face-n">The centre</div>
+         <p class="derived">${A.name} is the mirror of ${esc(byV[ANTI[a]].name)}. ${B.name} is the mirror
+            of ${esc(byV[ANTI[b]].name)}. Neither mirror is an edge — a pair is an axis, and an axis is not
+            a member. <b>The join is not a girder. It is a direction.</b></p></div>`;
+  }
+
+  else if(sel.type==='brace'){
+    const t=TRI[sel.i], vs=TRIF[sel.i].map(v=>byV[v]);
+    h=`<div class="kind">triangular face ${sel.i} · braced · a tool</div>
+       <h1>${esc(t.name)}</h1>
+       <div class="bearing">pierced by the ${t.t} tetrahedron · rigid · built and walked</div>
+       <div class="face"><div class="face-n">Face I · what was built</div>
+         <p class="verbatim">${esc(t.what)}</p></div>
+       <div class="face"><div class="face-n">Face II · why a triangle</div>
+         <p>A triangle is the only polygon that cannot be deformed without changing the length of a side.
+            It is braced by being a triangle — nothing is added to make it rigid. The eight things that
+            are actually built and walked sit on the eight triangles, and this is not an analogy:
+            <b>the fold slider cannot move them.</b> Drag it and watch. They turn; they do not give.</p></div>
+       <div class="face"><div class="face-n">Face III · the three levels it spans</div>
+         <div class="chips">${vs.map(v=>
+           `<button class="chip ${v.dir==='fall'?'fallc':'risec'}" data-go="level:${v.i}">${esc(v.name)}</button>`).join('')}</div>
+         <p class="derived" style="margin-top:12px">Derived from the sign of the face normal against the
+            vertex coordinates. Not stored anywhere.</p></div>
+       <div class="face"><div class="face-n">The centre · the standing</div>
+         <p class="note">Walked by the hand that made the change, and the browser pane would not composite,
+            so no screenshot exists. THE_ASCENT.md:3 and LEVEL_ONE_REPORT.md:3 both read WALKABLE and both
+            should read UNWITNESSED.</p></div>`;
+  }
+
+  else if(sel.type==='fork'){
+    const f=SQ[sel.i], key='sq'+sel.i, mk=marks[key];
+    const vs=SQF[sel.i].map(v=>byV[v]);
+    const x=SQCROSS[sel.i];
+    const nm=p=>p&&p.length? TRI[p[0][0]].name+' — '+TRI[p[0][1]].name : '—';
+    h=`<div class="kind">square face ${sel.i} · ${mk?'braced by your mark':'unbraced'} · a fork</div>
+       <h1>${esc(f.name)}</h1>
+       <div class="bearing">the square is where the equilibrium folds · ${mk?'this one no longer can':'this one still can'}</div>
+       <div class="face"><div class="face-n">Face I · the fork</div>
+         <p class="verbatim">${esc(f.q)}</p></div>
+       <div class="face"><div class="face-n">Face II · what crosses here, without touching</div>
+         <p class="derived">The centre of this square is the exact midpoint of two tetrahedron members —
+            one falling, one rising. They pass through the same point and are not joined at it.</p>
+         <p class="derived">falling &nbsp;<b>${esc(nm(x.fall))}</b><br>
+                            rising &nbsp;&nbsp;<b>${esc(nm(x.rise))}</b></p>
+         <p class="derived" style="margin-top:11px">Bounded by four levels:</p>
+         <div class="chips">${vs.map(v=>
+           `<button class="chip ${v.dir==='fall'?'fallc':'risec'}" data-go="level:${v.i}">${esc(v.name)}</button>`).join('')}</div></div>
+       <div class="gate">
+         <div class="lbl ${mk?'marked':''}">${mk?'marked · reversible':'at your gate · nothing defaulted'}</div>
+         <div class="opts">
+           ${f.opts.map(o=>`<button class="opt ${mk===o?'on':''}" data-mark="${key}" data-val="${esc(o)}">${esc(o)}</button>`).join('')}
+           <button class="opt ${mk==='hold'?'on':''}" data-mark="${key}" data-val="hold">hold — not tonight</button>
+         </div>
+         <div class="note">A mark braces the square, shortens the fold, and copies to your clipboard.
+           Nothing is sent. Click it again to unmark.</div>
+       </div>
+       <div class="face"><div class="face-n">The centre · what an open square costs</div>
+         <p class="derived">Each unbraced square lets the crystal fold a tenth of the way further.
+            Past 30° the bearing axis collapses and falling and rising stop being separable — so an
+            open fork is not neutral storage. <b>It is fold permitted.</b> Six marks and the range is
+            zero: the equilibrium is rigid and the direction cannot be lost.</p></div>`;
+  }
+
+  else if(sel.type==='gate'){
+    const G=GATE[sel.i], key='g'+sel.i, mk=marks[key];
+    h=`<div class="kind">already at your gate · not defaulted</div>
+       <h1>${esc(G.name)}</h1>
+       <div class="bearing">found by the counsel · offered as reading, not as ruling</div>
+       <div class="face"><div class="face-n">Face I · what was found</div>
+         <p class="verbatim">${esc(G.q)}</p></div>
+       <div class="gate">
+         <div class="lbl ${mk?'marked':''}">${mk?'marked · reversible':'decide — reversible, no pressure'}</div>
+         <div class="opts">
+           ${G.opts.map(o=>`<button class="opt ${mk===o?'on':''}" data-mark="${key}" data-val="${esc(o)}">${esc(o)}</button>`).join('')}
+           <button class="opt ${mk==='hold'?'on':''}" data-mark="${key}" data-val="hold">hold — not tonight</button>
+         </div>
+         <div class="note">Nothing was subtracted. Stripping a thing does not answer whether it may exist;
+           it makes the open fork harder to see.</div>
+       </div>`;
+  }
+
+  else if(sel.type==='surface'){
+    const s=SURFACES[sel.i];
+    h=`<div class="kind">a surface that exists</div>
+       <h1>${esc(s[0])}</h1>
+       <div class="bearing">state: ${esc(s[2])}</div>
+       <div class="face"><div class="face-n">Face I</div><p>${esc(s[1])}</p></div>
+       <div class="face"><div class="face-n">Face II · the three stores</div>
+         <p class="derived">nesiworld · nesi.level_one · nesi.ascent — nothing written in one is visible
+            to the others. <b>Islands of compression with no sea of tension is a pile, not a structure.</b></p></div>`;
+  }
+
+  el.innerHTML=h; el.scrollTop=0;
+}
+
+/* ══════════════ register ══════════════ */
+function register(){
+  const r=document.getElementById('reg');
+  const fall=LEVELS.filter(l=>l.dir==='fall'), rise=LEVELS.filter(l=>l.dir==='rise');
+  const row=(t,i,ix,nm,tag,cls='')=>
+    `<div class="row ${cls} ${sel.type===t&&sel.i===i?'sel':''}" data-go="${t}:${i}">
+       <span class="ix">${ix}</span><span class="nm">${esc(nm)}</span><span class="tag">${tag}</span></div>`;
+  let h='';
+  h+='<div class="grp">the fall · six vertices</div>';
+  fall.forEach(l=>h+=row('level',l.i,'↓'+l.n,l.name,l.held?'held':'blank','f'));
+  h+='<div class="grp">the rise · six vertices</div>';
+  rise.forEach(l=>h+=row('level',l.i,'↑'+l.n,l.name,l.held?'held':'blank','r'));
+  h+='<div class="grp">braced · eight triangular faces</div>';
+  TRI.forEach((t,i)=>h+=row('brace',i,'△',t.name,'built','done'));
+  h+='<div class="grp">unbraced · six square faces</div>';
+  SQ.forEach((f,i)=>h+=row('fork',i,'□',f.name,marks['sq'+i]?'marked':'open',marks['sq'+i]?'done':'open'));
+  h+='<div class="grp">at your gate</div>';
+  GATE.forEach((G,i)=>h+=row('gate',i,'◇',G.name,marks['g'+i]?'marked':'open',marks['g'+i]?'done':'open'));
+  h+='<div class="grp">the relations · twenty-four edges</div>';
+  EDGES.forEach((e,i)=>h+=row('rel',i,'—',byV[e[0]].name.replace('THE ','')+' · '+byV[e[1]].name.replace('THE ',''),
+     byV[e[0]].dir!==byV[e[1]].dir?'cross':'same'));
+  h+='<div class="grp">the surfaces that exist</div>';
+  SURFACES.forEach((s,i)=>h+=row('surface',i,'▪',s[0],s[2]));
+  r.innerHTML=h;
+
+  const n=SQ.filter((_,i)=>marks['sq'+i]).length;
+  document.getElementById('regsub').textContent=
+    `${n} of 6 squares braced · ${Object.keys(marks).length} marks held`;
+}
+
+/* ══════════════ fold ══════════════ */
+const foldEl=document.getElementById('fold');
+function foldState(){
+  const braced=SQ.filter((_,i)=>marks['sq'+i]).length, un=6-braced;
+  const maxU=(Math.PI/3)*(un/6);
+  if(u>maxU) u=maxU;
+  foldEl.disabled = un===0;
+  foldEl.value = maxU>0 ? Math.round(u/maxU*1000) : 0;
+  const lbl=document.getElementById('foldlbl');
+  lbl.textContent = un===0 ? 'braced · it can no longer fold' : `${un} of 6 unbraced`;
+  lbl.className = un===0?'locked':'';
+  TILT=tiltLimit(); ax=clampTilt(ax);
+  const deg=u*180/Math.PI, m=sepMargin();
+  let ph='equilibrium · 12 vertices · 24 edges · 14 faces';
+  if(deg>1&&deg<20) ph='folding · the squares give, the triangles do not';
+  else if(deg>=20&&deg<25) ph='≈ icosahedral phase · 22.24° · the squares have become triangles';
+  else if(deg>=25&&deg<57) ph='folding on · the twelve are closing toward six';
+  else if(deg>=57) ph='octahedron · the twelve have landed on six · pairs coincide';
+  const el=document.getElementById('phase');
+  el.innerHTML = ph + '<br><span style="color:'+(m>1e-6?C('--dimmer'):C('--fork'))+'">'
+    + (m>1e-6 ? 'bearing holds · falling below, rising above · margin '+m.toFixed(3)
+                 +' · view may tilt '+(TILT*180/Math.PI).toFixed(1)+'°'
+              : 'BEARING COLLAPSED at 30° · falling and rising are no longer separable · tilt released')
+    + '</span>';
+}
+foldEl.addEventListener('input',()=>{
+  const un=6-SQ.filter((_,i)=>marks['sq'+i]).length;
+  u=(Math.PI/3)*(un/6)*(foldEl.value/1000);
+  foldState(); draw();
+});
+
+/* ══════════════ marks ══════════════ */
+function toast(m){ const t=document.getElementById('toast');
+  t.textContent=m; t.classList.add('on'); clearTimeout(toast._t);
+  toast._t=setTimeout(()=>t.classList.remove('on'),1900); }
+
+function copy(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    return navigator.clipboard.writeText(text).catch(()=>fallback(text));
+  fallback(text);
+}
+function fallback(text){
+  const t=document.createElement('textarea'); t.value=text;
+  t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t);
+  t.select(); try{document.execCommand('copy');}catch(e){} t.remove();
+}
+function mark(key,val){
+  if(marks[key]===val){ delete marks[key]; toast('unmarked'); }
+  else{
+    marks[key]=val;
+    const label = key[0]==='s' ? SQ[+key.slice(2)].name : GATE[+key.slice(1)].name;
+    copy(`NESI · MARK\n${label}\n→ ${val}\n`);
+    toast(key[0]==='s' ? 'marked · the square is braced · copied' : 'marked · copied');
+  }
+  foldState(); context(); register(); draw();
+}
+document.getElementById('copyall').addEventListener('click',()=>{
+  const ks=Object.keys(marks);
+  if(!ks.length) return toast('no marks yet');
+  const lines=ks.map(k=>{
+    const label = k[0]==='s' ? SQ[+k.slice(2)].name : GATE[+k.slice(1)].name;
+    return `${label}\n  → ${marks[k]}`;
+  });
+  copy('NESI · MARKS\n\n'+lines.join('\n\n')+'\n');
+  toast(ks.length+' marks copied');
+});
+
+/* ══════════════ events ══════════════ */
+function go(t,i){ sel={type:t,i:+i}; context(); register(); draw(); }
+document.addEventListener('click',e=>{
+  const m=e.target.closest('[data-mark]');
+  if(m) return mark(m.dataset.mark, m.dataset.val);
+  const g2=e.target.closest('[data-go]');
+  if(g2){ const [t,i]=g2.dataset.go.split(':'); go(t,i); }
+});
+
+let px=0,py=0,moved=0;
+cv.addEventListener('pointerdown',e=>{
+  dragging=true; moved=0; px=e.clientX; py=e.clientY;
+  cv.classList.add('drag'); cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove',e=>{
+  const r=cv.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  if(dragging){
+    const dx=e.clientX-px, dy=e.clientY-py; moved+=Math.abs(dx)+Math.abs(dy);
+    ay+=dx*0.008; ax+=dy*0.008; ax=clampTilt(ax);
+    px=e.clientX; py=e.clientY; draw();
+  }else{
+    const h2=pick(mx,my);
+    const same = (!h2&&!hover) || (h2&&hover&&h2.type===hover.type&&h2.i===hover.i);
+    if(!same){ hover=h2; readout(); draw(); }
+  }
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>cv.addEventListener(ev,e=>{
+  if(dragging&&moved<5){
+    const r=cv.getBoundingClientRect();
+    const h2=pick(e.clientX-r.left,e.clientY-r.top);
+    if(h2) go(h2.type,h2.i);
+  }
+  dragging=false; cv.classList.remove('drag');
+}));
+function readout(){
+  const el=document.getElementById('readout');
+  if(!hover){ el.innerHTML='drag to turn · click a <b>vertex</b>, an <b>edge</b>, or a <b>face</b>'; return; }
+  if(hover.type==='level'){ const L=byV[hover.i];
+    el.innerHTML=`<b>${esc(L.name)}</b> · ${L.dir} ${L.n} · mirror of ${esc(byV[ANTI[hover.i]].name)}`; }
+  else if(hover.type==='rel'){ const [a,b]=EDGES[hover.i];
+    el.innerHTML=`<b>relation</b> · ${esc(byV[a].name)} — ${esc(byV[b].name)}`; }
+  else if(hover.type==='brace') el.innerHTML=`<b>${esc(TRI[hover.i].name)}</b> · braced · built and walked`;
+  else el.innerHTML=`<b>${esc(SQ[hover.i].name)}</b> · ${marks['sq'+hover.i]?'braced by your mark':'unbraced · an open fork'}`;
+}
+addEventListener('keydown',e=>{
+  const k=e.key;
+  if(k==='ArrowLeft'){ ay-=0.09; draw(); }
+  else if(k==='ArrowRight'){ ay+=0.09; draw(); }
+  else if(k==='ArrowUp'){ ax=clampTilt(ax-0.09); draw(); }
+  else if(k==='ArrowDown'){ ax=clampTilt(ax+0.09); draw(); }
+  else if(k==='Escape'){ sel={type:'intro'}; context(); register(); draw(); }
+  else return;
+  e.preventDefault();
+});
+addEventListener('resize',()=>{resize();draw();});
+
+/* ══════════════ run ══════════════ */
+frame(); resize(); foldState(); context(); register();
+(function tick(){ if(!dragging){ ay+=drift; draw(); } requestAnimationFrame(tick); })();
+</script>
+</body>
+</html>
