@@ -979,7 +979,7 @@ cv.addEventListener("pointerdown",e=>{
 });
 cv.addEventListener("pointermove",e=>{
   const p=toWorld(e);
-  cv.style.cursor = drag?"grabbing":hover(p)?"grab":"default";
+  cv.style.cursor = drag?"grabbing":hover(p)?"grab":soundable(p)?"pointer":"default";
   if(!drag)return;
   stir();
   if(drag.k==="gate")S.gate=Math.max(0,Math.min(1,drag.g0+(drag.y0-p.y)/GATE_H));
@@ -997,6 +997,19 @@ function hover(p){
   if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16)return true;
   for(let i=0;i<S.seated;i++)if(Math.hypot(p.x-SEATS[i].x,p.y-SEATS[i].y)<74)return true;
   for(const s of S.shoots){const f=fruitAt(s); if(f&&Math.hypot(p.x-f.x,p.y-f.y)<f.r+13)return true}
+  return false;
+}
+/* THE SOUNDING HAS A CURSOR. It was the one act in the world with no hand-signal
+   — the ground gave a sentence back and nothing said the ground could be asked.
+   Deliberately NOT folded into hover(): hover() means "this can be dragged" and
+   reads grab; the sounding is a click and reads pointer. Same predicate as the
+   pointerdown branch, and checked in the same order — last, after everything
+   liftable — so a stone lying on buried ground still reads grab, not pointer. */
+function soundable(p){
+  for(let i=S.settled.length-1;i>=0;i--){
+    const d=S.settled[i];
+    if(Math.abs(p.x-d.x)<20&&Math.abs(p.y-groundY(d.x))<24)return true;
+  }
   return false;
 }
 function sound(i,e){
@@ -1041,6 +1054,15 @@ cv.addEventListener("pointercancel",release);
 
 /* ------------------------------------------------------------------ paint */
 const SHEET={x0:44,x1:956,y0:14,y1:190};
+/* THE CLOUD'S BAND — the free sky between the page's lower edge and the ridge.
+   DERIVED FROM SHEET.y1, never written as a number: the cloud was drawn at a
+   literal cy=112, which is INSIDE the page, at 80% opacity over it, and so the
+   one signal that writing is becoming weather before a drop falls could not be
+   seen. Eight suites, every assertion green, none of them looking. (LEARNED 5,
+   re-broken the day after it was filed; LEARNED 22 — a fact, not a comment, so
+   moving the page moves the cloud instead of hiding it again.) */
+const CLOUD_TOP=SHEET.y1+4, CLOUD_BOT=236;
+const CLOUD_CY=(CLOUD_TOP+CLOUD_BOT)/2, CLOUD_RR=(CLOUD_BOT-CLOUD_TOP)/2;
 function fit(){
   const d=Math.min(devicePixelRatio||1,2);
   cv.width=innerWidth*d; cv.height=innerHeight*d;
@@ -1159,8 +1181,9 @@ function frame(now){
   if(heavy>0.01){
     g.save();
     for(let i=0;i<7;i++){
-      const cx=rainMean-138+i*46+Math.sin(t*0.35+i)*7, cy=112+Math.cos(t*0.5+i*1.7)*5;
-      const rr=30+((i*37)%22);
+      const cx=rainMean-138+i*46+Math.sin(t*0.35+i)*7;
+      const cy=CLOUD_CY+Math.cos(t*0.5+i*1.7)*3;
+      const rr=CLOUD_RR*(0.74+((i*37)%22)/76);
       const cg=g.createRadialGradient(cx,cy,2,cx,cy,rr);
       const a=0.10+heavy*0.55;
       cg.addColorStop(0,"rgba("+(150-heavy*70)+","+(158-heavy*70)+","+(166-heavy*66)+","+a+")");
