@@ -153,6 +153,9 @@ addEventListener("keydown",e=>{
     return; }
   keys[e.key.toLowerCase()]=true;
   if(e.key===" ")e.preventDefault();
+  // TAB opens and closes the case. It is a view of the machine, never of you,
+  // so it costs nothing to leave open and nothing to close.
+  if(e.key==="Tab"){ e.preventDefault(); CASE.open=!CASE.open; }
   if(e.key==="Escape") view = (view==="map" ? view : "map");
 });
 addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
@@ -226,7 +229,11 @@ tank:{ enter(){ L.drops=[]; L.pool=S.water||0; L.sent=[]; if(!L.opened){ L.opene
     g.fillStyle="rgba(74,108,122,.75)"; g.fillRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
     g.strokeStyle="rgba(40,40,44,.4)"; g.strokeRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
     g.fillStyle="#4a6c7a"; L.drops.forEach(d=>{ g.beginPath(); g.arc(d.x,d.y,6,0,7); g.fill(); });
-    ground(floor+22); }
+    ground(floor+22);
+    // THE WRITING TETRA, vertex down, standing behind an aperture in this wall.
+    // "Four faces of one writing tetra, vertex down, you at the point."
+    windowDrag(window3d(20, 20, Math.min(210,W*0.22), Math.min(180,H*0.24),
+                        "tetra", Math.min(58,W*0.06))); }
 },
 
 /* 2 · THE LENS — "250 word, and it gets worked by the user into a lens."
@@ -550,7 +557,13 @@ seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
 
     L.free.forEach(f=>{ if(f.rest!==null) return;
       g.fillStyle="rgba(255,246,214,.95)"; g.beginPath(); g.arc(f.x,f.y,9,0,7); g.fill();
-      g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=1.5; g.stroke(); }); }
+      g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=1.5; g.stroke(); });
+
+    // THE EQUILIBRIUM ITSELF, in three dimensions, behind an aperture — with the
+    // seats you have fed lit on the actual solid. The flat ring above is the same
+    // twelve seen from directly above; this is them in the round. Turn it by hand.
+    windowDrag(window3d(18, 18, Math.min(230,W*0.22), Math.min(200,H*0.26),
+                        "ve", Math.min(46,W*0.048), L.seated)); }
 },
 
 /* 11 · THE GARDEN — "it fills only from play… nothing pre-populates it; nothing
@@ -773,11 +786,175 @@ function hovered(){ const P=mapPts();
   for(const p of P){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
   return 0; }
 
+/* ═══ THE 3D WINDOWS ════════════════════════════════════════════════════════
+   Kevin, 2026-08-14: "I'm imagining a 2d game with 3d windows, objects, and
+   spaces."
+
+   The world stays flat and THE SOLIDS ARE REAL. A window is an aperture cut in
+   the 2D surface with an actual three-dimensional object standing behind it,
+   projected in perspective and depth-sorted so it reads as volume. Not a picture
+   of a solid, and not a 3D world you walk — a hole in the flat world with depth
+   on the other side.
+
+   THE SOLIDS ARE THE CORPUS'S OWN, at true coordinates, never decorative:
+     tetra  the writing tetra, VERTEX DOWN, "you at the point"
+            (NESI_VISION_as_it_stands.md:22)
+     twin   two tetrahedra meeting face to face on one shared triangle
+            (THE_FOUR_RULINGS_2026-08-07.md:44, RULED)
+     ve     the vector equilibrium: 12 vertices at permutations of (+/-1,+/-1,0),
+            24 edges derived by distance — the solid the game is contained in
+
+   NOTHING TURNS ON ITS OWN. A solid rotating by itself is a thing moving that
+   the player did not cause, which is precisely the PRESENCE SEAM, marked OPEN
+   and Kevin's. A window turns under the pointer and is otherwise still. */
+
+const SOLIDS = {
+  tetra: { v:[[0,-1.15,0],[1.0,0.42,-0.58],[-1.0,0.42,-0.58],[0,0.42,1.15]],
+           e:[[0,1],[0,2],[0,3],[1,2],[2,3],[3,1]] },
+  twin:  { v:[[0,-1.5,0],[0,1.5,0],[1.0,0,-0.58],[-1.0,0,-0.58],[0,0,1.15]],
+           e:[[0,2],[0,3],[0,4],[1,2],[1,3],[1,4],[2,3],[3,4],[4,2]] },
+  ve: (()=>{ const v=[
+        [1,1,0],[1,-1,0],[-1,1,0],[-1,-1,0],
+        [1,0,1],[1,0,-1],[-1,0,1],[-1,0,-1],
+        [0,1,1],[0,1,-1],[0,-1,1],[0,-1,-1]];
+      const e=[];                      // an edge is any pair at distance sqrt(2)
+      for(let i=0;i<12;i++) for(let j=i+1;j<12;j++){
+        const d=Math.hypot(v[i][0]-v[j][0],v[i][1]-v[j][1],v[i][2]-v[j][2]);
+        if(Math.abs(d-Math.SQRT2)<1e-9) e.push([i,j]); }
+      return {v,e}; })()
+};
+
+let win = { yaw:0.6, pitch:-0.28, grabbed:false, gx:0, gy:0 };
+
+function project(p, yaw, pitch, scale, cx0, cy0){
+  const cy=Math.cos(yaw), sy=Math.sin(yaw);
+  const x=p[0]*cy - p[2]*sy, z=p[0]*sy + p[2]*cy, y=p[1];
+  const cp=Math.cos(pitch), sp=Math.sin(pitch);
+  const y2=y*cp - z*sp, z2=y*sp + z*cp;
+  const d=4.2, k=d/(d+z2);
+  return { x:cx0 + x*scale*k, y:cy0 + y2*scale*k, k, z:z2 };
+}
+
+/* An aperture with a solid standing behind it. `mark` lights particular
+   vertices — used by THE SEATING for the seats that have been fed. */
+function window3d(x,y,w,h,solid,scale,mark){
+  g.save();
+  g.beginPath(); g.rect(x,y,w,h); g.clip();
+  const rg=g.createRadialGradient(x+w/2,y+h/2,4,x+w/2,y+h/2,Math.max(w,h)*0.72);
+  rg.addColorStop(0,"#8e9aa2"); rg.addColorStop(1,"#333d45");
+  g.fillStyle=rg; g.fillRect(x,y,w,h);
+
+  const S0=SOLIDS[solid], cx0=x+w/2, cy0=y+h/2;
+  const P=S0.v.map(v=>project(v,win.yaw,win.pitch,scale,cx0,cy0));
+  S0.e.map(e=>({e,d:(P[e[0]].z+P[e[1]].z)/2}))
+      .sort((a,b)=>b.d-a.d)                     // far struts first
+      .forEach(({e,d})=>{ const a=P[e[0]], b=P[e[1]], near=(d+1.7)/3.4;
+        g.strokeStyle="rgba(238,236,228,"+(0.20+0.62*(1-near)).toFixed(2)+")";
+        g.lineWidth=0.7+1.9*(1-near);
+        g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(b.x,b.y); g.stroke(); });
+  P.forEach((p,i)=>{ const on=mark&&mark.indexOf(i)>=0;
+    g.beginPath(); g.arc(p.x,p.y,(on?4.2:2.6)*p.k,0,7);
+    g.fillStyle= on?"rgba(255,240,190,.95)":"rgba(238,236,228,.55)"; g.fill(); });
+  g.restore();
+
+  // the frame: a cut in the surface, with the near lip catching light
+  g.strokeStyle="rgba(40,40,44,.55)"; g.lineWidth=2; g.strokeRect(x,y,w,h);
+  g.strokeStyle="rgba(255,255,255,.30)"; g.lineWidth=1;
+  g.beginPath(); g.moveTo(x+1,y+h-1); g.lineTo(x+1,y+1); g.lineTo(x+w-1,y+1); g.stroke();
+  return {x,y,w,h};
+}
+
+/* The pointer turns whatever window it is inside. Nothing turns by itself. */
+let lastWin=null;
+function windowDrag(rect){
+  lastWin=rect; if(!rect) return false;
+  const inside = mouse.x>=rect.x&&mouse.x<=rect.x+rect.w&&mouse.y>=rect.y&&mouse.y<=rect.y+rect.h;
+  if(mouse.down && inside && !win.grabbed){ win.grabbed=true; win.gx=mouse.x; win.gy=mouse.y; }
+  if(!mouse.down) win.grabbed=false;
+  if(win.grabbed){
+    win.yaw += (mouse.x-win.gx)*0.010;
+    win.pitch = Math.max(-1.2, Math.min(1.2, win.pitch + (mouse.y-win.gy)*0.008));
+    win.gx=mouse.x; win.gy=mouse.y;
+  }
+  return inside;
+}
+
+/* ═══ THE CLEAR CASE ════════════════════════════════════════════════════════
+   Kevin, 2026-08-14: "developed headup displays that give the user a clear case
+   machine operating in full transparency."
+
+   A clear-cased machine is one whose working you can watch. So this reports the
+   MACHINE and never the player, and that distinction is the whole law: law 2
+   forbids a number that is a READ OF YOU — a score, a count of your words, a
+   streak. Which store the code opened, and whether it read or wrote, is a fact
+   about the machine. Nothing here counts your writing.
+
+   IT IS INSTRUMENTED, NOT ASSERTED. localStorage and the network are wrapped
+   below, so every line is a record of a call that actually happened. If the case
+   ever reads "no request" while one is being made, the wrapper is broken - the
+   line cannot become true by claiming it. Toggle with TAB. */
+
+const CASE = { ops:[], net:0, model:0, open:true };
+function op(kind, what){ CASE.ops.push({kind,what}); if(CASE.ops.length>4) CASE.ops.shift(); }
+(function instrument(){
+  const gi=Storage.prototype.getItem, si=Storage.prototype.setItem;
+  Storage.prototype.getItem=function(k){ if(String(k).indexOf("nesi.")===0) op("read",k); return gi.apply(this,arguments); };
+  Storage.prototype.setItem=function(k){ if(String(k).indexOf("nesi.")===0) op("write",k); return si.apply(this,arguments); };
+  const f=window.fetch;
+  if(f) window.fetch=function(){ CASE.net++; op("network","request"); return f.apply(this,arguments); };
+  const xo=XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open=function(){ CASE.net++; op("network","request"); return xo.apply(this,arguments); };
+})();
+
+function heldKeys(){
+  if(typing) return "writing";
+  if(win.grabbed) return "turning a window";
+  if(mouse.down) return "pointer";
+  const k=Object.keys(keys).filter(x=>keys[x]);
+  return k.length ? k.join(" ") : "";
+}
+
+function drawCase(){
+  if(!CASE.open) return;
+  const w=Math.min(320,W*0.36), h=176, x=W-w-16, y=H-h-16, L=x+12;
+  g.save();
+  g.fillStyle="rgba(18,22,25,.82)"; g.fillRect(x,y,w,h);
+  g.strokeStyle="rgba(238,236,228,.28)"; g.lineWidth=1; g.strokeRect(x,y,w,h);
+  g.font="10.5px ui-monospace, Consolas, monospace"; g.textAlign="left";
+  let ln=y+20;
+  const row=(k,v,quiet)=>{ g.fillStyle="rgba(238,236,228,.40)"; g.fillText(k,L,ln);
+    g.fillStyle= quiet?"rgba(238,236,228,.46)":"rgba(255,240,190,.92)";
+    g.fillText(v,L+76,ln); ln+=15; };
+  const hk=heldKeys();
+  row("hand",    hk||"idle", !hk);
+  row("store",   "nesi.ascent", true);
+  row("water",   "read-only", true);
+  row("model",   CASE.model===0?"no call":"CALLED", CASE.model===0);
+  row("network", CASE.net===0?"no request":"REQUEST MADE", CASE.net===0);
+  ln+=6;
+  g.strokeStyle="rgba(238,236,228,.16)";
+  g.beginPath(); g.moveTo(L,ln-10); g.lineTo(x+w-12,ln-10); g.stroke();
+  g.fillStyle="rgba(238,236,228,.40)"; g.fillText("last",L,ln);
+  if(!CASE.ops.length){ g.fillStyle="rgba(238,236,228,.30)"; g.fillText("nothing yet",L+76,ln); }
+  CASE.ops.forEach((o,i)=>{ g.fillStyle= o.kind==="write"?"rgba(255,240,190,.92)":"rgba(238,236,228,.52)";
+    g.fillText(o.kind+"  "+o.what, L+76, ln+i*13); });
+  g.restore();
+}
+
 /* ── loop ─────────────────────────────────────────────────────────────────── */
 let last=performance.now();
 function frame(now){ const dt=Math.min(48,now-last); last=now;
-  if(view==="map"){ if(mouse.clicked){ mouse.clicked=false; const h=hovered(); if(h) enter(h); } drawMap(); }
+  if(view==="map"){
+    drawMap();
+    // The whole solid, standing behind an aperture in the map's own surface.
+    const r=window3d(W-Math.min(230,W*0.24)-16, 16, Math.min(230,W*0.24), Math.min(190,H*0.24),
+                     "twin", Math.min(52,W*0.055));
+    const onWin=windowDrag(r);
+    if(mouse.clicked && !onWin && !win.grabbed){ const h=hovered(); if(h) enter(h); }
+    mouse.clicked=false;
+  }
   else { const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false; }
+  drawCase();
   requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
 </script>

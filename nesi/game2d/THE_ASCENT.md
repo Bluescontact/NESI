@@ -211,6 +211,94 @@ resolving an open fork by furniture.
   set-down produces nothing, nothing moves that the hand did not move, and the
   deep renders nothing.
 
+---
+
+## THE 3D WINDOWS AND THE CLEAR CASE
+
+Built 2026-08-14 on Kevin's mark: *"I'm imagining a 2d game with 3d windows,
+objects, and spaces. developed headup displays that give the user a clear case
+machine operating in full transparency."*
+
+### The windows — the world stays flat and the solids are real
+
+A window is an **aperture cut in the 2D surface** with an actual
+three-dimensional object standing behind it: rotated, perspective-divided, and
+depth-sorted so nearer struts overlay farther ones. Not a picture of a solid, and
+not a 3D world you walk — a hole in the flat world with depth on the other side.
+
+**The solids are the corpus's own, at true coordinates, never decorative:**
+
+| solid | what it is | where it opens |
+|---|---|---|
+| `tetra` | the writing tetra, **vertex down**, *"you at the point"* | THE TANK |
+| `twin` | two tetrahedra meeting face to face on one shared triangle | the map |
+| `ve` | the vector equilibrium — the solid the game is contained in | THE SEATING |
+
+**The VE is derived, not drawn from memory.** Twelve vertices at the
+permutations of (±1,±1,0); the 24 edges are computed as every pair at distance
+√2. Verified in the running game: 12 vertices, 24 edges, every vertex a
+permutation of (±1,±1,0), all radii equal, **every vertex of degree 4** — which
+is the cuboctahedron and nothing else.
+
+**In THE SEATING the window lights the seats you have actually fed.** The flat
+ring is those twelve seen from directly above; the window is the same twelve in
+the round, with your fed seats lit on the real solid. One list, three places now.
+
+**NOTHING TURNS ON ITS OWN.** A solid rotating by itself is a thing moving that
+the player did not cause — precisely the **presence seam**, marked OPEN and
+Kevin's. So a window turns under the pointer and is otherwise still. Measured:
+**180 frames with no hand on it produced exactly zero yaw and zero pitch drift.**
+
+### The case — it reports the machine, never you
+
+`TAB` opens and closes it. What is on it:
+
+```
+hand      what input is live right now
+store     nesi.ascent (this browser)
+water     read-only
+model     no call
+network   no request
+last      the last four things the machine actually did
+```
+
+**The distinction that makes this lawful.** Law 2 forbids a number that is a
+**read of you** — a score, a count of your words, a streak. Which store the code
+opened, and whether it read or wrote, is a fact about the *machine*. **No line on
+the case reads `S.lenses`, `S.ground`, `S.done`, or any of your writing.**
+
+**IT IS INSTRUMENTED, NOT ASSERTED — this is the whole point of a clear case.**
+`localStorage.getItem/setItem`, `fetch` and `XMLHttpRequest.open` are wrapped, so
+every line is a record of a call that actually happened. Proven both ways in the
+running game:
+
+```
+a real getItem      → the case showed  read  nesi.ascent
+a real save()       → the case showed  write nesi.ascent
+a probe XHR opened  → the network counter went 0 → 1
+                      (so "no request" cannot be true by claim — the wrapper fires)
+after a full twelve-level playthrough:  network 0 · model 0
+```
+
+If the case ever reads *no request* while one is being made, the wrapper is
+broken. The line cannot become true by claiming it.
+
+### Verified
+
+```
+solids            tetra 4v/6e · twin 5v/9e · ve 12v/24e, all degree 4, all radii equal
+perspective       a vertex behind centre projects at 0.75, in front at 1.50 — nearer is bigger
+stillness         180 frames, no hand → yaw drift 0.000000, pitch drift 0.000000
+the hand          drag inside the aperture turns it; outside it, the click still enters a level
+the aperture      inside (142,154,162) vs the flat surface beside it (219,220,211)
+TAB               case (45,49,50) → closed (168,173,166) → reopens byte-identical
+regression        all twelve still play from cleared state · 0 runtime errors
+first frame       no blank surface; the lowest is THE DEEP at 4 colours, which is
+                  law 9 holding — water above the line, nothing drawn below
+```
+
+---
+
 ## The one thing next
 
 Level 10 still roots nothing, because every walk so far came back the same day.
