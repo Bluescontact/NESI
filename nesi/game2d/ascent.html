@@ -1153,9 +1153,16 @@ function mapNodes(){
    came from, one ring up.
 
    It sits ABOVE the water because light rises and water falls, which is the
-   world's own direction and not a layout choice. */
+   world's own direction and not a layout choice.
+
+   ITS SIZE IS DERIVED FROM THE CIRCUIT, NOT PICKED. It is sized and placed so
+   its lowest edge — and the two lines of name under that edge — clear the
+   circuit's topmost joint. At any window size the two figures stand apart
+   rather than crossing, because a run of one that overlaps a run of the other
+   would be two different things under one hand. */
+function ascentTop(){ return H*0.50 - Math.min(W,H)*0.34; }   // the circuit's crown
 function ascentNodes(){
-  const r=Math.min(W,H)*0.115, cy2=H*0.175;
+  const r=Math.min(W,H)*0.075, cy2=ascentTop()-46-r/2;
   return [-90,30,150].map(d=>{ const a=d*Math.PI/180;
     return {x:W/2+r*Math.cos(a)*1.35, y:cy2+r*Math.sin(a)}; });
 }
@@ -1219,12 +1226,18 @@ function drawMap(){
     g.beginPath(); g.moveTo(p.a.x,p.a.y); g.lineTo(p.b.x,p.b.y); g.stroke(); });
   AN.forEach(n=>{ g.beginPath(); g.arc(n.x,n.y,3,0,7);
     g.fillStyle= up ? "rgba(60,54,44,.45)" : "rgba(90,84,74,.18)"; g.fill(); });
-  AP.forEach(p=>{ const out = p.y<H*0.175 ? -18 : 22;
+  // Names sit OUTSIDE the figure, pushed away from its centre, so the two side
+  // runs never write over each other and the base run never writes onto the
+  // circuit below it.
+  const acx0=(AN[0].x+AN[1].x+AN[2].x)/3, acy0=(AN[0].y+AN[1].y+AN[2].y)/3;
+  AP.forEach(p=>{ const dx=p.x-acx0, dy=p.y-acy0, side=Math.abs(dx)>Math.abs(dy);
     if(up){
-      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif"; g.textAlign="center";
-      g.fillText(p.l.name, p.x, p.y+out);
+      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif";
+      g.textAlign = side ? (dx>0?"left":"right") : "center";
+      const lx = side ? p.x+(dx>0?22:-22) : p.x, ly = side ? p.y : p.y+18;
+      g.fillText(p.l.name, lx, ly);
       g.fillStyle="rgba(90,84,74,.85)"; g.font="10px Georgia,serif";
-      g.fillText(p.l.mech, p.x, p.y+out+(out<0?-12:12)); }
+      g.fillText(p.l.mech, lx, ly+12); }
     if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
       g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
 

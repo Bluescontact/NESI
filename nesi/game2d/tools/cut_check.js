@@ -194,7 +194,7 @@ ok("W12 no count, no total, no number of the machine's own",
    digits.length === 0, digits.length ? "DIGITS: " + digits.slice(0, 4).join(" | ") : "none");
 
 /* 8 · ONE WORD HAS NO SEAM — it is a single lens, not a crash */
-X.openSeating(); wt.value = "unaccompanied"; X.commitWrite();
+X.enter("seating"); wt.value = "unaccompanied"; X.commitWrite();
 const L1 = X.L;
 ok("W13 a one-word writing becomes one lens and asks for no cut",
    L1.cut === null && L1.free.length === 1 && L1.free[0].t === "unaccompanied",

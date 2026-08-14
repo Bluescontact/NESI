@@ -52,6 +52,18 @@
     overflow-x:auto;white-space:pre-wrap}
   .f .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
     padding-left:11px;margin-bottom:10px}
+  /* a marker, not a fork: it carries no control, so it borrows the fork's
+     reading styles and none of its buttons */
+  .mk{background:var(--sf);border:1px solid var(--bdr);border-left:3px solid var(--gb);
+    padding:16px 18px;margin-bottom:22px}
+  .mk .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .mk h3{font-size:16px;font-weight:normal;margin-bottom:8px}
+  .mk b{font-weight:normal;font-size:14px;color:var(--gf)}
+  .mk .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    display:block;margin:4px 0 6px}
+  .mk .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
+    padding-left:11px;line-height:1.6}
   .opts{display:flex;flex-direction:column;gap:5px;margin-top:12px}
   .opt{text-align:left;border:1px solid var(--bdr);background:transparent;
     font:inherit;font-size:13.5px;color:var(--gf);padding:9px 13px;cursor:pointer;
@@ -245,8 +257,47 @@ const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(M)); }catch(e){} 
 const list=document.getElementById("list");
 const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 
+/* ═══ THE MARKERS ═══════════════════════════════════════════════════════════
+   Kevin's ask, 2026-08-14: "set a marker down at those undecided junctions, and
+   return to the larger process."
+
+   Three junctions are stopped, not open and not closed. Two he ruled with the
+   naming reserved — "and I will say which is which", "and I will say what kind"
+   — and one he left unmarked. A marker is not a fork: it carries no options and
+   no control, because the direction is already his and only the naming is
+   pending. It says where the build stopped and what is held open behind it, so
+   the return is a walk to a place rather than a re-derivation.
+
+   NOTHING HERE GUESSES. Each entry names what the code holds ready. */
+const JUNCTIONS = [
+ { n:"What kind of trace a set-down leaves",
+   his:"a trace, and I will say what kind",
+   held:"daily.html — a set-down stages the stone `set` and keeps it whole: text, day, seams, and where your hand left it. Any trace you name can still be built on that. No trace is drawn today, because inventing one would be the machine deciding what your absence meant." },
+ { n:"Which of hand and site routes a writing to a colour",
+   his:"both, and I will say which is which",
+   held:"THE DISPLAY LAW admits three sources — WHERE the writing sits, WHAT THE HAND DID there, and one more. You ruled both in; which carries which is unbuilt. No display state anywhere reads the words to decide how the words appear, so no wrong answer has been laid down while this waits." },
+ { n:"BLIND's door",
+   his:"— left unmarked on the surface",
+   held:"daily.html:74-80 — the mechanism is already there: #bg carries the ink, #page is transparent. BLIND is one CSS property away and no gesture has been assigned, because what turns the ink off is the entry to a named face." }
+];
+
+function renderJunctions(){
+  const box=document.createElement("div");
+  box.className="mk";
+  box.innerHTML='<div class="n">stopped here · nothing to mark · the naming is yours</div>'+
+    '<h3>Markers at the undecided junctions</h3>';
+  JUNCTIONS.forEach(j=>{
+    const d=document.createElement("div"); d.style.cssText="margin-top:12px";
+    d.innerHTML='<b>'+esc(j.n)+'</b><br><span class="cite">your mark: '+esc(j.his)+'</span>'+
+      '<div class="cost">'+esc(j.held)+'</div>';
+    box.appendChild(d);
+  });
+  list.appendChild(box);
+}
+
 function render(){
   list.textContent="";
+  renderJunctions();
   let group="";
   FORKS.forEach((f,i)=>{
     if(f.g!==group){ group=f.g;
