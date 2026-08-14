@@ -767,19 +767,27 @@ deep:{ enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
    clicked has nothing to do with where it comes to rest. You feed the frame;
    you do not place anything in it. */
 seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
+    L.words=null; L.cut=null; L.lay=null;
     if(!L.asked){ L.asked=true;
       openWrite(500,(text)=>{
-        // one writing, reduced by the hand to two lenses — his stage three
-        const w=text.split(/\s+/).filter(Boolean); const half=Math.ceil(w.length/2);
-        // Released from the bottom with enough rise to carry them up through the
-        // seat ring, and a lateral drift that differs per lens so the two do not
-        // travel the same line. Where each comes to rest follows from that drift
-        // and from which seats are already fed — never from where you released it.
-        L.free=[{t:w.slice(0,half).join(" ")},{t:w.slice(half).join(" ")}]
-          .map((o,i)=>({t:o.t, x:W*0.5+(i?70:-70), y:H-120,
-                        vx:(i?1:-1)*(0.7+Math.random()*0.6), vy:-3.4, rest:null}));
+        // ONE WRITING, REDUCED BY THE HAND TO TWO LENSES — his stage three.
+        // The writing is laid down and waits. Nothing is cut yet.
+        L.words=text.split(/\s+/).filter(Boolean);
+        // A cut is a seam BETWEEN two words; one word has no seam in it, and a
+        // word is never broken (law 4, verbatim). So a single word is a single
+        // lens and there is nothing to cut.
+        if(L.words.length<2) release([L.words.join(" ")]);
       }); } },
+
   step(dt){ if(typing) return;
+    // THE CUT — the hand's, and the machine has no opinion about where it lands.
+    if(L.words && L.cut===null){
+      const lay=cutLayout(L.words);
+      const s=nearestSeam(lay);
+      if(mouse.clicked){ mouse.clicked=false;
+        if(s){ L.cut=s.i;
+          release([ L.words.slice(0,L.cut).join(" "), L.words.slice(L.cut).join(" ") ]); } }
+      return; }
     const P=seats();
     L.free.forEach(f=>{ if(f.rest!==null) return;
       f.vy+=0.010; f.x+=f.vx; f.y+=f.vy; f.vx*=0.999;
@@ -792,6 +800,7 @@ seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
     if(L.free.length&&L.free.every(f=>f.rest!==null)){
       S.seated=L.seated; L.free.forEach(f=>S.lenses.push(f.t)); save(); finish(); } },
   draw(){
+    if(L.words && L.cut===null){ drawCut(); return; }
     // THE JOIN, drawn in one frame: the twelve seats above, the twelve mirrors
     // below, and the shared face between them. Light RISES — every beam in this
     // view runs from a mirror up to its own seat, never downward.
@@ -970,6 +979,87 @@ function wrap(t,n){ const o=[]; String(t).split("\n").forEach(p=>{ if(!p.trim())
    socket — from either end. */
 
 /* The twelve seats of the equilibrium (above the shared face). */
+/* ── THE CUT — level 9's seam, and the hand makes it ──────────────────────────
+   "the frame is fed, never filled." It was fed by Math.ceil(w.length/2) until
+   2026-08-14: the machine took the writing and cut it at its own exact middle,
+   which is a computed pass on the player's words — the thing law 5 exists to
+   forbid. Kevin's mark: "fix the 500 halving so the hand cuts it."
+
+   Cited per seam S3 — the passage this serves:
+     ~/.claude/CLAUDE.md, law 5 — "THE OPERATOR'S HAND RUNS THE FILTER. No
+     automatic sorting, no computed pass, no classifier deciding what a fraction
+     is."  And law 4: the words are never rewritten, so a cut falls BETWEEN two
+     words and never through one.
+
+   What the machine still does, and it is not a judgement: it lays the words out
+   so they can be seen, and it finds which seam the hand is nearest. Where that
+   hand goes is not its business. There is no suggested seam, no midpoint drawn,
+   no default if the hand does nothing — an uncut writing simply stays uncut, and
+   the level stays unfinished and re-enterable. Held is lawful. */
+function cutLayout(ws){
+  if(L.lay && L.lay.w===W && L.lay.h===H && L.lay.n===ws.length) return L.lay;
+  const maxw=Math.min(760,W-120), x0=(W-maxw)/2, top=76, avail=H-top-70;
+  let fs=15, lh=22, pos=[], lines=1;
+  for(const size of [15,13,11,9,8]){
+    fs=size; lh=Math.round(size*1.5); pos=[]; lines=1;
+    g.font=fs+"px Georgia,serif";
+    let x=x0, y=top, sp=g.measureText(" ").width;
+    for(let k=0;k<ws.length;k++){
+      const tw=g.measureText(ws[k]).width;
+      if(x>x0 && x+tw>x0+maxw){ x=x0; y+=lh; lines++; }
+      pos.push({x, y, r:x+tw});
+      x+=tw+sp;
+    }
+    if(lines*lh<=avail) break;
+  }
+  // A SEAM PER GAP, and only per gap: n words carry n-1 seams, so neither side
+  // of any cut is ever empty. That is not the machine overruling the hand — it
+  // is what a cut between words is.
+  const seams=[];
+  for(let k=0;k+1<pos.length;k++){
+    const a=pos[k], b=pos[k+1];
+    seams.push( a.y===b.y ? {x:(a.r+b.x)/2, y:a.y, i:k+1} : {x:a.r+4, y:a.y, i:k+1} );
+  }
+  L.lay={w:W, h:H, n:ws.length, fs, lh, pos, seams};
+  return L.lay;
+}
+/* Nearest by distance, with the vertical weighted so the seam stays on the line
+   the hand is actually over. It always returns one: a click anywhere cuts
+   somewhere, because the hand cuts where it wants. */
+function nearestSeam(lay){
+  let best=null, bd=1e9;
+  for(const s of lay.seams){
+    const d=Math.hypot(mouse.x-s.x,(mouse.y-s.y)*2.6);
+    if(d<bd){ bd=d; best=s; }
+  }
+  return best;
+}
+/* Released from the bottom with enough rise to carry them up through the seat
+   ring, and a lateral drift that differs per lens so the two do not travel the
+   same line. Where each comes to rest follows from that drift and from which
+   seats are already fed — never from where you released it, and now never from
+   where you cut either. */
+function release(parts){
+  L.free=parts.filter(t=>t.length).map((t,i)=>({ t, x:W*0.5+(i?70:-70), y:H-120,
+    vx:(i?1:-1)*(0.7+Math.random()*0.6), vy:-3.4, rest:null }));
+}
+function drawCut(){
+  const gr=g.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#e4e6dd"); gr.addColorStop(.62,"#c2bfb2"); gr.addColorStop(1,"#7f8f96");
+  g.fillStyle=gr; g.fillRect(0,0,W,H);
+  const lay=cutLayout(L.words);
+  g.font=lay.fs+"px Georgia,serif"; g.textAlign="left"; g.textBaseline="alphabetic";
+  g.fillStyle="rgba(40,38,34,.90)";
+  for(let k=0;k<lay.pos.length;k++) g.fillText(L.words[k], lay.pos[k].x, lay.pos[k].y);
+  // the seam the hand is on, drawn as a rule through the line and nothing else.
+  // No highlight on either side: both sides become a lens and neither is the
+  // better half, so there is nothing to distinguish and nothing is coloured.
+  const s=nearestSeam(lay);
+  if(s){ g.strokeStyle="rgba(40,38,34,.85)"; g.lineWidth=1.5;
+    g.beginPath(); g.moveTo(s.x, s.y-lay.fs); g.lineTo(s.x, s.y+lay.fs*0.42); g.stroke(); }
+  ring(mouse.x,mouse.y,14);
+}
+
 function seats(){ const R=Math.min(W,H)*0.30;
   return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2-Math.PI/2;
     return {x:W/2+R*Math.cos(a), y:H*0.42+R*Math.sin(a)}; }); }

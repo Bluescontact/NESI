@@ -4885,3 +4885,75 @@ on THE DAM.
 **Standing: UNWITNESSED.** Walked by the hand that made the change; no
 screenshot (the Browser pane did not composite). Store hash unchanged;
 `nesi.html` untouched.
+
+---
+
+## 2026-08-14 · THE HAND CUTS THE 500 (session 68204d6d)
+
+Kevin's mark, verbatim: *"fix the 500 halving so the hand cuts it."* This closes
+the gate cowan opened the same day — *THE 500 IS HALVED BY THE MACHINE* — by his
+own word, not by a seat's reading. No fork was resolved here; he resolved it.
+
+**The articulation this serves, cited per SEAM S3:** `~/.claude/CLAUDE.md` law 5 —
+*"The operator's hand runs the filter. No automatic sorting, no computed pass, no
+classifier deciding what a fraction is."* And law 4: the words are never
+rewritten, so a cut falls **between** two words and never through one.
+
+### What was there
+`ascent.html`, THE SEATING: `const half=Math.ceil(w.length/2)`. The machine took
+the 500-word writing and cut it at its own exact middle — a computed pass on the
+player's words, which is the one thing law 5 names.
+
+### What is there now
+The writing is laid out on the page and **waits, uncut**. The hand moves over it,
+a rule marks the seam it is nearest, and a click cuts there. `cutLayout()` lays
+the words out and finds the seams; `nearestSeam()` reports which one the hand is
+on; `release()` sends the two parts up as lenses on the physics that was already
+there. **There is no suggested seam, no midpoint drawn, and no default if the
+hand never acts** — an uncut writing stays uncut and the level stays unfinished
+and re-enterable. Held is lawful.
+
+A cut is a seam *between* two words, so `n` words carry `n-1` seams and neither
+side of any cut is ever empty. A one-word writing has no seam in it and becomes
+one lens rather than a crash.
+
+### Walked — `node tools/cut_check.js`, 13 of 13, on a copy of his real water
+The new instrument drives ascent.html's real script block in a VM with a stub DOM
+(the boot_check.js pattern — the preview pane pins one JS realm and cannot be
+re-booted honestly). **S4 honoured:** the words fed to the panel are his own
+poured water from `kevins-water.json`, read-only, verbatim, in order — 19 stones,
+201 words. His store was never opened for writing.
+
+A prohibition check ("no `Math.ceil` in the file") would pass on a blank screen,
+so this asserts the opposite — that a hand at a coordinate moves the cut:
+
+- **W4/W5 · the counterfactual, measured both ways.** Hand at seam 35 → cut 35.
+  `Math.ceil(n/2)` would have been **101**.
+- **W9 · a different hand cuts differently.** Same writing, hand at the other end
+  → cut **167**. The cut follows the hand and nothing else.
+- **W7/W8 · verbatim.** The two lenses rejoin byte-identical to what he poured;
+  no word broken, none lost, order intact.
+- **W3 · held is lawful.** 240 frames with no hand: still uncut, still in the level.
+- **W10 · 200 seams, none empties a side.**
+- **W11/W12 · no number reaches the screen.** Recorded off the real `fillText`
+  calls in `drawCut()`: 201 strings painted, every one of them his own word, zero
+  of the machine's own digits.
+- **W13 · one word is one lens**, and asks for no cut.
+
+### FOUND AND NOT FIXED — THE SEATING HAS NO DOOR
+`enter(n)` reads `LEVELS[n-1]`, the twelve. **THE SEATING, THE LENS and THE
+HELIOSTAT live in `ASCENT` (`ascent.html:154`), which is declared and read by
+nothing** — no node, no click, no `enter()` path. The harness opens the level by
+calling its own `enter()` directly, and says so in its own header rather than
+hiding it. By the slice rule (*"if reaching the new thing requires a console
+command, the slice is not done"*) **the mechanic is verified and the slice is
+not.** Not built here on purpose: a door into the ascent would settle the
+twelve-level shape and which-surface-is-the-game, both on Kevin's own untouched
+list. Gate opened.
+
+### Standing
+**BLOCKED** — the mechanic is proven; the way in does not exist. Browser check:
+`ascent.html` boots clean at `localhost:8731`, no console errors, the served file
+is the edited one, the clear case reads `water read-only · model no call ·
+network no request`. `reach_check.js` R5 still fails — pre-existing, and it reads
+`world.html`, which this pass did not touch.
