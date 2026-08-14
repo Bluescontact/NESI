@@ -5,91 +5,103 @@
 <!--
   THE DAILY SURFACE. One page. You open it and you write.
 
+  Kevin's brief, 2026-08-14: "I want a game that holds my writing... I want to
+  use the game rather then claude to process my dailly writing of 750 to 1500
+  words a day, but useful and shareable for anyone that journals or writes."
+
+  Serves NESI_VISION_as_it_stands.md:22 — "A day has a felt end that no gate
+  enforces… The page falling quiet is the mechanic. Tomorrow opens on still
+  water; the day begins when your hand does."
+
   ─────────────────────────────────────────────────────────────────────────────
-  KEVIN'S BRIEF, 2026-08-14, verbatim:
+  TWO MECHANICS PORTED 2026-08-14 FROM WHERE THEY WERE ALREADY BUILT, on Kevin's
+  instruction. Neither was invented here; both are carried from the source.
 
-    "I want a game that holds my writing... that game is nesi."
-    "I want to use the game rather then claude to process my dailly writing of
-     750 to 1500 words a day, but useful and shareable for anyone that journals
-     or writes... the game is the gift i'm giving myself."
-    "The game doesnt rely on my knowing how every descsion was shaped."
+  1 · THE WATERMARK — from nesi/game2d/world.html:471-513, which carries the
+      band cut character-for-character from nesi.html:342-358.
 
-  And the articulation it serves (SEAM S3), counsel/reference/
-  NESI_VISION_as_it_stands.md:22 —
-    "Level One — the Tank, the daily journal. The most load-bearing surface of
-     everything… A day has a felt end that no gate enforces: your hand stirs the
-     water's surface, and when the writing stops, the water goes still on its
-     own. The page falling quiet is the mechanic. Tomorrow opens on still water;
-     the day begins when your hand does."
+        "A .!?… completes a sentence and the trailing cluster leaves with it; a
+         period between two digits is inside a number; bare punctuation is not a
+         sentence. THE PAGE IS NEVER CLEARED AND DELETION NEVER UN-BANKS.
+         Nothing here looks at meaning."
+
+      A sentence banks LIVE, at the keystroke, the moment it completes. What has
+      banked reads dimmer on the page — that is the world having taken it. The
+      band cut is a punctuation scan and nothing else; it never opens a word.
+
+      WHY IT MATTERS HERE: before this, a day was one blob and a select-all-
+      delete lost it. Now the stones are append-only — deleting the page removes
+      nothing that has banked. This is the safety property the surface lacked.
+
+      ITS OWN OPEN QUESTION, carried with it rather than smoothed:
+      BUILD_RECORD.md:2334 names the watermark "the only irreversible transfer
+      in the game" and flags it as a floor breach — a cost that must be visible
+      at the moment of the choice. Here the dimming IS that disclosure, and
+      whether that is enough is not settled by this port.
+
+  2 · THE HELD ARRIVAL — from nesi/world2d/scripts/writing_store.gd:140-169.
+
+        "An edit made on one face does not silently become the sentence
+         everywhere. It is held on the stone as an offer — the face it was made
+         on shows it as its reading; every other face shows the standing text
+         with the arrival highlighted and attached. TAKING it is his click, and
+         only that click settles the body. No timer, no auto-accept, no machine
+         acknowledgement — an arrival that is never taken simply stays held,
+         BECAUSE HELD IS LAWFUL."
+
+      Here the second face is the line. Drop it, a sentence comes back, and you
+      may write over it — but the stone does not change. Your rewrite rides
+      attached beneath the standing text until you click it. Never click it and
+      it simply stays, forever, and nothing asks.
   ─────────────────────────────────────────────────────────────────────────────
 
-  THE LOOP, and there is only one:
-    still water  →  you write, and the water climbs the page behind your words
-                 →  you stop; the page falls quiet; the water goes still on its own
-                 →  the day settles into the ground as one band
-                 →  drop a line anywhere in the water and one of your own
-                    sentences comes back, verbatim, unlabelled
-                 →  you leave. Tomorrow opens on still water, with today beneath.
+  NOTHING READS WHAT YOU WROTE. The operations performed on your text are: count
+  its words to move the water, scan it for sentence-ending punctuation, and store
+  it. There is no other. No sentiment, no theme, no sorting, no model call, and
+  no network request — the file makes none.
 
-  NOTHING HERE READS WHAT YOU WROTE. The only operations ever performed on your
-  text are: measure its length to move the water, split it on punctuation to
-  find sentence boundaries, and store it. There is no fourth. No sentiment, no
-  theme, no classification, no sorting, no highlight-by-meaning, no scoring, and
-  no model call anywhere — the file contains none and makes no network request.
-
-  NO NUMBER REACHES YOU. No word count, no streak, no day tally, no progress
-  bar. The water's height is the only reading of how much you wrote, and it is a
-  height. 750 words fills it well; 1500 fills it further; neither is a line to
-  cross and nothing marks either.
-
-  NOTHING IS CAPPED. Write ten words or five thousand. Nothing refuses a
-  keystroke, nothing stops you, nothing says when to end.
-
-  NOTHING NAGS. No reminder, no streak, no "you haven't written since". Miss a
-  month and the water is still still, and the ground is exactly as you left it.
-
-  QUITTING LOSES NOTHING. The day's text is written to disk on every pause and
-  again as the tab closes.
-
-  THE ONE STORE. This reads `nesi.water`, and on first run it also adopts
-  anything already kept in `nesi.level_one` and `nesi.ascent` — the three
-  islands, joined, without deleting either of the old ones. See ADOPT below.
+  NO NUMBER REACHES YOU. NOTHING IS CAPPED. NOTHING NAGS. QUITTING LOSES NOTHING.
 -->
 <style>
-  :root{
-    --sky:#dfe3e0; --sky2:#c3ccc9; --water:#6f93a4; --deep:#40606f;
-    --ink:#14161a; --ground:#9d9384; --ground2:#8a8072; --shoot:#4f6a3d;
-    --paper:#f4f2ec;
-  }
+  :root{ --sky:#dfe3e0; --ink:#14161a; --taken:#8d9298; --paper:#f4f2ec;
+         --water:#6f93a4; --deep:#40606f; --ground:#9d9384; --shoot:#4f6a3d; }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:var(--sky)}
-  body{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;color:var(--ink)}
+  body{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif}
   #c{position:fixed;inset:0;width:100vw;height:100vh;display:block}
-  /* THE PAGE. Transparent — the water rises behind your words, never over them. */
-  #page{position:fixed;inset:0;border:none;outline:none;resize:none;background:transparent;
-    font:inherit;font-size:19px;line-height:1.85;color:var(--ink);
-    padding:8vh max(6vw,24px) 42vh; caret-color:var(--ink);}
-  #page::placeholder{color:rgba(20,22,26,.26)}
-  /* The line you drop, and what it brings up. Your words only — never the
-     machine's, which is why nothing here is ever styled as a message. */
-  #up{position:fixed;left:50%;top:14vh;transform:translateX(-50%);
+  /* The page is drawn twice: the backdrop carries the words and shows which of
+     them the world has taken; the field carries the caret and is invisible. */
+  #bg,#page{position:fixed;inset:0;font:inherit;font-size:19px;line-height:1.85;
+    padding:8vh max(6vw,24px) 42vh;white-space:pre-wrap;word-wrap:break-word;
+    overflow-y:auto;overflow-x:hidden}
+  #bg{color:var(--ink);pointer-events:none}
+  #bg .taken{color:var(--taken)}            /* what the world already has */
+  #page{border:none;outline:none;resize:none;background:transparent;
+    color:transparent;caret-color:var(--ink)}
+  /* what the line brought up. Your words only — the machine's never appear. */
+  #up{position:fixed;left:50%;top:12vh;transform:translateX(-50%);
     width:min(680px,86vw);background:var(--paper);border:1px solid rgba(90,84,74,.45);
-    padding:20px 22px;font-size:17px;line-height:1.6;display:none;
-    box-shadow:0 16px 44px rgba(0,0,0,.18);white-space:pre-wrap}
-  @media (max-width:640px){ #page{font-size:17px;padding:6vh 20px 46vh} }
+    padding:18px 20px;font-size:17px;line-height:1.62;display:none;
+    box-shadow:0 16px 44px rgba(0,0,0,.18);max-height:64vh;overflow-y:auto}
+  #up .stand{outline:none;white-space:pre-wrap}
+  /* the arrival rides attached beneath the standing text, and taking it is a click */
+  #up .arr{margin-top:14px;padding:12px 14px;background:#e8eef1;
+    border-left:3px solid var(--water);white-space:pre-wrap;cursor:pointer}
+  #up .arr:hover{background:#dfe8ec}
+  @media (max-width:640px){ #bg,#page{font-size:17px;padding:6vh 20px 46vh} }
 </style>
 
 <canvas id="c"></canvas>
-<textarea id="page" spellcheck="false" autocomplete="off" autocorrect="off"
-  placeholder="&#8203;"></textarea>
+<div id="bg" aria-hidden="true"></div>
+<textarea id="page" spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
 <div id="up"></div>
 
 <script>
 "use strict";
 
 /* ═══ the store — one, and it adopts the others ═════════════════════════════ */
-const KEY="nesi.water", SCHEMA="water.1";
-let S={ schema:SCHEMA, today:"", text:"", past:[], returns:0 };
+const KEY="nesi.water", SCHEMA="water.2";     /* .2 — the watermark and the stones */
+let S={ schema:SCHEMA, today:"", text:"", mark:0, stones:[], past:[], returns:0, n:1 };
 
 const dayStamp=()=>{ const d=new Date();
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
@@ -97,9 +109,17 @@ const dayStamp=()=>{ const d=new Date();
 function load(){
   try{ const r=localStorage.getItem(KEY);
     if(r){ const d=JSON.parse(r);
-      if(d && d.schema===SCHEMA){
+      if(d && (d.schema===SCHEMA || d.schema==="water.1")){
         S.today=d.today||""; S.text=typeof d.text==="string"?d.text:"";
         S.past=Array.isArray(d.past)?d.past:[]; S.returns=d.returns|0;
+        S.mark=d.mark|0; S.stones=Array.isArray(d.stones)?d.stones:[]; S.n=d.n||1;
+        /* water.1 kept whole days and no stones. Cut its days into stones ONCE,
+           so nothing written before the watermark existed is stranded. */
+        if(d.schema==="water.1" && !S.stones.length){
+          S.past.forEach(b=> cut(b.text).forEach(t=> S.stones.push({n:S.n++, t, d:b.d}) ));
+          cut(S.text).forEach(t=> S.stones.push({n:S.n++, t, d:S.today}) );
+          S.mark=S.text.length;
+        }
       }
       return;
     }
@@ -107,107 +127,180 @@ function load(){
   adopt();
 }
 
-/* ADOPT — the join, done without deleting anything.
-   Three stores existed with no member between them: nesi.level_one and
-   nesi.ascent each held a `kept` array of sentences, mutually invisible. On the
-   very first run of this surface those are read and laid down as one band of
-   ground beneath today, in the order they came. NEITHER OLD KEY IS TOUCHED —
-   they are read and left exactly where they are, so nothing can be lost by this
-   running. If both are empty this does nothing at all. */
+/* ADOPT — the join, done without deleting anything. Reads whatever
+   nesi.level_one and nesi.ascent kept and lays it down as ground. NEITHER OLD
+   KEY IS WRITTEN OR DELETED. */
 function adopt(){
   const gather=k=>{ try{ const r=localStorage.getItem(k); if(!r) return [];
       const d=JSON.parse(r); return Array.isArray(d && d.kept) ? d.kept.filter(x=>typeof x==="string") : [];
     }catch(e){ return []; } };
-  const earlier=gather("nesi.level_one").concat(gather("nesi.ascent"));
-  if(earlier.length) S.past.push({ d:"earlier", text: earlier.join(" ") });
+  gather("nesi.level_one").concat(gather("nesi.ascent"))
+    .forEach(t=> S.stones.push({n:S.n++, t, d:"earlier"}) );
+  if(S.stones.length) S.past.push({d:"earlier", text:S.stones.map(s=>s.t).join(" ")});
 }
 
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+/* pad → read back → commit. A bad write never destroys a good record. */
+function save(){
+  try{ const j=JSON.stringify(S);
+    localStorage.setItem(KEY+".pad", j);
+    if(localStorage.getItem(KEY+".pad")===j){ localStorage.setItem(KEY,j); localStorage.removeItem(KEY+".pad"); }
+  }catch(e){}
+}
+
+/* ═══ THE BAND CUT ══════════════════════════════════════════════════════════
+   Carried from world.html:472-496, which carries it from nesi.html:342-358.
+   A .!?… completes a sentence and the trailing cluster leaves with it; a period
+   between two digits is inside a number; bare punctuation is not a sentence.
+   Nothing here looks at meaning. */
+const isEnd=c=> ".!?…".indexOf(c)>=0;
+function cut(v){                     /* the same rule, over a whole string */
+  const out=[]; let i=0, start=0;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){ i++; continue; }
+      let j=i; while(j+1<v.length&&isEnd(v[j+1])) j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) out.push(seg);
+      start=j+1; i=j+1;
+    } else i++;
+  }
+  return out;
+}
 
 load();
 
-/* Roll the day over. Yesterday's whole text goes down into the ground as its own
-   band; today starts empty. Nothing is summarised on the way down. */
+/* the day rolls over. Yesterday's whole text goes down as its own band; its
+   stones are already banked and are not re-cut. */
 const stamp=dayStamp();
 if(S.today && S.today!==stamp){
   if(S.text.trim()) S.past.push({ d:S.today, text:S.text });
-  S.text=""; S.today=stamp; S.returns++;      // you came back on a later day
-  save();
+  S.text=""; S.mark=0; S.today=stamp; S.returns++; save();
 } else if(!S.today){ S.today=stamp; save(); }
 
 /* ═══ the page ══════════════════════════════════════════════════════════════ */
-const page=document.getElementById("page");
+const page=document.getElementById("page"), bg=document.getElementById("bg");
 page.value=S.text;
-page.focus();
-page.setSelectionRange(page.value.length, page.value.length);
+if(S.mark>page.value.length) S.mark=page.value.length;
+page.focus(); page.setSelectionRange(page.value.length, page.value.length);
+page.addEventListener("scroll", ()=>{ bg.scrollTop=page.scrollTop; });
 
-let quiet=0, stirred=0, settled=S.text.trim().length>0 ? 0 : 0;
-let level=0, target=0, still=true;
+let quiet=0, stirred=0, level=0, target=0, still=true, dirty=false;
 
-/* THE ONLY THREE THINGS EVER DONE TO YOUR TEXT. */
 const words = t => t.trim() ? t.trim().split(/\s+/).length : 0;
-const sentences = t => String(t).split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(Boolean);
-/* (store is the third, above.) */
+/* The water's height. A curve, never a threshold — it never reaches the top, so
+   there is no line to cross and nothing to complete.
 
-/* The water's height. A curve, never a threshold: 750 words fills it well, 1500
-   fills it further, and it never quite reaches the top — so there is no line to
-   cross and nothing to complete. */
-function heightFor(n){ return 1 - Math.exp(-n/620); }
+   AND IT NEVER DRAINS. The walk of 2026-08-14 found the flaw: with the height
+   taken only from today's page, an empty page meant no water at all — so on a
+   fresh morning, and after clearing the page, there was nothing to drop a line
+   into and the return was unreachable. The lake does not empty overnight. There
+   is a resting level, and the day's writing rises above it. */
+const REST = 0.28;
+const heightFor = n => REST + (1-REST)*(1 - Math.exp(-n/620));
 
-let dirty=false;
-page.addEventListener("input", ()=>{
-  S.text=page.value; dirty=true; quiet=0; still=false; stirred=1;
-  target=heightFor(words(S.text));
+/* THE PAGE IS DRAWN, and what has banked reads dimmer. That dimming is the
+   whole of the disclosure that a transfer has happened. */
+function paint(){
+  const v=page.value, w=Math.max(0,Math.min(S.mark|0,v.length));
+  bg.textContent="";
+  const gone=document.createElement("span"); gone.className="taken";
+  gone.appendChild(document.createTextNode(v.slice(0,w)));
+  bg.appendChild(gone);
+  bg.appendChild(document.createTextNode(v.slice(w)));
+  bg.scrollTop=page.scrollTop;
+}
+
+/* THE WATERMARK. A sentence banks live, at the keystroke, and never un-banks.
+   Deleting the page pulls the watermark back — and removes no stone, because
+   the stones are append-only. That is the whole of "deletion never un-banks". */
+function bandCut(){
+  const v=page.value;
+  S.text=v; quiet=0; still=false;
+  if(S.mark>v.length) S.mark=v.length;
+  let i=S.mark, start=S.mark;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){ i++; continue; }
+      let j=i; while(j+1<v.length&&isEnd(v[j+1])) j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) S.stones.push({n:S.n++, t:seg, d:S.today});
+      start=j+1; S.mark=j+1; i=j+1;
+    } else i++;
+  }
+  target=heightFor(words(v));
+  dirty=true; paint();
+}
+page.addEventListener("input", bandCut);
+
+/* THE NEWLINE LANDS, and banks what is held — carried from world.html:498-513.
+   The break goes in first, because a record with no line breaks is not a
+   record. */
+page.addEventListener("keydown", e=>{
+  if(e.key!=="Enter") return;
+  const seg=page.value.slice(S.mark).trim();
+  setTimeout(()=>{
+    if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) S.stones.push({n:S.n++, t:seg, d:S.today});
+    S.mark=page.value.length; S.text=page.value; dirty=true; paint(); save();
+  },0);
 });
-/* Saved on every pause and again on the way out. Quitting mid-sentence loses
-   nothing, and nothing on screen says so. */
+
 setInterval(()=>{ if(dirty){ save(); dirty=false; } }, 1500);
 addEventListener("beforeunload", ()=>{ S.text=page.value; save(); });
 addEventListener("visibilitychange", ()=>{ if(document.hidden){ S.text=page.value; save(); } });
 
-/* ═══ the line you drop ═════════════════════════════════════════════════════
-   Click in the water. A line goes down and brings back ONE of your own
-   sentences, verbatim, with nothing saying why that one and nothing saying
-   where it came from. Chosen by WHERE you dropped it — the horizontal position
-   picks a place in the ground, and older lies deeper — never by what any
-   sentence says. If there is nothing settled under that spot, the line runs out
-   and nothing appears. That is a deep, and it is not marked anywhere. */
+/* ═══ THE LINE, AND THE HELD ARRIVAL ════════════════════════════════════════
+   Drop a line in the water and one of your own sentences comes back — chosen by
+   WHERE you dropped it, never by what it says. You may write over what comes
+   up. The stone does not change: your rewrite is held against it as an arrival
+   and rides attached beneath the standing text until you click it. Never click
+   it and it stays held, and nothing asks. */
 const up=document.getElementById("up");
-let line=null;
+let line=null, openStone=-1;
 
-function allBands(){
-  const b=S.past.slice();
-  if(S.text.trim()) b.push({d:S.today, text:S.text});   // today is soundable too
-  return b;
-}
 function soundAt(x){
-  const bands=allBands(); if(!bands.length) return null;
-  const all=[]; bands.forEach((band,bi)=>sentences(band.text).forEach(s=>all.push({s,bi})));
-  if(!all.length) return null;
-  const i=Math.floor((x/innerWidth)*all.length);
-  if(i<0||i>=all.length) return null;
-  return all[i];
+  if(!S.stones.length) return -1;
+  const i=Math.floor((x/innerWidth)*S.stones.length);
+  return (i>=0 && i<S.stones.length) ? i : -1;
 }
-/* WHILE THE PAGE IS QUIET, THE SURFACE IS SOUNDABLE. The page covers the whole
-   window, so the line could never be dropped through it. Rather than carve the
-   page into regions, the two states take turns: your hand on the keys makes it a
-   page; the page falling quiet makes it water. Touch a key and it is a page
-   again. The mechanic that ends the day is the same one that opens the line. */
+function paintUp(){
+  up.textContent="";
+  if(openStone<0){ up.style.display="none"; return; }
+  const st=S.stones[openStone];
+  const stand=document.createElement("div");
+  stand.className="stand"; stand.contentEditable="true"; stand.spellcheck=false;
+  stand.textContent=st.t;
+  /* AN EDIT DOES NOT SETTLE ANYTHING. It is held on the stone as an offer. */
+  stand.addEventListener("input", ()=>{
+    const t=stand.textContent;
+    if(t===st.t){ delete st.arrival; } else { st.arrival={t}; }
+    dirty=true;
+  });
+  up.appendChild(stand);
+  if(st.arrival && st.arrival.t!==st.t){
+    const a=document.createElement("div");
+    a.className="arr"; a.textContent=st.arrival.t;
+    /* TAKING IT IS HIS CLICK, and only that click settles the body. */
+    a.addEventListener("click", ()=>{ st.t=st.arrival.t; delete st.arrival; dirty=true; save(); paintUp(); });
+    up.appendChild(a);
+  }
+  up.style.display="block";
+}
 addEventListener("pointerdown", e=>{
-  if(!still) return;                                // your hand is still writing
+  /* working in what came up. The Node test is not decoration: contains() throws
+     on anything that is not a Node, and a pointer event can carry one. */
+  if(e.target instanceof Node && up.contains(e.target)) return;
+  if(!still) return;                                /* your hand is still writing */
   const wy=innerHeight*(1-level*0.42);
-  if(e.clientY < wy) return;                        // above the water: nothing
-  const hit=soundAt(e.clientX);
-  line={x:e.clientX, y:wy, d:0, max:innerHeight-wy, found:!!hit};
-  if(hit){ up.textContent=hit.s; up.style.display="block"; }
-  else { up.style.display="none"; }                 // ran out. Nothing is said.
+  if(e.clientY < wy){ return; }
+  const i=soundAt(e.clientX);
+  line={x:e.clientX, y:wy, d:0, max:innerHeight-wy, found:i>=0};
+  openStone=i; paintUp();                            /* nothing found shows nothing */
+  if(i>=0) save();
 });
 addEventListener("keydown", e=>{
-  if(e.key==="Escape"){ up.style.display="none"; page.focus(); return; }
-  // any key returns you to the page, wherever you were
-  if(document.activeElement!==page && !e.ctrlKey && !e.metaKey && !e.altKey){
-    page.focus(); still=false; quiet=0;
-  }
+  if(e.key==="Escape"){ openStone=-1; paintUp(); page.focus(); return; }
+  if(document.activeElement!==page && !up.contains(document.activeElement)
+     && !e.ctrlKey && !e.metaKey && !e.altKey){ page.focus(); still=false; quiet=0; }
 });
 
 /* ═══ the surface ═══════════════════════════════════════════════════════════ */
@@ -217,81 +310,54 @@ function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=innerWidth; H=innerHei
   cv.width=W*DPR; cv.height=H*DPR; g.setTransform(DPR,0,0,DPR,0,0); }
 addEventListener("resize",resize); resize();
 
-target=heightFor(words(S.text));
-level=target;                       // you open on the water you left
+target=heightFor(words(S.text)); level=target;
+paint();
 
-let t=0;
+let t=0, last=performance.now();
 function frame(dt){
-  t+=dt;
-  quiet+=dt;
-  /* THE PAGE FALLING QUIET IS THE MECHANIC. Six seconds without a keystroke and
-     the surface goes still on its own. No gate enforces it, nothing announces
-     it, and writing again stirs it back. */
-  if(quiet>6000) still=true;
+  t+=dt; quiet+=dt;
+  if(quiet>6000) still=true;                 /* the page falling quiet is the mechanic */
   stirred += ((still?0:1)-stirred)*0.04;
-  // the page and the water take turns for the pointer — see the note above
-  page.style.pointerEvents = still ? "none" : "auto";
   level += (target-level)*0.035;
-  if(line){ line.d=Math.min(line.max, line.d+14); }
+  page.style.pointerEvents = still ? "none" : "auto";
+  if(line) line.d=Math.min(line.max, line.d+14);
   draw();
 }
-
 function draw(){
-  const wy=H*(1-level*0.42);              // the waterline, climbing the page
+  const wy=H*(1-level*0.42);
   const sky=g.createLinearGradient(0,0,0,H);
   sky.addColorStop(0,"#e6e9e6"); sky.addColorStop(1,"#c6cfcc");
   g.fillStyle=sky; g.fillRect(0,0,W,H);
 
-  /* the ground: one band per day you have written, oldest deepest. Nothing
-     labels a band and nothing counts them. */
-  const bands=S.past.length;
+  const days=new Set(S.stones.map(s=>s.d)); const bands=days.size;
   const gy=H-Math.min(H*0.30, 26+bands*13);
   g.fillStyle="#9d9384"; g.fillRect(0,gy,W,H-gy);
-  for(let i=0;i<bands;i++){
-    const y=gy+10+i*13;
-    if(y>H-6) break;
+  for(let i=0;i<bands;i++){ const y=gy+10+i*13; if(y>H-6) break;
     g.strokeStyle= i%2 ? "rgba(120,112,100,.40)" : "rgba(140,132,120,.32)";
     g.lineWidth=1.5; g.beginPath();
     for(let x=0;x<=W;x+=26) g.lineTo(x, y+Math.sin(x*0.008+i*1.3)*2.4);
-    g.stroke();
-  }
+    g.stroke(); }
 
-  /* the water */
   const wg=g.createLinearGradient(0,wy,0,H);
   wg.addColorStop(0,"rgba(111,147,164,.50)"); wg.addColorStop(1,"rgba(64,96,111,.72)");
   g.fillStyle=wg; g.fillRect(0,wy,W,H-wy);
 
-  /* the surface itself: it moves while your hand does, and goes flat when the
-     page falls quiet. That is the only thing on screen that reads as "alive",
-     and it reads your HAND, never your words. */
-  g.strokeStyle="rgba(240,244,246,.55)"; g.lineWidth=1.5;
-  g.beginPath();
-  for(let x=0;x<=W;x+=8){
-    const a=stirred*3.2;
-    g.lineTo(x, wy + Math.sin(x*0.021 + t*0.0026)*a + Math.sin(x*0.009 - t*0.0017)*a*0.7);
-  }
+  g.strokeStyle="rgba(240,244,246,.55)"; g.lineWidth=1.5; g.beginPath();
+  for(let x=0;x<=W;x+=8){ const a=stirred*3.2;
+    g.lineTo(x, wy + Math.sin(x*0.021+t*0.0026)*a + Math.sin(x*0.009-t*0.0017)*a*0.7); }
   g.stroke();
 
-  /* what returning made stand. One mark per day you came back — never a number,
-     and absence is simply bare ground. */
   for(let i=0;i<Math.min(S.returns,40);i++){
     const x=W*0.06 + i*Math.max(16,(W*0.88)/40);
     g.strokeStyle="#4f6a3d"; g.lineWidth=2;
     g.beginPath(); g.moveTo(x,gy+4); g.lineTo(x,gy-11); g.stroke();
-    g.fillStyle="#4f6a3d"; g.beginPath(); g.arc(x,gy-13,2.6,0,7); g.fill();
-  }
+    g.fillStyle="#4f6a3d"; g.beginPath(); g.arc(x,gy-13,2.6,0,7); g.fill(); }
 
-  /* the line you dropped */
   if(line){
     g.strokeStyle="rgba(240,244,246,.8)"; g.lineWidth=1.4;
     g.beginPath(); g.moveTo(line.x,line.y); g.lineTo(line.x,line.y+line.d); g.stroke();
-    if(line.found && line.d>=line.max*0.6){
-      g.fillStyle="rgba(240,244,246,.92)";
-      g.beginPath(); g.arc(line.x,line.y+line.d,3.4,0,7); g.fill();
-    }
-  }
+    if(line.found && line.d>=line.max*0.6){ g.fillStyle="rgba(240,244,246,.92)";
+      g.beginPath(); g.arc(line.x,line.y+line.d,3.4,0,7); g.fill(); } }
 }
-
-let last=performance.now();
 (function tick(now){ const dt=Math.min(48,now-last); last=now; frame(dt); requestAnimationFrame(tick); })(performance.now());
 </script>
