@@ -1,6 +1,11 @@
 # LEVEL ONE — THE TANK. Run report, 2026-08-13.
 
-**WALKABLE.** Four increments green in one walk, on Kevin's real poured water.
+**UNWITNESSED.** Four increments green in one walk on Kevin's real poured water
+— **driven from code by the hand that made the change.**
+
+> **Corrected 2026-08-14.** This said **WALKABLE**. `LEARNED.md:2`, Kevin's mark:
+> *"no WALKABLE without a stranger read; machine-proved surfaces are
+> UNWITNESSED."* The evidence below is real; the word was not earned.
 
 ```
 way in ................... PASS  ← fresh load: player at entry, legible [true,false,false],

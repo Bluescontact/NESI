@@ -1,8 +1,17 @@
 # THE DESCENT AND THE ASCENT — twelve levels, two directions
 
-**WALKABLE.** All twelve played to completion from a cleared state, in the new
-order, zero runtime errors. `nesi/game2d/ascent.html`, one file, no server
-required, no network, no model call.
+**UNWITNESSED.** All twelve played to completion from a cleared state, zero
+runtime errors — **by the hand that made the change, driving the page from
+code.** `nesi/game2d/ascent.html`, one file, no server required, no network, no
+model call.
+
+> **Corrected 2026-08-14.** This file said **WALKABLE** and it was not entitled
+> to. `nesi/mind/LEARNED.md` line 2, Kevin's own mark of 2026-08-12: *"no
+> WALKABLE without a stranger read; machine-proved surfaces are UNWITNESSED."*
+> Every check below was machine-driven — real key and mouse events and real
+> pixels, but no stranger, and the builder cannot walk their own build. THE
+> CRYSTAL caught this and named the line. The evidence stands; the word was
+> wrong.
 
 ---
 

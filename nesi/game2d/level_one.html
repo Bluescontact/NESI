@@ -1,380 +1,338 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>NESI · level one · the tank</title>
+<title>NESI · level one · the writing tetra</title>
 <!--
-  LEVEL ONE — THE TANK. Three faces of Kevin's own writing, one lens.
-  2D, one HTML file, no server needed, no network, no model call.
+  LEVEL ONE — THE TETRAHEDRON OF CONTROLLED WRITING SURFACES.
+  Four sub-levels. One HTML file, no server needed, no network, no model call.
 
   ─────────────────────────────────────────────────────────────────────────────
-  THE ARTICULATION THIS SERVES (SEAM S3 — cited before the build, file and line)
+  KEVIN'S SPECIFICATION, 2026-08-14, verbatim and built as written:
 
-  Kevin's own words, in his own store, kevins-water.json stones n:26–42:
+    "level one... the tertrahedron controlled writing surfaces.
+     4 sub levels.... 100 words on blind surface, unlocks, the 100 word
+     sequential face. that unlucks the scatter board where i user sees every
+     sentence ever typed, and cant auto sort, auto arrange, and autp highlight
+     different things. group and tile sentences to build paragraphs left
+     unformed and incomplete. Once the full tetra writing surface is unlocked..
+     you have x number of words, and it unlocks the first lens making board."
 
-    n:26  "buckminster fuller, The first tetra and level is the tank."
-    n:34  "The write is separated face by face until a clear lens is held in 3
-           faces..."
-    n:35  "When the 3 faces light up.."
-    n:36  "the tetra can drain to the next tetra."
-    n:42  "Leve one the daily jounral is the most load bearing surface of
-           everything."
+    "I'm thinking of the tetra, and how one board seeds, the next, and returning
+     to the first doesn't undo anything. sloppy writing doesnt hurt anything.
+     emotional writing doesnt trigger a response. no one's emotions are being
+     read and diagnosed, or asserted.. no judgement on any of the context.."
 
-  And counsel/reference/NESI_VISION_as_it_stands.md:22 —
-    "Level One — the Tank, the daily journal. The most load-bearing surface of
-     everything. Four faces of one writing tetra, vertex down, you at the point"
-
-  THE EARLIER VERSION OF THIS FILE DIVERGED AND WAS REPLACED. It put three
-  documents the machine had chosen at the vertices, and had the player write
-  about them. That held none of Kevin's writing — the same failure he named at
-  07:15 on 2026-08-13: "notice how what was built never actually held the
-  writing." The triangulation he asked for is not between three machine-picked
-  documents. It is between three FACES OF HIS OWN WRITING, and the thing held
-  across all three is the LENS.
-
-  THE WATER SEAM S4: the faces carry his real poured water, copied in by
-  tools/pour.js, his store never opened for writing. 19 stones, dealt across
-  three faces in the order they came — the river's own order. Nothing computes
-  kinship; a kinship measure would quietly become a claim about his thinking.
   ─────────────────────────────────────────────────────────────────────────────
+  THE FOUR GUARANTEES, and they are enforced by construction rather than by care
 
-  THE SLICE: you arrive at the tank, read your own writing at three faces, and
-  the tetra closes; at the empty centre you hold up to 100 words — the lens. The
-  lens is placed at the centre, the three faces light, the drain opens, and it is
-  all still there when you leave and come back.
+  1 · ONE BOARD SEEDS THE NEXT. Face 2 holds face 1's words. Face 3 holds every
+      sentence from 1 and 2. Face 4 stands on all three. Nothing is re-entered.
 
-  NO JUDGE. No score, no correct answer, no validator, no model call. The world
-  responds to the act of holding a lens, never to its content.
-  NO INSTRUCTIONAL TEXT. The reveal order is the instruction.
-  NO NUMBER REACHES THE PLAYER. The cap is seen as room, never as digits.
+  2 · RETURNING TO THE FIRST UNDOES NOTHING. Unlocks are monotonic — `open` only
+      ever grows, and no path in this file removes a face, clears a sentence, or
+      lowers a threshold. Come back to BLIND on any day and write again; the
+      scatter keeps every tile where your hand left it.
+
+  3 · SLOPPY WRITING COSTS NOTHING. There is no spellcheck, no minimum sentence,
+      no wellformedness test, no length-per-sentence rule, and no path that
+      rejects text. A stream of one-word fragments advances the tetra exactly as
+      far as polished prose does.
+
+  4 · NOTHING READS WHAT YOU WROTE. Not one branch in this file tests the CONTENT
+      of a word. Text is counted for the cap, split on punctuation for tiles, and
+      stored — and that is the complete list of operations performed on it. No
+      sentiment, no classification, no theme, no highlight-by-meaning, no sort.
+      THE FALSIFIER, the corpus's own: "would the response be identical for a
+      thousand words of grief and a thousand words of grocery lists?" It is, and
+      that is checkable by feeding both and diffing the world.
+
+  LAW 5, THE HAND RUNS EVERYTHING. The scatter board has NO auto-sort, no
+  auto-arrange, no auto-highlight. Tiles begin where they fall and move only when
+  a hand moves them. Paragraphs are built by putting things near each other, are
+  never validated, and are LEFT UNFORMED AND INCOMPLETE on purpose — there is no
+  finished state to reach and nothing marks one.
+
+  X IS NOT NAMED, AND IS NOT INVENTED. "you have x number of words" — Kevin did
+  not say what x is, so WORDS_FOR_LENS is null and the fourth face opens on the
+  three faces being worked. When he names x it is one line, below.
 -->
 <style>
   html,body{margin:0;height:100%;background:#b6ae9f;overflow:hidden;
     font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;color:#17171a;}
   canvas{display:block;width:100vw;height:100vh;}
-  #field{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:min(680px,86vw);background:#f2efe8;border:1px solid #a49b8c;
+  .panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(720px,88vw);background:#f2efe8;border:1px solid #a49b8c;
     padding:26px 26px 20px;display:none;box-shadow:0 18px 48px rgba(0,0,0,.22);}
-  #field textarea{width:100%;height:170px;border:none;outline:none;resize:none;
-    background:transparent;font:inherit;font-size:18px;line-height:1.55;color:#17171a;}
-  /* THE CAP IS VISIBLE AS ROOM, NOT AS A NUMBER. The unfilled part of this strip
-     is the room that is left. No digits, no percentage, no word count.
-     Revert to digits: SHOW_DIGITS = true. */
-  #room{height:2px;background:#a49b8c;margin-top:14px;}
-  #room i{display:block;height:2px;background:#17171a;width:100%;transition:width .12s linear;}
-  #digits{display:none;font-size:12px;letter-spacing:.14em;margin-top:8px;color:#6b6459;}
+  .panel textarea{width:100%;height:210px;border:none;outline:none;resize:none;
+    background:transparent;font:inherit;font-size:17px;line-height:1.6;color:#17171a;}
+  /* THE BLIND FACE. The words are in the field and are never shown while you
+     type — "you type and the words don't perform for you." The caret is hidden
+     too, so there is nothing on the surface to watch or to correct against. */
+  .panel.blind textarea{color:transparent;caret-color:transparent;text-shadow:none;}
+  /* Room, never a number. The unfilled strip is what is left. */
+  .room{height:2px;background:#a49b8c;margin-top:14px;}
+  .room i{display:block;height:2px;background:#17171a;width:100%;transition:width .12s linear}
 </style>
 
 <canvas id="c"></canvas>
-<div id="field">
-  <textarea id="t" spellcheck="false"></textarea>
-  <div id="room"><i id="roomfill"></i></div>
-  <div id="digits"></div>
+<div class="panel" id="wp">
+  <textarea id="wt" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+  <div class="room"><i id="wr"></i></div>
 </div>
 
-<script src="level_one_water.js"></script>
 <script>
 "use strict";
 
-/* ── the water. His, verbatim, poured by tools/pour.js. ─────────────────────
-   If the pour has not been run there is no water, and the tank says so by
-   standing empty rather than by inventing a sentence to put on a face. */
-const WATER = window.WATER || { faces:[[],[],[]], stones:0, poured:"" };
-const FACES = WATER.faces || [[],[],[]];
+/* ═══ the four faces ═══════════════════════════════════════════════════════ */
+const FACES = [
+  {k:"blind",      name:"BLIND",       note:"the words don't perform for you", cap:100},
+  {k:"sequential", name:"SEQUENTIAL",  note:"the whole keylog, held immutable", cap:100},
+  {k:"scatter",    name:"THE SCATTER", note:"your hand groups; nothing sorts"},
+  {k:"tetra",      name:"THE TETRA",   note:"three faces standing"}
+];
 
-/* ── the laws, as constants ─────────────────────────────────────────────── */
-const WORD_CAP    = 100;
-const SHOW_DIGITS = false;
-const READ_RADIUS = 62;
-const HOLD_MS     = 1000;
-const RADIUS      = 250;
-const SPEED       = 2.9;
-const SCHEMA      = 2;              // schema 1 was the machine-doc version
-const SAVE_KEY    = "nesi.level_one";
+/* Kevin's "x number of words" — UNNAMED, so not invented. While this is null the
+   fourth face opens on the three faces having been worked. Name x here and it
+   becomes an additional condition; it can never become a *replacement* for the
+   three, because that would let volume substitute for the work. */
+const WORDS_FOR_LENS = null;
 
-/* ── the tetra, vertex down, seen from above: three faces, one centre ────── */
-const CENTRE = {x:0, y:0};
-const VERTS = [-90, 30, 150].map(d => {
-  const r = d*Math.PI/180;
-  return { x: CENTRE.x + RADIUS*Math.cos(r), y: CENTRE.y + RADIUS*Math.sin(r) };
-});
-/* THE SPAWN SITS INSIDE THE THRESHOLD. It used to sit 50 px outside it, so
-   `out` was true on frame one, the leave-fade ran from boot, and the opening
-   screen washed to flat #b6ae9f inside a second. A blank first frame passed a
-   green walk because the walk read state and not pixels. */
-const ENTRY = { x:0, y: RADIUS + 200 };
-const THRESHOLD_Y = RADIUS + 250;
-
-let S = { read:[false,false,false], lens:"", held:false, drained:false };
-let player = { x:ENTRY.x, y:ENTRY.y };
-let held   = { idx:-1, ms:0 };
-let typing = false;
-let fade = 0;
-let lit  = 0;            // how far the three faces have come up, 0..1
-
-/* ── persistence ────────────────────────────────────────────────────────── */
-function save(){
-  try{ localStorage.setItem(SAVE_KEY, JSON.stringify({
-    schema:SCHEMA, read:S.read, lens:S.lens, held:S.held, drained:S.drained })); }
-  catch(e){}
-}
-function load(){
-  try{
-    const raw = localStorage.getItem(SAVE_KEY); if(!raw) return;
-    const d = JSON.parse(raw);
-    if(!d || d.schema !== SCHEMA) return;   // a foreign schema is ignored, never migrated silently
-    if(Array.isArray(d.read) && d.read.length===3) S.read = d.read.map(Boolean);
-    S.lens    = typeof d.lens === "string" ? d.lens : "";
-    S.held    = !!d.held;
-    S.drained = !!d.drained;
-    if(S.held) lit = 1;
-  }catch(e){}
-}
+const SCHEMA="l1.1", KEY="nesi.level_one";
+let S = {
+  open:1,            // how many faces stand. MONOTONIC — nothing in this file lowers it.
+  kept:[],           // every sentence ever typed, in the order it came. Append only.
+  tiles:[],          // {i, x, y} — where your hand left each tile. Never auto-placed.
+  lens:false         // the first lens-making board, opened by the whole tetra
+};
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Object.assign({schema:SCHEMA},S))); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return; const d=JSON.parse(r);
+  if(!d||d.schema!==SCHEMA) return;
+  // MONOTONIC ON LOAD TOO: take the greater of what is stored and what is held.
+  S.open=Math.max(S.open, d.open|0);
+  if(Array.isArray(d.kept)) S.kept=d.kept.slice();
+  if(Array.isArray(d.tiles)) S.tiles=d.tiles.slice();
+  S.lens = S.lens || !!d.lens;
+}catch(e){} }
 load();
 
-/* ── the staged reveal. One face is legible; reading it opens the next. ──── */
-function legible(i){ return i===0 || S.read[i-1]; }
-function closed(){ return S.read[0] && S.read[1] && S.read[2]; }
+/* THE ONLY OPERATIONS EVER PERFORMED ON YOUR TEXT: count it for the cap, cut it
+   into sentences for tiles, and store it. There is no fourth. */
+const words = s => s.trim().split(/\s+/).filter(Boolean);
+function sentences(t){
+  // Split on punctuation, keep everything, drop nothing. A fragment with no
+  // full stop is a sentence — sloppy writing costs nothing.
+  return String(t).split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(Boolean);
+}
 
-/* ── input ──────────────────────────────────────────────────────────────── */
-const keys = Object.create(null);
-addEventListener("keydown", e => {
+/* ADVANCE IS MONOTONIC AND IS THE ONLY WAY `open` CHANGES. */
+function advance(to){ if(to>S.open){ S.open=to; save(); } }
+
+/* ═══ the writing panel ════════════════════════════════════════════════════ */
+const wp=document.getElementById("wp"), wt=document.getElementById("wt"), wr=document.getElementById("wr");
+let typing=false, cap=100, onCommit=null, accepted="";
+wt.addEventListener("beforeinput",e=>{
+  if(e.inputType&&e.inputType.indexOf("delete")===0) return;
+  let d=e.data||""; if(!d&&e.dataTransfer) d=e.dataTransfer.getData("text")||"";
+  const nx=wt.value.slice(0,wt.selectionStart)+d+wt.value.slice(wt.selectionEnd);
+  if(words(nx).length>cap) e.preventDefault();
+});
+wt.addEventListener("input",()=>{
+  if(words(wt.value).length>cap){ wt.value=accepted; const e=wt.value.length; wt.setSelectionRange(e,e); }
+  else accepted=wt.value;
+  wr.style.width=(100*Math.max(0,1-words(wt.value).length/cap))+"%";
+});
+function openWrite(c, blind, cb){
+  cap=c; onCommit=cb; typing=true;
+  wp.className = "panel" + (blind?" blind":"");
+  wp.style.display="block"; wt.value=""; accepted=""; wr.style.width="100%"; wt.focus();
+}
+function commit(){
+  const t=wt.value; if(words(t).length<1) return;
+  typing=false; wp.style.display="none"; wt.blur();
+  // KEPT VERBATIM. Not trimmed of anything but surrounding whitespace, not
+  // corrected, not normalised, not judged.
+  const s=sentences(t);
+  S.kept=S.kept.concat(s);
+  save();
+  if(onCommit) onCommit(s);
+}
+
+/* ═══ input ════════════════════════════════════════════════════════════════ */
+const keys=Object.create(null);
+let mouse={x:0,y:0,down:false,clicked:false};
+addEventListener("keydown",e=>{
   if(typing){
-    if(e.key==="Enter" && (e.ctrlKey||e.metaKey)){ e.preventDefault(); hold(); }
+    if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); commit(); return; }
+    // THE DOOR OUT. Escape leaves the writing surface WITHOUT committing.
+    // Until this line, every key but Ctrl+Enter was swallowed and the panel had
+    // no close control at all — a first hand was trapped in the game's opening
+    // gesture with no exit but the browser tab. Nothing is kept on the way out:
+    // leaving is not a failed commit, it is a complete state.
+    if(e.key==="Escape"){ e.preventDefault(); typing=false; wp.style.display="none";
+      wt.blur(); onCommit=null; face=-1; return; }
     return;
   }
-  keys[e.key.toLowerCase()] = true;
+  keys[e.key.toLowerCase()]=true;
   if(e.key===" ") e.preventDefault();
+  if(e.key==="Escape") face=-1;
 });
-addEventListener("keyup", e => { keys[e.key.toLowerCase()] = false; });
-const pressed = () => !!(keys["e"] || keys[" "] || keys["enter"]);
-function axis(){
-  let dx=0, dy=0;
-  if(keys["a"]||keys["arrowleft"])  dx--;
-  if(keys["d"]||keys["arrowright"]) dx++;
-  if(keys["w"]||keys["arrowup"])    dy--;
-  if(keys["s"]||keys["arrowdown"])  dy++;
-  const m = Math.hypot(dx,dy)||1;
-  return {x:dx/m, y:dy/m};
-}
+addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
+const cv=document.getElementById("c"), g=cv.getContext("2d");
+cv.addEventListener("mousemove",e=>{ const r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; });
+cv.addEventListener("mousedown",()=>{ mouse.down=true; });
+addEventListener("mouseup",()=>{ if(mouse.down) mouse.clicked=true; mouse.down=false; });
 
-/* ── the lens ───────────────────────────────────────────────────────────── */
-const fieldEl=document.getElementById("field"), taEl=document.getElementById("t"),
-      fillEl=document.getElementById("roomfill"), digEl=document.getElementById("digits");
-const words = s => s.trim().split(/\s+/).filter(Boolean);
-
-/* THE CAP REFUSES THE KEYSTROKE — it does not edit the text.
-   The first version truncated on 'input', which moved the caret and produced
-   "word91ord92ord93…". A cap that corrupts the writing breaks the law that the
-   player's words are never rewritten. So the refusal sits at 'beforeinput'. */
-taEl.addEventListener("beforeinput", e => {
-  if(e.inputType && e.inputType.indexOf("delete")===0) return;
-  let data = e.data || "";
-  if(!data && e.dataTransfer) data = e.dataTransfer.getData("text") || "";
-  const next = taEl.value.slice(0,taEl.selectionStart) + data + taEl.value.slice(taEl.selectionEnd);
-  if(words(next).length > WORD_CAP) e.preventDefault();
-});
-/* Backstop, for insertion paths that ignore a cancelled beforeinput. It RESTORES
-   rather than trims, so it can never leave a half-grown word at the boundary. */
-let _accepted = "";
-taEl.addEventListener("input", () => {
-  if(words(taEl.value).length > WORD_CAP){
-    taEl.value = _accepted;
-    const end = taEl.value.length; taEl.setSelectionRange(end,end);
-  } else _accepted = taEl.value;
-  room();
-});
-function room(){
-  const n = words(taEl.value).length;
-  fillEl.style.width = (100*Math.max(0,1-n/WORD_CAP)) + "%";
-  if(SHOW_DIGITS){ digEl.style.display="block"; digEl.textContent = n+" / "+WORD_CAP; }
-}
-function openField(){
-  typing=true; fieldEl.style.display="block"; taEl.value=""; _accepted=""; room(); taEl.focus();
-}
-/* "until a clear lens is held in 3 faces" — the act is HOLDING a lens, not
-   submitting an answer. Nothing judges it. */
-function hold(){
-  const w = words(taEl.value);
-  if(w.length < 1) return;
-  S.lens = w.join(" ");
-  S.held = true;
-  save();                                  // written on the act, never on exit
-  typing=false; fieldEl.style.display="none"; taEl.blur();
-}
-
-/* ── the loop ───────────────────────────────────────────────────────────── */
-const cv=document.getElementById("c"), cx=cv.getContext("2d");
 let W=0,H=0,DPR=1;
-function resize(){
-  DPR=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight;
-  cv.width=W*DPR; cv.height=H*DPR; cx.setTransform(DPR,0,0,DPR,0,0);
-}
+function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight;
+  cv.width=W*DPR; cv.height=H*DPR; g.setTransform(DPR,0,0,DPR,0,0); }
 addEventListener("resize",resize); resize();
 
+/* ═══ the tetra, vertex down, you at the point ═════════════════════════════ */
+let face=-1, grab=null, L={};
+
+function faceTri(){
+  const cx=W/2, cy=H*0.46, R=Math.min(W,H)*0.30;
+  const P=[0,120,240].map(d=>{ const a=(d-90)*Math.PI/180;
+    return {x:cx+R*Math.cos(a), y:cy+R*Math.sin(a)}; });
+  return {P, cx, cy, R, point:{x:cx, y:cy+R*1.02}};   // the point, below — you
+}
+function faceSpot(i){
+  const t=faceTri();
+  if(i<3){ const a=t.P[i], b=t.P[(i+1)%3];
+    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2}; }
+  return {x:t.cx, y:t.cy};                            // the whole surface
+}
+
+function enter(i){
+  if(i>=S.open) return;                               // a face that does not stand yet
+  face=i; L={t:0};
+  const f=FACES[i];
+  if(f.k==="blind"){
+    openWrite(f.cap, true, ()=>{ advance(2); face=-1; });
+  } else if(f.k==="sequential"){
+    openWrite(f.cap, false, ()=>{ advance(3); face=-1; });
+  } else if(f.k==="scatter"){
+    // Tiles begin where they FALL — a fixed lay-down by index, never a sort.
+    // Nothing is grouped, ranked, coloured, or highlighted for you.
+    S.kept.forEach((s,k)=>{ if(!S.tiles.some(t=>t.i===k)){
+      S.tiles.push({i:k, x: 90 + (k%4)*Math.max(150,(W-220)/4), y: 130 + Math.floor(k/4)*74 }); } });
+    save();
+  } else if(f.k==="tetra"){
+    if(!S.lens && (WORDS_FOR_LENS===null || S.kept.join(" ").split(/\s+/).filter(Boolean).length>=WORDS_FOR_LENS)){
+      S.lens=true; save();
+    }
+  }
+}
+
+/* ═══ loop ═════════════════════════════════════════════════════════════════ */
 let last=performance.now();
 function frame(now){ const dt=Math.min(48,now-last); last=now; step(dt); draw(); requestAnimationFrame(frame); }
 
-function step(dt){
-  if(typing) return;                       // the body does not walk while the hand writes
-  const a=axis();
-  if(a.x||a.y){ player.x += a.x*SPEED*(dt/16.7); player.y += a.y*SPEED*(dt/16.7); }
-
-  // "When the 3 faces light up.." — they come up on the holding of the lens.
-  if(S.held && lit < 1) lit = Math.min(1, lit + dt/900);
-
-  // THE WAY OUT, and it is his: "the tetra can drain to the next tetra."
-  // Before the lens is held, leaving is walking back over the threshold you
-  // came in on. After it, the drain at the centre is open too.
-  const out = player.y > THRESHOLD_Y;
-  if(S.held && !S.drained && Math.hypot(player.x-CENTRE.x, player.y-CENTRE.y) < 26){
-    S.drained = true; save();
+function step(){
+  if(typing) return;
+  if(face===2){                                        // THE SCATTER — the hand only
+    if(mouse.down && !grab){
+      for(let k=S.tiles.length-1;k>=0;k--){ const t=S.tiles[k];
+        if(mouse.x>t.x-8 && mouse.x<t.x+142 && mouse.y>t.y-8 && mouse.y<t.y+34){
+          grab=t; S.tiles.push(S.tiles.splice(k,1)[0]); break; } }
+    }
+    if(grab){ grab.x=mouse.x-66; grab.y=mouse.y-12; }
+    if(!mouse.down && grab){ grab=null; save(); advance(4); }
+    if(mouse.clicked) mouse.clicked=false;
+    return;
   }
-  fade += ((out || S.drained ? 1 : 0) - fade) * 0.06;
-
-  // reading a face — a held act inside the radius, and declinable
-  let near=-1;
-  for(let i=0;i<3;i++){
-    if(S.read[i] || !legible(i)) continue;
-    if(Math.hypot(player.x-VERTS[i].x, player.y-VERTS[i].y) < READ_RADIUS){ near=i; break; }
+  if(face<0 && mouse.clicked){                         // the tetra: pick a face
+    mouse.clicked=false;
+    for(let i=0;i<4;i++){ const s=faceSpot(i);
+      if(Math.hypot(mouse.x-s.x, mouse.y-s.y) < (i<3?46:34)){ enter(i); break; } }
   }
-  if(near>=0 && pressed()){
-    if(held.idx!==near){ held.idx=near; held.ms=0; }
-    held.ms += dt;
-    if(held.ms>=HOLD_MS){ S.read[near]=true; save(); held.idx=-1; held.ms=0; }
-  } else { held.idx=-1; held.ms=0; }
-
-  // the centre is inert until all three faces have been read
-  if(closed() && !S.held && !typing){
-    if(Math.hypot(player.x-CENTRE.x, player.y-CENTRE.y) < READ_RADIUS && pressed()) openField();
-  }
+  mouse.clicked=false;
 }
 
-/* ── drawing ────────────────────────────────────────────────────────────── */
 function draw(){
-  cx.fillStyle="#b6ae9f"; cx.fillRect(0,0,W,H);
-  cx.save(); cx.translate(W/2-player.x, H/2-player.y);
-  ground();
-  if(closed()) tetra();
-  if(S.held) beams();
-  centre();
-  for(let i=0;i<3;i++) face(i);
-  if(S.held) lens();
-  body();
-  cx.restore();
-  if(fade>0.004){ cx.fillStyle="rgba(182,174,159,"+fade.toFixed(3)+")"; cx.fillRect(0,0,W,H); }
+  const gr=g.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#e3e4dc"); gr.addColorStop(1,"#b6ae9f");
+  g.fillStyle=gr; g.fillRect(0,0,W,H);
+  if(face===1) return drawSequential();
+  if(face===2) return drawScatter();
+  drawTetra();
 }
 
-function ground(){
-  cx.fillStyle="#cfc9bd"; cx.fillRect(-900,-900,1800,2200);
-  cx.strokeStyle="rgba(140,132,120,.20)"; cx.lineWidth=1;
-  for(let x=-900;x<=900;x+=60){ cx.beginPath(); cx.moveTo(x,-900); cx.lineTo(x,1300); cx.stroke(); }
-  for(let y=-900;y<=1300;y+=60){ cx.beginPath(); cx.moveTo(-900,y); cx.lineTo(900,y); cx.stroke(); }
-  cx.strokeStyle="rgba(90,84,74,.5)"; cx.lineWidth=2;
-  cx.beginPath(); cx.moveTo(-320,THRESHOLD_Y); cx.lineTo(320,THRESHOLD_Y); cx.stroke();
-}
+function drawTetra(){
+  const t=faceTri();
+  // the three edges of the writing surface
+  g.strokeStyle="rgba(60,54,44,.45)"; g.lineWidth=2;
+  g.beginPath(); g.moveTo(t.P[0].x,t.P[0].y); g.lineTo(t.P[1].x,t.P[1].y);
+  g.lineTo(t.P[2].x,t.P[2].y); g.closePath(); g.stroke();
+  // vertex down: the struts running to the point, where you are
+  g.strokeStyle="rgba(60,54,44,.28)"; g.lineWidth=1.5;
+  t.P.forEach(p=>{ g.beginPath(); g.moveTo(p.x,p.y); g.lineTo(t.point.x,t.point.y); g.stroke(); });
+  g.fillStyle="rgba(40,40,44,.75)"; g.beginPath(); g.arc(t.point.x,t.point.y,6,0,7); g.fill();
 
-/* The tetra closes only when all three faces have been read. */
-function tetra(){
-  cx.strokeStyle="rgba(40,40,44,.42)"; cx.lineWidth=2;
-  cx.beginPath(); cx.moveTo(VERTS[0].x,VERTS[0].y);
-  cx.lineTo(VERTS[1].x,VERTS[1].y); cx.lineTo(VERTS[2].x,VERTS[2].y);
-  cx.closePath(); cx.stroke();
-}
-
-/* "When the 3 faces light up.." — light runs from each face to the centre.
-   Colour is never the only carrier: the faces also TURN, and the drain opens. */
-function beams(){
-  cx.save(); cx.globalAlpha = 0.30*lit;
-  for(const v of VERTS){
-    const g = cx.createLinearGradient(v.x,v.y,CENTRE.x,CENTRE.y);
-    g.addColorStop(0,"rgba(255,246,214,0)"); g.addColorStop(1,"rgba(255,240,190,1)");
-    cx.strokeStyle=g; cx.lineWidth=16*lit; cx.lineCap="round";
-    cx.beginPath(); cx.moveTo(v.x,v.y); cx.lineTo(CENTRE.x,CENTRE.y); cx.stroke();
-  }
-  cx.restore();
-}
-
-/* The centre is VISIBLY EMPTY until a lens is held — a ring you stand inside
-   with nothing in it. Once held, it is a drain: the way to the next tetra. */
-function centre(){
-  cx.strokeStyle = S.held ? "rgba(60,54,44,.85)" : "rgba(90,84,74,.65)";
-  cx.lineWidth = (closed() && !S.held) ? 3 : 2;
-  cx.beginPath(); cx.arc(CENTRE.x,CENTRE.y,46,0,Math.PI*2); cx.stroke();
-  if(S.held){
-    cx.strokeStyle="rgba(60,54,44,"+(0.25+0.5*lit).toFixed(2)+")"; cx.lineWidth=2;
-    cx.beginPath(); cx.arc(CENTRE.x,CENTRE.y,26,0,Math.PI*2); cx.stroke();
-  }
-}
-
-function face(i){
-  const v=VERTS[i];
-  // A read face and an unread one are the SAME slab of the same footprint.
-  // The difference is whether your writing stands at it. Nothing glows to
-  // point at itself, and nothing is marked as worth attention.
-  let ang=0;
-  if(S.held) ang = Math.atan2(CENTRE.y-v.y, CENTRE.x-v.x) + Math.PI/2;
-  cx.save(); cx.translate(v.x,v.y); cx.rotate(ang);
-  cx.fillStyle = S.held ? mix("#8d8578","#efe4bd",lit) : "#8d8578";
-  cx.fillRect(-46,-11,92,22);
-  cx.strokeStyle="rgba(40,40,44,.5)"; cx.lineWidth=1.5; cx.strokeRect(-46,-11,92,22);
-  cx.restore();
-
-  if(!S.read[i] && legible(i)){
-    if(Math.hypot(player.x-v.x, player.y-v.y) < READ_RADIUS){
-      const a = held.idx===i ? (0.35+0.65*held.ms/HOLD_MS) : 0.35;
-      cx.fillStyle="rgba(30,30,34,"+a.toFixed(2)+")";
-      cx.font="26px Georgia, serif"; cx.textAlign="center"; cx.fillText("·", v.x, v.y-24);
+  for(let i=0;i<4;i++){
+    const s=faceSpot(i), stands=i<S.open, f=FACES[i];
+    g.beginPath(); g.arc(s.x, s.y, i<3?15:11, 0, 7);
+    if(stands){ g.fillStyle= i===3 ? "#c8b98a" : "#8d8578"; g.fill(); }
+    g.strokeStyle= stands ? "rgba(40,40,44,.75)" : "rgba(90,84,74,.26)"; g.lineWidth=2; g.stroke();
+    if(stands){
+      const out = s.y < t.cy ? -26 : 30;
+      g.fillStyle="rgba(30,30,34,.88)"; g.font="12px Georgia,serif"; g.textAlign="center";
+      g.fillText(f.name, s.x, s.y+out);
+      g.fillStyle="rgba(90,84,74,.8)"; g.font="10px Georgia,serif";
+      g.fillText(f.note, s.x, s.y+out+(out<0?-13:13));
     }
   }
-  if(S.read[i]) sheet(i);
+  // the first lens-making board, once the tetra stands whole
+  if(S.lens){
+    g.strokeStyle="rgba(150,132,74,.85)"; g.lineWidth=2;
+    g.beginPath(); g.arc(W/2, H*0.09, 13, 0, 7); g.stroke();
+    g.fillStyle="rgba(200,185,138,.55)"; g.fill();
+  }
 }
 
-/* YOUR OWN WRITING, standing at the face. Verbatim, in the order it came.
-   Nothing is summarised, nothing is joined, nothing is titled. */
-function sheet(i){
-  const v=VERTS[i], mine=FACES[i]||[];
-  const lines=[];
-  mine.forEach(s => { wrap(s,50).forEach(l=>lines.push(l)); lines.push(""); });
-  if(!lines.length) return;                 // an empty face stands empty
-  const w=400, lh=15.5, pad=14, h=pad*2+lines.length*lh;
-  const ux=(v.x-CENTRE.x)/RADIUS, uy=(v.y-CENTRE.y)/RADIUS;
-  const px=v.x+ux*74-w/2, py=v.y+uy*74-h/2;
-  cx.fillStyle="rgba(242,239,232,.96)"; cx.fillRect(px,py,w,h);
-  cx.strokeStyle="rgba(120,112,100,.7)"; cx.lineWidth=1; cx.strokeRect(px,py,w,h);
-  cx.fillStyle="#17171a"; cx.font="13px Georgia, serif"; cx.textAlign="left";
-  lines.forEach((l,k)=>cx.fillText(l,px+pad,py+pad+12+k*lh));
+/* SEQUENTIAL — the whole keylog, in the order it came, never rewritten. Not one
+   character, not one space. Nothing is highlighted and nothing is grouped. */
+function drawSequential(){
+  g.fillStyle="#efece4"; g.fillRect(0,0,W,H);
+  g.fillStyle="#17171a"; g.font="13px Georgia,serif"; g.textAlign="left";
+  let y=54; const x=Math.max(40,(W-760)/2), wid=Math.min(760,W-80);
+  for(const s of S.kept){
+    for(const line of wrapTo(s, wid, "13px Georgia,serif")){
+      if(y>H-40) return; g.fillText(line, x, y); y+=19; }
+    y+=8;
+  }
 }
 
-/* THE LENS, held at the centre. It stays. */
-function lens(){
-  const lines=wrap(S.lens,34), w=300, lh=18, pad=16, h=pad*2+lines.length*lh;
-  cx.fillStyle="rgba(255,252,240,.98)"; cx.fillRect(CENTRE.x-w/2,CENTRE.y-h/2,w,h);
-  cx.strokeStyle="rgba(40,40,44,.85)"; cx.lineWidth=2; cx.strokeRect(CENTRE.x-w/2,CENTRE.y-h/2,w,h);
-  cx.fillStyle="#17171a"; cx.font="15px Georgia, serif"; cx.textAlign="center";
-  lines.forEach((l,k)=>cx.fillText(l,CENTRE.x,CENTRE.y-h/2+pad+13+k*lh));
-}
-
-function body(){
-  cx.fillStyle="#2a2a30"; cx.beginPath(); cx.arc(player.x,player.y,9,0,Math.PI*2); cx.fill();
-  cx.strokeStyle="rgba(242,239,232,.85)"; cx.lineWidth=2; cx.stroke();
-}
-
-function mix(a,b,t){
-  const p=s=>[parseInt(s.slice(1,3),16),parseInt(s.slice(3,5),16),parseInt(s.slice(5,7),16)];
-  const A=p(a),B=p(b);
-  return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")";
-}
-function wrap(text,n){
-  const out=[];
-  String(text).split("\n").forEach(para=>{
-    if(!para.trim()){ out.push(""); return; }
-    let line="";
-    para.trim().split(/\s+/).forEach(word=>{
-      if((line+" "+word).trim().length>n){ out.push(line.trim()); line=word; }
-      else line=(line+" "+word).trim();
-    });
-    if(line) out.push(line);
+/* THE SCATTER — every sentence ever typed. Nothing sorts it, nothing arranges
+   it, nothing highlights it. Your hand puts things beside other things, and what
+   that means is yours. Paragraphs stay unformed and incomplete; nothing here has
+   a finished state and nothing marks one. */
+function drawScatter(){
+  g.fillStyle="#dcd8cd"; g.fillRect(0,0,W,H);
+  g.strokeStyle="rgba(140,132,120,.18)"; g.lineWidth=1;
+  for(let x=0;x<W;x+=54){ g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
+  for(let y=0;y<H;y+=54){ g.beginPath(); g.moveTo(0,y); g.lineTo(W,y); g.stroke(); }
+  S.tiles.forEach(t=>{
+    const s=S.kept[t.i]; if(s===undefined) return;
+    g.fillStyle="rgba(250,248,242,.97)"; g.fillRect(t.x, t.y, 134, 26);
+    g.strokeStyle="rgba(90,84,74,.45)"; g.lineWidth=1; g.strokeRect(t.x, t.y, 134, 26);
+    g.fillStyle="#17171a"; g.font="10px Georgia,serif"; g.textAlign="left";
+    g.fillText(clipTo(s, 124, "10px Georgia,serif"), t.x+6, t.y+17);
   });
-  return out;
+}
+
+function wrapTo(text, wid, font){
+  g.font=font; const out=[]; let line="";
+  for(const w of String(text).split(/\s+/)){
+    const t=line?line+" "+w:w;
+    if(g.measureText(t).width>wid && line){ out.push(line); line=w; } else line=t;
+  }
+  if(line) out.push(line); return out;
+}
+function clipTo(text, wid, font){
+  g.font=font; let s=String(text);
+  if(g.measureText(s).width<=wid) return s;
+  while(s.length>1 && g.measureText(s+"…").width>wid) s=s.slice(0,-1);
+  return s+"…";
 }
 
 requestAnimationFrame(frame);
