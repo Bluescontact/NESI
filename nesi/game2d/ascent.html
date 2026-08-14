@@ -98,27 +98,69 @@ const FACES  = WATER.faces || [[],[],[]];
 
    The turn is not a level. It is the shared face, and you cross it by having
    reached the bottom. */
+/* ═══ THE TWELVE ARE ALL WATER, AND THEY ARE EDGES ══════════════════════════
+   Kevin's correction, 2026-08-14, verbatim:
+
+     "Each edge is a game level... each game level, affects all other levels.
+      12 levels through water mechanics, that seeds the information needed for
+      the lens and light mechanics to develop into the final 12 lens heliostat."
+
+   THREE THINGS CHANGED, and they are structural, not cosmetic.
+
+   1 · A LEVEL IS AN EDGE, NOT A SEAT. The lenses take the VERTICES — already
+       ruled, 2026-08-07: "the lenses take the vertices — the organs are
+       executables, not content." So the levels cannot also be vertices. They are
+       the edges: the runs BETWEEN things, which is what water does. A vertex is
+       where something comes to rest; an edge is where it travels.
+
+   2 · ALL TWELVE ARE WATER. The lens and the light are no longer six levels
+       standing beside six others. They are what the water SEEDS. The twelve run
+       the whole water mechanic from the first sentence to the still page, and
+       the ascent is what that makes possible — not a parallel ladder.
+
+   3 · EVERY LEVEL AFFECTS EVERY OTHER, and it does so THROUGH THE WATER rather
+       than through a rule that says so. There is one WATER below, every level
+       both reads and writes it, and no level owns it. Hold at the dam and the
+       filter sees a different load. Cut a channel and the ground settles
+       elsewhere. Let something go in the deep and the tank opens on a changed
+       surface. The coupling is not a feature bolted on; it is the single shared
+       body they all stand in.
+
+   WHICH SOLID'S TWELVE EDGES — NOT FIXED, AND DELIBERATELY NOT INVENTED.
+   Twelve edges is an octahedron or a cube; the cuboctahedron carries twelve
+   VERTICES and twenty-four edges. The corpus has refused this exact class of
+   tie-break before — "leave it unfixed, the four are interchangeable" — and a
+   build that needs a specific solid has to say so out loud rather than pick one
+   to be convenient. So the twelve are ordered and adjacent, each sharing its
+   ends with its neighbours, and WHICH polyhedron's edge-set they are is Kevin's
+   and is open. Nothing below depends on the answer. */
 const LEVELS = [
-  // ── THE DESCENT · water · filters · NESI · everything falls ──────────────
-  {n:1,  key:"tank",     name:"THE TANK",          mech:"writing becomes water",             dir:"descent", cap:100},
-  {n:2,  key:"dam",      name:"THE DAM",           mech:"power comes at the release",        dir:"descent", cap:500},
-  {n:3,  key:"filter",   name:"THE FILTER",        mech:"separation by behaviour, by hand",  dir:"descent"},
-  {n:4,  key:"stations", name:"THE STATIONS",      mech:"three outputs, always",             dir:"descent"},
-  {n:5,  key:"ground",   name:"THE GROUND",        mech:"what it sets down is the ground",   dir:"descent"},
-  {n:6,  key:"deep",     name:"THE DEEP",          mech:"the line is yours; what you release comes back", dir:"descent"},
-  // ── THE ASCENT · light · lens · heliostat · everything rises ─────────────
-  {n:7,  key:"lens",     name:"THE LENS",          mech:"the hand works the material",       dir:"ascent",  cap:250},
-  {n:8,  key:"heliostat",name:"THE HELIOSTAT",     mech:"light rises from the world below",  dir:"ascent"},
-  {n:9,  key:"seating",  name:"THE SEATING",       mech:"the frame is fed, never filled",    dir:"ascent"},
-  {n:10, key:"winter",   name:"THE OVERWINTERING", mech:"time cannot be counterfeited",      dir:"ascent"},
-  {n:11, key:"garden",   name:"THE GARDEN",        mech:"it fills only from play",           dir:"ascent"},
-  {n:12, key:"cast",     name:"THE CAST",          mech:"the only door out, by hand",        dir:"ascent"}
+  {n:1,  key:"tank",     name:"THE TANK",          mech:"writing becomes water",                  cap:100},
+  {n:2,  key:"rain",     name:"THE RAIN",          mech:"the world receives without reading"},
+  {n:3,  key:"dam",      name:"THE DAM",           mech:"power comes at the release"},
+  {n:4,  key:"channel",  name:"THE CHANNEL",       mech:"water cuts where the grain already runs"},
+  {n:5,  key:"filter",   name:"THE FILTER",        mech:"separation by behaviour, by hand"},
+  {n:6,  key:"stations", name:"THE STATIONS",      mech:"three outputs, always"},
+  {n:7,  key:"ground",   name:"THE GROUND",        mech:"what it sets down is the ground"},
+  {n:8,  key:"shoal",    name:"THE SHOAL",         mech:"arrangement, never a verdict"},
+  {n:9,  key:"sounding", name:"THE SOUNDING",      mech:"the line is yours"},
+  {n:10, key:"deep",     name:"THE DEEP",          mech:"what you release comes back as ground"},
+  {n:11, key:"stilling", name:"THE STILLING",      mech:"the page falling quiet is the mechanic"},
+  {n:12, key:"winter",   name:"THE OVERWINTERING", mech:"time cannot be counterfeited"}
+];
+
+/* THE ASCENT is no longer levels. It is what the twelve seed, reached from the
+   water once the water has something to give it. */
+const ASCENT = [
+  {key:"lens",      name:"THE LENS",      mech:"the hand works the material", cap:250},
+  {key:"seating",   name:"THE SEATING",   mech:"the frame is fed, never filled", cap:500},
+  {key:"heliostat", name:"THE HELIOSTAT", mech:"twelve mirrors, twelve lenses"}
 ];
 
 /* ── state ────────────────────────────────────────────────────────────────── */
-const SCHEMA="ascent.1", KEY="nesi.ascent";
+const SCHEMA="ascent.2", KEY="nesi.ascent";   // .2 — water became a body, not a number
 let S = {
-  done:{}, at:1, lenses:[], water:0, released:false, ground:[], caught:[],
+  done:{}, at:1, lenses:[], water:null, released:false, ground:[], caught:[],
   // THE WORLD KEEPS WHAT IT TAKES. Every sentence committed at the tank, held
   // verbatim, appended, never trimmed, never reordered, never read for content,
   // never counted at any door. It does not leave in the cast.
@@ -129,6 +171,53 @@ let S = {
   // in here. One list, two places — there is no second registry.
   seated:[]
 };
+/* ═══ THE WATER — one body, twelve edges, no owner ══════════════════════════
+   "each game level, affects all other levels."
+
+   This is how. There is ONE water. Every level reads it on entry and writes it
+   on the act, and no level holds a private copy. The coupling is therefore not a
+   rule the code obeys — it is the fact that there is nothing else for a level to
+   act on.
+
+   NONE OF THIS REACHES THE PLAYER AS A NUMBER. Every field is read on screen as
+   FORM: how high the water stands, how much it carries, whether it is clear or
+   turbid, where the bed is cut, whether the surface is moving. Law 2 is not
+   strained by a model having numbers in it; it is broken by putting one in front
+   of the player, and nothing here is ever printed.
+
+   WHAT SEEDS THE ASCENT. `readings` is the information the twelve produce — one
+   entry per level actually played, recording what the water DID there. It is not
+   a score and cannot be raised by playing better; it is a trace. The lens and
+   the light develop out of it, which is the whole shape Kevin named: twelve
+   water levels seeding the twelve-lens heliostat. */
+const WATER0 = {
+  level:0,        // how high it stands — rises with what was written, falls when released
+  load:0,         // what it carries in suspension — raised by cutting, dropped by settling
+  clarity:1,      // 1 clear, 0 turbid — falls when disturbed, recovers only in stillness
+  cut:[],         // where the bed has been carved; a channel persists and steers later water
+  held:0,         // what the dam is holding right now
+  released:0,     // what has ever been let go
+  still:1,        // 1 the surface is at rest, 0 it is moving
+  readings:[]     // {edge, what} — the trace the twelve leave for the lens and the light
+};
+function W_(){ if(!S.water || typeof S.water!=="object") S.water=JSON.parse(JSON.stringify(WATER0));
+               for(const k in WATER0) if(!(k in S.water)) S.water[k]=WATER0[k];
+               return S.water; }
+function clamp01(v){ return Math.max(0, Math.min(1, v)); }
+
+/* A level records what the water did on its edge. One per edge, replaced rather
+   than accumulated, so returning to a level revises its trace instead of
+   inflating it — there is nothing here to farm. */
+function reading(edge, what){
+  const w=W_(); const i=w.readings.findIndex(r=>r.edge===edge);
+  const r={edge, what};
+  if(i>=0) w.readings[i]=r; else w.readings.push(r);
+}
+/* What the ascent has to work with. A lens becomes available per THREE distinct
+   edges that have left a trace — so the twelve seed four, and the full twelve
+   lenses are an arc across many returns, not one sitting. */
+function seeded(){ return Math.floor(W_().readings.length/3); }
+
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Object.assign({schema:SCHEMA},S))); }catch(e){} }
 function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return; const d=JSON.parse(r);
   if(!d||d.schema!==SCHEMA) return; Object.keys(S).forEach(k=>{ if(k in d) S[k]=d[k]; }); }catch(e){} }
@@ -206,7 +295,9 @@ const SET = {
 /* 1 · THE TANK — "you type a hundred words, and you see the water flow into the
    dam." Writing becomes water. Every sentence you completed falls as a drop and
    pools behind the gate. Nothing reads it. */
-tank:{ enter(){ L.drops=[]; L.pool=S.water||0; L.sent=[]; if(!L.opened){ L.opened=true;
+tank:{ enter(){ const w=W_();
+    // READS THE ONE WATER: you open on the surface the other eleven left.
+    L.drops=[]; L.pool=w.level*90; L.sent=[]; if(!L.opened){ L.opened=true;
     openWrite(100,(text,n)=>{ L.sent=text.split(/(?<=[.!?])\s+/).filter(Boolean);
       if(!L.sent.length) L.sent=[text]; L.fed=0;
       /* THE WORLD MUST RETURN WHAT IT TAKES. Until 2026-08-14 the hundred words
@@ -220,9 +311,10 @@ tank:{ enter(){ L.drops=[]; L.pool=S.water||0; L.sent=[]; if(!L.opened){ L.opene
     L.drops.forEach(d=>{ d.v+=0.5; d.y+=d.v; });
     const floor=H-190;
     L.drops=L.drops.filter(d=>{ if(d.y>=floor-L.pool*1.6){ L.pool=Math.min(90,L.pool+3); return false; } return true; });
-    S.water=L.pool;
+    // WRITES THE ONE WATER: writing raises the level and stirs the surface.
+    const w=W_(); w.level=clamp01(L.pool/90); w.still=0;
     if(L.sent&&L.fed>=L.sent.length&&!L.drops.length&&L.pool>0){ L.settle=(L.settle||0)+dt;
-      if(L.settle>1200){ finish(); } } },
+      if(L.settle>1200){ reading(1,"raised"); save(); finish(); } } },
   draw(){ sky(); const floor=H-190;
     // the gate — a dam wall the water pools behind
     g.fillStyle="#6f675a"; g.fillRect(W*0.5+200, floor-120, 26, 140);
@@ -268,16 +360,25 @@ lens:{ enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-12
 /* 3 · THE DAM — "A dam restricts flow, accumulates head, and generates power at
    the moment of release — never at the moment of restriction." Hold, then let
    go. Holding is not producing. */
-dam:{ enter(){ L.head=0; L.open=0; L.spun=0; L.done=false; },
+dam:{ enter(){ const w=W_();
+    // READS: there is only as much head to gather as the tank actually raised.
+    L.cap=Math.max(0.15, w.level); L.head=0; L.open=0; L.spun=0; L.done=false; },
   step(dt){ if(typing) return;
     const press=keys["e"]||keys[" "];
-    if(!L.released){ if(press) L.head=Math.min(1,L.head+dt/2600); }
-    if(!press&&L.head>0.15&&!L.released){ L.released=true; }
+    const w=W_();
+    if(!L.released){ if(press){ L.head=Math.min(L.cap,L.head+dt/2600); w.held=L.head; w.still=1; } }
+    if(!press&&L.head>0.12&&!L.released){ L.released=true; }
     if(L.released){ L.open=Math.min(1,L.open+dt/700);
       L.spun+=L.head*L.open*dt*0.02; L.head=Math.max(0,L.head-dt/1400);
+      // WRITES: the release spends the level, stirs it, and puts the held load
+      // into suspension — which is exactly what THE FILTER will have to sort.
+      w.held=L.head; w.still=0;
       // The dam asks for no writing. It is a hand act — hold, then let go — and
       // the whole of it is that the wheel turns only on the drop.
-      if(L.open>=1&&L.head<=0&&!L.done){ L.done=true; S.released=true; save(); finish(); } } },
+      if(L.open>=1&&L.head<=0&&!L.done){ L.done=true; S.released=true;
+        w.released=clamp01(w.released+L.cap); w.level=clamp01(w.level-L.cap*0.55);
+        w.load=clamp01(w.load+L.cap*0.8); w.clarity=clamp01(w.clarity-L.cap*0.5);
+        reading(3,"released"); save(); finish(); } } },
   draw(){ sky(); const fy=H-170;
     g.fillStyle="rgba(74,108,122,.75)"; const hh=40+L.head*180;
     g.fillRect(W*0.5-300,fy-hh,300,hh); // the head, accumulating behind
@@ -301,7 +402,11 @@ ground:{ enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,
       const fy=H-150-Math.sin(b.x*0.01)*14;
       if(b.y>=fy){ b.y=fy; b.v*=-0.22; if(Math.abs(b.v)<0.6){ b.set=true; } } });
     if(all&&!L.k){ L.k=(L.k||0)+dt; }
-    if(L.k){ L.k+=dt; if(L.k>1400){ S.ground=L.blocks.map(b=>b.s); save(); finish(); } } },
+    if(L.k){ L.k+=dt; if(L.k>1400){ const w=W_();
+      // WRITES: settling takes the load out of the water and leaves it clearer.
+      S.ground=L.blocks.map(b=>b.s);
+      w.load=clamp01(w.load-0.45); w.clarity=clamp01(w.clarity+0.30); w.still=1;
+      reading(7,"settled"); save(); finish(); } } },
   draw(){ sky();
     // A settled block and a falling one are the same block. Settling is a fact
     // about where it is, not a state the world congratulates.
@@ -314,17 +419,26 @@ ground:{ enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,
 /* 5 · THE FILTER — four fractions, told apart by BEHAVIOUR, never by colour
    alone: bedload sinks fast, suspended hangs, dissolved is invisible, film
    clings to the top. The hand catches them. No computed pass. */
-filter:{ enter(){ L.bits=[]; L.caught=0; L.spawn=0;
+filter:{ enter(){ const w=W_();
+    // READS: the load the dam put into suspension is what there is to sort. Let
+    // nothing go and there is almost nothing here — which is a fact about the
+    // water, not a judgement about you.
+    L.need=Math.max(2, Math.round(2+w.load*6));
+    L.rate=Math.max(180, 620-w.load*420);
+    L.bits=[]; L.caught=0; L.spawn=0;
     L.kinds=[{k:"bedload",v:2.6,w:0},{k:"suspended",v:0.7,w:1.4},{k:"film",v:0.12,w:0.2}]; },
   step(dt){ L.spawn+=dt;
-    if(L.spawn>420&&L.bits.length<18){ L.spawn=0; const t=L.kinds[(Math.random()*3)|0];
+    if(L.spawn>L.rate&&L.bits.length<18){ L.spawn=0; const t=L.kinds[(Math.random()*3)|0];
       L.bits.push({x:120+Math.random()*(W-240),y:90,ph:Math.random()*7,t}); }
     L.bits.forEach(b=>{ b.ph+=dt*0.004; b.y+=b.t.v; b.x+=Math.sin(b.ph)*b.t.w; });
     if(mouse.clicked){ mouse.clicked=false;
       for(let i=0;i<L.bits.length;i++){ const b=L.bits[i];
         if(Math.hypot(mouse.x-b.x,mouse.y-b.y)<26){ S.caught.push(b.t.k); L.caught++; L.bits.splice(i,1); break; } } }
     L.bits=L.bits.filter(b=>b.y<H-90);
-    if(L.caught>=6){ save(); finish(); } },
+    // WRITES: what the hand takes out of suspension leaves the water clearer.
+    if(L.caught>=L.need){ const w=W_();
+      w.load=clamp01(w.load-0.10*L.caught); w.clarity=clamp01(w.clarity+0.09*L.caught);
+      reading(5,"sorted"); save(); finish(); } },
   draw(){ sky();
     L.bits.forEach(b=>{ g.fillStyle="#5d6f78"; g.beginPath();
       if(b.t.k==="bedload"){ g.arc(b.x,b.y,8,0,7); }
@@ -344,7 +458,12 @@ stations:{ enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
       for(const [k,r] of Object.entries(b)){
         if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
           S.routed[k]++; L.i++;                      // set-down: nothing happens. no toast, no chime.
-          if(L.i>=L.queue.length){ save(); finish(); } break; } } } },
+          if(L.i>=L.queue.length){ const w=W_();
+          // WRITES: sending downstream puts it back in the water; dropping to
+          // the lake takes it out; setting down does nothing at all, and that is
+          // the point — law 6, no destination, no feedback.
+          w.load=clamp01(w.load + S.routed.spire*0.05 - S.routed.lake*0.04);
+          reading(6,"routed"); save(); finish(); } break; } } } },
   draw(){ sky(); const b=bays();
     Object.entries(b).forEach(([k,r])=>{ g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=2;
       g.strokeRect(r.x,r.y,r.w,r.h);
@@ -416,8 +535,10 @@ heliostat:{ enter(){ L.a=-0.9; L.grown=0; },
    ground is bare — not failing. */
 winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
   step(dt){ L.t+=dt;
-    if(!L.same&&L.t>1600&&!L.k){ S.rooted++; S.lastDay=today(); save(); L.k=1; }
-    if(L.t>2600&&(!L.same||L.ack)){ finish(); }
+    if(!L.same&&L.t>1600&&!L.k){ S.rooted++; S.lastDay=today();
+      // WRITES: rooting takes something out of the water for good.
+      const w=W_(); w.released=clamp01(w.released+0.08); w.still=1; save(); L.k=1; }
+    if(L.t>2600&&(!L.same||L.ack)){ reading(12, L.same?"held":"rooted"); save(); finish(); }
     if(L.same&&(keys["e"]||keys[" "])) L.ack=true; },
   draw(){ sky(); const fy=H-150; ground(fy);
     // what is standing, and what is simply bare
@@ -429,7 +550,151 @@ winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=toda
         g.beginPath(); g.moveTo(x-9,fy); g.lineTo(x+9,fy); g.stroke(); } } }
 },
 
-/* 6 · THE DEEP — the bottom of the descent, and where NESI is.
+/* 2 · THE RAIN — "the moment a sentence completes, it falls into the world as
+   visible rain… Never read, never judged — but lavishly received." The world
+   answers THAT you wrote, never WHAT. Your hand catches nothing here; it only
+   moves the catchment under what is already falling. */
+rain:{ enter(){ const w=W_();
+    // READS: it rains as much as the tank raised. A dry tank is a dry sky, and
+    // that is a fact about the water.
+    L.drops=[]; L.caught=0; L.need=6; L.t=0; L.rate=Math.max(90, 420-w.level*330);
+    L.pan=W/2; },
+  step(dt){ const w=W_(); L.t+=dt;
+    if(L.t>L.rate){ L.t=0; L.drops.push({x:60+Math.random()*(W-120), y:-10, v:1.4+Math.random()*1.2}); }
+    if(mouse.down) L.pan += (mouse.x-L.pan)*0.18;
+    const fy=H-150;
+    L.drops.forEach(d=>{ d.v+=0.05; d.y+=d.v; });
+    L.drops=L.drops.filter(d=>{
+      if(d.y>=fy){ if(Math.abs(d.x-L.pan)<70){ L.caught++; w.level=clamp01(w.level+0.012); }
+                   return false; }
+      return true; });
+    if(L.caught>=L.need){ w.still=0; reading(2,"received"); save(); finish(); } },
+  draw(){ sky(); const fy=H-150;
+    g.strokeStyle="rgba(74,108,122,.75)"; g.lineWidth=2;
+    L.drops.forEach(d=>{ g.beginPath(); g.moveTo(d.x,d.y); g.lineTo(d.x,d.y+9); g.stroke(); });
+    ground(fy);
+    // the catchment: a pan you slide under the sky. It never says it caught one.
+    g.fillStyle="rgba(74,108,122,.45)"; g.fillRect(L.pan-70, fy-8, 140, 12);
+    g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5; g.strokeRect(L.pan-70, fy-8, 140, 12); }
+},
+
+/* 4 · THE CHANNEL — "the water cuts where they already said things belong."
+   You drag a course across the bed. The cut PERSISTS in the one water, and every
+   later level runs down it. This is the clearest instance of an edge reaching
+   every other edge: what you carve here is the ground THE GROUND settles on. */
+channel:{ enter(){ const w=W_(); L.path=w.cut.slice(); L.drawing=false; L.startLen=L.path.length; },
+  step(){ const w=W_();
+    if(mouse.down){ const p=L.path[L.path.length-1];
+      if(!p || Math.hypot(mouse.x-p.x, mouse.y-p.y)>18){ L.path.push({x:mouse.x,y:mouse.y}); L.drawing=true; } }
+    if(!mouse.down && L.drawing && L.path.length-L.startLen>=8){
+      // WRITES: a channel is permanent. It raises the load (cutting stirs the
+      // bed) and it steers what comes after.
+      w.cut=L.path.slice(0,240);
+      w.load=clamp01(w.load+0.22); w.clarity=clamp01(w.clarity-0.18); w.still=0;
+      reading(4,"cut"); save(); finish(); } },
+  draw(){ sky(); const fy=H-140; ground(fy*0.0+0);
+    g.fillStyle="#a89f8e"; g.fillRect(0,0,W,H);
+    g.strokeStyle="rgba(140,132,120,.25)"; g.lineWidth=1;
+    for(let x=0;x<W;x+=44){ g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
+    // the grain already in the bed — you cut with it or across it, and nothing says which
+    g.strokeStyle="rgba(120,112,100,.30)"; g.lineWidth=2;
+    for(let i=0;i<7;i++){ const y=H*0.16+i*H*0.11; g.beginPath();
+      for(let x=0;x<=W;x+=24) g.lineTo(x, y+Math.sin(x*0.006+i)*14); g.stroke(); }
+    if(L.path.length>1){ g.strokeStyle="rgba(74,108,122,.85)"; g.lineWidth=9; g.lineCap="round"; g.lineJoin="round";
+      g.beginPath(); L.path.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.stroke(); }
+    ring(mouse.x,mouse.y,14); }
+},
+
+/* 8 · THE SHOAL — "Your sentences are shoals. They stand up out of the water
+   because you put them there, in your own words, unchanged… The arrangement is
+   the meaning; nothing labels it." You move them by hand. Nothing sorts. */
+shoal:{ enter(){ const w=W_();
+    // READS: what stands above the surface depends on how high the water is.
+    // Raise it and fewer show; release and more of the bed is out of the water.
+    L.st=(S.ground.length?S.ground:STONES).slice(0,9).map((s,i)=>({
+      s, x:W*0.16+(i%3)*W*0.24, y:H*0.30+Math.floor(i/3)*H*0.18, held:false}));
+    L.grab=null; L.moved=0; },
+  step(){ const w=W_();
+    if(mouse.down && !L.grab){ for(const t of L.st){
+      if(Math.abs(mouse.x-t.x)<70 && Math.abs(mouse.y-t.y)<16){ L.grab=t; break; } } }
+    if(!mouse.down && L.grab){ L.grab=null; L.moved++; }
+    if(L.grab){ L.grab.x=mouse.x; L.grab.y=mouse.y; }
+    if(L.moved>=3){ w.still=1; reading(8,"arranged"); save(); finish(); } },
+  draw(){ const w=W_();
+    g.fillStyle="#8fa2ab"; g.fillRect(0,0,W,H);
+    const line=H*0.30+ (1-w.level)*H*0.34;        // the waterline, set by the one water
+    g.fillStyle="rgba(74,108,122,.55)"; g.fillRect(0,line,W,H-line);
+    L.st.forEach(t=>{ const above=t.y<line;
+      g.fillStyle= above ? "rgba(242,239,232,.96)" : "rgba(120,140,150,.55)";
+      g.fillRect(t.x-70,t.y-13,140,26);
+      g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1; g.strokeRect(t.x-70,t.y-13,140,26);
+      if(above){ g.fillStyle="#17171a"; g.font="10px Georgia,serif"; g.textAlign="center";
+        g.fillText(wrap(t.s,30)[0]||"", t.x, t.y+4); } });
+    ring(mouse.x,mouse.y,16,"rgba(240,236,226,.5)"); }
+},
+
+/* 11 · THE STILLING — "your hand stirs the water's surface, and when the writing
+   stops, the water goes still on its own. The page falling quiet is the
+   mechanic." The one level whose act is stopping. Touch nothing and it finishes;
+   touch anything and it does not. Clarity recovers only here. */
+stilling:{ enter(){ L.q=0; L.ripple=1; },
+  step(dt){ const w=W_();
+    const touched = mouse.down || Object.keys(keys).some(k=>keys[k]);
+    if(touched){ L.q=0; L.ripple=1; w.still=0; }
+    else { L.q+=dt; L.ripple=Math.max(0,1-L.q/3000);
+      if(L.q>3000){ w.still=1; w.clarity=clamp01(w.clarity+0.35); w.load=clamp01(w.load-0.15);
+        reading(11,"stilled"); save(); finish(); } } },
+  draw(){ const w=W_();
+    const gr=g.createLinearGradient(0,0,0,H);
+    gr.addColorStop(0,"#c9d3d6"); gr.addColorStop(1,"#6d8792"); g.fillStyle=gr; g.fillRect(0,0,W,H);
+    const cy2=H*0.52;
+    for(let i=0;i<9;i++){
+      const a=0.30*(1-i/9)*L.ripple;
+      if(a<=0.004) continue;
+      g.strokeStyle="rgba(240,244,246,"+a.toFixed(3)+")"; g.lineWidth=1.5;
+      g.beginPath();
+      for(let x=0;x<=W;x+=14) g.lineTo(x, cy2+i*22-70 + Math.sin(x*0.02+i*0.7)*10*L.ripple);
+      g.stroke(); }
+    // when it is still, the surface is a flat line and nothing else happens
+    if(L.ripple<0.05){ g.strokeStyle="rgba(240,244,246,.5)"; g.lineWidth=1;
+      g.beginPath(); g.moveTo(0,cy2); g.lineTo(W,cy2); g.stroke(); } }
+},
+
+/* 9 · THE SOUNDING — "the line is yours, you choose where to drop it, and the
+   reading is yours to take… the machine has no line."
+
+   It shares the bed with THE DEEP and uses the same ground: a line dropped over
+   settled writing finds bottom and brings ONE sentence back, verbatim and
+   unlabelled, with nothing saying why that one. A line dropped where nothing
+   settled runs out. That is a deep, and nothing records where the deeps are —
+   an absence is not written down.
+
+   READS the one water twice over: what is down there at all is what THE GROUND
+   settled, and how far a line can see is the clarity THE FILTER and THE STILLING
+   left behind. Sound a turbid lake and it gives you less. */
+sounding:{ enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
+  step(){ if(!mouse.clicked) return; mouse.clicked=false;
+    if(mouse.y < H*0.24) return;
+    const i = keptAtX(mouse.x), found = i>=0 && Math.random() < 0.35+0.65*L.clear;
+    L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
+    if(found) L.up=i;
+    S.soundings.push(found?"floor":"deep");
+    if(L.lines.length>=4){ const w=W_(); w.still=1;
+      reading(9,"sounded"); save(); finish(); } },
+  draw(){ g.fillStyle="#7f93a0"; g.fillRect(0,0,W,H*0.42);
+    g.fillStyle="#2b3b45"; g.fillRect(0,H*0.42,W,H);      // below the line: nothing, ever
+    L.lines.forEach(l=>{ g.strokeStyle="rgba(240,236,226,.75)"; g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(l.x,H*0.18); g.lineTo(l.x,H*0.18+l.d); g.stroke();
+      if(!l.deep){ g.fillStyle="rgba(240,236,226,.9)";
+        g.beginPath(); g.arc(l.x,H*0.18+l.d,4,0,7); g.fill(); } });
+    // What the last line brought up. Drawn BY INDEX out of the store — this
+    // path cannot be handed a string, so no machine wording can reach the
+    // screen through it. Verbatim, unlabelled, with nothing saying why that one.
+    drawKept(L.up, W/2, H*0.085);
+    ring(mouse.x,mouse.y,14,"rgba(240,236,226,.5)"); }
+},
+
+/* 10 · THE DEEP — the bottom of the water, and where NESI is.
    Two halves of one mechanic, and they are the same act: you drop a line, and
    you let something go.
      "the line is yours, you choose where to drop it, and the reading is yours
@@ -458,7 +723,13 @@ deep:{ enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
     } else {                                    // below the line: let it go
       L.sunk++; S.sank.push(1);
     }
-    if(L.lines.length>=3 && L.sunk>=3){ save(); finish(); } },
+    // THE DEEP's own act is LETTING GO. Sounding moved to its own edge (9) when
+    // the twelve became all-water; a line may still be dropped here, and it uses
+    // the same ground, but it is not what finishes this edge.
+    if(L.sunk>=3){ const w=W_();
+      // WRITES: what you let go leaves the water and comes back later as ground.
+      w.released=clamp01(w.released+0.12*L.sunk); w.load=clamp01(w.load-0.06*L.sunk);
+      reading(10,"let go"); save(); finish(); } },
   draw(){ g.fillStyle="#7f93a0"; g.fillRect(0,0,W,H*0.45);
     g.fillStyle="#2b3b45"; g.fillRect(0,H*0.45,W,H);   // below the line: nothing. ever.
     // the lines you dropped. A line that found bottom ends in a mark; a line
@@ -618,6 +889,11 @@ function keptDepth(i){ const n=S.kept.length;
 /* Drawn FROM THE STORE BY INDEX. This function cannot be handed a string, so
    no machine wording can reach the screen through it. */
 function drawKept(i,cx2,y){
+  // The index guard has to reject a NON-index too. `undefined < 0` is false and
+  // `undefined >= n` is false, so a call with no argument slipped straight past
+  // the original test and crashed on S.kept[undefined].split — which is how THE
+  // SOUNDING died the first time it was walked, 2026-08-14.
+  if(!Number.isInteger(i)) return;
   if(!S.kept||i<0||i>=S.kept.length) return;
   const s=S.kept[i]; g.fillStyle="rgba(240,236,226,.92)";
   g.font="15px Georgia,serif"; g.textAlign="center";
@@ -731,56 +1007,78 @@ function beamCrossesWater(m,ang){
    A seat you have not reached is drawn hollow. Nothing says "locked", nothing is
    greyed out with a name behind it, and nothing is written on this screen except
    the names of the two directions. ─────────────────────────────────────────── */
+/* THE MAP IS A CIRCUIT OF TWELVE EDGES, not two arcs.
+   A level is an EDGE — the run between two points — so the map draws the runs
+   and puts the level on the run. Twelve edges close a circuit, because the water
+   does: it is written, falls, is held, cuts, is sorted, routed, settles, stands,
+   is sounded, released, goes still, and waits for another day. The last edge
+   meets the first, which is what a day returning to a still surface IS.
+
+   The joints between edges are drawn small and carry nothing. They are not seats
+   — the seats are the twelve VERTICES of the equilibrium, and those belong to
+   the lenses. A joint here is only where one run hands to the next. */
+function mapNodes(){
+  const R=Math.min(W,H)*0.34, cy2=H*0.50;
+  return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2 - Math.PI/2;
+    return {x:W/2+R*Math.cos(a)*1.24, y:cy2+R*Math.sin(a)}; });
+}
+/* Edge i runs from joint i to joint i+1, and the level sits at its midpoint. */
 function mapPts(){
-  const mid=H*0.52, amp=Math.min(W,H)*0.19, rx=Math.min(W*0.32,340);
-  return LEVELS.map((l,i)=>{
-    if(l.dir==="descent"){                     // falls: left to right, bowing down
-      const t=i/5;
-      return {x:W/2-rx+(2*rx)*t, y:mid+30+Math.sin(t*Math.PI)*amp, l};
-    }
-    const t=(i-6)/5;                            // rises: right to left, bowing up
-    return {x:W/2+rx-(2*rx)*t, y:mid-30-Math.sin(t*Math.PI)*amp, l};
-  });
+  const N=mapNodes();
+  return LEVELS.map((l,i)=>{ const a=N[i], b=N[(i+1)%12];
+    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2, a, b, l}; });
 }
 function drawMap(){
   const gr=g.createLinearGradient(0,0,0,H);
   gr.addColorStop(0,"#e2e5dd"); gr.addColorStop(.5,"#c6c3b6"); gr.addColorStop(1,"#98a29e");
   g.fillStyle=gr; g.fillRect(0,0,W,H);
-  const P=mapPts(), mid=H*0.52;
+  const N=mapNodes(), P=mapPts(), w=W_();
 
-  // the shared face, seen edge-on. The lake is on it.
-  g.strokeStyle="rgba(60,54,44,.42)"; g.lineWidth=2;
-  g.beginPath(); g.moveTo(W*0.10,mid); g.lineTo(W*0.90,mid); g.stroke();
-  g.fillStyle="rgba(74,108,122,.32)";
-  g.beginPath(); g.ellipse(W/2,mid,90,11,0,0,7); g.fill();
+  // THE ONE WATER, standing in the middle of the circuit that made it. Its
+  // height and its clarity are the twelve edges' combined doing, read as form
+  // and never as a figure.
+  const lr=Math.min(W,H)*0.15*(0.45+0.55*w.level);
+  g.fillStyle="rgba(74,108,122,"+(0.16+0.34*(1-w.clarity)+0.14*w.level).toFixed(3)+")";
+  g.beginPath(); g.ellipse(W/2,H*0.50,lr*1.6,lr*0.44,0,0,7); g.fill();
+  // what the hand carved in THE CHANNEL, lying where every edge can see it
+  if(w.cut&&w.cut.length>1){ g.strokeStyle="rgba(60,80,92,.35)"; g.lineWidth=4;
+    g.beginPath(); w.cut.forEach((p,i)=>{ const x=W/2+(p.x-W/2)*0.32, y=H*0.50+(p.y-H*0.52)*0.28;
+      i?g.lineTo(x,y):g.moveTo(x,y); }); g.stroke(); }
 
-  const path=(a,b,col)=>{ g.strokeStyle=col; g.lineWidth=1.5; g.beginPath();
-    for(let i=a;i<=b;i++){ i===a?g.moveTo(P[i].x,P[i].y):g.lineTo(P[i].x,P[i].y); } g.stroke(); };
-  path(0,5,"rgba(74,108,122,.6)");     // water falls
-  path(6,11,"rgba(190,170,110,.8)");   // light rises
+  // THE TWELVE EDGES. A run that has been walked carries water; one that has not
+  // is the dry bed it is, and dry is a correct state.
+  P.forEach(p=>{ const done=!!S.done[p.l.n], open=unlocked(p.l.n);
+    g.strokeStyle= done ? "rgba(74,108,122,.85)" : open ? "rgba(90,84,74,.55)" : "rgba(90,84,74,.20)";
+    g.lineWidth= done ? 5 : 2;
+    g.beginPath(); g.moveTo(p.a.x,p.a.y); g.lineTo(p.b.x,p.b.y); g.stroke(); });
 
-  // which way each direction runs, said by the arrow and never by a sentence
-  g.font="16px Georgia,serif"; g.textAlign="center";
-  g.fillStyle="rgba(74,108,122,.8)";  g.fillText("↓", W*0.055, mid+20);
-  g.fillStyle="rgba(150,132,74,.95)"; g.fillText("↑", W*0.945, mid-12);
+  // the joints, where one run hands to the next. They carry nothing — the seats
+  // are the equilibrium's twelve vertices and those belong to the lenses.
+  N.forEach(n=>{ g.beginPath(); g.arc(n.x,n.y,3,0,7);
+    g.fillStyle="rgba(60,54,44,.45)"; g.fill(); });
 
-  P.forEach(p=>{ const done=!!S.done[p.l.n], open=unlocked(p.l.n), asc=p.l.dir==="ascent";
-    g.beginPath(); g.arc(p.x,p.y,done?14:10,0,7);
-    if(done){ g.fillStyle= asc?"#c8b98a":"#7f97a4"; g.fill(); }
-    g.strokeStyle= open?"rgba(40,40,44,.78)":"rgba(90,84,74,.28)"; g.lineWidth=2; g.stroke();
-    if(open){ const out= asc?-24:26;
-      g.fillStyle="rgba(30,30,34,.88)"; g.font="12px Georgia,serif"; g.textAlign="center";
+  P.forEach(p=>{ const open=unlocked(p.l.n), out = p.y<H*0.50 ? -20 : 24;
+    if(open){
+      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif"; g.textAlign="center";
       g.fillText(p.l.name, p.x, p.y+out);
-      g.fillStyle="rgba(90,84,74,.85)"; g.font="10.5px Georgia,serif";
-      g.fillText(p.l.mech, p.x, p.y+out+(asc?-13:13)); }
+      g.fillStyle="rgba(90,84,74,.85)"; g.font="10px Georgia,serif";
+      g.fillText(p.l.mech, p.x, p.y+out+(out<0?-12:12)); }
     if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
-      g.beginPath(); g.arc(p.x,p.y,21,0,7); g.stroke(); } });
+      g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
+
+  // WHAT THE TWELVE HAVE SEEDED — one lens per three edges that left a trace.
+  // Nothing counts them out loud; there are simply more of them, or there are not.
+  const s=seeded();
+  for(let i=0;i<4;i++){ const x=W/2+(i-1.5)*32, y=44;
+    g.beginPath(); g.arc(x,y,7,0,7);
+    if(i<s){ g.fillStyle="#c8b98a"; g.fill(); }
+    g.strokeStyle= i<s ? "rgba(60,54,44,.7)" : "rgba(90,84,74,.25)"; g.lineWidth=1.5; g.stroke(); }
 
   g.font="11px Georgia,serif";
   g.textAlign="left";  g.fillStyle="rgba(58,78,90,.85)";
-  g.fillText("THE DESCENT · water · filters · nesi", W*0.06, H-26);
+  g.fillText("TWELVE EDGES · one water · each reaches the others", W*0.06, H-26);
   g.textAlign="right"; g.fillStyle="rgba(118,102,52,.9)";
-  g.fillText("THE ASCENT · light · lens · heliostat", W*0.94, 32);
+  g.fillText("what the water seeds", W*0.94, 32);
 }
 function hovered(){ const P=mapPts();
   for(const p of P){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
