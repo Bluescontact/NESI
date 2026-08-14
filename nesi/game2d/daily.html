@@ -88,6 +88,24 @@
   #up .arr{margin-top:14px;padding:12px 14px;background:#e8eef1;
     border-left:3px solid var(--water);white-space:pre-wrap;cursor:pointer}
   #up .arr:hover{background:#dfe8ec}
+  /* TILES on THE TABLE. Each sentence its own tile, in written order, where your
+     hand left it. A merged tile carries its seams; a tile with an arrival is
+     ringed. No colour carries a distinction on its own. */
+  #table{position:fixed;inset:0;background:#cfc9bd;display:none;overflow:auto}
+  #table .tile{position:absolute;width:230px;background:#faf8f2;border:1px solid rgba(90,84,74,.5);
+    padding:9px 11px;font-size:12.5px;line-height:1.5;cursor:grab;white-space:pre-wrap;
+    box-shadow:0 2px 6px rgba(0,0,0,.07)}
+  #table .tile.drag{cursor:grabbing;box-shadow:0 12px 28px rgba(0,0,0,.20);z-index:9}
+  #table .tile.over{border-color:#40606f;border-width:2px}
+  #table .tile.arr{border-left:3px solid #6f93a4}
+  #table .tile.seamed{border-style:double;border-width:3px}
+  #table .src{display:block;margin-top:6px;font-size:10px;color:#7d766a;letter-spacing:.04em}
+  #seams{position:fixed;left:50%;top:10vh;transform:translateX(-50%);width:min(620px,86vw);
+    background:var(--paper);border:1px solid rgba(90,84,74,.5);padding:18px 20px;display:none;
+    max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.6;
+    box-shadow:0 16px 44px rgba(0,0,0,.2)}
+  #seams .part{padding:8px 0;border-top:1px solid rgba(90,84,74,.22);white-space:pre-wrap}
+  #seams .part:first-child{border-top:none}
   @media (max-width:640px){ #bg,#page{font-size:17px;padding:6vh 20px 46vh} }
 </style>
 
@@ -95,6 +113,8 @@
 <div id="bg" aria-hidden="true"></div>
 <textarea id="page" spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
 <div id="up"></div>
+<div id="table"></div>
+<div id="seams"></div>
 
 <script>
 "use strict";
@@ -257,10 +277,19 @@ addEventListener("visibilitychange", ()=>{ if(document.hidden){ S.text=page.valu
 const up=document.getElementById("up");
 let line=null, openStone=-1;
 
+/* The bed, where the settled stones lie. Derived from how many days have
+   settled — never displayed as a figure. */
+function bedY(){
+  const bands=new Set(held().map(s=>s.d)).size;
+  return innerHeight - Math.min(innerHeight*0.30, 26+bands*13);
+}
+/* A merged part does not double: its words live in the merged stone now, so the
+   line reaches what is held and not what was absorbed. */
 function soundAt(x){
-  if(!S.stones.length) return -1;
-  const i=Math.floor((x/innerWidth)*S.stones.length);
-  return (i>=0 && i<S.stones.length) ? i : -1;
+  const h=held(); if(!h.length) return -1;
+  const i=Math.floor((x/innerWidth)*h.length);
+  if(i<0||i>=h.length) return -1;
+  return S.stones.indexOf(h[i]);
 }
 function paintUp(){
   up.textContent="";
@@ -288,20 +317,144 @@ function paintUp(){
 addEventListener("pointerdown", e=>{
   /* working in what came up. The Node test is not decoration: contains() throws
      on anything that is not a Node, and a pointer event can carry one. */
-  if(e.target instanceof Node && up.contains(e.target)) return;
+  if(e.target instanceof Node && (up.contains(e.target) || tableEl.contains(e.target)
+     || seamsEl.contains(e.target))) return;
+  if(tableOpen) return;
   if(!still) return;                                /* your hand is still writing */
   const wy=innerHeight*(1-level*0.42);
   if(e.clientY < wy){ return; }
+  /* THE BED IS WHERE THE STONES LIE, so that is where the table opens. Above it,
+     in the open water, the line goes down. The two acts are the two depths — no
+     button names either one. */
+  if(e.clientY >= bedY()){ openTable(); return; }
   const i=soundAt(e.clientX);
   line={x:e.clientX, y:wy, d:0, max:innerHeight-wy, found:i>=0};
   openStone=i; paintUp();                            /* nothing found shows nothing */
   if(i>=0) save();
 });
 addEventListener("keydown", e=>{
-  if(e.key==="Escape"){ openStone=-1; paintUp(); page.focus(); return; }
+  if(e.key==="Escape"){
+    if(seamsEl.style.display==="block"){ seamsEl.style.display="none"; return; }
+    if(tableOpen){ closeTable(); return; }
+    openStone=-1; paintUp(); page.focus(); return;
+  }
+  if(tableOpen) return;
   if(document.activeElement!==page && !up.contains(document.activeElement)
      && !e.ctrlKey && !e.metaKey && !e.altKey){ page.focus(); still=false; quiet=0; }
 });
+
+/* ═══ TILES AND THE TABLE ═══════════════════════════════════════════════════
+   Ported 2026-08-14 from nesi/world2d/scripts/writing_table.gd and
+   writing_store.gd:232-290. Names are the corpus's own — THE_MAP_2026-08-11.md:
+   "Four faces, the intake's own: THE TABLE (centre — it touches all three) ·
+   BLIND · TILES · SEQUENTIAL."
+
+   TILES — "each sentence its own tile, in written order" (writing_field.gd:58).
+   THE TABLE — "every source together, source legible on every tile. Drag a tile
+   and it stays; drop it onto another and they merge, in written order, seams
+   kept." (writing_table.gd:2,156)
+
+   THE MERGE, carried exactly:
+     "Two or more stones become one, verbatim, IN WRITTEN ORDER — by their
+      numbers, NEVER by the order they were picked. THE SEAMS ARE KEPT IN THE
+      DATA: every part is snapshotted on the merged stone AND stays in the bank,
+      staged 'merged', so a merge could be taken apart later. NO UNMERGE CONTROL
+      EXISTS — whether a merge can be undone is unmarked and is Kevin's;
+      preserving the option costs nothing, deciding it is not this file's."
+     "Source: differing sources are ALL carried, visibly — never one picked,
+      never blanked."
+
+   THE SEAMS PANE: "shows them, in written order, verbatim, and closes again.
+   READING ONLY: opening changes nothing, records nothing, says nothing."
+
+   AND THE FORK THAT IS NOT ENTERED: "No machine ever decides which sentences are
+   attempts at the same sentence — that fork is not entered and not defaulted."
+   Nothing here suggests a merge, groups tiles, or orders them by anything but
+   the number they were written in. The hand carries a tile onto another or
+   nothing happens. */
+const tableEl=document.getElementById("table"), seamsEl=document.getElementById("seams");
+let tableOpen=false, carried=null, grabDX=0, grabDY=0;
+
+const held = () => S.stones.filter(s=>s.stage!=="merged");
+
+function layout(){
+  /* Tiles begin where they fall, in WRITTEN ORDER, and never move again unless a
+     hand moves them. Nothing sorts, groups, or re-flows them. */
+  const cols=Math.max(1,Math.floor((innerWidth-40)/250));
+  held().forEach((s,i)=>{ if(typeof s.x!=="number"){
+    s.x=20+(i%cols)*250; s.y=20+Math.floor(i/cols)*116; } });
+}
+function openTable(){ tableOpen=true; layout(); paintTable(); tableEl.style.display="block"; }
+function closeTable(){ tableOpen=false; tableEl.style.display="none"; seamsEl.style.display="none"; page.focus(); }
+
+function paintTable(){
+  tableEl.textContent="";
+  held().forEach(s=>{
+    const el=document.createElement("div");
+    el.className="tile" + (s.arrival?" arr":"") + (s.seams?" seamed":"");
+    el.style.left=s.x+"px"; el.style.top=s.y+"px";
+    el.appendChild(document.createTextNode(s.t));
+    /* source legible on every tile — all of them, joined, never one picked */
+    const src=document.createElement("span"); src.className="src";
+    src.textContent=s.d; el.appendChild(src);
+    el.addEventListener("pointerdown", e=>{
+      e.stopPropagation();
+      /* a merged tile opens its seams — reading only */
+      if(s.seams && e.detail>1){ showSeams(s); return; }
+      carried=s; grabDX=e.clientX-s.x; grabDY=e.clientY-s.y;
+      el.classList.add("drag"); el.setPointerCapture(e.pointerId);
+    });
+    el.addEventListener("pointermove", e=>{
+      if(carried!==s) return;
+      s.x=e.clientX-grabDX; s.y=e.clientY-grabDY;
+      el.style.left=s.x+"px"; el.style.top=s.y+"px";
+      markTarget(s);
+    });
+    el.addEventListener("pointerup", e=>{
+      if(carried!==s) return;
+      el.classList.remove("drag");
+      const t=targetUnder(s);
+      carried=null;
+      if(t) merge(s,t); else { dirty=true; save(); paintTable(); }
+    });
+    tableEl.appendChild(el);
+  });
+}
+/* CENTRE-IN IS THE GUARD AGAINST A GRAZE (writing_table.gd:96). A tile merges
+   only when its own centre is inside another — brushing past does nothing. */
+function centreOf(s){ return {x:s.x+115, y:s.y+50}; }
+function targetUnder(s){
+  const c=centreOf(s);
+  return held().find(o=> o!==s && c.x>=o.x && c.x<=o.x+230 && c.y>=o.y && c.y<=o.y+100 ) || null;
+}
+function markTarget(s){
+  const t=targetUnder(s);
+  [...tableEl.children].forEach((el,i)=>{ el.classList.toggle("over", held()[i]===t && !!t); });
+}
+
+/* THE MERGE. Written order by number, never by which tile was carried. */
+function merge(a,b){
+  const parts=[a,b].sort((x,y)=> x.n-y.n);
+  const body=parts.map(p=>p.t).join("\n");                  /* VERBATIM, joined only */
+  const days=[...new Set(parts.map(p=>p.d))].join(" · ");   /* ALL sources carried */
+  const seams=parts.map(p=>({n:p.n, t:p.t, d:p.d}));        /* every part snapshotted */
+  parts.forEach(p=>{ p.stage="merged"; });                  /* and each stays in the bank */
+  S.stones.push({ n:S.n++, t:body, d:days, seams,
+                  x:Math.min(a.x,b.x), y:Math.min(a.y,b.y) });
+  dirty=true; save(); paintTable();
+}
+
+/* READING ONLY. Opening changes nothing, records nothing, says nothing. */
+function showSeams(s){
+  seamsEl.textContent="";
+  (s.seams||[]).slice().sort((x,y)=>x.n-y.n).forEach(p=>{
+    const d=document.createElement("div"); d.className="part";
+    d.appendChild(document.createTextNode(p.t));
+    seamsEl.appendChild(d);
+  });
+  seamsEl.style.display="block";
+}
+tableEl.addEventListener("pointerdown", ()=>{ seamsEl.style.display="none"; });
 
 /* ═══ the surface ═══════════════════════════════════════════════════════════ */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
@@ -329,8 +482,8 @@ function draw(){
   sky.addColorStop(0,"#e6e9e6"); sky.addColorStop(1,"#c6cfcc");
   g.fillStyle=sky; g.fillRect(0,0,W,H);
 
-  const days=new Set(S.stones.map(s=>s.d)); const bands=days.size;
-  const gy=H-Math.min(H*0.30, 26+bands*13);
+  const bands=new Set(held().map(s=>s.d)).size;
+  const gy=bedY();
   g.fillStyle="#9d9384"; g.fillRect(0,gy,W,H-gy);
   for(let i=0;i<bands;i++){ const y=gy+10+i*13; if(y>H-6) break;
     g.strokeStyle= i%2 ? "rgba(120,112,100,.40)" : "rgba(140,132,120,.32)";
