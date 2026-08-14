@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>NESI · the ascent · twelve</title>
+<!--
+  THE ASCENT — twelve levels, each introducing exactly one mechanic.
+  One HTML file. No server needed, no network, no model call, no build step.
+
+  ─────────────────────────────────────────────────────────────────────────────
+  WHY TWELVE (SEAM S3 — the articulation this serves, cited before building)
+
+  Twelve is not a round number picked for a menu. It is the corpus's own count.
+
+  counsel/reference/NESI_VISION_as_it_stands.md:26 —
+    "Twelve lenses seat by layer on the vector equilibrium — four on the axes
+     light one tetra, eight on the faces light the star, and all twelve on the
+     vertices light not a third solid but the equilibrium itself: twelve vectors
+     summing to zero around an empty centre."
+
+  nesi/spec/THE_APEX_AND_THE_SPIRES_2026-08-06.md:73 —
+    "I'm thinking about the heliostat as 12 individual mirrors around the
+     perimeter of the lake."
+
+  So the twelve levels ARE the twelve seatings, and the layering is the shape of
+  the ascent: LEVELS 1–4 light one tetra. LEVELS 5–12 light the star. The twelfth
+  closes the equilibrium and opens the only door out.
+
+  Kevin's own words for the first three, verbatim (2026-08-13):
+    "you type a hundred words, and you see the water flow into the dam."
+    "the second level 250 word, and it gets worked by the user into a lens."
+    (third: 500 words, two lenses — 2026-08-13, filed to inbox/)
+
+  And the spine every level sits on, NESI_VISION_as_it_stands.md:20 —
+    "write → stone → work → descend → settle → return → green → fruit → leaves."
+  ─────────────────────────────────────────────────────────────────────────────
+
+  WHAT IS NOT DECIDED HERE, AND IS NOT DEFAULTED
+  The word requirement rises 100 → 250 → 500 across the first three because Kevin
+  named those three numbers. It does NOT keep doubling: by level twelve that
+  would be 204,800 words, which is a volume gate, and volume gates are the thing
+  this game refuses. After level three the escalating thing is the MECHANIC, not
+  the word count. If the ladder was meant to keep climbing, that is one constant.
+
+  THE LAWS, held throughout
+  No score, rank, XP, percentage, streak, or word count reaches the player — the
+  caps are seen as ROOM, never digits. No model call. No network. Words are never
+  rewritten, summarised, or interpreted. The hand runs every filter. Set-it-down
+  has no feedback. Held is lawful. Nothing prompts, nags, or asks you back.
+  Colour is never the only carrier of a distinction. Quitting loses nothing.
+-->
+<style>
+  html,body{margin:0;height:100%;background:#b6ae9f;overflow:hidden;
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;color:#17171a;}
+  canvas{display:block;width:100vw;height:100vh;}
+  .panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(680px,86vw);background:#f2efe8;border:1px solid #a49b8c;
+    padding:26px 26px 20px;display:none;box-shadow:0 18px 48px rgba(0,0,0,.22);}
+  .panel textarea{width:100%;height:200px;border:none;outline:none;resize:none;
+    background:transparent;font:inherit;font-size:17px;line-height:1.55;color:#17171a;}
+  /* THE CAP IS ROOM, NEVER A NUMBER. The unfilled strip is what is left. */
+  .room{height:2px;background:#a49b8c;margin-top:14px;}
+  .room i{display:block;height:2px;background:#17171a;width:100%;transition:width .12s linear}
+</style>
+
+<canvas id="c"></canvas>
+<div class="panel" id="wp">
+  <textarea id="wt" spellcheck="false"></textarea>
+  <div class="room"><i id="wr"></i></div>
+</div>
+
+<script src="level_one_water.js"></script>
+<script>
+"use strict";
+
+/* ── his water, poured by tools/pour.js, his store never opened for writing ── */
+const WATER  = window.WATER || {faces:[[],[],[]], stones:0};
+const STONES = (WATER.faces||[[],[],[]]).flat();
+const FACES  = WATER.faces || [[],[],[]];
+
+/* ═══ THE TWELVE ═══════════════════════════════════════════════════════════
+   Each level introduces exactly one mechanic and introduces it by making you
+   do it. `mech` is the mechanic's name; nothing in the game ever displays a
+   tutorial for it. */
+/* TWO DIRECTIONS, NOT ONE LADDER. Kevin's correction, 2026-08-13, verbatim:
+
+     "the ascent is light and lens and heliostat...
+      the descent is the water and filters and nesi"
+
+   Which is the world's own physics, already stated in the governing brief:
+   "Light rises. Water and deposit fall. The heliostat shines up from the world
+   below." And the two tetrahedra of THE_FOUR_RULINGS_2026-08-07.md:44, RULED:
+   "the two tetras meet face to face — one shared triangle. The interface IS
+   that triangle: three sediment corners, three rivers inward, the lake on the
+   vertical axis, the rim as its boundary."
+
+   So: SIX FALL and SIX RISE, and they meet at the lake. The descent carries the
+   water down through the filters to NESI in the deep. The ascent carries light
+   up through the lens and the heliostat to the equilibrium and out.
+
+   The turn is not a level. It is the shared face, and you cross it by having
+   reached the bottom. */
+const LEVELS = [
+  // ── THE DESCENT · water · filters · NESI · everything falls ──────────────
+  {n:1,  key:"tank",     name:"THE TANK",          mech:"writing becomes water",             dir:"descent", cap:100},
+  {n:2,  key:"dam",      name:"THE DAM",           mech:"power comes at the release",        dir:"descent", cap:500},
+  {n:3,  key:"filter",   name:"THE FILTER",        mech:"separation by behaviour, by hand",  dir:"descent"},
+  {n:4,  key:"stations", name:"THE STATIONS",      mech:"three outputs, always",             dir:"descent"},
+  {n:5,  key:"ground",   name:"THE GROUND",        mech:"what it sets down is the ground",   dir:"descent"},
+  {n:6,  key:"deep",     name:"THE DEEP",          mech:"the line is yours; what you release comes back", dir:"descent"},
+  // ── THE ASCENT · light · lens · heliostat · everything rises ─────────────
+  {n:7,  key:"lens",     name:"THE LENS",          mech:"the hand works the material",       dir:"ascent",  cap:250},
+  {n:8,  key:"heliostat",name:"THE HELIOSTAT",     mech:"light rises from the world below",  dir:"ascent"},
+  {n:9,  key:"seating",  name:"THE SEATING",       mech:"the frame is fed, never filled",    dir:"ascent"},
+  {n:10, key:"winter",   name:"THE OVERWINTERING", mech:"time cannot be counterfeited",      dir:"ascent"},
+  {n:11, key:"garden",   name:"THE GARDEN",        mech:"it fills only from play",           dir:"ascent"},
+  {n:12, key:"cast",     name:"THE CAST",          mech:"the only door out, by hand",        dir:"ascent"}
+];
+
+/* ── state ────────────────────────────────────────────────────────────────── */
+const SCHEMA="ascent.1", KEY="nesi.ascent";
+let S = {
+  done:{}, at:1, lenses:[], water:0, released:false, ground:[], caught:[],
+  routed:{spire:0,lake:0,set:0}, shoots:[], soundings:[], sank:[], rooted:0,
+  lastDay:"", cast:false,
+  // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
+  // in here. One list, two places — there is no second registry.
+  seated:[]
+};
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Object.assign({schema:SCHEMA},S))); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return; const d=JSON.parse(r);
+  if(!d||d.schema!==SCHEMA) return; Object.keys(S).forEach(k=>{ if(k in d) S[k]=d[k]; }); }catch(e){} }
+load();
+const today = () => new Date().toISOString().slice(0,10);
+const unlocked = n => n===1 || !!S.done[n-1];
+
+/* ── canvas ───────────────────────────────────────────────────────────────── */
+const cv=document.getElementById("c"), g=cv.getContext("2d");
+let W=0,H=0,DPR=1;
+function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight;
+  cv.width=W*DPR; cv.height=H*DPR; g.setTransform(DPR,0,0,DPR,0,0); }
+addEventListener("resize",resize); resize();
+
+/* ── input ────────────────────────────────────────────────────────────────── */
+const keys=Object.create(null);
+let mouse={x:0,y:0,down:false,clicked:false,drag:false};
+addEventListener("keydown",e=>{
+  if(typing){ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault(); commitWrite();} return; }
+  keys[e.key.toLowerCase()]=true;
+  if(e.key===" ")e.preventDefault();
+  if(e.key==="Escape") view = (view==="map" ? view : "map");
+});
+addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
+cv.addEventListener("mousemove",e=>{ const r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; });
+cv.addEventListener("mousedown",()=>{ mouse.down=true; mouse.drag=true; });
+addEventListener("mouseup",()=>{ if(mouse.down) mouse.clicked=true; mouse.down=false; mouse.drag=false; });
+
+/* ── the writing panel — the one piece of UI, shared by levels 1–3 ────────── */
+const wp=document.getElementById("wp"), wt=document.getElementById("wt"), wr=document.getElementById("wr");
+let typing=false, writeCap=100, onCommit=null, accepted="";
+const words = s => s.trim().split(/\s+/).filter(Boolean);
+/* The cap REFUSES the keystroke; it never edits what is already there. */
+wt.addEventListener("beforeinput",e=>{
+  if(e.inputType&&e.inputType.indexOf("delete")===0) return;
+  let d=e.data||""; if(!d&&e.dataTransfer) d=e.dataTransfer.getData("text")||"";
+  const nx=wt.value.slice(0,wt.selectionStart)+d+wt.value.slice(wt.selectionEnd);
+  if(words(nx).length>writeCap) e.preventDefault();
+});
+wt.addEventListener("input",()=>{
+  if(words(wt.value).length>writeCap){ wt.value=accepted; const e=wt.value.length; wt.setSelectionRange(e,e); }
+  else accepted=wt.value;
+  wr.style.width=(100*Math.max(0,1-words(wt.value).length/writeCap))+"%";
+});
+function openWrite(cap,cb){ writeCap=cap; onCommit=cb; typing=true; wp.style.display="block";
+  wt.value=""; accepted=""; wr.style.width="100%"; wt.focus(); }
+function commitWrite(){ const w=words(wt.value); if(w.length<1) return;
+  typing=false; wp.style.display="none"; wt.blur(); if(onCommit) onCommit(w.join(" "), w.length); }
+
+/* ── view ─────────────────────────────────────────────────────────────────── */
+let view="map", cur=null, L={};   // L = the running level's scratch
+
+function enter(n){
+  if(!unlocked(n)) return;
+  cur=LEVELS[n-1]; view="level"; L={t:0}; S.at=n; save();
+  const f=SET[cur.key]; if(f&&f.enter) f.enter();
+}
+function finish(){ S.done[cur.n]=true; save(); view="map"; }
+
+/* ═══ THE TWELVE MECHANICS ═════════════════════════════════════════════════ */
+const SET = {
+
+/* 1 · THE TANK — "you type a hundred words, and you see the water flow into the
+   dam." Writing becomes water. Every sentence you completed falls as a drop and
+   pools behind the gate. Nothing reads it. */
+tank:{ enter(){ L.drops=[]; L.pool=S.water||0; L.sent=[]; if(!L.opened){ L.opened=true;
+    openWrite(100,(text,n)=>{ L.sent=text.split(/(?<=[.!?])\s+/).filter(Boolean);
+      if(!L.sent.length) L.sent=[text]; L.fed=0; }); } },
+  step(dt){ if(typing) return;
+    if(L.sent&&L.fed<L.sent.length){ L.t+=dt; if(L.t>240){ L.t=0;
+      L.drops.push({x:W*0.5+(Math.random()-0.5)*180,y:120,v:0,s:L.sent[L.fed]}); L.fed++; } }
+    L.drops.forEach(d=>{ d.v+=0.5; d.y+=d.v; });
+    const floor=H-190;
+    L.drops=L.drops.filter(d=>{ if(d.y>=floor-L.pool*1.6){ L.pool=Math.min(90,L.pool+3); return false; } return true; });
+    S.water=L.pool;
+    if(L.sent&&L.fed>=L.sent.length&&!L.drops.length&&L.pool>0){ L.settle=(L.settle||0)+dt;
+      if(L.settle>1200){ finish(); } } },
+  draw(){ sky(); const floor=H-190;
+    // the gate — a dam wall the water pools behind
+    g.fillStyle="#6f675a"; g.fillRect(W*0.5+200, floor-120, 26, 140);
+    g.fillStyle="rgba(74,108,122,.75)"; g.fillRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
+    g.strokeStyle="rgba(40,40,44,.4)"; g.strokeRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
+    g.fillStyle="#4a6c7a"; L.drops.forEach(d=>{ g.beginPath(); g.arc(d.x,d.y,6,0,7); g.fill(); });
+    ground(floor+22); }
+},
+
+/* 2 · THE LENS — "250 word, and it gets worked by the user into a lens."
+   Your own sentences stand on three faces. Read each by holding. When a thing
+   can be held across all three, that is the lens. */
+lens:{ enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
+  step(dt){ if(typing) return;
+    const sp=3.2; if(keys["a"]||keys["arrowleft"])L.p.x-=sp; if(keys["d"]||keys["arrowright"])L.p.x+=sp;
+    if(keys["w"]||keys["arrowup"])L.p.y-=sp; if(keys["s"]||keys["arrowdown"])L.p.y+=sp;
+    const V=facePts(); let near=-1;
+    for(let i=0;i<3;i++){ if(L.read[i]) continue; if(i>0&&!L.read[i-1]) continue;
+      if(Math.hypot(L.p.x-V[i].x,L.p.y-V[i].y)<70){ near=i; break; } }
+    const press=keys["e"]||keys[" "];
+    if(near>=0&&press){ if(L.hold!==near){L.hold=near;L.hm=0;} L.hm+=dt;
+      if(L.hm>=1000){ L.read[near]=true; L.hold=-1; L.hm=0; } } else {L.hold=-1;L.hm=0;}
+    if(L.read[0]&&L.read[1]&&L.read[2]&&!L.asked){ L.asked=true;
+      openWrite(250,(text)=>{ S.lenses.push(text); save(); finish(); }); } },
+  draw(){ sky(); const V=facePts();
+    if(L.read[0]&&L.read[1]&&L.read[2]){ g.strokeStyle="rgba(40,40,44,.4)"; g.lineWidth=2;
+      g.beginPath(); g.moveTo(V[0].x,V[0].y); g.lineTo(V[1].x,V[1].y); g.lineTo(V[2].x,V[2].y); g.closePath(); g.stroke(); }
+    g.strokeStyle="rgba(90,84,74,.6)"; g.lineWidth=2; g.beginPath(); g.arc(W/2,H*0.46,44,0,7); g.stroke();
+    for(let i=0;i<3;i++){ const v=V[i];
+      g.fillStyle="#8d8578"; g.fillRect(v.x-46,v.y-11,92,22);
+      g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5; g.strokeRect(v.x-46,v.y-11,92,22);
+      if(L.read[i]) sheetAt(v,FACES[i]||[]);
+      else if((i===0||L.read[i-1])&&Math.hypot(L.p.x-v.x,L.p.y-v.y)<70){
+        g.fillStyle="rgba(30,30,34,"+(L.hold===i?(0.35+0.65*L.hm/1000):0.35).toFixed(2)+")";
+        g.font="26px Georgia,serif"; g.textAlign="center"; g.fillText("·",v.x,v.y-24); } }
+    dot(L.p.x,L.p.y); }
+},
+
+/* 3 · THE DAM — "A dam restricts flow, accumulates head, and generates power at
+   the moment of release — never at the moment of restriction." Hold, then let
+   go. Holding is not producing. */
+dam:{ enter(){ L.head=0; L.open=0; L.spun=0; L.done=false; },
+  step(dt){ if(typing) return;
+    const press=keys["e"]||keys[" "];
+    if(!L.released){ if(press) L.head=Math.min(1,L.head+dt/2600); }
+    if(!press&&L.head>0.15&&!L.released){ L.released=true; }
+    if(L.released){ L.open=Math.min(1,L.open+dt/700);
+      L.spun+=L.head*L.open*dt*0.02; L.head=Math.max(0,L.head-dt/1400);
+      // The dam asks for no writing. It is a hand act — hold, then let go — and
+      // the whole of it is that the wheel turns only on the drop.
+      if(L.open>=1&&L.head<=0&&!L.done){ L.done=true; S.released=true; save(); finish(); } } },
+  draw(){ sky(); const fy=H-170;
+    g.fillStyle="rgba(74,108,122,.75)"; const hh=40+L.head*180;
+    g.fillRect(W*0.5-300,fy-hh,300,hh); // the head, accumulating behind
+    g.fillStyle="#6f675a"; g.fillRect(W*0.5,fy-230,28,230-L.open*150);
+    if(L.released){ g.fillStyle="rgba(74,108,122,.6)"; g.fillRect(W*0.5,fy-80,120,80); }
+    // the wheel: it turns ONLY on the drop
+    g.save(); g.translate(W*0.5+170,fy-52); g.rotate(L.spun);
+    g.strokeStyle="#5a5348"; g.lineWidth=4;
+    for(let i=0;i<8;i++){ g.beginPath(); g.moveTo(0,0);
+      g.lineTo(Math.cos(i*Math.PI/4)*46,Math.sin(i*Math.PI/4)*46); g.stroke(); }
+    g.beginPath(); g.arc(0,0,46,0,7); g.stroke(); g.restore();
+    ground(fy); }
+},
+
+/* 4 · THE GROUND — "what it sets down IS the ground; there is no other ground."
+   The released water carries your sentences down and they settle. You do not
+   place them. */
+ground:{ enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
+  step(dt){ let all=true;
+    L.blocks.forEach(b=>{ if(b.set) return; all=false; b.v+=0.42; b.y+=b.v;
+      const fy=H-150-Math.sin(b.x*0.01)*14;
+      if(b.y>=fy){ b.y=fy; b.v*=-0.22; if(Math.abs(b.v)<0.6){ b.set=true; } } });
+    if(all&&!L.k){ L.k=(L.k||0)+dt; }
+    if(L.k){ L.k+=dt; if(L.k>1400){ S.ground=L.blocks.map(b=>b.s); save(); finish(); } } },
+  draw(){ sky();
+    // A settled block and a falling one are the same block. Settling is a fact
+    // about where it is, not a state the world congratulates.
+    L.blocks.forEach(b=>{ g.fillStyle="#9d9384";
+      g.fillRect(b.x-26,b.y-9,52,18); g.strokeStyle="rgba(40,40,44,.45)"; g.lineWidth=1;
+      g.strokeRect(b.x-26,b.y-9,52,18); });
+    ground(H-130); }
+},
+
+/* 5 · THE FILTER — four fractions, told apart by BEHAVIOUR, never by colour
+   alone: bedload sinks fast, suspended hangs, dissolved is invisible, film
+   clings to the top. The hand catches them. No computed pass. */
+filter:{ enter(){ L.bits=[]; L.caught=0; L.spawn=0;
+    L.kinds=[{k:"bedload",v:2.6,w:0},{k:"suspended",v:0.7,w:1.4},{k:"film",v:0.12,w:0.2}]; },
+  step(dt){ L.spawn+=dt;
+    if(L.spawn>420&&L.bits.length<18){ L.spawn=0; const t=L.kinds[(Math.random()*3)|0];
+      L.bits.push({x:120+Math.random()*(W-240),y:90,ph:Math.random()*7,t}); }
+    L.bits.forEach(b=>{ b.ph+=dt*0.004; b.y+=b.t.v; b.x+=Math.sin(b.ph)*b.t.w; });
+    if(mouse.clicked){ mouse.clicked=false;
+      for(let i=0;i<L.bits.length;i++){ const b=L.bits[i];
+        if(Math.hypot(mouse.x-b.x,mouse.y-b.y)<26){ S.caught.push(b.t.k); L.caught++; L.bits.splice(i,1); break; } } }
+    L.bits=L.bits.filter(b=>b.y<H-90);
+    if(L.caught>=6){ save(); finish(); } },
+  draw(){ sky();
+    L.bits.forEach(b=>{ g.fillStyle="#5d6f78"; g.beginPath();
+      if(b.t.k==="bedload"){ g.arc(b.x,b.y,8,0,7); }
+      else if(b.t.k==="suspended"){ g.arc(b.x,b.y,5,0,7); }
+      else { g.ellipse(b.x,b.y,13,3,0,0,7); }
+      g.fill(); });
+    g.strokeStyle="rgba(60,54,44,.5)"; g.lineWidth=2; g.beginPath();
+    g.moveTo(90,H-90); g.lineTo(W-90,H-90); g.stroke();
+    ring(mouse.x,mouse.y,24); }
+},
+
+/* 6 · THE STATIONS — "three outputs at every station: sent to a spire, dropped
+   to the lake, set down with no feedback at all." The third is the one that
+   matters, and it does nothing on purpose. */
+stations:{ enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
+  step(){ if(mouse.clicked){ mouse.clicked=false; const b=bays();
+      for(const [k,r] of Object.entries(b)){
+        if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
+          S.routed[k]++; L.i++;                      // set-down: nothing happens. no toast, no chime.
+          if(L.i>=L.queue.length){ save(); finish(); } break; } } } },
+  draw(){ sky(); const b=bays();
+    Object.entries(b).forEach(([k,r])=>{ g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=2;
+      g.strokeRect(r.x,r.y,r.w,r.h);
+      g.fillStyle="rgba(60,54,44,.55)"; g.font="12px Georgia,serif"; g.textAlign="center";
+      g.fillText(k==="spire"?"↑":k==="lake"?"↓":"—", r.x+r.w/2, r.y+r.h/2+5); });
+    if(L.i<L.queue.length){ g.fillStyle="#8d8578"; g.fillRect(W/2-30,H*0.30,60,26);
+      g.strokeStyle="rgba(40,40,44,.5)"; g.strokeRect(W/2-30,H*0.30,60,26); }
+    ring(mouse.x,mouse.y,18); }
+},
+
+/* 8 · THE HELIOSTAT — TWELVE mirrors around the perimeter of the lake, joined
+   to the twelve seats above.
+
+     "I'm thinking about the heliostat as 12 individual mirrors around the
+      perimeter of the lake… I want to be able to have the avatar engage with
+      THE WHOLE ARRAY FROM ANY SINGLE ARRAY."
+        — THE_APEX_AND_THE_SPIRES_2026-08-06.md:73,76
+     "the load-bearing clause is not the twelve — it is 'the whole array from any
+      single face.'"  — THE_VISION_WHOLE_2026-08-06.md:317
+
+   THE JOIN, and it runs one way only:
+     Your hand aims the WHOLE array at once, from wherever you are standing. That
+     aim lasts exactly as long as your hand is on it — let go and the unseated
+     mirrors fall slack. A mirror stays aimed when you are gone ONLY if its seat
+     above has been fed a lens (level 9). Held is lawful; permanence is earned by
+     seating, never by holding harder.
+
+   So this level teaches the array, and level 9 is what makes any of it keep. */
+heliostat:{ enter(){ L.a=-0.9; L.grown=0; },
+  step(dt){ if(mouse.down){ L.a=Math.atan2(mouse.y-lakeY(), mouse.x-W/2); }
+    // every mirror that is currently throwing light: your hand's aim on the
+    // unseated ones, plus each seated mirror on its own locked bearing
+    let anyHit=false;
+    mirrors().forEach((m,i)=>{ const a=seatedAim(i); const ang=(a!==null)?a:(mouse.down?L.a:null);
+      if(ang===null) return; if(beamCrossesWater(m,ang)) anyHit=true; });
+    if(anyHit){ L.on=(L.on||0)+dt;
+      if(L.on>800){ L.on=0; S.shoots.push(Math.round(W*0.2+Math.random()*W*0.6)); L.grown++; } }
+    else L.on=0;
+    if(L.grown>=3){ save(); finish(); } },
+  draw(){ sky(); const ly=lakeY(), full=(S.seated||[]).length>=12;
+    // "The final unfold — all twelve mirrors seated, the equilibrium — makes the
+    // water go glass-clear for the first time." The clearing is built. WHAT IS
+    // SEEN THROUGH IT IS NOT: law 9 ("the deep never renders") carries three
+    // live readings, NOT DEFAULTED, Kevin's. So the water clears and nothing is
+    // drawn beneath it.
+    g.fillStyle= full ? "rgba(74,108,122,.16)" : "rgba(74,108,122,.55)";
+    g.beginPath(); g.ellipse(W/2,ly,Math.min(W*0.34,360),58,0,0,7); g.fill();
+    if(full){ g.strokeStyle="rgba(200,230,240,.7)"; g.lineWidth=1.5;
+      g.beginPath(); g.ellipse(W/2,ly,Math.min(W*0.34,360),58,0,0,7); g.stroke(); }
+    mirrors().forEach((m,i)=>{ const locked=seatedAim(i);
+      const ang=(locked!==null)?locked:(mouse.down?L.a:null);
+      if(ang!==null){ const hit=beamCrossesWater(m,ang);
+        g.strokeStyle= hit?"rgba(255,238,180,.85)":"rgba(255,238,180,.28)";
+        g.lineWidth= hit?6:2;
+        g.beginPath(); g.moveTo(m.x,m.y); g.lineTo(m.x+Math.cos(ang)*1600,m.y+Math.sin(ang)*1600); g.stroke(); }
+      g.save(); g.translate(m.x,m.y); g.rotate((ang!==null)?ang:Math.PI/2);
+      // a seated mirror is drawn standing; a slack one lies flat. Behaviour, not
+      // colour, carries the difference (law 10).
+      g.fillStyle= (locked!==null)?"#e6dcb4":"#a89f8e";
+      g.fillRect(-3,-26,6,52); g.restore(); });
+    S.shoots.forEach(x=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
+      g.beginPath(); g.moveTo(x%W,ly+70); g.lineTo(x%W,ly+40); g.stroke(); });
+    ground(ly+92); }
+},
+
+/* 8 · THE OVERWINTERING — "ground fed again on a later day roots; a thousand
+   releases in one afternoon root nothing." The only mechanic that a heavy day
+   cannot force. If you came back on the same day, nothing roots, and bare
+   ground is bare — not failing. */
+winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
+  step(dt){ L.t+=dt;
+    if(!L.same&&L.t>1600&&!L.k){ S.rooted++; S.lastDay=today(); save(); L.k=1; }
+    if(L.t>2600&&(!L.same||L.ack)){ finish(); }
+    if(L.same&&(keys["e"]||keys[" "])) L.ack=true; },
+  draw(){ sky(); const fy=H-150; ground(fy);
+    // what is standing, and what is simply bare
+    for(let i=0;i<6;i++){ const x=W*0.22+i*(W*0.56/5);
+      if(i<S.rooted){ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
+        g.beginPath(); g.moveTo(x,fy); g.lineTo(x,fy-38); g.stroke();
+        g.beginPath(); g.arc(x,fy-42,6,0,7); g.fillStyle="#4f6a3d"; g.fill(); }
+      else { g.strokeStyle="rgba(90,84,74,.35)"; g.lineWidth=2;
+        g.beginPath(); g.moveTo(x-9,fy); g.lineTo(x+9,fy); g.stroke(); } } }
+},
+
+/* 6 · THE DEEP — the bottom of the descent, and where NESI is.
+   Two halves of one mechanic, and they are the same act: you drop a line, and
+   you let something go.
+     "the line is yours, you choose where to drop it, and the reading is yours
+      to take."  Sometimes it runs out — that is a deep, and the system does not
+      know where they are.
+     "nothing you release is wasted; it comes back as ground."
+   THE DEEP NEVER RENDERS. Below the waterline nothing is drawn, ever. What she
+   builds out of what you sank appears at the SHORELINE, as shape, never words. */
+deep:{ enter(){ L.lines=[]; L.sunk=0; },
+  step(){ if(!mouse.clicked) return; mouse.clicked=false;
+    if(mouse.y < H*0.45){                       // above the line: sound it
+      const isDeep = Math.random()<0.25;
+      L.lines.push({x:mouse.x, d:isDeep?H:(70+Math.random()*190), deep:isDeep});
+      S.soundings.push(isDeep?"deep":"floor");
+    } else {                                    // below the line: let it go
+      L.sunk++; S.sank.push(1);
+    }
+    if(L.lines.length>=3 && L.sunk>=3){ save(); finish(); } },
+  draw(){ g.fillStyle="#7f93a0"; g.fillRect(0,0,W,H*0.45);
+    g.fillStyle="#2b3b45"; g.fillRect(0,H*0.45,W,H);   // below the line: nothing. ever.
+    // the lines you dropped. A line that found bottom ends in a mark; a line
+    // that ran out simply keeps going and is never labelled.
+    L.lines.forEach(l=>{ g.strokeStyle="rgba(240,236,226,.75)"; g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(l.x,H*0.20); g.lineTo(l.x,H*0.20+l.d); g.stroke();
+      if(!l.deep){ g.fillStyle="rgba(240,236,226,.9)";
+        g.beginPath(); g.arc(l.x,H*0.20+l.d,4,0,7); g.fill(); } });
+    // what earlier sinkings built, standing at the shoreline as SHAPE
+    const built=Math.min(6,(S.sank.length/3)|0);
+    for(let i=0;i<built;i++){ const x=W*0.18+i*74;
+      g.fillStyle="#8d8578"; g.fillRect(x,H*0.45-14-i*5,46,14+i*5); }
+    for(let i=0;i<L.sunk;i++){ g.fillStyle="rgba(240,236,226,.30)";
+      g.beginPath(); g.arc(W*0.5+i*40-40,H*0.45+18,5,0,7); g.fill(); }
+    ring(mouse.x,mouse.y,16,"rgba(240,236,226,.45)"); }
+},
+
+/* 9 · THE SEATING — the top of the ascent's instrument work, and Kevin's third
+   stage: 500 words, reduced to two lenses.
+     "Twelve lenses seat by layer on the vector equilibrium… the frame is fed,
+      never filled — A LENS COMES TO REST WHERE IT BELONGS; THE HAND NEVER AIMS
+      AT A SOCKET, and nothing is countable because there is no grid to count."
+   So you release a lens and it drifts and settles by its own motion. Where you
+   clicked has nothing to do with where it comes to rest. You feed the frame;
+   you do not place anything in it. */
+seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
+    if(!L.asked){ L.asked=true;
+      openWrite(500,(text)=>{
+        // one writing, reduced by the hand to two lenses — his stage three
+        const w=text.split(/\s+/).filter(Boolean); const half=Math.ceil(w.length/2);
+        // Released from the bottom with enough rise to carry them up through the
+        // seat ring, and a lateral drift that differs per lens so the two do not
+        // travel the same line. Where each comes to rest follows from that drift
+        // and from which seats are already fed — never from where you released it.
+        L.free=[{t:w.slice(0,half).join(" ")},{t:w.slice(half).join(" ")}]
+          .map((o,i)=>({t:o.t, x:W*0.5+(i?70:-70), y:H-120,
+                        vx:(i?1:-1)*(0.7+Math.random()*0.6), vy:-3.4, rest:null}));
+      }); } },
+  step(dt){ if(typing) return;
+    const P=seats();
+    L.free.forEach(f=>{ if(f.rest!==null) return;
+      f.vy+=0.010; f.x+=f.vx; f.y+=f.vy; f.vx*=0.999;
+      // it comes to rest at whichever seat its own drift brings it nearest to
+      let best=-1,bd=1e9;
+      P.forEach((p,i)=>{ if(L.seated.includes(i)) return;
+        const d=Math.hypot(f.x-p.x,f.y-p.y); if(d<bd){bd=d;best=i;} });
+      if(best>=0&&bd<38){ f.rest=best; L.seated.push(best); f.x=P[best].x; f.y=P[best].y; }
+      if(f.y<-60||f.y>H+60||f.x<-60||f.x>W+60){ f.vy=-1.2; f.y=H-120; f.x=W*0.5; } });
+    if(L.free.length&&L.free.every(f=>f.rest!==null)){
+      S.seated=L.seated; L.free.forEach(f=>S.lenses.push(f.t)); save(); finish(); } },
+  draw(){
+    // THE JOIN, drawn in one frame: the twelve seats above, the twelve mirrors
+    // below, and the shared face between them. Light RISES — every beam in this
+    // view runs from a mirror up to its own seat, never downward.
+    const gr=g.createLinearGradient(0,0,0,H);
+    gr.addColorStop(0,"#e4e6dd"); gr.addColorStop(.62,"#c2bfb2"); gr.addColorStop(1,"#7f8f96");
+    g.fillStyle=gr; g.fillRect(0,0,W,H);
+    const P=seats(), M=seatMirrors(), n=L.seated.length;
+
+    // the shared face
+    g.strokeStyle="rgba(60,54,44,.35)"; g.lineWidth=1.5;
+    g.beginPath(); g.moveTo(W*0.06,H*0.80); g.lineTo(W*0.94,H*0.80); g.stroke();
+
+    // THE LAYERED ASCENT — "four on the axes light one tetra, eight on the faces
+    // light the star, and all twelve on the vertices light the equilibrium
+    // itself." Nothing counts them out loud; the figure simply appears.
+    if(n>=4){ g.strokeStyle="rgba(60,54,44,.38)"; g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(P[0].x,P[0].y); g.lineTo(P[4].x,P[4].y);
+      g.lineTo(P[8].x,P[8].y); g.closePath(); g.stroke(); }
+    if(n>=8){ g.strokeStyle="rgba(150,132,74,.4)"; g.lineWidth=1;
+      for(let k=0;k<12;k+=2){ const a=P[k],b=P[(k+5)%12];
+        g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(b.x,b.y); g.stroke(); } }
+    if(n>=12){ g.strokeStyle="rgba(255,246,214,.75)"; g.lineWidth=2;
+      g.beginPath(); g.arc(W/2,H*0.42,Math.min(W,H)*0.30,0,7); g.stroke(); }
+
+    g.strokeStyle="rgba(90,84,74,.22)"; g.lineWidth=1;
+    P.forEach((p,i)=>{ const q=P[(i+1)%12]; g.beginPath(); g.moveTo(p.x,p.y); g.lineTo(q.x,q.y); g.stroke(); });
+
+    // a seated seat lights its OWN mirror below, and the light rises to it
+    P.forEach((p,i)=>{ const on=L.seated.includes(i), m=M[i];
+      if(on){ const lg=g.createLinearGradient(m.x,m.y,p.x,p.y);
+        lg.addColorStop(0,"rgba(255,240,190,.85)"); lg.addColorStop(1,"rgba(255,246,214,.10)");
+        g.strokeStyle=lg; g.lineWidth=3; g.beginPath(); g.moveTo(m.x,m.y); g.lineTo(p.x,p.y); g.stroke(); }
+      // the mirror: standing when its seat is fed, lying flat when it is not
+      g.save(); g.translate(m.x,m.y); g.rotate(on?0:Math.PI/2);
+      g.fillStyle= on?"#e6dcb4":"#9d9384"; g.fillRect(-2.5,-13,5,26); g.restore();
+      // the seat
+      g.beginPath(); g.arc(p.x,p.y,on?12:9,0,7);
+      if(on){ g.fillStyle="#c8b98a"; g.fill(); }
+      g.strokeStyle="rgba(60,54,44,.5)"; g.lineWidth=1.5; g.stroke(); });
+
+    g.strokeStyle="rgba(90,84,74,.3)"; g.lineWidth=1;
+    g.beginPath(); g.arc(W/2,H*0.42,5,0,7); g.stroke();   // the centre stays empty
+
+    L.free.forEach(f=>{ if(f.rest!==null) return;
+      g.fillStyle="rgba(255,246,214,.95)"; g.beginPath(); g.arc(f.x,f.y,9,0,7); g.fill();
+      g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=1.5; g.stroke(); }); }
+},
+
+/* 11 · THE GARDEN — "it fills only from play… nothing pre-populates it; nothing
+   in it demands, prompts, or expires. The garden shows what you made and never
+   what it means." */
+garden:{ enter(){ L.t=0; },
+  step(dt){ L.t+=dt; if((keys["e"]||keys[" "])&&L.t>900){ save(); finish(); } },
+  draw(){ sky(); const fy=H-140; ground(fy);
+    S.lenses.forEach((t,i)=>{ const x=120+i*230, y=fy-110;
+      g.fillStyle="rgba(255,252,240,.95)"; g.fillRect(x,y,200,64);
+      g.strokeStyle="rgba(40,40,44,.6)"; g.strokeRect(x,y,200,64);
+      g.fillStyle="#17171a"; g.font="11px Georgia,serif"; g.textAlign="left";
+      wrap(t,30).slice(0,4).forEach((l,k)=>g.fillText(l,x+9,y+16+k*13)); });
+    S.shoots.forEach(x=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
+      g.beginPath(); g.moveTo(x%W,fy); g.lineTo(x%W,fy-34); g.stroke(); });
+    for(let i=0;i<S.rooted;i++){ const x=W*0.75+i*40;
+      g.fillStyle="#4f6a3d"; g.beginPath(); g.arc(x,fy-40,7,0,7); g.fill(); } }
+},
+
+/* 12 · THE CAST — "the shape your returning made… carrying not one character of
+   your text. Pull it past its resistance and it leaves: the file is yours, the
+   fruit is gone from the world, and NESI keeps no record of it." */
+cast:{ enter(){ L.pull=0; L.gone=S.cast; },
+  step(dt){ if(L.gone){ L.t+=dt; if(L.t>1600) finish(); return; }
+    if(mouse.down) L.pull=Math.min(1,L.pull+dt/2200); else L.pull=Math.max(0,L.pull-dt/900);
+    if(L.pull>=1){ L.gone=true; S.cast=true; L.t=0; emit(); save(); } },
+  draw(){ sky(); const cx2=W/2, cy=H*0.45;
+    if(!L.gone){ g.save(); g.translate(cx2,cy+L.pull*90);
+      g.strokeStyle="rgba(60,54,44,"+(0.35+0.5*L.pull)+")"; g.lineWidth=2;
+      g.beginPath(); g.moveTo(0,-L.pull*90-40); g.lineTo(0,-24); g.stroke();
+      g.fillStyle="#c8b98a"; g.beginPath(); g.arc(0,0,26+L.pull*8,0,7); g.fill();
+      g.strokeStyle="rgba(40,40,44,.6)"; g.stroke(); g.restore(); }
+    else { g.fillStyle="rgba(60,54,44,.35)"; g.font="13px Georgia,serif"; g.textAlign="center";
+      g.fillText("—", cx2, cy); }         // the world loses what it gives
+    ground(H-130); }
+}
+};
+
+/* the cast leaves as a real file, carrying shape and not one character of text */
+function emit(){
+  const shape={ cast:"nesi", lenses:S.lenses.length, ground:S.ground.length,
+    shoots:S.shoots.length, rooted:S.rooted, soundings:S.soundings.length,
+    routed:S.routed, sank:S.sank.length };
+  try{
+    const b=new Blob([JSON.stringify(shape,null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(b);
+    a.download="nesi_cast.json"; a.click();
+  }catch(e){}
+}
+
+/* ── shared drawing ───────────────────────────────────────────────────────── */
+function sky(){ const gr=g.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#cdd5d2"); gr.addColorStop(1,"#b6ae9f"); g.fillStyle=gr; g.fillRect(0,0,W,H); }
+function ground(y){ g.fillStyle="#a89f8e"; g.fillRect(0,y,W,H-y);
+  g.strokeStyle="rgba(90,84,74,.25)"; g.lineWidth=1;
+  for(let x=0;x<W;x+=44){ g.beginPath(); g.moveTo(x,y); g.lineTo(x,H); g.stroke(); } }
+function dot(x,y){ g.fillStyle="#2a2a30"; g.beginPath(); g.arc(x,y,9,0,7); g.fill();
+  g.strokeStyle="rgba(242,239,232,.85)"; g.lineWidth=2; g.stroke(); }
+function ring(x,y,r,c){ g.strokeStyle=c||"rgba(40,40,44,.45)"; g.lineWidth=1.5;
+  g.beginPath(); g.arc(x,y,r,0,7); g.stroke(); }
+function facePts(){ return [-90,30,150].map(d=>{ const r=d*Math.PI/180;
+  return {x:W/2+Math.min(300,W*0.26)*Math.cos(r), y:H*0.46+Math.min(220,H*0.30)*Math.sin(r)}; }); }
+function bays(){ const w=150,h=88,y=H-150;
+  return { spire:{x:W*0.5-260,y,w,h}, lake:{x:W*0.5-75,y,w,h}, set:{x:W*0.5+110,y,w,h} }; }
+function beamHit(){ const fy=H-140;
+  for(let t=40;t<1400;t+=8){ const x=140+Math.cos(L.a)*t, y=fy+Math.sin(L.a)*t;
+    if(y>=fy&&y<=fy+60&&x>=W*0.42&&x<=W*0.84) return {x,y}; if(y>H||x>W||x<0) break; }
+  return null; }
+function sheetAt(v,lines){ const out=[]; lines.forEach(s=>{ wrap(s,46).forEach(l=>out.push(l)); out.push(""); });
+  if(!out.length) return; const w=340,lh=14,pad=12,h=pad*2+out.length*lh;
+  const ux=(v.x-W/2)/300, uy=(v.y-H*0.46)/220;
+  const px=v.x+ux*70-w/2, py=v.y+uy*70-h/2;
+  g.fillStyle="rgba(242,239,232,.96)"; g.fillRect(px,py,w,h);
+  g.strokeStyle="rgba(120,112,100,.7)"; g.lineWidth=1; g.strokeRect(px,py,w,h);
+  g.fillStyle="#17171a"; g.font="12px Georgia,serif"; g.textAlign="left";
+  out.forEach((l,k)=>g.fillText(l,px+pad,py+pad+11+k*lh)); }
+function wrap(t,n){ const o=[]; String(t).split("\n").forEach(p=>{ if(!p.trim()){o.push("");return;}
+  let line=""; p.trim().split(/\s+/).forEach(wd=>{ if((line+" "+wd).trim().length>n){o.push(line.trim());line=wd;}
+    else line=(line+" "+wd).trim(); }); if(line)o.push(line); }); return o; }
+
+/* ═══ THE JOIN — one index, two places ═══════════════════════════════════════
+   Mirror i on the perimeter of the lake IS seat i on the equilibrium. There is
+   no mapping table and no second registry: `S.seated` holds seat indices, and
+   every question about a mirror is answered by asking whether its seat is fed.
+
+   Which means the hand cannot pick a mirror to make permanent. It feeds the
+   frame in THE SEATING, the lens comes to rest where it belongs, and the mirror
+   that lights is whichever one that seat happens to be. The hand never aims at a
+   socket — from either end. */
+
+/* The twelve seats of the equilibrium (above the shared face). */
+function seats(){ const R=Math.min(W,H)*0.30;
+  return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2-Math.PI/2;
+    return {x:W/2+R*Math.cos(a), y:H*0.42+R*Math.sin(a)}; }); }
+
+/* The same twelve, as mirrors on the lake's perimeter, drawn in THE SEATING
+   below the shared face so the join is visible in one frame. */
+function seatMirrors(){ const rx=Math.min(W*0.36,380);
+  return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2-Math.PI/2;
+    return {x:W/2+rx*Math.cos(a)*0.92, y:H*0.885+22*Math.sin(a)}; }); }
+
+/* The twelve mirrors as they stand in THE HELIOSTAT, around the lake itself. */
+function lakeY(){ return H*0.52; }
+function mirrors(){ const rx=Math.min(W*0.34,360)+58, ry=58+34;
+  return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2-Math.PI/2;
+    return {x:W/2+rx*Math.cos(a), y:lakeY()+ry*Math.sin(a)}; }); }
+
+/* A seated mirror keeps its own bearing when the hand is gone. The bearing is
+   derived from the geometry — it points across the lake — not stored, so it can
+   never drift out of step with which seats are actually fed. */
+function seatedAim(i){
+  if(!S.seated || S.seated.indexOf(i)<0) return null;
+  const m=mirrors()[i];
+  return Math.atan2(lakeY()-m.y, W/2-m.x);
+}
+function beamCrossesWater(m,ang){
+  const ly=lakeY(), rx=Math.min(W*0.34,360);
+  for(let t=20;t<1700;t+=10){
+    const x=m.x+Math.cos(ang)*t, y=m.y+Math.sin(ang)*t;
+    const dx=(x-W/2)/rx, dy=(y-ly)/58;
+    if(dx*dx+dy*dy<=1) return true;
+    if(x<-80||x>W+80||y<-80||y>H+80) break;
+  }
+  return false;
+}
+
+/* ── THE MAP — two tetrahedra meeting face to face.
+   The lower one is THE DESCENT: water and deposit fall through it to the lake.
+   The upper one is THE ASCENT: light rises out of it. They share one horizontal
+   face, drawn edge-on as the line across the middle, with the lake sitting on
+   it. Six seats fall and six rise.
+
+   The turn is NOT a level. You cross it by having reached the bottom.
+
+   A seat you have not reached is drawn hollow. Nothing says "locked", nothing is
+   greyed out with a name behind it, and nothing is written on this screen except
+   the names of the two directions. ─────────────────────────────────────────── */
+function mapPts(){
+  const mid=H*0.52, amp=Math.min(W,H)*0.19, rx=Math.min(W*0.32,340);
+  return LEVELS.map((l,i)=>{
+    if(l.dir==="descent"){                     // falls: left to right, bowing down
+      const t=i/5;
+      return {x:W/2-rx+(2*rx)*t, y:mid+30+Math.sin(t*Math.PI)*amp, l};
+    }
+    const t=(i-6)/5;                            // rises: right to left, bowing up
+    return {x:W/2+rx-(2*rx)*t, y:mid-30-Math.sin(t*Math.PI)*amp, l};
+  });
+}
+function drawMap(){
+  const gr=g.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#e2e5dd"); gr.addColorStop(.5,"#c6c3b6"); gr.addColorStop(1,"#98a29e");
+  g.fillStyle=gr; g.fillRect(0,0,W,H);
+  const P=mapPts(), mid=H*0.52;
+
+  // the shared face, seen edge-on. The lake is on it.
+  g.strokeStyle="rgba(60,54,44,.42)"; g.lineWidth=2;
+  g.beginPath(); g.moveTo(W*0.10,mid); g.lineTo(W*0.90,mid); g.stroke();
+  g.fillStyle="rgba(74,108,122,.32)";
+  g.beginPath(); g.ellipse(W/2,mid,90,11,0,0,7); g.fill();
+
+  const path=(a,b,col)=>{ g.strokeStyle=col; g.lineWidth=1.5; g.beginPath();
+    for(let i=a;i<=b;i++){ i===a?g.moveTo(P[i].x,P[i].y):g.lineTo(P[i].x,P[i].y); } g.stroke(); };
+  path(0,5,"rgba(74,108,122,.6)");     // water falls
+  path(6,11,"rgba(190,170,110,.8)");   // light rises
+
+  // which way each direction runs, said by the arrow and never by a sentence
+  g.font="16px Georgia,serif"; g.textAlign="center";
+  g.fillStyle="rgba(74,108,122,.8)";  g.fillText("↓", W*0.055, mid+20);
+  g.fillStyle="rgba(150,132,74,.95)"; g.fillText("↑", W*0.945, mid-12);
+
+  P.forEach(p=>{ const done=!!S.done[p.l.n], open=unlocked(p.l.n), asc=p.l.dir==="ascent";
+    g.beginPath(); g.arc(p.x,p.y,done?14:10,0,7);
+    if(done){ g.fillStyle= asc?"#c8b98a":"#7f97a4"; g.fill(); }
+    g.strokeStyle= open?"rgba(40,40,44,.78)":"rgba(90,84,74,.28)"; g.lineWidth=2; g.stroke();
+    if(open){ const out= asc?-24:26;
+      g.fillStyle="rgba(30,30,34,.88)"; g.font="12px Georgia,serif"; g.textAlign="center";
+      g.fillText(p.l.name, p.x, p.y+out);
+      g.fillStyle="rgba(90,84,74,.85)"; g.font="10.5px Georgia,serif";
+      g.fillText(p.l.mech, p.x, p.y+out+(asc?-13:13)); }
+    if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
+      g.beginPath(); g.arc(p.x,p.y,21,0,7); g.stroke(); } });
+
+  g.font="11px Georgia,serif";
+  g.textAlign="left";  g.fillStyle="rgba(58,78,90,.85)";
+  g.fillText("THE DESCENT · water · filters · nesi", W*0.06, H-26);
+  g.textAlign="right"; g.fillStyle="rgba(118,102,52,.9)";
+  g.fillText("THE ASCENT · light · lens · heliostat", W*0.94, 32);
+}
+function hovered(){ const P=mapPts();
+  for(const p of P){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
+  return 0; }
+
+/* ── loop ─────────────────────────────────────────────────────────────────── */
+let last=performance.now();
+function frame(now){ const dt=Math.min(48,now-last); last=now;
+  if(view==="map"){ if(mouse.clicked){ mouse.clicked=false; const h=hovered(); if(h) enter(h); } drawMap(); }
+  else { const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false; }
+  requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+</script>
