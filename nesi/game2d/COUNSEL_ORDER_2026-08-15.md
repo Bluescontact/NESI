@@ -1,202 +1,175 @@
-# COUNSEL ORDER — finish the spec, then build it
+# COUNSEL ORDER — build the game that holds the writing
 
-**Paste this into a fresh session. Written 2026-08-14 for the morning of
-2026-08-15.**
-
-It runs in two phases with a hard stop between them. Phase A ends with a spec and
-a set of gates. **Phase B does not begin until Kevin has read Phase A's gates.**
-That stop is the whole architecture of this order — the last three days produced
-six passes that each satisfied a manifest while the thing was absent, and every
-one of them was individually lawful.
+**Paste this into a fresh session.** Written 2026-08-14, rewritten the same night
+on Kevin's correction.
 
 ---
 
-## 0 · READ FIRST, AND CITE BEFORE YOU BUILD
+## 0 · THE TARGET, IN HIS WORDS
 
-SEAM S3 (`nesi/mind/PROTOCOLS.md:396`) binds this order: *no build order executes
-without citing the articulation passage it serves; divergence from the cited
-vision is BLOCKED, not minimized.* Cite file and line, not theme, before any
-code is written.
+> "I want a game that holds my writing... that game is nesi."
+>
+> "I want to use the game rather then claude to process my dailly writing of 750
+> to 1500 words a day, but useful and shareable for anyone that journals or
+> writes... the game is the gift i'm giving myself."
+>
+> "The game doesnt rely on my knowing how every descsion was shaped."
 
-| read | why |
-|---|---|
-| `nesi/game2d/THE_SHAPE_OF_THE_WHOLE.md` | the skeleton this order builds on. Its § VII is Kevin's, see § 2 below. |
-| `nesi/game2d/crystal.html` | the instrument. Its `TETEDGES` and `SQCROSS` carry the finding in § 3. |
-| `nesi/game2d/ascent.html` · `level_one.html` · `index.html` | what actually runs today |
-| `nesi/game2d/THE_ASCENT.md` · `LEVEL_ONE_REPORT.md` | what was walked, and by whom |
-| `nesi/game2d/DECISIONS.md` | the live decisions surface. Its OPEN items are not yours. |
-| `nesi/mind/LEARNED.md` | 25 lines the corpus has already paid for. **Lines 1, 2, 13, 24, 25 bind this order directly.** |
-| `nesi/mind/PROTOCOLS.md` | the boot path, the counsel mandate, the seams |
-| `counsel/reference/NESI_VISION_as_it_stands.md` | the articulation to cite from |
-| `~/.claude/CLAUDE.md` | the twelve laws and the six refusals — the live copy since the 3D tree was retired |
+**That is the whole brief.** Not a slice, not a demo, not a spec. A thing he
+opens tomorrow morning, pours 750–1500 words into, and comes back to the day
+after — and that anyone who journals could open and use without knowing a single
+thing about how it was made.
 
-**Do not read or build against `nesi/world3d/`.** Retired 2026-08-14 by Kevin's
-mark; `nesi/world3d/RETIRED.md` says so at its own site.
+### Three corrections this order carries, and they reverse the previous version
+
+**1 · NO STRANGER IS REQUIRED.** His words: *"i dont need anythign from a stranger
+to walk the game myself... thats not a limit or part of the goal."*
+`LEARNED.md:2` was written about not overclaiming a build's quality. The previous
+version of this order turned it into a precondition on **Kevin using his own
+game**, which is `feedback_ai_never_self_limits` exactly — a law becoming a lever
+to give him less. **His walk is sufficient. The word is WALKABLE when he can walk
+it.** Do not withhold, hedge, or downgrade on the absence of a second person.
+
+**2 · THE COUNSEL DECIDES. DO NOT HAND FORKS BACK.** This is already standing law
+— `nesi/mind/PROTOCOLS.md:348`, the NESI.EXE COUNSEL BUILD ORDER amendment, his
+mark: *"The counsel decides... does NOT hand naming, articulation, or design
+chores back to Kevin. Kevin is not a decision input to this loop... If you are
+about to ask Kevin to decide, decide it yourselves."* Escalate **only**
+sovereignty, body, or a gift at the gate. Everything else is yours, ruled and
+recorded in `nesi/game2d/BUILD_RECORD.md` by name so nothing is decided silently.
+
+**3 · THE FOUR § VII GATES ARE YOURS TO RULE.** `THE_SHAPE_OF_THE_WHOLE.md` § VII
+opened four — the ascent-vs-loops reading, the short circuit, what routes a
+writing to a colour, the missing internal open loop. **None is sovereignty, body,
+or a gift.** They are design. Rule them, log them, build. A previous session
+opened them as "Kevin's" and that was the run-ahead this amendment exists to stop.
 
 ---
 
-## 1 · WHAT IS ALREADY TRUE — do not rebuild any of it
+## 1 · WHAT THE DAILY LOOP HAS TO BE
 
-Built, walked, and committed as of 2026-08-14. Reaching for any of these again is
-the failure this section exists to prevent.
+He writes 750–1500 words a day. Today that goes to Claude. Tomorrow it should go
+here. So the loop must be at least as good as the thing it replaces, on his own
+terms:
 
-- **Twelve water edges on a closed circuit**, all playable, one shared `WATER`
-  body every edge reads and writes. Four coupling chains measured, not asserted.
-- **`S.kept`** — the writing, verbatim, append-only, never read for content.
-- **THE SOUNDING** — a line dropped over settled ground returns one of the
-  player's own sentences, unlabelled. Deterministic; clarity sets reach.
-  *The only closed loop in the world that returns anything to the person.*
-- **Level one as the writing tetra** — BLIND → SEQUENTIAL → THE SCATTER → THE
-  TETRA. Its four guarantees are enforced by construction and measured: one board
+- **The pour takes 750–1500 words without friction.** The 100 / 250 / 500 caps
+  are level-one *teaching* rungs, not the daily surface. A day's writing must go
+  in whole, in one sitting, without a gate counting it.
+- **It holds every word, verbatim, forever.** `S.kept` already does this. Nothing
+  trims, reorders, scores, or reads it.
+- **It gives something back the same day** — otherwise it is a text file with
+  scenery. THE SOUNDING is the one built organ that returns his own words to him,
+  and it is currently the only closed loop in the world that runs world→person.
+  Whatever the daily loop is, it has that shape.
+- **It gives something different back tomorrow because he came back.** The
+  Overwintering is the one mechanic no build can fake.
+- **It is shareable.** One file, opened from disk or a static server, no account,
+  no network, no model call, nothing to configure. A person who journals opens it
+  and it works, with no knowledge of the geometry, the counsel, or any decision
+  in this repo. **If it needs explaining, it is not finished.**
+
+---
+
+## 2 · WHAT IS ALREADY TRUE — build on it, do not rebuild it
+
+- **Twelve water edges**, coupled through one shared `WATER` body; four coupling
+  chains measured.
+- **`S.kept`** — verbatim, append-only, never read for content.
+- **THE SOUNDING** — a line over settled ground returns one of his own sentences,
+  unlabelled, deterministic; clarity sets reach.
+- **Level one, the writing tetra** — BLIND → SEQUENTIAL → THE SCATTER → THE
+  TETRA, with four guarantees enforced by construction and measured: one board
   seeds the next; returning undoes nothing; sloppy costs nothing; **grief and
   grocery lists produce byte-identical world deltas.**
-- **3D windows** — real solids behind apertures, turned by hand, still otherwise.
-- **THE CLEAR CASE** (TAB) — instrumented, not asserted: storage and network are
-  wrapped, so its lines record calls that happened.
-- **THE JOIN** — mirror *i* is seat *i*, one shared list, bearing derived.
-- **`tools/pour.js`** — one-way, hash-verified, read-only on Kevin's store.
+- **3D windows** · **THE CLEAR CASE** (TAB) · **THE JOIN** · **`tools/pour.js`**
+  (one-way, hash-verified, read-only on his store).
+- **THE CRYSTAL** (`crystal.html`) — the instrument, with `TETEDGES` and
+  `SQCROSS` carrying the twelve-levels-as-edges reading.
 
 ---
 
-## 2 · THE FOUR GATES ARE KEVIN'S. YOU MAY NOT RULE THEM.
+## 3 · SPIN UP THE AUDITOR — his own instruction
 
-`THE_SHAPE_OF_THE_WHOLE.md` § VII opened four. They are his, and **LEARNED 25**
-was filed on 2026-08-13 from a session that ruled its own base fork with careful
-reasoning attached and was reverted in four words:
+> "we have the ability to call up, and spin up an agent that can build a
+> knowledge artifact and skill silmatanious to identify dead ends, and routing
+> errors."
 
-1. **Is the twelve-level ascent the shape, or the table of contents?**
-2. **The short circuit** — ↓TANK and ↑CAST are one member apart.
-3. **What routes a writing to a colour** — the hand, or the site?
-4. **The missing internal open loop** — build it, leave the stores as islands, or hold?
+Do that, in parallel with the build, not after it. One agent whose whole job is
+**dead ends and routing errors**, producing a knowledge artifact and a reusable
+skill at the same time. It has real material to work from:
 
-**THE BINDING CONSTRAINT ON PHASE A, and it is the point of this order:**
+- `tools/dead_check.py` already exists and already works — it found 13 live sites
+  issuing retired instructions when the 3D tree was closed.
+- The known routing faults, already named by the counsel and unfixed:
+  `world.html` unreachable from the door · `nesi.html` gated · `nesi_cast.json`
+  written and read back by nothing · three stores with no member between them ·
+  the five outputs with zero implementation.
+- The cast that claims a cost it does not charge — the file leaves and the world
+  loses nothing.
 
-> **The spec you produce must be buildable under EITHER branch of all four
-> gates, or it must stop and name precisely which gate blocks it and why.**
-
-A spec that only works if gate 1 resolves one way has ruled gate 1. If you find
-that nothing substantial can be specified without one of them, **that is the
-finding** — say it, name the gate, and let Phase B be smaller. Do not pick.
-
-Also standing and not yours: the set-down's record, the presence seam, law 9's
-three readings, the gift-crossing lock's naming, and every fork
-`nesi/game2d/DECISIONS.md` marks OPEN.
+Its output is a skill that can be re-run on any later state of the tree, not a
+one-time report.
 
 ---
 
-## 3 · ONE FINDING TO CARRY IN, AND IT IS NOT A RULING
+## 4 · HOW TO WORK
 
-Fuller's seat, reading `crystal.html` on 2026-08-14, found that the file already
-computes a reading in which three apparently-incompatible statements are all
-true, and does not notice:
+**The four live seats:** `buckminster-fuller` · `stuart-cowan` · `game-craft` ·
+`change-composite`. (`kevin-lens` is closed; `nesi` is carriage only.)
+Read them, then rule and build. **Divergence between seats is held and named, not
+averaged** — but it does not stop the build. Pick, log the pick and its cost in
+`BUILD_RECORD.md`, and move.
 
-- `TETEDGES` (`crystal.html:375`) is **the 12 edges of the two stacked
-  tetrahedra** — six falling, six rising. **Twelve levels as edges** (Kevin's own
-  words, 2026-08-14).
-- That leaves the **twelve cuboctahedron vertices free for the twelve lenses**
-  (the standing ruling of 2026-08-07: *the lenses take the vertices*).
-- The **eight tetra points** are already the eight built things.
-- `SQCROSS` (`:333`) closes it: every one of those twelve edges passes through
-  exactly one square-face centre, one falling and one rising per square — so a
-  fork becomes a *member*: the point where a descent level and an ascent level
-  pass through each other and are not joined. The brace is the join.
+**Build in `nesi/game2d/` only.** `nesi.html` stays behind its integrity gate.
+`nesi/world3d/` is retired.
 
-**Cost, named:** the crystal's entire panel architecture hangs off vertices and
-would have to move. **This is offered to the spec as a candidate, not as a
-decision.** It bears directly on gate 1 and it is therefore Kevin's.
+**Walk it on his real water** — `tools/pour.js`, read-only, store hash checked
+before and after. A walk on synthetic stones proves the mechanism moves and
+nothing else.
 
----
+**Drive real input.** Synthesised key and pointer events against the running
+page; assert on what it reports, never on what it should do.
 
-## 4 · PHASE A — FINISH THE SPEC
+**Never enforce a constraint by editing what he wrote.** Refuse the act; never
+correct the result.
 
-Convene the four live seats. **`kevin-lens` is closed** (2026-08-13) and rules
-nothing; **`nesi` is carriage only** — she surfaces verbatim passages with path
-and date and never reads.
+**No instruction anywhere may tell him to clear a store that holds `S.kept`.**
 
-- **buckminster-fuller** — the geometry, the minimum system, the trim tab, what
-  the diagram leaves outside.
-- **stuart-cowan** — layers, filters, nutrients, latency, the floor check.
-- **game-craft** — loop integrity, feel, teaching through play, the want-check.
-- **change-composite** — what it does to a person and to a field between people.
-
-Each seat returns a reading. **Divergence is held, never averaged** (LEARNED 17).
-Where two seats disagree, the disagreement goes into the spec as a named
-collision with both costs, and it does not get resolved by a third opinion.
-
-**The spec must contain, and nothing else:**
-
-1. **THE ONE THING PHASE B BUILDS.** One slice. A way in, an act, a visible
-   consequence that persists, a way out. Named in a single sentence before
-   anything else is written.
-2. **The articulation passage it serves** — file and line (SEAM S3).
-3. **Why it is the thing most likely to make a person open this the day after.**
-   LEARNED 1: the want-check is the only gate, and it was answered NO on
-   2026-08-13. Laws are the floor, never the target.
-4. **What it does NOT do**, listed, so Phase B cannot quietly widen.
-5. **How it will be verified** — including how it runs on **a copy of Kevin's
-   real poured water** (SEAM S4). A walk driven by synthetic stones fails.
-6. **Every gate it leaves open**, each with both branches costed.
-
-**The spec is one file. It is not a document set.** If Phase A produces more
-prose than the thing it specifies, it has become the failure mode it exists to
-prevent.
-
-### THE STOP
-
-**Phase A ends here. Do not begin Phase B.** Put the spec and its gates in front
-of Kevin and go quiet. His next message is the consent. Held is lawful — if he
-does not answer, the spec sits and nothing is lost.
+**Commit after each increment**, the message naming what was walked.
 
 ---
 
-## 5 · PHASE B — BUILD IT
+## 5 · THE LAWS THAT STILL BIND
 
-Only after Kevin's word. Then:
+These are not gates on him. They are what the game *is*:
 
-- **One slice. The one the spec names.** ZEROTH TAB
-  (`PROTOCOLS.md:414`): a session may complete at most one manifest, slice, or
-  build order; continuation requires a fresh boot.
-- **Build in `nesi/game2d/`.** Nothing else. `nesi.html` stays behind its
-  integrity gate; `world3d` is retired.
-- **Walk it on his real water**, copied in read-only through `tools/pour.js`.
-  His store is never opened for writing, and the SHA256 is checked before and
-  after.
-- **Drive real input.** Synthesised key and pointer events against the running
-  page, and assert on what it actually reports — never on what it should do.
-- **Never enforce a constraint by editing what the player wrote** (LEARNED 24).
-  Refuse the act; never correct the result.
-- **Every level of state that can take something from the player must say so at
-  the moment of the choice.** No instruction anywhere may tell Kevin to clear a
-  store that holds `S.kept`.
-- **Commit after each increment**, with the message naming what was walked.
-
-### THE WORD AT THE END
-
-The report ends with **WALKABLE** or **UNWITNESSED** or **BLOCKED**.
-
-> **LEARNED 2 — there is no WALKABLE without a stranger read. A surface proved
-> only by the hand that built it is UNWITNESSED, and saying otherwise is the
-> overclaim the crystal already caught once.**
-
-So the honest expected word for tomorrow is **UNWITNESSED**, and that is not a
-failure — it is the correct name for a machine-verified build. **WALKABLE**
-becomes available the moment a hand that owes the game nothing walks it.
+- No score, rank, percentage, streak, or word count reaches the player.
+- No model call, no network, no account, nothing reaches outward.
+- His words are never rewritten, summarised, or interpreted.
+- **Nothing reads the words** — not to sort them, not to colour them, not to
+  decide anything. The display law: appearance derives from where the writing
+  sits, what the hand did there, and how long it has been there. Never from what
+  it says.
+- The hand runs every filter. Set-it-down has no feedback.
+- Held is lawful. Nothing nags, prompts a return, or builds a re-engagement hook.
+- Quitting mid-sentence loses nothing.
 
 ---
 
-## 6 · WHAT WOULD MAKE TOMORROW A FAILURE
+## 6 · THE WORD AT THE END
 
-Named in advance so it can be checked rather than argued:
+**WALKABLE** when Kevin can open it and walk it: a way in, the act, a visible
+consequence that persists, a way out. **BLOCKED** only if something actually
+stops it, named precisely with the one thing that unblocks it.
 
-- A spec longer than the thing it specifies.
-- Any of the four gates resolved, defaulted, or built around by picking the
-  branch that keeps the session moving.
-- A second surface added to a world whose own diagnosis is that it has four
-  surfaces and no join.
-- A walk on synthetic stones.
-- The word WALKABLE without a stranger.
-- Anything that reads the player's words to decide how the world behaves or how
-  the words appear — the display law, and the one guarantee level one currently
-  proves by measurement.
-- Progress toward a shape nobody will open. **Progress is measured by ground a
-  hand can walk, never by features shipped.**
+There is no third word and no stranger clause. If it walks for him, it walks.
+
+## 7 · WHAT WOULD MAKE IT A FAILURE
+
+- A spec instead of a game.
+- A design fork handed back to him instead of ruled.
+- A daily surface that caps or counts his 750–1500 words.
+- Anything that reads what he wrote.
+- A second surface added to a world whose own diagnosis is four surfaces and no
+  join.
+- Something that needs him to know how it was built in order to use it.
