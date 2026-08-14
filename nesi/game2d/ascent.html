@@ -119,6 +119,10 @@ const LEVELS = [
 const SCHEMA="ascent.1", KEY="nesi.ascent";
 let S = {
   done:{}, at:1, lenses:[], water:0, released:false, ground:[], caught:[],
+  // THE WORLD KEEPS WHAT IT TAKES. Every sentence committed at the tank, held
+  // verbatim, appended, never trimmed, never reordered, never read for content,
+  // never counted at any door. It does not leave in the cast.
+  kept:[],
   routed:{spire:0,lake:0,set:0}, shoots:[], soundings:[], sank:[], rooted:0,
   lastDay:"", cast:false,
   // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
@@ -143,7 +147,10 @@ addEventListener("resize",resize); resize();
 const keys=Object.create(null);
 let mouse={x:0,y:0,down:false,clicked:false,drag:false};
 addEventListener("keydown",e=>{
-  if(typing){ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault(); commitWrite();} return; }
+  if(typing){
+    if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault(); commitWrite();}
+    else if(e.key==="Escape"){e.preventDefault(); closeWrite();}
+    return; }
   keys[e.key.toLowerCase()]=true;
   if(e.key===" ")e.preventDefault();
   if(e.key==="Escape") view = (view==="map" ? view : "map");
@@ -173,6 +180,12 @@ function openWrite(cap,cb){ writeCap=cap; onCommit=cb; typing=true; wp.style.dis
   wt.value=""; accepted=""; wr.style.width="100%"; wt.focus(); }
 function commitWrite(){ const w=words(wt.value); if(w.length<1) return;
   typing=false; wp.style.display="none"; wt.blur(); if(onCommit) onCommit(w.join(" "), w.length); }
+/* THE DOOR OUT OF THE FIRST ROOM. Escape lays the panel aside without
+   committing: nothing is kept, nothing is said, and the level is left
+   unfinished and re-enterable. Quitting mid-sentence loses nothing and
+   nothing on screen says so. */
+function closeWrite(){ typing=false; wp.style.display="none"; wt.blur();
+  onCommit=null; if(L) L.opened=false; view="map"; }
 
 /* ── view ─────────────────────────────────────────────────────────────────── */
 let view="map", cur=null, L={};   // L = the running level's scratch
@@ -192,7 +205,12 @@ const SET = {
    pools behind the gate. Nothing reads it. */
 tank:{ enter(){ L.drops=[]; L.pool=S.water||0; L.sent=[]; if(!L.opened){ L.opened=true;
     openWrite(100,(text,n)=>{ L.sent=text.split(/(?<=[.!?])\s+/).filter(Boolean);
-      if(!L.sent.length) L.sent=[text]; L.fed=0; }); } },
+      if(!L.sent.length) L.sent=[text]; L.fed=0;
+      /* THE WORLD MUST RETURN WHAT IT TAKES. Until 2026-08-14 the hundred words
+         became a pool height and nothing else — the level named for holding the
+         writing did not hold it. They are now kept, verbatim, in the store.
+         Kept is not shown. It is not counted. It waits in the ground. */
+      S.kept=(S.kept||[]).concat(L.sent); save(); }); } },
   step(dt){ if(typing) return;
     if(L.sent&&L.fed<L.sent.length){ L.t+=dt; if(L.t>240){ L.t=0;
       L.drops.push({x:W*0.5+(Math.random()-0.5)*180,y:120,v:0,s:L.sent[L.fed]}); L.fed++; } }
@@ -413,12 +431,23 @@ winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=toda
      "nothing you release is wasted; it comes back as ground."
    THE DEEP NEVER RENDERS. Below the waterline nothing is drawn, ever. What she
    builds out of what you sank appears at the SHORELINE, as shape, never words. */
-deep:{ enter(){ L.lines=[]; L.sunk=0; },
+/* THE GROUND DECIDES, NOT A COIN. Until 2026-08-14 a sounding's outcome was
+   Math.random()<0.25 — nothing the hand had given the world determined where a
+   deep was. Now the writing that settled IS the bottom: sentences lie along the
+   width in the order they came, oldest deepest. A line dropped over settled
+   ground finds bottom and brings ONE of them back, verbatim, unlabelled, with
+   nothing saying why it is that one. A line dropped where nothing settled runs
+   out — that is a deep, and nothing records where the deeps are, because a deep
+   is an absence and absence is not written down.
+   Nothing puts a pattern in the ground. It was always down there.
+   (keptAtX / keptDepth / drawKept are defined below the mechanics.) */
+deep:{ enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
   step(){ if(!mouse.clicked) return; mouse.clicked=false;
     if(mouse.y < H*0.45){                       // above the line: sound it
-      const isDeep = Math.random()<0.25;
-      L.lines.push({x:mouse.x, d:isDeep?H:(70+Math.random()*190), deep:isDeep});
-      S.soundings.push(isDeep?"deep":"floor");
+      const i = keptAtX(mouse.x), found = i>=0;
+      L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
+      if(found) L.up=i;                          // what came up, held by index
+      S.soundings.push(found?"floor":"deep");
     } else {                                    // below the line: let it go
       L.sunk++; S.sank.push(1);
     }
@@ -437,6 +466,8 @@ deep:{ enter(){ L.lines=[]; L.sunk=0; },
       g.fillStyle="#8d8578"; g.fillRect(x,H*0.45-14-i*5,46,14+i*5); }
     for(let i=0;i<L.sunk;i++){ g.fillStyle="rgba(240,236,226,.30)";
       g.beginPath(); g.arc(W*0.5+i*40-40,H*0.45+18,5,0,7); g.fill(); }
+    // what came up: one of your own sentences, verbatim, with nothing beside it
+    drawKept(L.up, W*0.5, 62);
     ring(mouse.x,mouse.y,16,"rgba(240,236,226,.45)"); }
 },
 
@@ -558,7 +589,37 @@ cast:{ enter(){ L.pull=0; L.gone=S.cast; },
 }
 };
 
-/* the cast leaves as a real file, carrying shape and not one character of text */
+/* ── the ground's own bottom ───────────────────────────────────────────────
+   Sentences lie along the width in the order they came. A line over settled
+   ground finds one; a line over nothing runs out. Nothing is drawn to say
+   where either is. */
+function keptAtX(x){
+  const n=S.kept?S.kept.length:0; if(!n) return -1;
+  const w=W/n, i=Math.floor(x/w);
+  if(i<0||i>=n) return -1;
+  return Math.abs(x-(i+0.5)*w) < Math.min(48,w*0.42) ? i : -1;
+}
+/* Older writing lies deeper. Nothing on screen ever says how deep. */
+function keptDepth(i){ const n=S.kept.length;
+  return 70 + 190*(n<2?0:(1-i/(n-1))); }
+/* Drawn FROM THE STORE BY INDEX. This function cannot be handed a string, so
+   no machine wording can reach the screen through it. */
+function drawKept(i,cx2,y){
+  if(!S.kept||i<0||i>=S.kept.length) return;
+  const s=S.kept[i]; g.fillStyle="rgba(240,236,226,.92)";
+  g.font="15px Georgia,serif"; g.textAlign="center";
+  const wds=s.split(" "); let ln="", yy=y;
+  for(let k=0;k<wds.length;k++){
+    const t=ln?ln+" "+wds[k]:wds[k];
+    if(g.measureText(t).width>Math.min(760,W-80)&&ln){ g.fillText(ln,cx2,yy); yy+=21; ln=wds[k]; }
+    else ln=t;
+  }
+  if(ln) g.fillText(ln,cx2,yy);
+}
+
+/* the cast leaves as a real file, carrying shape and not one character of text.
+   S.kept is NOT in it and never will be: the world keeps the writing, and the
+   writing does not leave. */
 function emit(){
   const shape={ cast:"nesi", lenses:S.lenses.length, ground:S.ground.length,
     shoots:S.shoots.length, rooted:S.rooted, soundings:S.soundings.length,

@@ -144,7 +144,8 @@ tools/ | ORGAN | - | build | - | - | -
 skills/ | ORGAN | - | build | - | - | -
 nesi/mind/ | ORGAN | - | build | - | - | ~/.claude/projects/C--Users-KMEAR-OneDrive-Desktop-DSS-content/memory/
 nesi/bench/ | ORGAN | - | build | - | - | ~/.claude/skills/
-nesi/world3d/ | ORGAN | - | build | - | - | -
+nesi/world3d/ | RETIRED 2026-08-14 (Kevin's mark) — kept as record, never built against; see nesi/world3d/RETIRED.md | - | - | - | - | -
+nesi/game2d/ | ORGAN | - | build | - | - | -
 nesi/spec/ | ORGAN | - | build | - | - | -
 _COMPOST/ | MATERIAL | compost | DECIDE | - | - | -
 nesi/_compost/ | MATERIAL | compost | DECIDE | - | - | -

@@ -179,8 +179,35 @@ its precondition file `PLAY_LOG.jsonl` not existing at all, which blocks the
 runner rather than passing it. Failing closed is the shape holding, not
 breaking.*
 
+**23 · A HARNESS THAT INFERS A STATE REPORTS SUCCESS IT NEVER SAW.** `walk.gd`
+decided the body had landed by counting twenty frames of stillness — and the body
+was standing still at the apex because its 8-second descent had not begun. Every
+screenshot for a day was taken 240 m in the air and the run believed it held
+evidence. Fixed by asking the body's own `entry_active()` instead of reading a
+proxy. **Ask the object its state; never infer it from a symptom.** Composted out
+of the 3D tree on its retirement, 2026-08-14 — the lesson is engine-agnostic and
+binds the 2D harness identically. *Falsifier: any check whose pass condition is a
+side-effect rather than the thing itself.*
+
+**24 · A CONSTRAINT THAT EDITS THE MATERIAL TO ENFORCE ITSELF BREAKS THE LAW IT
+SERVES.** The 100-word cap was implemented by truncating on `input`, which moved
+the caret and produced `word91ord92ord93…` — a cap enforcing law 4 by *rewriting
+the player's words*. Moved upstream to `beforeinput`, which refuses the keystroke
+and edits nothing. **Enforce by refusing the act, never by correcting the
+result.** Found by walking, 2026-08-13. *Falsifier: any guard that mutates
+user-authored content after the fact.*
+
+**25 · A BUILD SESSION MUST NOT RULE ITS OWN BASE FORK.** The counsel named this
+on 2026-08-13 (MARKS 1021) as a thing that should stay dead — and the very next
+run did it, ruling a night's slice into the 3D tree under Precedent Law, with the
+collision logged face-up and reasoned at length. Kevin reverted it in four words:
+*"I want a 2d game with 2d elements built inside of interactive html."* **Logging
+a base-fork ruling carefully does not make it yours to make.** The reasoning was
+sound and the fork still was not the session's. *Falsifier: a ruling that decides
+which tree, engine, or medium the work happens in.*
+
 ---
 
 *Falsifier for this file: if a session reads it at boot and the corpus still
 re-learns one of these the hard way, the line was written wrong — fix the line,
-do not add a twenty-first.*
+do not add another.*

@@ -96,7 +96,11 @@ const VERTS = [-90, 30, 150].map(d => {
   const r = d*Math.PI/180;
   return { x: CENTRE.x + RADIUS*Math.cos(r), y: CENTRE.y + RADIUS*Math.sin(r) };
 });
-const ENTRY = { x:0, y: RADIUS + 300 };
+/* THE SPAWN SITS INSIDE THE THRESHOLD. It used to sit 50 px outside it, so
+   `out` was true on frame one, the leave-fade ran from boot, and the opening
+   screen washed to flat #b6ae9f inside a second. A blank first frame passed a
+   green walk because the walk read state and not pixels. */
+const ENTRY = { x:0, y: RADIUS + 200 };
 const THRESHOLD_Y = RADIUS + 250;
 
 let S = { read:[false,false,false], lens:"", held:false, drained:false };

@@ -117,7 +117,13 @@ what stands finds new form in it. Nothing else is the destination.
   (built 2026-08-07, on his mark that day) — the recurring convention that
   every screen in the world renders as a tetra: four vertices, unslotted ones
   drawn hollow and left empty, read by presence or absence of what stands
-  behind them, never by a label or a message. *(The candidate reading that
+  behind them, never by a label or a message. *(LAYERED 2026-08-14, on Kevin's
+  mark retiring the 3D tree — the naming above is untouched and still governs.
+  The file it cites now sits inside a RETIRED tree (`nesi/world3d/RETIRED.md`),
+  so it is a **provenance citation, not a live path**. Do not open that tree to
+  re-derive the format, and do not read this citation as licence to build there.
+  The convention it names is engine-agnostic and is carried by the 2D build's own
+  surfaces.)* *(The candidate reading that
   preceded this mark, and the caution around inferring it, is preserved at
   `counsel/kevinlens/SHAPE_nutrients_and_gifts.md` and this session's own
   MARKS_LOG entries — the naming above is his word, not a machine inference.)*
