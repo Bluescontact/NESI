@@ -159,12 +159,20 @@ function adopt(){
   if(S.stones.length) S.past.push({d:"earlier", text:S.stones.map(s=>s.t).join(" ")});
 }
 
-/* pad → read back → commit. A bad write never destroys a good record. */
+/* pad → read back → commit. A bad write never destroys a good record.
+   AND A FAILED WRITE IS NEVER FORGOTTEN. This used to swallow the error and the
+   caller cleared `dirty` regardless — so on the morning the store filled up,
+   every keystroke would be lost from then on and the surface would look exactly
+   the same. It now reports whether it actually wrote, and the caller keeps
+   trying rather than giving up quietly. The header promises that quitting loses
+   nothing; a promise with an expiry date and no alarm is not one. */
 function save(){
   try{ const j=JSON.stringify(S);
     localStorage.setItem(KEY+".pad", j);
-    if(localStorage.getItem(KEY+".pad")===j){ localStorage.setItem(KEY,j); localStorage.removeItem(KEY+".pad"); }
-  }catch(e){}
+    if(localStorage.getItem(KEY+".pad")!==j) return false;
+    localStorage.setItem(KEY,j); localStorage.removeItem(KEY+".pad");
+    return true;
+  }catch(e){ return false; }
 }
 
 /* ═══ THE BAND CUT ══════════════════════════════════════════════════════════
@@ -204,7 +212,8 @@ if(S.mark>page.value.length) S.mark=page.value.length;
 page.focus(); page.setSelectionRange(page.value.length, page.value.length);
 page.addEventListener("scroll", ()=>{ bg.scrollTop=page.scrollTop; });
 
-let quiet=0, stirred=0, level=0, target=0, still=true, dirty=false;
+let quiet=0, stirred=0, level=0, target=0, still=true, dirty=false, mouseY=0;
+addEventListener("pointermove", e=>{ mouseY=e.clientY; });
 
 const words = t => t.trim() ? t.trim().split(/\s+/).length : 0;
 /* The water's height. A curve, never a threshold — it never reaches the top, so
@@ -257,14 +266,25 @@ page.addEventListener("input", bandCut);
    record. */
 page.addEventListener("keydown", e=>{
   if(e.key!=="Enter") return;
-  const seg=page.value.slice(S.mark).trim();
+  /* ONE BANKING PATH, NOT TWO. This used to capture the segment at keydown and
+     bank it after the deferral — but the newline's own `input` event fires in
+     between, `bandCut` banks any completed sentence and advances S.mark, and the
+     stale segment then banked THE SAME SENTENCE AGAIN. Every paragraph break
+     after a finished sentence produced a duplicate stone: doubles in the table,
+     the same sentence returned twice by the line, the sounding skewed toward
+     paragraph endings. Found by the counsel, 2026-08-14, by tracing the order of
+     events; the shape was ported faithfully from world.html:498-513, which has
+     the identical defect. The segment is now recomputed AFTER the input has run,
+     from the watermark as it actually stands, so there is only ever one path. */
   setTimeout(()=>{
+    const seg=page.value.slice(S.mark).trim();
     if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) S.stones.push({n:S.n++, t:seg, d:S.today});
     S.mark=page.value.length; S.text=page.value; dirty=true; paint(); save();
   },0);
 });
 
-setInterval(()=>{ if(dirty){ save(); dirty=false; } }, 1500);
+/* keeps trying — `dirty` clears only on a write that actually landed */
+setInterval(()=>{ if(dirty && save()) dirty=false; }, 1500);
 addEventListener("beforeunload", ()=>{ S.text=page.value; save(); });
 addEventListener("visibilitychange", ()=>{ if(document.hidden){ S.text=page.value; save(); } });
 
@@ -277,11 +297,36 @@ addEventListener("visibilitychange", ()=>{ if(document.hidden){ S.text=page.valu
 const up=document.getElementById("up");
 let line=null, openStone=-1;
 
-/* The bed, where the settled stones lie. Derived from how many days have
-   settled — never displayed as a figure. */
+/* A day, counted honestly. A merged stone carries the days of all its parts, so
+   merging across two days used to MANUFACTURE A BAND — the ground recorded a
+   merge as though it were a return, and by the collision below, each phantom
+   band pushed the bed further up into the water. Counting the days themselves
+   cannot be gamed by table work. */
+function dayset(){
+  const d=new Set();
+  held().forEach(s=> String(s.d).split(" · ").forEach(x=> d.add(x)) );
+  return d;
+}
+
+/* THE BED, and the fix three seats found independently by arithmetic.
+
+   bedY grew with the number of bands; wy fell with the day's word count. Two
+   coordinates competing for one axis with nothing between them. On a fresh
+   morning the water rests at REST=0.28, so wy = 0.882·H — and once the bands
+   pushed bedY above that, EVERY click below the waterline opened the table and
+   THE LINE COULD NO LONGER BE DROPPED AT ALL. On a 900px window that is the
+   seventh day; on a 700px laptop the fifth. The one channel that runs
+   world→person died exactly when returning was supposed to start paying, and
+   nothing said so.
+
+   The bed is now derived from the water rather than competing with it: it sits
+   under the surface by construction, and the open water band can never close.
+   This is subtraction — an independent coordinate goes away. */
+const OPEN_WATER = 0.09;              /* the band that must never close */
 function bedY(){
-  const bands=new Set(held().map(s=>s.d)).size;
-  return innerHeight - Math.min(innerHeight*0.30, 26+bands*13);
+  const wy=innerHeight*(1-level*0.42);
+  const want=innerHeight - Math.min(innerHeight*0.30, 26+dayset().size*13);
+  return Math.max(want, wy + Math.max(58, innerHeight*OPEN_WATER));
 }
 /* A merged part does not double: its words live in the merged stone now, so the
    line reaches what is held and not what was absorbed. */
@@ -295,23 +340,45 @@ function paintUp(){
   up.textContent="";
   if(openStone<0){ up.style.display="none"; return; }
   const st=S.stones[openStone];
+  /* THE STANDING TEXT STAYS, and it stays READ-ONLY. The source says every other
+     face shows "the standing text with the arrival highlighted and attached" —
+     the whole point of holding an offer is that you can see what you are being
+     offered a choice between. The editable block is the offer; this is what it
+     would replace. */
+  const body=document.createElement("div");
+  body.className="stand"; body.textContent=st.t;
+  up.appendChild(body);
   const stand=document.createElement("div");
   stand.className="stand"; stand.contentEditable="true"; stand.spellcheck=false;
+  stand.style.marginTop="10px"; stand.style.opacity=".62";
   stand.textContent=st.t;
   /* AN EDIT DOES NOT SETTLE ANYTHING. It is held on the stone as an offer. */
+  up.appendChild(stand);
+  /* THE STANDING TEXT MUST STAY VISIBLE, and the thing you click to take the
+     arrival must exist WHILE you are making it. Before this, typing into the
+     stand rewrote it in place and the arrival block was only drawn on the NEXT
+     paint — so the standing sentence was visible nowhere, there was nothing to
+     compare against, and no control appeared. The writer believed the edit had
+     taken. The offer is now drawn live, beneath the standing text, from the
+     first keystroke. */
+  const arr=document.createElement("div");
+  arr.className="arr"; arr.style.display="none";
+  /* TAKING IT IS HIS CLICK, and only that click settles the body. */
+  arr.addEventListener("click", ()=>{
+    if(!st.arrival) return;
+    st.t=st.arrival.t; delete st.arrival; dirty=true; save(); paintUp();
+  });
+  up.appendChild(arr);
+  const showArr=()=>{
+    if(st.arrival && st.arrival.t!==st.t){ arr.textContent=st.arrival.t; arr.style.display="block"; }
+    else arr.style.display="none";
+  };
   stand.addEventListener("input", ()=>{
     const t=stand.textContent;
     if(t===st.t){ delete st.arrival; } else { st.arrival={t}; }
-    dirty=true;
+    dirty=true; showArr();
   });
-  up.appendChild(stand);
-  if(st.arrival && st.arrival.t!==st.t){
-    const a=document.createElement("div");
-    a.className="arr"; a.textContent=st.arrival.t;
-    /* TAKING IT IS HIS CLICK, and only that click settles the body. */
-    a.addEventListener("click", ()=>{ st.t=st.arrival.t; delete st.arrival; dirty=true; save(); paintUp(); });
-    up.appendChild(a);
-  }
+  showArr();
   up.style.display="block";
 }
 addEventListener("pointerdown", e=>{
@@ -320,7 +387,14 @@ addEventListener("pointerdown", e=>{
   if(e.target instanceof Node && (up.contains(e.target) || tableEl.contains(e.target)
      || seamsEl.contains(e.target))) return;
   if(tableOpen) return;
-  if(!still) return;                                /* your hand is still writing */
+  /* THE GATE IS POSITION, NOT TIME. `still` used to gate this too, which gave one
+     state variable two jobs: the day's felt end, AND who owns the pointer. The
+     cost fell on the commonest act there is — pausing to think for six seconds
+     and then clicking into your own paragraph to fix a word. The click died, the
+     page could not be scrolled, and the caret could not be placed. The page owns
+     the pointer above the waterline and the world owns it below; that is already
+     spatially true and needs no state. The quiet went back to meaning only what
+     the header says it means. */
   const wy=innerHeight*(1-level*0.42);
   if(e.clientY < wy){ return; }
   /* THE BED IS WHERE THE STONES LIE, so that is where the table opens. Above it,
@@ -338,7 +412,19 @@ addEventListener("keydown", e=>{
     if(tableOpen){ closeTable(); return; }
     openStone=-1; paintUp(); page.focus(); return;
   }
-  if(tableOpen) return;
+  /* THE TABLE HAS A DOOR NOW. It used to swallow the keyboard entirely — every
+     keystroke returned before reaching anything, with no visible control and no
+     exit but Escape, which nothing announced. A hand that reached for the bottom
+     of the screen was in a grey room with a dead keyboard. level_one.html had
+     already learned this exact lesson and written it down; this file
+     reintroduced it. Any key you would write with now closes the table and puts
+     you back on the page, which is the only thing a writer would try. */
+  if(tableOpen){
+    if(e.key.length===1 && !e.ctrlKey && !e.metaKey && !e.altKey){
+      closeTable(); page.focus(); still=false; quiet=0;
+    }
+    return;
+  }
   if(document.activeElement!==page && !up.contains(document.activeElement)
      && !e.ctrlKey && !e.metaKey && !e.altKey){ page.focus(); still=false; quiet=0; }
 });
@@ -472,7 +558,18 @@ function frame(dt){
   if(quiet>6000) still=true;                 /* the page falling quiet is the mechanic */
   stirred += ((still?0:1)-stirred)*0.04;
   level += (target-level)*0.035;
-  page.style.pointerEvents = still ? "none" : "auto";
+  /* THE PAGE KEEPS THE POINTER, ALWAYS. It used to go click-through the moment
+     the surface went still, which meant that after six seconds of thinking you
+     could not place the caret in your own paragraph and could not scroll the
+     page to read what you had written. The world's acts are gated by depth
+     instead — see the pointerdown handler. */
+  /* THE CURSOR SAYS WHAT THE DEPTH WILL DO, before you commit to it. Ported in
+     principle from world.html:995-1014, where the cursor predicates are the same
+     predicates as the acts, checked in the same order. This is the whole of the
+     discoverability answer, and it costs no text, no tooltip, no prompt. */
+  const wy=H*(1-level*0.42);
+  document.body.style.cursor = tableOpen ? "" :
+      (mouseY>=bedY() ? "grab" : mouseY>=wy ? "pointer" : "");
   if(line) line.d=Math.min(line.max, line.d+14);
   draw();
 }
@@ -482,7 +579,7 @@ function draw(){
   sky.addColorStop(0,"#e6e9e6"); sky.addColorStop(1,"#c6cfcc");
   g.fillStyle=sky; g.fillRect(0,0,W,H);
 
-  const bands=new Set(held().map(s=>s.d)).size;
+  const bands=dayset().size;
   const gy=bedY();
   g.fillStyle="#9d9384"; g.fillRect(0,gy,W,H-gy);
   for(let i=0;i<bands;i++){ const y=gy+10+i*13; if(y>H-6) break;
