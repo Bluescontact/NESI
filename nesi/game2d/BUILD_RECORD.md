@@ -4834,3 +4834,54 @@ the page says now.
 
 → **The writing is held: visible as you write it, and reachable back out of the ground.**
 The want-check is his and has not happened.
+
+---
+
+## 2026-08-14 · THE COLLECTIVE DREAM AND THE GIFT (session 56dc26d3)
+
+Kevin's order: *"i want to have the counsel reconcile visions, do a dream session
+individually and collectively, and then demonstrate the deposit as a gift."*
+His mark on the manifest: *"run it as written."*
+
+Four live seats reconciled the visions and dreamed alone
+(`counsel/<seat>/RECONCILE_AND_DREAM_2026-08-14.md`), then dreamed together
+(`counsel/THE_COLLECTIVE_DREAM_2026-08-14.md`). All four independently named the
+same build: **the tank keeps the writing.**
+
+### THE ONE RULING MADE UNDER THE NESI.EXE BUILD ORDER, recorded by name
+
+Three seats said storage only tonight; game-craft said keep **and** give back.
+**Ruled: build both halves.** Ground: Kevin's order was to demonstrate the
+deposit as a gift, and a deposit that is kept and never returns cannot be
+demonstrated as one. The three seats' objection was to sequencing, not to the
+return; none barred it. Pure mechanic choice — this session's to converge and
+record, not to hand back (`PROTOCOLS.md:348`).
+
+### Built and walked (`nesi/game2d/THE_GIFT.md`)
+- `level_one.html:99` — spawn moved inside `THRESHOLD_Y`. The opening frame no
+  longer washes to flat. Counterfactual measured both ways: 2 distinct colours
+  before, 20 after.
+- `ascent.html` — Escape closes the writing panel without committing. The door
+  out of the first room now exists.
+- `ascent.html` — `S.kept`: the tank holds every committed sentence verbatim.
+  9 of Kevin's real sentences kept and byte-identical across a full reload.
+  **Not in the cast, and never will be.**
+- `ascent.html` — THE DEEP's sounding reads the ground instead of
+  `Math.random()`. A line over settled ground returned *"buckminster fuller, The
+  first tetra and level is the tank."* verbatim; a line 38 px away ran out.
+  1329 lit pixels measured on the canvas buffer; 0 when nothing came up.
+
+### Deliberately NOT built — his forks, untouched
+The cast's contents · the set-down counter · law 9's three readings · which
+surface is the game · the twelve-level shape · the fourth number · the
+workshops-versus-rungs question.
+
+### Named, not fixed
+`ascent.html:455` still halves the 500 with `Math.ceil(w.length/2)` — the
+machine's hand where the design says *"halved by the hand"* (law 5). Six
+level-number comments on wrong levels; a phantom fourth fraction; dead `cap:500`
+on THE DAM.
+
+**Standing: UNWITNESSED.** Walked by the hand that made the change; no
+screenshot (the Browser pane did not composite). Store hash unchanged;
+`nesi.html` untouched.

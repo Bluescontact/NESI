@@ -1,0 +1,60 @@
+{
+  "_the_fork_is_called": "THE SLICE. Kevin's mark, 2026-08-13, on the two-two split the counsel would not converge: buckminster-fuller and change-composite would have built MANIFEST 2 (the night); stuart-cowan and game-craft would go nowhere above the fun slice until it has been wanted on two lived days. He called the slice. This file is that branch and only that branch — six passes over ONE slice at increasing feel-depth, alternating ADD and SUBTRACT, which is game-craft's own prescription for how six phases are spent when the constraint is want-signal latency rather than build throughput.",
+
+  "_what_is_not_here": "No new mechanic, no new screen, no fifth station, nothing above the slice. Every phase below is sited in a finding already made by a seat that read the file cold — none of them is a fresh idea, and none of them settles an open fork. The dam bypass (phase 4) is the one phase that changes world behaviour rather than perception, and it is written as a single range correction with no branch in it.",
+
+  "_sibling_rule": "None of the six stands on another. Each is independently revertible and the order is irrelevant — the runner enforces this by refusing any phase whose cost_of_no names another phase. Reverting phase 2 does not break 1, 3, 4, 5 or 6.",
+
+  "executor": "claude --print",
+
+  "phases": [
+    {
+      "id": "sounding-handle",
+      "title": "ADD · the sounding gets the affordance every other object already has",
+      "cites": { "file": "nesi/mind/LEARNED.md", "line": 77 },
+      "cost_of_no": "one cursor state over settled deposits. Nothing else in the world moves.",
+      "order": "In nesi/game2d/world.html, the function hover() at line 995 tests stones, the dam gate, the mirror seats and fruit. It does not test S.settled. That makes the sounding — the one act that gives the writer his own sentence back — the only interactive object in this world whose cursor never changes. Add a settled-deposit branch to hover() so the cursor answers over a settled deposit exactly as it already does over a stone, using the same hit radius the pointerdown handler uses for settled deposits so the two agree. Add nothing else: no text, no label, no hint, no tooltip, no message, no highlight. Touch no other function. Verify with: node tools/reach_check.js and node tools/refusal_check.js and node tools/hold_check.js.",
+      "checks": ["reach_check.js", "refusal_check.js", "hold_check.js"]
+    },
+    {
+      "id": "deposit-mark-findable",
+      "title": "ADD · the mark a sentence leaves is big enough for a hand to find",
+      "cites": { "file": "counsel/reference/NESI_VISION_as_it_stands.md", "line": 14 },
+      "cost_of_no": "settled deposits go back to being drawn small and dark. The sounding still works for anyone who knows where it is.",
+      "order": "In nesi/game2d/world.html, a settled deposit is drawn about 9 logical pixels wide and 5 high, in a brown that sits on brown ground. A pointer target that small and that low in contrast cannot be found by a hand that does not already know it is there. Enlarge the drawn deposit so its width is at least 24 logical pixels, and give it enough tonal separation from the soil beneath it that its edge is visible without colour being the only carrier of the distinction — law 10. Keep its form the same kind of thing it already is: a mound in the ground, not a new object, not an icon, not a glow, and carrying no text. Change only the drawing of the settled deposit. Verify with: node tools/reach_check.js and node tools/refusal_check.js and node tools/hold_check.js.",
+      "checks": ["reach_check.js", "refusal_check.js", "hold_check.js"]
+    },
+    {
+      "id": "weather-not-hidden",
+      "title": "SUBTRACT · the writing becoming weather stops being drawn behind the page",
+      "cites": { "file": "nesi/game2d/THE_GAME.md", "line": 63 },
+      "cost_of_no": "the cloud goes back to gathering where the page covers it. The rain still falls.",
+      "order": "In nesi/game2d/world.html, the writing sheet occupies logical y 14 to 190 at about 80 percent opacity, and the cloud that gathers as a sentence is written sits at about cy 112 with a radius of 30 to 52 — behind the sheet. The one signal that a person's writing is becoming weather before any drop falls is therefore painted where it cannot be seen, and the connection is only learnable once rain clears y 190. Change the draw order or the cloud's position so the gathering cloud is visible while a sentence is being written, without moving the sheet and without making the sheet more transparent than it is. Subtract occlusion; add nothing. No new element, no text, no indicator. Verify with: node tools/refusal_check.js and node tools/hold_check.js and node tools/still_check.js.",
+      "checks": ["refusal_check.js", "hold_check.js", "still_check.js"]
+    },
+    {
+      "id": "dam-not-bypassed",
+      "title": "SUBTRACT · the free path around the dam closes, so the gate is load-bearing",
+      "cites": { "file": "nesi/game2d/THE_GAME.md", "line": 63 },
+      "cost_of_no": "birth weather goes back to falling across a wider band. Every other part of the chain is unaffected.",
+      "order": "In nesi/game2d/world.html, birth weather falls over x less than 360 while the dam basin spans DAM.x1 258 to 566. Enough sentences therefore wet the channel around x 330 with the gate shut, and a shoot appears without the dam ever having been touched — so the most decisive gesture in the slice can be skipped without the person ever learning it exists. Narrow the birth weather's fall range so it lands within the catchment the dam actually holds back. Change the range constant and nothing else: no new mechanic, no message, no gate on the gesture, no hint that the dam matters. Verify with: node tools/refusal_check.js and node tools/hold_check.js and node tools/conserve.js.",
+      "checks": ["refusal_check.js", "hold_check.js", "conserve.js"]
+    },
+    {
+      "id": "walk-ends-at-the-sounding",
+      "title": "ADD · the cold walk parks where tomorrow's first ninety seconds should end",
+      "cites": { "file": "counsel/reference/NESI_VISION_as_it_stands.md", "line": 16 },
+      "cost_of_no": "the walk script ends where it ended before. No game code is touched by this phase at all.",
+      "order": "Read nesi/game2d/tools/cold_walk.js. Extend the scripted walk so that it runs on a copy of the real poured water at nesi/game2d/kevins-water.json — copied, never written to — and so that its last step leaves the world parked with a settled deposit under the cursor, the state a person would meet if they opened the world and had ninety seconds. Write the PNG or PNGs it already writes at that final state. Do not modify world.html. Do not modify kevins-water.json. Verify by running: node tools/cold_walk.js and node tools/refusal_check.js.",
+      "checks": ["refusal_check.js", "hold_check.js"]
+    },
+    {
+      "id": "checks-assert-presence",
+      "title": "SUBTRACT · one instrument stops passing on absence",
+      "cites": { "file": "nesi/mind/LEARNED.md", "line": 77 },
+      "cost_of_no": "one check file is left as it was. No game code is touched by this phase at all.",
+      "order": "Read nesi/game2d/tools/night_check.js. Every assertion in it that can be satisfied by something being absent is to be rewritten so that it must find its subject in order to pass, and so that failing to find its subject is reported as a FAIL rather than skipped silently. A blank world must not be able to pass this file. Add no assertions about anything the file does not already cover. Do not modify world.html. Report the full output of node tools/night_check.js before and after the change. Verify with: node tools/night_check.js and node tools/refusal_check.js.",
+      "checks": ["night_check.js", "refusal_check.js"]
+    }
+  ]
+}
