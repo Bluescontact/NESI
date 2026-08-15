@@ -544,12 +544,31 @@ let room=null;                    // the level you are standing inside, if any
 
    `hold` has three and `draw` has three, so neither closes yet. 17 mechanisms
    do not divide into fours; what fills those two levels is open. */
+/* ═══ LEVEL ONE, REBUILT ════════════════════════════════════════════════════
+   Kevin's order, 2026-08-14, after choosing the gesture rule: "rebuild level
+   one."
+
+   The old level one was tank(reach) · rain(draw) · dam(hold) · channel(draw) —
+   grouped by the water's opening sequence, which is a different rule from the
+   one he chose, so under gesture it was not a level at all.
+
+   THE TANK IS A REACH, so level one is the reach level and keeps the entry. Its
+   other three come from the four reaches that were gathered a moment ago; DEEP
+   goes loose, because it reads what THE SOUNDING leaves and cannot be the level
+   that teaches the reach.
+
+   WHAT THE FOUR ACTUALLY MAKE, which was not designed and is why this is the
+   right four: writing becomes water · your hand separates it · your hand routes
+   it three ways · you drop a line and one of your own sentences comes back.
+   That is the whole give-and-return circuit, and every step of it is one hand
+   on one thing. A first level that teaches the reach teaches the world.
+
+   AND IT IS NAMED BY ITS GESTURE, not by a name invented for it. Grouping by
+   gesture makes the naming fall out the same way the grouping did. */
 const ROOMS = [
-  { n:1, name:"LEVEL ONE", mech:"four faces of one tetra",
-    faces:["tank","rain","dam","channel"], mixed:true },
-  { n:2, name:"THE REACH", mech:"a hand on a thing, and it answers",
-    faces:["filter","stations","sounding","deep"] },
-  { n:3, name:"THE WAIT",  mech:"doing nothing is the mechanic",
+  { n:1, name:"THE REACH", mech:"a hand on a thing, and it answers",
+    faces:["tank","filter","stations","sounding"] },
+  { n:2, name:"THE WAIT",  mech:"doing nothing is the mechanic",
     faces:["ground","winter","stilling","garden"] }
 ];
 const roomOf = n => ROOMS.find(r=>r.n===n);
@@ -643,8 +662,27 @@ tank:{ g:"reach", enter(){ const w=W_();
       L.drops.push({x:W*0.5+(Math.random()-0.5)*180,y:120,v:0,s:L.sent[L.fed]}); L.fed++; } }
     L.drops.forEach(d=>{ d.v+=0.5; d.y+=d.v; });
     const floor=H-190;
-    L.drops=L.drops.filter(d=>{ if(d.y>=floor-L.pool*1.6){ L.pool=Math.min(90,L.pool+3); return false; } return true; });
-    // WRITES THE ONE WATER: writing raises the level and stirs the surface.
+    L.drops=L.drops.filter(d=>{ if(d.y>=floor-L.pool*1.6){ L.pool=Math.min(90,L.pool+3);
+      /* PER DROP, NOT PER FRAME. This lives here and not in the step body below
+         because step() runs every frame: at 0.02 a frame the load reached its
+         ceiling in a second and a half and the lake went black. A sentence
+         landing brings what a sentence brings, once. */
+      { const w=W_(); w.load=clamp01(w.load+0.05); w.clarity=clamp01(w.clarity-0.04); }
+      return false; } return true; });
+    /* WRITES THE ONE WATER: writing raises the level, stirs the surface, and
+       ARRIVES CARRYING SOMETHING.
+
+       The load was the gap the rebuilt level one exposed. Grouped by gesture,
+       the reach level is tank · filter · stations · sounding, and it is FIRST —
+       so on a cold morning nothing has stirred the bed yet. The filter had
+       nothing suspended to separate and its whole effect clamped to zero; the
+       stations had nothing to route. Under the old grouping the dam sat between
+       them and did this job, and the dam is a hold, so it is not in this level.
+
+       Writing arrives carrying material, which is the world's own physics —
+       water carries fractions — and it makes the reach level self-contained:
+       write, separate by hand, route three ways, drop a line and get one back.
+       Small, because the dam's release is still what really stirs the bed. */
     const w=W_(); w.level=clamp01(L.pool/90); w.still=0;
     /* it is done when nothing is left waiting and nothing is left falling —
        whether the water was written here or arrived from the daily surface */
@@ -834,7 +872,17 @@ filter:{ g:"reach", enter(){ const w=W_();
    to the lake, set down with no feedback at all." The third is the one that
    matters, and it does nothing on purpose. */
 stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
-  step(){ if(mouse.clicked){ mouse.clicked=false; const b=bays();
+  step(){ if(mouse.clicked){ mouse.clicked=false;
+      /* NOTHING TO ROUTE IS NOT A FINISHED LEVEL. Grouping by gesture put this
+         face beside the tank and the filter, and a hand can enter it first —
+         at which point the queue is empty. It used to finish on the first click,
+         because `L.i >= L.queue.length` is true at 1 >= 0: the level completed
+         having routed nothing, which is an act with no material dressed as an
+         act. The faces inside a level are not gated against each other and will
+         not be; an empty station is simply empty, and a hand that finds it empty
+         has learned where the water comes from. */
+      if(!L.queue.length) return;
+      const b=bays();
       for(const [k,r] of Object.entries(b)){
         if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
           S.routed[k]++; L.i++;                      // set-down: nothing happens. no toast, no chime.
@@ -1076,7 +1124,13 @@ sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
     L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
     if(found) L.up=i;
     S.soundings.push(found?"floor":"deep");
-    if(L.lines.length>=4){ const w=W_(); w.still=1;
+    /* AND THE SOUNDING NEEDS SOMETHING DOWN THERE. Four lines into a lake that
+       holds nothing is four lines into nothing — the same hollow act as routing
+       an empty queue, and reachable the same way, by entering this face before
+       the tank. The lake is empty until you have written; a line still drops,
+       and it still finds nothing, and that is a true reading of an empty lake.
+       It is not a finished level. */
+    if(L.lines.length>=4 && (S.kept||[]).length){ const w=W_(); w.still=1;
       reading(9,"sounded"); save(); finish(); } },
   draw(){ g.fillStyle="#7f93a0"; g.fillRect(0,0,W,H*0.42);
     g.fillStyle="#2b3b45"; g.fillRect(0,H*0.42,W,H);      // below the line: nothing, ever

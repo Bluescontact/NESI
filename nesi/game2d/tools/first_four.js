@@ -100,7 +100,7 @@ vm.runInContext(
   src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,facesOf,worked,levelDone," +
         "esc(){ const e={key:'Escape',preventDefault(){}}; if(view==='level'&&room&&room.faces.indexOf(cur&&cur.key)>=0)view='room';" +
         "  else if(view==='room'){room=null;view='map';} else if(view!=='map')view='map'; }," +
-        "get room(){return room;}," +
+        "get room(){return room;}, L(){return L;}, bays," +
         "toMap(){view='map';}, commit(t){commitWrite&&0;}, get typing(){return typing;}," +
         "feed(text){ if(onCommit){ const f=onCommit; typing=false; wp.style.display='none';" +
         "  onCommit=null; f(text, text.split(/\\s+/).length); } }," +
@@ -116,8 +116,21 @@ const tick = (n = 1) => { for (let i = 0; i < n; i++) X.frame(t += 16); };
 const clickAt = (x, y) => { X.mouse.x = x; X.mouse.y = y; X.mouse.clicked = true; tick(); };
 const hoverAt = (x, y) => { X.mouse.x = x; X.mouse.y = y; return X.hovered(); };
 const ptFor = n => X.mapPts().find(p => p.l.n === n);
-/* a photograph of the one water, so a claim about persistence is a comparison */
-const shot = () => { const w = X.W_(); return { level: w.level, load: w.load, clarity: w.clarity, cut: (w.cut||[]).length }; };
+/* THE PHOTOGRAPH IS OF THE WHOLE WORLD, NOT JUST THE WATER — a claim about
+   persistence is a comparison, and two faces caught this one being too narrow.
+
+   THE SOUNDING's only write on the water is to still the surface. And THE
+   STATIONS can legitimately net to ZERO in the load — send two on, drop two to
+   the lake, and it comes back where it started — while having changed the world
+   completely, because WHERE EACH ONE WENT is recorded and permanent. A
+   consequence that persists is not always a consequence in the water. */
+const shot = () => { const w = X.W_(), S = X.S;
+  return { level: w.level, load: w.load, clarity: w.clarity, still: w.still,
+           cut: (w.cut || []).length,
+           routed: S.routed.spire + S.routed.lake + S.routed.set,
+           kept: (S.kept || []).length,
+           caught: (S.caught || []).length,
+           soundings: (S.soundings || []).length }; };
 
 /* ═══ THE RUN ══════════════════════════════════════════════════════════════ */
 ok("F0 the walk carries his real poured water, not invented stones",
@@ -129,9 +142,13 @@ ok("F0 and his store was opened read-only",
       map; you go in once and move between them without leaving. ───────────── */
 X.toMap(); tick();
 ok("L1 the map carries LEVEL ONE as ONE run, not four",
-   X.mapPts().filter(p => ["tank","rain","dam","channel"].indexOf(p.l.key) >= 0).length === 0 &&
+   X.mapPts().filter(p => ["tank","filter","stations","sounding"].indexOf(p.l.key) >= 0).length === 0 &&
    !!ptFor(1),
    X.mapPts().map(p => p.l.name).join(" · "));
+ok("L1b and it is a gesture level — every face declares the same verb",
+   ["tank", "filter", "stations", "sounding"]
+     .every(k => src.indexOf("\n" + k + ':{ g:"reach"') >= 0),
+   "reach, all four");
 { const p = ptFor(1);
   ok("L2 a hand on it finds it", hoverAt(p.x, p.y) === 1);
   clickAt(p.x, p.y);
@@ -140,13 +157,18 @@ ok("L1 the map carries LEVEL ONE as ONE run, not four",
 ok("L4 all four faces are in front of you at once, none gated against another",
    X.facesOf().length === 4, X.facesOf().map(f => f.k).join(", "));
 
-const order = ["tank", "rain", "dam", "channel"];
+/* Rebuilt 2026-08-14 on his order, after the gesture rule made the old level one
+   (tank·rain·dam·channel — reach, draw, hold, draw) not a level at all. Level
+   one is the REACH level and keeps the entry: writing becomes water, your hand
+   separates it, your hand routes it, you drop a line and one of your own
+   sentences comes back. */
+const order = ["tank", "filter", "stations", "sounding"];
 const before = {};
 let blocked = null;
-const NAME = { tank:"THE TANK", rain:"THE RAIN", dam:"THE DAM", channel:"THE CHANNEL" };
+const NAME = { tank:"THE TANK", filter:"THE FILTER", stations:"THE STATIONS", sounding:"THE SOUNDING" };
 
 for (const key of order) {
-  const n = { tank:1, rain:2, dam:3, channel:4 }[key];
+  const n = { tank:1, filter:2, stations:3, sounding:4 }[key];
   const L = NAME[key];
   if (blocked) { ok("F" + n + " " + L + " — not reached", false, "blocked at " + blocked); continue; }
 
@@ -171,30 +193,33 @@ for (const key of order) {
        (X.S.kept || []).length + " kept");
   }
   if (n === 2) {
-    /* the pan is dragged under the rain by a hand that holds the button down */
-    X.mouse.down = true;
-    for (let i = 0; i < 2400 && X.view === "level"; i++) {
-      X.mouse.x = 500 + Math.sin(i / 40) * 120; X.mouse.y = 400; tick();
+    /* THE FILTER — a hand on each falling bit. Reached for where it actually is,
+       never at a fixed coordinate, because a walk that clicks empty water proves
+       nothing about whether the thing can be caught. */
+    for (let i = 0; i < 6000 && X.view === "level"; i++) {
+      const b = X.L().bits && X.L().bits[0];
+      if (b) { X.mouse.x = b.x; X.mouse.y = b.y; X.mouse.clicked = true; }
+      tick();
     }
-    X.mouse.down = false;
   }
   if (n === 3) {
-    for (let i = 0; i < 3000 && X.view === "level"; i++) {
-      /* the gate is opened by holding, and released — the level's own control */
-      X.mouse.down = i < 1500; X.mouse.x = 500; X.mouse.y = 400;
-      X.keys[" "] = i < 1500; tick();
+    /* THE STATIONS — three outputs, and the walk uses all three */
+    const bays = X.bays(); const ks = Object.keys(bays);
+    for (let i = 0; i < 400 && X.view === "level"; i++) {
+      const r = bays[ks[i % 3]];
+      X.mouse.x = r.x + r.w / 2; X.mouse.y = r.y + r.h / 2; X.mouse.clicked = true;
+      tick();
     }
-    X.mouse.down = false; X.keys[" "] = false;
   }
   if (n === 4) {
-    /* a course dragged across the bed, then let go */
-    X.mouse.down = true;
-    for (let i = 0; i < 30; i++) { X.mouse.x = 90 + i * 28; X.mouse.y = 300 + Math.sin(i / 4) * 60; tick(); }
-    X.mouse.down = false; tick(4);
+    /* THE SOUNDING — four lines dropped into the water, by hand */
+    for (let i = 0; i < 400 && X.view === "level"; i++) {
+      X.mouse.x = 120 + (i * 37) % 760; X.mouse.y = 460; X.mouse.clicked = true; tick();
+    }
   }
 
   /* ── a way out: back into the LEVEL, not out to the map ───────────────── */
-  const last = key === "channel";
+  const last = key === "sounding";
   ok("F" + n + "e working " + L + " marks that face and puts you back in the level",
      X.worked(key) === true && (last ? X.view === "map" : X.view === "room"),
      "worked=" + X.worked(key) + " view=" + X.view);
@@ -207,8 +232,10 @@ for (const key of order) {
   /* ── a consequence that persists ──────────────────────────────────────── */
   const after = shot();
   const changed = Object.keys(after).filter(k => after[k] !== before[n][k]);
-  ok("F" + n + "f it changed the ONE water, and the change is still there",
-     changed.length > 0, changed.length ? changed.join(", ") + " moved" : "NOTHING MOVED");
+  ok("F" + n + "f it changed the world, and the change is still there",
+     changed.length > 0,
+     changed.length ? changed.join(", ") + " moved"
+       : "NOTHING MOVED — before " + JSON.stringify(before[n]) + " after " + JSON.stringify(after));
 }
 
 /* ── the level hands back to the map, and only then does anything else open ─ */
@@ -231,10 +258,10 @@ if (!blocked) {
   clickAt(ptFor(1).x, ptFor(1).y);
   ok("L7 the level can be walked back into after it is complete",
      X.view === "room", "view=" + X.view);
-  const f = X.facesOf().find(q => q.k === "channel");
+  const f = X.facesOf().find(q => q.k === "sounding");
   X.mouse.x = f.c.x; X.mouse.y = f.c.y; X.mouse.clicked = true; tick();
   ok("L8 and a worked face opens again — returning to it undoes nothing",
-     X.view === "level" && X.cur.key === "channel" && (X.S.kept || []).length === keptBefore,
+     X.view === "level" && X.cur.key === "sounding" && (X.S.kept || []).length === keptBefore,
      "kept unchanged at " + keptBefore);
   X.esc();
   ok("L9 Escape steps out by ONE — into the level, not out of the world",
@@ -273,8 +300,12 @@ if (!blocked) {
      before[2].level > before[1].level,
      "the tank opened at " + before[1].level.toFixed(3) +
      " and left " + before[2].level.toFixed(3) + ", which is what the rain opened on");
-  ok("F6 the channel's cut stands in the water after the walk — every later level runs down it",
-     (w.cut || []).length >= 8, (w.cut || []).length + " points held");
+  /* THE CHANNEL LEFT LEVEL ONE with the gesture rule — it is a draw. What level
+     one leaves in the water now is what the reach put there: a raised level, a
+     stirred bed, and his sentences kept. */
+  ok("F6 what the level leaves in the water is still there after it closes",
+     w.level > 0 && (X.S.kept || []).length > 0,
+     "level " + w.level.toFixed(3) + " · " + (X.S.kept || []).length + " kept");
   ok("F7 his writing survived the whole run, verbatim and uncounted",
      (X.S.kept || []).length > 0 && HIS.some(h => X.S.kept.some(k => k.indexOf(h.slice(0, 24)) >= 0)),
      X.S.kept.length + " kept, none trimmed");
@@ -289,17 +320,22 @@ if (!blocked) {
       in forever is not a level. So: does the room DO NOTHING when the hand does
       nothing, and does the handle move when it is held? ────────────────────── */
 {
+  /* THE DAM IS LOOSE AGAIN. The gesture rule took it out of level one — it is a
+     hold and level one is the reach — so it stands on the ring as itself, and
+     this section enters it there. Every run before it is marked done so the
+     ring's own order opens it. */
   bag.clear();
-  vm.runInContext("S.done={}; S.faces={}; S.at=1; W_().level=0.5; room=null; view='map';", sandbox);
+  vm.runInContext("S.done={}; S.faces={}; room=null; view='map';" +
+    "MAPRUNS.forEach(r=>{ if(r.key!=='dam') S.done[r.n]=true; }); W_().level=0.5;", sandbox);
   X.toMap(); tick();
-  clickAt(ptFor(1).x, ptFor(1).y);                 /* into the level */
-  const fd = X.facesOf().find(q => q.k === "dam");
-  X.mouse.x = fd.c.x; X.mouse.y = fd.c.y; X.mouse.clicked = true; tick();
-  ok("A1 THE DAM opens", X.view === "level" && X.cur.key === "dam");
+  const dp = X.mapPts().find(p => p.l.key === "dam");
+  ok("A0 THE DAM stands on the ring as itself", !!dp, dp ? dp.l.name : "not on the ring");
+  clickAt(dp.x, dp.y);
+  ok("A1 THE DAM opens", X.view === "level" && X.cur.key === "dam", "view=" + X.view);
   const still = [];
   for (let i = 0; i < 400; i++) { X.mouse.down = false; X.keys[" "] = false; tick(); still.push(1); }
   ok("A2 a hand that does nothing is never nagged, and nothing happens by itself",
-     X.view === "level" && !X.worked("dam"), "still standing in the room after 400 frames");
+     X.view === "level" && !X.S.done[3], "still standing in the room after 400 frames");
   const rest = vm.runInContext("L.handle", sandbox);
   X.mouse.down = true; for (let i = 0; i < 40; i++) tick();
   const pressed = vm.runInContext("L.handle", sandbox);
@@ -309,8 +345,8 @@ if (!blocked) {
      vm.runInContext("L.head", sandbox) > 0, "head gathered on mouse alone");
   X.mouse.down = false;
   for (let i = 0; i < 800 && X.view === "level"; i++) tick();
-  ok("A5 letting go releases it, and that works the face and returns you to the level",
-     X.view === "room" && X.worked("dam") === true, "view=" + X.view);
+  ok("A5 letting go releases it, and that finishes the run",
+     X.view === "map" && X.S.done[3] === true, "view=" + X.view);
 }
 
 /* ── B · THE TANK TAKES WHAT ALREADY ARRIVED. He writes in the daily surface and
@@ -324,6 +360,7 @@ if (!blocked) {
   X.toMap(); tick();
   clickAt(ptFor(1).x, ptFor(1).y);                 /* into the level */
   const ft = X.facesOf().find(q => q.k === "tank");
+  if (!ft) throw new Error("the tank is not a face of level one any more");
   X.mouse.x = ft.c.x; X.mouse.y = ft.c.y; X.mouse.clicked = true; tick();
   ok("B1 THE TANK opens on water that already arrived", X.view === "level" && X.cur.key === "tank");
   ok("B2 and it does NOT ask him to write the day again",
@@ -358,5 +395,5 @@ for (const r of results) {
   console.log((r.pass ? "  ok  " : "  FAIL") + "  " + r.n + (r.note ? "   [" + r.note + "]" : ""));
 }
 console.log(failed ? "\nfirst four: " + failed + " FAILED — not playable\n"
-                   : "\nfirst four: all " + results.length + " passed — TANK · RAIN · DAM · CHANNEL walk in order, on his water\n");
+                   : "\nfirst four: all " + results.length + " passed — THE REACH walks: tank · filter · stations · sounding, on his water\n");
 process.exit(failed ? 1 : 0);

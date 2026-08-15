@@ -81,7 +81,7 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
-  src + "\n;globalThis.__X={S,mouse,frame,hovered,ascentPts,mapPts,unlocked,reading,seeded,finish,get room(){return room;}," +
+  src + "\n;globalThis.__X={S,mouse,frame,hovered,ascentPts,mapPts,unlocked,reading,seeded,finish,ROOMS,get room(){return room;}," +
         "toMap(){view='map';},resize,ascentNodes,mapNodes, get view(){return view;}, get cur(){return cur;}};",
   sandbox, { filename: "ascent.html<script>" });
 
@@ -147,9 +147,13 @@ ok("D12 a hand finds the first run on the circuit", hoverAt(one.x, one.y) === 1,
 clickAt(one.x, one.y);
 ok("D13 and it opens the LEVEL, not one of its mechanisms",
    X.view === "room" && !!X.room, "view=" + X.view);
-ok("D13b the level's faces have no door of their own out here",
-   X.mapPts().every(p => ["tank","rain","dam","channel"].indexOf(p.l.key) < 0),
-   X.mapPts().length + " runs on the circuit");
+/* Amended 2026-08-14 with the rebuild: level one is the REACH level now, so its
+   faces are tank, filter, stations and sounding. Asked of the levels themselves
+   rather than of a list of names, so the next gather cannot make it stale. */
+ok("D13b no face of any level has a door of its own out here",
+   X.mapPts().every(p => X.ROOMS.every(r => r.faces.indexOf(p.l.key) < 0)),
+   X.mapPts().length + " runs on the circuit · " +
+   X.ROOMS.map(r => r.name).join(" + ") + " are levels");
 
 /* ── 6 · THE TWO FIGURES STAND APART, at every window size ───────────────── */
 /* The upper tetra is drawn above the circuit. If its lowest edge — or the two
