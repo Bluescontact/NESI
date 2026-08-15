@@ -52,6 +52,28 @@ nor its presence is empty rather than compliant.
 | the world holds the writing | his sentences bank as he writes them |
 | any refusal at all | a hand can act on the surface — a page with no act refuses nothing |
 
+### And the same binding at the player's hand
+
+The eleven boundaries a hand can lift each name **what they keep**, not only what
+they stop, and the clear case prints both. Lifting one shows what is given up.
+
+| the boundary | what it keeps |
+|---|---|
+| a run opens after the one before it | each run opens on the water the one before it left |
+| a level closes on all four faces | a level's four faces are one act, so closing it means something |
+| the tank does not ask twice | a morning is poured once, in the place you actually write |
+| nothing falls on its own | the reach stays yours — the world waits however long you take |
+| a sentence is poured once | your sentence stands in the water once, however often you return |
+| four gestures, no fifth | four verbs is what lets every act be asked the same question |
+| no number reaches you | what you see is form — how high, how clear, how far down |
+| no model call | the world runs in your hands, with nothing listening |
+| your words are never rewritten | what comes back to you is what you wrote |
+| the deep never renders | what you let go of is out of sight until it returns as ground |
+| a line cannot be dropped into the sky | a line finds what the water is holding |
+
+`constraint_lint` C8 refuses a boundary that names no yes, so a new *no* arrives
+with the question already attached.
+
 **Ten of ten live instruments are presence-asserting.** Removing the clear case's
 proof from `ascent.html` now fails the refusal check by name, and a blank page
 fails it on the first line.

@@ -374,27 +374,38 @@ const GESTURES = ["reach","hold","draw","wait"];
    the code. An unannounced boundary is a build failure, not a style note. */
 const CONSTRAINTS = [
  { id:"order",     mine:true,  where:"map",
-   says:"A run on the circuit opens only after the one before it is finished." },
+   says:"A run on the circuit opens only after the one before it is finished.",
+   keeps:"each run opens on the water the one before it left" },
  { id:"level-done",mine:true,  where:"room",
-   says:"A level hands you back to the map only when all four of its faces are worked." },
+   says:"A level hands you back to the map only when all four of its faces are worked.",
+   keeps:"a level's four faces are one act, so closing it means something" },
  { id:"tank-asks", mine:true,  where:"tank",
-   says:"The tank does not ask you to write when water has already arrived from the daily surface." },
+   says:"The tank does not ask you to write when water has already arrived from the daily surface.",
+   keeps:"a morning is poured once, in the place you actually write" },
  { id:"no-offer",  mine:false, where:"tank",
-   says:"Nothing falls on its own. The world never offers; the reach is always yours." },
+   says:"Nothing falls on its own. The world never offers; the reach is always yours.",
+   keeps:"the reach stays yours — the world waits however long you take" },
  { id:"once",      mine:false, where:"tank",
-   says:"A sentence that has been poured is not poured again." },
+   says:"A sentence that has been poured is not poured again.",
+   keeps:"your sentence stands in the water once, however often you return" },
  { id:"fifth",     mine:true,  where:"*",
-   says:"A stage may use only reach, hold, draw or wait. There is no fifth gesture." },
+   says:"A stage may use only reach, hold, draw or wait. There is no fifth gesture.",
+   keeps:"four verbs is what lets every act be asked the same question" },
  { id:"no-number", mine:false, where:"*",
-   says:"No number reaches you. No score, count, rank, percentage or progress bar." },
+   says:"No number reaches you. No score, count, rank, percentage or progress bar.",
+   keeps:"what you see is form — how high, how clear, how far down" },
  { id:"no-call",   mine:false, where:"*",
-   says:"No model call and no network request, anywhere on the path you walk." },
+   says:"No model call and no network request, anywhere on the path you walk.",
+   keeps:"the world runs in your hands, with nothing listening" },
  { id:"verbatim",  mine:false, where:"*",
-   says:"Your words are never rewritten, summarised or categorised." },
+   says:"Your words are never rewritten, summarised or categorised.",
+   keeps:"what comes back to you is what you wrote" },
  { id:"deep",      mine:false, where:"deep",
-   says:"The deep never renders." },
+   says:"The deep never renders.",
+   keeps:"what you let go of is out of sight until it returns as ground" },
  { id:"sky-is-not-water", mine:true, where:"sounding",
-   says:"A line cannot be dropped into the sky. Only the water takes one." }
+   says:"A line cannot be dropped into the sky. Only the water takes one.",
+   keeps:"a line finds what the water is holding" }
 ];
 /* switched off by his hand, kept in his own store, and read before every refusal */
 function bound(id){
@@ -2355,15 +2366,15 @@ function drawCase(){
    announces the boundaries must not become one. */
 function boundRows(){
   const n=boundsHere().length, w=Math.min(430,W*0.46), x=16;
-  const top=H-16-(44+n*30);
-  return boundsHere().map((c,i)=>({ c, x, y:top+34+i*30, w, h:26 }));
+  const top=H-16-(44+n*44);
+  return boundsHere().map((c,i)=>({ c, x, y:top+34+i*44, w, h:40 }));
 }
 function drawBounds(){
   if(!CASE.open) return;
   g.fillStyle="rgba(238,236,228,.55)"; g.font="10.5px ui-monospace, Consolas, monospace";
   g.textAlign="left"; g.fillText("the world is held while this is open · TAB to go back", 28, 26);
   const rows=boundRows(); if(!rows.length) return;
-  const w=rows[0].w, h=44+rows.length*30, top=H-16-h;
+  const w=rows[0].w, h=44+rows.length*44, top=H-16-h;
   g.save();
   g.fillStyle="rgba(18,22,25,.82)"; g.fillRect(12,top,w+8,h);
   g.strokeStyle="rgba(238,236,228,.28)"; g.lineWidth=1; g.strokeRect(12,top,w+8,h);
@@ -2376,6 +2387,11 @@ function drawBounds(){
                 : hot ? "rgba(255,240,190,.95)" : "rgba(238,236,228,.72)";
     const line = (r.c.mine ? "· " : "  ") + r.c.says;
     g.fillText(line, 28, r.y);
+    /* AND WHAT IT KEEPS. A boundary that says only what it stops asks a hand to
+       lift it blind. Every one names the presence it protects, so lifting it
+       shows what is given up rather than only what becomes allowed. */
+    if(r.c.keeps){ g.fillStyle= on ? "rgba(238,236,228,.60)" : "rgba(238,236,228,.32)";
+      g.fillText("     keeps: " + r.c.keeps, 28, r.y + 12); }
     if(!on){ const tw=g.measureText(line).width;
       g.strokeStyle="rgba(238,236,228,.45)"; g.lineWidth=1;
       g.beginPath(); g.moveTo(28,r.y-4); g.lineTo(28+tw,r.y-4); g.stroke(); }

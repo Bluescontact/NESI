@@ -37,6 +37,8 @@ const ok = (n, pass, note) => results.push({ n, pass: !!pass, note: note == null
 const block = src.match(/const CONSTRAINTS\s*=\s*\[([\s\S]*?)\n\];/);
 const REG = block ? [...block[1].matchAll(/id:"([^"]+)",\s*mine:(true|false),\s*where:"([^"]+)"/g)]
   .map(m => ({ id: m[1], mine: m[2] === "true", where: m[3] })) : [];
+/* what each one KEEPS — the presence it protects, in the same order */
+const KEEPS = block ? [...block[1].matchAll(/keeps:"([^"]+)"/g)].map(m => m[1]) : [];
 ok("C1 the registry exists and is not empty", REG.length > 0, REG.length + " constraints registered");
 
 /* the call sites */
@@ -74,6 +76,24 @@ ok("C5 and every one of them can be switched off by a hand",
    /function unbind\(/.test(src) && /function boundsClick\(/.test(src) &&
    /S\.off/.test(src) && /off:\[\]/.test(src),
    "unbind + a click target + kept in his own store, declared so it survives the night");
+
+/* ═══ A BOUNDARY NAMES WHAT IT KEEPS ════════════════════════════════════════
+   A rule that says only what it stops asks a hand to lift it blind. Every
+   constraint carries the presence it protects, so lifting one shows what is
+   given up rather than only what becomes allowed — the same binding the refusal
+   check makes between a law and the thing that satisfies it, one level in, where
+   a hand can reach it. */
+/* AND THE PANEL HAS ROOM FOR IT. A second line per row needs the spacing to
+   carry it; the rows were 30px apart and the keeps line sits 12px under the
+   says line, so a row that did not grow would print one boundary's yes over the
+   next boundary's no. */
+ok("C9 the panel gives each boundary room for both its lines",
+   /y:top\+34\+i\*44/.test(src) && /rows\.length\s*\*\s*44/.test(src),
+   "44px a row, the keeps line 12px under the says line");
+
+ok("C8 every boundary names what it keeps, not only what it stops",
+   KEEPS.length === REG.length && KEEPS.every(k => k.length > 8),
+   KEEPS.length + " of " + REG.length + " named");
 
 /* the ones this build introduced, counted out loud — these are the ones that
    accumulate invisibly, so the number of them is itself worth seeing */

@@ -164,6 +164,24 @@
   #sill{position:fixed;left:0;right:0;top:0;height:22px;cursor:pointer;
     background:linear-gradient(to bottom,rgba(20,22,26,.14),transparent)}
   #sill:hover{background:linear-gradient(to bottom,rgba(20,22,26,.26),transparent)}
+  /* ═══ THE LOAD MEMBER ══════════════════════════════════════════════════════
+     Four words on a stone. The slot is drawn ALWAYS — hollow while the member
+     is unanswered, filled when a hand has answered it. That hollow square is
+     the visible third thing: held is not the same pixel as not-built, and it
+     is not the same pixel as answered. Nothing here is preselected and there
+     is no submit; the words are the control. */
+  .load{margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    font-size:12.5px;letter-spacing:.02em;color:var(--stone)}
+  .load .slot{width:11px;height:11px;flex:0 0 auto;border:1px solid rgba(90,84,74,.75)}
+  .load .slot.pre{background:rgba(90,84,74,.34)}     /* under a hand, not answered */
+  .load .slot.ans{background:var(--stone);border-color:var(--stone)}
+  .load .w{cursor:pointer;padding:1px 0;border-bottom:1px solid transparent}
+  .load .w:hover{color:var(--ink);border-bottom-color:rgba(90,84,74,.6)}
+  .load .said{color:var(--ink);cursor:pointer;border-bottom:1px dotted rgba(90,84,74,.55)}
+  #up .load{font-size:13.5px}
+  #table .tile .load{margin-top:7px;gap:7px;font-size:10.5px}
+  #table .tile .load .slot{width:9px;height:9px}
+  .leaving{opacity:.42}                              /* what a yes would send out */
   @media (max-width:640px){ #bg,#page{font-size:17px;padding:6vh 20px 46vh} }
 </style>
 
