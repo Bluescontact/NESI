@@ -34,6 +34,15 @@ brief has is six of them filed in the wrong column, turn where the solid says
 return and back. As an unordered census of which eight edges cross, it is
 perfect.
 
+### Confirmed twice, independently
+
+A second session pinned this in parallel and wrote `solid.js`, deriving
+everything from its own circuit table. **The two tables are written differently
+and generate the identical 24 edges** — same members, same triangle count, same
+answer on his line. Two derivations from different rotations of the same solid,
+which is the strongest form this could have been confirmed in, and neither
+session saw the other's work.
+
 ### It is the solid, checked
 
 ```
