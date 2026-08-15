@@ -37,21 +37,24 @@ const ctx = new Proxy({}, {
     if (k === "measureText") return t => ({ width: String(t).length * 7.4 });
     if (k === "fillText" || k === "strokeText")
       return t => { if (recording) painted.push(String(t)); };
-    if (k === "canvas") return { clientWidth: 1000, clientHeight: 700 };
+    if (k === "canvas") return SIZE;
     return noop;
   },
   set: () => true
 });
+/* the window is resizable here, because the figures have to stand apart at every
+   size and a check at one size would not know that */
+const SIZE = { clientWidth: 1000, clientHeight: 700 };
 const cache = new Map();
 const mk = () => ({
   value: "", style: {}, width: 0, height: 0,
   addEventListener: noop, removeEventListener: noop, focus: noop, blur: noop,
   setPointerCapture: noop, getContext: () => ctx, appendChild: noop, removeChild: noop,
   click: noop, href: "", firstChild: null, insertBefore: noop, className: "",
-  textContent: "", scrollTop: 0, clientWidth: 1000, clientHeight: 700,
+  textContent: "", get clientWidth(){return SIZE.clientWidth;}, get clientHeight(){return SIZE.clientHeight;}, scrollTop: 0,
   classList: { add: noop, remove: noop, toggle: noop, contains: () => false },
   setSelectionRange: noop, selectionStart: 0, selectionEnd: 0,
-  getBoundingClientRect: () => ({ left: 0, top: 0, width: 1000, height: 700 })
+  getBoundingClientRect: () => ({ left: 0, top: 0, width: SIZE.clientWidth, height: SIZE.clientHeight })
 });
 const byId = id => { if (!cache.has(id)) cache.set(id, mk()); return cache.get(id); };
 
@@ -79,7 +82,7 @@ sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
   src + "\n;globalThis.__X={S,mouse,frame,hovered,ascentPts,mapPts,unlocked,reading,seeded,finish," +
-        "toMap(){view='map';}, get view(){return view;}, get cur(){return cur;}};",
+        "toMap(){view='map';},resize,ascentNodes,mapNodes, get view(){return view;}, get cur(){return cur;}};",
   sandbox, { filename: "ascent.html<script>" });
 
 const X = sandbox.__X;
@@ -139,6 +142,27 @@ ok("D12 a hand still finds THE TANK on the circuit", hoverAt(one.x, one.y) === 1
 clickAt(one.x, one.y);
 ok("D13 and still enters it", X.view === "level" && X.cur.key === "tank",
    "cur=" + (X.cur ? X.cur.key : "none"));
+
+/* ── 6 · THE TWO FIGURES STAND APART, at every window size ───────────────── */
+/* The upper tetra is drawn above the circuit. If its lowest edge — or the two
+   lines of name beneath that edge — reached the circuit's crown, two different
+   runs would sit under one hand. Derived, so it has to hold at any size. */
+for (const [w, h] of [[1000,700],[800,885],[1440,900],[1280,1024],[700,600]]) {
+  SIZE.clientWidth = w; SIZE.clientHeight = h; X.resize();
+  const AN = X.ascentNodes(), MN = X.mapNodes();
+  const lowestEdge = Math.max(...AN.map(n => n.y));
+  const labelBottom = lowestEdge + 30;            /* name at +18, mech at +30 */
+  const crown = Math.min(...MN.map(n => n.y));
+  const apex = Math.min(...AN.map(n => n.y));
+  let nearest = 1e9;
+  for (const a of X.ascentPts()) for (const m of X.mapPts())
+    nearest = Math.min(nearest, Math.hypot(a.x-m.x, a.y-m.y));
+  ok("D14 " + w + "x" + h + " — the tetra and its names clear the circuit's crown, and it fits on screen",
+     labelBottom < crown && apex > 8 && nearest > 52,
+     "names end " + labelBottom.toFixed(0) + " · crown " + crown.toFixed(0) +
+     " · apex " + apex.toFixed(0) + " · nearest two runs " + nearest.toFixed(0) + "px");
+}
+SIZE.clientWidth = 1000; SIZE.clientHeight = 700; X.resize();
 
 /* ── report ──────────────────────────────────────────────────────────────── */
 let failed = 0;

@@ -5028,3 +5028,78 @@ concerning "the retired 3D tree, also retired." **`world2d` was never retired by
 any mark of his** — the retirement named `world3d` — and it is now ruled live by
 name. That line is superseded, not edited: it stands where it is, wrong, with
 this above it.
+
+---
+
+## 2026-08-14 · THE DOOR INTO THE ASCENT (session 68204d6d)
+
+Kevin's mark, verbatim: *"build the door into the ascent."* Caught at 15:47. This
+closes the gate opened an hour earlier by the hand-cut's own walk — *THE SEATING
+HAS NO DOOR*.
+
+**A correction to what that gate said, made out loud.** It claimed a door "would
+settle the twelve-level shape and which-surface-is-the-game." On reading the file
+properly, that was overcautious: `ascent.html` **already states both the
+structure and the condition** in its own comments. The door implements existing
+articulation; it does not choose between forks. The two forks are untouched.
+
+**The articulation this serves, cited per SEAM S3, both from `ascent.html:152`:**
+*"THE ASCENT is no longer levels. It is what the twelve seed, **reached from the
+water once the water has something to give it**."* And the map's own law at
+`:1098` — *"two tetrahedra meeting face to face… the upper one is THE ASCENT:
+light rises out of it."*
+
+### What was there
+`ASCENT` — THE LENS, THE SEATING, THE HELIOSTAT — declared and read by **nothing**.
+`enter(n)` took `LEVELS[n-1]`. No node, no click, no path. Three built mechanics
+sat outside the world.
+
+### What is there now
+- **`ASCENT` entries carry their own id as `n`, a string.** `S.done` then holds
+  numbers for the twelve and three names for the ascent **in one map** —
+  `finish()` needs no branch and no second registry was created.
+- **`unlocked()`** opens all three on `seeded()>=1` — the file's own condition and
+  no other. **No order was invented among them:** nothing in the corpus ranks
+  them, and the heliostat's own note says a mirror may be aimed by hand with no
+  seat fed at all (*"held is lawful; permanence is earned by seating, never by
+  holding harder"*), so gating it behind THE SEATING would have contradicted it.
+  Which of the three you walk first is yours.
+- **The upper tetra is drawn on the map** in the same hand as the twelve — three
+  joints, three runs, the level at each run's midpoint. Walked runs carry light,
+  unwalked are the dry bed they are, a run the water cannot reach yet is faint
+  **with no name on it**. Nothing says "locked". The seed dots moved to its
+  centre: they are what the twelve send up, standing inside the figure they open.
+- **Its size is derived from the circuit, not picked** — largest figure fitting
+  between 12px from the top and 40px above the circuit's crown.
+
+### Walked — `node tools/door_check.js`, 22 of 22
+It does not call `enter()` itself — that would prove only that a function exists.
+It sets a mouse coordinate, sets the click flag, and runs the game's **own
+`frame()`** through the real map branch, then asks where the game ended up.
+
+- **D2–D5 · the door is shut** before the water has anything to give: the runs
+  are not open, a hand finds nothing, a click enters nothing, and **the map
+  writes no name on a run that cannot be reached.**
+- **D8/D9 · a hand opens it.** All three entered from the map by click —
+  `view=level`, `cur=lens` / `seating` / `heliostat`.
+- **D10/D11 · `S.done["seating"]` records by name, and nothing was written under
+  an undefined key.**
+- **D12/D13 · the twelve are unharmed** — THE TANK still found and entered.
+- **D14 · the two figures stand apart at 5 window sizes**, 1000×700 through
+  1280×1024. This caught a real defect: sizing off `min(W,H)` alone pushed the
+  apex **off the top of the screen** at wide-short windows (apex −13, −3, −18).
+  Fixed by deriving the size from the band, and re-run clean.
+
+`cut_check.js` now reaches THE SEATING **through the real door**, `enter("seating")`,
+after giving the water enough to seed it open. Still 13 of 13. `hold_check` and
+`refusal_check` pass.
+
+### Standing
+**WALKABLE** — THE SEATING's hand-cut can now be reached from spawn: play far
+enough that the water has something to give, and the upper tetra opens on the map.
+
+**The edge of what was checked:** the browser could not be screenshotted this pass
+— the pane stopped compositing — so the figure's *look* is asserted numerically
+across five sizes rather than seen. `ascent.html` boots clean with no console
+errors. The screenshot taken before the sizing fix is what showed the overlap that
+D14 then caught and measured. Whether it reads right under a hand is Kevin's.

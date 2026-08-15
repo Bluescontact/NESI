@@ -181,7 +181,11 @@ let S = {
   lastDay:"", cast:false,
   // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
   // in here. One list, two places — there is no second registry.
-  seated:[]
+  seated:[],
+  // WATER THAT ARRIVED FROM THE DAILY SURFACE and has not yet been reached for.
+  // Written only by daily.html's internal open loop; emptied only by a hand at
+  // the head of THE TANK. Never read for content, never counted at any door.
+  arrived:[]
 };
 /* ═══ THE WATER — one body, twelve edges, no owner ══════════════════════════
    "each game level, affects all other levels."
@@ -320,7 +324,28 @@ const SET = {
    pools behind the gate. Nothing reads it. */
 tank:{ enter(){ const w=W_();
     // READS THE ONE WATER: you open on the surface the other eleven left.
-    L.drops=[]; L.pool=w.level*90; L.sent=[]; if(!L.opened){ L.opened=true;
+    L.drops=[]; L.pool=w.level*90; L.sent=[]; L.fed=0;
+    /* WATER THAT ALREADY ARRIVED — built 2026-08-14, "build the first 4 levels
+       playable."
+
+       Level one asked him to write a hundred words. He had already written that
+       morning, in the daily surface, and dropped sentences to the lake — which
+       under the internal open loop LEAVE nesi.water and ARRIVE here. The tank
+       was making him write the same day twice, which is the level named for
+       holding the writing failing to hold the writing he had.
+
+       So what arrived is IN THE ROOM, held at the head of the tank. It is not
+       offered, announced, or counted: "the world never offers; the reach is
+       always yours" (Kevin's mark, 2026-08-14). It hangs there, and a hand that
+       reaches for one lets it fall. Nothing falls on its own and nothing asks.
+
+       Arrivals are consumed the moment they fall, so the same sentence is never
+       poured twice; it moves from `arrived` into `kept`, where the world keeps
+       what it takes. */
+    L.held=(S.arrived||[]).slice(0,9).map((t,i)=>({ t, x:W*0.5-200+i*46, y:96+ (i%3)*22 }));
+    L.hadHeld=L.held.length;
+    if(L.hadHeld) return;                     /* there is water here; do not ask for more */
+    if(!L.opened){ L.opened=true;
     openWrite(100,(text,n)=>{ L.sent=text.split(/(?<=[.!?])\s+/).filter(Boolean);
       if(!L.sent.length) L.sent=[text]; L.fed=0;
       /* THE WORLD MUST RETURN WHAT IT TAKES. Until 2026-08-14 the hundred words
@@ -329,6 +354,14 @@ tank:{ enter(){ const w=W_();
          Kept is not shown. It is not counted. It waits in the ground. */
       S.kept=(S.kept||[]).concat(L.sent); save(); }); } },
   step(dt){ if(typing) return;
+    /* the reach: a hand on a held arrival lets that one fall, and only that one */
+    if(L.held&&L.held.length&&mouse.clicked){
+      const i=L.held.findIndex(h=>Math.hypot(mouse.x-h.x,mouse.y-h.y)<26);
+      if(i>=0){ const h=L.held.splice(i,1)[0];
+        L.drops.push({x:h.x,y:h.y,v:0,s:h.t});
+        S.kept=(S.kept||[]).concat([h.t]);
+        S.arrived=(S.arrived||[]).filter(t=>t!==h.t);   /* it arrived once */
+        save(); } }
     if(L.sent&&L.fed<L.sent.length){ L.t+=dt; if(L.t>240){ L.t=0;
       L.drops.push({x:W*0.5+(Math.random()-0.5)*180,y:120,v:0,s:L.sent[L.fed]}); L.fed++; } }
     L.drops.forEach(d=>{ d.v+=0.5; d.y+=d.v; });
@@ -336,7 +369,15 @@ tank:{ enter(){ const w=W_();
     L.drops=L.drops.filter(d=>{ if(d.y>=floor-L.pool*1.6){ L.pool=Math.min(90,L.pool+3); return false; } return true; });
     // WRITES THE ONE WATER: writing raises the level and stirs the surface.
     const w=W_(); w.level=clamp01(L.pool/90); w.still=0;
-    if(L.sent&&L.fed>=L.sent.length&&!L.drops.length&&L.pool>0){ L.settle=(L.settle||0)+dt;
+    /* it is done when nothing is left waiting and nothing is left falling —
+       whether the water was written here or arrived from the daily surface */
+    /* BOTH OF THESE MUST ASK WHETHER THERE WAS ANYTHING TO DO. `L.sent` is an
+       empty array before the panel commits, and an empty array is truthy — so
+       `L.sent && L.fed>=L.sent.length` was TRUE in an untouched room and the
+       level finished itself the instant it opened, on nobody's act. */
+    const written = L.sent && L.sent.length>0 && L.fed>=L.sent.length;
+    const reached = L.hadHeld>0 && L.held && L.held.length===0;
+    if((written||reached)&&!L.drops.length&&L.pool>0){ L.settle=(L.settle||0)+dt;
       if(L.settle>1200){ reading(1,"raised"); save(); finish(); } } },
   draw(){ sky(); const floor=H-190;
     // the gate — a dam wall the water pools behind
@@ -344,6 +385,16 @@ tank:{ enter(){ const w=W_();
     g.fillStyle="rgba(74,108,122,.75)"; g.fillRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
     g.strokeStyle="rgba(40,40,44,.4)"; g.strokeRect(W*0.5-260, floor-L.pool*1.6, 460, L.pool*1.6+22);
     g.fillStyle="#4a6c7a"; L.drops.forEach(d=>{ g.beginPath(); g.arc(d.x,d.y,6,0,7); g.fill(); });
+    /* what arrived, held at the head of the tank. Drawn as water, not as a list:
+       each one a bead that swells under a hand and falls when reached for. No
+       label, no order shown, nothing counted, and none of them says a word. */
+    if(L.held) L.held.forEach(h=>{
+      const near=Math.hypot(mouse.x-h.x,mouse.y-h.y)<26;
+      g.fillStyle= near ? "rgba(74,108,122,.95)" : "rgba(74,108,122,.62)";
+      g.beginPath(); g.arc(h.x,h.y,near?11:8,0,7); g.fill();
+      g.strokeStyle="rgba(40,40,44,.35)"; g.lineWidth=1; g.stroke();
+      if(near){ g.strokeStyle="rgba(40,40,44,.30)"; g.beginPath();
+        g.moveTo(h.x,h.y+13); g.lineTo(h.x,h.y+30); g.stroke(); } });
     ground(floor+22);
     // THE WRITING TETRA, vertex down, standing behind an aperture in this wall.
     // "Four faces of one writing tetra, vertex down, you at the point."
@@ -385,10 +436,24 @@ lens:{ enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-12
    go. Holding is not producing. */
 dam:{ enter(){ const w=W_();
     // READS: there is only as much head to gather as the tank actually raised.
-    L.cap=Math.max(0.15, w.level); L.head=0; L.open=0; L.spun=0; L.done=false; },
+    L.cap=Math.max(0.15, w.level); L.head=0; L.open=0; L.spun=0; L.done=false;
+    /* THE GATE HAS A HANDLE NOW — built 2026-08-14, "build the first 4 levels
+       playable." The act here is hold-then-let-go, on E or space, and NOTHING
+       ON SCREEN SAID SO. A hand that entered saw a wall and a still wheel and
+       could stand in the room forever. reach_check's own law: an act with no
+       affordance is not in the world.
+
+       So the handle is a body, not a caption. It sits on the gate, it moves
+       down while you hold, it rides back up when you let go, and it is the only
+       thing in the room that answers a hand. No number, no label, no prompt to
+       press anything, and it never nags: it simply is the part that moves. */
+    L.handle=0; },
   step(dt){ if(typing) return;
-    const press=keys["e"]||keys[" "];
+    /* the mouse works it too — a hand that has only ever used a mouse is still
+       a hand, and the handle is a thing you can push */
+    const press=keys["e"]||keys[" "]||mouse.down;
     const w=W_();
+    L.handle += ((press&&!L.released ? 1 : 0) - L.handle) * 0.18;
     if(!L.released){ if(press){ L.head=Math.min(L.cap,L.head+dt/2600); w.held=L.head; w.still=1; } }
     if(!press&&L.head>0.12&&!L.released){ L.released=true; }
     if(L.released){ L.open=Math.min(1,L.open+dt/700);
@@ -407,6 +472,19 @@ dam:{ enter(){ const w=W_();
     g.fillRect(W*0.5-300,fy-hh,300,hh); // the head, accumulating behind
     g.fillStyle="#6f675a"; g.fillRect(W*0.5,fy-230,28,230-L.open*150);
     if(L.released){ g.fillStyle="rgba(74,108,122,.6)"; g.fillRect(W*0.5,fy-80,120,80); }
+    /* THE HANDLE. Rest is up; held is down. It is the one moving part in the
+       room before anything else moves, so it is what a hand finds. */
+    if(!L.released){
+      const hx=W*0.5+44, top=fy-214, travel=54, hy=top+(L.handle||0)*travel;
+      g.strokeStyle="rgba(60,56,48,.75)"; g.lineWidth=5;
+      g.beginPath(); g.moveTo(hx,top-14); g.lineTo(hx,hy+16); g.stroke();
+      g.fillStyle="#8b8474"; g.fillRect(hx-17,hy,34,17);
+      g.strokeStyle="rgba(40,38,34,.6)"; g.lineWidth=1.5; g.strokeRect(hx-17,hy,34,17);
+      /* and the head it is gathering, drawn as a rising mark on the wall — form,
+         never a figure */
+      if(L.head>0){ g.fillStyle="rgba(74,108,122,.5)";
+        g.fillRect(W*0.5-6,fy-40-L.head*180,10,4); }
+    }
     // the wheel: it turns ONLY on the drop
     g.save(); g.translate(W*0.5+170,fy-52); g.rotate(L.spun);
     g.strokeStyle="#5a5348"; g.lineWidth=4;
@@ -1162,7 +1240,14 @@ function mapNodes(){
    would be two different things under one hand. */
 function ascentTop(){ return H*0.50 - Math.min(W,H)*0.34; }   // the circuit's crown
 function ascentNodes(){
-  const r=Math.min(W,H)*0.075, cy2=ascentTop()-46-r/2;
+  // The band it has to live in: 12px below the top of the window, 40px above the
+  // crown — the 40 is the two lines of name that hang under its lowest edge. The
+  // figure is then the largest one that fits that band, never larger. On a wide
+  // short window the crown rides high and the tetra is small; that is correct,
+  // and sizing it off min(W,H) alone pushed its apex off the top of the screen.
+  const crown=ascentTop(), baseY=crown-40;
+  const r=Math.max(14, Math.min(Math.min(W,H)*0.075, (crown-52)/1.5));
+  const cy2=baseY-r/2;
   return [-90,30,150].map(d=>{ const a=d*Math.PI/180;
     return {x:W/2+r*Math.cos(a)*1.35, y:cy2+r*Math.sin(a)}; });
 }

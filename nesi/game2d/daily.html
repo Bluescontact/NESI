@@ -608,7 +608,11 @@ function toTheLake(s){
   try{ const r=localStorage.getItem(K); d=r?JSON.parse(r):null; }catch(e){ d=null; }
   if(!d || typeof d!=="object") d={ schema:"ascent.2", kept:[] };
   if(!Array.isArray(d.kept)) d.kept=[];
-  d.kept.push(s.t);                                    /* VERBATIM. Nothing else. */
+  if(!Array.isArray(d.arrived)) d.arrived=[];
+  /* `arrived` is water standing at the head of THE TANK, waiting for a hand.
+     `kept` is what the world has taken. A sentence moves from the first to the
+     second when he reaches for it there — never on its own. */
+  d.arrived.push(s.t);                                 /* VERBATIM. Nothing else. */
   const j=JSON.stringify(d);
   try{
     localStorage.setItem(K+".pad", j);
