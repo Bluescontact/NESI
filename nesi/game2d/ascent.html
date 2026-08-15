@@ -297,9 +297,18 @@ const today = () => new Date().toISOString().slice(0,10);
    LEVEL is complete — not once a face of it is — and then in their own order.
    Faces inside a level are never gated against each other: "returning to the
    first doesn't undo anything," and nor does entering the third first. */
-const unlocked = n => isAscent(n) ? (!bound("order") || seeded()>=1)
-  : (!bound("order") ? true
-     : n===1 ? true : n===5 ? !!S.done[1] : !!S.done[n-1]);
+/* THE ORDER IS THE RING'S OWN ORDER, not a hand-kept list of special cases. It
+   used to say "n===5 opens on level one", which was true only while the map had
+   exactly one level on it — gathering two more silently broke the chain. Each
+   run on the circuit opens when the run before it on the circuit is done, and
+   the first is always open. Derived, so gathering another level cannot break it. */
+const unlocked = n => {
+  if(isAscent(n)) return !bound("order") || seeded()>=1;
+  if(!bound("order")) return true;
+  const i = MAPRUNS.findIndex(r=>r.n===n);
+  if(i<=0) return i===0;
+  return !!S.done[MAPRUNS[i-1].n];
+};
 
 /* ── canvas ───────────────────────────────────────────────────────────────── */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
@@ -510,14 +519,59 @@ let room=null;                    // the level you are standing inside, if any
    question with several workable answers — by circuit, by what the water is
    doing, by what the hand is doing — and it is on the decision surface with
    those options rather than settled here. */
-const LEVEL1 = { n:1, faces:["tank","rain","dam","channel"] };
-const faceOf = k => LEVELS.find(l=>l.key===k);
+/* ═══ THE LEVELS ════════════════════════════════════════════════════════════
+   Gathered BY GESTURE, on Kevin's mark, 2026-08-14, from the loose mechanisms
+   and their declared verbs. The gather was a count, not a choice — every stage
+   already declared which of the four it is, so the grouping fell out of what was
+   already written down:
+
+     reach  7   tank · lens · filter · stations · sounding · deep · seating
+     wait   4   ground · winter · stilling · garden
+     hold   3   dam · heliostat · cast
+     draw   3   rain · channel · shoal
+
+   TWO COMPLETE LEVELS FELL OUT AT ONCE:
+
+     THE REACH — filter · stations · sounding · deep. All four came from the
+       eight loose mechanisms. Nothing borrowed, nothing left over.
+     THE WAIT  — ground · winter · stilling · garden. Three from the loose eight
+       and one from the ascent side, which is the only borrow in the gather.
+
+   AND ONE CONFLICT, WHICH IS THE REAL FINDING. LEVEL ONE as built is
+   tank(reach) · rain(draw) · dam(hold) · channel(draw) — a mixed level. Under
+   the gesture rule it is not a level at all. It is left standing and marked,
+   because the answer to that is his and the two clean levels do not depend on it.
+
+   `hold` has three and `draw` has three, so neither closes yet. 17 mechanisms
+   do not divide into fours; what fills those two levels is open. */
+const ROOMS = [
+  { n:1, name:"LEVEL ONE", mech:"four faces of one tetra",
+    faces:["tank","rain","dam","channel"], mixed:true },
+  { n:2, name:"THE REACH", mech:"a hand on a thing, and it answers",
+    faces:["filter","stations","sounding","deep"] },
+  { n:3, name:"THE WAIT",  mech:"doing nothing is the mechanic",
+    faces:["ground","winter","stilling","garden"] }
+];
+const roomOf = n => ROOMS.find(r=>r.n===n);
+
+/* THE GARDEN AND THE CAST HAVE BODIES AND NO NAMES. Both are built, both are
+   walked, and neither appears in LEVELS or ASCENT — so nothing in the file could
+   say what they were called, and the first level to contain one crashed on
+   drawing its own face. Their names and mechanics are the ones already written
+   at THE_ASCENT.md:11-12, not new ones. */
+const UNLISTED = [
+  {n:"garden", key:"garden", name:"THE GARDEN", mech:"it fills only from play"},
+  {n:"cast",   key:"cast",   name:"THE CAST",   mech:"the world loses what it gives"}
+];
+const faceOf = k => LEVELS.find(l=>l.key===k) || ASCENT.find(l=>l.key===k)
+                 || UNLISTED.find(l=>l.key===k);
 const worked = k => !!(S.faces&&S.faces[k]);
-const levelDone = () => LEVEL1.faces.every(worked);
+const levelDone = (r) => (r||room||ROOMS[0]).faces.every(worked);
 
 function enter(n){
   if(!unlocked(n)) return;
-  if(n===1){ view="room"; room=LEVEL1; S.at=1; save(); return; }   /* the level, not a face */
+  const r=roomOf(n);
+  if(r){ view="room"; room=r; S.at=n; save(); return; }            /* the level, not a face */
   cur=runOf(n); if(!cur) return;
   view="level"; L={t:0}; S.at=n; save();
   const f=SET[cur.key]; if(f&&f.enter) f.enter();
@@ -533,7 +587,7 @@ function enterFace(k){
 function finish(){
   if(room && room.faces.indexOf(cur.key)>=0){
     S.faces=S.faces||{}; S.faces[cur.key]=true;
-    if(levelDone() || !bound("level-done")){ S.done[room.n]=true; save(); room=null; view="map"; return; }
+    if(levelDone(room) || !bound("level-done")){ S.done[room.n]=true; save(); room=null; view="map"; return; }
     save(); view="room"; return;
   }
   S.done[cur.n]=true; save(); view="map";
@@ -1456,8 +1510,11 @@ function beamCrossesWater(m,ang){
    they are not pretending to be levels; which level each belongs to is
    unbuilt and on the decision surface with candidate answers. So the ring is nine runs, not twelve,
    and it will be a different number again when he says how the rest gather. */
-const MAPRUNS = [{n:1, key:"__level1", name:"LEVEL ONE", mech:"four faces of one tetra"}]
-  .concat(LEVELS.slice(4));
+/* the levels, then whatever is still loose — derived, so gathering another one
+   removes it from the ring without a second list to keep in step */
+const INSIDE = ROOMS.reduce((a,r)=>a.concat(r.faces),[]);
+const MAPRUNS = ROOMS.map(r=>({n:r.n, key:"__room"+r.n, name:r.name, mech:r.mech}))
+  .concat(LEVELS.filter(l=>INSIDE.indexOf(l.key)<0));
 function mapNodes(){
   const R=Math.min(W,H)*0.34, cy2=H*0.50, n=MAPRUNS.length;
   return Array.from({length:n},(_,i)=>{ const a=(i/n)*Math.PI*2 - Math.PI/2;
@@ -1597,11 +1654,12 @@ function facesOf(){
   /* the net: the centre triangle and three folded off its sides */
   const A={x:cx,y:cy-r}, B={x:cx-r*0.87,y:cy+r*0.5}, C={x:cx+r*0.87,y:cy+r*0.5};
   const out=(p,q,s)=>({x:p.x+q.x-s.x, y:p.y+q.y-s.y});
+  const f=(room||ROOMS[0]).faces;
   return [
-    {k:"tank",    t:[A,B,C],                 c:{x:cx,y:cy}},
-    {k:"rain",    t:[A,B,out(A,B,C)],        c:{x:(A.x+B.x+out(A,B,C).x)/3, y:(A.y+B.y+out(A,B,C).y)/3}},
-    {k:"dam",     t:[B,C,out(B,C,A)],        c:{x:(B.x+C.x+out(B,C,A).x)/3, y:(B.y+C.y+out(B,C,A).y)/3}},
-    {k:"channel", t:[A,C,out(A,C,B)],        c:{x:(A.x+C.x+out(A,C,B).x)/3, y:(A.y+C.y+out(A,C,B).y)/3}}
+    {k:f[0], t:[A,B,C],          c:{x:cx,y:cy}},
+    {k:f[1], t:[A,B,out(A,B,C)], c:{x:(A.x+B.x+out(A,B,C).x)/3, y:(A.y+B.y+out(A,B,C).y)/3}},
+    {k:f[2], t:[B,C,out(B,C,A)], c:{x:(B.x+C.x+out(B,C,A).x)/3, y:(B.y+C.y+out(B,C,A).y)/3}},
+    {k:f[3], t:[A,C,out(A,C,B)], c:{x:(A.x+C.x+out(A,C,B).x)/3, y:(A.y+C.y+out(A,C,B).y)/3}}
   ];
 }
 function inTri(p,t){
@@ -1632,7 +1690,8 @@ function drawRoom(){
     g.fillText(l.mech, f.c.x, f.c.y+14);
   });
   g.fillStyle="rgba(60,58,52,.55)"; g.font="11px Georgia,serif"; g.textAlign="left";
-  g.fillText("LEVEL ONE · four faces of one tetra", W*0.06, H-26);
+  const r=room||ROOMS[0];
+  g.fillText(r.name + " · " + r.mech + (r.mixed ? "  — mixed, not a gesture level" : ""), W*0.06, H-26);
   /* the way back to the map is the same one every room has: Escape. */
 }
 

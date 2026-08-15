@@ -215,8 +215,17 @@ for (const key of order) {
 if (!blocked) {
   ok("L5 the completed LEVEL is what returns you to the map",
      X.view === "map" && X.S.done[1] === true, "view=" + X.view);
+  /* Amended 2026-08-14: run 5 was THE FILTER standing loose on the ring. The
+     gather by gesture put it inside THE REACH, so it is no longer a run at all
+     and unlocked(5) is correctly false. What this check is actually for is that
+     finishing a LEVEL opens the next thing on the ring — asked of the ring
+     itself, so gathering another level cannot make it stale again. */
+  const ring = X.mapPts().map(p => p.l.n);
   ok("L6 and nothing beyond it was open until the level closed",
-     X.unlocked(5) === true, "the next run on the map opens on the LEVEL, not on a face");
+     X.unlocked(ring[1]) === true && ring[0] === 1,
+     "finishing LEVEL ONE opened the next run on the ring (" + ring[1] + ")");
+  ok("L6b and a mechanism gathered into a level is no longer a run of its own",
+     X.unlocked(5) === false, "THE FILTER is inside THE REACH now, not on the ring");
   /* going back in: a worked face is still enterable and undoes nothing */
   const keptBefore = (X.S.kept || []).length;
   clickAt(ptFor(1).x, ptFor(1).y);
