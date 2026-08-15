@@ -55,12 +55,12 @@ hand opens today.**
 | instrument | its claim | live equivalent |
 |---|---|---|
 | `bloom_check` | does the world unfold all at once, only when earned, carrying everything the hand placed | **none** |
-| `boot_check` | does it cold-boot correctly from an empty store | **none** — the live surfaces have no cold-boot check |
+| `boot_check` | does it cold-boot correctly from an empty store | **partly** — `first_four` cold-starts LEVEL ONE only; four levels never |
 | `green_check` | is standing made of returns, not of hours — "a volume-storm roots nothing" | **none** |
 | `head_check` | does upstream work shape the weather, and does the thing that leaves carry no words out | **partly** — the gift shop is walked, the weather is not |
 | `hold_check` | does the world hold the writing | **yes** — `daily_walk` D1–D15 |
 | `night_check` | does the deep work while you are away, and only then | **none** |
-| `reach_check` | can a hand find the things the world will answer | **none** — and this is the one that would have caught the dam |
+| `reach_check` | can a hand find the things the world will answer | **none** — and its rule does not fit a canvas world; see §3 |
 | `still_check` | does the valley actually go quiet — a claim about the frame loop | **none** |
 | `wire_check` | is anything an island — does a chain cross every wire in one sitting | **partly** — the circuit was walked once, by hand |
 | `pattern_lint` | A3's pattern rules | **none** |
@@ -69,15 +69,39 @@ hand opens today.**
 
 ## 3 · THE TWO THAT MATTER MOST
 
-**`reach_check`** — *can a hand find the things the world will answer?* Its own
-law is "an act with no affordance is not in the world," and it is the check that
-would have caught THE DAM having no handle. That fault was found by a hand
-instead. **The live build has no affordance check at all.**
+> **CORRECTED 2026-08-14, on his standing instruction — *check before any
+> assertion*.** This section as first written made two claims I had not checked,
+> and both were wrong. They are corrected below rather than removed.
 
-**`boot_check`** — cold-boot from an empty store. Every fault involving a fresh
-morning — the lake that drained, the stations that finished on nothing, the
-sounding into an empty lake — is a cold-boot fault, and all three were found by
-walking rather than by a check.
+**`reach_check`** — *can a hand find the things the world will answer?*
+
+**I claimed it would have caught THE DAM having no handle. IT WOULD NOT.**
+Checked: its rule is that every target acted on in `pointerdown` must also be
+tested in `hover()`, so the cursor changes over it. `ascent.html` has **no
+`hover()` function and no cursor change anywhere** — 0 of each — because it is a
+canvas world that DRAWS its affordances rather than changing a pointer. And the
+dam's act before the handle was `keys["e"]||keys[" "]`, **a keyboard act with no
+click target at all.** The rule has no subject there and would not have looked.
+
+**What is true:** the live build has no affordance check of any kind, and an
+affordance check for a canvas world needs a different rule than this one —
+*every act must have something drawn that answers a hand before the act is
+taken.* That rule does not exist anywhere yet.
+
+**`boot_check`** — cold-boot from an empty store.
+
+**I claimed the live build has no cold-boot check. IT HAS ONE, narrowly.**
+`first_four` clears the store and walks LEVEL ONE from empty. What is missing is
+a cold boot of *the rest*: four of the five levels have never been entered from
+a cleared store by any instrument.
+
+**And the three faults I called cold-boot faults are not, quite.** The drained
+lake was — it appeared on a fresh morning. The stations finishing on nothing and
+the sounding into an empty lake appeared **when a face was entered before the
+face that feeds it**, which a cleared store guarantees but does not define. They
+are EMPTY-STATE faults: a seat entered with nothing upstream of it. That is the
+class, and it is wider than cold boot, because ungated faces mean any order is
+reachable at any time.
 
 ---
 
