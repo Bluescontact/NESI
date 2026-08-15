@@ -60,7 +60,7 @@ hand opens today.**
 | `head_check` | does upstream work shape the weather, and does the thing that leaves carry no words out | **partly** — the gift shop is walked, the weather is not |
 | `hold_check` | does the world hold the writing | **yes** — `daily_walk` D1–D15 |
 | `night_check` | does the deep work while you are away, and only then | **none** |
-| `reach_check` | can a hand find the things the world will answer | **none** — and its rule does not fit a canvas world; see §3 |
+| `reach_check` | can a hand find the things the world will answer | **replaced** — `answer_check` asks it behaviourally, for a canvas world |
 | `still_check` | does the valley actually go quiet — a claim about the frame loop | **none** |
 | `wire_check` | is anything an island — does a chain cross every wire in one sitting | **partly** — the circuit was walked once, by hand |
 | `pattern_lint` | A3's pattern rules | **none** |
@@ -83,10 +83,17 @@ canvas world that DRAWS its affordances rather than changing a pointer. And the
 dam's act before the handle was `keys["e"]||keys[" "]`, **a keyboard act with no
 click target at all.** The rule has no subject there and would not have looked.
 
-**What is true:** the live build has no affordance check of any kind, and an
-affordance check for a canvas world needs a different rule than this one —
-*every act must have something drawn that answers a hand before the act is
-taken.* That rule does not exist anywhere yet.
+**What is true:** the live build had no affordance check of any kind, and one for
+a canvas world needs a different rule than this — *every act must have something
+drawn that answers a hand before the act is taken.*
+
+**BUILT 2026-08-15 as `tools/answer_check.js`.** It reads no source and cannot be
+satisfied by a variable with the right name: it puts a hand where the act is,
+WITHOUT COMPLETING IT, and compares the glass. A reach must change the screen
+unclicked; a hold must change it while held; a draw must follow a moving hand; a
+wait must show the room moving on its own, or a hand cannot tell alive from
+stuck. All twenty acts answer. **And it is proven to fail:** with the dam's
+handle taken back out, it reports the exact fault that was found by a hand.
 
 **`boot_check`** — cold-boot from an empty store.
 

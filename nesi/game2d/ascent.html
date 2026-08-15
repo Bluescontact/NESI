@@ -1196,6 +1196,7 @@ winter:{ g:"wait", enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.la
        pass; all a hand can do here is see that, and the seeing is a wait. */
     if(L.same && wait(dt, 900).still) L.ack=true; },
   draw(){ sky(); const fy=H-150; ground(fy);
+    breathe(H-150);      /* the light moves; time cannot be hurried */
     // what is standing, and what is simply bare
     for(let i=0;i<6;i++){ const x=W*0.22+i*(W*0.56/5);
       if(i<S.rooted){ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
@@ -1547,13 +1548,24 @@ garden:{ g:"wait", enter(){ L.t=0; },
        the whole act. Nothing asks and no key is named. */
     if(wait(dt, 2400).still && L.t>900){ save(); finish(); } },
   draw(){ sky(); const fy=H-140; ground(fy);
+    /* AND HERE TOO — still for 120 frames, caught the same way. The garden's
+       claim is that it fills from play while you are elsewhere, so a hand
+       standing in it must be able to tell it is growing rather than frozen.
+       What moves is the growth itself, leaning: nothing is asked, nothing is
+       counted, and no act makes it lean faster. */
+    L.sway=(L.sway||0)+1;
+    /* the room breathes even when nothing has grown yet — an empty garden was
+       a dead room, which is the same empty-state fault as the stations routing
+       nothing and the sounding into an empty lake */
+    breathe(H-140);
     S.lenses.forEach((t,i)=>{ const x=120+i*230, y=fy-110;
       g.fillStyle="rgba(255,252,240,.95)"; g.fillRect(x,y,200,64);
       g.strokeStyle="rgba(40,40,44,.6)"; g.strokeRect(x,y,200,64);
       g.fillStyle="#17171a"; g.font="11px Georgia,serif"; g.textAlign="left";
       wrap(t,30).slice(0,4).forEach((l,k)=>g.fillText(l,x+9,y+16+k*13)); });
-    S.shoots.forEach(x=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
-      g.beginPath(); g.moveTo(x%W,fy); g.lineTo(x%W,fy-34); g.stroke(); });
+    S.shoots.forEach((x,i)=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
+      const lean=Math.sin(L.sway*0.013+i*0.8)*4;   /* it leans; it is not hurried */
+      g.beginPath(); g.moveTo(x%W,fy); g.lineTo(x%W+lean,fy-34); g.stroke(); });
     for(let i=0;i<S.rooted;i++){ const x=W*0.75+i*40;
       g.fillStyle="#4f6a3d"; g.beginPath(); g.arc(x,fy-40,7,0,7); g.fill(); } }
 },
@@ -1703,6 +1715,22 @@ function shelfReach(){
 /* ── shared drawing ───────────────────────────────────────────────────────── */
 function sky(){ const gr=g.createLinearGradient(0,0,0,H);
   gr.addColorStop(0,"#cdd5d2"); gr.addColorStop(1,"#b6ae9f"); g.fillStyle=gr; g.fillRect(0,0,W,H); }
+/* ═══ THE WORLD BREATHES ═════════════════════════════════════════════════════
+   A hand standing in a room must be able to tell the world is alive rather than
+   stuck. The answer check found two seats where nothing on the glass moved at
+   all over 120 frames — THE OVERWINTERING and an empty THE GARDEN — and both are
+   seats whose whole claim is that something happens while you are not acting.
+
+   This is one function, not a thing each stage remembers, because the first
+   version of it went into the wrong stage entirely: a first-match replace put
+   the light in THE SPRING and neither seat that needed it got anything.
+
+   It asks for nothing, no act speeds it, and it is not a figure. */
+function breathe(y){
+  const t = (breathe.t = (breathe.t || 0) + 1);
+  g.fillStyle = "rgba(238,240,236," + (0.035 + 0.03 * Math.sin(t * 0.011)).toFixed(3) + ")";
+  g.fillRect(0, 0, W, y === undefined ? H : y);
+}
 function ground(y){ g.fillStyle="#a89f8e"; g.fillRect(0,y,W,H-y);
   g.strokeStyle="rgba(90,84,74,.25)"; g.lineWidth=1;
   for(let x=0;x<W;x+=44){ g.beginPath(); g.moveTo(x,y); g.lineTo(x,H); g.stroke(); } }
