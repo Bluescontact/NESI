@@ -182,6 +182,9 @@ let S = {
   // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
   // in here. One list, two places — there is no second registry.
   seated:[],
+  // CONSTRAINTS HE HAS SWITCHED OFF. His, kept with everything else of his, and
+  // read before every refusal in the file. Declared here so it survives the night.
+  off:[],
   // WHICH FACES OF A LEVEL HAVE BEEN WORKED. Declared here because load() only
   // restores keys that already stand in S — a field invented at runtime is saved
   // and then silently dropped on the next morning, which would have made every
@@ -294,8 +297,9 @@ const today = () => new Date().toISOString().slice(0,10);
    LEVEL is complete — not once a face of it is — and then in their own order.
    Faces inside a level are never gated against each other: "returning to the
    first doesn't undo anything," and nor does entering the third first. */
-const unlocked = n => isAscent(n) ? seeded()>=1
-  : (n===1 ? true : n===5 ? !!S.done[1] : !!S.done[n-1]);
+const unlocked = n => isAscent(n) ? (!bound("order") || seeded()>=1)
+  : (!bound("order") ? true
+     : n===1 ? true : n===5 ? !!S.done[1] : !!S.done[n-1]);
 
 /* ── canvas ───────────────────────────────────────────────────────────────── */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
@@ -327,6 +331,69 @@ let mouse={x:0,y:0,down:false,clicked:false,drag:false};
    None of them prompts, labels, counts or nags. They are how a hand asks; what
    answers is the stage's own business. */
 const GESTURES = ["reach","hold","draw","wait"];
+
+/* ═══ THE CONSTRAINTS — every negative assertion in this world, on the glass ══
+   Kevin's law, 2026-08-14, verbatim:
+
+     "A constraint acts as a lint, it's an upstream boundary and should be
+      announced at each gate. A negative assertion that isn't user visible and
+      modifiable is a failure. the user controls all negative assertions and
+      contraints."
+
+   So every "you cannot", "not yet", "only when", "never" that this build
+   enforces is REGISTERED HERE, shown in the clear case at the gate where it
+   actually binds, and switched off by a hand. Nothing refuses silently.
+
+   `mine` says who put it there: MINE are boundaries this build introduced and
+   he never asked for — those are the dangerous ones, because they accumulate
+   invisibly. HIS are ones he set. Both are switchable, because he controls all
+   of them; the flag is so he can tell at a glance which he never agreed to.
+
+   `where` is the gate it binds at — the case shows only what binds HERE, so a
+   boundary is announced where it is met rather than filed in a list.
+
+   THE LINT: tools/constraint_lint.js fails if any refusal in the code is not
+   registered here, and if any registered constraint is not actually reached by
+   the code. An unannounced boundary is a build failure, not a style note. */
+const CONSTRAINTS = [
+ { id:"order",     mine:true,  where:"map",
+   says:"A run on the circuit opens only after the one before it is finished." },
+ { id:"level-done",mine:true,  where:"room",
+   says:"A level hands you back to the map only when all four of its faces are worked." },
+ { id:"tank-asks", mine:true,  where:"tank",
+   says:"The tank does not ask you to write when water has already arrived from the daily surface." },
+ { id:"no-offer",  mine:false, where:"tank",
+   says:"Nothing falls on its own. The world never offers; the reach is always yours." },
+ { id:"once",      mine:false, where:"tank",
+   says:"A sentence that has been poured is not poured again." },
+ { id:"fifth",     mine:true,  where:"*",
+   says:"A stage may use only reach, hold, draw or wait. There is no fifth gesture." },
+ { id:"no-number", mine:false, where:"*",
+   says:"No number reaches you. No score, count, rank, percentage or progress bar." },
+ { id:"no-call",   mine:false, where:"*",
+   says:"No model call and no network request, anywhere on the path you walk." },
+ { id:"verbatim",  mine:false, where:"*",
+   says:"Your words are never rewritten, summarised or categorised." },
+ { id:"deep",      mine:false, where:"deep",
+   says:"The deep never renders." },
+ { id:"sky-is-not-water", mine:true, where:"sounding",
+   says:"A line cannot be dropped into the sky. Only the water takes one." }
+];
+/* switched off by his hand, kept in his own store, and read before every refusal */
+function bound(id){
+  if(S.off && S.off.indexOf(id)>=0) return false;   /* he turned this one off */
+  return true;
+}
+function boundsHere(){
+  const at = view==="level" && cur ? cur.key : view;
+  return CONSTRAINTS.filter(c=> c.where==="*" || c.where===at );
+}
+function unbind(id){
+  S.off = S.off || [];
+  const i=S.off.indexOf(id);
+  if(i>=0) S.off.splice(i,1); else S.off.push(id);
+  save();
+}
 
 /* REACH. True on the frame a hand comes down on the thing. `near()` is the same
    test without the click, so a stage can show the thing answering BEFORE it is
@@ -466,7 +533,7 @@ function enterFace(k){
 function finish(){
   if(room && room.faces.indexOf(cur.key)>=0){
     S.faces=S.faces||{}; S.faces[cur.key]=true;
-    if(levelDone()){ S.done[room.n]=true; save(); room=null; view="map"; return; }
+    if(levelDone() || !bound("level-done")){ S.done[room.n]=true; save(); room=null; view="map"; return; }
     save(); view="room"; return;
   }
   S.done[cur.n]=true; save(); view="map";
@@ -500,7 +567,7 @@ tank:{ g:"reach", enter(){ const w=W_();
        what it takes. */
     L.held=(S.arrived||[]).slice(0,9).map((t,i)=>({ t, x:W*0.5-200+i*46, y:96+ (i%3)*22 }));
     L.hadHeld=L.held.length;
-    if(L.hadHeld) return;                     /* there is water here; do not ask for more */
+    if(L.hadHeld && bound("tank-asks")) return;   /* there is water here; do not ask for more */
     if(!L.opened){ L.opened=true;
     openWrite(100,(text,n)=>{ L.sent=text.split(/(?<=[.!?])\s+/).filter(Boolean);
       if(!L.sent.length) L.sent=[text]; L.fed=0;
@@ -516,7 +583,7 @@ tank:{ g:"reach", enter(){ const w=W_();
       if(i>=0){ const h=L.held.splice(i,1)[0];
         L.drops.push({x:h.x,y:h.y,v:0,s:h.t});
         S.kept=(S.kept||[]).concat([h.t]);
-        S.arrived=(S.arrived||[]).filter(t=>t!==h.t);   /* it arrived once */
+        if(bound("once")) S.arrived=(S.arrived||[]).filter(t=>t!==h.t);
         save(); } }
     if(L.sent&&L.fed<L.sent.length){ L.t+=dt; if(L.t>240){ L.t=0;
       L.drops.push({x:W*0.5+(Math.random()-0.5)*180,y:120,v:0,s:L.sent[L.fed]}); L.fed++; } }
@@ -939,7 +1006,9 @@ stilling:{ g:"wait", enter(){ L.q=0; L.ripple=1; },
    left behind. Sound a turbid lake and it gives you less. */
 sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
   step(){ if(!mouse.clicked) return; mouse.clicked=false;
-    if(mouse.y < H*0.24) return;
+    /* the sky is not water, so a line cannot be dropped into it — a boundary on
+       the hand, so it is registered and announced like every other */
+    if(bound("sky-is-not-water") && mouse.y < H*0.24) return;
     // THE GROUND DECIDES, AND SO DOES THE WATER — but neither of them is a coin.
     // This line used to read `i>=0 && Math.random() < 0.35+0.65*L.clear`, which
     // re-introduced the exact die the corpus had just removed from THE DEEP.
@@ -1725,11 +1794,67 @@ function drawCase(){
   CASE.ops.forEach((o,i)=>{ g.fillStyle= o.kind==="write"?"rgba(255,240,190,.92)":"rgba(238,236,228,.52)";
     g.fillText(o.kind+"  "+o.what, L+76, ln+i*13); });
   g.restore();
+  drawBounds();
+}
+
+/* ═══ THE BOUNDARIES, ANNOUNCED AT THE GATE ═════════════════════════════════
+   "A constraint acts as a lint, it's an upstream boundary and should be
+    announced at each gate."
+
+   So the case's second panel lists what is binding HERE — in this view, on this
+   face — and nowhere else. A boundary you are not currently inside is not your
+   problem and is not shown.
+
+   Each line is a switch. Click it and the boundary is off, in your store,
+   immediately, and the world runs without it. A struck-through line is a
+   boundary you have lifted. `mine` — the ones this build introduced and you
+   never asked for — carry a mark, because those are the ones that accumulate
+   invisibly, and telling them apart at a glance is the whole point.
+
+   Nothing here is a number and nothing here is about you. */
+function boundRows(){
+  const w=Math.min(430,W*0.46), x=16, y=16;
+  return boundsHere().map((c,i)=>({ c, x, y:y+34+i*30, w, h:26 }));
+}
+function drawBounds(){
+  if(!CASE.open) return;
+  const rows=boundRows(); if(!rows.length) return;
+  const w=rows[0].w, h=44+rows.length*30;
+  g.save();
+  g.fillStyle="rgba(18,22,25,.82)"; g.fillRect(12,12,w+8,h);
+  g.strokeStyle="rgba(238,236,228,.28)"; g.lineWidth=1; g.strokeRect(12,12,w+8,h);
+  g.font="10.5px ui-monospace, Consolas, monospace"; g.textAlign="left";
+  g.fillStyle="rgba(238,236,228,.40)";
+  g.fillText("what is binding here — click a line to lift it", 28, 34);
+  rows.forEach(r=>{
+    const on=bound(r.c.id), hot=mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y-14&&mouse.y<r.y+12;
+    g.fillStyle = !on ? "rgba(238,236,228,.30)"
+                : hot ? "rgba(255,240,190,.95)" : "rgba(238,236,228,.72)";
+    const line = (r.c.mine ? "· " : "  ") + r.c.says;
+    g.fillText(line, 28, r.y);
+    if(!on){ const tw=g.measureText(line).width;
+      g.strokeStyle="rgba(238,236,228,.45)"; g.lineWidth=1;
+      g.beginPath(); g.moveTo(28,r.y-4); g.lineTo(28+tw,r.y-4); g.stroke(); }
+  });
+  g.fillStyle="rgba(238,236,228,.30)";
+  g.fillText("·  this build put there, not you", 28, 26+rows.length*30+14);
+  g.restore();
+}
+/* the hand on a boundary. Runs before the view's own click, so lifting a
+   boundary never also enters something behind it. */
+function boundsClick(){
+  if(!CASE.open || !mouse.clicked) return false;
+  const r=boundRows().find(r=> mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y-14&&mouse.y<r.y+12 );
+  if(!r) return false;
+  unbind(r.c.id); mouse.clicked=false; return true;
 }
 
 /* ── loop ─────────────────────────────────────────────────────────────────── */
 let last=performance.now();
 function frame(now){ const dt=Math.min(48,now-last); last=now;
+  /* the boundaries are read before anything else reads the hand, so lifting one
+     never also enters whatever was drawn underneath it */
+  if(boundsClick()){ drawCase(); requestAnimationFrame(frame); return; }
   if(view==="map"){
     drawMap();
     // The whole solid, standing behind an aperture in the map's own surface.
