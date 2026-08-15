@@ -3,8 +3,19 @@
 **The counsel pass, 2026-08-14.** One entry per seat, seven fields. Grounded in
 the bodies as they stand in `ascent.html`, not in what they might become.
 
-**STATE: HELD.** It waits on one thing, named in §0, and everything that does not
-depend on it is delivered in full below.
+**STATE: WAS HELD, NOW RELEASED.** It waited on which of 192 placements was the
+world. Kevin's line — *"↓TANK and ↓FILTER are joined"* — cut it to three, and the
+brief's own census cut it to one. **The placement is `THE_SOLID.md`.**
+
+**AND THE CORRECTION THAT CAME WITH IT:** §0 below reports the brief's geometry
+census as disagreeing with the solid. **It does not.** Scored against all three
+surviving worlds the brief hits 8/8 on the one that is the world, and 4/8 on each
+of the others — I compared it against an arbitrary survivor and reported the
+difference as its error. The brief carried the pinning relation the whole time.
+Its eight crossing edges are exactly right; six are filed turn-for-return.
+
+§0 is left standing rather than rewritten, per the supersession convention. The
+twelve entries were never affected either way.
 
 ---
 
