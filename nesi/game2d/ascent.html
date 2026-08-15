@@ -1812,20 +1812,26 @@ function drawCase(){
    invisibly, and telling them apart at a glance is the whole point.
 
    Nothing here is a number and nothing here is about you. */
+/* THE PANEL SITS IN THE BOTTOM LEFT, out of the world's way. It was in the top
+   left and it covered exactly where THE TANK holds its arrivals — a hand
+   reaching for a bead hit the panel instead. Caught by first_four B5, which is
+   the identity: four reaches went in, one bead came out, 1/4. A panel that
+   announces the boundaries must not become one. */
 function boundRows(){
-  const w=Math.min(430,W*0.46), x=16, y=16;
-  return boundsHere().map((c,i)=>({ c, x, y:y+34+i*30, w, h:26 }));
+  const n=boundsHere().length, w=Math.min(430,W*0.46), x=16;
+  const top=H-16-(44+n*30);
+  return boundsHere().map((c,i)=>({ c, x, y:top+34+i*30, w, h:26 }));
 }
 function drawBounds(){
   if(!CASE.open) return;
   const rows=boundRows(); if(!rows.length) return;
-  const w=rows[0].w, h=44+rows.length*30;
+  const w=rows[0].w, h=44+rows.length*30, top=H-16-h;
   g.save();
-  g.fillStyle="rgba(18,22,25,.82)"; g.fillRect(12,12,w+8,h);
-  g.strokeStyle="rgba(238,236,228,.28)"; g.lineWidth=1; g.strokeRect(12,12,w+8,h);
+  g.fillStyle="rgba(18,22,25,.82)"; g.fillRect(12,top,w+8,h);
+  g.strokeStyle="rgba(238,236,228,.28)"; g.lineWidth=1; g.strokeRect(12,top,w+8,h);
   g.font="10.5px ui-monospace, Consolas, monospace"; g.textAlign="left";
   g.fillStyle="rgba(238,236,228,.40)";
-  g.fillText("what is binding here — click a line to lift it", 28, 34);
+  g.fillText("what is binding here — click a line to lift it", 28, top+22);
   rows.forEach(r=>{
     const on=bound(r.c.id), hot=mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y-14&&mouse.y<r.y+12;
     g.fillStyle = !on ? "rgba(238,236,228,.30)"
@@ -1837,7 +1843,7 @@ function drawBounds(){
       g.beginPath(); g.moveTo(28,r.y-4); g.lineTo(28+tw,r.y-4); g.stroke(); }
   });
   g.fillStyle="rgba(238,236,228,.30)";
-  g.fillText("·  this build put there, not you", 28, 26+rows.length*30+14);
+  g.fillText("·  this build put there, not you", 28, H-22);
   g.restore();
 }
 /* the hand on a boundary. Runs before the view's own click, so lifting a
