@@ -111,6 +111,25 @@ after, and say so when no fingerprint was taken.
 
 ## WHERE TO BUILD NEXT
 
+**The audit refuses, and its refusal is the work order.** Now that `LIVE` is read
+off `ascent.html`, a failure is a fact about the game:
+
+```
+F4 (outputs) absent at 11 of 12 — TANK, DAM, FILTER, GROUND, DEEP, LENS,
+                                  HELIOSTAT, SEATING, OVERWINTERING, GARDEN, CAST
+F7 (held)    absent at 11 of 12 — DAM, FILTER, STATIONS, GROUND, DEEP, LENS,
+                                  HELIOSTAT, SEATING, OVERWINTERING, GARDEN, CAST
+```
+
+**Both wait on a ruling, and neither is mine to make.** The counsel pass
+specified seven fields at all twelve seats. Law 1 says *three outputs at every
+station* — and in the build `bays()` is called from `stations` alone, which is
+consistent with the law read narrowly and not with the counsel pass read
+literally. That is spec disagreeing with spec, so it is named here rather than
+built past: **does every seat carry the three outputs, or is the third output the
+stations' work and the other eleven carry something else?** Same question for the
+held form, where TANK's hung arrivals are currently the only one.
+
 Three rules have no instrument yet, and each names its own first move.
 
 **A cold boot of every level.** `first_four` cold-starts LEVEL ONE. The other
@@ -152,6 +171,26 @@ passes none of the 27. The control, which is the live world with the held form
 removed, fails on F7 alone. The live world holds.** The control is what keeps the
 first two honest: a suite that refused everything unconditionally would also pass
 the empty test.
+
+### LIVE is read off the build now
+
+`tools/seats.js` parses the `SET` table and emits the twelve seats. `LIVE` was a
+hand-written literal — `full_seat()`, every field filled in by me — so 27/27 was
+a fact about my transcription. **There is no fallback:** if the deriver cannot
+run, the audit refuses, because a fallback restores the literal it replaced.
+
+Six of the seven fields have a mechanical signature and are derived. **The cost
+does not** — a seat spending the last of the water and one spending none read
+alike — so each of the twelve now *declares* it beside its gesture, the same move
+as `keeps:` on a boundary. Declared is not derived, and `seats.js` says so on
+every run rather than letting a reader assume it was measured.
+
+Two derivations were wrong on the first pass and are worth keeping named: the
+outputs matched *"lake"* and *"set"* as loose words and reported two outputs at
+seats offering none; the held form matched `_h`, which is the hold verb's own
+timer, not a form on screen. **A deriver reading prose rather than mechanism is
+the failure it exists to catch.** Both read exactly now — `bays()` and
+`S.routed.<k>` for the outputs, a visible hung/previewed form for held.
 
 Two entries came back absence-passing *and* unbound — E1 (WALKABLE) and E2
 (UNWITNESSED), stated as *"state != WALKABLE or produced"*, which is satisfied by

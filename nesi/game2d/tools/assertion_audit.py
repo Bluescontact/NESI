@@ -25,9 +25,38 @@ def full_seat(name):
             'persists': 'a record', 'cost': 'a named cost', 'held': 'a preview',
             'named_by_gesture': True, 'material_from_prior': True}
 
+# ---------- LIVE IS READ OFF THE BUILD ----------
+# It was `[full_seat(n) for n in THE_TWELVE]` — a hand-written literal with every
+# field filled in by me. The suite passed 27/27 and the number was a fact about
+# my transcription, not about ascent.html.
+#
+# tools/seats.js parses the SET table and emits what is actually there. It
+# refuses to derive what it cannot see: `cost` comes back null with its reason
+# attached, because what a hand gives up by acting is not visible to a parser.
+# A deriver that fills its own gaps is the literal again with more steps.
+#
+# If the deriver cannot run, this REFUSES rather than falling back to the
+# literal — a fallback would restore the exact thing being removed.
+
+import json, subprocess, os, sys as _sys
+_HERE = os.path.dirname(os.path.abspath(__file__))
+try:
+    _raw = subprocess.run(["node", os.path.join(_HERE, "seats.js"), "--json"],
+                          capture_output=True, text=True, check=True).stdout
+    _derived = json.loads(_raw)
+except Exception as _err:
+    print("[assertion_audit] REFUSED — could not read the seats off the build:", _err)
+    print("            LIVE is derived from ascent.html; there is no hand-written fallback,")
+    print("            because a fallback restores the literal this replaced.")
+    _sys.exit(1)
+
+THE_TWELVE = ['TANK','DAM','FILTER','STATIONS','GROUND','DEEP',
+              'LENS','HELIOSTAT','SEATING','OVERWINTERING','GARDEN','CAST']
+DERIVED = [_derived['seats'][n] for n in THE_TWELVE if n in _derived['seats']]
+NOT_DERIVABLE = _derived['not_derivable']
+
 LIVE = world(
-    seats=[full_seat(n) for n in ['TANK','DAM','FILTER','STATIONS','GROUND','DEEP',
-                                  'LENS','HELIOSTAT','SEATING','OVERWINTERING','GARDEN','CAST']],
+    seats=DERIVED,
     drops=[{'carries': True, 'per_drop': True}],
     answers_available=['yes','no','dont_know','dont_want_to'],
     record=[{'kind':'drop'},{'kind':'route'},{'kind':'hold'}],
@@ -233,7 +262,21 @@ if _cf != ['F7']:
     _bad.append("the control should fail on F7 alone; it failed on " + (", ".join(_cf) or "nothing"))
 _lf = [k for k, v in _l.items() if not v]
 if _lf:
-    _bad.append("the live world fails: " + ", ".join(_lf))
+    # A REFUSAL THAT IS A WORK ORDER. Since LIVE is read off ascent.html, a
+    # failure here is a fact about the game rather than about the register — so
+    # it names the seats, not just the rule. "F4 fails" sends nobody anywhere;
+    # "F4 fails at eleven seats, and here they are" is the next slice.
+    _FIELD = {'F1':'gesture','F2':'material_in','F3':'surface','F4':'outputs',
+              'F5':'persists','F6':'cost','F7':'held'}
+    for _k in _lf:
+        _f = _FIELD.get(_k)
+        if not _f:
+            _bad.append("the live world fails: " + _k)
+            continue
+        _at = [s['name'] for s in DERIVED
+               if not (len(s.get(_f) or []) == 3 if _f == 'outputs' else s.get(_f))]
+        _bad.append(_k + " (" + _f + ") is absent at " + str(len(_at)) +
+                    " of " + str(len(DERIVED)) + " seats: " + ", ".join(_at))
 _u = [k for k, _, _, _ in STATED if _stated_empty[k] and k not in BINDINGS]
 if _u:
     _bad.append("absence-passing and unbound: " + ", ".join(_u))

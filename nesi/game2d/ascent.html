@@ -669,7 +669,7 @@ const SET = {
 /* 1 · THE TANK — "you type a hundred words, and you see the water flow into the
    dam." Writing becomes water. Every sentence you completed falls as a drop and
    pools behind the gate. Nothing reads it. */
-tank:{ g:"reach", enter(){ const w=W_();
+tank:{ g:"reach", cost:"the morning is poured once; what falls here is not in the daily surface any more", enter(){ const w=W_();
     // READS THE ONE WATER: you open on the surface the other eleven left.
     L.drops=[]; L.pool=w.level*90; L.sent=[]; L.fed=0;
     /* WATER THAT ALREADY ARRIVED — built 2026-08-14, "build the first 4 levels
@@ -886,7 +886,7 @@ table:{ g:"draw", enter(){ const w=W_();
 /* 2 · THE LENS — "250 word, and it gets worked by the user into a lens."
    Your own sentences stand on three faces. Read each by holding. When a thing
    can be held across all three, that is the lens. */
-lens:{ g:"reach", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
+lens:{ g:"reach", cost:"reading across all three is what costs — the lens is time, not material", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
   step(dt){ if(typing) return;
     /* THE REACH, in the shared verb — and this seat is why the check had to ask
        every stage. It DECLARED a reach and ran on WASD: a walking idiom that is
@@ -936,7 +936,7 @@ lens:{ g:"reach", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x
 /* 3 · THE DAM — "A dam restricts flow, accumulates head, and generates power at
    the moment of release — never at the moment of restriction." Hold, then let
    go. Holding is not producing. */
-dam:{ g:"hold", enter(){ const w=W_();
+dam:{ g:"hold", cost:"held head is not power — nothing downstream moves for as long as you hold", enter(){ const w=W_();
     // READS: there is only as much head to gather as the tank actually raised.
     L.cap=Math.max(0.15, w.level); L.head=0; L.open=0; L.spun=0; L.done=false;
     /* THE GATE HAS A HANDLE NOW — built 2026-08-14, "build the first 4 levels
@@ -1001,7 +1001,7 @@ dam:{ g:"hold", enter(){ const w=W_();
 /* 4 · THE GROUND — "what it sets down IS the ground; there is no other ground."
    The released water carries your sentences down and they settle. You do not
    place them. */
-ground:{ g:"wait", enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
+ground:{ g:"wait", cost:"a stone set is ground now; the shape you make is the shape that stays", enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
   /* THE WAIT, in the shared verb. You do not place them; the correct act here is
      not to act, and the verb is what says so. */
   step(dt){ let all=true;
@@ -1028,7 +1028,7 @@ ground:{ g:"wait", enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Ma
 /* 5 · THE FILTER — four fractions, told apart by BEHAVIOUR, never by colour
    alone: bedload sinks fast, suspended hangs, dissolved is invisible, film
    clings to the top. The hand catches them. No computed pass. */
-filter:{ g:"reach", enter(){ const w=W_();
+filter:{ g:"reach", cost:"a fraction you catch is out of the water; the separation cannot be walked back", enter(){ const w=W_();
     // READS: the load the dam put into suspension is what there is to sort. Let
     // nothing go and there is almost nothing here — which is a fact about the
     // water, not a judgement about you.
@@ -1085,7 +1085,7 @@ filter:{ g:"reach", enter(){ const w=W_();
 /* 6 · THE STATIONS — "three outputs at every station: sent to a spire, dropped
    to the lake, set down with no feedback at all." The third is the one that
    matters, and it does nothing on purpose. */
-stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
+stations:{ g:"reach", cost:"a route spends the water on one destination, and the other two do not get it", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
   step(){ if(reach(mouse.x, mouse.y, 1e9)){ mouse.clicked=false;
       /* NOTHING TO ROUTE IS NOT A FINISHED LEVEL. Grouping by gesture put this
          face beside the tank and the filter, and a hand can enter it first —
@@ -1152,7 +1152,7 @@ stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
      seating, never by holding harder.
 
    So this level teaches the array, and level 9 is what makes any of it keep. */
-heliostat:{ g:"hold", enter(){ L.a=-0.9; L.grown=0; },
+heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity, and the day is one day", enter(){ L.a=-0.9; L.grown=0; },
   step(dt){
     /* THE HOLD, in the shared verb: the aim is live only while a hand holds it,
        and the verb owns "is a hand holding". */
@@ -1197,7 +1197,7 @@ heliostat:{ g:"hold", enter(){ L.a=-0.9; L.grown=0; },
    releases in one afternoon root nothing." The only mechanic that a heavy day
    cannot force. If you came back on the same day, nothing roots, and bare
    ground is bare — not failing. */
-winter:{ g:"wait", enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
+winter:{ g:"wait", cost:"the day itself — a thousand releases in one afternoon root nothing", enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
   step(dt){ L.t+=dt;
     if(!L.same&&L.t>1600&&!L.k){ S.rooted++; S.lastDay=today();
       // WRITES: rooting takes something out of the water for good.
@@ -1415,7 +1415,7 @@ sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
    is an absence and absence is not written down.
    Nothing puts a pattern in the ground. It was always down there.
    (keptAtX / keptDepth / drawKept are defined below the mechanics.) */
-deep:{ g:"reach", enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
+deep:{ g:"reach", cost:"a line brings back one, and which one is not yours to choose", enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
   step(){ if(!reach(mouse.x, mouse.y, 1e9)) return; mouse.clicked=false;
     if(mouse.y < H*0.45){                       // above the line: sound it
       const i = keptAtX(mouse.x), found = i>=0;
@@ -1459,7 +1459,7 @@ deep:{ g:"reach", enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
    So you release a lens and it drifts and settles by its own motion. Where you
    clicked has nothing to do with where it comes to rest. You feed the frame;
    you do not place anything in it. */
-seating:{ g:"reach", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
+seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not yours, and it does not move again", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
     L.words=null; L.cut=null; L.lay=null;
     if(!L.asked){ L.asked=true;
       openWrite(500,(text)=>{
@@ -1553,7 +1553,7 @@ seating:{ g:"reach", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
 /* 11 · THE GARDEN — "it fills only from play… nothing pre-populates it; nothing
    in it demands, prompts, or expires. The garden shows what you made and never
    what it means." */
-garden:{ g:"wait", enter(){ L.t=0; },
+garden:{ g:"wait", cost:"nothing is spent; it shows what you made and asks for no act", enter(){ L.t=0; },
   step(dt){ L.t+=dt;
     /* THE WAIT, in the shared verb: standing still in the garden long enough is
        the whole act. Nothing asks and no key is named. */
@@ -1584,7 +1584,7 @@ garden:{ g:"wait", enter(){ L.t=0; },
 /* 12 · THE CAST — "the shape your returning made… carrying not one character of
    your text. Pull it past its resistance and it leaves: the file is yours, the
    fruit is gone from the world, and NESI keeps no record of it." */
-cast:{ g:"hold", enter(){ L.pull=0; L.gone=S.cast; },
+cast:{ g:"hold", cost:"the fruit leaves the world, and NESI keeps no record of it", enter(){ L.pull=0; L.gone=S.cast; },
   step(dt){
     /* THE SHELF TAKES A HAND BEFORE THE LEVEL DOES. A gift standing in the shop
        is not part of the casting; reaching for one is the player's own act and
