@@ -198,20 +198,25 @@ for (const key of order) {
        (X.S.kept || []).length + " kept");
   }
   if (n === 2) {
-    /* THE FILTER — a hand on each falling bit. Reached for where it actually is,
-       never at a fixed coordinate, because a walk that clicks empty water proves
-       nothing about whether the thing can be caught. */
-    for (let i = 0; i < 6000 && X.view === "level"; i++) {
-      const b = X.L().bits && X.L().bits[0];
-      if (b) { X.mouse.x = b.x; X.mouse.y = b.y; X.mouse.clicked = true; }
+    /* THE FILTER — TWO REACHES, because a lift is now held before it is kept.
+       Reach a falling bit and it rides at the head of the room; reach the held
+       one and it settles. A walk that only reached once would lift and lift and
+       never keep anything, which is what this walk did until the held form went
+       in — it caught the change rather than the change breaking it. */
+    for (let i = 0; i < 8000 && X.view === "level"; i++) {
+      const L = X.L();
+      const target = L.hand || (L.bits && L.bits[0]);
+      if (target) { X.mouse.x = target.x; X.mouse.y = target.y; X.mouse.clicked = true; }
       tick();
     }
   }
   if (n === 3) {
-    /* THE STATIONS — three outputs, and the walk uses all three */
+    /* THE STATIONS — TWO REACHES ON THE SAME BAY, because the route now rests on
+       the lip before it is walked. The walk still uses all three outputs; it
+       says each one twice. */
     const bays = X.bays(); const ks = Object.keys(bays);
-    for (let i = 0; i < 400 && X.view === "level"; i++) {
-      const r = bays[ks[i % 3]];
+    for (let i = 0; i < 600 && X.view === "level"; i++) {
+      const r = bays[ks[Math.floor(i / 2) % 3]];
       X.mouse.x = r.x + r.w / 2; X.mouse.y = r.y + r.h / 2; X.mouse.clicked = true;
       tick();
     }
@@ -316,6 +321,52 @@ if (!blocked) {
      X.S.kept.length + " kept, none trimmed");
   ok("F8 no number reached the screen at any point in the four",
      true, "checked by refusal_check.js, not here");
+}
+
+/* ═══ THE HELD FORMS — a reach that settles on contact cannot be walked around ═
+   THE_WORK_SURFACES named THE FILTER and THE STATIONS as the only two seats with
+   no held form. Both are a reach, and a reach settled on contact. These assert
+   that a first touch HOLDS and a second SETTLES, and that nothing settles by
+   itself in between. */
+{
+  bag.clear();
+  /* the bank must start empty or "one reach keeps nothing" is unfalsifiable */
+  vm.runInContext("S.done={}; S.faces={}; S.caught=[]; S.routed={spire:0,lake:0,set:0};" +
+                  " room=null; view='map'; W_().load=0.6;", sandbox);
+  X.toMap(); tick();
+  clickAt(ptFor(L1()).x, ptFor(L1()).y);
+  const ff = X.facesOf().find(q => q.k === "filter");
+  X.mouse.x = ff.c.x; X.mouse.y = ff.c.y; X.mouse.clicked = true; tick();
+  ok("H1 THE FILTER opens", X.view === "level" && X.cur.key === "filter");
+  for (let i = 0; i < 400 && !(X.L().bits || []).length; i++) tick();
+  const b0 = X.L().bits[0];
+  X.mouse.x = b0.x; X.mouse.y = b0.y; X.mouse.clicked = true; tick();
+  ok("H2 one reach LIFTS it and does not keep it",
+     !!X.L().hand && (X.S.caught || []).length === 0,
+     "held, bank still empty");
+  for (let i = 0; i < 200; i++) { X.mouse.clicked = false; tick(); }
+  ok("H3 and it rides there — nothing settles by itself",
+     !!X.L().hand && (X.S.caught || []).length === 0, "still held after 200 frames");
+  const h = X.L().hand;
+  X.mouse.x = h.x; X.mouse.y = h.y; X.mouse.clicked = true; tick();
+  ok("H4 the second reach settles it", (X.S.caught || []).length === 1 && !X.L().hand,
+     (X.S.caught || []).length + " in the bank");
+
+  vm.runInContext("S.faces={}; S.caught=['a','b','c']; S.routed={spire:0,lake:0,set:0}; view='room';", sandbox);
+  const fs2 = X.facesOf().find(q => q.k === "stations");
+  X.mouse.x = fs2.c.x; X.mouse.y = fs2.c.y; X.mouse.clicked = true; tick();
+  ok("H5 THE STATIONS opens with a queue", X.view === "level" && X.cur.key === "stations");
+  const bays0 = X.bays(), k0 = Object.keys(bays0)[0], r0 = bays0[k0];
+  const routedBefore = X.S.routed[k0];
+  X.mouse.x = r0.x + r0.w / 2; X.mouse.y = r0.y + r0.h / 2; X.mouse.clicked = true; tick();
+  ok("H6 one reach RESTS the route on the lip and sends nothing",
+     X.L().lip === k0 && X.S.routed[k0] === routedBefore, "resting on " + X.L().lip);
+  for (let i = 0; i < 200; i++) { X.mouse.clicked = false; tick(); }
+  ok("H7 and it rests — nothing walks the route by itself",
+     X.L().lip === k0 && X.S.routed[k0] === routedBefore, "still resting after 200 frames");
+  X.mouse.x = r0.x + r0.w / 2; X.mouse.y = r0.y + r0.h / 2; X.mouse.clicked = true; tick();
+  ok("H8 saying the same bay again walks it",
+     X.S.routed[k0] === routedBefore + 1 && !X.L().lip, k0 + " now " + X.S.routed[k0]);
 }
 
 /* ═══ THE TWO THINGS THAT MAKE THEM PLAYABLE, not merely working ═══════════ */

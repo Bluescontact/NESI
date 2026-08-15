@@ -995,15 +995,36 @@ filter:{ g:"reach", enter(){ const w=W_();
     if(L.spawn>L.rate&&L.bits.length<18){ L.spawn=0; const t=L.kinds[(Math.random()*3)|0];
       L.bits.push({x:120+Math.random()*(W-240),y:90,ph:Math.random()*7,t}); }
     L.bits.forEach(b=>{ b.ph+=dt*0.004; b.y+=b.t.v; b.x+=Math.sin(b.ph)*b.t.w; });
+    /* THE HELD FORM, built 2026-08-14. THE_WORK_SURFACES named this seat as one
+       of the two with none: a reach settled on contact, so a separation could
+       not be walked around or set back down.
+
+       A lifted bit now RIDES AT THE TOP OF THE ROOM, held, and a second reach on
+       it settles it into the bank. A reach on the water below puts it back where
+       it came from, still falling. Nothing settles on one touch and nothing
+       expires — a bit left riding simply rides. */
     if(mouse.clicked){ mouse.clicked=false;
-      for(let i=0;i<L.bits.length;i++){ const b=L.bits[i];
-        if(Math.hypot(mouse.x-b.x,mouse.y-b.y)<26){ S.caught.push(b.t.k); L.caught++; L.bits.splice(i,1); break; } } }
+      const h=L.hand;
+      if(h && near(h.x,h.y,26)){ S.caught.push(h.t.k); L.caught++; L.hand=null; }
+      else if(h){ L.bits.push({x:mouse.x,y:Math.max(90,mouse.y-40),ph:h.ph,t:h.t}); L.hand=null; }
+      else for(let i=0;i<L.bits.length;i++){ const b=L.bits[i];
+        if(near(b.x,b.y,26)){ L.hand={t:b.t, ph:b.ph, x:W*0.5, y:56}; L.bits.splice(i,1); break; } } }
     L.bits=L.bits.filter(b=>b.y<H-90);
     // WRITES: what the hand takes out of suspension leaves the water clearer.
     if(L.caught>=L.need){ const w=W_();
       w.load=clamp01(w.load-0.10*L.caught); w.clarity=clamp01(w.clarity+0.09*L.caught);
       reading(5,"sorted"); save(); finish(); } },
   draw(){ sky();
+    /* what is held rides at the head of the room, and answers a hand */
+    if(L.hand){ const h=L.hand, on=near(h.x,h.y,26);
+      g.strokeStyle="rgba(40,40,44,.22)"; g.lineWidth=1;
+      g.beginPath(); g.moveTo(h.x,h.y+16); g.lineTo(h.x,h.y+34); g.stroke();
+      g.fillStyle= on?"rgba(93,111,120,.98)":"rgba(93,111,120,.78)";
+      g.beginPath();
+      if(h.t.k==="bedload") g.arc(h.x,h.y,on?11:9,0,7);
+      else if(h.t.k==="suspended"){ g.ellipse(h.x,h.y,on?13:11,on?8:6,0,0,7); }
+      else g.rect(h.x-12,h.y-3,24,6);
+      g.fill(); g.strokeStyle=PAL.edge; g.lineWidth=1; g.stroke(); }
     L.bits.forEach(b=>{ g.fillStyle="#5d6f78"; g.beginPath();
       if(b.t.k==="bedload"){ g.arc(b.x,b.y,8,0,7); }
       else if(b.t.k==="suspended"){ g.arc(b.x,b.y,5,0,7); }
@@ -1031,6 +1052,16 @@ stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
       const b=bays();
       for(const [k,r] of Object.entries(b)){
         if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
+          /* THE HELD FORM, built 2026-08-14. The brief's own words: HOLD THE
+             ROUTE BEFORE WALKING IT. A reach on a bay used to send immediately
+             and routing has no undo — so the one act in this seat that cannot
+             be taken back was also the one that took a single touch.
+
+             The piece now RESTS ON THE LIP of the bay you reached for. Reach
+             another bay and it moves there; reach the same bay again and it
+             goes. A route left resting simply rests: nothing sends it. */
+          if(L.lip!==k){ L.lip=k; break; }
+          L.lip=null;
           S.routed[k]++; L.i++;                      // set-down: nothing happens. no toast, no chime.
           if(L.i>=L.queue.length){ const w=W_();
           // WRITES: sending downstream puts it back in the water; dropping to
@@ -1039,8 +1070,14 @@ stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
           w.load=clamp01(w.load + S.routed.spire*0.05 - S.routed.lake*0.04);
           reading(6,"routed"); save(); finish(); } break; } } } },
   draw(){ sky(); const b=bays();
-    Object.entries(b).forEach(([k,r])=>{ g.strokeStyle="rgba(60,54,44,.6)"; g.lineWidth=2;
+    Object.entries(b).forEach(([k,r])=>{
+      const held=(L.lip===k);
+      g.strokeStyle= held?"rgba(40,40,44,.9)":"rgba(60,54,44,.6)"; g.lineWidth= held?3.5:2;
       g.strokeRect(r.x,r.y,r.w,r.h);
+      /* what rests on the lip, waiting for the hand to say it again */
+      if(held){ g.fillStyle="rgba(74,108,122,.85)";
+        g.beginPath(); g.arc(r.x+r.w/2, r.y-12, 9, 0, 7); g.fill();
+        g.strokeStyle=PAL.edge; g.lineWidth=1; g.stroke(); }
       g.fillStyle="rgba(60,54,44,.55)"; g.font="12px Georgia,serif"; g.textAlign="center";
       g.fillText(k==="spire"?"↑":k==="lake"?"↓":"—", r.x+r.w/2, r.y+r.h/2+5); });
     if(L.i<L.queue.length){ g.fillStyle="#8d8578"; g.fillRect(W/2-30,H*0.30,60,26);
@@ -1540,9 +1577,15 @@ function drawKept(i,cx2,y){
    this file, in the cast's own room, and it is the only place in the world that
    writes a file. */
 function emit(){
-  const words=(S.kept||[]).slice();
-  if(!words.length) return;                    /* nothing written, nothing to give */
+  /* A GIFT IS WHAT IS NEW SINCE THE LAST ONE. The first version handed over
+     everything in the bank, so a second cast gave back the first gift's
+     sentences again — his own writing returned to him doubled, which is the
+     opposite of a gift and would have got worse every time. What has already
+     been given is not given again; what has not is what the gift is. */
   S.shop=S.shop||[];
+  const given=new Set(S.shop.flatMap(g=>g.text));
+  const words=(S.kept||[]).filter(t=>!given.has(t));
+  if(!words.length) return;              /* nothing new — the cast gives nothing, and says nothing */
   S.shop.push({ n:S.shop.length+1, d:today(), text:words });
   save();
 }
@@ -1564,6 +1607,11 @@ function takeGift(gi){
    ranked, counted or dated on screen; each is a shape, and a hand on one takes
    it. A gift already taken stays on the shelf — taking is not spending, and the
    world does not run out of a thing it has already given. */
+/* THE SHOP IS A PLACE, NOT A ROOM'S FURNITURE. It stood only in the cast's own
+   room, which meant the one door to it was the seat that made it — you had to
+   re-enter the act of giving to receive. It stands on the map as well now:
+   present when there is something in it, silent when there is not. It does not
+   offer and it is not a run on the circuit; it is simply there. */
 function shelfPts(){
   const gs=S.shop||[]; if(!gs.length) return [];
   const y=H-96, w=Math.min(78, (W-120)/Math.max(1,gs.length));
@@ -2135,7 +2183,17 @@ function windowDrag(rect){
    ever reads "no request" while one is being made, the wrapper is broken - the
    line cannot become true by claiming it. Toggle with TAB. */
 
-const CASE = { ops:[], net:0, model:0, open:true };
+/* THE CASE IS A MODE, NOT AN OVERLAY — changed 2026-08-14, twice bitten.
+   It used to be open by default and its panels floated over the world, so a hand
+   reaching into the world could land on a panel row instead: it ate four of the
+   tank's beads once, and then the stations' bays. Moving a panel fixed one
+   instance and left the class alone.
+
+   Opening the case now SUSPENDS THE WORLD. You are looking at the machine or you
+   are playing it, never both, so nothing can be ambiguous about which one a
+   reach meant. It is closed until a hand presses TAB, it costs nothing to open,
+   and nothing in the world moves while it is. */
+const CASE = { ops:[], net:0, model:0, open:false };
 function op(kind, what){ CASE.ops.push({kind,what}); if(CASE.ops.length>4) CASE.ops.shift(); }
 (function instrument(){
   const gi=Storage.prototype.getItem, si=Storage.prototype.setItem;
@@ -2210,6 +2268,8 @@ function boundRows(){
 }
 function drawBounds(){
   if(!CASE.open) return;
+  g.fillStyle="rgba(238,236,228,.55)"; g.font="10.5px ui-monospace, Consolas, monospace";
+  g.textAlign="left"; g.fillText("the world is held while this is open · TAB to go back", 28, 26);
   const rows=boundRows(); if(!rows.length) return;
   const w=rows[0].w, h=44+rows.length*30, top=H-16-h;
   g.save();
@@ -2244,11 +2304,19 @@ function boundsClick(){
 /* ── loop ─────────────────────────────────────────────────────────────────── */
 let last=performance.now();
 function frame(now){ const dt=Math.min(48,now-last); last=now;
-  /* the boundaries are read before anything else reads the hand, so lifting one
-     never also enters whatever was drawn underneath it */
-  if(boundsClick()){ drawCase(); requestAnimationFrame(frame); return; }
+  /* THE CASE HELD OPEN HOLDS THE WORLD. Draw what is there, take a hand only on
+     the boundaries, and let nothing else move or be reached. */
+  if(CASE.open){
+    if(view==="map") drawMap(); else if(view==="room") drawRoom();
+    else { const f=SET[cur.key]; if(f.draw) f.draw(); }
+    g.fillStyle="rgba(18,22,25,.42)"; g.fillRect(0,0,W,H);   // the world, held still behind glass
+    boundsClick(); drawCase(); mouse.clicked=false;
+    requestAnimationFrame(frame); return;
+  }
   if(view==="map"){
     drawMap();
+    shelf();                       /* the shop stands on the map when it holds something */
+    if(shelfReach()){ requestAnimationFrame(frame); return; }
     // The whole solid, standing behind an aperture in the map's own surface.
     /* THE APERTURE SHOWS THE WORLD ITSELF, and the seats a hand has worked are
        lit in it. Nothing is labelled and nothing is counted — it is the shape,
