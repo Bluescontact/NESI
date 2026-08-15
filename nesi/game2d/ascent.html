@@ -1997,7 +1997,72 @@ const SOLIDS = {
       for(let i=0;i<12;i++) for(let j=i+1;j<12;j++){
         const d=Math.hypot(v[i][0]-v[j][0],v[i][1]-v[j][1],v[i][2]-v[j][2]);
         if(Math.abs(d-Math.SQRT2)<1e-9) e.push([i,j]); }
-      return {v,e}; })()
+      return {v,e}; })(),
+
+  /* ═══ THE WORLD — the pinned solid, with the seats where they actually are ══
+     Built 2026-08-14. The map's aperture used to show `twin`, a generic figure
+     that stood for the shape without being it. It is the world now: the twelve
+     seats at their real positions and the twenty-four members between them,
+     derived from the four circuits and nothing else.
+
+     THE PLACEMENT is `THE_SOLID.md` — pinned by his line "↓TANK and ↓FILTER are
+     joined", cut from 192 by that and from three by the counsel brief's own
+     census, and confirmed independently by a second session's `solid.js`.
+
+     The coordinates are SOLVED HERE, not typed in: the four circuits are the
+     four central hexagons, so a seat's pair-of-circuits names its vertex, and
+     the vertex is the one whose two hexagon planes are exactly that pair. A
+     typed-in coordinate table would be a second place the world could drift. */
+  world: (()=>{
+    const C=[["dam","stations","deep","heliostat","winter","cast"],
+             ["filter","ground","dam","seating","garden","heliostat"],
+             ["stations","ground","tank","winter","garden","lens"],
+             ["tank","filter","deep","lens","seating","cast"]];
+    const V=[]; for(const [a,b] of [[0,1],[0,2],[1,2]])
+      for(const s1 of [1,-1]) for(const t of [1,-1]){ const v=[0,0,0]; v[a]=s1; v[b]=t; V.push(v); }
+    const d2=(i,j)=>V[i].reduce((s,x,k)=>s+(x-V[j][k])**2,0);
+    const NR=[[1,1,1],[1,1,-1],[1,-1,1],[-1,1,1]];
+    const planeOf=i=>NR.map((n,k)=>V[i][0]*n[0]+V[i][1]*n[1]+V[i][2]*n[2]===0?k:-1).filter(k=>k>=0);
+    const seatCircuits={}; C.forEach((c,ci)=>c.forEach(n=>(seatCircuits[n]=seatCircuits[n]||[]).push(ci)));
+
+    /* THE PLACEMENT IS SOLVED, NOT ASSUMED. A seat's pair-of-circuits names a
+       PAIR of vertices — they are antipodes — so there are two choices per pair
+       and 2^6 placements to sift.
+
+       A GREEDY PICK GETS HALF OF THEM WRONG, and the first version of this was a
+       greedy pick: it took the first free vertex with the right planes and
+       produced TWELVE MEMBERS AT d²=6, which is a body diagonal and not an edge.
+       It drew a figure that was not the world and reported nothing amiss.
+
+       The test is the only one that matters: EVERY STEP OF EVERY CIRCUIT MUST BE
+       A REAL EDGE, d²=2. If no placement satisfies it this returns an empty
+       figure rather than drawing a lie. */
+    const names=C.flat().filter((n,i,a)=>a.indexOf(n)===i);
+    const buckets={};
+    for(let i=0;i<12;i++){ const k=planeOf(i).sort().join(","); (buckets[k]=buckets[k]||[]).push(i); }
+    const keys=Object.keys(buckets);
+    let idx=null;
+    for(let mask=0; mask<64 && !idx; mask++){
+      const cand={}, taken=new Set(); let ok=true;
+      for(const n of names){
+        const k=seatCircuits[n].slice().sort().join(",");
+        const b=buckets[k]; if(!b){ ok=false; break; }
+        const flip=(mask>>keys.indexOf(k))&1;
+        const pick=taken.has(b[flip]) ? b[1-flip] : b[flip];
+        if(taken.has(pick)){ ok=false; break; }
+        taken.add(pick); cand[n]=pick;
+      }
+      if(!ok) continue;
+      if(C.every(c=>{ for(let i=0;i<6;i++) if(d2(cand[c[i]],cand[c[(i+1)%6]])!==2) return false; return true; }))
+        idx=cand;
+    }
+    if(!idx) return { v:V, e:[], name:[], idx:{} };     /* refuse rather than draw a lie */
+    const name=[]; Object.entries(idx).forEach(([n,i])=>name[i]=n);
+    const e=[], seen=new Set();
+    C.forEach(c=>{ for(let i=0;i<6;i++){ const a=idx[c[i]], b=idx[c[(i+1)%6]];
+      const k=[a,b].sort().join("|"); if(seen.has(k)) continue; seen.add(k); e.push([a,b]); } });
+    return { v:V, e, name, idx };
+  })()
 };
 
 let win = { yaw:0.6, pitch:-0.28, grabbed:false, gx:0, gy:0 };
@@ -2185,8 +2250,13 @@ function frame(now){ const dt=Math.min(48,now-last); last=now;
   if(view==="map"){
     drawMap();
     // The whole solid, standing behind an aperture in the map's own surface.
+    /* THE APERTURE SHOWS THE WORLD ITSELF, and the seats a hand has worked are
+       lit in it. Nothing is labelled and nothing is counted — it is the shape,
+       with what you have touched standing brighter. */
+    const wsolid=SOLIDS.world;
+    const litSeats=Object.keys(S.faces||{}).map(k=>wsolid.idx[k]).filter(i=>i!==undefined);
     const r=window3d(W-Math.min(230,W*0.24)-16, 16, Math.min(230,W*0.24), Math.min(190,H*0.24),
-                     "twin", Math.min(52,W*0.055));
+                     "world", Math.min(46,W*0.048), litSeats);
     const onWin=windowDrag(r);
     if(mouse.clicked && !onWin && !win.grabbed){ const h=hovered(); if(h) enter(h); }
     mouse.clicked=false;
