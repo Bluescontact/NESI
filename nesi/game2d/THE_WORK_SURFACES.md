@@ -24,11 +24,26 @@ form are properties of the seat.
 
 ## 1 · THE TWELVE
 
-Read the fields as: **gesture · material in · work surface · three outputs ·
+Read the fields as: **gesture · material in · work surface · outputs ·
 what persists · cost · held form.**
 
 Where a field describes something not yet built, it says so in its own line
 rather than in a footnote.
+
+> **RULING, 2026-08-15 — Kevin's mark: *the third output is the stations' work.***
+>
+> This pass listed **three outputs** as a field of every seat. Law 1 says three
+> outputs at every *station*, and the build calls `bays()` from `stations` alone.
+> Spec disagreed with spec; the mark settles it. **The three outputs are one
+> seat's job, not twelve seats' field.** The heading is `outputs` from here — a
+> seat has whatever outputs it has, and only the stations owe all three.
+>
+> `assertion_audit` F4 now asks that **exactly one** seat carry all three. Not
+> "at least one": a second seat carrying them would mean the third output leaked
+> back out into the world it was just ruled out of.
+>
+> The cost line at each seat is **declared** in `ascent.html` beside its gesture,
+> not derived — a parser cannot see what a hand gives up.
 
 ---
 

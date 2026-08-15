@@ -115,20 +115,24 @@ after, and say so when no fingerprint was taken.
 off `ascent.html`, a failure is a fact about the game:
 
 ```
-F4 (outputs) absent at 11 of 12 — TANK, DAM, FILTER, GROUND, DEEP, LENS,
-                                  HELIOSTAT, SEATING, OVERWINTERING, GARDEN, CAST
-F7 (held)    absent at 11 of 12 — DAM, FILTER, STATIONS, GROUND, DEEP, LENS,
-                                  HELIOSTAT, SEATING, OVERWINTERING, GARDEN, CAST
+F7 (held) absent at 10 of 12 — DAM, FILTER, GROUND, DEEP, LENS, HELIOSTAT,
+                               SEATING, OVERWINTERING, GARDEN, CAST
 ```
 
-**Both wait on a ruling, and neither is mine to make.** The counsel pass
-specified seven fields at all twelve seats. Law 1 says *three outputs at every
-station* — and in the build `bays()` is called from `stations` alone, which is
-consistent with the law read narrowly and not with the counsel pass read
-literally. That is spec disagreeing with spec, so it is named here rather than
-built past: **does every seat carry the three outputs, or is the third output the
-stations' work and the other eleven carry something else?** Same question for the
-held form, where TANK's hung arrivals are currently the only one.
+**F4 is closed by ruling, 2026-08-15: *the third output is the stations' work.***
+The counsel pass had listed three outputs as a field of every seat; law 1 says
+three outputs at every *station*; the build calls `bays()` from `stations` alone.
+F4 now asks that **exactly one** seat carry all three — not "at least one",
+because a second would mean the third output leaked back into the world it was
+ruled out of. `THE_WORK_SURFACES.md` carries the ruling at its field header.
+
+**F7 stands open.** TANK's hung arrivals and the STATIONS' lip are the two held
+forms that exist. My read, offered rather than assumed: the two that have one are
+the two seats where the act cannot be taken back — pouring the morning, and
+routing with no undo. That would make the held form a property of irreversibility
+rather than of every seat, and the ten without one may be correct as they are.
+The instrument asks for twelve because the counsel pass did; it is not a
+statement about which answer is right.
 
 Three rules have no instrument yet, and each names its own first move.
 

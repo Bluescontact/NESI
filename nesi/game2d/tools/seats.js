@@ -37,10 +37,21 @@ const SEATS = [
 const starts = [...SRC.matchAll(/^([a-z_]+):\{ g:"(reach|hold|draw|wait)"/gm)]
   .map(m => ({ key: m[1], g: m[2], at: m.index }));
 
+/* THE LAST ENTRY NEEDS AN END. `cast` is the final seat in SET, so slicing to
+   SRC.length handed it the whole rest of the file — every helper, every other
+   function — and it reported `bays()` because bays() is DEFINED below SET.
+   A body that runs past its own table reports the table's neighbours as its
+   own. SET closes at the first `};` at column 0 after the last entry. */
+const SET_END = (() => {
+  const last = starts[starts.length - 1].at;
+  const m = /^\};/m.exec(SRC.slice(last));
+  return m ? last + m.index : SRC.length;
+})();
+
 function body(key) {
   const i = starts.findIndex(s => s.key === key);
   if (i < 0) return null;
-  const end = i + 1 < starts.length ? starts[i + 1].at : SRC.length;
+  const end = i + 1 < starts.length ? starts[i + 1].at : SET_END;
   return SRC.slice(starts[i].at, end);
 }
 
@@ -67,19 +78,31 @@ const DERIVE = {
   surface: b => /\bdraw\s*\(\s*\)\s*\{|draw\(dt\)\s*\{|draw\s*\(\s*dt\s*\)/.test(b)
     ? "renders its own face" : null,
 
-  /* THREE OUTPUTS — send to a spire, drop to the lake, set it down.
-     READ EXACTLY, not by keyword. The three outputs are one construct in the
-     build: bays() returns the three boxes, and S.routed counts what went to
-     each. A seat offers them if it calls bays(); it takes one if it writes
-     S.routed.<k>. The first pass here matched "lake" and "set" as loose words
-     and reported two outputs at seats that offer none — a deriver reading
-     prose rather than mechanism, which is the failure it exists to catch. */
+  /* THE THREE OUTPUTS — send to a spire, drop to the lake, set it down.
+     THE STATIONS' WORK, by Kevin's ruling 2026-08-15. Not a field every seat
+     carries: the third output is what the stations are for.
+
+     READ EXACTLY, THIRD ATTEMPT. `routed.spire` matched a LOAD FORMULA —
+     `w.load = w.load + S.routed.spire*0.05 - S.routed.lake*0.04` — which reads
+     the tallies to move the water and routes nothing. The actual routing is
+     `S.routed[k]++` over `Object.entries(bays())`: a dynamic key that sends all
+     three, which no per-name regex could ever see. Twice I reported outputs
+     that were arithmetic and missed the routing that was there.
+
+     So it is read as the one construct it is — a seat that walks the three bays
+     and increments the one a hand chose offers all three. Law 6 is why `set`
+     can never be found by looking for its effects: setting down does nothing
+     at all, on purpose. Its presence is THE BAY BEING THERE TO REACH, not a
+     consequence to detect. */
   outputs: b => {
     const o = [];
-    if (/bays\(\)/.test(b)) o.push("offers the three bays");
-    for (const k of ["spire", "lake", "set"])
-      if (new RegExp("routed\\." + k).test(b) || new RegExp('routed\\["' + k + '"\\]').test(b))
-        o.push("routes to the " + k);
+    const offers = /bays\(\)/.test(b);
+    const walks  = /Object\.entries\(\s*b\s*\)/.test(b);
+    const sends  = /S\.routed\[\s*k\s*\]\s*\+\+/.test(b);
+    /* The bays being present is the GATE, not a fourth output. Counting it as
+       one made the stations report four, which is the same sloppiness in the
+       other direction. */
+    if (offers && walks && sends) o.push("to a spire", "to the lake", "set down");
     return o;
   },
 
@@ -101,6 +124,12 @@ const DERIVE = {
        (law 7), so the form that SHOWS held is the presence the law protects,
        and a timer is not it. */
     if (/L\.held\b/.test(b)) return "hung, waiting for a hand";
+    /* L.lip — THE STATIONS' held form, and the one this missed while reporting
+       it absent. The piece rests on the lip of the bay a hand reached for;
+       reach another and it moves there, reach the same again and it goes. Built
+       for exactly the reason a held form exists: routing has no undo, so the
+       one irreversible act in the seat must not be a single touch. */
+    if (/L\.lip\b/.test(b)) return "resting on the lip, one more reach to send";
     if (/preview|ghost/.test(b)) return "previewed before it is taken";
     if (/L\.aim\b|L\.hover\b/.test(b)) return "under the hand, not yet taken";
     return null;

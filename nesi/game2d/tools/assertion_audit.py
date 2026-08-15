@@ -65,10 +65,15 @@ LIVE = world(
            'produced':['12 entries','a verified siting'],
            'verified_against':['4 asserted distances','the 8-edge census']})
 
-# the control: live build with one presence removed
+# THE CONTROL: THE LIVE BUILD WITH ONE PRESENCE REMOVED.
+# It was built from full_seat() — the literal — so it was never the live world
+# minus something, it was a different world entirely. That stayed invisible while
+# both worlds happened to satisfy the same rules, and surfaced the moment F4 was
+# restated: the literal gave all twelve seats three outputs, so the control
+# failed F4 for a reason that had nothing to do with the held form it removes.
+# It is DERIVED now, so "one presence removed" means exactly that.
 CONTROL = world(
-    seats=[dict(full_seat(n), held=None) for n in ['TANK','DAM','FILTER','STATIONS','GROUND','DEEP',
-                                                   'LENS','HELIOSTAT','SEATING','OVERWINTERING','GARDEN','CAST']],
+    seats=[dict(s, held=None) for s in DERIVED],
     drops=LIVE['drops'], answers_available=LIVE['answers'], record=LIVE['record'],
     siting=LIVE['siting'], pass_=LIVE['pass'])
 
@@ -108,7 +113,12 @@ STATED = [
  ('F1','field','1 · the gesture', lambda w: bool(S(w)) and all(s['gesture'] for s in S(w))),
  ('F2','field','2 · material in', lambda w: bool(S(w)) and all(s['material_in'] for s in S(w))),
  ('F3','field','3 · the work surface', lambda w: bool(S(w)) and all(s['surface'] for s in S(w))),
- ('F4','field','4 · three outputs', lambda w: bool(S(w)) and all(len(s['outputs'])==3 for s in S(w))),
+ # F4 — KEVIN'S RULING 2026-08-15: "the third output is the stations' work."
+ # The counsel pass listed three outputs as a field of every seat; the build put
+ # bays() at the stations alone; law 1 says three outputs at every STATION. The
+ # ruling settles it — this is not twelve seats' field, it is one seat's job.
+ ('F4','field','4 · three outputs — the STATIONS carry them',
+  lambda w: len([s for s in S(w) if len(s['outputs'] or [])==3])>=1),
  ('F5','field','5 · what persists', lambda w: bool(S(w)) and all(s['persists'] for s in S(w))),
  ('F6','field','6 · the cost', lambda w: bool(S(w)) and all(s['cost'] for s in S(w))),
  ('F7','field','7 · the held form', lambda w: bool(S(w)) and all(s['held'] for s in S(w))),
@@ -213,7 +223,11 @@ INVERTED = [
  ('F1', lambda w: bool(S(w)) and all(s['gesture'] for s in S(w))),
  ('F2', lambda w: bool(S(w)) and all(s['material_in'] for s in S(w))),
  ('F3', lambda w: bool(S(w)) and all(s['surface'] for s in S(w))),
- ('F4', lambda w: bool(S(w)) and all(len(s['outputs'])==3 for s in S(w))),
+ # Presence-asserting under the ruling: the seat that carries them must carry
+ # ALL THREE — a stations offering two is the law broken where it actually
+ # lives. And exactly one seat carries them: a second would mean the third
+ # output leaked back out into the world it was ruled out of.
+ ('F4', lambda w: len([s for s in S(w) if len(s['outputs'] or [])==3])==1),
  ('F5', lambda w: bool(S(w)) and all(s['persists'] for s in S(w))),
  ('F6', lambda w: bool(S(w)) and all(s['cost'] and s['cost']!='none' for s in S(w))),
  ('F7', lambda w: bool(S(w)) and all(s['held'] for s in S(w))),
@@ -273,8 +287,15 @@ if _lf:
         if not _f:
             _bad.append("the live world fails: " + _k)
             continue
-        _at = [s['name'] for s in DERIVED
-               if not (len(s.get(_f) or []) == 3 if _f == 'outputs' else s.get(_f))]
+        if _f == 'outputs':
+            # Under the ruling this is about ONE seat, so naming eleven would be
+            # the old reading printed back out.
+            _has = [s['name'] for s in DERIVED if len(s.get(_f) or []) == 3]
+            _bad.append("F4 (three outputs): " + (
+                "no seat carries all three" if not _has
+                else "carried by " + str(len(_has)) + " seats, not one: " + ", ".join(_has)))
+            continue
+        _at = [s['name'] for s in DERIVED if not s.get(_f)]
         _bad.append(_k + " (" + _f + ") is absent at " + str(len(_at)) +
                     " of " + str(len(DERIVED)) + " seats: " + ", ".join(_at))
 _u = [k for k, _, _, _ in STATED if _stated_empty[k] and k not in BINDINGS]
