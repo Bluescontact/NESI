@@ -19,6 +19,19 @@
  * IT NEVER WRITES EITHER STORE. Its own fingerprint lives under a key of its
  * own, so the guard cannot be the thing that damages what it guards.
  */
+/* IT SAYS WHERE IT LIVES, RATHER THAN CRASHING. Run under node it threw
+   "window is not defined" — eight lines of stack, and a hand that piped it
+   anywhere read nothing at all. A guard whose failure looks like noise is the
+   failure it exists to catch, so it names its own front door and exits 2. */
+if (typeof window === "undefined") {
+  console.error("[store_guard] this one runs IN THE PAGE, not under node.");
+  console.error("   open the ascent or the daily surface, then in its console:");
+  console.error("      __guard(\"mark\")    — before any work");
+  console.error("      __guard(\"check\")   — after it");
+  console.error("   the file is loaded by evaluating it in the page, not by requiring it.");
+  process.exit(2);
+}
+
 window.__guard = function (mode) {
   const KEYS = ["nesi.water", "nesi.ascent", "nesi.marks", "nesi.level_one"];
   const MARK = "nesi.__guard";           /* its own key, never one of his */

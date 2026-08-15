@@ -25,6 +25,7 @@ members ............ 24
 | `answer_check` | the running page | **every act answers a hand before it is taken** — 20 of 20 |
 | `kit_check` | ascent + daily | four verbs, used by every stage that declares one; one palette across every page |
 | `constraint_lint` | ascent | every boundary registered, announced at its gate, liftable by hand |
+| `load_check` | the running daily page | **the load member is the hand's** — 7 of 7 live, and 0 of 7 with the member taken away, run as a control rather than asserted |
 | `first_four` | ascent + his water | LEVEL ONE walks from a cleared store, on a copy of his real writing |
 | `daily_walk` | the running page | nineteen properties of the surface he writes in |
 | `door_check` | ascent | every level is reachable from the map |
@@ -51,6 +52,9 @@ nor its presence is empty rather than compliant.
 | quitting loses nothing | pad, read back, commit — in the surface he writes in |
 | the world holds the writing | his sentences bank as he writes them |
 | any refusal at all | a hand can act on the surface — a page with no act refuses nothing |
+| the load is never read, inferred, computed or defaulted | four words on the stone, nothing preselected, and a hollow slot that stays hollow — a law satisfied by never asking is now satisfied by asking |
+| an unanswered load is held, not zero and not yes | held is a drawn third thing: hollow slot and four words, distinct from both answered and absent |
+| no information is offered to a don't-want-to | the exchange ends — the panel closes and nothing at all is rendered after it |
 
 ### And the same binding at the player's hand
 
@@ -125,13 +129,49 @@ once by hand; no instrument holds it.
 
 ---
 
+## ONE FRONT DOOR
+
+```bash
+node tools/check_all.js
+```
+
+Ten instruments, one exit code. It reports a **CRASH** separately from a FAIL,
+because an instrument that threw before reaching its assertions checked nothing
+while one that refused checked everything — and it refuses outright if any
+instrument it names is missing from disk. It exists because the store guard
+crashed under node, the crash was piped through `tail -2`, and the last line read
+like output.
+
+The three that run in the page are printed as *not covered by this run* rather
+than left silent.
+
+`tools/assertion_audit.py` is his, and runs here as a row: it encodes the whole
+register — the standing rules, the load alphabet, the seven fields, the ending
+states, the siting — as predicates, and gates on three facts at once. **A blank
+passes none of the 27. The control, which is the live world with the held form
+removed, fails on F7 alone. The live world holds.** The control is what keeps the
+first two honest: a suite that refused everything unconditionally would also pass
+the empty test.
+
+Two entries came back absence-passing *and* unbound — E1 (WALKABLE) and E2
+(UNWITNESSED), stated as *"state != WALKABLE or produced"*, which is satisfied by
+never claiming WALKABLE. The two ending states meant to carry evidence were the
+two asking for none. Both are bound now, and all three endings require what they
+produced.
+
+---
+
 ## THE TEN THAT DESCRIBE A SUPERSEDED SURFACE
 
 `bloom_check` · `boot_check` · `green_check` · `head_check` · `hold_check` ·
 `night_check` · `reach_check` · `still_check` · `wire_check` · `pattern_lint`
 
-They read `world.html` and `nesi.html` and are kept as a record of what was
-verified there. `scope_check` names them on every run, so the list stays visible
-and current. Three of their claims already have live equivalents: the world
+They read `world.html` and `nesi.html`. They now live at `tools/retired/`, marked
+by their own `RETIRED.md` — the world3d convention, a mark layered on rather than
+a deletion. They were failing `scope_check` on every run by design, and **a red
+line that is red by design trains a hand to read past red.** Moving them makes
+that instrument mean something again: everything still in `tools/` reads the live
+build, so a new failure there is a real one. `scope_check` now also asserts the
+register is not empty and that a retirement is *marked* rather than merely gone. Three of their claims already have live equivalents: the world
 holding the writing (`daily_walk`), a hand finding what the world answers
 (`answer_check`), and the chain crossing every wire (walked once).

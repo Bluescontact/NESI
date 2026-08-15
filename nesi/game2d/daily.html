@@ -510,6 +510,15 @@ function paintUp(){
     dirty=true; showArr();
   });
   showArr();
+  /* THE LOAD MEMBER, on the stone that came up. It renders EMPTY and stays
+     visibly empty until a hand answers it. A don't-want-to closes this panel
+     with nothing rendered after it — that is the whole of "no information is
+     offered to a don't-want-to". A yes has sent the stone out, so there is
+     nothing left here to stand over either. */
+  up.appendChild(loadMember(st, body, k=>{
+    if(k==="yes" || k==="dont_want_to"){ openStone=-1; paintUp(); return; }
+    paintUp();
+  }));
   up.style.display="block";
 }
 addEventListener("pointerdown", e=>{
@@ -606,6 +615,104 @@ const EDGE=64;                       /* the two edges of the table — see point
 const OUT = ["merged","withdrawn","lake","set","unmerged"];
 const held = () => S.stones.filter(s=>OUT.indexOf(s.stage)<0);
 
+/* ═══ THE LOAD MEMBER ═══════════════════════════════════════════════════════
+   THE LOAD LAW, adopted 2026-08-15, built here 2026-08-15 on Kevin's mark
+   "build P1 — the load member at the tank." Serves the load law as stated in
+   the counsel's work-surfaces pass, ↓TANK's third field:
+
+     "Two surfaces, and only two. A single open field — no label, no submit …
+      And beneath it the LOAD MEMBER: four words, no slider, no default,
+      nothing preselected. The field is typed; the member is answered. The seat
+      may never answer it."
+
+   And the law's own seven clauses, each of which was passed COMPLETELY by this
+   page an hour ago by never asking:
+
+     the load member is the user's · load is not read, not inferred, not
+     computed and never defaulted · the alphabet is four · "no" and "i don't
+     want to" are not the same answer · no information is offered to a
+     don't-want-to · an unanswered load is held, not zero and not yes · all
+     four settle the drop.
+
+   WHERE IT SITS, AND WHY NOT UNDER THE FIELD. It renders on a STONE — in what
+   the line brought up, and on every tile at the table — never under the page
+   you are typing into. A member standing under a live page is a question
+   asked of every sentence as it lands, which is the nag law 7 forbids. A
+   member on a stone is a question asked of a thing already in your hand, and
+   only when your hand is on it. Both places are ↓TANK's own face.
+
+   WHAT EACH ANSWER DOES, and the one line that governs it:
+   "All four settle the drop. Two of them refuse. In the water, 'no' and 'i
+    don't want to' are IDENTICAL; in the record they are not."
+
+     yes             the turn — it goes out. The stone leaves this store and
+                     arrives in the ascent's, by the open loop that already
+                     exists. The only one of the four that moves water.
+     no              recorded. The water is not touched.
+     i don't know    recorded. The water is not touched.
+     i don't want to recorded, and the exchange ENDS — the panel closes and
+                     nothing is rendered after it. No reason is owed and none
+                     is asked. Identical to "no" in the water, as the law says.
+
+   NOT BUILT HERE, and not defaulted: the counsel's siting of the four answers
+   onto ↓STATIONS' three outputs plus one empty face. That is a different seat
+   and this page is ↓TANK. Nothing here forecloses it. */
+const LOAD = [ {k:"yes",          w:"yes"},
+               {k:"no",           w:"no"},
+               {k:"dont_know",    w:"i don't know"},
+               {k:"dont_want_to", w:"i don't want to"} ];
+const LOADW = k => (LOAD.find(o=>o.k===k)||{}).w || "";
+
+/* A FUNCTION DECLARATION ON PURPOSE, so an instrument can take it away and run
+   the same seven clauses against a surface that has no member — which is the
+   only way to show the clauses are satisfied by presence and not by silence. */
+function loadMember(st, body, after){
+  const el=document.createElement("div"); el.className="load";
+  const slot=document.createElement("span"); slot.className="slot";
+  el.appendChild(slot);
+  const clean=()=>{ if(body) body.classList.remove("leaving"); };
+
+  if(st.load){
+    /* ANSWERED. The four are gone — the seat does not ask twice. The answer
+       stands, and a hand may take its own answer back by touching it; nothing
+       suggests that and nothing prompts it. A "yes" is not here to take back:
+       its stone has already left the reach. */
+    slot.classList.add("ans");
+    const said=document.createElement("span");
+    said.className="said"; said.textContent=LOADW(st.load);
+    said.addEventListener("pointerdown", e=>e.stopPropagation());
+    said.addEventListener("click", e=>{ e.stopPropagation();
+      delete st.load; dirty=true; save(); if(after) after(null); });
+    el.appendChild(said);
+    return el;
+  }
+
+  /* HELD. Four words, nothing preselected, the slot hollow. It stays exactly
+     this way however long it is left — no timer resolves it, and the page's
+     own save loop writes the absence of an answer as the absence of an
+     answer. */
+  LOAD.forEach(o=>{
+    const w=document.createElement("span"); w.className="w"; w.textContent=o.w;
+    /* THE ACT ANSWERS THE HAND BEFORE IT IS TAKEN — the same rule the rest of
+       this world is built to. The slot fills under a hand without committing,
+       and a yes additionally dims the stone it would send out, so the one
+       answer that costs water shows its cost while the hand is still deciding. */
+    w.addEventListener("pointerenter", ()=>{ slot.classList.add("pre");
+      if(o.k==="yes" && body) body.classList.add("leaving"); });
+    w.addEventListener("pointerleave", ()=>{ slot.classList.remove("pre"); clean(); });
+    w.addEventListener("pointerdown", e=>e.stopPropagation());   /* never a drag */
+    w.addEventListener("click", e=>{
+      e.stopPropagation(); clean();
+      st.load=o.k; dirty=true;
+      if(o.k==="yes") toTheLake(st);        /* the turn — the one that moves water */
+      else save();
+      if(after) after(o.k);
+    });
+    el.appendChild(w);
+  });
+  return el;
+}
+
 function layout(){
   /* Tiles begin where they fall, in WRITTEN ORDER, and never move again unless a
      hand moves them. Nothing sorts, groups, or re-flows them. */
@@ -634,6 +741,9 @@ function paintTable(){
     /* source legible on every tile — all of them, joined, never one picked */
     const src=document.createElement("span"); src.className="src";
     src.textContent=s.d; el.appendChild(src);
+    /* and the load member on every tile, so the question stands wherever a
+       hand is holding a stone — not only where the line put one */
+    el.appendChild(loadMember(s, el, ()=>paintTable()));
     el.addEventListener("pointerdown", e=>{
       e.stopPropagation();
       /* a merged tile opens its seams — reading only */
@@ -792,7 +902,11 @@ function carriedText(){
     bank.forEach(s=>{
       line("");
       line(s.t);                                        /* verbatim, never touched */
-      line("    " + s.d + (s.stage ? " · " + s.stage : "") + (s.by ? " · by " + s.by : ""));
+      /* THE RECORD IS WHERE THE TWO REFUSALS PART. In the water "no" and "i
+         don't want to" are identical — neither moves a drop. Here they are not,
+         and this line is the only place that difference exists. */
+      line("    " + s.d + (s.stage ? " · " + s.stage : "") + (s.by ? " · by " + s.by : "")
+                 + (s.load ? " · answered: " + LOADW(s.load) : ""));
       if(s.seams) s.seams.slice().sort((x,y)=>x.n-y.n)
         .forEach(p=> line("    seam · " + p.d + " · " + p.t));
     });

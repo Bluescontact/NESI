@@ -66,15 +66,42 @@ for (const c of checks) {
                   : pages.filter(f => live.has(f)).join(", "));
 }
 
+/* ═══ AND IT ASSERTS THERE IS SOMETHING TO SCOPE ════════════════════════════
+   Until the ten legacy instruments moved to tools/retired/ this ran red every
+   time and its red meant nothing. Now it runs green — and an EMPTY tools/ would
+   run green too, which is the absence-passing shape exactly (game-craft,
+   2026-08-13). So it names the instruments it expects to find and refuses if
+   any is gone, and it requires the retired site to be marked rather than merely
+   absent: a retirement nobody wrote down is indistinguishable from a deletion. */
+const EXPECTED = ["refusal_check.js", "kit_check.js", "constraint_lint.js", "first_four.js",
+                  "door_check.js", "world_check.js", "cut_check.js", "solid_check.js",
+                  "answer_check.js", "daily_walk.js", "store_guard.js"];
+const goneNow = EXPECTED.filter(f => !fs.existsSync(path.join(ROOT, "tools", f)));
+const retiredDir = path.join(ROOT, "tools", "retired");
+const retiredMarked = fs.existsSync(path.join(retiredDir, "RETIRED.md"));
+const retiredCount = fs.existsSync(retiredDir)
+  ? fs.readdirSync(retiredDir).filter(f => f.endsWith(".js")).length : 0;
+
+ok("S· the register is not empty", goneNow.length === 0,
+   goneNow.length ? "MISSING: " + goneNow.join(", ") : EXPECTED.length + " instruments present");
+ok("S· what was retired is marked, not merely gone", !retiredCount || retiredMarked,
+   retiredCount ? retiredCount + " at tools/retired/" + (retiredMarked ? ", marked by RETIRED.md" : " with NO RETIRED.md")
+                : "nothing retired");
+
 console.log("live, from the front door: " + [...live].sort().join(" · ") + "\n");
 let failed = 0;
 for (const r of results) {
   if (!r.pass) failed++;
   console.log((r.pass ? "  ok  " : "  FAIL") + "  " + r.n.padEnd(22) + (r.note ? " " + r.note : ""));
 }
+/* THE REFUSAL SAYS WHICH REFUSAL IT IS. It printed "reading a building nobody
+   walks" for every failure, including the two above, which are about the
+   register being present and its retirements being marked. A refusal that
+   misnames itself sends a hand to the wrong place. */
 console.log(failed
-  ? "\nscope: " + failed + " instrument(s) are reading a building nobody walks.\n" +
-    "  " + dead.join("\n  ") + "\n" +
-    "  A check narrower than its claim reads as safety and is silence.\n"
+  ? "\nscope: " + failed + " refusal(s)\n" +
+    (dead.length ? "  reading a building nobody walks:\n    " + dead.join("\n    ") + "\n" +
+                   "  A check narrower than its claim reads as safety and is silence.\n"
+                 : "  see the FAIL line(s) above — the register itself, not what it reads.\n")
   : "\nscope: every instrument reads the live build\n");
 process.exit(failed ? 1 : 0);
