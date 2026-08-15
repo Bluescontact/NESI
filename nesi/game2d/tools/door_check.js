@@ -142,8 +142,10 @@ ok("D11 and nothing was written under an undefined key — one map, no second re
    LEVEL. This check follows the truth; it does not hold the old shape open. */
 X.toMap();
 const one = X.mapPts()[0];
-ok("D12 a hand finds the first run on the circuit", hoverAt(one.x, one.y) === 1,
-   one.l.name);
+/* Amended 2026-08-14: level ids were raised above the mechanism ids, so the
+   first run is no longer numbered 1. Asked of the run itself. */
+ok("D12 a hand finds the first run on the circuit", hoverAt(one.x, one.y) === one.l.n,
+   one.l.name + " (n=" + one.l.n + ")");
 clickAt(one.x, one.y);
 ok("D13 and it opens the LEVEL, not one of its mechanisms",
    X.view === "room" && !!X.room, "view=" + X.view);

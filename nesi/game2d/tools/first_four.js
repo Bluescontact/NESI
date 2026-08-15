@@ -97,7 +97,7 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
-  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,facesOf,worked,levelDone," +
+  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,facesOf,worked,levelDone,ROOMS," +
         "esc(){ const e={key:'Escape',preventDefault(){}}; if(view==='level'&&room&&room.faces.indexOf(cur&&cur.key)>=0)view='room';" +
         "  else if(view==='room'){room=null;view='map';} else if(view!=='map')view='map'; }," +
         "get room(){return room;}, L(){return L;}, bays," +
@@ -116,6 +116,11 @@ const tick = (n = 1) => { for (let i = 0; i < n; i++) X.frame(t += 16); };
 const clickAt = (x, y) => { X.mouse.x = x; X.mouse.y = y; X.mouse.clicked = true; tick(); };
 const hoverAt = (x, y) => { X.mouse.x = x; X.mouse.y = y; return X.hovered(); };
 const ptFor = n => X.mapPts().find(p => p.l.n === n);
+/* LEVEL ONE IS ASKED OF THE RING, NOT SPELLED. Its id moved from 1 to 101 when
+   level ids were raised above the mechanism ids — two runs had answered to 2 and
+   THE RAIN was unreachable. A check that spells an id goes stale the next time
+   one moves; this one asks the ring which run is first. */
+const L1 = () => X.mapPts()[0].l.n;
 /* THE PHOTOGRAPH IS OF THE WHOLE WORLD, NOT JUST THE WATER — a claim about
    persistence is a comparison, and two faces caught this one being too narrow.
 
@@ -143,14 +148,14 @@ ok("F0 and his store was opened read-only",
 X.toMap(); tick();
 ok("L1 the map carries LEVEL ONE as ONE run, not four",
    X.mapPts().filter(p => ["tank","filter","stations","sounding"].indexOf(p.l.key) >= 0).length === 0 &&
-   !!ptFor(1),
+   !!ptFor(L1()),
    X.mapPts().map(p => p.l.name).join(" · "));
 ok("L1b and it is a gesture level — every face declares the same verb",
    ["tank", "filter", "stations", "sounding"]
      .every(k => src.indexOf("\n" + k + ':{ g:"reach"') >= 0),
    "reach, all four");
-{ const p = ptFor(1);
-  ok("L2 a hand on it finds it", hoverAt(p.x, p.y) === 1);
+{ const p = ptFor(L1());
+  ok("L2 a hand on it finds it", hoverAt(p.x, p.y) === L1());
   clickAt(p.x, p.y);
   ok("L3 and clicking it puts you INSIDE THE LEVEL — not into a mechanism",
      X.view === "room" && !!X.room, "view=" + X.view); }
@@ -226,7 +231,7 @@ for (const key of order) {
   if (!X.worked(key)) { blocked = key; continue; }
 
   ok("F" + n + "e2 and the LEVEL is not finished by one face",
-     last ? X.S.done[1] === true : !X.S.done[1],
+     last ? X.S.done[L1()] === true : !X.S.done[L1()],
      last ? "four faces worked — the level is done" : "level still open after " + L);
 
   /* ── a consequence that persists ──────────────────────────────────────── */
@@ -241,7 +246,7 @@ for (const key of order) {
 /* ── the level hands back to the map, and only then does anything else open ─ */
 if (!blocked) {
   ok("L5 the completed LEVEL is what returns you to the map",
-     X.view === "map" && X.S.done[1] === true, "view=" + X.view);
+     X.view === "map" && X.S.done[L1()] === true, "view=" + X.view);
   /* Amended 2026-08-14: run 5 was THE FILTER standing loose on the ring. The
      gather by gesture put it inside THE REACH, so it is no longer a run at all
      and unlocked(5) is correctly false. What this check is actually for is that
@@ -249,13 +254,13 @@ if (!blocked) {
      itself, so gathering another level cannot make it stale again. */
   const ring = X.mapPts().map(p => p.l.n);
   ok("L6 and nothing beyond it was open until the level closed",
-     X.unlocked(ring[1]) === true && ring[0] === 1,
+     X.unlocked(ring[1]) === true && ring[0] === L1(),
      "finishing LEVEL ONE opened the next run on the ring (" + ring[1] + ")");
   ok("L6b and a mechanism gathered into a level is no longer a run of its own",
      X.unlocked(5) === false, "THE FILTER is inside THE REACH now, not on the ring");
   /* going back in: a worked face is still enterable and undoes nothing */
   const keptBefore = (X.S.kept || []).length;
-  clickAt(ptFor(1).x, ptFor(1).y);
+  clickAt(ptFor(L1()).x, ptFor(L1()).y);
   ok("L7 the level can be walked back into after it is complete",
      X.view === "room", "view=" + X.view);
   const f = X.facesOf().find(q => q.k === "sounding");
@@ -277,8 +282,8 @@ if (!blocked) {
      raw.faces && Object.keys(raw.faces).length === 4, JSON.stringify(raw.faces || null));
   vm.runInContext("S.faces={}; S.done={}; load();", sandbox);
   ok("L12 and they come back on the next morning — the level stays finished",
-     X.levelDone() === true && X.S.done[1] === true,
-     "faces " + Object.keys(X.S.faces || {}).length + " · level done " + !!X.S.done[1]);
+     X.levelDone() === true && X.S.done[L1()] === true,
+     "faces " + Object.keys(X.S.faces || {}).length + " · level done " + !!X.S.done[L1()]);
 }
 
 /* ── the four faces fit inside the room at every window size ──────────────── */
@@ -324,18 +329,26 @@ if (!blocked) {
      hold and level one is the reach — so it stands on the ring as itself, and
      this section enters it there. Every run before it is marked done so the
      ring's own order opens it. */
+  /* THE DAM IS INSIDE A LEVEL AGAIN. The gesture rule took it out of level one
+     for being a hold; the three new mechanisms completed THE HOLD, and the dam
+     is one of its four faces. So it is entered the way any face is — through
+     its level — and this section asks the ROOMS table which one holds it rather
+     than spelling a level id that will move again. */
   bag.clear();
   vm.runInContext("S.done={}; S.faces={}; room=null; view='map';" +
-    "MAPRUNS.forEach(r=>{ if(r.key!=='dam') S.done[r.n]=true; }); W_().level=0.5;", sandbox);
+    "ROOMS.forEach(r=>{ if(r.faces.indexOf('dam')<0) S.done[r.n]=true; }); W_().level=0.5;", sandbox);
   X.toMap(); tick();
-  const dp = X.mapPts().find(p => p.l.key === "dam");
-  ok("A0 THE DAM stands on the ring as itself", !!dp, dp ? dp.l.name : "not on the ring");
+  const damRoom = X.ROOMS.find(r => r.faces.indexOf("dam") >= 0);
+  ok("A0 THE DAM is a face of a level", !!damRoom, damRoom ? damRoom.name : "loose");
+  const dp = X.mapPts().find(p => p.l.n === damRoom.n);
   clickAt(dp.x, dp.y);
+  const fdam = X.facesOf().find(q => q.k === "dam");
+  X.mouse.x = fdam.c.x; X.mouse.y = fdam.c.y; X.mouse.clicked = true; tick();
   ok("A1 THE DAM opens", X.view === "level" && X.cur.key === "dam", "view=" + X.view);
   const still = [];
   for (let i = 0; i < 400; i++) { X.mouse.down = false; X.keys[" "] = false; tick(); still.push(1); }
   ok("A2 a hand that does nothing is never nagged, and nothing happens by itself",
-     X.view === "level" && !X.S.done[3], "still standing in the room after 400 frames");
+     X.view === "level" && !X.worked("dam"), "still standing in the room after 400 frames");
   const rest = vm.runInContext("L.handle", sandbox);
   X.mouse.down = true; for (let i = 0; i < 40; i++) tick();
   const pressed = vm.runInContext("L.handle", sandbox);
@@ -345,8 +358,8 @@ if (!blocked) {
      vm.runInContext("L.head", sandbox) > 0, "head gathered on mouse alone");
   X.mouse.down = false;
   for (let i = 0; i < 800 && X.view === "level"; i++) tick();
-  ok("A5 letting go releases it, and that finishes the run",
-     X.view === "map" && X.S.done[3] === true, "view=" + X.view);
+  ok("A5 letting go releases it, and that works the face",
+     X.worked("dam") === true, "view=" + X.view);
 }
 
 /* ── B · THE TANK TAKES WHAT ALREADY ARRIVED. He writes in the daily surface and
@@ -358,7 +371,7 @@ if (!blocked) {
   vm.runInContext("S.done={}; S.faces={}; S.at=1; S.kept=[]; S.arrived=" + JSON.stringify(mine) +
                   "; W_().level=0.15; room=null; view='map';", sandbox);
   X.toMap(); tick();
-  clickAt(ptFor(1).x, ptFor(1).y);                 /* into the level */
+  clickAt(ptFor(L1()).x, ptFor(L1()).y);                 /* into the level */
   const ft = X.facesOf().find(q => q.k === "tank");
   if (!ft) throw new Error("the tank is not a face of level one any more");
   X.mouse.x = ft.c.x; X.mouse.y = ft.c.y; X.mouse.clicked = true; tick();

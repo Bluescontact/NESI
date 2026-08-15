@@ -182,6 +182,9 @@ let S = {
   // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
   // in here. One list, two places — there is no second registry.
   seated:[],
+  // THE GIFT SHOP. What casting made, kept in NESI, never pushed anywhere.
+  // Declared here because load() only restores keys that already stand in S.
+  shop:[],
   // CONSTRAINTS HE HAS SWITCHED OFF. His, kept with everything else of his, and
   // read before every refusal in the file. Declared here so it survives the night.
   off:[],
@@ -280,7 +283,12 @@ function seeded(){ return Math.floor(W_().readings.length/3); }
 
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Object.assign({schema:SCHEMA},S))); }catch(e){} }
 function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return; const d=JSON.parse(r);
-  if(!d||d.schema!==SCHEMA) return; Object.keys(S).forEach(k=>{ if(k in d) S[k]=d[k]; }); }catch(e){} }
+  if(!d||d.schema!==SCHEMA) return; Object.keys(S).forEach(k=>{ if(k in d) S[k]=d[k]; });
+  /* levels used to be numbered 1 and 2, which collided with the mechanisms.
+     A morning's finished levels are not lost to the renumbering. */
+  if(S.done[1]&&!S.done[101]){ S.done[101]=true; delete S.done[1]; }
+  if(S.done[2]&&!S.done[102]){ S.done[102]=true; delete S.done[2]; }
+  }catch(e){} }
 load();
 const today = () => new Date().toISOString().slice(0,10);
 /* THE THREE OPEN TOGETHER, on the condition this file already stated for them
@@ -565,11 +573,31 @@ let room=null;                    // the level you are standing inside, if any
 
    AND IT IS NAMED BY ITS GESTURE, not by a name invented for it. Grouping by
    gesture makes the naming fall out the same way the grouping did. */
+/* LEVEL IDS LIVE ABOVE THE MECHANISM IDS AND CANNOT COLLIDE WITH THEM.
+   They were 1 and 2, and the mechanisms are numbered 1..12 — so THE WAIT and
+   THE RAIN both answered to 2, `enter(2)` resolved to the level, and THE RAIN
+   was on the ring and unreachable. Found by counting ids before building on
+   them. A level's id is now 100 + its place, which no mechanism can reach. */
 const ROOMS = [
-  { n:1, name:"THE REACH", mech:"a hand on a thing, and it answers",
+  { n:101, name:"THE REACH", mech:"a hand on a thing, and it answers",
     faces:["tank","filter","stations","sounding"] },
-  { n:2, name:"THE WAIT",  mech:"doing nothing is the mechanic",
-    faces:["ground","winter","stilling","garden"] }
+  { n:102, name:"THE WAIT",  mech:"doing nothing is the mechanic",
+    faces:["ground","winter","stilling","garden"] },
+  { n:103, name:"THE HOLD",  mech:"gather, then let go",
+    faces:["dam","heliostat","membrane","cast"] },
+  { n:104, name:"THE DRAW",  mech:"a course across a surface, which persists",
+    faces:["rain","channel","shoal","table"] },
+  /* AND THE FIFTH FELL OUT OF THE OTHER FOUR. With the three built, exactly four
+     mechanisms were left over and all four are a reach — spring, lens, deep,
+     seating. Nothing was arranged to make that happen; it is what 20 = 5 × 4
+     looks like when every mechanism already declares its verb.
+
+     Named THE RETURN because that is what its four do: what went down comes back
+     up · the hand works what came back · what you release returns as ground · the
+     frame is fed by what rose. The word is the corpus's own — "the world must
+     return what it takes". */
+  { n:105, name:"THE RETURN", mech:"what comes back, and what the hand does with it",
+    faces:["spring","lens","deep","seating"] }
 ];
 const roomOf = n => ROOMS.find(r=>r.n===n);
 
@@ -579,8 +607,11 @@ const roomOf = n => ROOMS.find(r=>r.n===n);
    drawing its own face. Their names and mechanics are the ones already written
    at THE_ASCENT.md:11-12, not new ones. */
 const UNLISTED = [
-  {n:"garden", key:"garden", name:"THE GARDEN", mech:"it fills only from play"},
-  {n:"cast",   key:"cast",   name:"THE CAST",   mech:"the world loses what it gives"}
+  {n:"garden",   key:"garden",   name:"THE GARDEN",      mech:"it fills only from play"},
+  {n:"cast",     key:"cast",     name:"THE CAST",        mech:"the world loses what it gives"},
+  {n:"membrane", key:"membrane", name:"THE MEMBRANE",    mech:"the shape separates, flow is the readout"},
+  {n:"spring",   key:"spring",   name:"THE SPRING",      mech:"what went down comes back up"},
+  {n:"table",    key:"table",    name:"THE WATER TABLE", mech:"you draw where the water goes"}
 ];
 const faceOf = k => LEVELS.find(l=>l.key===k) || ASCENT.find(l=>l.key===k)
                  || UNLISTED.find(l=>l.key===k);
@@ -715,6 +746,121 @@ tank:{ g:"reach", enter(){ const w=W_();
     // "Four faces of one writing tetra, vertex down, you at the point."
     windowDrag(window3d(20, 20, Math.min(210,W*0.22), Math.min(180,H*0.24),
                         "tetra", Math.min(58,W*0.06))); }
+},
+
+/* ═══ THREE MECHANISMS, ONE PER GESTURE ══════════════════════════════════════
+   Kevin, 2026-08-14: "do it." The count said each remaining gesture was exactly
+   one short of a level — reach 3, hold 3, draw 3 — and 17 + 3 = 20 = five fours.
+   These are the three, and every one of their names is the corpus's own:
+
+     THE MEMBRANE   ~/.claude/CLAUDE.md:103 — one of the control room's four
+                    stations, named there and built nowhere.
+     THE SPRING     :106 — "each spire has a dam, a SPRING AT ITS BASE, a
+                    triangular ground deposit, and a river."
+     THE WATER TABLE :103 — the first of the four stations, likewise unbuilt.
+
+   Nothing here is a new noun. Three named places that had no mechanic. */
+
+/* ↓ THE MEMBRANE — the hold that completes THE HOLD.
+   "nothing classifies, the shape separates, flow is the readout."
+   You press the water against a shaped screen. What passes is decided by the
+   SHAPE — fine matter goes through, coarse does not — and no part of this reads
+   what anything is. Flow is the only readout: the harder you press, the more
+   moves, and the coarse never moves however hard you press. */
+membrane:{ g:"hold", enter(){ const w=W_();
+    L.cap=Math.max(0.12, w.load);           // there is only as much to press as is carried
+    L.through=0; L.done=false;
+    // what stands against the screen: fine passes, coarse cannot, and the
+    // difference is a behaviour, not a label. Colour carries nothing here.
+    L.stuff=Array.from({length:14},(_,i)=>({ y:100+((i*37)%220), x:0,
+      fine:i%3!==0, ph:i*0.7 })); },
+  step(dt){ const h=hold(dt, 2.2), w=W_();
+    L.press=h.held;
+    L.stuff.forEach(b=>{ b.ph+=dt*0.003;
+      if(b.fine) b.x=Math.min(1, b.x + h.held*dt/900);    // fine matter crosses
+      else       b.x=Math.min(0.46, b.x + h.held*dt/1400); });  // coarse stops at the screen
+    L.through=L.stuff.filter(b=>b.x>=1).length;
+    if(h.letting_go && !L.done){ L.done=true;
+      // WRITES: what crossed is out of suspension. The coarse is still carried.
+      const passed=L.through/L.stuff.length;
+      w.load=clamp01(w.load - passed*L.cap*0.7);
+      w.clarity=clamp01(w.clarity + passed*0.4); w.still=0;
+      reading(13,"passed"); save(); finish(); } },
+  draw(){ sky(); const fy=H-150, sx=W*0.5;
+    // the screen itself, drawn as a screen
+    g.strokeStyle=PAL.edge; g.lineWidth=2;
+    for(let y=90;y<fy;y+=9){ g.beginPath(); g.moveTo(sx,y); g.lineTo(sx,y+5); g.stroke(); }
+    L.stuff.forEach(b=>{ const x=90+(sx-90)*Math.min(b.x,0.46)/0.46 + (b.x>0.46?(b.x-0.46)/0.54*(W-sx-90):0);
+      g.fillStyle=b.fine?"rgba(74,108,122,.72)":"rgba(90,84,74,.85)";
+      g.beginPath();
+      if(b.fine) g.arc(x, b.y+Math.sin(b.ph)*3, 4, 0, 7);
+      else g.rect(x-6, b.y-5, 12, 10);
+      g.fill(); });
+    // the press, drawn as a plate that advances — form, never a figure
+    g.fillStyle="rgba(90,84,74,.55)"; g.fillRect(60, 80, 16+(L.press||0)*40, fy-80);
+    ground(fy); }
+},
+
+/* ↑ THE SPRING — the reach that completes THE REACH's rise-side twin.
+   "each spire has a spring at its base." What went down comes back up here,
+   and only what the ground has finished with. It hangs at the mouth; a hand
+   takes it or leaves it. Nothing rises on its own and nothing is offered. */
+spring:{ g:"reach", enter(){ const w=W_();
+    // READS: what was released and what sank is what the spring has to give.
+    const n=Math.max(1, Math.min(5, (S.sank||[]).length || Math.round(w.released*4)+1));
+    L.up=Array.from({length:n},(_,i)=>({ x:W*0.5-((n-1)*54)/2+i*54, y:H*0.55, t:0, took:false }));
+    L.took=0; },
+  step(dt){ L.up.forEach(u=>{ u.t+=dt; });
+    const u=L.up.find(u=>!u.took && reach(u.x,u.y));
+    if(u){ u.took=true; L.took++;
+      (S.ground=S.ground||[]).push("risen");           // it comes back as ground
+    }
+    if(L.took>=L.up.length && !L.done){ L.done=true; const w=W_();
+      w.level=clamp01(w.level+0.06*L.up.length); w.still=0;
+      reading(14,"risen"); save(); finish(); } },
+  draw(){ sky(); const fy=H-150; ground(fy);
+    g.fillStyle="rgba(74,108,122,.35)";
+    g.beginPath(); g.ellipse(W*0.5, H*0.62, 150, 34, 0, 0, 7); g.fill();
+    L.up.forEach(u=>{ if(u.took) return;
+      const on=near(u.x,u.y), r=on?12:9, b=Math.sin(u.t*0.003)*4;
+      g.fillStyle= on?"rgba(74,108,122,.95)":"rgba(74,108,122,.62)";
+      g.beginPath(); g.arc(u.x, u.y+b, r, 0, 7); g.fill();
+      g.strokeStyle=PAL.edge; g.lineWidth=1; g.stroke();
+      if(on){ g.strokeStyle="rgba(40,40,44,.30)"; g.beginPath();
+        g.moveTo(u.x,u.y+b-r-4); g.lineTo(u.x,u.y+b-r-20); g.stroke(); } }); }
+},
+
+/* ↓ THE WATER TABLE — the draw that completes THE DRAW.
+   The first of the control room's four stations. Three spires stand on it and
+   you draw where the water goes. The course PERSISTS in the one water, exactly
+   as the channel's does — this is the same act one level up, on the table
+   rather than in the bed. Nothing compares the three spires to each other. */
+table:{ g:"draw", enter(){ const w=W_();
+    L._d={path:[], drawing:false};
+    L.spires=[0,1,2].map(i=>({ x:W*0.5+(i-1)*Math.min(200,W*0.2), y:H*0.34 }));
+    L.fed=[false,false,false]; },
+  step(){ const w=W_();
+    const d=draw(10);
+    // a course reaching a spire feeds it; which ones is the hand's business
+    L.spires.forEach((sp,i)=>{ if(d.path.some(p=>Math.hypot(p.x-sp.x,p.y-sp.y)<40)) L.fed[i]=true; });
+    if(d.landed && !L.done){ L.done=true;
+      // WRITES: the course stands in the water, and what it fed is carried.
+      w.cut=d.path.slice(0,240);
+      w.level=clamp01(w.level-0.04); w.still=0;
+      reading(15,"tabled"); save(); finish(); } },
+  draw(){ sky();
+    g.fillStyle="#b8b0a0"; g.fillRect(0,0,W,H);
+    g.strokeStyle="rgba(140,132,120,.28)"; g.lineWidth=1;
+    for(let x=0;x<W;x+=52){ g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
+    L.spires.forEach((sp,i)=>{ g.strokeStyle=PAL.edge; g.lineWidth=L.fed[i]?3.5:1.5;
+      g.beginPath(); g.moveTo(sp.x, sp.y-30); g.lineTo(sp.x-26, sp.y+26); g.lineTo(sp.x+26, sp.y+26);
+      g.closePath();
+      g.fillStyle= L.fed[i] ? "rgba(74,108,122,.34)" : "rgba(242,239,232,.30)"; g.fill(); g.stroke(); });
+    const p=(L._d&&L._d.path)||[];
+    if(p.length>1){ g.strokeStyle="rgba(74,108,122,.85)"; g.lineWidth=9;
+      g.lineCap="round"; g.lineJoin="round"; g.beginPath();
+      p.forEach((q,i)=> i?g.lineTo(q.x,q.y):g.moveTo(q.x,q.y)); g.stroke(); }
+    ring(mouse.x,mouse.y,14); }
 },
 
 /* 2 · THE LENS — "250 word, and it gets worked by the user into a lens."
@@ -1318,7 +1464,12 @@ garden:{ g:"wait", enter(){ L.t=0; },
    your text. Pull it past its resistance and it leaves: the file is yours, the
    fruit is gone from the world, and NESI keeps no record of it." */
 cast:{ g:"hold", enter(){ L.pull=0; L.gone=S.cast; },
-  step(dt){ if(L.gone){ L.t+=dt; if(L.t>1600) finish(); return; }
+  step(dt){
+    /* THE SHELF TAKES A HAND BEFORE THE LEVEL DOES. A gift standing in the shop
+       is not part of the casting; reaching for one is the player's own act and
+       the level neither waits for it nor counts it. */
+    if(shelfReach()) return;
+    if(L.gone){ L.t+=dt; if(L.t>1600) finish(); return; }
     if(mouse.down) L.pull=Math.min(1,L.pull+dt/2200); else L.pull=Math.max(0,L.pull-dt/900);
     if(L.pull>=1){ L.gone=true; S.cast=true; L.t=0; emit(); save(); } },
   draw(){ sky(); const cx2=W/2, cy=H*0.45;
@@ -1329,7 +1480,8 @@ cast:{ g:"hold", enter(){ L.pull=0; L.gone=S.cast; },
       g.strokeStyle="rgba(40,40,44,.6)"; g.stroke(); g.restore(); }
     else { g.fillStyle="rgba(60,54,44,.35)"; g.font="13px Georgia,serif"; g.textAlign="center";
       g.fillText("—", cx2, cy); }         // the world loses what it gives
-    ground(H-130); }
+    ground(H-130);
+    shelf(); }
 }
 };
 
@@ -1369,15 +1521,71 @@ function drawKept(i,cx2,y){
 /* the cast leaves as a real file, carrying shape and not one character of text.
    S.kept is NOT in it and never will be: the world keeps the writing, and the
    writing does not leave. */
+/* ═══ THE GIFT SHOP ═════════════════════════════════════════════════════════
+   Kevin, 2026-08-14: "the cast should force a use to download it... It should be
+   somethign a user chooses for themselves... so it should remain stored in nesi
+   in a gift shop."
+
+   This function used to force a download the moment the cast landed, and what it
+   downloaded was a bag of COUNTS — lenses, ground, shoots, rooted, soundings,
+   routed, sank. Two things wrong in one line. It pushed, and what it pushed was
+   a tally of the player rather than anything of theirs.
+
+   Casting now makes a GIFT and the gift stays in NESI. A gift is his own
+   sentences, verbatim, as the world held them at that moment — the corpus's own
+   shape for it: "the world takes the writing, keeps it whole, says nothing about
+   it, asks nothing for it, and hands one of them back unlabelled, unranked."
+
+   NOTHING LEAVES UNTIL A HAND TAKES IT OFF THE SHELF. That act is at the end of
+   this file, in the cast's own room, and it is the only place in the world that
+   writes a file. */
 function emit(){
-  const shape={ cast:"nesi", lenses:S.lenses.length, ground:S.ground.length,
-    shoots:S.shoots.length, rooted:S.rooted, soundings:S.soundings.length,
-    routed:S.routed, sank:S.sank.length };
+  const words=(S.kept||[]).slice();
+  if(!words.length) return;                    /* nothing written, nothing to give */
+  S.shop=S.shop||[];
+  S.shop.push({ n:S.shop.length+1, d:today(), text:words });
+  save();
+}
+/* taking one is the player's own act, and only then does anything leave */
+function takeGift(gi){
+  const gift=(S.shop||[])[gi]; if(!gift) return;
+  const body="NESI · a gift · "+gift.d+"\n\n"+gift.text.join("\n\n")+"\n";
   try{
-    const b=new Blob([JSON.stringify(shape,null,2)],{type:"application/json"});
+    const b=new Blob([body],{type:"text/plain;charset=utf-8"});
     const a=document.createElement("a"); a.href=URL.createObjectURL(b);
-    a.download="nesi_cast.json"; a.click();
+    a.download="nesi-gift-"+gift.d+"-"+gift.n+".txt"; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
   }catch(e){}
+  gift.taken=true; save();                     /* taken is remembered; it stays on the shelf */
+}
+
+/* ── THE SHELF — what stands in the gift shop ──────────────────────────────
+   Gifts stand along the bottom of the cast's room. Nothing about them is
+   ranked, counted or dated on screen; each is a shape, and a hand on one takes
+   it. A gift already taken stays on the shelf — taking is not spending, and the
+   world does not run out of a thing it has already given. */
+function shelfPts(){
+  const gs=S.shop||[]; if(!gs.length) return [];
+  const y=H-96, w=Math.min(78, (W-120)/Math.max(1,gs.length));
+  return gs.map((g0,i)=>({ g:g0, i, x:W/2-((gs.length-1)*w)/2+i*w, y }));
+}
+function shelf(){
+  const pts=shelfPts(); if(!pts.length) return;
+  g.strokeStyle=PAL.edge; g.lineWidth=1.5;
+  g.beginPath(); g.moveTo(W*0.12,H-70); g.lineTo(W*0.88,H-70); g.stroke();
+  pts.forEach(p=>{
+    const on=near(p.x,p.y,26);
+    g.fillStyle= p.g.taken ? "rgba(200,185,138,.42)" : (on?"rgba(200,185,138,.98)":"rgba(200,185,138,.80)");
+    g.beginPath(); g.arc(p.x,p.y,on?20:16,0,7); g.fill();
+    g.strokeStyle=PAL.edge; g.lineWidth= p.g.taken?1:2; g.stroke();
+    if(on){ g.strokeStyle="rgba(40,40,44,.30)"; g.lineWidth=1;
+      g.beginPath(); g.moveTo(p.x,p.y+22); g.lineTo(p.x,p.y+40); g.stroke(); }
+  });
+}
+function shelfReach(){
+  const p=shelfPts().find(p=>reach(p.x,p.y,26));
+  if(!p) return false;
+  takeGift(p.i); return true;
 }
 
 /* ── shared drawing ───────────────────────────────────────────────────────── */
