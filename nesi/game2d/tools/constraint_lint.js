@@ -103,6 +103,11 @@ for (const k of keys) {
        mouse or keys. That is the thing that can silently narrow the world. */
     if (!/mouse|keys\[/.test(t)) continue;
     if (/^if\s*\(\s*!\s*mouse\.(clicked|down)\s*\)/.test(t)) continue;  /* "nothing happened yet" */
+    /* the same guard written in the shared verb. `if(!reach(...)) return` refuses
+       nothing — it is the stage saying no gesture has happened this frame, which
+       is the state every stage is in most of the time. Flagging it made the lint
+       fire on the conversion to the verbs, which is the opposite of its job. */
+    if (/^if\s*\(\s*!\s*(reach|holding|draw|wait)\s*\(/.test(t)) continue;
     unrouted.push(k + ": " + t);
   }
 }

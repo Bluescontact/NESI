@@ -61,10 +61,17 @@ const faceOf = k => { const i = SET.indexOf("\n" + k + ":{");
 const call = v => new RegExp("(?:^|[^\\w.])" + v + "\\((?!\\)\\s*\\{)");
 const USES = { reach: call("reach"), hold: /(?:^|[^\w.])(hold|holding)\(/,
                draw: call("draw"), wait: call("wait") };
-for (const k of ["tank", "rain", "dam", "channel"]) {
-  const body = faceOf(k), g = stages.find(s => s.key === k).g;
-  ok("K5 LEVEL ONE · " + k + " declares " + g + " and uses that verb",
-     USES[g].test(body), g);
+/* K5 ASKS EVERY STAGE, NOT JUST LEVEL ONE'S FOUR. It used to name four keys, and
+   it kept naming the OLD four after level one was rebuilt — so it was checking
+   rain, dam and channel, which had left the level, and had never checked the
+   sixteen others at all. Walking the levels then found three faces that no act
+   could finish, one of them driven by a movement idiom that is not any of the
+   four verbs. A check that only inspects the room it was written in is not a
+   check. */
+for (const st of stages) {
+  const body = faceOf(st.key);
+  ok("K5 " + st.key + " declares " + st.g + " and uses that verb",
+     USES[st.g].test(body), st.g);
 }
 ok("K6 and no face of LEVEL ONE hand-rolls a hit test any more",
    ["tank", "rain", "dam", "channel"].every(k => !/Math\.hypot\(mouse/.test(faceOf(k))),

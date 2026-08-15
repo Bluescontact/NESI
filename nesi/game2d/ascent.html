@@ -434,12 +434,21 @@ function hold(dt, secs){
 /* DRAW. A course, in the stage's own coordinates, that only grows while the hand
    is down and only lands when it lets go with enough of a line to be a line. */
 function draw(min){
-  L._d = L._d || {path:[], drawing:false};
+  L._d = L._d || {path:[], drawing:false, started:false};
   const d=L._d;
   if(mouse.down){ const p=d.path[d.path.length-1];
-    if(!p || Math.hypot(mouse.x-p.x, mouse.y-p.y)>18){ d.path.push({x:mouse.x,y:mouse.y}); d.drawing=true; } }
-  const landed = !mouse.down && d.drawing && d.path.length>=(min||8);
-  return { path:d.path, drawing:d.drawing, landed };
+    if(!p || Math.hypot(mouse.x-p.x, mouse.y-p.y)>18){ d.path.push({x:mouse.x,y:mouse.y}); }
+    d.started=true; }
+  /* `drawing` MEANS A HAND IS DOWN RIGHT NOW. It used to mean "a hand has been
+     down at some point in this room", because it was set true and never cleared
+     — so it stayed true after the release forever. Two stages read it as the
+     live state and were wrong for it: THE SHOAL never registered a let-go, so
+     its level could not be finished by any hand, and THE RAIN's pan went on
+     following a pointer that was not held. `started` carries the old meaning for
+     the landing test, under a name that says what it is. */
+  d.drawing = mouse.down && d.started;
+  const landed = !mouse.down && d.started && d.path.length>=(min||8);
+  return { path:d.path, drawing:d.drawing, started:d.started, landed };
 }
 /* WAIT. Doing nothing is the mechanic, so ANY input resets it — and nothing on
    screen ever says so, asks for it, or counts it down. */
@@ -868,14 +877,35 @@ table:{ g:"draw", enter(){ const w=W_();
    can be held across all three, that is the lens. */
 lens:{ g:"reach", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
   step(dt){ if(typing) return;
-    const sp=3.2; if(keys["a"]||keys["arrowleft"])L.p.x-=sp; if(keys["d"]||keys["arrowright"])L.p.x+=sp;
-    if(keys["w"]||keys["arrowup"])L.p.y-=sp; if(keys["s"]||keys["arrowdown"])L.p.y+=sp;
-    const V=facePts(); let near=-1;
+    /* THE REACH, in the shared verb — and this seat is why the check had to ask
+       every stage. It DECLARED a reach and ran on WASD: a walking idiom that is
+       not one of the four gestures, hiding inside a stage that said it was a
+       reach. No act a walk could produce ever finished it.
+
+       It also declared `let near`, which SHADOWED the verb `near()` across this
+       whole body — so the verb could not have been used here even by accident.
+
+       Reading a face is a reach on that face: the hand goes where it reaches
+       rather than being steered a pixel at a time. The holding that reads is
+       unchanged; it is the STEERING that was the undeclared fifth gesture. */
+    const V=facePts(); let on=-1;
     for(let i=0;i<3;i++){ if(L.read[i]) continue; if(i>0&&!L.read[i-1]) continue;
-      if(Math.hypot(L.p.x-V[i].x,L.p.y-V[i].y)<70){ near=i; break; } }
-    const press=keys["e"]||keys[" "];
-    if(near>=0&&press){ if(L.hold!==near){L.hold=near;L.hm=0;} L.hm+=dt;
-      if(L.hm>=1000){ L.read[near]=true; L.hold=-1; L.hm=0; } } else {L.hold=-1;L.hm=0;}
+      if(near(V[i].x,V[i].y,70)){ on=i; break; } }
+    if(on>=0){ L.p.x += (V[on].x-L.p.x)*0.25; L.p.y += (V[on].y-L.p.y)*0.25; }
+
+    /* AND THE READ IS TWO REACHES, not a timed hold. Holding for a second was
+       the last timed act in the world and it made this seat a HOLD wearing a
+       reach's label — which would have made THE RETURN a mixed level, the same
+       conflict level one had. The honest fix is not to relabel it: it is to give
+       this seat the held form every other reach now has. The first reach brings
+       the face up; the second takes it. A face brought up and left simply stays
+       up, and nothing is on a clock. */
+    if(on>=0 && reach(V[on].x, V[on].y, 70)){ mouse.clicked=false;
+      if(L.hold!==on){ L.hold=on; }        /* first reach: it stands up, held */
+      else { L.read[on]=true; L.hold=-1; } /* second reach on the same face: read */
+    }
+    if(on<0) L.hold=-1;
+    L.hm = (L.hold>=0) ? 1000 : 0;         /* the panel reads fully open when held */
     if(L.read[0]&&L.read[1]&&L.read[2]&&!L.asked){ L.asked=true;
       openWrite(250,(text)=>{ S.lenses.push(text); save(); finish(); }); } },
   draw(){ sky(); const V=facePts();
@@ -886,7 +916,7 @@ lens:{ g:"reach", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x
       g.fillStyle="#8d8578"; g.fillRect(v.x-46,v.y-11,92,22);
       g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5; g.strokeRect(v.x-46,v.y-11,92,22);
       if(L.read[i]) sheetAt(v,FACES[i]||[]);
-      else if((i===0||L.read[i-1])&&Math.hypot(L.p.x-v.x,L.p.y-v.y)<70){
+      else if((i===0||L.read[i-1])&&near(v.x,v.y,70)){
         g.fillStyle="rgba(30,30,34,"+(L.hold===i?(0.35+0.65*L.hm/1000):0.35).toFixed(2)+")";
         g.font="26px Georgia,serif"; g.textAlign="center"; g.fillText("·",v.x,v.y-24); } }
     dot(L.p.x,L.p.y); }
@@ -961,7 +991,11 @@ dam:{ g:"hold", enter(){ const w=W_();
    The released water carries your sentences down and they settle. You do not
    place them. */
 ground:{ g:"wait", enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
+  /* THE WAIT, in the shared verb. You do not place them; the correct act here is
+     not to act, and the verb is what says so. */
   step(dt){ let all=true;
+    /* the verb, said out loud: the correct act at this seat is not to act */
+    wait(dt, 1200);
     L.blocks.forEach(b=>{ if(b.set) return; all=false; b.v+=0.42; b.y+=b.v;
       const fy=H-150-Math.sin(b.x*0.01)*14;
       if(b.y>=fy){ b.y=fy; b.v*=-0.22; if(Math.abs(b.v)<0.6){ b.set=true; } } });
@@ -1003,12 +1037,14 @@ filter:{ g:"reach", enter(){ const w=W_();
        it settles it into the bank. A reach on the water below puts it back where
        it came from, still falling. Nothing settles on one touch and nothing
        expires — a bit left riding simply rides. */
-    if(mouse.clicked){ mouse.clicked=false;
+    if(mouse.clicked){
       const h=L.hand;
-      if(h && near(h.x,h.y,26)){ S.caught.push(h.t.k); L.caught++; L.hand=null; }
-      else if(h){ L.bits.push({x:mouse.x,y:Math.max(90,mouse.y-40),ph:h.ph,t:h.t}); L.hand=null; }
+      if(h && reach(h.x,h.y,26)){ mouse.clicked=false; S.caught.push(h.t.k); L.caught++; L.hand=null; }
+      else if(h && reach(mouse.x,mouse.y,1e9)){ mouse.clicked=false;
+        L.bits.push({x:mouse.x,y:Math.max(90,mouse.y-40),ph:h.ph,t:h.t}); L.hand=null; }
       else for(let i=0;i<L.bits.length;i++){ const b=L.bits[i];
-        if(near(b.x,b.y,26)){ L.hand={t:b.t, ph:b.ph, x:W*0.5, y:56}; L.bits.splice(i,1); break; } } }
+        if(reach(b.x,b.y,26)){ mouse.clicked=false;
+          L.hand={t:b.t, ph:b.ph, x:W*0.5, y:56}; L.bits.splice(i,1); break; } } }
     L.bits=L.bits.filter(b=>b.y<H-90);
     // WRITES: what the hand takes out of suspension leaves the water clearer.
     if(L.caught>=L.need){ const w=W_();
@@ -1039,7 +1075,7 @@ filter:{ g:"reach", enter(){ const w=W_();
    to the lake, set down with no feedback at all." The third is the one that
    matters, and it does nothing on purpose. */
 stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
-  step(){ if(mouse.clicked){ mouse.clicked=false;
+  step(){ if(reach(mouse.x, mouse.y, 1e9)){ mouse.clicked=false;
       /* NOTHING TO ROUTE IS NOT A FINISHED LEVEL. Grouping by gesture put this
          face beside the tank and the filter, and a hand can enter it first —
          at which point the queue is empty. It used to finish on the first click,
@@ -1051,7 +1087,9 @@ stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
       if(!L.queue.length) return;
       const b=bays();
       for(const [k,r] of Object.entries(b)){
-        if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
+        /* THE REACH, in the shared verb: a bay answers a hand that comes down
+           anywhere on it, and the verb owns whether a hand came down. */
+        if(near(r.x+r.w/2, r.y+r.h/2, Math.max(r.w,r.h)*0.62)){
           /* THE HELD FORM, built 2026-08-14. The brief's own words: HOLD THE
              ROUTE BEFORE WALKING IT. A reach on a bay used to send immediately
              and routing has no undo — so the one act in this seat that cannot
@@ -1104,11 +1142,15 @@ stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
 
    So this level teaches the array, and level 9 is what makes any of it keep. */
 heliostat:{ g:"hold", enter(){ L.a=-0.9; L.grown=0; },
-  step(dt){ if(mouse.down){ L.a=Math.atan2(mouse.y-lakeY(), mouse.x-W/2); }
+  step(dt){
+    /* THE HOLD, in the shared verb: the aim is live only while a hand holds it,
+       and the verb owns "is a hand holding". */
+    hold(dt, 1.0);
+    if(holding()){ L.a=Math.atan2(mouse.y-lakeY(), mouse.x-W/2); }
     // every mirror that is currently throwing light: your hand's aim on the
     // unseated ones, plus each seated mirror on its own locked bearing
     let anyHit=false;
-    mirrors().forEach((m,i)=>{ const a=seatedAim(i); const ang=(a!==null)?a:(mouse.down?L.a:null);
+    mirrors().forEach((m,i)=>{ const a=seatedAim(i); const ang=(a!==null)?a:(holding()?L.a:null);
       if(ang===null) return; if(beamCrossesWater(m,ang)) anyHit=true; });
     if(anyHit){ L.on=(L.on||0)+dt;
       if(L.on>800){ L.on=0; S.shoots.push(Math.round(W*0.2+Math.random()*W*0.6)); L.grown++; } }
@@ -1125,7 +1167,7 @@ heliostat:{ g:"hold", enter(){ L.a=-0.9; L.grown=0; },
     if(full){ g.strokeStyle="rgba(200,230,240,.7)"; g.lineWidth=1.5;
       g.beginPath(); g.ellipse(W/2,ly,Math.min(W*0.34,360),58,0,0,7); g.stroke(); }
     mirrors().forEach((m,i)=>{ const locked=seatedAim(i);
-      const ang=(locked!==null)?locked:(mouse.down?L.a:null);
+      const ang=(locked!==null)?locked:(holding()?L.a:null);
       if(ang!==null){ const hit=beamCrossesWater(m,ang);
         g.strokeStyle= hit?"rgba(255,238,180,.85)":"rgba(255,238,180,.28)";
         g.lineWidth= hit?6:2;
@@ -1150,7 +1192,9 @@ winter:{ g:"wait", enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.la
       // WRITES: rooting takes something out of the water for good.
       const w=W_(); w.released=clamp01(w.released+0.08); w.still=1; save(); L.k=1; }
     if(L.t>2600&&(!L.same||L.ack)){ reading(12, L.same?"held":"rooted"); save(); finish(); }
-    if(L.same&&(keys["e"]||keys[" "])) L.ack=true; },
+    /* THE WAIT, in the shared verb. A day that has not passed cannot be made to
+       pass; all a hand can do here is see that, and the seeing is a wait. */
+    if(L.same && wait(dt, 900).still) L.ack=true; },
   draw(){ sky(); const fy=H-150; ground(fy);
     // what is standing, and what is simply bare
     for(let i=0;i<6;i++){ const x=W*0.22+i*(W*0.56/5);
@@ -1232,9 +1276,13 @@ shoal:{ g:"draw", enter(){ const w=W_();
       s, x:W*0.16+(i%3)*W*0.24, y:H*0.30+Math.floor(i/3)*H*0.18, held:false}));
     L.grab=null; L.moved=0; },
   step(){ const w=W_();
-    if(mouse.down && !L.grab){ for(const t of L.st){
+    /* THE DRAW, in the shared verb. Moving a shoal is a course the hand draws
+       with the thing in it: the verb owns "is a hand down and moving", the
+       arrangement is the stage's, and the landing is the letting go. */
+    const dr=draw(2);
+    if(dr.drawing && !L.grab){ for(const t of L.st){
       if(Math.abs(mouse.x-t.x)<70 && Math.abs(mouse.y-t.y)<16){ L.grab=t; break; } } }
-    if(!mouse.down && L.grab){ L.grab=null; L.moved++; }
+    if(!dr.drawing && L.grab){ L.grab=null; L.moved++; L._d={path:[],drawing:false,started:false}; }
     if(L.grab){ L.grab.x=mouse.x; L.grab.y=mouse.y; }
     if(L.moved>=3){ w.still=1; reading(8,"arranged"); save(); finish(); } },
   draw(){ const w=W_();
@@ -1256,7 +1304,8 @@ shoal:{ g:"draw", enter(){ const w=W_();
    touch anything and it does not. Clarity recovers only here. */
 stilling:{ g:"wait", enter(){ L.q=0; L.ripple=1; },
   step(dt){ const w=W_();
-    const touched = mouse.down || Object.keys(keys).some(k=>keys[k]);
+    /* THE WAIT, in the shared verb: any input resets it and nothing says so. */
+    const q=wait(dt, 6000); const touched = q.quiet===0;
     if(touched){ L.q=0; L.ripple=1; w.still=0; }
     else { L.q+=dt; L.ripple=Math.max(0,1-L.q/3000);
       if(L.q>3000){ w.still=1; w.clarity=clamp01(w.clarity+0.35); w.load=clamp01(w.load-0.15);
@@ -1290,7 +1339,11 @@ stilling:{ g:"wait", enter(){ L.q=0; L.ripple=1; },
    settled, and how far a line can see is the clarity THE FILTER and THE STILLING
    left behind. Sound a turbid lake and it gives you less. */
 sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
-  step(){ if(!mouse.clicked) return; mouse.clicked=false;
+  step(){
+    /* THE REACH, in the shared verb. A line is dropped where the hand comes
+       down; the verb owns "did a hand come down here", the water owns what a
+       line finds. */
+    if(!reach(mouse.x, mouse.y, 1e9)) return; mouse.clicked=false;
     /* the sky is not water, so a line cannot be dropped into it — a boundary on
        the hand, so it is registered and announced like every other */
     if(bound("sky-is-not-water") && mouse.y < H*0.24) return;
@@ -1302,8 +1355,11 @@ sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
     // which lies deepest — is out of reach until the water is stilled. Sort at
     // THE FILTER or wait at THE STILLING and the same spot gives up more.
     const i = keptAtX(mouse.x);
-    const reach = 70 + 190*L.clear;
-    const found = i>=0 && keptDepth(i) <= reach;
+    /* named `carry`, not `reach` — a local of that name SHADOWED the verb across
+       this whole body and put it in the temporal dead zone, so the stage threw
+       the moment it was converted. The same shadowing was in the lens. */
+    const carry = 70 + 190*L.clear;
+    const found = i>=0 && keptDepth(i) <= carry;
     L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
     if(found) L.up=i;
     S.soundings.push(found?"floor":"deep");
@@ -1348,7 +1404,7 @@ sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
    Nothing puts a pattern in the ground. It was always down there.
    (keptAtX / keptDepth / drawKept are defined below the mechanics.) */
 deep:{ g:"reach", enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
-  step(){ if(!mouse.clicked) return; mouse.clicked=false;
+  step(){ if(!reach(mouse.x, mouse.y, 1e9)) return; mouse.clicked=false;
     if(mouse.y < H*0.45){                       // above the line: sound it
       const i = keptAtX(mouse.x), found = i>=0;
       L.lines.push({x:mouse.x, d:found?keptDepth(i):H, deep:!found});
@@ -1409,7 +1465,9 @@ seating:{ g:"reach", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
     if(L.words && L.cut===null){
       const lay=cutLayout(L.words);
       const s=nearestSeam(lay);
-      if(mouse.clicked){ mouse.clicked=false;
+      /* THE REACH, in the shared verb: the verb owns whether a hand came down;
+         nearestSeam owns which seam it came down on. */
+      if(reach(mouse.x, mouse.y, 1e9)){ mouse.clicked=false;
         if(s){ L.cut=s.i;
           release([ L.words.slice(0,L.cut).join(" "), L.words.slice(L.cut).join(" ") ]); } }
       return; }
@@ -1484,7 +1542,10 @@ seating:{ g:"reach", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
    in it demands, prompts, or expires. The garden shows what you made and never
    what it means." */
 garden:{ g:"wait", enter(){ L.t=0; },
-  step(dt){ L.t+=dt; if((keys["e"]||keys[" "])&&L.t>900){ save(); finish(); } },
+  step(dt){ L.t+=dt;
+    /* THE WAIT, in the shared verb: standing still in the garden long enough is
+       the whole act. Nothing asks and no key is named. */
+    if(wait(dt, 2400).still && L.t>900){ save(); finish(); } },
   draw(){ sky(); const fy=H-140; ground(fy);
     S.lenses.forEach((t,i)=>{ const x=120+i*230, y=fy-110;
       g.fillStyle="rgba(255,252,240,.95)"; g.fillRect(x,y,200,64);
@@ -1507,7 +1568,10 @@ cast:{ g:"hold", enter(){ L.pull=0; L.gone=S.cast; },
        the level neither waits for it nor counts it. */
     if(shelfReach()) return;
     if(L.gone){ L.t+=dt; if(L.t>1600) finish(); return; }
-    if(mouse.down) L.pull=Math.min(1,L.pull+dt/2200); else L.pull=Math.max(0,L.pull-dt/900);
+    /* THE HOLD, in the shared verb. The pull is the held fraction and it decays
+       when the hand stops — the one gesture in the world that undoes itself. */
+    const hp=hold(dt, 2.2);
+    L.pull = holding() ? hp.held : Math.max(0, L.pull-dt/900);
     if(L.pull>=1){ L.gone=true; S.cast=true; L.t=0; emit(); save(); } },
   draw(){ sky(); const cx2=W/2, cy=H*0.45;
     if(!L.gone){ g.save(); g.translate(cx2,cy+L.pull*90);
