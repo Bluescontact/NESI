@@ -112,6 +112,25 @@ ok("K10 daily's canvas draws from the palette, not from literals of its own",
    (daily.match(/g\.fillStyle\s*=\s*"#/g) || []).length === 0,
    (daily.match(/g\.fillStyle\s*=\s*"#/g) || []).length + " hex literals left on the canvas");
 
+/* EVERY PAGE, NOT JUST THE TWO. The front door carried its own background —
+   #dfe3e0, a colour in no palette — and nothing looked at it because the palette
+   check only ever compared ascent.html against daily.html. A third page drifting
+   is exactly as much drift as two. */
+const pages = fs.readdirSync(ROOT).filter(f => /\.html$/.test(f));
+const offPalette = [];
+for (const f of pages) {
+  const t = fs.readFileSync(path.join(ROOT, f), "utf8");
+  const hexes = [...new Set((t.match(/#[0-9a-fA-F]{6}/g) || []).map(h => h.toLowerCase()))];
+  const known = new Set(Object.values(palA).concat(Object.values(palD)).map(v => v.toLowerCase()));
+  /* only the SMALL pages are held to it — the big surfaces carry drawing shades
+     that are not materials, and calling those drift would make the check noise */
+  if (t.length > 8000) continue;
+  const stray = hexes.filter(h => !known.has(h));
+  if (stray.length) offPalette.push(f + ": " + stray.join(" "));
+}
+ok("K11 the small pages carry no colour the palette does not name",
+   offPalette.length === 0, offPalette.join(" · ") || pages.length + " pages looked at");
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 let failed = 0;
 for (const r of results) {
