@@ -11,15 +11,63 @@ what its two ends do to each other, and every one of those is a cut you can make
 
 ---
 
+## ■ CORRECTION — 2026-08-14, circuit four was mis-transcribed
+
+**The circuits being wrong is exactly what happened.** Kevin's build prompt of
+the same day carried a different circuit four. The two were tested against real
+coordinates rather than argued about, and this file's version does not exist:
+
+```
+BUILD PROMPT   ↓DEEP–↓FILTER–↓TANK–↑CAST–↑SEATING–↑LENS   embeds as a great circle: True
+THIS FILE was  ↓TANK–↓DEEP–↓FILTER–↑LENS–↑CAST–↑SEATING   embeds as a great circle: False
+```
+
+**The superseded line is kept here and nowhere else.** Circuits one, two and
+three were right and are untouched; the six vertices of circuit four were right;
+**four of its six edges were not.** What this file had — `↓TANK—↓DEEP`,
+`↓FILTER—↑LENS`, `↑LENS—↑CAST`, `↑SEATING—↓TANK` — are not edges of the solid.
+The four that replace them are `↓FILTER—↓TANK`, `↓TANK—↑CAST`, `↑SEATING—↑LENS`,
+`↑LENS—↓DEEP`.
+
+**Why the file's own checks did not catch it.** The wrong cycle passed every test
+written in §0: it visits the same six vertices, it puts each antipodal pair
+opposite, and it runs three falling then three rising contiguously. Two distinct
+6-cycles satisfy all three. Only an embedding test separates them — the six
+vertices of a circuit form an octahedron graph, which carries several
+Hamiltonian cycles, and just one of them is the great circle.
+
+**What this changed downstream, and is fixed below:** levels 19–24, the turn on
+circuit four (was 21 `↓FILTER—↑LENS`, is 21 `↓TANK—↑CAST`), the return (was 24
+`↑SEATING—↓TANK`, is 24 `↑LENS—↓DEEP`), and both readings in §2. **What it did
+not change:** the twelve vertices, circuits one–three, the six antipodal pairs,
+and the uniform edge signature — all re-verified after the correction.
+
+**One §0 claim is withdrawn outright.** "↓TANK is three steps from ↑LENS, and
+everything else in the world is two or fewer" was false before the correction and
+is false after it. The solid is vertex-transitive: **all six antipodal pairs sit
+at distance 3**, and no pair is farther from itself than any other. Writing is not
+measurably farther from a worked lens than the dam is from the heliostat — that
+sentence read a symmetry as a discovery.
+
+---
+
 ## 0 · WHAT WAS COMPUTED FIRST, SO THE LIST IS NOT A GUESS
 
 ```
 edges walked out of the four circuits ....... 24, all distinct
 degree of every vertex ...................... 4  (a cuboctahedron is 4-regular)
 each vertex lies on ......................... exactly 2 circuits
-antipodal pairs (same two circuits) .......... 6, and none of them adjacent
+antipodal pairs (same two circuits) .......... 6, none adjacent, ALL at distance 3
 edge signature of every circuit ............. dd dd du uu uu ud — identical, all four
+faces ....................................... 14 — 8 triangular, 6 square
+planes cutting 3+ seats ..................... 81 — 56 cut three, 21 cut four,
+                                                  4 cut six, and those four ARE
+                                                  the circuits
 ```
+
+Re-verified after the correction above, from coordinates, not from this table.
+The plane census carries its own identity: Σ planes × C(seats,3) = 220 = C(12,3),
+which holds exactly.
 
 Two things fell out that were not designed:
 
@@ -39,10 +87,17 @@ level that turns the world over and exactly one that closes it.
 | ↓GROUND ↔ ↑GARDEN | what it sets down is the ground ↔ fills only from play |
 | ↓DEEP ↔ ↑CAST | what you release comes back ↔ the world loses what it gives |
 
-You can never walk from one of a pair to its opposite in one level. Each pair
-reads as a real opposition, and one of them is measurably extreme: **↓TANK is
-three steps from ↑LENS, and everything else in the world is two or fewer.**
-Writing is the farthest thing from a worked lens that the solid contains.
+You can never walk from one of a pair to its opposite in one level, and each pair
+reads as a real opposition. ~~One of them is measurably extreme — ↓TANK is three
+steps from ↑LENS and everything else is two or fewer.~~ **Withdrawn, see the
+correction above:** every antipodal pair sits at exactly three steps. The solid
+gives no pair a longer walk than any other, and every seat sees an identical
+world.
+
+**Two seats carry neither a turn nor a return: ↓GROUND and ↑GARDEN.** Ground's
+four members all fall; garden's four all rise. They are the only two like that,
+and they are each other's antipode — the pure seats, the one pair the world never
+asks to change direction.
 
 ---
 
@@ -87,12 +142,12 @@ Each is named by its two ends, not by a name I made up. `↓` falls, `↑` rises
 
 | # | level | what it accomplishes |
 |---|---|---|
-| 19 | ↓TANK — ↓DEEP | Some of what you write goes straight to the bottom without being worked. The shortest fall in the world. |
-| 20 | ↓DEEP — ↓FILTER | What came back from the deep is what there is to sort. You separate what returned, not what you sent. |
-| 21 | ↓FILTER — ↑LENS | **THE TURN.** Separation by hand and shaping by hand are one continuous act — the same hand, twice, with nothing in between. |
-| 22 | ↑LENS — ↑CAST | A lens can leave. The worked thing is the giveable thing. |
-| 23 | ↑CAST — ↑SEATING | What departed leaves a seat behind it. Giving is what makes room in the frame. |
-| 24 | ↑SEATING — ↓TANK | **THE RETURN.** A frame with a filled seat changes what the next writing can become. |
+| 19 | ↓DEEP — ↓FILTER | What came back from the deep is what there is to sort. You separate what returned, not what you sent. |
+| 20 | ↓FILTER — ↓TANK | Separation runs back into intake. What your hand pulled out of suspension is what the page holds next — and this is the withdrawal route: a deleted sentence leaves the line by way of the filter, and the bank keeps it. |
+| 21 | ↓TANK — ↑CAST | **THE TURN.** Writing departs directly. One member from intake to the world, where the long way round is eleven — the door out, and the shortest crossing the solid contains. |
+| 22 | ↑CAST — ↑SEATING | What departed leaves a seat behind it. Giving is what makes room in the frame. |
+| 23 | ↑SEATING — ↑LENS | A frame with a filled seat is what a hand has to work with. The seating is what the lens is ground against. |
+| 24 | ↑LENS — ↓DEEP | **THE RETURN.** The worked lens falls to the bottom. What you shaped is what sinks, and circuit one is waiting there to raise it as light. |
 
 ---
 
@@ -102,15 +157,21 @@ The uniform signature means the world has exactly four of each, and they are the
 levels that carry the whole shape:
 
 **The turns — 3 · 9 · 15 · 21.** ↓DEEP—↑HELIOSTAT · ↓FILTER—↑HELIOSTAT ·
-↓STATIONS—↑LENS · ↓FILTER—↑LENS. These are the only four edges in the solid that
-run from a falling place to a rising one — 4 of 24, counted — so every one is the
-moment water becomes light. **Two of the four go through the filter**, which
-makes it the turn on half the circuits.
+↓STATIONS—↑LENS · ↓TANK—↑CAST. **Two of the four pass through ↑HELIOSTAT**, which
+makes light the turn on half the circuits.
 
 **The returns — 6 · 12 · 18 · 24.** ↑CAST—↓DAM · ↑SEATING—↓DAM ·
-↑OVERWINTERING—↓TANK · ↑SEATING—↓TANK. The only four edges running from a rising
-place to a falling one, and **4 of 4 land on the tank or the dam** — the world
-saying the only way back down is into intake or into holding.
+↑OVERWINTERING—↓TANK · ↑LENS—↓DEEP. **Two of the four land on ↓DAM.**
+
+Together these eight are every mixed edge the solid has — 8 of 24, counted, with
+the other sixteen running falling-to-falling or rising-to-rising. And the two
+seats that take a doubled share are **↑HELIOSTAT and ↓DAM**, which are *each
+other's antipode* and sit on the same two circuits, one and two. The world
+concentrates its turning and its returning on a single axis, and it is the axis
+between light and what holds.
+
+~~4 of 4 land on the tank or the dam.~~ **Withdrawn with the correction above** —
+the returns land 2 on ↓DAM, 1 on ↓TANK, 1 on ↓DEEP.
 
 ---
 
