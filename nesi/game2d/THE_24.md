@@ -1,5 +1,30 @@
 # THE TWENTY-FOUR — a draft, derived from the twelve and the circuits
 
+> ## ■ CORRECTED 2026-08-14, THE WORK SURFACES PASS
+>
+> **The arithmetic below is right and its subject is wrong.** These 24 edges were
+> walked out of the four circuits *as the corpus writes their cyclic order*, and
+> that graph is **not a cuboctahedron**: it carries 4 triangles where the solid
+> carries 8. Two graphs, 12 vertices and 24 edges and 4-regular apiece, not the
+> same shape.
+>
+> **What survives:** twelve places · twenty-four transits · four closed walks of
+> six that partition them · each place on exactly two walks · six pairs sharing
+> both walks. All still true of the graph the circuits write.
+>
+> **What does not survive:** that these are the solid's edges, and therefore
+> every specific pair — the turns, the returns, the antipodal table, and the
+> tank-to-lens distance.
+>
+> **And it cannot be fixed by re-ordering.** The edge set is not determined by
+> anything written down: 192 placements satisfy the sets, the
+> three-falling-three-rising property, and circuit 1 exactly as written, and they
+> disagree about which pairs are members. See `THE_WORK_SURFACES.md` §0. **One
+> written adjacency cuts it.**
+>
+> Left standing rather than deleted, per the supersession convention.
+
+
 **Kevin's ask, 2026-08-14:** *"draft the 24 level list from the twelve and the
 circuits."*
 
