@@ -81,7 +81,7 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
-  src + "\n;globalThis.__X={S,mouse,frame,hovered,ascentPts,mapPts,unlocked,reading,seeded,finish," +
+  src + "\n;globalThis.__X={S,mouse,frame,hovered,ascentPts,mapPts,unlocked,reading,seeded,finish,get room(){return room;}," +
         "toMap(){view='map';},resize,ascentNodes,mapNodes, get view(){return view;}, get cur(){return cur;}};",
   sandbox, { filename: "ascent.html<script>" });
 
@@ -135,13 +135,21 @@ ok("D10 finishing THE SEATING records it by name and returns to the map",
 ok("D11 and nothing was written under an undefined key — one map, no second registry",
    !("undefined" in X.S.done), Object.keys(X.S.done).join(", "));
 
-/* ── 5 · THE TWELVE ARE UNHARMED ─────────────────────────────────────────── */
+/* ── 5 · THE CIRCUIT IS UNHARMED ─────────────────────────────────────────
+   Amended 2026-08-14 on Kevin's correction: "those arent full levels. those are
+   all 4 mechanisms inside the first level." THE TANK is no longer a run on the
+   circuit — it is a face inside LEVEL ONE, and the circuit's first run is the
+   LEVEL. This check follows the truth; it does not hold the old shape open. */
 X.toMap();
 const one = X.mapPts()[0];
-ok("D12 a hand still finds THE TANK on the circuit", hoverAt(one.x, one.y) === 1);
+ok("D12 a hand finds the first run on the circuit", hoverAt(one.x, one.y) === 1,
+   one.l.name);
 clickAt(one.x, one.y);
-ok("D13 and still enters it", X.view === "level" && X.cur.key === "tank",
-   "cur=" + (X.cur ? X.cur.key : "none"));
+ok("D13 and it opens the LEVEL, not one of its mechanisms",
+   X.view === "room" && !!X.room, "view=" + X.view);
+ok("D13b the level's faces have no door of their own out here",
+   X.mapPts().every(p => ["tank","rain","dam","channel"].indexOf(p.l.key) < 0),
+   X.mapPts().length + " runs on the circuit");
 
 /* ── 6 · THE TWO FIGURES STAND APART, at every window size ───────────────── */
 /* The upper tetra is drawn above the circuit. If its lowest edge — or the two

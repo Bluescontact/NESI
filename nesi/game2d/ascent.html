@@ -182,6 +182,11 @@ let S = {
   // THE JOIN. Seat indices that have been fed a lens. Mirror i is lit iff i is
   // in here. One list, two places — there is no second registry.
   seated:[],
+  // WHICH FACES OF A LEVEL HAVE BEEN WORKED. Declared here because load() only
+  // restores keys that already stand in S — a field invented at runtime is saved
+  // and then silently dropped on the next morning, which would have made every
+  // level one you had finished open again unworked.
+  faces:{},
   // WATER THAT ARRIVED FROM THE DAILY SURFACE and has not yet been reached for.
   // Written only by daily.html's internal open loop; emptied only by a hand at
   // the head of THE TANK. Never read for content, never counted at any door.
@@ -249,7 +254,12 @@ const today = () => new Date().toISOString().slice(0,10);
    fed at all — "held is lawful; permanence is earned by seating, never by
    holding harder." Gating it behind THE SEATING would have contradicted that.
    So: one condition, three runs, and which you walk first is yours. */
-const unlocked = n => isAscent(n) ? seeded()>=1 : (n===1 || !!S.done[n-1]);
+/* Level one is the way in and is always open. The loose mechanisms open once the
+   LEVEL is complete — not once a face of it is — and then in their own order.
+   Faces inside a level are never gated against each other: "returning to the
+   first doesn't undo anything," and nor does entering the third first. */
+const unlocked = n => isAscent(n) ? seeded()>=1
+  : (n===1 ? true : n===5 ? !!S.done[1] : !!S.done[n-1]);
 
 /* ── canvas ───────────────────────────────────────────────────────────────── */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
@@ -271,7 +281,15 @@ addEventListener("keydown",e=>{
   // TAB opens and closes the case. It is a view of the machine, never of you,
   // so it costs nothing to leave open and nothing to close.
   if(e.key==="Tab"){ e.preventDefault(); CASE.open=!CASE.open; }
-  if(e.key==="Escape") view = (view==="map" ? view : "map");
+  /* ESCAPE STEPS OUT BY ONE, never all the way. Inside a face of a level it puts
+     you back in the level — leaving the face unworked and re-enterable, losing
+     nothing. Standing in the level it puts you on the map. This is what makes
+     the level a place you are inside rather than four doors in a row. */
+  if(e.key==="Escape"){
+    if(view==="level" && room && room.faces.indexOf(cur&&cur.key)>=0){ view="room"; }
+    else if(view==="room"){ room=null; view="map"; }
+    else if(view!=="map"){ view="map"; }
+  }
 });
 addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
 cv.addEventListener("mousemove",e=>{ const r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; });
@@ -306,15 +324,58 @@ function closeWrite(){ typing=false; wp.style.display="none"; wt.blur();
   onCommit=null; if(L) L.opened=false; view="map"; }
 
 /* ── view ─────────────────────────────────────────────────────────────────── */
-let view="map", cur=null, L={};   // L = the running level's scratch
+let view="map", cur=null, L={};   // L = the running face's scratch
+let room=null;                    // the level you are standing inside, if any
+
+/* ═══ A LEVEL IS NOT A MECHANISM ════════════════════════════════════════════
+   Kevin's correction, 2026-08-14, on being shown four "levels" walked:
+
+     "those arent full levels. those are all 4 mechanisms inside the first level."
+
+   He is right, and the map was the evidence: THE TANK, THE RAIN, THE DAM and
+   THE CHANNEL each had their own node, their own door and their own way out to
+   the map. Four doors is four levels; they were never four levels.
+
+   A LEVEL IS A TETRA WITH FOUR FACES. You enter the level once. Inside it you
+   move between its four faces WITHOUT LEAVING — his own shape from the writing
+   tetra, 2026-08-13: "one board seeds the next, and returning to the first
+   doesn't undo anything." The level is complete when its four faces have been
+   worked, and only then does it hand you back to the map.
+
+   LEVEL ONE is built. THE NAME OF LEVEL ONE IS NOT INVENTED HERE — it is
+   numbered on screen and its four faces carry their own names, which are his.
+   THE OTHER EIGHT MECHANISMS ARE STILL LOOSE on the map, because which of them
+   group into which level is his shape and not a thing to guess: 24 levels of
+   four faces is 96 faces, and there are twelve mechanisms. That gap is real and
+   is said out loud rather than filled. */
+const LEVEL1 = { n:1, faces:["tank","rain","dam","channel"] };
+const faceOf = k => LEVELS.find(l=>l.key===k);
+const worked = k => !!(S.faces&&S.faces[k]);
+const levelDone = () => LEVEL1.faces.every(worked);
 
 function enter(n){
   if(!unlocked(n)) return;
+  if(n===1){ view="room"; room=LEVEL1; S.at=1; save(); return; }   /* the level, not a face */
   cur=runOf(n); if(!cur) return;
   view="level"; L={t:0}; S.at=n; save();
   const f=SET[cur.key]; if(f&&f.enter) f.enter();
 }
-function finish(){ S.done[cur.n]=true; save(); view="map"; }
+/* going into one of the level's own faces — no map in between */
+function enterFace(k){
+  cur=faceOf(k); if(!cur) return;
+  view="level"; L={t:0}; save();
+  const f=SET[cur.key]; if(f&&f.enter) f.enter();
+}
+/* THE ONE WAY OUT of a face is back into the level it belongs to. Only the
+   level's completion reaches the map. */
+function finish(){
+  if(room && room.faces.indexOf(cur.key)>=0){
+    S.faces=S.faces||{}; S.faces[cur.key]=true;
+    if(levelDone()){ S.done[room.n]=true; save(); room=null; view="map"; return; }
+    save(); view="room"; return;
+  }
+  S.done[cur.n]=true; save(); view="map";
+}
 
 /* ═══ THE TWELVE MECHANICS ═════════════════════════════════════════════════ */
 const SET = {
@@ -1217,9 +1278,17 @@ function beamCrossesWater(m,ang){
    The joints between edges are drawn small and carry nothing. They are not seats
    — the seats are the twelve VERTICES of the equilibrium, and those belong to
    the lenses. A joint here is only where one run hands to the next. */
+/* WHAT THE MAP CARRIES NOW. Level one is ONE run, because it is one level; its
+   four faces are inside it and have no door of their own out here. The eight
+   mechanisms that have not been gathered into a level yet stand as themselves —
+   they are not pretending to be levels, and which level each belongs to is
+   Kevin's shape, unbuilt and unguessed. So the ring is nine runs, not twelve,
+   and it will be a different number again when he says how the rest gather. */
+const MAPRUNS = [{n:1, key:"__level1", name:"LEVEL ONE", mech:"four faces of one tetra"}]
+  .concat(LEVELS.slice(4));
 function mapNodes(){
-  const R=Math.min(W,H)*0.34, cy2=H*0.50;
-  return Array.from({length:12},(_,i)=>{ const a=(i/12)*Math.PI*2 - Math.PI/2;
+  const R=Math.min(W,H)*0.34, cy2=H*0.50, n=MAPRUNS.length;
+  return Array.from({length:n},(_,i)=>{ const a=(i/n)*Math.PI*2 - Math.PI/2;
     return {x:W/2+R*Math.cos(a)*1.24, y:cy2+R*Math.sin(a)}; });
 }
 /* THE UPPER TETRA, DRAWN THE SAME WAY THE CIRCUIT IS — three joints, three runs
@@ -1258,8 +1327,8 @@ function ascentPts(){
 }
 /* Edge i runs from joint i to joint i+1, and the level sits at its midpoint. */
 function mapPts(){
-  const N=mapNodes();
-  return LEVELS.map((l,i)=>{ const a=N[i], b=N[(i+1)%12];
+  const N=mapNodes(), n=MAPRUNS.length;
+  return MAPRUNS.map((l,i)=>{ const a=N[i], b=N[(i+1)%n];
     return {x:(a.x+b.x)/2, y:(a.y+b.y)/2, a, b, l}; });
 }
 function drawMap(){
@@ -1342,6 +1411,59 @@ function drawMap(){
   g.textAlign="right"; g.fillStyle="rgba(118,102,52,.9)";
   g.fillText("what the water seeds", W*0.94, 32);
 }
+/* ═══ THE ROOM — LEVEL ONE, seen from inside ════════════════════════════════
+   The four faces of one tetra, vertex down, laid out as its net so all four are
+   in front of you at once. A face you have worked stays open: you can go back
+   into it, and going back undoes nothing.
+
+   NOTHING IS RANKED, ORDERED OR NUMBERED HERE. There is no first face and no
+   next face — the four sit where the tetra puts them, and which you enter is
+   your hand's. A worked face is drawn as a face that has been worked (filled,
+   its edge doubled), never as a tick, a count or a colour alone. */
+function facesOf(){
+  const cx=W/2, cy=H*0.50, r=Math.min(W,H)*0.21;
+  /* the net: the centre triangle and three folded off its sides */
+  const A={x:cx,y:cy-r}, B={x:cx-r*0.87,y:cy+r*0.5}, C={x:cx+r*0.87,y:cy+r*0.5};
+  const out=(p,q,s)=>({x:p.x+q.x-s.x, y:p.y+q.y-s.y});
+  return [
+    {k:"tank",    t:[A,B,C],                 c:{x:cx,y:cy}},
+    {k:"rain",    t:[A,B,out(A,B,C)],        c:{x:(A.x+B.x+out(A,B,C).x)/3, y:(A.y+B.y+out(A,B,C).y)/3}},
+    {k:"dam",     t:[B,C,out(B,C,A)],        c:{x:(B.x+C.x+out(B,C,A).x)/3, y:(B.y+C.y+out(B,C,A).y)/3}},
+    {k:"channel", t:[A,C,out(A,C,B)],        c:{x:(A.x+C.x+out(A,C,B).x)/3, y:(A.y+C.y+out(A,C,B).y)/3}}
+  ];
+}
+function inTri(p,t){
+  const s=(a,b,c)=>(a.x-c.x)*(b.y-c.y)-(b.x-c.x)*(a.y-c.y);
+  const d1=s(p,t[0],t[1]), d2=s(p,t[1],t[2]), d3=s(p,t[2],t[0]);
+  return !((d1<0||d2<0||d3<0) && (d1>0||d2>0||d3>0));
+}
+function faceUnder(){ return facesOf().find(f=>inTri(mouse,f.t)) || null; }
+function drawRoom(){
+  const gr=g.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,"#cdd5d2"); gr.addColorStop(1,"#b6ae9f"); g.fillStyle=gr; g.fillRect(0,0,W,H);
+  const hot=faceUnder();
+  facesOf().forEach(f=>{
+    const w=worked(f.k), on=hot&&hot.k===f.k;
+    g.beginPath(); f.t.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.closePath();
+    /* worked faces are FILLED; unworked are open. The distinction is the fill and
+       the doubled edge, not the colour — a face reads the same to any eye. */
+    g.fillStyle = w ? "rgba(74,108,122,.34)" : (on? "rgba(242,239,232,.55)" : "rgba(242,239,232,.28)");
+    g.fill();
+    g.strokeStyle= on ? "rgba(40,40,44,.85)" : "rgba(40,40,44,.45)";
+    g.lineWidth = w ? 3.5 : 1.5; g.stroke();
+    if(w){ g.lineWidth=1; g.strokeStyle="rgba(40,40,44,.35)";
+      g.beginPath(); f.t.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.closePath(); g.stroke(); }
+    const l=faceOf(f.k);
+    g.fillStyle="rgba(30,30,34,.82)"; g.font="12px Georgia,serif"; g.textAlign="center";
+    g.fillText(l.name, f.c.x, f.c.y);
+    g.fillStyle="rgba(60,58,52,.62)"; g.font="10.5px Georgia,serif";
+    g.fillText(l.mech, f.c.x, f.c.y+14);
+  });
+  g.fillStyle="rgba(60,58,52,.55)"; g.font="11px Georgia,serif"; g.textAlign="left";
+  g.fillText("LEVEL ONE · four faces of one tetra", W*0.06, H-26);
+  /* the way back to the map is the same one every room has: Escape. */
+}
+
 function hovered(){
   for(const p of ascentPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
   for(const p of mapPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
@@ -1512,6 +1634,11 @@ function frame(now){ const dt=Math.min(48,now-last); last=now;
                      "twin", Math.min(52,W*0.055));
     const onWin=windowDrag(r);
     if(mouse.clicked && !onWin && !win.grabbed){ const h=hovered(); if(h) enter(h); }
+    mouse.clicked=false;
+  }
+  else if(view==="room"){
+    drawRoom();
+    if(mouse.clicked){ const f=faceUnder(); if(f) enterFace(f.k); }
     mouse.clicked=false;
   }
   else { const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false; }

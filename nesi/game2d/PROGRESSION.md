@@ -166,3 +166,48 @@ Which is a hard engineering constraint, not a mood:
 
 The next slice already agreed — the first four levels playable — is unaffected by
 this map, and lands inside circuit 3 and circuit 4 at their falling ends.
+
+---
+
+## 5 · A LEVEL IS NOT A MECHANISM — Kevin's correction, 2026-08-14
+
+Shown four walked runs, he said:
+
+> **"those arent full levels. those are all 4 mechanisms inside the first level."**
+
+He was right, and the map was the evidence: THE TANK, THE RAIN, THE DAM and THE
+CHANNEL each had their own node, their own door and their own way out. **Four
+doors is four levels.** They were never four levels.
+
+### What a level is
+
+**A level is a tetra with four faces.** You enter it once. Inside it you move
+between its four faces without leaving — his own shape from the writing tetra:
+*"one board seeds the next, and returning to the first doesn't undo anything."*
+The level is complete when its four faces have been worked, and **only then** does
+it hand you back to the map, and only then does anything beyond it open.
+
+Escape steps out by one: from a face into the level, from the level to the map.
+A face left early is unworked and re-enterable, and nothing is lost.
+
+**LEVEL ONE is built this way** — four faces of one tetra, laid out as its net so
+all four are in front of you at once, none gated against another. Worked faces
+are filled with their edge doubled; the distinction is never colour alone.
+
+### What this does to the count
+
+| | |
+|---|---|
+| levels | 24 — the edges of the solid, unchanged |
+| faces per level | 4 |
+| faces in total | **96** |
+| mechanisms that exist today | **12** |
+
+**That gap is real and is not filled here.** Eight of the twelve mechanisms are
+still loose on the map, standing as themselves rather than pretending to be
+levels. Which of them gather into which level is his shape. The circuit shows
+nine runs today — one level and eight ungathered mechanisms — and it will be a
+different number again when he says how the rest gather.
+
+**The name of LEVEL ONE is not invented.** It is numbered on screen; its four
+faces carry their own names, which are his.

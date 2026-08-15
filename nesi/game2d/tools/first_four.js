@@ -1,20 +1,24 @@
 #!/usr/bin/env node
 /*
- * THE FIRST FOUR — are levels 1 to 4 PLAYABLE, in order, from a cleared store?
+ * LEVEL ONE — is the LEVEL playable, from a cleared store?
  *
- * Kevin, 2026-08-14: "build the first 4 levels playable."
+ * Kevin, 2026-08-14: "build the first 4 levels playable." Then, on being shown
+ * four walked runs: "those arent full levels. those are all 4 mechanisms inside
+ * the first level."
  *
- * Reachable is not playable. door_check.js already proves the doors open. This
- * asks the slice question of each of THE TANK · THE RAIN · THE DAM · THE
- * CHANNEL, and it asks it of the RUN, not of four modules:
+ * He was right, and this file was part of the evidence — it walked four things
+ * that each had their own door out to the map, which is four levels. It now
+ * walks ONE LEVEL with four faces:
  *
- *     a way in     — a hand on the map finds it and enters it
- *     an act       — the player's own input changes the world
+ *     a way in     — a hand on the map finds the LEVEL and goes inside it
+ *     four faces   — all in front of you at once, none gated against another,
+ *                    entered and left without the map in between
+ *     an act       — the player's own input changes the world, on each face
  *     a consequence that persists — the change is in the ONE water when the
- *                    next level opens, and the next level opens differently
- *                    because of it
- *     a way out    — it finishes and returns to the map, and the map opens the
- *                    next one
+ *                    next face opens, and that face opens differently for it
+ *     a way out    — a worked face returns you to the LEVEL; only the LEVEL
+ *                    finishing returns you to the map, and only that opens
+ *                    anything beyond it
  *
  * THE WATER SEAM, S4 — this walk runs on a COPY of Kevin's real poured water,
  * read out of kevins-water.json, which is opened READ-ONLY and never written.
@@ -93,7 +97,10 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
-  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save," +
+  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,facesOf,worked,levelDone," +
+        "esc(){ const e={key:'Escape',preventDefault(){}}; if(view==='level'&&room&&room.faces.indexOf(cur&&cur.key)>=0)view='room';" +
+        "  else if(view==='room'){room=null;view='map';} else if(view!=='map')view='map'; }," +
+        "get room(){return room;}," +
         "toMap(){view='map';}, commit(t){commitWrite&&0;}, get typing(){return typing;}," +
         "feed(text){ if(onCommit){ const f=onCommit; typing=false; wp.style.display='none';" +
         "  onCommit=null; f(text, text.split(/\\s+/).length); } }," +
@@ -118,23 +125,38 @@ ok("F0 the walk carries his real poured water, not invented stones",
 ok("F0 and his store was opened read-only",
    fs.statSync(STORE).mtimeMs === fs.statSync(STORE).mtimeMs, "never opened for writing anywhere in this file");
 
-const order = [1, 2, 3, 4];
+/* ── LEVEL ONE IS ONE LEVEL. Its four faces have no door of their own on the
+      map; you go in once and move between them without leaving. ───────────── */
+X.toMap(); tick();
+ok("L1 the map carries LEVEL ONE as ONE run, not four",
+   X.mapPts().filter(p => ["tank","rain","dam","channel"].indexOf(p.l.key) >= 0).length === 0 &&
+   !!ptFor(1),
+   X.mapPts().map(p => p.l.name).join(" · "));
+{ const p = ptFor(1);
+  ok("L2 a hand on it finds it", hoverAt(p.x, p.y) === 1);
+  clickAt(p.x, p.y);
+  ok("L3 and clicking it puts you INSIDE THE LEVEL — not into a mechanism",
+     X.view === "room" && !!X.room, "view=" + X.view); }
+ok("L4 all four faces are in front of you at once, none gated against another",
+   X.facesOf().length === 4, X.facesOf().map(f => f.k).join(", "));
+
+const order = ["tank", "rain", "dam", "channel"];
 const before = {};
 let blocked = null;
+const NAME = { tank:"THE TANK", rain:"THE RAIN", dam:"THE DAM", channel:"THE CHANNEL" };
 
-for (const n of order) {
-  const L = ["", "THE TANK", "THE RAIN", "THE DAM", "THE CHANNEL"][n];
-  if (blocked) { ok("F" + n + " " + L + " — not reached", false, "blocked at level " + blocked); continue; }
+for (const key of order) {
+  const n = { tank:1, rain:2, dam:3, channel:4 }[key];
+  const L = NAME[key];
+  if (blocked) { ok("F" + n + " " + L + " — not reached", false, "blocked at " + blocked); continue; }
 
-  /* ── a way in ─────────────────────────────────────────────────────────── */
-  X.toMap(); tick();
-  const p = ptFor(n);
-  ok("F" + n + "a " + L + " is open on the map and a hand finds it",
-     !!p && X.unlocked(n) && hoverAt(p.x, p.y) === n, p ? "hover=" + hoverAt(p.x, p.y) : "no node");
-  clickAt(p.x, p.y);
-  ok("F" + n + "b clicking it ENTERS it",
-     X.view === "level" && X.cur && X.cur.n === n, "view=" + X.view + " cur=" + (X.cur ? X.cur.key : "-"));
-  if (X.view !== "level") { blocked = n; continue; }
+  /* ── a way in: from inside the level, by hand, on the face itself ─────── */
+  const f = X.facesOf().find(q => q.k === key);
+  X.mouse.x = f.c.x; X.mouse.y = f.c.y; X.mouse.clicked = true; tick();
+  ok("F" + n + "b a hand on " + L + " enters that face, from inside the level",
+     X.view === "level" && X.cur && X.cur.key === key,
+     "view=" + X.view + " cur=" + (X.cur ? X.cur.key : "-"));
+  if (X.view !== "level") { blocked = key; continue; }
 
   before[n] = shot();
 
@@ -171,21 +193,69 @@ for (const n of order) {
     X.mouse.down = false; tick(4);
   }
 
-  /* ── a way out ────────────────────────────────────────────────────────── */
-  ok("F" + n + "e the act finishes it and returns to the map",
-     X.view === "map" && X.S.done[n] === true,
-     "view=" + X.view + " done=" + !!X.S.done[n]);
-  if (X.view !== "map" || !X.S.done[n]) { blocked = n; continue; }
+  /* ── a way out: back into the LEVEL, not out to the map ───────────────── */
+  const last = key === "channel";
+  ok("F" + n + "e working " + L + " marks that face and puts you back in the level",
+     X.worked(key) === true && (last ? X.view === "map" : X.view === "room"),
+     "worked=" + X.worked(key) + " view=" + X.view);
+  if (!X.worked(key)) { blocked = key; continue; }
+
+  ok("F" + n + "e2 and the LEVEL is not finished by one face",
+     last ? X.S.done[1] === true : !X.S.done[1],
+     last ? "four faces worked — the level is done" : "level still open after " + L);
 
   /* ── a consequence that persists ──────────────────────────────────────── */
   const after = shot();
   const changed = Object.keys(after).filter(k => after[k] !== before[n][k]);
-  ok("F" + n + "f it changed the ONE water, and the change is still there on the map",
+  ok("F" + n + "f it changed the ONE water, and the change is still there",
      changed.length > 0, changed.length ? changed.join(", ") + " moved" : "NOTHING MOVED");
-
-  ok("F" + n + "g and the next level is now open",
-     n === 4 ? true : X.unlocked(n + 1), n === 4 ? "end of the four" : "level " + (n + 1));
 }
+
+/* ── the level hands back to the map, and only then does anything else open ─ */
+if (!blocked) {
+  ok("L5 the completed LEVEL is what returns you to the map",
+     X.view === "map" && X.S.done[1] === true, "view=" + X.view);
+  ok("L6 and nothing beyond it was open until the level closed",
+     X.unlocked(5) === true, "the next run on the map opens on the LEVEL, not on a face");
+  /* going back in: a worked face is still enterable and undoes nothing */
+  const keptBefore = (X.S.kept || []).length;
+  clickAt(ptFor(1).x, ptFor(1).y);
+  ok("L7 the level can be walked back into after it is complete",
+     X.view === "room", "view=" + X.view);
+  const f = X.facesOf().find(q => q.k === "channel");
+  X.mouse.x = f.c.x; X.mouse.y = f.c.y; X.mouse.clicked = true; tick();
+  ok("L8 and a worked face opens again — returning to it undoes nothing",
+     X.view === "level" && X.cur.key === "channel" && (X.S.kept || []).length === keptBefore,
+     "kept unchanged at " + keptBefore);
+  X.esc();
+  ok("L9 Escape steps out by ONE — into the level, not out of the world",
+     X.view === "room", "view=" + X.view);
+  X.esc();
+  ok("L10 and again to the map", X.view === "map", "view=" + X.view);
+
+  /* the level survives the night — a worked face that is not in the declared
+     state is saved and then silently dropped on the next load */
+  X.save();
+  const raw = JSON.parse(bag.get("nesi.ascent"));
+  ok("L11 the worked faces are written to the store",
+     raw.faces && Object.keys(raw.faces).length === 4, JSON.stringify(raw.faces || null));
+  vm.runInContext("S.faces={}; S.done={}; load();", sandbox);
+  ok("L12 and they come back on the next morning — the level stays finished",
+     X.levelDone() === true && X.S.done[1] === true,
+     "faces " + Object.keys(X.S.faces || {}).length + " · level done " + !!X.S.done[1]);
+}
+
+/* ── the four faces fit inside the room at every window size ──────────────── */
+for (const [w, h] of [[1000,700],[800,885],[1440,900],[1280,1024],[700,600]]) {
+  SIZE.clientWidth = w; SIZE.clientHeight = h;
+  vm.runInContext("W=innerWidth=" + w + "; H=innerHeight=" + h + ";", sandbox);
+  const F = X.facesOf();
+  const inside = F.every(f => f.t.every(p => p.x > 4 && p.x < w - 4 && p.y > 4 && p.y < h - 4));
+  ok("L13 " + w + "x" + h + " — all four faces of the level are on screen", inside,
+     F.map(f => f.k).join(", "));
+}
+SIZE.clientWidth = 1000; SIZE.clientHeight = 700;
+vm.runInContext("W=innerWidth=1000; H=innerHeight=700;", sandbox);
 
 /* ── the seam that makes them one run and not four modules ───────────────── */
 if (!blocked) {
@@ -211,14 +281,16 @@ if (!blocked) {
       nothing, and does the handle move when it is held? ────────────────────── */
 {
   bag.clear();
-  vm.runInContext("S.done={1:true,2:true}; S.at=3; W_().level=0.5; view='map';", sandbox);
+  vm.runInContext("S.done={}; S.faces={}; S.at=1; W_().level=0.5; room=null; view='map';", sandbox);
   X.toMap(); tick();
-  const p = ptFor(3); clickAt(p.x, p.y);
+  clickAt(ptFor(1).x, ptFor(1).y);                 /* into the level */
+  const fd = X.facesOf().find(q => q.k === "dam");
+  X.mouse.x = fd.c.x; X.mouse.y = fd.c.y; X.mouse.clicked = true; tick();
   ok("A1 THE DAM opens", X.view === "level" && X.cur.key === "dam");
   const still = [];
   for (let i = 0; i < 400; i++) { X.mouse.down = false; X.keys[" "] = false; tick(); still.push(1); }
   ok("A2 a hand that does nothing is never nagged, and nothing happens by itself",
-     X.view === "level" && !X.S.done[3], "still standing in the room after 400 frames");
+     X.view === "level" && !X.worked("dam"), "still standing in the room after 400 frames");
   const rest = vm.runInContext("L.handle", sandbox);
   X.mouse.down = true; for (let i = 0; i < 40; i++) tick();
   const pressed = vm.runInContext("L.handle", sandbox);
@@ -228,8 +300,8 @@ if (!blocked) {
      vm.runInContext("L.head", sandbox) > 0, "head gathered on mouse alone");
   X.mouse.down = false;
   for (let i = 0; i < 800 && X.view === "level"; i++) tick();
-  ok("A5 letting go releases it, and that finishes the level",
-     X.view === "map" && X.S.done[3] === true, "view=" + X.view);
+  ok("A5 letting go releases it, and that works the face and returns you to the level",
+     X.view === "room" && X.worked("dam") === true, "view=" + X.view);
 }
 
 /* ── B · THE TANK TAKES WHAT ALREADY ARRIVED. He writes in the daily surface and
@@ -238,10 +310,12 @@ if (!blocked) {
 {
   bag.clear();
   const mine = HIS.slice(0, 4);
-  vm.runInContext("S.done={}; S.at=1; S.kept=[]; S.arrived=" + JSON.stringify(mine) +
-                  "; W_().level=0.15; view='map';", sandbox);
+  vm.runInContext("S.done={}; S.faces={}; S.at=1; S.kept=[]; S.arrived=" + JSON.stringify(mine) +
+                  "; W_().level=0.15; room=null; view='map';", sandbox);
   X.toMap(); tick();
-  clickAt(ptFor(1).x, ptFor(1).y);
+  clickAt(ptFor(1).x, ptFor(1).y);                 /* into the level */
+  const ft = X.facesOf().find(q => q.k === "tank");
+  X.mouse.x = ft.c.x; X.mouse.y = ft.c.y; X.mouse.clicked = true; tick();
   ok("B1 THE TANK opens on water that already arrived", X.view === "level" && X.cur.key === "tank");
   ok("B2 and it does NOT ask him to write the day again",
      X.typing === false, "typing=" + X.typing);
@@ -262,8 +336,8 @@ if (!blocked) {
      (X.S.arrived || []).length === 0 && (X.S.kept || []).length === mine.length,
      "arrived " + (X.S.arrived || []).length + " · kept " + (X.S.kept || []).length);
   for (let i = 0; i < 900 && X.view === "level"; i++) tick();
-  ok("B6 reaching for all of it finishes the level, same as writing it would",
-     X.view === "map" && X.S.done[1] === true, "view=" + X.view + " done=" + !!X.S.done[1]);
+  ok("B6 reaching for all of it works the face, same as writing it would",
+     X.view === "room" && X.worked("tank") === true, "view=" + X.view + " worked=" + X.worked("tank"));
   ok("B7 his words are kept verbatim, none trimmed, none reordered",
      mine.every((m, i) => X.S.kept[i] === m), "all " + mine.length + " byte-identical");
 }
