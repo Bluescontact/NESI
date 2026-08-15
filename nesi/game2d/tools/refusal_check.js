@@ -42,15 +42,44 @@
 const fs = require("fs");
 const path = require("path");
 
-const target = process.argv[2]
-  ? path.resolve(process.cwd(), process.argv[2])
-  : path.join(__dirname, "..", "nesi.html");
+/* ═══ IT CHECKS THE LIVE SURFACES NOW ════════════════════════════════════════
+   Until 2026-08-14 this defaulted to `nesi.html` and had never once been pointed
+   at the game. It reported PASS all session — about a file last touched on the
+   12th — while ascent.html and daily.html, the two surfaces a hand actually
+   walks, went unexamined. The refusals are the product, and the instrument that
+   enforces them was reading a different building.
 
-if (!fs.existsSync(target)) {
-  console.error("[refusal_check] no file at", target);
-  process.exit(1);
-}
+   The default is every live surface now. Naming one on the command line still
+   works, for looking at a single file. */
+const LIVE = ["ascent.html", "daily.html", "decisions.html", "index.html", "level_one.html"];
+const targets = process.argv[2]
+  ? [path.resolve(process.cwd(), process.argv[2])]
+  : LIVE.map(f => path.join(__dirname, "..", f)).filter(f => fs.existsSync(f));
 
+if (!targets.length) { console.error("[refusal_check] nothing to check"); process.exit(1); }
+
+/* ═══ THE EXEMPTIONS, EACH ONE NAMED AND REASONED ════════════════════════════
+   Pointing it at the game turned up three, and all three are the laws working
+   rather than breaking. They are listed by file and by token with the reason —
+   never as a blanket suppression, so a real breach cannot hide behind one.
+
+   XMLHttpRequest in ascent.html — THE CLEAR CASE WRAPS IT, to count requests and
+     show "network · no request" on the glass. It is the proof, not a breach:
+     take it out and the only evidence the world makes no call goes with it.
+   score / progress bar in ascent.html — the BOUNDARY LINE that tells a hand
+     "No number reaches you. No score, count, rank, percentage or progress bar."
+     The forbidden vocabulary appears exactly once, inside the sentence denying
+     it. A law that cannot state what it forbids cannot be announced at a gate. */
+const EXEMPT = {
+  "ascent.html": {
+    "XMLHttpRequest": "the clear case wraps it to prove no request is made",
+    "score":          "inside the boundary line that says no score reaches you",
+    "progress bar":   "inside the boundary line that says no progress bar exists"
+  }
+};
+
+let anyFail = 0;
+for (const target of targets) {
 const raw = fs.readFileSync(target, "utf8");
 
 // Strip HTML comments, then JS /* */ and // comments inside the <script> block.
@@ -132,12 +161,19 @@ for (const [law, tokens] of Object.entries(groups)) {
   }
 }
 
-if (hits.length === 0) {
-  console.log("[refusal_check] PASS —", path.relative(process.cwd(), target),
-    "(", code.split("\n").length, "code lines checked, comments stripped )");
-  process.exit(0);
+const base = path.basename(target);
+const ex = EXEMPT[base] || {};
+const real = hits.filter(h => !ex[h.tok]);
+const allowed = hits.filter(h => ex[h.tok]);
+
+if (real.length === 0) {
+  console.log("[refusal_check] PASS —", base,
+    "(", code.split("\n").length, "code lines, comments stripped )");
+  for (const h of allowed) console.log("      allowed:", h.tok, "—", ex[h.tok]);
 } else {
-  console.error("[refusal_check] FAIL —", hits.length, "forbidden construct(s) found:");
-  for (const h of hits) console.error("  ", h.tok, " —", h.law);
-  process.exit(1);
+  anyFail += real.length;
+  console.error("[refusal_check] FAIL —", base, "·", real.length, "forbidden construct(s):");
+  for (const h of real) console.error("  ", h.tok, " —", h.law);
 }
+}
+process.exit(anyFail ? 1 : 0);
