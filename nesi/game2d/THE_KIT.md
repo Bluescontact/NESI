@@ -146,6 +146,8 @@ Three gaps, in the order they pay:
 3. **The level container is already right — leave it alone and use it.**
    `facesOf()` is the piece the other twenty-three levels reuse unchanged.
 
-And the thing NOT to do: nothing here decides **which mechanisms gather into
-which of the twenty-four levels.** That is Kevin's shape. The kit is what makes
-any grouping cheap to build once he says it — thirty lines a stage.
+**On the grouping** — which mechanisms gather into which of the twenty-four
+levels — this document takes no position, because the kit is indifferent to it:
+every grouping costs the same thirty lines a stage. Three workable groupings are
+on the decision surface (by circuit, by what the water is doing, by what the hand
+is doing), each with what it would cost.

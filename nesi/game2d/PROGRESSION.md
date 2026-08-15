@@ -203,11 +203,17 @@ are filled with their edge doubled; the distinction is never colour alone.
 | faces in total | **96** |
 | mechanisms that exist today | **12** |
 
-**That gap is real and is not filled here.** Eight of the twelve mechanisms are
-still loose on the map, standing as themselves rather than pretending to be
-levels. Which of them gather into which level is his shape. The circuit shows
-nine runs today — one level and eight ungathered mechanisms — and it will be a
-different number again when he says how the rest gather.
+**That gap is real.** Eight of the twelve mechanisms are still loose on the map,
+standing as themselves rather than pretending to be levels. The circuit shows
+nine runs today — one level and eight ungathered mechanisms.
 
-**The name of LEVEL ONE is not invented.** It is numbered on screen; its four
-faces carry their own names, which are his.
+**The grouping is an open question with at least three workable answers**, and
+they are on the decision surface as options rather than as a wait:
+
+1. **By circuit** — the solid already gives four closed walks of six, and each
+   walk's members are a natural set.
+2. **By what the water is doing** — intake, separation, deposit, return.
+3. **By what the hand is doing** — the four gestures, one level per gesture.
+
+LEVEL ONE is numbered rather than named on screen. A number is a lawful
+permanent answer; whether it takes a name is also on that surface.

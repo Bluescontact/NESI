@@ -224,6 +224,42 @@ const WATER0 = {
 function W_(){ if(!S.water || typeof S.water!=="object") S.water=JSON.parse(JSON.stringify(WATER0));
                for(const k in WATER0) if(!(k in S.water)) S.water[k]=WATER0[k];
                return S.water; }
+/* ═══ THE PALETTE — one world, one set of materials ═════════════════════════
+   Built 2026-08-14 on Kevin's order, from THE_KIT.md's second gap: there are no
+   assets in this game at all — no image, no audio, no webfont, no network call,
+   everything is drawn — so THE PALETTE IS THE ASSET LIBRARY. And there were two
+   of them, one per file, thirty colours against fifteen, unshared.
+
+   This block is the canonical set. IT IS BYTE-IDENTICAL IN daily.html and
+   palette_check.js fails if the two ever drift, because "one palette" that
+   depends on someone remembering is two palettes with a delay.
+
+   Named by MATERIAL, never by use: a colour called `water` can be a lake, a
+   drop, a bead or a stain, and stays true. Nothing here encodes a state, a
+   judgement or a rank — colour is never the only carrier of a distinction
+   (law 10), so these are the world's substances and nothing else.
+
+   THE WATER HAS TWO DEPTHS AND THAT IS NOT A FUDGE. `water` is the body seen
+   deep — pooled, held, in the tank and the lake. `shallow` is the same body at
+   the surface, where the writing sits. They were the two blues the count found
+   in the two files; keeping both as named depths ends the duplication without
+   repainting the surface he writes on every morning. If he wants one flat
+   colour it is one token, changed once, in both files at once. */
+const PAL = {
+  ink:      "#17171a",   // his words, and only his words
+  paper:    "#f2efe8",   // anything his words are set on
+  water:    "#4a6c7a",   // the body, deep — pooled, held, carried
+  shallow:  "#6f93a4",   // the same body at the surface, where writing sits
+  deep:     "#40606f",   // what the deep would be, if the deep rendered
+  ground:   "#a89f8e",   // what the water sets down
+  stone:    "#6f675a",   // gate, wall, dam, anything built
+  sky:      "#cdd5d2",   // above, near
+  horizon:  "#b6ae9f",   // above, far
+  shoot:    "#4f6a3d",   // what grows
+  taken:    "#8d9298",   // what the world already has
+  edge:     "rgba(40,40,44,.45)",   // every outline in the world
+  quiet:    "rgba(90,84,74,.25)"    // every division that must not shout
+};
 function clamp01(v){ return Math.max(0, Math.min(1, v)); }
 
 /* A level records what the water did on its edge. One per edge, replaced rather
@@ -271,6 +307,64 @@ addEventListener("resize",resize); resize();
 /* ── input ────────────────────────────────────────────────────────────────── */
 const keys=Object.create(null);
 let mouse={x:0,y:0,down:false,clicked:false,drag:false};
+
+/* ═══ THE FOUR GESTURES ═════════════════════════════════════════════════════
+   Built 2026-08-14 on Kevin's order, from THE_KIT.md's first gap: four gestures
+   existed in the build and NONE of them had a verb, so every stage hand-rolled
+   its own out of `mouse.clicked`, `mouse.down` and a bare key. The dam proved
+   what that costs — its act was a key nobody named, with no affordance at all,
+   and it was found by a hand rather than by a check.
+
+   These are the four, and there is no fifth. A stage DECLARES which one it uses
+   (`g:` on its body) and then uses that verb, so a check can ask all twenty-four
+   the same question instead of reading twenty-four hand-rolled hit tests.
+
+     REACH — a hand on a thing, and that thing answers
+     HOLD  — gather while held; the LETTING GO is the act
+     DRAW  — a course dragged across a surface, which persists
+     WAIT  — the stage where doing nothing is the mechanic
+
+   None of them prompts, labels, counts or nags. They are how a hand asks; what
+   answers is the stage's own business. */
+const GESTURES = ["reach","hold","draw","wait"];
+
+/* REACH. True on the frame a hand comes down on the thing. `near()` is the same
+   test without the click, so a stage can show the thing answering BEFORE it is
+   taken — which is the whole of having an affordance. */
+function near(x,y,r){ return Math.hypot(mouse.x-x, mouse.y-y) < (r||26); }
+function reach(x,y,r){ return mouse.clicked && near(x,y,r); }
+
+/* HOLD. Mouse or E or space — a hand that has only ever used a mouse is still a
+   hand. `held` is the fraction gathered, 0–1, at the rate the stage sets; it is
+   FORM for the stage to draw, never a figure. `let_go` fires once, on release,
+   and only if something was actually gathered: a stray click releases nothing. */
+function holding(){ return mouse.down || keys["e"] || keys[" "]; }
+function hold(dt, secs){
+  L._h = L._h || {v:0, was:false, went:false};
+  const h=L._h, on=holding();
+  if(on && !h.went) h.v = Math.min(1, h.v + dt/((secs||2.6)*1000));
+  h.went = (!on && h.was && h.v>0.12) || h.went;
+  h.was = on;
+  return { held:h.v, letting_go:h.went };
+}
+/* DRAW. A course, in the stage's own coordinates, that only grows while the hand
+   is down and only lands when it lets go with enough of a line to be a line. */
+function draw(min){
+  L._d = L._d || {path:[], drawing:false};
+  const d=L._d;
+  if(mouse.down){ const p=d.path[d.path.length-1];
+    if(!p || Math.hypot(mouse.x-p.x, mouse.y-p.y)>18){ d.path.push({x:mouse.x,y:mouse.y}); d.drawing=true; } }
+  const landed = !mouse.down && d.drawing && d.path.length>=(min||8);
+  return { path:d.path, drawing:d.drawing, landed };
+}
+/* WAIT. Doing nothing is the mechanic, so ANY input resets it — and nothing on
+   screen ever says so, asks for it, or counts it down. */
+function wait(dt, ms){
+  L._w = (L._w||0);
+  if(mouse.down || mouse.clicked || Object.keys(keys).some(k=>keys[k])) L._w = 0;
+  else L._w += dt;
+  return { quiet:L._w, still:L._w >= (ms||6000) };
+}
 addEventListener("keydown",e=>{
   if(typing){
     if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault(); commitWrite();}
@@ -344,10 +438,11 @@ let room=null;                    // the level you are standing inside, if any
 
    LEVEL ONE is built. THE NAME OF LEVEL ONE IS NOT INVENTED HERE — it is
    numbered on screen and its four faces carry their own names, which are his.
-   THE OTHER EIGHT MECHANISMS ARE STILL LOOSE on the map, because which of them
-   group into which level is his shape and not a thing to guess: 24 levels of
-   four faces is 96 faces, and there are twelve mechanisms. That gap is real and
-   is said out loud rather than filled. */
+   THE OTHER EIGHT MECHANISMS ARE STILL LOOSE on the map. 24 levels of four
+   faces is 96 faces and there are twelve mechanisms; the grouping is an open
+   question with several workable answers — by circuit, by what the water is
+   doing, by what the hand is doing — and it is on the decision surface with
+   those options rather than settled here. */
 const LEVEL1 = { n:1, faces:["tank","rain","dam","channel"] };
 const faceOf = k => LEVELS.find(l=>l.key===k);
 const worked = k => !!(S.faces&&S.faces[k]);
@@ -383,7 +478,7 @@ const SET = {
 /* 1 · THE TANK — "you type a hundred words, and you see the water flow into the
    dam." Writing becomes water. Every sentence you completed falls as a drop and
    pools behind the gate. Nothing reads it. */
-tank:{ enter(){ const w=W_();
+tank:{ g:"reach", enter(){ const w=W_();
     // READS THE ONE WATER: you open on the surface the other eleven left.
     L.drops=[]; L.pool=w.level*90; L.sent=[]; L.fed=0;
     /* WATER THAT ALREADY ARRIVED — built 2026-08-14, "build the first 4 levels
@@ -416,8 +511,8 @@ tank:{ enter(){ const w=W_();
       S.kept=(S.kept||[]).concat(L.sent); save(); }); } },
   step(dt){ if(typing) return;
     /* the reach: a hand on a held arrival lets that one fall, and only that one */
-    if(L.held&&L.held.length&&mouse.clicked){
-      const i=L.held.findIndex(h=>Math.hypot(mouse.x-h.x,mouse.y-h.y)<26);
+    if(L.held&&L.held.length){
+      const i=L.held.findIndex(h=>reach(h.x,h.y));
       if(i>=0){ const h=L.held.splice(i,1)[0];
         L.drops.push({x:h.x,y:h.y,v:0,s:h.t});
         S.kept=(S.kept||[]).concat([h.t]);
@@ -450,11 +545,11 @@ tank:{ enter(){ const w=W_();
        each one a bead that swells under a hand and falls when reached for. No
        label, no order shown, nothing counted, and none of them says a word. */
     if(L.held) L.held.forEach(h=>{
-      const near=Math.hypot(mouse.x-h.x,mouse.y-h.y)<26;
-      g.fillStyle= near ? "rgba(74,108,122,.95)" : "rgba(74,108,122,.62)";
-      g.beginPath(); g.arc(h.x,h.y,near?11:8,0,7); g.fill();
+      const on=near(h.x,h.y);
+      g.fillStyle= on ? "rgba(74,108,122,.95)" : "rgba(74,108,122,.62)";
+      g.beginPath(); g.arc(h.x,h.y,on?11:8,0,7); g.fill();
       g.strokeStyle="rgba(40,40,44,.35)"; g.lineWidth=1; g.stroke();
-      if(near){ g.strokeStyle="rgba(40,40,44,.30)"; g.beginPath();
+      if(on){ g.strokeStyle="rgba(40,40,44,.30)"; g.beginPath();
         g.moveTo(h.x,h.y+13); g.lineTo(h.x,h.y+30); g.stroke(); } });
     ground(floor+22);
     // THE WRITING TETRA, vertex down, standing behind an aperture in this wall.
@@ -466,7 +561,7 @@ tank:{ enter(){ const w=W_();
 /* 2 · THE LENS — "250 word, and it gets worked by the user into a lens."
    Your own sentences stand on three faces. Read each by holding. When a thing
    can be held across all three, that is the lens. */
-lens:{ enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
+lens:{ g:"reach", enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-120}; },
   step(dt){ if(typing) return;
     const sp=3.2; if(keys["a"]||keys["arrowleft"])L.p.x-=sp; if(keys["d"]||keys["arrowright"])L.p.x+=sp;
     if(keys["w"]||keys["arrowup"])L.p.y-=sp; if(keys["s"]||keys["arrowdown"])L.p.y+=sp;
@@ -495,7 +590,7 @@ lens:{ enter(){ L.read=[false,false,false]; L.hold=-1; L.hm=0; L.p={x:W/2,y:H-12
 /* 3 · THE DAM — "A dam restricts flow, accumulates head, and generates power at
    the moment of release — never at the moment of restriction." Hold, then let
    go. Holding is not producing. */
-dam:{ enter(){ const w=W_();
+dam:{ g:"hold", enter(){ const w=W_();
     // READS: there is only as much head to gather as the tank actually raised.
     L.cap=Math.max(0.15, w.level); L.head=0; L.open=0; L.spun=0; L.done=false;
     /* THE GATE HAS A HANDLE NOW — built 2026-08-14, "build the first 4 levels
@@ -512,11 +607,13 @@ dam:{ enter(){ const w=W_();
   step(dt){ if(typing) return;
     /* the mouse works it too — a hand that has only ever used a mouse is still
        a hand, and the handle is a thing you can push */
-    const press=keys["e"]||keys[" "]||mouse.down;
-    const w=W_();
-    L.handle += ((press&&!L.released ? 1 : 0) - L.handle) * 0.18;
-    if(!L.released){ if(press){ L.head=Math.min(L.cap,L.head+dt/2600); w.held=L.head; w.still=1; } }
-    if(!press&&L.head>0.12&&!L.released){ L.released=true; }
+    /* THE HOLD, in the shared verb. The stage says how much there is to gather
+       (its cap) and how long a full gather takes; the verb owns mouse-or-key,
+       the fraction, and the once-only letting go. */
+    const h=hold(dt, 2.6), w=W_();
+    L.handle += ((holding()&&!L.released ? 1 : 0) - L.handle) * 0.18;
+    if(!L.released){ L.head=Math.min(L.cap, h.held*L.cap); w.held=L.head; if(holding()) w.still=1; }
+    if(h.letting_go && !L.released){ L.released=true; }
     if(L.released){ L.open=Math.min(1,L.open+dt/700);
       L.spun+=L.head*L.open*dt*0.02; L.head=Math.max(0,L.head-dt/1400);
       // WRITES: the release spends the level, stirs it, and puts the held load
@@ -558,7 +655,7 @@ dam:{ enter(){ const w=W_();
 /* 4 · THE GROUND — "what it sets down IS the ground; there is no other ground."
    The released water carries your sentences down and they settle. You do not
    place them. */
-ground:{ enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
+ground:{ g:"wait", enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,(W-160)/14),y:-40-i*70,v:0,set:false})); },
   step(dt){ let all=true;
     L.blocks.forEach(b=>{ if(b.set) return; all=false; b.v+=0.42; b.y+=b.v;
       const fy=H-150-Math.sin(b.x*0.01)*14;
@@ -581,7 +678,7 @@ ground:{ enter(){ L.blocks=STONES.slice(0,14).map((s,i)=>({s,x:60+i*Math.max(60,
 /* 5 · THE FILTER — four fractions, told apart by BEHAVIOUR, never by colour
    alone: bedload sinks fast, suspended hangs, dissolved is invisible, film
    clings to the top. The hand catches them. No computed pass. */
-filter:{ enter(){ const w=W_();
+filter:{ g:"reach", enter(){ const w=W_();
     // READS: the load the dam put into suspension is what there is to sort. Let
     // nothing go and there is almost nothing here — which is a fact about the
     // water, not a judgement about you.
@@ -615,7 +712,7 @@ filter:{ enter(){ const w=W_();
 /* 6 · THE STATIONS — "three outputs at every station: sent to a spire, dropped
    to the lake, set down with no feedback at all." The third is the one that
    matters, and it does nothing on purpose. */
-stations:{ enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
+stations:{ g:"reach", enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
   step(){ if(mouse.clicked){ mouse.clicked=false; const b=bays();
       for(const [k,r] of Object.entries(b)){
         if(mouse.x>r.x&&mouse.x<r.x+r.w&&mouse.y>r.y&&mouse.y<r.y+r.h){
@@ -654,7 +751,7 @@ stations:{ enter(){ L.queue=S.caught.slice(0,6); L.i=0; },
      seating, never by holding harder.
 
    So this level teaches the array, and level 9 is what makes any of it keep. */
-heliostat:{ enter(){ L.a=-0.9; L.grown=0; },
+heliostat:{ g:"hold", enter(){ L.a=-0.9; L.grown=0; },
   step(dt){ if(mouse.down){ L.a=Math.atan2(mouse.y-lakeY(), mouse.x-W/2); }
     // every mirror that is currently throwing light: your hand's aim on the
     // unseated ones, plus each seated mirror on its own locked bearing
@@ -695,7 +792,7 @@ heliostat:{ enter(){ L.a=-0.9; L.grown=0; },
    releases in one afternoon root nothing." The only mechanic that a heavy day
    cannot force. If you came back on the same day, nothing roots, and bare
    ground is bare — not failing. */
-winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
+winter:{ g:"wait", enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=today(); save(); L.same=true; } },
   step(dt){ L.t+=dt;
     if(!L.same&&L.t>1600&&!L.k){ S.rooted++; S.lastDay=today();
       // WRITES: rooting takes something out of the water for good.
@@ -716,14 +813,17 @@ winter:{ enter(){ L.same = (S.lastDay===today()); if(!S.lastDay){ S.lastDay=toda
    visible rain… Never read, never judged — but lavishly received." The world
    answers THAT you wrote, never WHAT. Your hand catches nothing here; it only
    moves the catchment under what is already falling. */
-rain:{ enter(){ const w=W_();
+rain:{ g:"draw", enter(){ const w=W_();
     // READS: it rains as much as the tank raised. A dry tank is a dry sky, and
     // that is a fact about the water.
     L.drops=[]; L.caught=0; L.need=6; L.t=0; L.rate=Math.max(90, 420-w.level*330);
     L.pan=W/2; },
   step(dt){ const w=W_(); L.t+=dt;
     if(L.t>L.rate){ L.t=0; L.drops.push({x:60+Math.random()*(W-120), y:-10, v:1.4+Math.random()*1.2}); }
-    if(mouse.down) L.pan += (mouse.x-L.pan)*0.18;
+    /* THE DRAW, in the shared verb: the pan follows a hand that is drawing a
+       line across the sky. The verb owns "is the hand down and moving"; where
+       the pan goes is the stage's. */
+    if(draw().drawing) L.pan += (mouse.x-L.pan)*0.18;
     const fy=H-150;
     L.drops.forEach(d=>{ d.v+=0.05; d.y+=d.v; });
     L.drops=L.drops.filter(d=>{
@@ -744,11 +844,14 @@ rain:{ enter(){ const w=W_();
    You drag a course across the bed. The cut PERSISTS in the one water, and every
    later level runs down it. This is the clearest instance of an edge reaching
    every other edge: what you carve here is the ground THE GROUND settles on. */
-channel:{ enter(){ const w=W_(); L.path=w.cut.slice(); L.drawing=false; L.startLen=L.path.length; },
+channel:{ g:"draw", enter(){ const w=W_(); L._d={path:w.cut.slice(), drawing:false}; L.startLen=L._d.path.length; },
   step(){ const w=W_();
-    if(mouse.down){ const p=L.path[L.path.length-1];
-      if(!p || Math.hypot(mouse.x-p.x, mouse.y-p.y)>18){ L.path.push({x:mouse.x,y:mouse.y}); L.drawing=true; } }
-    if(!mouse.down && L.drawing && L.path.length-L.startLen>=8){
+    /* THE DRAW, in the shared verb. The course is the verb's; what it means to
+       the bed is the stage's. The minimum is measured from what was already cut,
+       so adding to an old channel counts as a course and re-tracing it does not. */
+    const d=draw(L.startLen+8);
+    L.path=d.path;
+    if(d.landed){
       // WRITES: a channel is permanent. It raises the load (cutting stirs the
       // bed) and it steers what comes after.
       w.cut=L.path.slice(0,240);
@@ -770,7 +873,7 @@ channel:{ enter(){ const w=W_(); L.path=w.cut.slice(); L.drawing=false; L.startL
 /* 8 · THE SHOAL — "Your sentences are shoals. They stand up out of the water
    because you put them there, in your own words, unchanged… The arrangement is
    the meaning; nothing labels it." You move them by hand. Nothing sorts. */
-shoal:{ enter(){ const w=W_();
+shoal:{ g:"draw", enter(){ const w=W_();
     // READS: what stands above the surface depends on how high the water is.
     // Raise it and fewer show; release and more of the bed is out of the water.
     L.st=(S.ground.length?S.ground:STONES).slice(0,9).map((s,i)=>({
@@ -799,7 +902,7 @@ shoal:{ enter(){ const w=W_();
    stops, the water goes still on its own. The page falling quiet is the
    mechanic." The one level whose act is stopping. Touch nothing and it finishes;
    touch anything and it does not. Clarity recovers only here. */
-stilling:{ enter(){ L.q=0; L.ripple=1; },
+stilling:{ g:"wait", enter(){ L.q=0; L.ripple=1; },
   step(dt){ const w=W_();
     const touched = mouse.down || Object.keys(keys).some(k=>keys[k]);
     if(touched){ L.q=0; L.ripple=1; w.still=0; }
@@ -834,7 +937,7 @@ stilling:{ enter(){ L.q=0; L.ripple=1; },
    READS the one water twice over: what is down there at all is what THE GROUND
    settled, and how far a line can see is the clarity THE FILTER and THE STILLING
    left behind. Sound a turbid lake and it gives you less. */
-sounding:{ enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
+sounding:{ g:"reach", enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
   step(){ if(!mouse.clicked) return; mouse.clicked=false;
     if(mouse.y < H*0.24) return;
     // THE GROUND DECIDES, AND SO DOES THE WATER — but neither of them is a coin.
@@ -884,7 +987,7 @@ sounding:{ enter(){ L.lines=[]; L.up=-1; L.clear=W_().clarity; },
    is an absence and absence is not written down.
    Nothing puts a pattern in the ground. It was always down there.
    (keptAtX / keptDepth / drawKept are defined below the mechanics.) */
-deep:{ enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
+deep:{ g:"reach", enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
   step(){ if(!mouse.clicked) return; mouse.clicked=false;
     if(mouse.y < H*0.45){                       // above the line: sound it
       const i = keptAtX(mouse.x), found = i>=0;
@@ -928,7 +1031,7 @@ deep:{ enter(){ L.lines=[]; L.sunk=0; L.up=-1; },
    So you release a lens and it drifts and settles by its own motion. Where you
    clicked has nothing to do with where it comes to rest. You feed the frame;
    you do not place anything in it. */
-seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
+seating:{ g:"reach", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
     L.words=null; L.cut=null; L.lay=null;
     if(!L.asked){ L.asked=true;
       openWrite(500,(text)=>{
@@ -1020,7 +1123,7 @@ seating:{ enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
 /* 11 · THE GARDEN — "it fills only from play… nothing pre-populates it; nothing
    in it demands, prompts, or expires. The garden shows what you made and never
    what it means." */
-garden:{ enter(){ L.t=0; },
+garden:{ g:"wait", enter(){ L.t=0; },
   step(dt){ L.t+=dt; if((keys["e"]||keys[" "])&&L.t>900){ save(); finish(); } },
   draw(){ sky(); const fy=H-140; ground(fy);
     S.lenses.forEach((t,i)=>{ const x=120+i*230, y=fy-110;
@@ -1037,7 +1140,7 @@ garden:{ enter(){ L.t=0; },
 /* 12 · THE CAST — "the shape your returning made… carrying not one character of
    your text. Pull it past its resistance and it leaves: the file is yours, the
    fruit is gone from the world, and NESI keeps no record of it." */
-cast:{ enter(){ L.pull=0; L.gone=S.cast; },
+cast:{ g:"hold", enter(){ L.pull=0; L.gone=S.cast; },
   step(dt){ if(L.gone){ L.t+=dt; if(L.t>1600) finish(); return; }
     if(mouse.down) L.pull=Math.min(1,L.pull+dt/2200); else L.pull=Math.max(0,L.pull-dt/900);
     if(L.pull>=1){ L.gone=true; S.cast=true; L.t=0; emit(); save(); } },
@@ -1281,8 +1384,8 @@ function beamCrossesWater(m,ang){
 /* WHAT THE MAP CARRIES NOW. Level one is ONE run, because it is one level; its
    four faces are inside it and have no door of their own out here. The eight
    mechanisms that have not been gathered into a level yet stand as themselves —
-   they are not pretending to be levels, and which level each belongs to is
-   Kevin's shape, unbuilt and unguessed. So the ring is nine runs, not twelve,
+   they are not pretending to be levels; which level each belongs to is
+   unbuilt and on the decision surface with candidate answers. So the ring is nine runs, not twelve,
    and it will be a different number again when he says how the rest gather. */
 const MAPRUNS = [{n:1, key:"__level1", name:"LEVEL ONE", mech:"four faces of one tetra"}]
   .concat(LEVELS.slice(4));

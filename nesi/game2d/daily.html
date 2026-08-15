@@ -63,8 +63,26 @@
   NO NUMBER REACHES YOU. NOTHING IS CAPPED. NOTHING NAGS. QUITTING LOSES NOTHING.
 -->
 <style>
-  :root{ --sky:#dfe3e0; --ink:#14161a; --taken:#8d9298; --paper:#f4f2ec;
-         --water:#6f93a4; --deep:#40606f; --ground:#9d9384; --shoot:#4f6a3d; }
+  /* ═══ THE PALETTE — one world, one set of materials ═══════════════════════
+     The canonical set, byte-identical with the PAL block in ascent.html.
+     palette_check.js fails if the two ever drift: "one palette" that depends on
+     someone remembering is two palettes with a delay. There are no assets in
+     this game — everything is drawn — so the palette IS the asset library.
+     Named by material, never by use. Colour never carries a distinction on its
+     own (law 10); these are the world's substances and nothing else. */
+  :root{
+    --ink:      #17171a;   /* his words, and only his words */
+    --paper:    #f2efe8;   /* anything his words are set on */
+    --water:    #4a6c7a;   /* the body, deep — pooled, held, carried */
+    --shallow:  #6f93a4;   /* the same body at the surface, where writing sits */
+    --deep:     #40606f;   /* what the deep would be, if the deep rendered */
+    --ground:   #a89f8e;   /* what the water sets down */
+    --stone:    #6f675a;   /* gate, wall, dam, anything built */
+    --sky:      #cdd5d2;   /* above, near */
+    --horizon:  #b6ae9f;   /* above, far */
+    --shoot:    #4f6a3d;   /* what grows */
+    --taken:    #8d9298;   /* what the world already has */
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:var(--sky)}
   body{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif}
@@ -96,8 +114,8 @@
     padding:9px 11px;font-size:12.5px;line-height:1.5;cursor:grab;white-space:pre-wrap;
     box-shadow:0 2px 6px rgba(0,0,0,.07)}
   #table .tile.drag{cursor:grabbing;box-shadow:0 12px 28px rgba(0,0,0,.20);z-index:9}
-  #table .tile.over{border-color:#40606f;border-width:2px}
-  #table .tile.arr{border-left:3px solid #6f93a4}
+  #table .tile.over{border-color:var(--deep);border-width:2px}
+  #table .tile.arr{border-left:3px solid var(--shallow)}
   #table .tile.seamed{border-style:double;border-width:3px}
   #table .src{display:block;margin-top:6px;font-size:10px;color:#7d766a;letter-spacing:.04em}
   #seams{position:fixed;left:50%;top:10vh;transform:translateX(-50%);width:min(620px,86vw);
@@ -570,9 +588,10 @@ function paintTable(){
            at the top edge      → SET DOWN, and set-it-down has no destination,
                                   no animation and no confirmation. It simply is
                                   not there. Whether it leaves a trace, and of
-                                  what kind, is his and is NOT INVENTED HERE —
-                                  the stone is kept whole so any trace he names
-                                  can still be built.
+                                  what kind, is open — a mark, a dimming, a
+                                  place it goes, or nothing at all — and the
+                                  stone is kept whole so any of them can be
+                                  built on it.
            anywhere else        → it stays where you put it
          One gesture, four ends, no button and no label on any of them. */
       const c=centreOf(s);
@@ -746,15 +765,24 @@ function frame(dt){
   if(line) line.d=Math.min(line.max, line.d+14);
   draw();
 }
+/* THE CANVAS DRAWS FROM THE SAME PALETTE THE PAGE DOES. Read once off :root, so
+   there is exactly one place the world's materials are named in this file and it
+   is the block at the top. A literal here would be a third palette. */
+const PAL = (()=>{ const cs=getComputedStyle(document.documentElement), o={};
+  ["ink","paper","water","shallow","deep","ground","stone","sky","horizon","shoot","taken"]
+    .forEach(k=> o[k]=cs.getPropertyValue("--"+k).trim() );
+  return o; })();
+const rgba=(hex,a)=>{ const n=parseInt(hex.slice(1),16);
+  return "rgba("+(n>>16&255)+","+(n>>8&255)+","+(n&255)+","+a+")"; };
 function draw(){
   const wy=H*(1-level*0.42);
   const sky=g.createLinearGradient(0,0,0,H);
-  sky.addColorStop(0,"#e6e9e6"); sky.addColorStop(1,"#c6cfcc");
+  sky.addColorStop(0,rgba(PAL.sky,.55)); sky.addColorStop(1,PAL.sky);
   g.fillStyle=sky; g.fillRect(0,0,W,H);
 
   const bands=dayset().size;
   const gy=bedY();
-  g.fillStyle="#9d9384"; g.fillRect(0,gy,W,H-gy);
+  g.fillStyle=PAL.ground; g.fillRect(0,gy,W,H-gy);
   for(let i=0;i<bands;i++){ const y=gy+10+i*13; if(y>H-6) break;
     g.strokeStyle= i%2 ? "rgba(120,112,100,.40)" : "rgba(140,132,120,.32)";
     g.lineWidth=1.5; g.beginPath();
@@ -762,7 +790,7 @@ function draw(){
     g.stroke(); }
 
   const wg=g.createLinearGradient(0,wy,0,H);
-  wg.addColorStop(0,"rgba(111,147,164,.50)"); wg.addColorStop(1,"rgba(64,96,111,.72)");
+  wg.addColorStop(0,rgba(PAL.shallow,.50)); wg.addColorStop(1,rgba(PAL.deep,.72));
   g.fillStyle=wg; g.fillRect(0,wy,W,H-wy);
 
   g.strokeStyle="rgba(240,244,246,.55)"; g.lineWidth=1.5; g.beginPath();
@@ -772,9 +800,9 @@ function draw(){
 
   for(let i=0;i<Math.min(S.returns,40);i++){
     const x=W*0.06 + i*Math.max(16,(W*0.88)/40);
-    g.strokeStyle="#4f6a3d"; g.lineWidth=2;
+    g.strokeStyle=PAL.shoot; g.lineWidth=2;
     g.beginPath(); g.moveTo(x,gy+4); g.lineTo(x,gy-11); g.stroke();
-    g.fillStyle="#4f6a3d"; g.beginPath(); g.arc(x,gy-13,2.6,0,7); g.fill(); }
+    g.fillStyle=PAL.shoot; g.beginPath(); g.arc(x,gy-13,2.6,0,7); g.fill(); }
 
   if(line){
     g.strokeStyle="rgba(240,244,246,.8)"; g.lineWidth=1.4;
