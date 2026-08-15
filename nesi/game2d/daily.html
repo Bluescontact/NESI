@@ -55,6 +55,40 @@
       it simply stays, forever, and nothing asks.
   ─────────────────────────────────────────────────────────────────────────────
 
+  ─────────────────────────────────────────────────────────────────────────────
+  3 · SITED ON THE SOLID, 2026-08-14. This page is ↓TANK's face.
+
+     Until now the surface knew nothing about the world it is a seat of. It now
+     loads solid.js and asks it where things are, rather than carrying its own
+     copy of the geometry. Three members reach this page and all three are LOOKED
+     UP, never written here — so if a circuit ever changes and a member stops
+     existing, the lookup returns null and this page says so by not drawing it,
+     rather than drawing a door onto nothing.
+
+       ↓TANK—↑CAST          the door out. Circuit four's turn, and the one
+                            member from intake to departure — the long way round
+                            is eleven, which is every seat in the world once.
+       ↓TANK—↓FILTER—↓DEEP  the withdrawal. The only two-step path between the
+                            tank and the deep, found rather than written.
+       the tank's three     send · drop · set, derived from the tank's own real
+                            members, not from a list kept here.
+
+     ITS OWN OPEN QUESTION, carried rather than smoothed:
+     THE QUESTION: what does walking the door out cost? Kevin marked that the
+     member exists AND that it costs something to walk. What it costs is his.
+     THE CANDIDATE ANSWER here: the reach itself. The sill is not a click — it
+     is held until it gives, the same grammar as the cast's pull-past-resistance
+     in ascent.html:1320-1332. Let go early and nothing happens, nothing is said,
+     and nothing is kept about the attempt.
+     THIS PASS LEAVES IT STANDING. A price in some other currency — a day, a
+     stone, a fraction of the water — is a different answer and is not foreclosed.
+
+     AND WHAT DEPARTS WITH THE FRUIT IS NOT DECIDED HERE. ↑CAST's own emit() in
+     ascent.html:1372 carries shape and not one character of text, and this pass
+     does not touch it. The door out is the MEMBER, not the seat: the writing
+     leaves along the edge, and what the fruit carries stays Kevin's question.
+  ─────────────────────────────────────────────────────────────────────────────
+
   NOTHING READS WHAT YOU WROTE. The operations performed on your text are: count
   its words to move the water, scan it for sentence-ending punctuation, and store
   it. There is no other. No sentiment, no theme, no sorting, no model call, and
@@ -142,8 +176,21 @@
 <div id="sill" title="the door out"></div>
 <a id="carry" style="display:none"></a>
 
+<script src="solid.js"></script>
 <script>
 "use strict";
+
+/* ═══ WHERE THIS PAGE IS ════════════════════════════════════════════════════
+   ↓TANK's face. Every member below is FOUND in the solid, never written here.
+   If solid.js is absent the page still writes, still banks, still returns — it
+   simply has no door and no route, and says so by not drawing them. A writing
+   surface that dies because a geometry file is missing would be the wrong
+   dependency. */
+const SEAT="TANK";
+const G = (typeof SOLID!=="undefined") ? SOLID : null;
+const DOOR = G ? G.DOOR_OUT : null;                 /* ↓TANK—↑CAST */
+const WITHDRAW = G ? G.WITHDRAWAL : null;           /* ↓TANK—↓FILTER—↓DEEP */
+const OUTPUTS = G ? G.outputsOf(SEAT) : null;       /* send · drop · set */
 
 /* ═══ the store — one, and it adopts the others ═════════════════════════════ */
 const KEY="nesi.water", SCHEMA="water.2";     /* .2 — the watermark and the stones */
@@ -295,8 +342,14 @@ function bandCut(){
     S.stones.forEach(s=>{
       if(s.d!==S.today || s.seams) return;         /* today's plain stones only */
       const there = v.indexOf(s.t)>=0;
-      if(!there && s.stage===undefined) s.stage="withdrawn";
-      else if(there && s.stage==="withdrawn") delete s.stage;
+      /* AND IT WITHDRAWS BY WAY OF THE FILTER. The route is not chosen: ↓TANK to
+         ↓DEEP has exactly one two-step path in the whole solid, and it runs
+         through ↓FILTER. Found, not written — see solid.js WITHDRAWAL. The route
+         is kept on the stone so the door out can carry where it went; nothing on
+         screen says it, and no number is derived from it. The bank keeps, the
+         return releases. */
+      if(!there && s.stage===undefined){ s.stage="withdrawn"; if(WITHDRAW) s.by=WITHDRAW.join(" — "); }
+      else if(there && s.stage==="withdrawn"){ delete s.stage; delete s.by; }
     });
   }
   if(S.mark>v.length) S.mark=v.length;
@@ -711,6 +764,8 @@ tableEl.addEventListener("pointerdown", ()=>{ seamsEl.style.display="none"; });
 function carriedText(){
   const L=[], line=s=>L.push(s);
   line("NESI · the writing · " + S.today);
+  /* the member it left by, named from the solid rather than written here */
+  if(DOOR) line("left by " + DOOR.a + " — " + DOOR.b);
   line("");
   if(S.text.trim()){ line("── today ──"); line(""); line(S.text); line(""); }
   const bank=S.stones.slice().sort((a,b)=>a.n-b.n);
@@ -719,7 +774,7 @@ function carriedText(){
     bank.forEach(s=>{
       line("");
       line(s.t);                                        /* verbatim, never touched */
-      line("    " + s.d + (s.stage ? " · " + s.stage : ""));
+      line("    " + s.d + (s.stage ? " · " + s.stage : "") + (s.by ? " · by " + s.by : ""));
       if(s.seams) s.seams.slice().sort((x,y)=>x.n-y.n)
         .forEach(p=> line("    seam · " + p.d + " · " + p.t));
     });
@@ -727,12 +782,58 @@ function carriedText(){
   (S.past||[]).forEach(p=>{ line(""); line("── " + p.d + " ──"); line(""); line(p.text); });
   return L.join("\n");
 }
-document.getElementById("sill").addEventListener("click", ()=>{
-  const a=document.getElementById("carry");
-  const url=URL.createObjectURL(new Blob([carriedText()],{type:"text/plain;charset=utf-8"}));
-  a.href=url; a.download="nesi-writing-"+(S.today||"today")+".txt";
-  a.click(); setTimeout(()=>URL.revokeObjectURL(url), 4000);
-});
+/* THE SILL IS THE MEMBER ↓TANK—↑CAST, and it is HELD, not clicked. Kevin's mark:
+   the member exists but costs something to walk. The cost built here is the reach
+   itself — the same grammar as the cast's pull-past-resistance. Hold and the sill
+   deepens under your hand; let go early and it goes back, says nothing, and keeps
+   nothing about the attempt. No bar, no percentage, no count — the sill's own
+   darkening is the whole readout (law 2, and law 10: the depth is a shape, not a
+   colour). What it should cost in some other currency is not settled; see the
+   header. */
+const sill=document.getElementById("sill");
+if(!DOOR){
+  /* the member is not in the solid: no door is drawn, and nothing says why */
+  sill.style.display="none";
+} else {
+  /* THE COST IS A DURATION, NOT A FRAME COUNT. Driven from the clock and by an
+     interval rather than requestAnimationFrame — on a 120Hz screen a per-frame
+     increment would open the door in half the time, which would make the cost a
+     property of the writer's hardware. And rAF stops when the page is not
+     compositing, which would strand a hold mid-reach with the sill dark and
+     nothing moving. */
+  const REACH=900;                     /* how long the hand must stay on the sill */
+  let reach=0, onIt=false, iv=0, last=0;
+  const paintSill=()=>{
+    const k=Math.min(1,reach/REACH);
+    sill.style.height=(22+k*16)+"px";
+    sill.style.background="linear-gradient(to bottom,rgba(20,22,26,"+(0.14+k*0.44)+"),transparent)";
+  };
+  const stop=()=>{ clearInterval(iv); iv=0; };
+  const step=()=>{
+    const now=performance.now(), dt=Math.min(120, now-last); last=now;
+    reach += onIt ? dt : -dt*2.2;      /* it gives back faster than it takes */
+    if(reach<=0){ reach=0; paintSill(); stop(); return; }
+    if(reach>=REACH){ reach=0; onIt=false; paintSill(); stop(); walk(); return; }
+    paintSill();
+  };
+  const run=()=>{ if(!iv){ last=performance.now(); iv=setInterval(step,30); } };
+  const begin=()=>{ onIt=true; run(); };
+  const release=()=>{ onIt=false; if(reach>0) run(); };
+  sill.addEventListener("pointerdown", e=>{ e.preventDefault(); begin(); });
+  addEventListener("pointerup", release);
+  addEventListener("pointercancel", release);
+  sill.addEventListener("pointerleave", release);
+
+  /* WALKING IT. The writing leaves along the member; nothing here is removed and
+     nothing is counted on the way out. */
+  function walk(){
+    const a=document.getElementById("carry");
+    const url=URL.createObjectURL(new Blob([carriedText()],{type:"text/plain;charset=utf-8"}));
+    a.href=url; a.download="nesi-writing-"+(S.today||"today")+".txt";
+    a.click(); setTimeout(()=>URL.revokeObjectURL(url), 4000);
+  }
+  window.__walkDoor=walk;             /* the walk reaches it; nothing on the page does */
+}
 
 /* ═══ the surface ═══════════════════════════════════════════════════════════ */
 const cv=document.getElementById("c"), g=cv.getContext("2d");
