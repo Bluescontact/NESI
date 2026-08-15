@@ -150,6 +150,45 @@ const groups = {
 };
 
 const hits = [];
+/* ═══ EVERY REFUSAL IS BOUND TO THE PRESENCE THAT SATISFIES IT ═══════════════
+   A prohibition on its own is satisfied by a world that does less: this check
+   passed a blank page, proven by running it on one. game-craft named the rule on
+   2026-08-13 — "invert every check to presence-asserting, never
+   absence-passing. A blank screen passes every refusal."
+
+   So each law now carries the YES it protects. A surface that carries the law's
+   subject must carry its presence, and a surface carrying neither is not
+   compliant — it is empty, and says so.
+
+   The presences are the things the laws exist for:
+     the refusals hold when a hand can act at all
+     "no model call" holds when the machine SHOWS it makes none
+     "no number reaches you" holds when the boundary saying so is announced
+     "set-it-down has no feedback" holds when the third output is there to take */
+const PRESENCE = {
+  "*": [
+    { needs: /addEventListener\(|onCommit|reach\(|holding\(|draw\(|wait\(|location\.replace|opt\.addEventListener/,
+      is: "a hand can act on this surface at all — a page with no act refuses nothing" }
+  ],
+  "ascent.html": [
+    { needs: /CASE\.net|CASE\.model/,
+      is: "the clear case SHOWS the machine making no call — the proof, not the promise" },
+    { needs: /const CONSTRAINTS\s*=\s*\[/,
+      is: "every boundary is registered, so the one saying no number reaches you is announced" },
+    { needs: /set\s*:\s*\{|routed\[k\]|"set"/,
+      is: "the third output is there to take, which is what makes set-it-down a choice" }
+  ],
+  "daily.html": [
+    { needs: /localStorage\.setItem\(KEY\s*\+\s*"\.pad"/,
+      is: "pad, read back, commit — quitting loses nothing, which is the law it protects" },
+    { needs: /function bandCut/,
+      is: "his sentences bank as he writes them, which is what the world is refusing to spoil" }
+  ]
+};
+
+const need = (PRESENCE["*"] || []).concat(PRESENCE[path.basename(target)] || []);
+const missing = need.filter(n => !n.needs.test(code));
+
 for (const [law, tokens] of Object.entries(groups)) {
   for (const tok of tokens) {
     // case-insensitive scan; " xp " padding avoids matching "export"/"expand"
@@ -166,9 +205,14 @@ const ex = EXEMPT[base] || {};
 const real = hits.filter(h => !ex[h.tok]);
 const allowed = hits.filter(h => ex[h.tok]);
 
-if (real.length === 0) {
+if (missing.length) {
+  anyFail += missing.length;
+  console.error("[refusal_check] FAIL —", base, "·", missing.length, "refusal(s) bound to nothing:");
+  for (const m of missing) console.error("   missing:", m.is);
+} else if (real.length === 0) {
   console.log("[refusal_check] PASS —", base,
-    "(", code.split("\n").length, "code lines, comments stripped )");
+    "(", code.split("\n").length, "code lines · " + need.length + " presence(s) bound )");
+  for (const n of need) console.log("      bound to:", n.is);
   for (const h of allowed) console.log("      allowed:", h.tok, "—", ex[h.tok]);
 } else {
   anyFail += real.length;

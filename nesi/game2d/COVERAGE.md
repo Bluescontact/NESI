@@ -36,6 +36,28 @@ members ............ 24
 
 ---
 
+## EVERY REFUSAL IS BOUND TO A PRESENCE
+
+A prohibition on its own is satisfied by a world that does less — a blank page
+passed the refusal check, which was proven by running it on one. So each law
+carries the yes it protects, and a surface that carries neither the law's subject
+nor its presence is empty rather than compliant.
+
+| the no | the yes it is bound to |
+|---|---|
+| no model call, nothing outward | the clear case SHOWS the machine making none |
+| no number reaches you | the boundary saying so is registered and announced at its gate |
+| set-it-down has no confirmation | the third output is there to take, which is what makes it a choice |
+| quitting loses nothing | pad, read back, commit — in the surface he writes in |
+| the world holds the writing | his sentences bank as he writes them |
+| any refusal at all | a hand can act on the surface — a page with no act refuses nothing |
+
+**Ten of ten live instruments are presence-asserting.** Removing the clear case's
+proof from `ascent.html` now fails the refusal check by name, and a blank page
+fails it on the first line.
+
+---
+
 ## THE RULES THESE HOLD
 
 Each is a rule first and an instrument second. The rule is the thing to build to.
