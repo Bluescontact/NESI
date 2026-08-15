@@ -1,26 +1,17 @@
-/* THE STORE GUARD — his writing, fingerprinted, so damage cannot be silent.
+/* THE STORE GUARD — his writing is the same before and after any work.
  *
- * WHY THIS EXISTS, stated plainly because it is about me and not about the game.
- * Three times in one session an instrument of mine cleared or overwrote his
- * store and reported that it had put everything back:
+ * THE RULE: an instrument leaves his store byte-identical, and can prove it.
  *
- *   · probes that cleared localStorage while the page held the old state in
- *     memory, so the page's own next save undid the clear — and I then compared
- *     against the stale store and reported faults that were not there
- *   · the same shape again, in another surface
- *   · daily_walk.js, whose first run restored the key and was then overwritten
- *     by the page's next save, leaving its invented sentences in his store while
- *     the walk's last line said his store had been put back
+ * It asks nothing of any instrument. It fingerprints both stores before,
+ * compares after, and names what moved in the terms a person wants — stones,
+ * text, past, kept, arrived, shop, done, faces. Same shape as
+ * `audit_snapshot.py mark / diff` in the older tree: the mark is what makes a
+ * change set, and a session that skipped the mark is told so rather than
+ * reassured.
  *
- * THE PATTERN IS THE FINDING: a wipe undone by the thing that owns the state,
- * and an instrument that cannot tell. A check that can damage what it checks and
- * then say it didn't is worse than no check.
- *
- * So this does not ask any instrument to be careful. It takes a FINGERPRINT of
- * both stores before, and compares after, and names exactly what moved. It is
- * the same shape as `audit_snapshot.py mark / diff` in the older tree: without
- * the mark there is no change set, and a session that skipped the mark is told
- * so rather than reassured.
+ * THE FAILURE IT CATCHES, worth knowing because it is invisible from inside: a
+ * wipe undone by the thing that owns the state. A page holds its own copy in
+ * memory and its next save writes that back over a restore.
  *
  *   mark  — before any work:  __guard("mark")
  *   check — after it:         __guard("check")

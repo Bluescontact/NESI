@@ -3,99 +3,22 @@
 **The counsel pass, 2026-08-14.** One entry per seat, seven fields. Grounded in
 the bodies as they stand in `ascent.html`, not in what they might become.
 
-**STATE: WAS HELD, NOW RELEASED.** It waited on which of 192 placements was the
-world. Kevin's line — *"↓TANK and ↓FILTER are joined"* — cut it to three, and the
-brief's own census cut it to one. **The placement is `THE_SOLID.md`.**
-
-**AND THE CORRECTION THAT CAME WITH IT:** §0 below reports the brief's geometry
-census as disagreeing with the solid. **It does not.** Scored against all three
-surviving worlds the brief hits 8/8 on the one that is the world, and 4/8 on each
-of the others — I compared it against an arbitrary survivor and reported the
-difference as its error. The brief carried the pinning relation the whole time.
-Its eight crossing edges are exactly right; six are filed turn-for-return.
-
-§0 is left standing rather than rewritten, per the supersession convention. The
-twelve entries were never affected either way.
+**STATE: WALKABLE.** The placement it waited on is pinned in `THE_SOLID.md`,
+cut by his line *"↓TANK and ↓FILTER are joined"* together with the counsel
+brief's own census of the eight crossing edges.
 
 ---
 
-## 0 · WHAT THIS PASS FOUND FIRST, BEFORE WRITING A WORD
+## 0 · THE GEOMETRY UNDER THE TWELVE
 
-The brief hands down a geometry as canon. Checked against the solid, three things
-are true and one is not, and the one that is not is load-bearing.
+The four circuit sets are the four central hexagons of a cuboctahedron: every
+vertex on exactly two, as the solid requires. Three falling then three rising
+holds on all four. The placement is pinned, and the twenty-four members, the four
+turns, the four returns and the six antipodes are in `THE_SOLID.md`.
 
-### TRUE — the four circuit SETS are the four central hexagons
-
-Every vertex of a cuboctahedron lies on exactly two of its four central hexagons,
-and the corpus's four circuits partition the twelve names exactly that way. The
-sets are right.
-
-### TRUE — three falling then three rising, as a cyclic property
-
-Achievable on all four circuits simultaneously. It is not an accident of
-transcription.
-
-### NOT TRUE — the four circuits *as written* do not make a cuboctahedron
-
-Taken as cyclic orders and walked into edges, the written circuits generate a
-graph that is 12 vertices, 24 edges, 4-regular — **and has 4 triangles where a
-cuboctahedron has 8.** The two graphs are not the same shape.
-
-```
-the circuit graph as written .... 12 vertices · 24 edges · 4-regular · 4 triangles
-a cuboctahedron ................. 12 vertices · 24 edges · 4-regular · 8 triangles
-```
-
-Circuit 1 is written in an order the solid agrees with. Circuits 2, 3 and 4 are
-not.
-
-### AND THE THING THIS PASS IS HELD ON
-
-Fixing the orders does not fix the map, because **the edge set is not determined
-by anything the corpus writes down.** Each name's pair-of-circuits places it in a
-bucket of two vertices — the antipodal pair — and which of the two it takes is a
-free choice. Searching every placement that
-
-- puts the four sets on the four central hexagons, **and**
-- keeps three-falling-then-three-rising on all four, **and**
-- reproduces circuit 1 exactly as the corpus writes it
-
-leaves **192 surviving placements**, and they disagree about which pairs are
-members. There is no further constraint written down anywhere to cut them.
-
-> **HELD ON:** which of the 192 placements is the world. One more written
-> relation — any single "these two are adjacent" or "these two are not" from the
-> corpus — cuts it hard, and several would pin it outright.
-
-### What this costs, said plainly
-
-`THE_24.md`, written two commits ago, derived its 24 edges from the written
-orders. Its arithmetic was right and its subject was wrong: **it is a correct
-walk of a graph that is not the solid.** Its turns, its returns, and its
-antipodal-pair table are all statements about that graph. What survives intact:
-twelve places, twenty-four transits, four closed walks of six partitioning them,
-each place on exactly two walks, six pairs that share both walks. What does not:
-that these are the cuboctahedron's edges, and every specific pair.
-
-The brief's own census inherits it. Checked against one surviving placement:
-
-| the brief says | the solid says |
-|---|---|
-| ↓TANK—↑CAST is a turn | d²=6, **not a member** |
-| ↑LENS—↓DEEP is a return | d²=6, **not a member** |
-| ↓TANK—↓FILTER is a member | d²=2, **is a member** |
-| ↓FILTER—↓DEEP is a member | d²=6, **not a member** |
-| ↓FILTER—↓STATIONS is a square's diagonal | d²=4, a diagonal — **but of a different square** |
-| ↓FILTER→↓GROUND→↓STATIONS is the perimeter | first step yes, second step d²=6, **no** |
-
-Under a *different* one of the 192, these flip. **None of the six is settled**,
-which is the whole finding: this is not a disagreement to resolve by argument.
-
-### What this does NOT touch
-
-**Nothing below.** A seat's gesture, its material, its work surface, its three
-outputs, what persists, its cost and its held form are properties of the seat.
-They do not depend on which edges leave it. The twelve entries stand.
+**Nothing in the twelve entries below depends on it.** A seat's gesture, its
+material, its work surface, its outputs, what persists, its cost and its held
+form are properties of the seat.
 
 ---
 

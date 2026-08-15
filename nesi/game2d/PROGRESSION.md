@@ -139,32 +139,33 @@ Which is a hard engineering constraint, not a mood:
 
 ---
 
-## 3 · WHAT THIS MAP DOES NOT DO
+## 3 · WHAT IS OPEN, AND WHO SAYS IT
 
-- It **does not name the twenty-four levels.** The vertices are named; the edges
-  are not, and twenty-four names is exactly the kind of invention that would be
-  load-bearing and not his. An edge's mechanic is derivable from its two ends —
-  ↓TANK—↓GROUND is what writing-becomes-water does to what-it-sets-down — but
-  what each is *called* stays open.
-- It **does not rank the circuits or fix a walking order.** Four circuits, no
-  first among them; the solid permits many orders and enforces none.
-- It **does not touch NESI's reveal or the gifts' form.** Both are marked.
+- **The twenty-four names.** The vertices are named; each edge is named by its two
+  ends, and a name of its own is his to give. An edge's mechanic is already
+  derivable from those ends — ↓TANK—↓GROUND is what writing-becomes-water does to
+  what-it-sets-down.
+- **The walking order.** Four circuits, no first among them; the solid permits
+  many orders and enforces none. Any order is a mark away.
+- **NESI's reveal, and the gifts' form.** Both marked, both his. ▲
 
 ---
 
-## 4 · WHAT IS BUILT AND WHAT IS NOT
+## 4 · WHAT STANDS
 
 | | state |
 |---|---|
-| the twelve vertices | **built** — bodies for all twelve in `ascent.html`, all 17 door checks pass |
-| the 24 edges as levels | **not built** — the file walks vertices, not edges |
-| the four circuits as closed walks | **not built** — the geometry is verified, the walk is not |
-| the two-second flash | **not built** |
-| NESI's reveal | **marker** — his naming ▲ |
-| the final gifts | **marker** — his naming ▲ |
-| replay-after-change | **not built**, and it is a constraint on how the reveal is written, not a feature added after |
+| the twelve seats | **built** — bodies for all twelve, walked |
+| the five gesture levels | **built** — 20 mechanisms, four faces each, every one walked to completion |
+| the placement | **pinned** — `THE_SOLID.md`, confirmed twice independently |
+| the map shows the solid | **built** — every member a real edge, seats lighting as they are worked |
+| the gift shop | **built** — a gift is his own sentences, and a hand takes it |
+| the 24 edges as levels | **open** — the file walks seats and levels; the edge-walk is the next shape |
+| the four circuits as closed walks | **open** — the geometry is pinned, the walk is the build |
+| the two-second flash | **open** — its trigger is computable now that the solid is pinned |
+| NESI's reveal · the final gifts | **his naming** ▲ |
+| replay-after-change | **open** — a constraint on how the reveal is written, derived and never flagged |
 
-The next slice already agreed — the first four levels playable — is unaffected by
 this map, and lands inside circuit 3 and circuit 4 at their falling ends.
 
 ---

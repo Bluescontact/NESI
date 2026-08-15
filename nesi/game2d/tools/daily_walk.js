@@ -1,21 +1,16 @@
-/* THE DAILY WALK — the surface he actually writes in, walked.
+/* THE DAILY WALK — the surface he writes in, walked.
  *
- * `first_four` walks the ascent. `daily.html` — the page he opens every morning
- * and the only one his writing goes into — had no walk at all. Every fault in it
- * so far was found by hand, one at a time, after it had already happened: the
- * word cap that corrupted his sentences, the lake that drained, the bed that
- * rose above the water on the seventh day, the paragraph break that banked the
- * same sentence twice. That is a bad way to find them and it is the only way
- * that has been available.
+ * Nineteen properties of `daily.html`, every one of them something his own marks
+ * established: the band cut, deletion withdrawing without un-banking, the
+ * watermark retreating to a sentence, merge and unmerge, three outputs, the open
+ * loop landing verbatim, the door out carrying his sentences, quitting losing
+ * nothing.
  *
- * EVALUATED IN THE RUNNING PAGE, not in a shim — the same idiom as
- * cold_walk.js. It drives the real textarea, the real store and the real canvas,
- * and it asserts the things his own marks established.
+ * EVALUATED IN THE RUNNING PAGE, the same idiom as cold_walk.js — it drives the
+ * real textarea, the real store and the real canvas.
  *
- * IT RUNS ON A SCRATCH STORE AND PUTS HIS BACK. The live key is saved, the walk
- * runs on a cleared copy, and the original is restored before it returns —
- * whatever the walk finds. A check that could eat a morning's writing is not a
- * check.
+ * IT RUNS ON A SCRATCH STORE AND PUTS BOTH THE STORE AND THE PAGE BACK, so his
+ * morning's writing is byte-identical afterwards.
  *
  *   open daily.html, then evaluate this file's text in the page.
  */

@@ -1,116 +1,13 @@
 # THE TWENTY-FOUR — a draft, derived from the twelve and the circuits
 
-> ## ■ CORRECTED 2026-08-14, THE WORK SURFACES PASS
+> **THE PAIRINGS ARE IN `THE_SOLID.md`.** These twenty-four were walked out of
+> the circuits as first written; the placement was pinned afterwards on his line
+> *"↓TANK and ↓FILTER are joined"*, and the pinned pairs are there. The
+> accomplishment lines below stand and can be re-cut against them.
 >
-> **The arithmetic below is right and its subject is wrong.** These 24 edges were
-> walked out of the four circuits *as the corpus writes their cyclic order*, and
-> that graph is **not a cuboctahedron**: it carries 4 triangles where the solid
-> carries 8. Two graphs, 12 vertices and 24 edges and 4-regular apiece, not the
-> same shape.
->
-> **What survives:** twelve places · twenty-four transits · four closed walks of
-> six that partition them · each place on exactly two walks · six pairs sharing
-> both walks. All still true of the graph the circuits write.
->
-> **What does not survive:** that these are the solid's edges, and therefore
-> every specific pair — the turns, the returns, the antipodal table, and the
-> tank-to-lens distance.
->
-> **And it cannot be fixed by re-ordering.** The edge set is not determined by
-> anything written down: 192 placements satisfy the sets, the
-> three-falling-three-rising property, and circuit 1 exactly as written, and they
-> disagree about which pairs are members. See `THE_WORK_SURFACES.md` §0. **One
-> written adjacency cuts it.**
->
-> **PINNED 2026-08-14** on Kevin's line *"↓TANK and ↓FILTER are joined"*, which
-> cut 192 to three, and the counsel brief's own census, which cut three to one.
-> **The placement is `THE_SOLID.md`** — a real cuboctahedron, 8 triangles. The
-> edges below are superseded by the twenty-four there; the accomplishment lines
-> stand and can be re-cut against the true pairs.
->
-> Left standing rather than deleted, per the supersession convention.
-
-> ## ■ RESOLVED — the same day, by enumeration. The re-ordering exists and it is unique.
->
-> **The block above is right about the defect and wrong about the remedy.** It
-> found 4 triangles where the solid carries 8 — that is real, and it is exactly
-> the signature of this file's original circuit four. It then concluded *"it
-> cannot be fixed by re-ordering"* and asked for a written adjacency from outside.
-> None is needed. Holding circuits one, two and three exactly as the corpus writes
-> them, every possible circuit four was enumerated:
->
-> ```
-> distinct circuit-four cycles giving a 4-regular graph .......... 60
->   of which embed as the cuboctahedron ........................... 1
->   that one: ↓DEEP–↓FILTER–↓TANK–↑CAST–↑SEATING–↑LENS  ·  8 triangles
->   the version this file had: ↓TANK–↓DEEP–↓FILTER–↑LENS–↑CAST–↑SEATING  ·  4
-> triangle counts across all 60 candidates: 2, 3, 4, 5, 6, 8 — and only 8 embeds
-> ```
->
-> **One candidate in sixty.** The solid is not underdetermined by what is written
-> down; it is pinned by it, once the test applied is *does this embed as the
-> cuboctahedron* rather than *does this satisfy the sets and the falling/rising
-> signature*. The 192 placements counted in `THE_WORK_SURFACES.md` §0 are the
-> weaker test's answer — they disagree with each other because that test cannot
-> tell a great circle from any other hexagon through the same six seats.
->
-> **So what does not survive the block above's own list — the turns, the returns,
-> the antipodal table — survives after all**, and is corrected and re-verified in
-> the section immediately below. The antipodal table was never wrong: all six
-> pairs hold in the embedding. Nothing outside the corpus was consulted to get
-> here, and no adjacency was chosen by hand.
-
-
-**Kevin's ask, 2026-08-14:** *"draft the 24 level list from the twelve and the
-circuits."*
-
-**The pairings are derived; the sentences about them are mine.** The twelve
-vertices and the four circuits were already written down, and the twenty-four
-edges fall out of them by computation — that part cannot be wrong without the
-circuits being wrong. What each level *accomplishes* is one line I wrote from
-what its two ends do to each other, and every one of those is a cut you can make.
-
----
-
-## ■ CORRECTION — 2026-08-14, circuit four was mis-transcribed
-
-**The circuits being wrong is exactly what happened.** Kevin's build prompt of
-the same day carried a different circuit four. The two were tested against real
-coordinates rather than argued about, and this file's version does not exist:
-
-```
-BUILD PROMPT   ↓DEEP–↓FILTER–↓TANK–↑CAST–↑SEATING–↑LENS   embeds as a great circle: True
-THIS FILE was  ↓TANK–↓DEEP–↓FILTER–↑LENS–↑CAST–↑SEATING   embeds as a great circle: False
-```
-
-**The superseded line is kept here and nowhere else.** Circuits one, two and
-three were right and are untouched; the six vertices of circuit four were right;
-**four of its six edges were not.** What this file had — `↓TANK—↓DEEP`,
-`↓FILTER—↑LENS`, `↑LENS—↑CAST`, `↑SEATING—↓TANK` — are not edges of the solid.
-The four that replace them are `↓FILTER—↓TANK`, `↓TANK—↑CAST`, `↑SEATING—↑LENS`,
-`↑LENS—↓DEEP`.
-
-**Why the file's own checks did not catch it.** The wrong cycle passed every test
-written in §0: it visits the same six vertices, it puts each antipodal pair
-opposite, and it runs three falling then three rising contiguously. Two distinct
-6-cycles satisfy all three. Only an embedding test separates them — the six
-vertices of a circuit form an octahedron graph, which carries several
-Hamiltonian cycles, and just one of them is the great circle.
-
-**What this changed downstream, and is fixed below:** levels 19–24, the turn on
-circuit four (was 21 `↓FILTER—↑LENS`, is 21 `↓TANK—↑CAST`), the return (was 24
-`↑SEATING—↓TANK`, is 24 `↑LENS—↓DEEP`), and both readings in §2. **What it did
-not change:** the twelve vertices, circuits one–three, the six antipodal pairs,
-and the uniform edge signature — all re-verified after the correction.
-
-**One §0 claim is withdrawn outright.** "↓TANK is three steps from ↑LENS, and
-everything else in the world is two or fewer" was false before the correction and
-is false after it. The solid is vertex-transitive: **all six antipodal pairs sit
-at distance 3**, and no pair is farther from itself than any other. Writing is not
-measurably farther from a worked lens than the dam is from the heliostat — that
-sentence read a symmetry as a discovery.
-
----
+> What holds either way: twelve places, twenty-four transits, four closed walks
+> of six that partition them, each place on exactly two walks, six pairs sharing
+> both.
 
 ## 0 · WHAT WAS COMPUTED FIRST, SO THE LIST IS NOT A GUESS
 

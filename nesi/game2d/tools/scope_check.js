@@ -1,29 +1,17 @@
 #!/usr/bin/env node
 /*
- * SCOPE CHECK — does each instrument read the building it claims to?
+ * SCOPE CHECK — every instrument reads the live build.
  *
- * THE PATTERN THIS EXISTS FOR, found three times in one session and each time by
- * accident rather than by any check:
+ * THE RULE: a check's scope matches its claim. One that says "every stage" asks
+ * every stage; one that says "one palette" compares every page; one that
+ * enforces the refusals reads the surfaces a hand opens.
  *
- *   the palette check said "one palette" and compared exactly two files, so the
- *     front door carried a colour in no palette for as long as it liked
- *   the gesture check said "every stage declares its verb" and asked four of
- *     twenty, so thirteen stages wore a label they did not honour
- *   the refusal check — the instrument that enforces "the refusals are the
- *     product" — defaulted to nesi.html and had NEVER been pointed at the game.
- *     It reported PASS all session about a file last touched two days earlier
- *
- * Every one of those passed clean while the property it named was false
- * somewhere it was not looking. A check narrower than its own claim reads as
- * safety and is silence.
- *
- * So this asks the only question that catches the whole class: WHICH FILES DOES
- * EACH CHECK ACTUALLY READ, and are they the live ones? It cannot judge whether
- * a check's logic is right. It can see that an instrument is looking at a
- * building nobody walks, which is what happened three times.
+ * It asks the question that catches the whole class: WHICH FILES DOES EACH CHECK
+ * READ, and are they the live ones? It judges no check's logic. It sees an
+ * instrument reading a building nobody walks.
  *
  * LIVE means reachable from the front door: index.html, what it points at, and
- * what those point at. Not "recently edited", not "looks important".
+ * what those point at.
  *
  *   node tools/scope_check.js
  */

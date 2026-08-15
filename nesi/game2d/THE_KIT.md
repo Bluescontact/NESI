@@ -86,10 +86,10 @@ and no fourth wall between them.** The dam proved the cost of this: its act was 
 key nobody named, with no affordance at all, and a hand could stand in the room
 forever. It was found by hand, not by a check.
 
-> **THE GAP:** `reach(x,y,r)` · `hold()` · `draw()` · `wait(ms)` do not exist.
-> If they did, every stage would declare its gesture instead of implementing it,
-> and an affordance check could ask every stage the same question. Thirty lines
-> for the four of them, and it would shrink every stage that follows.
+> **BUILT.** `reach(x,y,r)` · `hold(dt,secs)` · `draw(min)` · `wait(dt,ms)`, and
+> `near()` as the reach's affordance half. Every stage declares one and uses it,
+> held by `kit_check` K3–K5. `answer_check` asks all twenty the same question
+> because they all speak the same four verbs.
 
 ---
 
@@ -120,9 +120,9 @@ network calls .. 0
 stands in place of an asset library is a palette — 30 colours in `ascent.html`,
 15 in `daily.html` — and it is not shared between the two files.
 
-> **THE GAP:** the same water is `#4a6c7a` in one file and `--water:#6f93a4` in
-> the other. Two palettes for one world. One shared set of tokens is the whole
-> fix and it is the cheapest thing on this page.
+> **BUILT.** Eleven materials, named by material and identical across every page,
+> held by `kit_check` K7–K11. The two blues were the surface and the deep of one
+> gradient and are kept as named depths: `shallow` and `water`.
 
 ---
 

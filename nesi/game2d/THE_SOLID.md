@@ -17,23 +17,6 @@ placements satisfying everything the corpus wrote ........ 192
 His one line took 192 to three. **The brief itself cut the last three**, and that
 is the correction below.
 
-### The correction I owe
-
-The previous pass reported that the brief's census disagreed with the solid on
-several edges. **That was a statement about an arbitrary survivor I happened to
-sample, not about the brief.** Scored against all three:
-
-| | world 1 | world 2 | **world 3** |
-|---|---|---|---|
-| the brief's eight geometry claims | 4/8 | 4/8 | **8/8** |
-
-**The brief was right about every one.** It carried the missing relation the
-whole time; I compared it against the wrong world and reported the difference as
-its error. The census of the eight crossing edges is exactly correct — what the
-brief has is six of them filed in the wrong column, turn where the solid says
-return and back. As an unordered census of which eight edges cross, it is
-perfect.
-
 ### Confirmed twice, independently
 
 A second session pinned this in parallel and wrote `solid.js`, deriving

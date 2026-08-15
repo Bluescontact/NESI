@@ -1,23 +1,17 @@
-/* ANSWER CHECK — does the world answer a hand BEFORE it takes anything?
+/* ANSWER CHECK — the world answers a hand before it takes anything.
  *
- * THE RULE, and it is the one the live build never had:
+ * THE RULE:
  *
- *     EVERY ACT MUST HAVE SOMETHING DRAWN THAT ANSWERS A HAND
+ *     EVERY ACT HAS SOMETHING DRAWN THAT ANSWERS A HAND
  *     BEFORE THE ACT IS TAKEN.
  *
- * `reach_check` in this directory enforces a different rule — that every
- * pointerdown target is also a hover target, so the CURSOR changes over it. That
- * rule has no subject here: ascent.html has zero hover handlers and zero cursor
- * changes, because it is a canvas world that DRAWS its affordances. I claimed
- * that check would have caught THE DAM having no handle. It would not have: the
- * dam's act was `keys["e"]||keys[" "]`, a keyboard act with no click target for
- * that rule to look at. The dam was found by a hand instead.
+ * It is the canvas-world form of a rule `reach_check` states for a DOM world : a pointerdown target is also a hover
+ * target, so the cursor changes over it. This world draws its affordances rather
+ * than changing a pointer, so the test is what appears.
  *
- * SO THIS ONE IS BEHAVIOURAL, NOT TEXTUAL. It does not read source and it cannot
- * be satisfied by a variable with the right name. It puts a hand where the act
- * is, WITHOUT COMPLETING IT, and compares what is on the glass. If nothing on
- * screen changes when a hand arrives, the act has no affordance — whatever the
- * code says.
+ * BEHAVIOURAL, NOT TEXTUAL — it reads no source, so a variable with the right
+ * name satisfies nothing. It puts a hand where the act is, WITHOUT COMPLETING
+ * IT, and compares what is on the glass. The glass is the evidence.
  *
  *   a reach — move the hand over the thing; the screen must change, unclicked
  *   a hold  — hold the button down; the screen must change while held
@@ -25,10 +19,9 @@
  *   a wait  — touch nothing at all; something must move on its own, or a hand
  *             has no way to know the room is alive rather than stuck
  *
- * IT RUNS ON A SCRATCH STORE AND PUTS HIS BACK, and it puts the page back too —
- * restoring the key alone is not enough, because the page goes on running with
- * its own state in memory and the next save writes that over the restore. That
- * has bitten three times in this tree.
+ * IT RUNS ON A SCRATCH STORE AND PUTS BOTH THE STORE AND THE PAGE BACK. A page
+ * holds its own state in memory and its next save writes that to the key, so
+ * restoring the key alone would leave the walk's state in his store.
  *
  *   open ascent.html, then evaluate this file's text in the page.
  */
@@ -41,6 +34,13 @@
   const his = localStorage.getItem(KEY);
 
   const cv = document.getElementById("c"), gg = cv.getContext("2d");
+  /* AN INSTRUMENT THAT CANNOT SEE REFUSES. A pane that is not compositing gives
+     a zero-width canvas, and every act then reads as unanswered — a clean sweep
+     of failures that says nothing about the build. cold_walk.js sets this
+     precedent: refuse, do not report. */
+  if (!cv.width || !cv.height)
+    return { REFUSED: "the canvas is " + cv.width + "x" + cv.height +
+             " — the pane is not compositing. Nothing was measured." };
   let T = 5e7;
   const step = (n = 1) => { for (let i = 0; i < n; i++) frame(T += 16); };
 
