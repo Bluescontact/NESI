@@ -171,5 +171,55 @@ ok("the centre lies on all four circuit planes; no seat lies on more than two",
 ok("NO member reaches the centre — nothing can be sent inward, only encircled",
    S.CENTRE && S.CENTRE.membersReaching===0);
 
+/* ── the eight faces ──────────────────────────────────────────────────────────
+   Kevin's instruction 2026-08-16: "site the eight mechanics on the eight
+   triangles." FACES.json holds the assignment. THE ASSIGNMENT IS A READING AND
+   IS NOT CHECKED HERE — 1872 matchings tied on the water evidence, so no test
+   could confirm it. What IS checked is that the reading stays WELL-FORMED
+   against the solid and against the running build: real mechanics, real
+   triangles, one each, and still costless. If a cost line is ever added to one
+   of the eight, it has become a seat and its siting is void. */
+{
+  const fs=require("fs"), path=require("path");
+  let F=null, src="";
+  try { F=JSON.parse(fs.readFileSync(path.join(__dirname,"..","FACES.json"),"utf8")); } catch(e){}
+  try { src=fs.readFileSync(path.join(__dirname,"..","ascent.html"),"utf8"); } catch(e){}
+  ok("FACES.json reads, and sites eight", !!F && F.sitings.length===8);
+  if(F && src){
+    const key=a=>a.slice().sort().join("|");
+    const real=new Set(S.TRIANGLES.map(t=>key(t.seats)));
+    const seatKeys=new Set(S.NAMES.map(n=>n.toLowerCase())); seatKeys.add("winter");
+    ok("every sited triangle is a real triangle of this solid",
+       F.sitings.every(s=>real.has(key(s.triangle))));
+    ok("eight distinct triangles — one tenant each, none doubled",
+       new Set(F.sitings.map(s=>key(s.triangle))).size===8);
+    ok("eight distinct mechanics", new Set(F.sitings.map(s=>s.mechanic)).size===8);
+    ok("every sited mechanic is a real stage body in ascent.html",
+       F.sitings.every(s=>new RegExp("^"+s.mechanic+":\\{ g:\"").test(src) ||
+                          src.includes("\n"+s.mechanic+":{ g:\"")));
+    /* THE CRITERION, and it is the only part of this that was derived */
+    ok("not one of the eight declares a cost — a seat is where the hand gives something up",
+       F.sitings.every(s=>!new RegExp("\\n"+s.mechanic+":\\{ g:\"\\w+\", cost:").test(src)));
+    ok("and none of them is a seat of the solid",
+       F.sitings.every(s=>!seatKeys.has(s.mechanic)));
+    ok("four on each tetrahedron",
+       F.sitings.filter(s=>s.tetra==="A").length===4 && F.sitings.filter(s=>s.tetra==="B").length===4);
+    ok("each row's tetra tag matches the solid's own",
+       F.sitings.every(s=>{ const t=S.TRIANGLES.find(t=>key(t.seats)===key(s.triangle));
+         return t && t.tetra===s.tetra; }));
+    /* the one hard constraint the water evidence did give */
+    ok("the silent triangle holds a mechanic that writes a single field",
+       (()=>{ const silent=S.TRIANGLES.find(t=>t.seats.every(n=>
+              !/w\.(level|load|clarity|cut|held|released|still)\s*=/.test(
+                (src.split("\n"+(n==="OVERWINTERING"?"winter":n.toLowerCase())+":{ g:\"")[1]||"").split("\n},")[0])));
+          if(!silent) return false;
+          const s=F.sitings.find(x=>key(x.triangle)===key(silent.seats));
+          return s && s.writes.length===1; })());
+    ok("every triangle of the solid now has a tenant", real.size===8 &&
+       F.sitings.length===8 && new Set(F.sitings.map(s=>key(s.triangle))).size===real.size);
+    console.log("        (the ASSIGNMENT is a session's reading — 1872 matchings tied; only its form is checked)");
+  }
+}
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);

@@ -1238,7 +1238,11 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
          nothing. Three shoots leave 0.4 of the day, so a hand that grew the
          minimum clears the water and a hand that grew five clears none. */
       w.clarity=clamp01(w.clarity + 0.12*L.light);
-      reading(11,"aimed"); save(); finish(); } },
+      /* EDGE 12, NOT 11. The partition pass first wrote 11, which THE STILLING
+         already holds — and reading() replaces by edge, so the two would have
+         overwritten each other's trace on every visit and seeded() would have
+         counted one where there were two. Twelve was the only free id. */
+      reading(12,"aimed"); save(); finish(); } },
   draw(){ sky(); const ly=lakeY(), full=(S.seated||[]).length>=12;
     // "The final unfold — all twelve mirrors seated, the equilibrium — makes the
     // water go glass-clear for the first time." The clearing is built. WHAT IS

@@ -13,10 +13,14 @@ doesnt."*
 mechanisms where there are twenty. A document alone does not hold in this tree.
 
 So everything in this file is **derived in `solid.js` and checked in
-`tools/solid_check.js`.** Twenty-two new assertions, all passing. No coordinates
-are written down anywhere: the embedding is *solved* from the circuit table, so
-if a circuit ever changes, the faces and the centre move with it or the solve
-fails loudly.
+`tools/solid_check.js`** — sixty assertions in one command, all passing. No
+coordinates are written down anywhere: the embedding is *solved* from the circuit
+table, so if a circuit ever changes, the faces and the centre move with it or the
+solve fails loudly.
+
+**One exception, and it is named where it appears:** the siting of the eight
+mechanics on the eight triangles (§11) is a *reading*, not a derivation. Its form
+is checked; its content cannot be. Everything else here is computed.
 
 **Read the prose here for what it means. Trust `solid_check.js` for what is
 true.** Where the two ever disagree, the check is right and this file is stale.
@@ -203,9 +207,9 @@ it serve itself?* Applying that test is Kevin's, not this file's.
 
 ## 10 · WHAT IS OPEN, AND WHOSE IT IS
 
-- **The eight triangles are empty, and eight built mechanics have no home.**
-  `membrane · spring · table · rain · channel · shoal · stilling · sounding`.
-  The counts match. Nothing is sited, and siting them is his.
+- ~~**The eight triangles are empty, and eight built mechanics have no home.**~~
+  **SITED 2026-08-16 on his instruction, same day. See `FACES.json` and §11.**
+  The assignment is a session's reading and not one row is marked.
 - **NESI's ten organs are unsited.** Second census, `ORGANS.json` has the
   first; the second is in the session record only.
 - **The inner tetra, relocated by §6** — available as its own body, not as seats.
@@ -214,3 +218,53 @@ it serve itself?* Applying that test is Kevin's, not this file's.
   offline progression" against "returns later as ground, on a day you did not
   come back." His frame of 2026-08-16 — that the deep is inhabited — is the
   first reading that does not require one of them to be wrong. Not resolved.
+
+---
+
+## 11 · THE EIGHT FACES — sited 2026-08-16
+
+**Kevin's instruction:** *"site the eight mechanics on the eight triangles."*
+
+**The criterion is derived and exact.** Every one of the twelve seated mechanics
+declares a `cost:` line beside its gesture. **Not one of the eight does.** A seat
+is where the hand gives something up; these eight take nothing. That is why they
+are faces, and `solid_check.js` re-tests it every run — add a cost to one of them
+and it has become a seat, and its siting is void.
+
+**Two facts the code gave up on the way:**
+
+- **`cut` is written by no seat at all** — only `table` and `channel`, both
+  `draw`. Carving the bed is a face-level act with no vertex, which is itself an
+  argument that faces are a real class and not a filing convenience.
+- **One triangle is silent.** LENS · GARDEN · SEATING write nothing into the
+  water between them, so only a mechanic writing a single field can lawfully sit
+  there — `shoal` or `sounding`, and no other.
+
+```
+A   TANK·FILTER·GROUND              membrane   strong
+    DAM·CAST·SEATING                table      medium
+    STATIONS·DEEP·LENS              spring     strong
+    HELIOSTAT·OVERWINTERING·GARDEN  stilling   medium
+
+B   TANK·OVERWINTERING·CAST         rain       strong
+    DAM·STATIONS·GROUND             channel    medium
+    FILTER·DEEP·HELIOSTAT           sounding   strong
+    LENS·GARDEN·SEATING             shoal      WEAK
+```
+
+**HOW FAR THE GEOMETRY CARRIED, stated plainly because it did not carry far.**
+Scored by shared water fields, the best total was 7 — **achieved by 1872 of the
+40320 possible matchings.** The mechanical evidence does not pick one. The slots
+are the solid's; the tenants are a session's reading. `sited_by` is `"session"`
+on every row and not one is marked. Striking a row costs only that row.
+
+`solid_check.js` therefore checks the FORM and never the assignment: real
+mechanics, real triangles, one tenant each, four per tetrahedron, still costless,
+and the silent triangle holding a single-field mechanic.
+
+**Two things that were not arranged.** Every mechanic landed on a triangle
+containing the seat it obviously belongs to, without that being a criterion. And
+↓THE DEEP has exactly two triangles and there were exactly two homeless
+mechanics that read the deep — `spring` took one and `sounding` the other.
+
+**The weakest row is named as weak.** `shoal` on the silent triangle is taste.
