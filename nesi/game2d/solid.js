@@ -264,6 +264,14 @@ const SQUARES = !EMBED ? [] : [0,1,2].flatMap(i => [1,-1].map(s => ({
    THE ANSWER IS SIX, AND THERE ARE SIX SQUARES. Nothing is redundant: all
    twenty-four members are load-bearing and not one is spare.
 
+   CONFIRMED INDEPENDENTLY, 2026-08-16, on Kevin's instruction. PyRigi 1.3.0
+   (MIT, ACM TOMS 2026) was given this exact framework — the twelve seats and the
+   twenty-four members, exported straight out of this file — and returned rank
+   24, 0 redundant bars, 6 trivial infinitesimal flexes and 6 NONTRIVIAL ones,
+   with is_inf_rigid() False. The accounting closes: nullity 12 = 6 rigid-body
+   + 6 mechanisms. A second implementation, by a different method, on the same
+   object. The number is not this session's arithmetic alone.
+
    AND IT DEPENDS ON WHETHER THE FACES ARE FILLED. Wikipedia again: the solid IS
    rigid read as rigid faces on hinges, and is NOT rigid read as rigid edges on
    free joints. The triangles are already braced as bar-frames, so tenanting the

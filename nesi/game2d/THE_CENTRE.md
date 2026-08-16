@@ -336,6 +336,30 @@ rigid-body motions   6
 INTERNAL MECHANISMS  6    — and there are six squares
 ```
 
+### Confirmed by a second implementation
+
+Kevin's instruction, same day: *"confirm the 6 with pyrigi."*
+
+**[PyRigi](https://github.com/PyRigi/PyRigi) 1.3.0** — MIT, published in ACM
+TOMS this year — was given this exact framework, the twelve seats and the
+twenty-four members exported straight out of `solid.js`. A different
+implementation, by a different method, on the same object:
+
+```
+rigidity matrix          24 x 36
+rank                     24        agrees
+redundant bars            0        agrees
+trivial inf flexes        6        the rigid-body motions
+NONTRIVIAL inf flexes     6        agrees — the mechanisms
+is_inf_rigid()        False
+```
+
+The accounting closes: **nullity 12 = 6 rigid-body + 6 mechanisms.** Checked
+explicitly, because PyRigi's `inf_flexes()` excludes the trivial ones by default
+and a confirmation resting on a misread API is not a confirmation.
+
+**The six is no longer this session's arithmetic alone.**
+
 **And it depends on whether the faces are filled.** Wikipedia again: the solid
 *is* rigid read as rigid faces on hinges, and is *not* rigid read as rigid edges
 on free joints. Triangles are already braced as bar-frames, so tenanting the
