@@ -113,5 +113,63 @@ ok("send and drop never name the same member",
 ok("the set-down has no destination and leaves no member — law 6",
    S.PRODUCTS.filter(p=>p.out==="set").every(p=>p.member===null&&p.to===null));
 
+/* ── the faces and the centre ─────────────────────────────────────────────────
+   Added 2026-08-16 with Kevin's ruling "the centre is the game." Every line here
+   re-derives from SOLID's solved embedding and is checked against the reference
+   solid built from coordinates at the top of this file. */
+ok("the circuits solve to a real embedding", !!S.EMBED);
+ok("fourteen faces — eight triangles, six squares",
+   S.TRIANGLES.length===8 && S.SQUARES.length===6);
+ok("Euler holds: 12 − 24 + 14 = 2", 12 - 24 + (S.TRIANGLES.length+S.SQUARES.length) === 2);
+ok("vertex configuration 3.4.3.4 — two triangles and two squares at every seat",
+   S.NAMES.every(n=>{ const f=S.facesOf(n); return f.triangles.length===2 && f.squares.length===2; }));
+ok("every member borders exactly one triangle and exactly one square",
+   S.MEMBERS.every(m=>{ const f=S.facesAlong(m.a,m.b); return !!f.triangle && !!f.square; }));
+ok("no two triangles share a member — they meet only at seats",
+   S.TRIANGLES.every((t,i)=>S.TRIANGLES.every((u,j)=>i===j||t.seats.filter(s=>u.seats.includes(s)).length<2)));
+
+/* THE TWO TETRAHEDRA ARE OUTSIDE. Recorded as a check because this file's author
+   had it inverted for two passes: no four seats form a regular tetrahedron, and
+   the eight triangle planes bound the solid rather than sit within it. */
+ok("the triangles split four and four",
+   S.TRIANGLES.filter(t=>t.tetra==="A").length===4 && S.TRIANGLES.filter(t=>t.tetra==="B").length===4);
+ok("every seat is on exactly one A triangle and one B — the two bodies touch at the twelve",
+   S.NAMES.every(n=>S.TRIANGLES.filter(t=>t.tetra==="A"&&t.seats.includes(n)).length===1 &&
+                    S.TRIANGLES.filter(t=>t.tetra==="B"&&t.seats.includes(n)).length===1));
+ok("NO four seats form a regular tetrahedron — there is no inner tetra made of seats",
+   (()=>{ let f=0; const N=S.NAMES;
+     for(let a=0;a<12;a++)for(let b=a+1;b<12;b++)for(let c=b+1;c<12;c++)for(let e=c+1;e<12;e++){
+       const q=[a,b,c,e].map(i=>S.EMBED[N[i]]), ds=[];
+       for(let x=0;x<4;x++)for(let y=x+1;y<4;y++) ds.push(q[x].reduce((s,v,i)=>s+(v-q[y][i])**2,0));
+       if(new Set(ds).size===1) f++; }
+     return f===0; })());
+
+ok("every square carries all four circuits, one seat each",
+   S.SQUARES.every(q=>new Set(q.seats.flatMap(n=>S.circuitsOf(n))).size===4 && q.seats.length===4));
+ok("no square holds an antipodal pair",
+   S.SQUARES.every(q=>!q.seats.some(n=>q.seats.includes(S.antipodeOf(n)))));
+ok("each axis cuts the twelve four · four · four",
+   S.SQUARES.every(q=>q.between.length===4));
+ok("the four between are mutually non-adjacent and are two antipodal pairs",
+   S.SQUARES.every(q=>q.between.every(a=>q.between.every(b=>a===b||!S.isMember(a,b))) &&
+     q.between.filter(n=>q.between.includes(S.antipodeOf(n))).length===4));
+/* ONE AXIS CARRIES THE WORLD'S OWN LAW AND ONLY ONE. Derived, never assigned:
+   one square is four falling seats and its opposite is four rising. */
+ok("exactly two squares are pure — one all falling, one all rising",
+   S.SQUARES.filter(q=>q.seats.every(S.falls)).length===1 &&
+   S.SQUARES.filter(q=>!q.seats.some(S.falls)).length===1);
+ok("and the four seats between them are TANK LENS DAM HELIOSTAT — the two pairs the corpus singled out",
+   (()=>{ const pure=S.SQUARES.find(q=>q.seats.every(S.falls));
+     return pure && ["DAM","HELIOSTAT","LENS","TANK"].every(n=>pure.between.includes(n)); })());
+
+ok("the centre is one edge-length from every seat — radial equilibrium",
+   S.CENTRE && S.CENTRE.equidistant &&
+   Math.abs(S.CENTRE.radius - S.CENTRE.edgeLength) < 1e-9);
+ok("the centre lies on all four circuit planes; no seat lies on more than two",
+   S.CENTRE && S.CENTRE.circuitPlanes===4 && S.NAMES.every(n=>S.circuitsOf(n).length===2));
+/* THE CONSTRAINT, not a curiosity: nothing can be sent to the centre. */
+ok("NO member reaches the centre — nothing can be sent inward, only encircled",
+   S.CENTRE && S.CENTRE.membersReaching===0);
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);

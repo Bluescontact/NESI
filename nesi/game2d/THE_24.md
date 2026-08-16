@@ -1,5 +1,22 @@
 # THE TWENTY-FOUR — a draft, derived from the twelve and the circuits
 
+> **■ TWO LINES BELOW HAVE GONE STALE. Marked 2026-08-16, not edited.**
+>
+> **§3 says "The file has 17 bodies."** There are **20**, and all four verbs now
+> divide by four exactly — reach 8 · hold 4 · draw 4 · wait 4 — so the
+> gesture-grouping closes into **five complete levels with nothing left over.**
+> The note in `ascent.html` that "`hold` has three and `draw` has three, so
+> neither closes yet" is stale by the same count. The build outgrew its own
+> record and nothing noticed until the faces were counted.
+>
+> **§3 also says the draft "says nothing about" the rest.** The solid's other
+> nine elements are now derived and checked: eight triangles, six squares, and
+> the centre. See **`THE_CENTRE.md`**, and Kevin's ruling of 2026-08-16 —
+> *"the centre is the game. everything else serves it."* The twenty-four below
+> are apparatus; they are not the game.
+>
+> Everything else in this file stands.
+
 > **THE PAIRINGS ARE IN `THE_SOLID.md`.** These twenty-four were walked out of
 > the circuits as first written; the placement was pinned afterwards on his line
 > *"↓TANK and ↓FILTER are joined"*, and the pinned pairs are there. The

@@ -179,9 +179,105 @@ const PRODUCTS = NAMES.flatMap(outputsOf);
 const DOOR_OUT   = memberBetween("TANK","CAST");        /* circuit four's turn */
 const WITHDRAWAL = routes("TANK","DEEP")[0] || null;    /* the only two-step path */
 
+/* ═══ THE FACES AND THE CENTRE ════════════════════════════════════════════════
+   Added 2026-08-16 on Kevin's line: "the centre is the game. everything else
+   serves it." — and on the standing one under it, "the geometry decides what
+   works or doesnt."
+
+   Until now this file knew vertices and edges and nothing else. The solid has
+   fourteen faces and a centre, and every claim made about them was being made
+   in prose, where THE_24.md has already shown claims go stale.
+
+   NO COORDINATES ARE WRITTEN DOWN. The embedding is SOLVED from the circuit
+   table above — assign the four circuits to the four threefold axes, then choose
+   the sign of each antipodal pair so that every circuit closes as a real
+   hexagon. If CIRCUITS ever changes, the faces and the centre move with it or
+   the solve fails loudly. That is the same rule the rest of the file keeps:
+   nothing stored that could drift from the table it came from. */
+
+const EMBED = (() => {
+  const P=[]; for(const[i,j]of[[0,1],[0,2],[1,2]])for(const si of[1,-1])for(const sj of[1,-1]){
+    const p=[0,0,0]; p[i]=si; p[j]=sj; P.push(p); }
+  const d=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const AXES=[[1,1,1],[1,1,-1],[1,-1,1],[-1,1,1]];   /* the four threefold axes */
+  const perms=a=>a.length<=1?[a]:a.flatMap((x,i)=>perms([...a.slice(0,i),...a.slice(i+1)]).map(q=>[x,...q]));
+  const pairs=[...new Set(NAMES.map(n=>[n,antipodeOf(n)].sort().join("|")))];
+  for(const p of perms([0,1,2,3])){
+    const cand={}; let fits=true;
+    for(const n of NAMES){ const cs=circuitsOf(n).map(k=>AXES[p[k]]);
+      cand[n]=P.filter(v=>d(v,cs[0])===0&&d(v,cs[1])===0);
+      if(cand[n].length!==2){ fits=false; break; } }
+    if(!fits) continue;
+    for(let m=0;m<(1<<pairs.length);m++){
+      const pos={};
+      pairs.forEach((pr,bi)=>{ const [a,b]=pr.split("|"), f=(m>>bi)&1;
+        pos[a]=cand[a][f]; pos[b]=cand[a][f].map(x=>-x); });
+      if(CIRCUITS.every(c=>c.every((n,i)=>d(pos[n],pos[c[(i+1)%6]])===1))) return pos;
+    }
+  }
+  return null;      /* the circuits do not embed — every consequence below is null */
+})();
+
+const dotp=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+
+/* EIGHT TRIANGLES — three seats all adjacent to each other. Tagged A or B by the
+   sign of their outward direction, which splits them four and four. The four
+   PLANES of one tag bound a tetrahedron AROUND the solid, not inside it: every
+   seat lies within all eight. The two tetrahedra meet in the octahedron, which
+   is the stella octangula, and neither of them is an interior. */
+const TRIANGLES = !EMBED ? [] : (() => {
+  const out=[];
+  for(let a=0;a<12;a++)for(let b=a+1;b<12;b++)for(let c=b+1;c<12;c++){
+    const s=[NAMES[a],NAMES[b],NAMES[c]], p=s.map(n=>EMBED[n]);
+    if(dotp(p[0],p[1])===1&&dotp(p[0],p[2])===1&&dotp(p[1],p[2])===1){
+      const n=[0,1,2].map(i=>p[0][i]+p[1][i]+p[2][i]);
+      out.push({ seats:s, tetra: n[0]*n[1]*n[2]>0 ? "A" : "B" }); } }
+  return out;
+})();
+
+/* SIX SQUARES — the hinges. As a strut-and-hinge frame the triangles are braced
+   and the squares are not; the solid flexes only here, which is the whole of the
+   jitterbug. Each square carries all four circuits, one seat each, and contains
+   no antipodal pair. Every member borders exactly one square and one triangle. */
+const SQUARES = !EMBED ? [] : [0,1,2].flatMap(i => [1,-1].map(s => ({
+  axis: "xyz"[i] + (s>0?"+":"-"),
+  seats: NAMES.filter(n=>EMBED[n][i]===s),
+  /* the four seats on NEITHER square of this axis: mutually non-adjacent,
+     and always two antipodal pairs */
+  between: NAMES.filter(n=>EMBED[n][i]===0)
+})));
+
+/* THE CENTRE — measured, never described. It is the only position on all four
+   circuits at once (every hexagon is a central hexagon), it is one edge-length
+   from every seat (radial equilibrium — the property Fuller singled out and the
+   one this solid is nearly alone in having), and NO MEMBER REACHES IT.
+
+   That last line is a constraint on the build, not a curiosity: nothing can be
+   sent to the centre, because there is no edge to send it along. The circuits do
+   not lead there. They encircle it. */
+const CENTRE = !EMBED ? null : {
+  radius: Math.hypot(...EMBED[NAMES[0]]),
+  edgeLength: (()=>{ const m=MEMBERS[0]; return Math.hypot(...EMBED[m.a].map((x,i)=>x-EMBED[m.b][i])); })(),
+  membersReaching: 0,
+  circuitPlanes: CIRCUITS.length,          /* all four contain it, by construction */
+  equidistant: !EMBED ? false : new Set(NAMES.map(n=>Math.hypot(...EMBED[n]).toFixed(9))).size===1
+};
+
+/* Which faces a seat sits on. Always two of each — vertex configuration 3.4.3.4. */
+const facesOf = s => ({
+  triangles: TRIANGLES.filter(t=>t.seats.includes(s)),
+  squares:   SQUARES.filter(q=>q.seats.includes(s))
+});
+/* The one square and the one triangle a member borders. */
+const facesAlong = (a,b) => ({
+  triangle: TRIANGLES.find(t=>t.seats.includes(a)&&t.seats.includes(b)) || null,
+  square:   SQUARES.find(q=>q.seats.includes(a)&&q.seats.includes(b)) || null
+});
+
 const SOLID = {
   SEATS, CIRCUITS, NAMES, MEMBERS, ADJ, PRODUCTS,
   TURNS, RETURNS, PURE, DOOR_OUT, WITHDRAWAL,
+  EMBED, TRIANGLES, SQUARES, CENTRE, facesOf, facesAlong,
   falls, memberBetween, isMember, circuitsOf, distance, routes,
   antipodeOf, outputsOf
 };

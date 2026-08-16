@@ -68,6 +68,14 @@
 </div>
 
 <script src="level_one_water.js"></script>
+<!-- THE SOLID, read by the running game for the first time on 2026-08-16.
+     THE_SOLID.md §4 said "nothing in the running game reads the edge set yet."
+     THE STATIONS now derives its three outputs from it: the set-down has no
+     member in the geometry, so it has nothing to acknowledge with. If this file
+     fails to load the world still runs and the stations fall silent on ALL
+     three outputs rather than guessing — failing toward silence, never toward
+     a confirmation. -->
+<script src="solid.js"></script>
 <script>
 "use strict";
 
@@ -1111,7 +1119,27 @@ stations:{ g:"reach", cost:"a route spends the water on one destination, and the
              goes. A route left resting simply rests: nothing sends it. */
           if(L.lip!==k){ L.lip=k; break; }
           L.lip=null;
-          S.routed[k]++; L.i++;                      // set-down: nothing happens. no toast, no chime.
+          /* THE THREE OUTPUTS, AND THE THIRD CANNOT ACKNOWLEDGE ─────────────
+             This used to be one line — S.routed[k]++ — run identically for all
+             three bays. Law 6 held because nobody had added a toast to the
+             third, not because the third was shaped so a toast could not be
+             added. Obeying a law and being unable to break it are different
+             states, and only the second survives the next hand in this file.
+
+             send() is the only way a piece leaves, and its RETURN VALUE is the
+             only thing anything on screen may read to show a departure. The
+             value it returns is the member the piece left on — and the solid
+             gives the set-down no member (solid.js outputsOf: {out:"set",
+             member:null}). So the third output returns undefined, not by a rule
+             this file remembers but because THE GEOMETRY HAS NOTHING THERE TO
+             RETURN. A confirmation on the set-down is now un-writable rather
+             than merely unwritten.
+
+             The COUNT still rises for all three. That is the seat's own field
+             five — the record of where each went is complete and permanent —
+             and it never reaches the player, which is the only thing law 2
+             asks. The record is not the acknowledgement. */
+          L.ack = send(k); L.i++;
           if(L.i>=L.queue.length){ const w=W_();
           // WRITES: sending downstream puts it back in the water; dropping to
           // the lake takes it out; setting down does nothing at all, and that is
@@ -1129,6 +1157,22 @@ stations:{ g:"reach", cost:"a route spends the water on one destination, and the
         g.strokeStyle=PAL.edge; g.lineWidth=1; g.stroke(); }
       g.fillStyle="rgba(60,54,44,.55)"; g.font="12px Georgia,serif"; g.textAlign="center";
       g.fillText(k==="spire"?"↑":k==="lake"?"↓":"—", r.x+r.w/2, r.y+r.h/2+5); });
+    /* THE DEPARTURE, drawn ONLY from what send() handed back ─────────────────
+       A piece that left on a member draws a short trace along it and fades. The
+       set-down handed back nothing, so this block is unreachable for it — not
+       skipped by an if on the bay's name, which the next hand could delete, but
+       unreachable because there is no value to draw from. That is the whole
+       difference between the law being obeyed and the law being built.
+
+       It is form and it is brief: a line leaving the bay, no glyph, no text, no
+       count, and nothing names the member it went on. */
+    if(L.ack){ L.ackT=(L.ackT||0)+1;
+      const a=Math.max(0, 1-L.ackT/45);
+      if(a<=0){ L.ack=null; L.ackT=0; }
+      else { const r=b[L.ack.on===memberFor("spire")?"spire":"lake"] || b.spire;
+        g.strokeStyle="rgba(74,108,122,"+(a*0.8)+")"; g.lineWidth=2;
+        g.beginPath(); g.moveTo(r.x+r.w/2, r.y-14);
+        g.lineTo(r.x+r.w/2, r.y-14-(1-a)*46); g.stroke(); } }
     if(L.i<L.queue.length){ g.fillStyle="#8d8578"; g.fillRect(W/2-30,H*0.30,60,26);
       g.strokeStyle="rgba(40,40,44,.5)"; g.strokeRect(W/2-30,H*0.30,60,26); }
     ring(mouse.x,mouse.y,18); }
@@ -1152,7 +1196,24 @@ stations:{ g:"reach", cost:"a route spends the water on one destination, and the
      seating, never by holding harder.
 
    So this level teaches the array, and level 9 is what makes any of it keep. */
-heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity, and the day is one day", enter(){ L.a=-0.9; L.grown=0; },
+heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity, and the day is one day", enter(){ L.a=-0.9; L.grown=0;
+    /* THE PARTITION — the day is one day, and now that is arithmetic ─────────
+       The cost line above has said "light spent on growth is light not spent on
+       clarity" since the seat was built, and nothing anywhere enforced it: you
+       could grow every shoot and the water lost nothing. A cost declared in a
+       string is a sentence about the seat, not a property of it.
+
+       One unit of light per visit. Every shoot takes a fifth of it. Whatever is
+       left when the hand leaves goes back to the water as clarity. Spent plus
+       returned is exactly one, so aiming here is arithmetically not aiming
+       there — which is the seat's whole claim, finally load-bearing.
+
+       IT IS NEVER A NUMBER ON SCREEN. The budget is read as form and only as
+       form: the beam simply has less to give and dims, and when it is gone the
+       mirrors still turn and nothing grows. No bar, no gauge, no warning, and
+       nothing says why — the absence is the feedback (law 6), and law 2 is not
+       strained by a model holding a number it never shows. */
+    L.light=1; },
   step(dt){
     /* THE HOLD, in the shared verb: the aim is live only while a hand holds it,
        and the verb owns "is a hand holding". */
@@ -1164,9 +1225,20 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
     mirrors().forEach((m,i)=>{ const a=seatedAim(i); const ang=(a!==null)?a:(holding()?L.a:null);
       if(ang===null) return; if(beamCrossesWater(m,ang)) anyHit=true; });
     if(anyHit){ L.on=(L.on||0)+dt;
-      if(L.on>800){ L.on=0; S.shoots.push(Math.round(W*0.2+Math.random()*W*0.6)); L.grown++; } }
+      /* a shoot spends a fifth of the day. With none left the beam still lands
+         and still lights the water — it simply has nothing more to give, and
+         nothing on screen says so. */
+      if(L.on>800 && L.light>0){ L.on=0; L.light=Math.max(0,L.light-0.2);
+        S.shoots.push(Math.round(W*0.2+Math.random()*W*0.6)); L.grown++; } }
     else L.on=0;
-    if(L.grown>=3){ save(); finish(); } },
+    if(L.grown>=3){ const w=W_();
+      /* WHAT WAS NOT SPENT ON GROWTH COMES BACK AS CLARITY. This is the other
+         half of the partition and the half that makes it a partition at all:
+         without it, unspent light would simply vanish and growing would cost
+         nothing. Three shoots leave 0.4 of the day, so a hand that grew the
+         minimum clears the water and a hand that grew five clears none. */
+      w.clarity=clamp01(w.clarity + 0.12*L.light);
+      reading(11,"aimed"); save(); finish(); } },
   draw(){ sky(); const ly=lakeY(), full=(S.seated||[]).length>=12;
     // "The final unfold — all twelve mirrors seated, the equilibrium — makes the
     // water go glass-clear for the first time." The clearing is built. WHAT IS
@@ -1180,8 +1252,12 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
     mirrors().forEach((m,i)=>{ const locked=seatedAim(i);
       const ang=(locked!==null)?locked:(holding()?L.a:null);
       if(ang!==null){ const hit=beamCrossesWater(m,ang);
-        g.strokeStyle= hit?"rgba(255,238,180,.85)":"rgba(255,238,180,.28)";
-        g.lineWidth= hit?6:2;
+        /* THE BUDGET IS READ AS FORM. A day with light left throws a full beam;
+           a day spent throws a thin one. Never a figure, never a bar. */
+        const lit=0.25+0.75*(L.light===undefined?1:L.light);
+        g.strokeStyle= hit?"rgba(255,238,180,"+(0.85*lit).toFixed(3)+")"
+                          :"rgba(255,238,180,"+(0.28*lit).toFixed(3)+")";
+        g.lineWidth= hit?(2+4*lit):2;
         g.beginPath(); g.moveTo(m.x,m.y); g.lineTo(m.x+Math.cos(ang)*1600,m.y+Math.sin(ang)*1600); g.stroke(); }
       g.save(); g.translate(m.x,m.y); g.rotate((ang!==null)?ang:Math.PI/2);
       // a seated mirror is drawn standing; a slack one lies flat. Behaviour, not
@@ -1553,7 +1629,42 @@ seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not you
 /* 11 · THE GARDEN — "it fills only from play… nothing pre-populates it; nothing
    in it demands, prompts, or expires. The garden shows what you made and never
    what it means." */
-garden:{ g:"wait", cost:"nothing is spent; it shows what you made and asks for no act", enter(){ L.t=0; },
+garden:{ g:"wait", cost:"nothing is spent; it shows what you made and asks for no act", enter(){ L.t=0;
+    /* THE GROWTH RULE, AND IT OPTIMISES NOTHING ─────────────────────────────
+       The garden used to LIST: it drew S.shoots and S.lenses where other seats
+       had put them. Nothing here grew — the room displayed deposits. The organ
+       is a local rule iterated over a neighbourhood, and the thing that makes it
+       lawful at THIS seat is what it does not have. There is no fitness, no
+       target shape and no score, because an objective function is a statement
+       about what the growth MEANS, and this seat never says what it means.
+
+       A row of cells along the bed. Each step every cell takes a share of its
+       two neighbours and loses a little of itself; each shoot is held at full
+       and is the only source. That is a screened-diffusion steady state — the
+       same shape as heat leaking from fixed sources, or a nutrient plume — and
+       it settles to a fixed point instead of running away.
+
+       IT RUNS TO CONVERGENCE HERE, ON ENTRY, AND THEN STOPS, AND THAT IS THE
+       LAW RATHER THAN AN OPTIMISATION. "It fills from play and not from
+       attention" — so the amount of growth must be a function of the SEEDS and
+       of nothing else. Iterating while the hand stands here would make standing
+       longer grow more, which is attention feeding the garden, and the seat
+       forbids exactly that. Look and leave, look and stay, never come: the bed
+       is identical, because the loop finished before the first frame drew.
+
+       Law 8 is untouched — nothing runs between visits. The SEEDS persist in
+       S.shoots and the bed is rebuilt from them each time the room opens. */
+    const N=140, D=0.22, decay=0.008;
+    const seeds=(S.shoots||[]).map(x=>Math.max(0,Math.min(N-1,Math.round((x%W)/W*(N-1)))));
+    let f=new Float32Array(N), nx=new Float32Array(N);
+    seeds.forEach(i=>f[i]=1);
+    for(let s=0;s<300;s++){
+      for(let i=0;i<N;i++){ const l=f[i>0?i-1:0], r=f[i<N-1?i+1:N-1];
+        const v=f[i]+D*(l+r-2*f[i])-decay*f[i]; nx[i]=v>0?(v>1?1:v):0; }
+      const t=f; f=nx; nx=t;
+      seeds.forEach(i=>{ f[i]=1; });          /* the shoots are the sources, held */
+    }
+    L.field=f; },
   step(dt){ L.t+=dt;
     /* THE WAIT, in the shared verb: standing still in the garden long enough is
        the whole act. Nothing asks and no key is named. */
@@ -1574,6 +1685,16 @@ garden:{ g:"wait", cost:"nothing is spent; it shows what you made and asks for n
       g.strokeStyle="rgba(40,40,44,.6)"; g.strokeRect(x,y,200,64);
       g.fillStyle="#17171a"; g.font="11px Georgia,serif"; g.textAlign="left";
       wrap(t,30).slice(0,4).forEach((l,k)=>g.fillText(l,x+9,y+16+k*13)); });
+    /* WHAT THE RULE MADE. Drawn beneath the stalks, as a profile of the bed —
+       so the carrier of the distinction is HEIGHT and the green is redundant
+       (law 10). Two shoots near each other make one continuous swell; a lone
+       shoot makes a narrow tuft. Nothing labels either, and nothing is counted:
+       the bed is simply higher where more was played. */
+    if(L.field){ const N=L.field.length;
+      g.beginPath(); g.moveTo(0,fy);
+      for(let i=0;i<N;i++) g.lineTo(i/(N-1)*W, fy-L.field[i]*26);
+      g.lineTo(W,fy); g.closePath();
+      g.fillStyle="rgba(79,106,61,.34)"; g.fill(); }
     S.shoots.forEach((x,i)=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
       const lean=Math.sin(L.sway*0.013+i*0.8)*4;   /* it leans; it is not hurried */
       g.beginPath(); g.moveTo(x%W,fy); g.lineTo(x%W+lean,fy-34); g.stroke(); });
@@ -1676,7 +1797,20 @@ function emit(){
   S.shop.push({ n:S.shop.length+1, d:today(), text:words });
   save();
 }
-/* taking one is the player's own act, and only then does anything leave */
+/* ── TAKING IS NOT SPENDING ───────────────────────────────────────────────────
+   REVERTED 2026-08-16, Kevin's ruling: "the gifts arent depleted by giving."
+
+   An earlier pass this same session made the take a MOVE — the gift spliced out
+   of S.shop, gone for good — on the strength of the corpus calling this seat
+   "half-built and dishonest: the file leaves and the world loses nothing."
+   That was a misread, and the file it overrode was this one: the paragraph
+   below THE SHELF has said from the beginning that a gift already taken stays,
+   "and the world does not run out of a thing it has already given."
+
+   A cost at this seat is not a deletion. What the giving costs is upstream —
+   what was cast, and what wintered before it was worth casting. The shelf is
+   not where the loss lives, and building one there took a seat that was
+   generous and made it stingy. */
 function takeGift(gi){
   const gift=(S.shop||[])[gi]; if(!gift) return;
   const body="NESI · a gift · "+gift.d+"\n\n"+gift.text.join("\n\n")+"\n";
@@ -1753,6 +1887,33 @@ function facePts(){ return [-90,30,150].map(d=>{ const r=d*Math.PI/180;
   return {x:W/2+Math.min(300,W*0.26)*Math.cos(r), y:H*0.46+Math.min(220,H*0.30)*Math.sin(r)}; }); }
 function bays(){ const w=150,h=88,y=H-150;
   return { spire:{x:W*0.5-260,y,w,h}, lake:{x:W*0.5-75,y,w,h}, set:{x:W*0.5+110,y,w,h} }; }
+
+/* ── THE MEMBER A ROUTE LEAVES ON, asked of the solid and never listed here ───
+   Law 1's three outputs, from solid.js. The two sited outputs name a real member
+   of THE STATIONS; the third names null, because the solid has no edge for a
+   thing sent nowhere. Nothing in this file writes that null down — it is what
+   comes back when you ask.
+
+   IF SOLID.JS IS NOT LOADED this returns null for every output and every bay
+   goes silent. That is the correct failure: a world that cannot ask the geometry
+   what a route left on must not draw a departure it cannot justify, and silence
+   on all three breaks no law while a guessed acknowledgement breaks law 6. */
+function memberFor(out){
+  const S_ = (typeof window!=="undefined") && window.SOLID;
+  if(!S_) return null;
+  const p = S_.outputsOf("STATIONS").find(o =>
+    o.out === (out==="spire" ? "send" : out==="lake" ? "drop" : "set"));
+  return (p && p.member) ? p.to : null;
+}
+/* THE ONLY WAY A PIECE LEAVES THE STATIONS. Returns the member it left on, or
+   undefined for the set-down — which has none, so there is nothing to return and
+   nothing on screen can be built from it. */
+function send(out){
+  S.routed[out]++;                       // the permanent record. Never drawn, never printed.
+  const on = memberFor(out);
+  if(!on) return;                        // the set-down. no destination, no value, no feedback.
+  return { on };
+}
 function beamHit(){ const fy=H-140;
   for(let t=40;t<1400;t+=8){ const x=140+Math.cos(L.a)*t, y=fy+Math.sin(L.a)*t;
     if(y>=fy&&y<=fy+60&&x>=W*0.42&&x<=W*0.84) return {x,y}; if(y>H||x>W||x<0) break; }

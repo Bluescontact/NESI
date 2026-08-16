@@ -1,5 +1,21 @@
 # THE SOLID — pinned, 2026-08-14
 
+> **■ EXTENDED 2026-08-16, and one line below is now false.**
+>
+> This file pinned the **vertices and the edges**. The solid also has **fourteen
+> faces and a centre**, and those are now derived in `solid.js` and checked in
+> `tools/solid_check.js` — eight triangles, six squares, and the position every
+> circuit plane passes through. **`THE_CENTRE.md`** carries them, together with
+> Kevin's ruling: *"the centre is the game. everything else serves it."*
+>
+> **§4 says "Nothing in the running game reads the edge set yet."** It does now.
+> `ascent.html` loads `solid.js` and THE STATIONS derives its three outputs from
+> it — the set-down has no member in the geometry, so it has nothing to
+> acknowledge with, and law 6 became a consequence of the solid rather than a
+> rule the file remembers.
+>
+> Everything else here stands, unedited.
+
 **Kevin's line:** *"↓TANK and ↓FILTER are joined — pin the placement."*
 
 It is pinned. The world is a cuboctahedron and this file is which one.
