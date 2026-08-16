@@ -255,13 +255,94 @@ const SQUARES = !EMBED ? [] : [0,1,2].flatMap(i => [1,-1].map(s => ({
    That last line is a constraint on the build, not a curiosity: nothing can be
    sent to the centre, because there is no edge to send it along. The circuits do
    not lead there. They encircle it. */
-const CENTRE = !EMBED ? null : {
+/* ── THE RIGIDITY OF THE CONTAINER ────────────────────────────────────────────
+   How many ways can this shape move? Computed, not looked up — Wikipedia states
+   only that the edge-framework "does not have structural rigidity" and gives no
+   number. The rigidity matrix has one row per member and three columns per seat;
+   its nullity, less the six rigid-body motions, is the count of real mechanisms.
+
+   THE ANSWER IS SIX, AND THERE ARE SIX SQUARES. Nothing is redundant: all
+   twenty-four members are load-bearing and not one is spare.
+
+   AND IT DEPENDS ON WHETHER THE FACES ARE FILLED. Wikipedia again: the solid IS
+   rigid read as rigid faces on hinges, and is NOT rigid read as rigid edges on
+   free joints. The triangles are already braced as bar-frames, so tenanting the
+   eight cost no motion. The six squares are the whole of the freedom, and
+   anything ever sited in one of them stops the container moving. */
+const RIGIDITY = !EMBED ? null : (() => {
+  const R = MEMBERS.map(m => {
+    const r = new Array(36).fill(0), a = NAMES.indexOf(m.a), b = NAMES.indexOf(m.b);
+    for (let k = 0; k < 3; k++) { const d = EMBED[m.a][k] - EMBED[m.b][k];
+      r[3*a+k] = d; r[3*b+k] = -d; }
+    return r;
+  });
+  let rk = 0;
+  const M = R.map(r => r.slice());
+  for (let c = 0; c < 36 && rk < M.length; c++) {
+    let p = -1, best = 1e-9;
+    for (let r = rk; r < M.length; r++) if (Math.abs(M[r][c]) > best) { best = Math.abs(M[r][c]); p = r; }
+    if (p < 0) continue;
+    [M[rk], M[p]] = [M[p], M[rk]];
+    for (let r = 0; r < M.length; r++) if (r !== rk && Math.abs(M[r][c]) > 1e-12) {
+      const f = M[r][c] / M[rk][c];
+      for (let k = c; k < 36; k++) M[r][k] -= f * M[rk][k];
+    }
+    rk++;
+  }
+  return { bars: MEMBERS.length, rank: rk, redundant: MEMBERS.length - rk,
+           rigidBody: 6, mechanisms: 36 - rk - 6 };
+})();
+
+/* ═══ THE CENTRE — the frame, not a place in it ═══════════════════════════════
+   Kevin's ruling 2026-08-16: "the centre is the game. everything else serves it."
+
+   ── WHAT IT IS SCAFFOLDED OUT OF, and every part is borrowed ──────────────────
+   A HALF-EDGE MESH'S SILENCE. That structure's whole vocabulary is boundary —
+     vertices, edges, faces — and it has no way to NAME an interior. Taken as the
+     mechanism rather than as a gap: the centre is unaddressable, not merely
+     un-addressed. There is no method here that writes it, and the object is
+     frozen so one cannot be added later.
+   RIGIDITY ANALYSIS'S GAUGE. A framework's own motion is what remains after the
+     six trivial motions are subtracted, and they are subtracted by holding the
+     centroid fixed. The centre is not a body in the system; it is what is held
+     still so the system's motion becomes measurable. That is "everything else
+     serves it" as arithmetic.
+   THE JITTERBUG'S FIXED POINT. The whole shape breathes and this does not move.
+
+   ── WHAT IT IS NOT ────────────────────────────────────────────────────────────
+   IT HOLDS NOTHING AND IS NAMED NOTHING. The slot stays empty on his standing
+   line. This is the frame the twelve are measured in — there is no field here to
+   put a thing in, and that is the point rather than an omission.
+
+   NOTHING CAN BE SENT TO IT. No member reaches it, so there is no `to` and no
+   `receive`. A design that delivers inward is geometrically false; here it is
+   also unwritable, which is the stronger of the two. */
+const CENTRE = !EMBED ? null : Object.freeze({
+  /* DERIVED EVERY TIME, never stored. The mean of wherever the twelve are — so
+     if they move, this is recomputed from where they moved to, and by the
+     symmetry of the solid it does not shift. Pass a map to measure a deformed
+     shape; pass nothing for the rest state. */
+  at(pos) { const P = pos || EMBED;
+    const s = NAMES.reduce((a,n)=>[a[0]+P[n][0], a[1]+P[n][1], a[2]+P[n][2]], [0,0,0]);
+    return s.map(x => x / NAMES.length); },
+
+  /* A seat's position IN THE FRAME. This is the only direction the relation
+     runs: a seat is read relative to the centre, never the centre relative to
+     a seat. */
+  relativeTo(seat, pos) { const P = pos || EMBED, c = this.at(P);
+    return P[seat].map((x,i) => x - c[i]); },
+
+  /* Does a motion leave the frame standing? The invariance test — hand it any
+     displaced set of the twelve and it says whether the centre held. */
+  holds(pos, eps) { const c = this.at(pos);
+    return Math.hypot(...c) <= (eps === undefined ? 1e-9 : eps); },
+
   radius: Math.hypot(...EMBED[NAMES[0]]),
   edgeLength: (()=>{ const m=MEMBERS[0]; return Math.hypot(...EMBED[m.a].map((x,i)=>x-EMBED[m.b][i])); })(),
   membersReaching: 0,
   circuitPlanes: CIRCUITS.length,          /* all four contain it, by construction */
-  equidistant: !EMBED ? false : new Set(NAMES.map(n=>Math.hypot(...EMBED[n]).toFixed(9))).size===1
-};
+  equidistant: new Set(NAMES.map(n=>Math.hypot(...EMBED[n]).toFixed(9))).size===1
+});
 
 /* Which faces a seat sits on. Always two of each — vertex configuration 3.4.3.4. */
 const facesOf = s => ({
@@ -277,7 +358,7 @@ const facesAlong = (a,b) => ({
 const SOLID = {
   SEATS, CIRCUITS, NAMES, MEMBERS, ADJ, PRODUCTS,
   TURNS, RETURNS, PURE, DOOR_OUT, WITHDRAWAL,
-  EMBED, TRIANGLES, SQUARES, CENTRE, facesOf, facesAlong,
+  EMBED, TRIANGLES, SQUARES, CENTRE, RIGIDITY, facesOf, facesAlong,
   falls, memberBetween, isMember, circuitsOf, distance, routes,
   antipodeOf, outputsOf
 };

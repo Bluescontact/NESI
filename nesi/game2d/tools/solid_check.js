@@ -221,5 +221,45 @@ ok("NO member reaches the centre — nothing can be sent inward, only encircled"
   }
 }
 
+/* ── the container's motion, and the frame it is measured in ──────────────────
+   Kevin's instruction 2026-08-16: "arrange them into the scaffold for the
+   centre." Wikipedia gives no number for the degrees of freedom; this is
+   computed from the rigidity matrix and checked here so it cannot drift into
+   prose and rot. */
+ok("twenty-four bars, and not one redundant — every member is load-bearing",
+   S.RIGIDITY && S.RIGIDITY.bars===24 && S.RIGIDITY.redundant===0);
+ok("six internal mechanisms — the container is NOT rigid as a bar frame",
+   S.RIGIDITY && S.RIGIDITY.mechanisms===6);
+ok("and there are exactly as many mechanisms as squares",
+   S.RIGIDITY && S.RIGIDITY.mechanisms===S.SQUARES.length);
+
+/* THE FRAME. Three properties, each borrowed from a different instrument and
+   each testable: unaddressable (the half-edge mesh's silence about interiors),
+   the gauge (rigidity analysis holds the centroid fixed to expose real motion),
+   and the fixed point (the jitterbug breathes and this does not move). */
+ok("the centre is at the origin at rest, derived and not stored",
+   S.CENTRE && Math.hypot(...S.CENTRE.at())<1e-12);
+ok("it holds when the shape BREATHES — the jitterbug's fixed point",
+   (()=>{ const b={}; S.NAMES.forEach(n=>b[n]=S.EMBED[n].map(x=>x*1.3));
+          return S.CENTRE.holds(b); })());
+ok("it FOLLOWS a translation — a gauge, so internal motion stays measurable",
+   (()=>{ const m={}; S.NAMES.forEach(n=>m[n]=S.EMBED[n].map((x,i)=>x+[5,-2,3][i]));
+          const c=S.CENTRE.at(m);
+          return Math.abs(c[0]-5)<1e-12 && Math.abs(c[1]+2)<1e-12 && Math.abs(c[2]-3)<1e-12; })());
+ok("a seat read IN THE FRAME is unchanged by that translation",
+   (()=>{ const m={}; S.NAMES.forEach(n=>m[n]=S.EMBED[n].map((x,i)=>x+[5,-2,3][i]));
+          return S.CENTRE.relativeTo("TANK",m).every((v,i)=>Math.abs(v-S.EMBED.TANK[i])<1e-12); })());
+
+/* UNADDRESSABLE, not merely un-addressed. The same move as the void return at
+   THE STATIONS: the law is kept by there being nothing to write, not by nobody
+   having written it. */
+ok("the frame is frozen — no field can be added to the centre at runtime",
+   S.CENTRE && Object.isFrozen(S.CENTRE) &&
+   (()=>{ try{ S.CENTRE.__x=1; }catch(e){} return !("__x" in S.CENTRE); })());
+ok("NOTHING CAN BE SENT TO IT — no receive, no to, no send, no set, no put",
+   S.CENTRE && ["receive","to","send","set","put","add","hold"].every(k=>!(k in S.CENTRE)));
+ok("and it names nothing — the frame carries no content field",
+   S.CENTRE && !["name","holds_","value","content","game"].some(k=>k in S.CENTRE));
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);

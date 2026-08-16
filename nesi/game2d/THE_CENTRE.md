@@ -13,7 +13,10 @@ doesnt."*
 mechanisms where there are twenty. A document alone does not hold in this tree.
 
 So everything in this file is **derived in `solid.js` and checked in
-`tools/solid_check.js`** — sixty assertions in one command, all passing. No
+`tools/solid_check.js`** — one command, and it prints every assertion and its
+verdict. *No count is written here on purpose:* a number in prose is the exact
+thing that went stale in `THE_24.md`, and this file would rot the same way. Run
+it and read the tally it prints. No
 coordinates are written down anywhere: the embedding is *solved* from the circuit
 table, so if a circuit ever changes, the faces and the centre move with it or the
 solve fails loudly.
@@ -268,3 +271,74 @@ containing the seat it obviously belongs to, without that being a criterion. And
 mechanics that read the deep — `spring` took one and `sounding` the other.
 
 **The weakest row is named as weak.** `shoal` on the silent triangle is taste.
+
+---
+
+## 12 · THE SCAFFOLD FOR THE CENTRE — built 2026-08-16
+
+**Kevin's instruction:** *"take the parts that serve, and arrange them into the
+scaffold for the centre."*
+
+Nothing in open source scaffolds a centre. Every mesh and polyhedron library
+models vertices, edges and faces; not one has a concept for a position that
+participates in everything and is reachable by nothing. **So it is assembled
+from three parts, each borrowed from a different instrument, and one of them is
+a negative.**
+
+**A HALF-EDGE MESH'S SILENCE.** That structure's whole vocabulary is boundary,
+and it has no way to *name* an interior. Taken as the mechanism rather than as a
+gap: the centre is **unaddressable, not merely un-addressed.** No method writes
+it, and the object is frozen so one cannot be added at runtime. Same move as the
+void return at ↓THE STATIONS — the law holds because there is nothing to write,
+not because nobody has written it.
+
+**RIGIDITY ANALYSIS'S GAUGE.** A framework's own motion is what remains once the
+six trivial motions are subtracted, and they are subtracted by holding the
+centroid fixed. **The centre is not a body in the system; it is what is held
+still so the system's motion becomes measurable.** That is "everything else
+serves it" as arithmetic rather than as a reading.
+
+**THE JITTERBUG'S FIXED POINT.** The whole shape breathes and this does not move.
+
+### What it does, and every line of it is checked
+
+```
+CENTRE.at(pos)            the centroid, DERIVED every call, never stored
+CENTRE.relativeTo(s,pos)  a seat read in the frame — and the relation runs one
+                          way only: a seat is read against the centre, never
+                          the centre against a seat
+CENTRE.holds(pos, eps)    the invariance test — hand it any displaced twelve
+```
+
+- at rest it is the origin
+- it **holds when the shape breathes** — the fixed point
+- it **follows a translation**, which is what makes it a gauge: move the whole
+  world and a seat read in the frame is unchanged, so internal motion stays
+  measurable
+- frozen; no field can be added
+- **no `receive`, no `to`, no `send`, no `set`, no `put`** — there is nothing to
+  send to
+- **no `name`, no `value`, no `content`** — the frame carries nothing. The slot
+  stays empty because there is no field to fill, which is the standing line made
+  structural rather than remembered.
+
+### And the number nobody had
+
+`RIGIDITY` computes the container's own motion from the rigidity matrix.
+Wikipedia states only that the edge-framework *"does not have structural
+rigidity"* and gives no count.
+
+```
+bars                24
+rank                24
+redundant            0    every member load-bearing, not one spare
+rigid-body motions   6
+INTERNAL MECHANISMS  6    — and there are six squares
+```
+
+**And it depends on whether the faces are filled.** Wikipedia again: the solid
+*is* rigid read as rigid faces on hinges, and is *not* rigid read as rigid edges
+on free joints. Triangles are already braced as bar-frames, so tenanting the
+eight (§11) cost no motion. **The six squares are the whole of the freedom, and
+anything ever sited in one of them stops the container moving.** "Nothing goes
+in the squares" is now a mechanical law and not a preference.
