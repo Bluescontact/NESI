@@ -1,5 +1,17 @@
 # THE GATE
 
+## TRIBUTARIES - 2026-08-16 - the commons swept, under `TRIBUTARIES` (Kevin's instrument)
+
+Water made elsewhere, running today, unjoined. Ranked by capacity x ease of routing.
+Nothing installed, vendored, or wired. Each names its mouth in the live build.
+
+1. trib_2026-08-16_02_headless_chrome_frame.md - a rendered frame of the live page; ends the three UNWITNESSED sessions (H cap - L effort - H conf) - mouth: `tools/check_all.js`
+2. trib_2026-08-16_01_intl_segmenter.md - sentence boundaries from the runtime instead of a regex; fixes 2 of 3 recorded defect classes (M - L - H) - mouth: `ascent.html:696`
+
+Refusal ledger for this sweep is in the session record: ~45 candidates read,
+2 survived. Part D of the instrument was written against the retired Godot tree
+and did not survive C0.
+
 ## SEED - 2026-08-11 - offered by Kevin's own hand ("more seed to the soil")
 
 Ten files in `seed_2026-08-11/`, manifest at `seed_2026-08-11_manifest.md`:
