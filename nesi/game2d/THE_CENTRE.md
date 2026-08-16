@@ -485,3 +485,71 @@ One family per class of position, and the count matches the points.
 ──
 13  axes — and 13 points. The shape counts itself twice.
 ```
+
+---
+
+## 14 · WHAT THE SIX PYRAMID CELLS DO — the trades
+
+**Kevin, 2026-08-16:** *"now assign function to the 6 pyramid cells."*
+
+### First: whether the question is even well-posed
+
+Six cells and six mechanisms could be a coincidence. **It is not.** For every one
+of the six squares there is a **one-dimensional space of motion that folds that
+square and leaves the other five rigid** — solved over the mechanism space with
+PyRigi, and all six localise.
+
+So each cell has its own movement, unique up to scale, available alone.
+
+### Second: what the movement does
+
+A square's four sides are members and cannot change. Its **two diagonals** are the
+only free lengths in it. Folding therefore moves the diagonals — and in every one
+of the six, **one diagonal closes exactly as the other opens.**
+
+**So a pyramid cell is a TRADE.** One exchange the world can make and only that
+one: two seats may be brought together, and the price is fixed in advance — the
+other two are pushed apart by the same motion. There is no way to do half of it,
+and no way to do it anywhere else.
+
+```
+x+    TANK ↔ HELIOSTAT          traded against    FILTER ↔ OVERWINTERING
+x−    DAM ↔ LENS                traded against    STATIONS ↔ SEATING
+y+    TANK ↔ DAM                traded against    GROUND ↔ CAST
+y−    DEEP ↔ GARDEN             traded against    HELIOSTAT ↔ LENS
+z+    FILTER ↔ STATIONS         traded against    GROUND ↔ DEEP      (all falling)
+z−    OVERWINTERING ↔ SEATING   traded against    CAST ↔ GARDEN      (all rising)
+```
+
+**NOT A GENERAL LAW OF FOUR-BAR LINKAGES**, and this file nearly wrote it as one.
+An isolated equilateral four-bar can change one diagonal while holding the other.
+The trade is a fact about *these* squares *inside this solid*, where the rest of
+the frame constrains them, and it was **measured, not deduced.**
+
+### And it completes the classification of seat relations
+
+Every pair of the twelve is exactly one of three things, and the count closes:
+
+```
+distance 1    24 pairs    A MEMBER — a level, something you walk
+distance 2    36 pairs    of which 12 share a square face — THE TRADES
+distance 3     6 pairs    the antipodes, never adjacent
+              ────────
+              66 pairs    = every pair of twelve
+```
+
+A diagonal is never a member and never an antipodal pair. **The trades are
+relations that are not walks** — the world can change them without anyone
+travelling anything, which is the same class of act as the radii holding the
+centre.
+
+### The three axes are graded, and nobody arranged that
+
+```
+z    4↓0↑  and  0↓4↑      pure — the only axis where a face is all one direction
+y    3↓1↑  and  1↓3↑      mostly
+x    2↓2↑  and  2↓2↑      balanced
+```
+
+The trade on `z+` happens entirely within the descent; the trade on `z−`
+entirely within the ascent. The `x` trades each cross between them.

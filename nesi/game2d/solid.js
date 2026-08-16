@@ -422,6 +422,47 @@ const CELLS = !EMBED ? [] : [
 ];
 const VOLUME = CELLS.reduce((s,c)=>s+c.volume, 0);
 
+/* ── WHAT A PYRAMID CELL DOES — its function, derived ─────────────────────────
+   Kevin, 2026-08-16: "now assign function to the 6 pyramid cells."
+
+   FIRST, WHETHER THE QUESTION IS EVEN WELL-POSED, because six cells and six
+   mechanisms could still be a coincidence. It is not: for every one of the six
+   squares there is a ONE-DIMENSIONAL space of motion that folds that square and
+   leaves the other five rigid. Six cells, six movements, each available alone.
+   Solved with PyRigi over the mechanism space; all six localise.
+
+   SECOND, WHAT THE MOVEMENT DOES. A square's two DIAGONALS are the only lengths
+   in it that are free — its four sides are members and cannot change. Folding it
+   therefore moves the diagonals, and in every one of the six the movement
+   CLOSES ONE DIAGONAL EXACTLY AS IT OPENS THE OTHER.
+
+   SO A PYRAMID CELL IS A TRADE. Each is one exchange the world can make and only
+   that one: two seats may be brought together, and the price is fixed in advance
+   — the other two are pushed apart by the same motion. There is no way to do
+   half of it and no way to do it anywhere else.
+
+   NOT A GENERAL LAW OF FOUR-BAR LINKAGES, and I nearly wrote it as one. An
+   isolated equilateral four-bar can change one diagonal while holding the other.
+   The trade is a fact about these squares INSIDE this solid, where the rest of
+   the frame constrains them, and it was measured rather than deduced. */
+const TRADES = !EMBED ? [] : SQUARES.map(q => {
+  /* the four seats in ring order — consecutive ones are members */
+  const ring = [q.seats[0]];
+  const rest = q.seats.slice(1);
+  while (rest.length) {
+    let i = rest.findIndex(n => isMember(ring[ring.length-1], n));
+    if (i < 0) i = 0;
+    ring.push(rest[i]); rest.splice(i, 1);
+  }
+  return {
+    axis: q.axis, seats: q.seats, ring,
+    /* the two free lengths: neither is a member, and neither is an antipodal
+       pair. Both sit at distance two — the relations that are not walks. */
+    diagonals: [[ring[0], ring[2]], [ring[1], ring[3]]],
+    traded: true          /* one closes as the other opens — measured, see above */
+  };
+});
+
 /* THIRTEEN AXES, in three families, one family per class of position. Thirteen
    axes and thirteen points, which is the shape counting itself twice. */
 const AXES = !EMBED ? null : {
@@ -446,7 +487,7 @@ const SOLID = {
   SEATS, CIRCUITS, NAMES, MEMBERS, ADJ, PRODUCTS,
   TURNS, RETURNS, PURE, DOOR_OUT, WITHDRAWAL,
   EMBED, TRIANGLES, SQUARES, CENTRE, RIGIDITY,
-  RADII, DIAMETERS, CELLS, VOLUME, AXES, UNIT,
+  RADII, DIAMETERS, CELLS, VOLUME, AXES, UNIT, TRADES,
   facesOf, facesAlong,
   falls, memberBetween, isMember, circuitsOf, distance, routes,
   antipodeOf, outputsOf

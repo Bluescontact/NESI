@@ -306,5 +306,26 @@ ok("the opened census: 13 points · 36 lines · 14 faces · 14 volumes",
    S.NAMES.length+1===13 && S.MEMBERS.length+S.RADII.length===36 &&
    S.TRIANGLES.length+S.SQUARES.length===14 && S.CELLS.length===14);
 
+/* -- what each pyramid cell DOES: the six trades ------------------------------
+   Kevin, 2026-08-16: "now assign function to the 6 pyramid cells." The function
+   is derived, not assigned: each cell is one exchange, and only that one. */
+ok("six trades, one per pyramid cell", S.TRADES.length===6);
+ok("each has exactly two free lengths -- its diagonals",
+   S.TRADES.every(t=>t.diagonals.length===2));
+ok("a diagonal is NEVER a member -- the four sides are members, the diagonals are not",
+   S.TRADES.every(t=>t.diagonals.every(([a,b])=>!S.isMember(a,b))));
+ok("and never an antipodal pair",
+   S.TRADES.every(t=>t.diagonals.every(([a,b])=>S.antipodeOf(a)!==b)));
+ok("every diagonal sits at distance two -- the relations that are not walks",
+   S.TRADES.every(t=>t.diagonals.every(([a,b])=>S.distance(a,b)===2)));
+ok("the ring order is real: consecutive seats in a square ARE members",
+   S.TRADES.every(t=>t.ring.every((n,i)=>S.isMember(n, t.ring[(i+1)%4]))));
+ok("twelve diagonals in all, every one distinct",
+   new Set(S.TRADES.flatMap(t=>t.diagonals.map(d=>d.slice().sort().join("|")))).size===12);
+ok("every pair of seats is a member, a distance-two, or an antipode: 24 + 36 + 6 = 66",
+   (()=>{ const c={1:0,2:0,3:0};
+     for(let i=0;i<12;i++) for(let j=i+1;j<12;j++) c[S.distance(S.NAMES[i],S.NAMES[j])]++;
+     return c[1]===24 && c[2]===36 && c[3]===6 && c[1]+c[2]+c[3]===66; })());
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);
