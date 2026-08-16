@@ -28,6 +28,13 @@ is checked; its content cannot be. Everything else here is computed.
 **Read the prose here for what it means. Trust `solid_check.js` for what is
 true.** Where the two ever disagree, the check is right and this file is stale.
 
+**THIS FILE IS WRITTEN IN A SPECIALIST REGISTER AND KEVIN SAID SO** — *"im
+struggling to align with the domain specific language your using"*, 2026-08-16.
+**`THE_CENTRE_IN_PLAIN_WORDS.md` says all of it again without jargon**, and
+carries a table of which vocabulary is his and which was imported. Read that one
+first. It is looser on purpose; this one is the precise version and the check is
+the true one.
+
 ---
 
 ## 1 · THE CENTRE, MEASURED
