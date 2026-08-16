@@ -94,6 +94,11 @@ Whatever the centre receives, it receives by being surrounded.
 
 ## 4 · THE FULL ELEMENT CENSUS
 
+> **■ THIS CENSUS STOPS AT THE SURFACE. Superseded 2026-08-16 by §13**, on his
+> line *"there are volumes, edges, and points within the solid that have yet to
+> be mapped."* Opening the interior roughly triples it. Read this as the skin
+> and §13 as the body.
+
 ```
 vertices  12   OCCUPIED    a seat — a hand acts at each
 edges     24   OCCUPIED    the members, the levels
@@ -373,3 +378,110 @@ on free joints. Triangles are already braced as bar-frames, so tenanting the
 eight (§11) cost no motion. **The six squares are the whole of the freedom, and
 anything ever sited in one of them stops the container moving.** "Nothing goes
 in the squares" is now a mechanical law and not a preference.
+
+---
+
+## 13 · THE INTERIOR — the 26 positions, mapped
+
+**Kevin, 2026-08-16:** *"there are volumes, edges, and points within the solid
+that have yet to be mapped, and assigned function."* → *"map the 26 positions."*
+
+Opening the interior roughly triples the census. All of it is derived in
+`solid.js` from the same embedding and checked in `tools/solid_check.js`.
+
+```
+points    13    the twelve seats + the centre          was 12
+lines     36    24 members + 12 RADII                  was 24
+faces     14    8 triangles + 6 squares                unchanged
+volumes   14    8 tetrahedra + 6 half-octahedra        entirely new
+```
+
+### A CORRECTION TO §3, KEPT RATHER THAN SMOOTHED
+
+§3 says no edge reaches the centre. **Twelve radii do.** What survives is the
+precise form: **no MEMBER reaches it.** A member is a walk — it lies on a
+circuit, it appears in a route, something travels it. A radius is none of those.
+It can be measured and it cannot be travelled, and nothing in `PRODUCTS`,
+`routes()` or `ADJ` will ever return one. Checked as a standing assertion.
+
+### THE 12 RADII — and their function is derived, not assigned
+
+Every radius is **exactly one edge long**. That equality is the entire reason
+Fuller called this shape the *vector equilibrium*: the outward spokes and the
+surrounding edges balance exactly. **So the radii are the holding, not channels.
+The twelve hold the centre by standing exactly as far from it as they stand from
+each other**, which is the mechanical form of the word you used.
+
+They pair into **six straight lines through the centre** — a seat's radius and
+its antipode's are collinear. So there are six diameters, not twelve spokes.
+
+```
+R·TANK    ─── R·LENS         R·DAM     ─── R·HELIOSTAT
+R·FILTER  ─── R·SEATING      R·STATIONS─── R·OVERWINTERING
+R·GROUND  ─── R·GARDEN       R·DEEP    ─── R·CAST
+```
+
+### THE 8 TETRAHEDRAL CELLS — 1 unit each · RIGID
+
+Because the radius equals the edge, **every one is a perfectly regular
+tetrahedron** — the minimum system. Each sits under a triangle, so each carries
+the mechanic already sited on that face (§11).
+
+```
+T1  A  TANK · FILTER · GROUND                  membrane
+T2  B  TANK · OVERWINTERING · CAST             rain
+T3  B  DAM · STATIONS · GROUND                 channel
+T4  A  DAM · CAST · SEATING                    table
+T5  B  FILTER · DEEP · HELIOSTAT               sounding
+T6  A  STATIONS · DEEP · LENS                  spring
+T7  A  HELIOSTAT · OVERWINTERING · GARDEN      stilling
+T8  B  LENS · GARDEN · SEATING                 shoal
+```
+
+### THE 6 PYRAMID CELLS — 2 units each · THESE DEFORM
+
+Half-octahedra, under the hinges. **These are what change shape when the world
+moves.**
+
+```
+P1  x+  TANK · FILTER · HELIOSTAT · OVERWINTERING
+P2  x−  DAM · STATIONS · LENS · SEATING
+P3  y+  TANK · DAM · GROUND · CAST
+P4  y−  DEEP · HELIOSTAT · LENS · GARDEN
+P5  z+  FILTER · STATIONS · GROUND · DEEP          ALL FALL
+P6  z−  OVERWINTERING · CAST · GARDEN · SEATING    ALL RISE
+```
+
+`P5` and `P6` are the two ends of the world's only pure descent/ascent axis
+(§12's out-and-return line). Everything that goes down goes through one;
+everything that rises goes through the other.
+
+### THE SPLIT THAT GOVERNS WHAT MAY BE BUILT
+
+```
+8 units    rigid, under the triangles     40%
+12 units   deforming, under the squares   60%
+────────
+20 units   Fuller's number, and it came out of the circuit table
+```
+
+**Twelve of the twenty units are in motion; eight cannot be.** And the breathing
+is total: at the equilibrium the volume is 20; collapsed to the octahedron it is
+4 — a fifth — without one member changing length.
+
+**My read, marked as a read and not derived:** the eight are what the world *is*,
+the six are what it *does*. Anything permanent belongs in a tetrahedral cell.
+Putting a thing in a pyramid cell would jam the hinge above it, the same way
+siting in a square would.
+
+### THIRTEEN AXES, THREE FAMILIES
+
+One family per class of position, and the count matches the points.
+
+```
+3   through opposite SQUARES      the hinge axes
+4   through opposite TRIANGLES    the tetrahedra axes
+6   through opposite SEATS        the radii, paired
+──
+13  axes — and 13 points. The shape counts itself twice.
+```

@@ -104,6 +104,43 @@ standing line turned into structure instead of something to remember.
 
 ---
 
+## 4b · WHAT IS INSIDE IT (added the same day)
+
+Everything above describes the outside. The inside has three times as much in it.
+
+Draw a line from the middle out to each of the twelve corners. Twelve spokes.
+**Every one of them is exactly as long as one strut.** That equality is the whole
+reason Fuller called this shape the "vector equilibrium" — the push outward and
+the hold inward are exactly matched.
+
+**So the spokes are the holding.** Not pipes, not routes — nothing travels them.
+The twelve hold the middle steady by standing exactly as far from it as they
+stand from each other. That is your word *held*, as a measurement.
+
+*(This corrects something I said earlier. I told you nothing reaches the middle.
+Twelve spokes do. What stays true: nothing **travels** to the middle. You can
+measure the distance; you cannot go along it.)*
+
+Now fill in the solid parts. Each face, joined to the middle, makes a wedge:
+
+- **8 wedges under the triangles** — each a perfect pyramid with all edges the
+  same. Call each one 1 unit. They are stiff.
+- **6 wedges under the squares** — each 2 units. These are the ones that change
+  shape when the thing moves.
+
+**The whole solid comes to exactly 20 units.** That is a known number of Fuller's,
+and it fell out of your own circuit table without being put there.
+
+**8 units cannot move. 12 units can.** Sixty percent of the inside is the moving
+part. And the movement is drastic: squeezed all the way down, the 20 becomes 4 —
+a fifth of the volume — without a single strut changing length.
+
+**What that means for building:** anything permanent belongs in one of the eight
+stiff wedges. Putting something in one of the six moving wedges jams it, the same
+as putting something in a square.
+
+---
+
 ## 5 · THE WORDS I USED, AND WHOSE THEY ARE
 
 | what I said | what it means | whose word |

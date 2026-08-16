@@ -352,6 +352,85 @@ const CENTRE = !EMBED ? null : Object.freeze({
   equidistant: new Set(NAMES.map(n=>Math.hypot(...EMBED[n]).toFixed(9))).size===1
 });
 
+/* ═══ THE INTERIOR — 26 positions the surface never showed ════════════════════
+   Kevin, 2026-08-16: "there are volumes, edges, and points within the solid that
+   have yet to be mapped, and assigned function." — then: "map the 26 positions."
+
+   Everything here is derived from the embedding, same as the faces. Opening the
+   interior roughly triples the census: 13 points, 36 lines, 14 faces, 14 volumes.
+
+   ── AND IT CORRECTS SOMETHING THIS FILE SAID ─────────────────────────────────
+   The CENTRE block above says no edge reaches the centre. Twelve RADII do. What
+   survives, and it is the precise form: NO MEMBER reaches it. A member is a walk
+   — a level, on a circuit, appearing in a route. A radius is none of those. It
+   can be measured and it cannot be travelled, and nothing in PRODUCTS, ROUTES or
+   ADJ will ever return one.
+
+   ── WHAT THE RADII ARE FOR, DERIVED RATHER THAN ASSIGNED ─────────────────────
+   Every radius is exactly one edge long. That equality is the whole of why
+   Fuller called this shape the VECTOR EQUILIBRIUM: the outward spokes and the
+   surrounding edges balance exactly. So the radii are THE HOLDING, not channels.
+   The twelve hold the centre by standing exactly as far from it as they stand
+   from each other. */
+
+const UNIT = !EMBED ? null : (() => {           /* one regular tetrahedron, this edge */
+  const e = Math.hypot(...EMBED[MEMBERS[0].a].map((x,i)=>x-EMBED[MEMBERS[0].b][i]));
+  return e*e*e / (6*Math.sqrt(2));
+})();
+const _sub = (a,b) => a.map((x,i)=>x-b[i]);
+const _cross = (a,b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+const _dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const _tet = (p,q,r,s) => Math.abs(_dot(_sub(q,p), _cross(_sub(r,p), _sub(s,p))))/6;
+
+/* TWELVE RADII, and they pair into SIX straight lines through the centre — a
+   radius and its antipode's radius are collinear, so the spokes are really six
+   diameters. Not walks: `member:null` on every one, permanently. */
+const RADII = !EMBED ? [] : NAMES.map(n => ({
+  seat: n, falls: falls(n),
+  length: Math.hypot(...EMBED[n]),
+  circuits: circuitsOf(n),
+  opposite: antipodeOf(n),
+  member: null                      /* it is not a walk and never becomes one */
+}));
+const DIAMETERS = !EMBED ? [] :
+  [...new Set(NAMES.map(n => [n, antipodeOf(n)].sort().join("|")))].map(k => k.split("|"));
+
+/* FOURTEEN CELLS, every one with the centre as its apex.
+     8 under the triangles — REGULAR tetrahedra, 1 unit, and they cannot deform
+     6 under the squares   — half-octahedra, 2 units, and these are what move
+   Twelve of the twenty units are in motion; eight cannot be. */
+const CELLS = !EMBED ? [] : [
+  ...TRIANGLES.map(t => ({
+    kind: "tetra", seats: t.seats, tetra: t.tetra, under: "triangle",
+    volume: _tet([0,0,0], ...t.seats.map(n=>EMBED[n])) / UNIT,
+    rigid: true
+  })),
+  ...SQUARES.map(q => {
+    /* the square's four seats in ring order, so the pyramid splits into two
+       tetrahedra that do not overlap */
+    const p = q.seats.slice();
+    const ring = [p[0], ...p.slice(1).sort((a,b) =>
+      Math.hypot(..._sub(EMBED[a],EMBED[p[0]])) - Math.hypot(..._sub(EMBED[b],EMBED[p[0]])))];
+    const o = [ring[0], ring[1], ring[3], ring[2]];      /* opposite corner last */
+    return {
+      kind: "pyramid", seats: q.seats, axis: q.axis, under: "square",
+      volume: (_tet([0,0,0], EMBED[o[0]], EMBED[o[1]], EMBED[o[2]]) +
+               _tet([0,0,0], EMBED[o[0]], EMBED[o[2]], EMBED[o[3]])) / UNIT,
+      rigid: false
+    };
+  })
+];
+const VOLUME = CELLS.reduce((s,c)=>s+c.volume, 0);
+
+/* THIRTEEN AXES, in three families, one family per class of position. Thirteen
+   axes and thirteen points, which is the shape counting itself twice. */
+const AXES = !EMBED ? null : {
+  throughSquares:   SQUARES.length/2,     /* 3 — the hinge axes */
+  throughTriangles: TRIANGLES.length/2,   /* 4 — the tetrahedra axes */
+  throughSeats:     DIAMETERS.length,     /* 6 — the radii, paired */
+  get total(){ return this.throughSquares + this.throughTriangles + this.throughSeats; }
+};
+
 /* Which faces a seat sits on. Always two of each — vertex configuration 3.4.3.4. */
 const facesOf = s => ({
   triangles: TRIANGLES.filter(t=>t.seats.includes(s)),
@@ -366,7 +445,9 @@ const facesAlong = (a,b) => ({
 const SOLID = {
   SEATS, CIRCUITS, NAMES, MEMBERS, ADJ, PRODUCTS,
   TURNS, RETURNS, PURE, DOOR_OUT, WITHDRAWAL,
-  EMBED, TRIANGLES, SQUARES, CENTRE, RIGIDITY, facesOf, facesAlong,
+  EMBED, TRIANGLES, SQUARES, CENTRE, RIGIDITY,
+  RADII, DIAMETERS, CELLS, VOLUME, AXES, UNIT,
+  facesOf, facesAlong,
   falls, memberBetween, isMember, circuitsOf, distance, routes,
   antipodeOf, outputsOf
 };

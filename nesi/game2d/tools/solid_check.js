@@ -261,5 +261,50 @@ ok("NOTHING CAN BE SENT TO IT — no receive, no to, no send, no set, no put",
 ok("and it names nothing — the frame carries no content field",
    S.CENTRE && !["name","holds_","value","content","game"].some(k=>k in S.CENTRE));
 
+/* ── the interior: 26 positions the surface never showed ──────────────────────
+   Kevin, 2026-08-16: "map the 26 positions." Twelve radii, eight tetrahedral
+   cells, six pyramid cells. Every line re-derived from the embedding. */
+ok("twelve radii, one per seat", S.RADII.length===12);
+ok("every radius is exactly one edge long — THE VECTOR EQUILIBRIUM",
+   S.RADII.every(r=>Math.abs(r.length - S.CENTRE.edgeLength) < 1e-12));
+ok("NO RADIUS IS A MEMBER — measurable, never walkable",
+   S.RADII.every(r=>r.member===null) &&
+   S.RADII.every(r=>!S.ADJ[r.seat].includes("CENTRE")) &&
+   !S.MEMBERS.some(m=>m.a==="CENTRE"||m.b==="CENTRE"));
+ok("the twelve radii pair into six straight lines through the centre",
+   S.DIAMETERS.length===6 &&
+   S.DIAMETERS.every(([a,b])=>S.EMBED[a].every((x,i)=>Math.abs(x+S.EMBED[b][i])<1e-12)));
+
+ok("fourteen cells — one under every face", S.CELLS.length===14);
+ok("eight tetrahedral cells, every one exactly ONE tetra-unit",
+   S.CELLS.filter(c=>c.kind==="tetra").length===8 &&
+   S.CELLS.filter(c=>c.kind==="tetra").every(c=>Math.abs(c.volume-1)<1e-9));
+ok("and every one of them REGULAR — because the radius equals the edge",
+   S.CELLS.filter(c=>c.kind==="tetra").every(c=>{
+     const P=c.seats.map(n=>S.EMBED[n]), L=[];
+     for(let i=0;i<3;i++){ L.push(Math.hypot(...P[i]));
+       for(let j=i+1;j<3;j++) L.push(Math.hypot(...P[i].map((x,k)=>x-P[j][k]))); }
+     return L.every(l=>Math.abs(l-S.CENTRE.edgeLength)<1e-9); }));
+ok("six pyramid cells, every one exactly TWO tetra-units (half-octahedra)",
+   S.CELLS.filter(c=>c.kind==="pyramid").length===6 &&
+   S.CELLS.filter(c=>c.kind==="pyramid").every(c=>Math.abs(c.volume-2)<1e-9));
+ok("the whole solid measures TWENTY — Fuller's number, out of the circuit table",
+   Math.abs(S.VOLUME-20)<1e-9);
+/* the split that matters for building: what can change and what cannot */
+ok("twelve of the twenty units deform; eight cannot",
+   Math.abs(S.CELLS.filter(c=>!c.rigid).reduce((s,c)=>s+c.volume,0)-12)<1e-9 &&
+   Math.abs(S.CELLS.filter(c=>c.rigid).reduce((s,c)=>s+c.volume,0)-8)<1e-9);
+ok("every rigid cell sits under a triangle, every deforming one under a square",
+   S.CELLS.every(c=>c.rigid === (c.under==="triangle")));
+
+ok("thirteen axes in three families — 3 through squares, 4 through triangles, 6 through seats",
+   S.AXES.throughSquares===3 && S.AXES.throughTriangles===4 &&
+   S.AXES.throughSeats===6 && S.AXES.total===13);
+ok("and thirteen points — the twelve seats and the centre",
+   S.NAMES.length + 1 === 13);
+ok("the opened census: 13 points · 36 lines · 14 faces · 14 volumes",
+   S.NAMES.length+1===13 && S.MEMBERS.length+S.RADII.length===36 &&
+   S.TRIANGLES.length+S.SQUARES.length===14 && S.CELLS.length===14);
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);
