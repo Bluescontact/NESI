@@ -36,6 +36,17 @@ const NODE = [
   ["solid_check",     "the solid's own arithmetic"],
   ["hand_check",      "the bed's own arithmetic — conserved, deterministic, and it holds"],
   ["scope_check",     "every instrument reads the live build"],
+  /* REGISTERED 2026-08-17 on Kevin's "close all three gaps", after the trim-tab
+     audit found these three built, working, and running only when a hand typed
+     them. The gesture map is the tab that sites every organ — commons and gate —
+     onto the twelve seats; it had no automatic channel, which is the exact shape
+     law 22 names. Registering them puts the channel in the suite.
+     They REPORT rather than refuse: each exits 0 today and says what it found.
+     That is honest for a map, and it is also why they sit at the end of the
+     list — a reader must be able to tell a gate from a survey. */
+  ["organ_map",       "27 organs sited by gesture, and the sockets still open"],
+  ["organ_audit",     "what each organ would cost the build if it were taken in"],
+  ["crossing_audit",  "what may leave the world, and what stays"],
 ];
 
 /* HIS AUDIT RUNS HERE TOO. tools/assertion_audit.py encodes the register —

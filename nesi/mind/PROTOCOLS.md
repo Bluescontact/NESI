@@ -21,13 +21,13 @@ lawful again from this mark forward.
 which is this corpus's convention: supersession is a mark on top, never a silent
 erasure. Read it as history from here, never as instruction.
 
-**What the lift does NOT do.** It does not touch the 2026-08-15 suspension of the
-vendor `~/.claude/CLAUDE.md`, of `MEMORY.md`, or of the machinery listed there.
-That suspension is a separate mark and is still standing; nothing here re-adopts
-any part of it by inference. It also does not make this file reachable — the
-pointer that led here is still suspended. **The one thing routed on this mark is
-`nesi/mind/LEARNED.md`, via a new project `CLAUDE.md` at the DSS root**, which is
-the only path in this repository that loads on its own.
+**The scope of the lift.** It reaches the freeze and stops there. The 2026-08-15
+suspension of the vendor `~/.claude/CLAUDE.md`, of `MEMORY.md`, and of the
+machinery listed with them stands as Kevin set it, and lifting any part of it is
+his in his own words, item by item or wholesale. This file stays behind that
+pointer and remains available to read as history. **The one thing routed on this
+mark is `nesi/mind/LEARNED.md`, via a new project `CLAUDE.md` at the DSS root**,
+which is the path in this repository that loads on its own.
 
 **What the freeze bought, recorded so the lift does not erase it:** it existed to
 make room for one output rather than more generation, and the corpus it protected

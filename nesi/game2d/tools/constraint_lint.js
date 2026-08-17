@@ -56,10 +56,15 @@ ok("C2 every bound() names a registered constraint", unregistered.length === 0,
    and not a shrug. */
 const HELD_ELSEWHERE = {
   "no-offer":  "first_four B4 — nothing falls on its own over 200 frames untouched",
-  "no-call":   "refusal_check + wire_check — the file makes no call at all",
+  "no-call":   "refusal_check — the file makes no call at all",  /* wire_check dropped 2026-08-17: retired, and its own notice forbids citing it */
   "no-number": "refusal_check — no figure reaches the screen",
-  "verbatim":  "wire_check R4 — one text door, his words only",
-  "deep":      "refusal_check — the deep is never drawn",
+  "verbatim":  "UNHELD — wire_check R4 held this and is retired; no live instrument has taken it up",
+  /* Corrected 2026-08-17. This cited refusal_check, which carries no deep token
+     at all — grep returns zero. conserve.js:95 K6 does assert it, and conserve
+     is outside check_all and runs inside a copy of a page nobody walks, so it
+     is not a live keeper either. The boundary stands and is liftable; what it
+     has is no instrument, and saying so is a container edge. */
+  "deep":      "UNHELD — no live instrument asserts it; conserve.js K6 is the nearest and is unwired",
   "fifth":     "kit_check K1/K4 — four gestures, every stage declares one",
   /* ADDED 2026-08-17, Kevin's F4 mark. Held by the law 4/5 group in
      refusal_check, proven by four falsifiers: a classifier on a core-loop
@@ -71,9 +76,51 @@ const HELD_ELSEWHERE = {
 const dead = ids.filter(id => calls.indexOf(id) < 0 && !HELD_ELSEWHERE[id]);
 ok("C3 every registered constraint is actually reached by the code",
    dead.length === 0, dead.join(", ") || "none unreached");
-for (const id of Object.keys(HELD_ELSEWHERE))
-  ok("C3b " + id + " is enforced elsewhere, by name, not by hope",
-     ids.indexOf(id) >= 0, HELD_ELSEWHERE[id]);
+/* ═══ C3b, REPAIRED 2026-08-17 ══════════════════════════════════════════════
+   It claimed each boundary is "enforced elsewhere, by name, not by hope" while
+   checking only that the id sat in the registry. The name was never resolved,
+   so a citation could point at a retired file or a check that does not contain
+   what is claimed, and this line would print it as held. Two of seven did:
+   `verbatim` cited wire_check, which lives in tools/retired/ under a notice
+   reading "do not cite their output as evidence", and `deep` cited
+   refusal_check, which carries no deep token at all.
+
+   That is law 22's own falsifier, verbatim: "a gate of this class that is
+   satisfied while the thing it guards is absent."
+
+   The repair resolves the name against the filesystem. A cited instrument must
+   exist in tools/ and must not be in tools/retired/. A boundary whose keeper
+   cannot be resolved is reported as unheld rather than held — which is a
+   reading, and leaves the boundary itself standing and liftable as before. */
+const TOOLS = path.join(__dirname);
+const resolves = name => {
+  for (const ext of [".js", ".mjs", ".py"])
+    if (fs.existsSync(path.join(TOOLS, name + ext))) return "live";
+  for (const ext of [".js", ".mjs", ".py"])
+    if (fs.existsSync(path.join(TOOLS, "retired", name + ext))) return "retired";
+  return "absent";
+};
+const unheld = [];
+for (const id of Object.keys(HELD_ELSEWHERE)) {
+  const cite = HELD_ELSEWHERE[id];
+  const named = [...new Set((cite.match(/\b[a-z][a-z0-9_]*_(?:check|lint|audit|filter|guard|map)\b|\bfirst_four\b/g) || []))];
+  const states = named.map(n => n + ":" + resolves(n));
+  /* UNHELD is a declared state, not a failure: the boundary stands, it is
+     announced and liftable, and it says plainly that no instrument holds it.
+     Counted and printed so the gap stays visible — law 21's token shape. */
+  if (cite.indexOf("UNHELD") === 0) { unheld.push(id); continue; }
+  const held = ids.indexOf(id) >= 0 && named.length > 0
+               && named.every(n => resolves(n) === "live");
+  ok("C3b " + id + " names a keeper that resolves to a live instrument",
+     held, states.join(" ") + (named.length ? "" : "no instrument named") +
+           " — " + cite);
+}
+
+/* the unheld, printed rather than hidden. A boundary with no instrument is a
+   real state of this build and a hand should be able to see how many. */
+ok("C3c every boundary with no live keeper says so plainly",
+   true, unheld.length ? unheld.length + " unheld: " + unheld.join(", ")
+                       : "none — every boundary has a live keeper");
 
 /* reachable by a hand: announced at a gate, and switchable */
 ok("C4 every constraint is announced at a gate the case can show",

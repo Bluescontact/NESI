@@ -102,7 +102,7 @@
     const p = mapPts().find(q => q.l.n === r.n);
     if (!p) return false;
     mouse.x = p.x; mouse.y = p.y; mouse.clicked = true; step();
-    const f = facesOf().find(q => q.k === key);
+    const f = netFaces().find(q => q.k === key);
     if (!f) return false;
     mouse.x = f.c.x; mouse.y = f.c.y; mouse.clicked = true; step();
     return view === "level" && cur && cur.key === key;

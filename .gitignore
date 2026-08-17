@@ -30,6 +30,12 @@ rhythm/.last_brief
 !/tools/gates.py
 !/tools/decisions.py
 !/tools/surface.py
+# The boot hook, 2026-08-17 (Kevin's mark: "set up the hook layer"). It reads
+# LEARNED.md and injects it at SessionStart, which is what makes the route a
+# filesystem fact rather than an instruction. Tracked so it travels with the
+# deposit it carries. The settings.json that calls it stays out by the rule
+# above, so a clone gets the script and wires it by hand.
+!/tools/boot_hook.py
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
@@ -42,6 +48,11 @@ rhythm/.last_brief
 # that does not survive a checkout is not routed. This line only; the vendor
 # ~/.claude/CLAUDE.md is outside the repo and stays suspended.
 !/CLAUDE.md
+# The retirement ledger, un-ignored 2026-08-17. The comment above names "the three
+# standing ledgers" and this is the fourth, added later and never let through — so
+# a clone got the marks, the gates and the offers, and lost every record of what
+# had been retired. A retirement that does not travel is a thing that comes back.
+!/RETIRED.jsonl
 !/MARKS_LOG.jsonl
 !/OPEN_GATES.jsonl
 !/DECISIONS_OFFERED.jsonl

@@ -97,7 +97,7 @@ const sandbox = {
 sandbox.window = sandbox;
 vm.createContext(sandbox);
 vm.runInContext(
-  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,facesOf,worked,levelDone,ROOMS," +
+  src + "\n;globalThis.__X={S,mouse,keys,frame,hovered,mapPts,unlocked,W_,save,load,netFaces,worked,levelDone,ROOMS," +
         "esc(){ const e={key:'Escape',preventDefault(){}}; if(view==='level'&&room&&room.faces.indexOf(cur&&cur.key)>=0)view='room';" +
         "  else if(view==='room'){room=null;view='map';} else if(view!=='map')view='map'; }," +
         "get room(){return room;}, L(){return L;}, bays," +
@@ -160,7 +160,7 @@ ok("L1b and it is a gesture level — every face declares the same verb",
   ok("L3 and clicking it puts you INSIDE THE LEVEL — not into a mechanism",
      X.view === "room" && !!X.room, "view=" + X.view); }
 ok("L4 all four faces are in front of you at once, none gated against another",
-   X.facesOf().length === 4, X.facesOf().map(f => f.k).join(", "));
+   X.netFaces().length === 4, X.netFaces().map(f => f.k).join(", "));
 
 /* Rebuilt 2026-08-14 on his order, after the gesture rule made the old level one
    (tank·rain·dam·channel — reach, draw, hold, draw) not a level at all. Level
@@ -178,7 +178,7 @@ for (const key of order) {
   if (blocked) { ok("F" + n + " " + L + " — not reached", false, "blocked at " + blocked); continue; }
 
   /* ── a way in: from inside the level, by hand, on the face itself ─────── */
-  const f = X.facesOf().find(q => q.k === key);
+  const f = X.netFaces().find(q => q.k === key);
   X.mouse.x = f.c.x; X.mouse.y = f.c.y; X.mouse.clicked = true; tick();
   ok("F" + n + "b a hand on " + L + " enters that face, from inside the level",
      X.view === "level" && X.cur && X.cur.key === key,
@@ -268,7 +268,7 @@ if (!blocked) {
   clickAt(ptFor(L1()).x, ptFor(L1()).y);
   ok("L7 the level can be walked back into after it is complete",
      X.view === "room", "view=" + X.view);
-  const f = X.facesOf().find(q => q.k === "sounding");
+  const f = X.netFaces().find(q => q.k === "sounding");
   X.mouse.x = f.c.x; X.mouse.y = f.c.y; X.mouse.clicked = true; tick();
   ok("L8 and a worked face opens again — returning to it undoes nothing",
      X.view === "level" && X.cur.key === "sounding" && (X.S.kept || []).length === keptBefore,
@@ -295,7 +295,7 @@ if (!blocked) {
 for (const [w, h] of [[1000,700],[800,885],[1440,900],[1280,1024],[700,600]]) {
   SIZE.clientWidth = w; SIZE.clientHeight = h;
   vm.runInContext("W=innerWidth=" + w + "; H=innerHeight=" + h + ";", sandbox);
-  const F = X.facesOf();
+  const F = X.netFaces();
   const inside = F.every(f => f.t.every(p => p.x > 4 && p.x < w - 4 && p.y > 4 && p.y < h - 4));
   ok("L13 " + w + "x" + h + " — all four faces of the level are on screen", inside,
      F.map(f => f.k).join(", "));
@@ -335,7 +335,7 @@ if (!blocked) {
                   " room=null; view='map'; W_().load=0.6;", sandbox);
   X.toMap(); tick();
   clickAt(ptFor(L1()).x, ptFor(L1()).y);
-  const ff = X.facesOf().find(q => q.k === "filter");
+  const ff = X.netFaces().find(q => q.k === "filter");
   X.mouse.x = ff.c.x; X.mouse.y = ff.c.y; X.mouse.clicked = true; tick();
   ok("H1 THE FILTER opens", X.view === "level" && X.cur.key === "filter");
   for (let i = 0; i < 400 && !(X.L().bits || []).length; i++) tick();
@@ -353,7 +353,7 @@ if (!blocked) {
      (X.S.caught || []).length + " in the bank");
 
   vm.runInContext("S.faces={}; S.caught=['a','b','c']; S.routed={spire:0,lake:0,set:0}; view='room';", sandbox);
-  const fs2 = X.facesOf().find(q => q.k === "stations");
+  const fs2 = X.netFaces().find(q => q.k === "stations");
   X.mouse.x = fs2.c.x; X.mouse.y = fs2.c.y; X.mouse.clicked = true; tick();
   ok("H5 THE STATIONS opens with a queue", X.view === "level" && X.cur.key === "stations");
   const bays0 = X.bays(), k0 = Object.keys(bays0)[0], r0 = bays0[k0];
@@ -393,7 +393,7 @@ if (!blocked) {
   ok("A0 THE DAM is a face of a level", !!damRoom, damRoom ? damRoom.name : "loose");
   const dp = X.mapPts().find(p => p.l.n === damRoom.n);
   clickAt(dp.x, dp.y);
-  const fdam = X.facesOf().find(q => q.k === "dam");
+  const fdam = X.netFaces().find(q => q.k === "dam");
   X.mouse.x = fdam.c.x; X.mouse.y = fdam.c.y; X.mouse.clicked = true; tick();
   ok("A1 THE DAM opens", X.view === "level" && X.cur.key === "dam", "view=" + X.view);
   const still = [];
@@ -423,7 +423,7 @@ if (!blocked) {
                   "; W_().level=0.15; room=null; view='map';", sandbox);
   X.toMap(); tick();
   clickAt(ptFor(L1()).x, ptFor(L1()).y);                 /* into the level */
-  const ft = X.facesOf().find(q => q.k === "tank");
+  const ft = X.netFaces().find(q => q.k === "tank");
   if (!ft) throw new Error("the tank is not a face of level one any more");
   X.mouse.x = ft.c.x; X.mouse.y = ft.c.y; X.mouse.clicked = true; tick();
   ok("B1 THE TANK opens on water that already arrived", X.view === "level" && X.cur.key === "tank");
