@@ -131,13 +131,33 @@ Now fill in the solid parts. Each face, joined to the middle, makes a wedge:
 **The whole solid comes to exactly 20 units.** That is a known number of Fuller's,
 and it fell out of your own circuit table without being put there.
 
-**8 units cannot move. 12 units can.** Sixty percent of the inside is the moving
-part. And the movement is drastic: squeezed all the way down, the 20 becomes 4 —
-a fifth of the volume — without a single strut changing length.
+*(I got this wrong the first time and measured it properly afterwards. I said the
+eight stiff wedges cannot move. They can — the spokes change length as the shape
+breathes, so every wedge changes size. Worse, the test I wrote to check it just
+restated its own assumption, so it agreed with me and proved nothing.)*
 
-**What that means for building:** anything permanent belongs in one of the eight
-stiff wedges. Putting something in one of the six moving wedges jams it, the same
-as putting something in a square.
+**Here is what is actually true, and it is a better distinction.** A triangle's
+three sides are struts, so a triangle can never change SHAPE — it can only be
+carried around. A square's four sides are struts too, but its two diagonals are
+free, so a square CAN change shape. **The triangle keeps its shape and loses its
+size. The square loses both.**
+
+So: **each of the eight wedges is the space between two things that hold** — an
+outer face that cannot change shape, and the middle, which cannot move. Only the
+gap between them varies. Nothing else in the shape is bounded like that.
+
+**And the inside is a checkerboard.** Every internal wall separates a stiff-faced
+wedge from a moving one — no two of a kind ever touch. Every moving wedge is
+walled on all four sides by wedges whose faces cannot deform. So the six
+exchanges do not happen in open space; each one is held between four things that
+keep their shape.
+
+**Which is exactly what the middle does for the whole shape, one size down.** The
+middle holds while everything moves; the eight hold their shape while the six
+change theirs.
+
+The breathing is still drastic: squeezed all the way down, the 20 units become 4
+— a fifth — without a single strut changing length.
 
 ---
 

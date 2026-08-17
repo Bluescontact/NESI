@@ -553,3 +553,69 @@ x    2↓2↑  and  2↓2↑      balanced
 
 The trade on `z+` happens entirely within the descent; the trade on `z−`
 entirely within the ascent. The `x` trades each cross between them.
+
+---
+
+## 15 · WHAT THE EIGHT TETRAHEDRAL CELLS DO — and a correction first
+
+**Kevin, 2026-08-16:** *"now assign function to the 8 tetrahedral cells."*
+
+### THE CORRECTION, because the answer depends on it
+
+§13 said the eight are **rigid** and that twelve of the twenty units move while
+eight cannot. **Both were wrong.** A cell's three lateral edges are *radii*, and
+radii are not members — they change length when the container moves. Measured
+with PyRigi: **under five of the six mechanisms a tetrahedral cell's volume
+changes.** Every cell in this solid changes volume. Nothing is rigid in that
+sense.
+
+**And the check written to confirm it was circular.** It defined rigid as
+`under === "triangle"`, so it asserted a tautology and passed while measuring
+nothing. That is a worse fault than the wrong claim, and it is the one to watch
+for: a check that restates its own premise will hold forever and tell you
+nothing. Replaced with three that measure.
+
+### WHAT IS ACTUALLY TRUE, and it is narrower and more useful
+
+```
+a triangular face   three sides, all MEMBERS      cannot change SHAPE
+a square face       four sides, all members       CAN — its diagonals are free
+                    but two diagonals free
+```
+
+**The difference is shape, not volume. The triangle keeps its shape and loses its
+volume. The square loses both.**
+
+### THE FUNCTION
+
+**A tetrahedral cell is the volume between two invariants.** Its outer bound is a
+face that cannot change shape; its inner bound is the centre, which cannot move.
+Both ends are fixed in their own way, and only the distance between them varies.
+Nothing else in the container is bounded like that — a pyramid cell has neither.
+
+**And they are what the trades happen against.** The interior is a
+**checkerboard**: all 24 internal faces separate a tetrahedral cell from a
+pyramid cell, and **no two of a kind ever touch.**
+
+```
+every pyramid cell   walled on all four sides by tetrahedral cells
+every tetra cell     abuts exactly three pyramid cells
+                     24 internal faces, one per member, each a tetra/pyramid wall
+```
+
+So the six exchanges of §14 do not happen in open space. **Each is bounded on
+all four sides by faces that cannot deform.** The eight are what make a trade
+*definite* rather than a general collapse — they are the reference the exchanges
+are measured against.
+
+**Which is the centre's relation to the twelve, one level down.** The centre
+holds while the shape moves; the eight hold their shape while the six change
+theirs. The same structure, recursed.
+
+### AND EVERY TRADE IS BRACED BY BOTH BODIES
+
+The eight split 4+4 into the two tetrahedra (§6). Checked: **every one of the six
+pyramid cells is walled by exactly two cells of body A and two of body B.**
+
+No trade is braced by one body alone. Whatever the two bodies are, every
+exchange in the world is held between them equally — and that was not arranged.

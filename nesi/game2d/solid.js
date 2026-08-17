@@ -396,14 +396,43 @@ const DIAMETERS = !EMBED ? [] :
   [...new Set(NAMES.map(n => [n, antipodeOf(n)].sort().join("|")))].map(k => k.split("|"));
 
 /* FOURTEEN CELLS, every one with the centre as its apex.
-     8 under the triangles — REGULAR tetrahedra, 1 unit, and they cannot deform
-     6 under the squares   — half-octahedra, 2 units, and these are what move
-   Twelve of the twenty units are in motion; eight cannot be. */
+     8 under the triangles — REGULAR tetrahedra, 1 unit
+     6 under the squares   — half-octahedra, 2 units
+
+   ── A CORRECTION, 2026-08-16, kept rather than quietly fixed ─────────────────
+   This block first said the eight "cannot deform" and that twelve of the twenty
+   units move while eight do not. BOTH WERE WRONG, and the check written to
+   confirm them was circular — it defined rigid as `under === "triangle"`, so it
+   asserted a tautology and passed while measuring nothing.
+
+   MEASURED with PyRigi over the six mechanisms: the radii change length, and a
+   tetrahedral cell's volume changes under five of the six. Every cell in the
+   solid changes volume. Nothing here is rigid in that sense.
+
+   WHAT IS ACTUALLY TRUE, and it is narrower and more useful:
+     a triangle's three sides are MEMBERS, so a triangular face can never change
+       SHAPE — it can only be carried;
+     a square's four sides are members but its two diagonals are free, so a
+       square face changes shape.
+   THE DIFFERENCE IS SHAPE, NOT VOLUME. The triangle keeps its shape and loses
+   its volume. The square loses both.
+
+   THE INTERIOR IS A CHECKERBOARD. All 24 internal faces separate a tetrahedral
+   cell from a pyramid cell; no two of a kind ever touch. Every pyramid is walled
+   on all four sides by tetrahedra, and every tetrahedron abuts three pyramids. */
 const CELLS = !EMBED ? [] : [
   ...TRIANGLES.map(t => ({
     kind: "tetra", seats: t.seats, tetra: t.tetra, under: "triangle",
     volume: _tet([0,0,0], ...t.seats.map(n=>EMBED[n])) / UNIT,
-    rigid: true
+    /* faceRigid, NOT `rigid`. CORRECTED 2026-08-16 — the earlier field said the
+       CELL was rigid and it is not: its three lateral edges are RADII, and radii
+       change length when the container moves. Measured with PyRigi: under five
+       of the six mechanisms a tetrahedral cell's volume changes.
+       WHAT IS TRUE is narrower and better. A triangle's three sides are members,
+       so the FACE can never change shape. The cell is the volume between a face
+       that cannot deform and a centre that cannot move — both of its bounds are
+       invariant, and only the distance between them varies. */
+    faceRigid: true, deforms: false
   })),
   ...SQUARES.map(q => {
     /* the square's four seats in ring order, so the pyramid splits into two
@@ -416,7 +445,10 @@ const CELLS = !EMBED ? [] : [
       kind: "pyramid", seats: q.seats, axis: q.axis, under: "square",
       volume: (_tet([0,0,0], EMBED[o[0]], EMBED[o[1]], EMBED[o[2]]) +
                _tet([0,0,0], EMBED[o[0]], EMBED[o[2]], EMBED[o[3]])) / UNIT,
-      rigid: false
+      /* a square's four sides are members but its DIAGONALS are free, so this
+         face changes shape. That is the difference from a tetrahedral cell, and
+         it is the only difference: both kinds change volume. */
+      faceRigid: false, deforms: true
     };
   })
 ];

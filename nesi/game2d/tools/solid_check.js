@@ -290,12 +290,22 @@ ok("six pyramid cells, every one exactly TWO tetra-units (half-octahedra)",
    S.CELLS.filter(c=>c.kind==="pyramid").every(c=>Math.abs(c.volume-2)<1e-9));
 ok("the whole solid measures TWENTY — Fuller's number, out of the circuit table",
    Math.abs(S.VOLUME-20)<1e-9);
-/* the split that matters for building: what can change and what cannot */
-ok("twelve of the twenty units deform; eight cannot",
-   Math.abs(S.CELLS.filter(c=>!c.rigid).reduce((s,c)=>s+c.volume,0)-12)<1e-9 &&
-   Math.abs(S.CELLS.filter(c=>c.rigid).reduce((s,c)=>s+c.volume,0)-8)<1e-9);
-ok("every rigid cell sits under a triangle, every deforming one under a square",
-   S.CELLS.every(c=>c.rigid === (c.under==="triangle")));
+/* THE SPLIT, CORRECTED 2026-08-16. The two checks that stood here claimed eight
+   units cannot move and that rigidity tracks the face. Both were wrong, and the
+   second was circular — it defined rigid as `under==="triangle"` and so asserted
+   a tautology. Measured with PyRigi: every cell changes volume. What actually
+   divides them is whether the FACE can change SHAPE. */
+ok("twelve units sit under the squares and eight under the triangles",
+   Math.abs(S.CELLS.filter(c=>c.deforms).reduce((s,c)=>s+c.volume,0)-12)<1e-9 &&
+   Math.abs(S.CELLS.filter(c=>!c.deforms).reduce((s,c)=>s+c.volume,0)-8)<1e-9);
+ok("a triangular face cannot change SHAPE — all three of its sides are members",
+   S.TRIANGLES.every(t=>[[0,1],[1,2],[0,2]].every(([i,j])=>S.isMember(t.seats[i],t.seats[j]))));
+ok("a square face CAN — its four sides are members but its diagonals are free",
+   S.TRADES.every(t=>t.ring.every((n,i)=>S.isMember(n,t.ring[(i+1)%4])) &&
+                     t.diagonals.every(([a,b])=>!S.isMember(a,b))));
+ok("THE INTERIOR IS A CHECKERBOARD — all 24 internal faces separate a tetrahedral cell from a pyramid",
+   S.MEMBERS.every(m=>{ const f=S.facesAlong(m.a,m.b); return !!f.triangle && !!f.square; }) &&
+   8*3===24 && 6*4===24);
 
 ok("thirteen axes in three families — 3 through squares, 4 through triangles, 6 through seats",
    S.AXES.throughSquares===3 && S.AXES.throughTriangles===4 &&
