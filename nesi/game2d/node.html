@@ -86,6 +86,14 @@ blockquote{margin:12px 0;padding:2px 0 2px 16px;border-left:2px solid var(--edge
   font-size:15.5px;color:var(--dim);font-style:italic}
 blockquote cite{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.06em;color:var(--faint);margin-top:7px;text-transform:uppercase}
+/* ---- tables, for the oversight schema ---- */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-family:var(--mono);font-size:12.5px}
+th{text-align:left;color:var(--faint);font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  font-size:10px;padding:8px 10px 8px 0;border-bottom:1px solid var(--edge2)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--edge);color:var(--dim);vertical-align:top}
+td.v{color:#fff;white-space:nowrap}
+td.bad{color:var(--rust)}
+tr:last-child td{border-bottom:0}
 .foot{margin-top:80px;border-top:1px solid var(--edge);padding-top:20px}
 @media(max-width:660px){
   .wrap{padding:36px 16px 90px}
@@ -105,6 +113,52 @@ blockquote cite{display:block;font-style:normal;font-family:var(--mono);font-siz
 <div class="sub">a way in · an act · a consequence · a way out</div>
 
 <p class="dim small">Everything from one session, made runnable. Three parts: a solid you can turn by hand, a gate that works, and the laws underneath both. Nothing here scores you, keeps a profile, or requires maintenance. Reload and it's empty — the node is the file you hold, not the page.</p>
+
+<h2><span class="n">§ 00</span> The oversight</h2>
+<hr class="r">
+
+<p>Above the geometry, not inside it. Every node in the assembly — including this one — is a tetrahedron of four, and the four are the same four every time.</p>
+
+<table>
+<tr><th>Vertex</th><th>What it is</th><th>Absent when</th></tr>
+<tr><td class="v">FLOOR</td><td>the lowest thing already survived on; bears weight</td><td>the node rests on an assumption</td></tr>
+<tr><td class="v">SEAM</td><td>the joint to the rest of the assembly</td><td>the node is unsited</td></tr>
+<tr><td class="v">GIFT</td><td>the thing that leaves whole</td><td>the node only produces returns</td></tr>
+<tr><td class="v">WITNESS</td><td>the crossing that proves it, not the claim that it works</td><td>evidence is a report, not a record</td></tr>
+</table>
+
+<p>Four vertices means four faces, and a face is what remains when one vertex is missing. Each is a stable way of being wrong — not a mistake, a configuration that runs.</p>
+
+<table>
+<tr><th>Face</th><th>Vertices</th><th>Reads</th><th>Collapse signature</th></tr>
+<tr><td class="v">Work</td><td>Floor · Seam · Gift</td><td>ground → joint → thing made</td><td class="bad">busy hands, nothing witnessed</td></tr>
+<tr><td class="v">Structure</td><td>Floor · Seam · Witness</td><td>ground → joint → proven</td><td class="bad">correct architecture, no Gift</td></tr>
+<tr><td class="v">Offer</td><td>Floor · Gift · Witness</td><td>ground → thing → proven</td><td class="bad">unsited: a good thing joined to nothing</td></tr>
+<tr><td class="v">Crossing</td><td>Seam · Gift · Witness</td><td>joint → thing → proven</td><td class="bad">unbearing: nothing under it; fails on load</td></tr>
+</table>
+
+<div class="law">Structure-face collapse is the dominant pathology here.
+
+Floor, Seam and Witness all present and no Gift: the
+architecture is correct, the joints are named, the
+evidence is real, and nothing leaves whole.
+
+It is the hardest face to see from inside, because
+three of the four readings come back clean.</div>
+
+<h3>The jurisdiction line</h3>
+<p>One glass floor divides the whole assembly. The same act is lawful above it and forbidden below.</p>
+
+<table>
+<tr><th></th><th>above the glass — operator</th><th>below the glass — player</th></tr>
+<tr><td class="v">numbers</td><td>lawful, required</td><td class="bad">forbidden</td></tr>
+<tr><td class="v">model calls</td><td>lawful</td><td class="bad">forbidden</td></tr>
+<tr><td class="v">summarising</td><td>lawful on build state only</td><td class="bad">forbidden</td></tr>
+<tr><td class="v">ranking</td><td>lawful on build tasks</td><td class="bad">forbidden anywhere</td></tr>
+<tr><td class="v">reaching outward</td><td>lawful</td><td class="bad">forbidden</td></tr>
+</table>
+
+<p class="small dim">The falsifier for the whole assembly: if an operator instrument ever reads below the glass, the line is decoration and the laws under it are unenforced.</p>
 
 <h2><span class="n">§ 01</span> The solid</h2>
 <hr class="r">
@@ -230,7 +284,76 @@ way in, or it did not return.</div>
 <div class="law">The register logs. It does not score.
 A metric on capacity is the proving impulse wearing a hat.</div>
 
-<h2><span class="n">§ 04</span> What stays open</h2>
+<h2><span class="n">§ 04</span> The twelve lenses</h2>
+<hr class="r">
+
+<p>The solid in § 01 has twelve vertices. This is what sits at them — not twelve topics, twelve <em>readings of one corpus</em>, and the geometry is not decoration on the arrangement. It is the arrangement.</p>
+
+<p><strong>Four circuits</strong> — four complete, independent readings of the whole pile, each a way of asking one question of everything. <strong>Six pairs</strong> — every pair of circuits crosses at two antipodal points. <strong>Twelve lenses</strong> — two per pair. One reads the joint from the side where <em>both circuits are present</em>; its antipode reads the same joint from the side where <em>one or both are absent</em>.</p>
+
+<blockquote>Presence and absence are the two ends of one axis, which is why the negative lens is not a complaint — it is the other half of the same reading.</blockquote>
+
+<p>So L1 reads what runs; L2 reads what is still, and keeps two kinds of stillness strictly apart — a body that performs no act, and an act named with no body anywhere. Neither lens may reach into the other's half. <em>A lens that reports both ends of its own axis has collapsed the axis and produces false volume.</em></p>
+
+<h3>The array constitution — binding on all twelve</h3>
+
+<div class="law">1 · Independence is the whole instrument. No lens sees
+    another's return. Overlap means something only if
+    neither could have known what the other found.
+
+2 · Verbatim, always. No paraphrase, no tidying, no
+    normalising of his spelling or his terms.
+
+3 · A lens reports. It does not recommend. The instrument
+    locates; it never steers.
+
+4 · No counting that ranks. "Appears in three places" is
+    a count. "More developed than" is forbidden.
+
+5 · The fallow return is complete. Nothing lit here is a
+    lawful, whole, finished return.
+
+6 · No new naming. Where a lens must point at something
+    unnamed, it points with a quote and says unnamed.
+
+7 · MISSING is never filled with a plausible guess.
+    A path from a summary is not a path.
+
+8 · Every return states its own edge — what it read and
+    what it did not.
+
+9 · The returns are instruments, not documents. Read once,
+    overlap taken, then composted. If they are still being
+    consulted a week later, the array became a library.
+
+10 · The reading is his. The machine never does the
+    recognizing.</div>
+
+<p class="small dim">Clause 9 is the one that keeps this a gift rather than an archive. Twelve returns is twelve new objects, and the test of any move is whether it adds to the pile or moves it.</p>
+
+<h2><span class="n">§ 05</span> The aporia the gate answers</h2>
+<hr class="r">
+
+<p>The gate in § 02 asks one question and stores nothing. That shape is not a preference. It is a position on a problem Derrida spent a book on, and it is worth stating plainly because the design fails if the position is wrong.</p>
+
+<p><strong>Mauss, 1925.</strong> The base unit of the social is the persistent open entry — A gave, B owes. Obligation-to-reciprocate is what makes the gift a gift.</p>
+
+<p><strong>Derrida, 1991.</strong> That is exactly the trap. <em>The debt is generated by the gift being seen as a gift.</em> Recognition is the mechanism: the moment either party registers a gift as given, the circuit closes and it becomes exchange. On this reading a pure gift is impossible, because appearing as one destroys it.</p>
+
+<p>Five answers exist in the field, and each keeps something and pays for it — hide the debt in the interval, bracket the terms, purify the exchange, deny it was ever a debt, make obligation itself the freedom.</p>
+
+<div class="law">This node takes a sixth position: relocate the trap from
+RECOGNITION to ADDRESSABILITY.
+
+Completion is atomic with delivery. The giver's relation
+terminates at the moment of handing over — so there is no
+open entry, not even on the giver's own books.</div>
+
+<p class="small dim"><strong>And here is where it can fail, stated rather than hidden.</strong> Derrida's circuit can close internally, on the giver's side, through self-recognition — the giver knowing they gave and booking the credit privately. So the diagnostic is: <em>is completion-at-delivery load-bearing, or aspirational?</em> If the giver retains any tracked relation to the thing that left — a watching, a hoping-it-lands, a checking — the internal ledger is open and the objection survives at the giver's node. The claim stands or falls exactly there.</p>
+
+<p>Which is why § 02 keeps <em>open vectors</em> and nothing else. Not people, not reputation, not what anyone is owed — only exchanges that started and have not closed, held so they can be closed rather than watched.</p>
+
+<h2><span class="n">§ 06</span> What stays open</h2>
 <hr class="r">
 
 <p>Three, unresolved, deposited as open rather than closed comfortably.</p>
