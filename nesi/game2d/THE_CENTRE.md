@@ -229,10 +229,14 @@ it serve itself?* Applying that test is Kevin's, not this file's.
   first; the second is in the session record only.
 - **The inner tetra, relocated by §6** — available as its own body, not as seats.
 - **The ascent/jitterbug direction, §8.**
-- **Law 8 against ↓THE DEEP's own line.** Named twice and still standing: "no
-  offline progression" against "returns later as ground, on a day you did not
-  come back." His frame of 2026-08-16 — that the deep is inhabited — is the
-  first reading that does not require one of them to be wrong. Not resolved.
+- ~~**Law 8 against ↓THE DEEP's own line.**~~ **NOT OPEN. It was resolved before
+  this session began and I flagged it three times without looking.**
+  `BUILD_RECORD.md:4331` states the ruling: *"Law 8 says the world does not
+  advance while you are gone. The sacred list says 'absence is productive by
+  design.' Those meet exactly here, and the line taken is: **the water does not
+  move while you are away; the deep builds.**"* Verified, not asserted, by
+  `tools/night_check.js` — 10/10. The deep is the single exception and it is
+  built. Found 2026-08-16 on his instruction *"find rather than ask."*
 
 ---
 
