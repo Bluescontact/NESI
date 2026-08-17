@@ -131,12 +131,12 @@ Now fill in the solid parts. Each face, joined to the middle, makes a wedge:
 **The whole solid comes to exactly 20 units.** That is a known number of Fuller's,
 and it fell out of your own circuit table without being put there.
 
-*(I got this wrong the first time and measured it properly afterwards. I said the
-eight stiff wedges cannot move. They can — the spokes change length as the shape
-breathes, so every wedge changes size. Worse, the test I wrote to check it just
-restated its own assumption, so it agreed with me and proved nothing.)*
+*(An earlier pass had the eight wedges as unmovable. Measured: the spokes change
+length as the shape breathes, so every wedge changes size. The test written to
+confirm it restated its own assumption, so it agreed and proved nothing — which
+is worth knowing as a general thing about tests.)*
 
-**Here is what is actually true, and it is a better distinction.** A triangle's
+**What is true is a better distinction.** A triangle's
 three sides are struts, so a triangle can never change SHAPE — it can only be
 carried around. A square's four sides are struts too, but its two diagonals are
 free, so a square CAN change shape. **The triangle keeps its shape and loses its

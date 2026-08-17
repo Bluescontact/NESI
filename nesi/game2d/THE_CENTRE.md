@@ -573,11 +573,10 @@ with PyRigi: **under five of the six mechanisms a tetrahedral cell's volume
 changes.** Every cell in this solid changes volume. Nothing is rigid in that
 sense.
 
-**And the check written to confirm it was circular.** It defined rigid as
-`under === "triangle"`, so it asserted a tautology and passed while measuring
-nothing. That is a worse fault than the wrong claim, and it is the one to watch
-for: a check that restates its own premise will hold forever and tell you
-nothing. Replaced with three that measure.
+**The check written to confirm it was circular** — it defined rigid as
+`under === "triangle"`, asserting a tautology, and so passed while measuring
+nothing. **A check that restates its own premise will hold forever and tell you
+nothing.** Replaced with three that measure.
 
 ### WHAT IS ACTUALLY TRUE, and it is narrower and more useful
 
