@@ -1,0 +1,55 @@
+// THE CLAIMS — one per line, each with a kind and a support set.
+//
+// Seeded 2026-08-17 on Kevin's mark, "build the truth-bearing spine first, not
+// TANK." These are not every claim in the corpus and are not meant to be. They
+// are the claims THIS SESSION actually leaned on, which is the only honest way
+// to start a file whose whole subject is warrant: a spine seeded from memory
+// would be the exact fault it exists to catch.
+//
+// ADMISSION: a claim needs a kind from the six and a support set that could
+// establish a claim of that kind. There is no generic kind and no fallback.
+// A claim whose supports cannot establish it comes back MISFILED rather than
+// being quietly downgraded — the downgrade would be a classifier deciding, and
+// nothing here decides.
+//
+// A BROKEN SUPPORT IS NOT A FALSE CLAIM. It is "something beneath me changed;
+// I no longer know whether I stand." Nothing in this file is rewritten when a
+// support goes; the break is exposed and left for a hand.
+//
+// Run:  node tools/standing_check.js
+
+{"id":"descent.twelve","kind":"MEASURED","says":"The descent half of the solid holds exactly twelve members.","support":[{"of":"solid","expr":"S.MEMBERS.filter(m=>S.EMBED[m.a][2]>=0&&S.EMBED[m.b][2]>=0).length","expect":12}]}
+
+{"id":"descent.equator.empty","kind":"MEASURED","says":"The equator carries no members, so the twenty-four part 12/12 with nothing shared.","support":[{"of":"solid","expr":"S.MEMBERS.filter(m=>S.EMBED[m.a][2]===0&&S.EMBED[m.b][2]===0).length","expect":0}]}
+
+{"id":"descent.axis","kind":"MEASURED","says":"z is the world's own vertical: of the three fourfold axes only z has one square face all falling and the other all rising.","support":[{"of":"solid","expr":"S.SQUARES.filter(q=>q.seats.every(n=>S.SEATS[n].fall)||q.seats.every(n=>!S.SEATS[n].fall)).map(q=>q.axis).sort()","expect":["z+","z-"]}]}
+
+{"id":"descent.bowl","kind":"MEASURED","says":"The descent half is a disk, not a solid: eight seats, twelve members, five whole panes, V-E+F=1.","support":[{"of":"solid","expr":"(()=>{const z=n=>S.EMBED[n][2],V=S.NAMES.filter(n=>z(n)>=0).length,E=S.MEMBERS.filter(m=>z(m.a)>=0&&z(m.b)>=0).length,F=S.TRIANGLES.filter(t=>t.seats.every(s=>z(s)>=0)).length+S.SQUARES.filter(q=>q.seats.every(s=>z(s)>=0)).length;return [V,E,F,V-E+F];})()","expect":[8,12,5,1]}]}
+
+{"id":"descent.twelfth.is.lens","kind":"MEASURED","says":"The twelfth member of the descent half, in the circuit table's own order, is LENS-DEEP.","support":[{"of":"solid","expr":"(()=>{const z=n=>S.EMBED[n][2],L=S.MEMBERS.filter(m=>z(m.a)>=0&&z(m.b)>=0);return [L[11].a,L[11].b].sort();})()","expect":["DEEP","LENS"]}]}
+
+{"id":"descent.circuits.three.each","kind":"MEASURED","says":"Each of the four circuits gives the descent exactly three of its six members.","support":[{"of":"solid","expr":"(()=>{const z=n=>S.EMBED[n][2],c=[0,0,0,0];S.MEMBERS.filter(m=>z(m.a)>=0&&z(m.b)>=0).forEach(m=>c[m.circuits[0]]++);return c;})()","expect":[3,3,3,3]}]}
+
+{"id":"runs.homeless.are.transits","kind":"DERIVED","rule":"The descent half has twelve members and eight seats. A built mechanism that is not a vertex therefore has no place to be except a member. Counted, not read.","says":"RAIN, CHANNEL, SHOAL, SOUNDING and STILLING are transits rather than places.","support":[{"of":"claim","id":"descent.twelve"},{"of":"solid","expr":"S.NAMES.filter(n=>S.EMBED[n][2]>=0).length","expect":8},{"of":"line","file":"nesi/game2d/THE_24.md","match":"RAIN, CHANNEL,"}]}
+
+{"id":"runs.siting","kind":"INFERRED","says":"The five transits land on members 2, 4, 7, 8 and 11 of the descent — sounding, channel, rain, shoal, withdrawal.","support":[{"of":"claim","id":"runs.homeless.are.transits"},{"of":"line","file":"nesi/game2d/descent.html","match":"THE SHOAL — arrangement, never a verdict"}]}
+
+{"id":"freeze.binds","kind":"MARKED","says":"The FULL FREEZE of 2026-08-07 binds and forbids new generation.","support":[{"of":"line","file":"nesi/mind/PROTOCOLS.md","match":"^# ■ FULL FREEZE — IN FORCE FROM 2026-08-07"}]}
+
+{"id":"freeze.lifted","kind":"MARKED","says":"The freeze was lifted on 2026-08-17 by Kevin's mark, and the lift reaches the freeze and stops there.","support":[{"of":"line","file":"nesi/mind/PROTOCOLS.md","match":"^# ■ THE FREEZE IS LIFTED — 2026-08-17, Kevin's mark"},{"of":"line","file":"CLAUDE.md","match":"FULL FREEZE of 2026-08-07 was lifted on 2026-08-17"}]}
+
+{"id":"suspension.stands","kind":"MARKED","says":"The 2026-08-15 suspension of the vendor CLAUDE.md and MEMORY.md stands, and lifting any part of it is his in his own words.","support":[{"of":"line","file":"CLAUDE.md","match":"The 2026-08-15 suspension stands as he set it"}]}
+
+{"id":"centre.is.the.game","kind":"MARKED","says":"The centre is the game; everything else serves it.","support":[{"of":"line","file":"nesi/game2d/THE_SOLID.md","match":"the centre is the game"},{"of":"line","file":"nesi/game2d/solid.js","match":"the centre is the game"}]}
+
+{"id":"law2.no.number","kind":"HARDENED","says":"No number reaches the player: no score, count, rank, percentage or progress bar on any live surface.","support":[{"of":"line","file":"nesi/game2d/tools/refusal_check.js","match":"leaderboard, achievement, percent, progress bar"},{"of":"line","file":"nesi/game2d/tools/check_all.js","match":"no model call, nothing outward, no score or reward cue"}]}
+
+{"id":"solid.is.the.authority","kind":"HARDENED","says":"solid.js is the authority for the geometry, and surfaces read it rather than copying it.","support":[{"of":"line","file":"nesi/game2d/index.html","match":"The figure is READ, never drawn by hand"},{"of":"line","file":"nesi/game2d/descent.html","match":"NOTHING GEOMETRIC HERE IS WRITTEN BY HAND"}]}
+
+{"id":"nothing.asserts.visible","kind":"OBSERVED","says":"No instrument in the corpus asserts that anything reaches the screen: descent.html printed 'unread' on five of twelve rows while check_all reported all fifteen holding.","support":[{"of":"walked","what":"descent.html at localhost:8901, read back through the DOM","when":"2026-08-17"},{"of":"line","file":"nesi/mind/LEARNED.md","match":"anything is VISIBLE"}]}
+
+{"id":"spine.before.tank","kind":"MARKED","says":"The truth-bearing spine is built before TANK and before the quarry.","support":[{"of":"mark","match":"truth-bearing spine"}]}
+
+{"id": "display.law.four.sources", "kind": "MARKED", "says": "The display law names four sources. Traversal — what a writing has crossed — is the fourth, admitted 2026-08-17.", "support": [{"of": "mark", "match": "traversal is a fourth source"}, {"of": "line", "file": "nesi/game2d/THE_SHAPE_OF_THE_WHOLE.md", "match": "exactly four sources"}, {"of": "line", "file": "nesi/game2d/THE_VISION.md", "match": "exactly four sources"}]}
+
+{"id": "display.law.fourth.bounded", "kind": "HARDENED", "says": "The fourth source records the fact and shape of a crossing, never a return's content and never a judgement made inside one; an instrument refuses any statement of four sources that drops the bounding clause.", "support": [{"of": "line", "file": "nesi/game2d/tools/display_law_check.js", "match": "the fourth source carries its bounding lint"}, {"of": "line", "file": "nesi/game2d/tools/check_all.js", "match": "the copies agree"}]}

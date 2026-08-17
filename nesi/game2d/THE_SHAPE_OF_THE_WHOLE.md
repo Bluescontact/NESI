@@ -154,14 +154,34 @@ Here is the rule that makes that hold under engineering pressure.
 ```text
 The machine may never read the words to decide how the words appear.
 Every display state — glow, dim, hue, weight, size, face, motion —
-must derive from one of exactly three sources:
+must derive from one of exactly four sources:
   1. WHERE the writing sits in the world
   2. WHAT THE HAND DID with water and light at that site
   3. HOW LONG it has been there
-Never from a fourth: what the writing says.
+  4. WHAT IT HAS CROSSED - the traversals the hand carried it through,
+     and what became of it there: branched, ended, returned, held,
+     carried forward unchanged
+Never from a fifth: what the writing says.
 The moment a colour is chosen by reading the text, the surface has begun
 grading the writer, and it does not matter how gently.
 ```
+
+> **■ AMENDED 2026-08-17 — the fourth source.** Kevin's mark: *"traversal is a
+> fourth source — add it to the display law."* The law stood at three from
+> 2026-08-14. The fourth admits what a piece of writing has UNDERGONE — that the
+> hand offered it to a work surface, that it branched, that a branch ended, that
+> it came back unchanged — as a lawful driver of appearance.
+>
+> **The fourth carries its own lint, because a widening is where a law gets
+> defeated.** Source four records the FACT and the SHAPE of a crossing. It never
+> records a return's content, and never a judgement made inside one. *Went out
+> five times and came back unchanged* is source four. *Came back stronger* is not
+> a fact about a crossing — it is a reading of one, and it is the fifth source
+> wearing the fourth's coat.
+>
+> **The test is mechanical:** strip every model's output text out of the record.
+> If a display state changes, that state was reading content.
+
 You already enforce this once. `drawKept(i, x, y)` takes an index and never a
 string, so machine wording cannot reach the screen through it. **The display law
 is that same law extended from wording to appearance.** It is not a new

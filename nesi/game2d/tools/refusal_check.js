@@ -71,7 +71,8 @@ const path = require("path");
    check is his word, not mine, so it stands outside the list and is named
    rather than exempted. */
 const LIVE = ["ascent.html", "daily.html", "day_one.html", "decisions.html",
-              "index.html", "level_one.html"];
+              "descent.html", "index.html", "level_one.html",
+              "traversal.html"];
 const targets = process.argv[2]
   ? [path.resolve(process.cwd(), process.argv[2])]
   : LIVE.map(f => path.join(__dirname, "..", f)).filter(f => fs.existsSync(f));

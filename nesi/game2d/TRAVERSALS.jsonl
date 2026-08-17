@@ -1,0 +1,62 @@
+// THE TRAVERSALS — what writings have undergone. One object or one crossing per line.
+//
+// Built 2026-08-17 on Kevin's mark, "build the traversal organ."
+//
+// WHAT IS IN HERE: object references and crossings. An object is {store, i, sha}
+// — an index into an append-only store and a digest. THERE IS NO TEXT IN THIS
+// FILE and there is no field that could hold any. The display law's own test for
+// its fourth source is "strip every model's output text out of the record; if a
+// display state changes, that state was reading content." Nothing to strip.
+//
+// WHAT IT IS SEEDED WITH, AND WHY ONLY THIS: the one traversal this session can
+// attest to — the vision draft going out to three readings tonight. Kevin's
+// actual practice has months of circulation in it and none of it is on disk. I
+// am not reconstructing it from his description, because a traversal store
+// seeded from an account of traversals is exactly the fault the standing spine
+// was built to catch: a record with a provenance and no support.
+//
+// SO THE STORE IS SMALL AND TRUE RATHER THAN LARGE AND REMEMBERED. His own
+// history enters when a hand enters it, one crossing at a time, or not at all.
+//
+// TWO OF THE THREE BRANCHES BELOW ARE STILL OUT. They carry no `to`, which is
+// in-flight — not ended, not held. Nothing was inferred from their silence and
+// nothing here asks after them.
+//
+// Run:  node tools/traversal_check.js
+
+// EVERY OBJECT DECLARES ITS SEAT, and the seat is one of the twelve. It is
+// DECLARED BY THE HAND, never inferred — the same rule the surface label obeys,
+// for the same reason: an organ that works out where a writing belongs is a
+// classifier, and it would be the fifth source wearing the fourth's coat.
+//
+// All seven below are seated at LENS, and that is a READING rather than a
+// derivation. The seat's gesture is "I WORK IT UNTIL IT HOLDS", and every object
+// here is a draft being worked. Strike it and it costs only these rows.
+//
+// ── the objects ────────────────────────────────────────────────────────────
+{"object":{"store":"doc","i":0,"seat":"LENS","sha":"a1f0c3","what":"THE_VISION_2026-08-17.md as first written"}}
+{"object":{"store":"doc","i":1,"seat":"LENS","sha":"b7d221","what":"the audit branch, as sent"}}
+{"object":{"store":"doc","i":2,"seat":"LENS","sha":"c3e884","what":"the ground branch, as sent"}}
+{"object":{"store":"doc","i":3,"seat":"LENS","sha":"d0a915","what":"the diverge branch, as sent"}}
+{"object":{"store":"doc","i":4,"seat":"LENS","sha":"a1f0c3","what":"the draft after the dream pass — same bytes, nothing was applied from it yet"}}
+{"object":{"store":"doc","i":5,"seat":"LENS","sha":"e6b47c","what":"the draft rebuilt around irreversibility"}}
+{"object":{"store":"doc","i":6,"seat":"LENS","sha":"f2c118","what":"the draft with the display law's fourth source"}}
+
+// ── the crossings ──────────────────────────────────────────────────────────
+{"crossing":{"from":"doc:0","to":"doc:1","gesture":"branch","surface":"the audit","at":"2026-08-17"}}
+{"crossing":{"from":"doc:0","to":"doc:2","gesture":"branch","surface":"the ground","at":"2026-08-17"}}
+{"crossing":{"from":"doc:0","to":"doc:3","gesture":"branch","surface":"the diverge","at":"2026-08-17"}}
+
+// three exposures, none of them returned yet. No `to`, and no `end` — because
+// nothing has been done to them. Silence is not a fate.
+{"crossing":{"from":"doc:1","gesture":"expose","surface":"the audit","at":"2026-08-17"}}
+{"crossing":{"from":"doc:2","gesture":"expose","surface":"the ground","at":"2026-08-17"}}
+{"crossing":{"from":"doc:3","gesture":"expose","surface":"the diverge","at":"2026-08-17"}}
+
+// the dream pass ran on the hand's own reading and changed no bytes — so the
+// draft was carried forward unchanged, and that is what `tempered` is made of
+{"crossing":{"from":"doc:0","to":"doc:4","gesture":"carry","surface":"the hand","at":"2026-08-17"}}
+
+// then it was worked, twice, on his marks
+{"crossing":{"from":"doc:4","to":"doc:5","gesture":"reopen","surface":"the hand","at":"2026-08-17"}}
+{"crossing":{"from":"doc:5","to":"doc:6","gesture":"reopen","surface":"the hand","at":"2026-08-17"}}

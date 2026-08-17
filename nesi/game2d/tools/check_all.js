@@ -47,6 +47,26 @@ const NODE = [
   ["organ_map",       "27 organs sited by gesture, and the sockets still open"],
   ["organ_audit",     "what each organ would cost the build if it were taken in"],
   ["crossing_audit",  "what may leave the world, and what stays"],
+  /* REGISTERED 2026-08-17 on Kevin's mark, "build the truth-bearing spine
+     first, not TANK." It REPORTS on lost support and REFUSES on misfiling —
+     see its header for why those are the right way round. A claim that has lost
+     its support must not turn the suite red, because the cheapest way back to
+     green would be deleting the claim, and the silent rewrite is the thing the
+     spine exists to prevent. */
+  ["standing_check",  "what kind of standing a claim has, and what keeps it standing"],
+  /* REGISTERED 2026-08-17 on Kevin's mark, "traversal is a fourth source — add
+     it to the display law." The display law had never lived in code. It is
+     stated in prose in three files and NOTHING asserted the copies agreed —
+     amending it turned up a drift of one word already sitting there. This one
+     DISCOVERS its statements instead of listing them, so it cannot go stale the
+     way a hand-maintained list does. It refuses. */
+  ["display_law_check","one law, stated in three places, and the copies agree"],
+  /* REGISTERED 2026-08-17 on Kevin's mark, "build the traversal organ." It
+     refuses on the two ways the display law's fourth source can be defeated: the
+     record acquiring a return's content, and a surface label acquiring
+     properties. Both are asserted against the source rather than asked for in a
+     comment, and both were control-tested the day they were written. */
+  ["traversal_check", "the fourth source stays the fourth"],
 ];
 
 /* HIS AUDIT RUNS HERE TOO. tools/assertion_audit.py encodes the register —

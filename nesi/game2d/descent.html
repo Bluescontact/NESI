@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>THE DESCENT</title>
+
+<!-- ■ 2026-08-17 — THE TWELVE OF THE DESCENT, AND THE BOWL THEY ASSEMBLE.
+
+     Kevin: "the 12 layer of descent assemble into the bottom half of the
+     cubedecohedron, and form the lens array, as a level 12 reveal. Each level
+     opens a new tool, or way for ones own hand to process and change and work
+     with their own writing."
+
+     NOTHING GEOMETRIC HERE IS WRITTEN BY HAND. The twelve are FILTERED out of
+     solid.js's twenty-four by one predicate — both ends at z >= 0 — and the
+     panes, the rim and the strut kinds are read the same way. If the circuit
+     table changes, this surface changes with it or says it could not read it.
+
+     WHAT THE SOLID DECIDED, AND WAS NOT CHOSEN HERE
+       · z is the world's own vertical. Of the three fourfold axes it is the
+         ONLY one whose two square faces are pure: z+ is four falling seats
+         (FILTER STATIONS GROUND DEEP), z- is four rising ones. x and y both
+         come out mixed. The descent did not have to be given an axis — the
+         seat table already had one.
+       · the equator carries ZERO members, so the twenty-four part 12 / 12 with
+         nothing left over and nothing double-counted.
+       · the descent half is 8 falls + 3 turns + 1 return, and they arrive as
+         four circuits contributing exactly three each.
+       · V8 - E12 + F5 = 1. It is a disk: a bowl of five panes, braced by eight
+         rim struts and four floor struts.
+       · TWELVE, IN THE CIRCUIT TABLE'S OWN ORDER, IS ↑LENS — ↓DEEP. The last
+         member of the descent half is the lens member. That was not arranged.
+
+     WHAT IS A READING AND IS HIS TO STRIKE: the TOOL line on each of the twelve,
+     and the siting of the five homeless runs (RAIN CHANNEL SHOAL SOUNDING
+     STILLING) onto five members. THE_SOLID.md 5 measured what happens when a
+     session reaches past the computation into a semantic tie-break — computed
+     claims 4 for 4, reasoned-from-meaning claims 0 for 4. So the two are kept
+     apart on screen, in the open, and the readings are marked as readings.
+
+     WHAT IS HIS AND IS NOT ANSWERED HERE: what a lens IS in the array, how many
+     the array holds, and the order the twelve are walked in. PROGRESSION.md 3
+     already left the walking order open; nothing here closes it.
+
+     STATE IS DERIVED, NEVER FLAGGED — PROGRESSION.md 2.iv. A level stands when
+     both its seats have been worked in nesi.ascent. There is no seen-the-end
+     bit, nothing is stored by this page, and undoing anything prior re-opens
+     the bowl. Nothing is counted on screen: a level that stands is drawn as
+     form, and the twelfth closing is a shape, not a total. -->
+
+<style>
+  :root{
+    --sky:#cdd5d2; --sky2:#dfe6e3; --ink:#3b372f; --dim:#7d766a;
+    --edge:rgba(90,84,74,.55); --fall:rgba(74,92,102,.75); --rise:rgba(140,116,74,.8);
+    --turn:#8a5a2b; --form:#faf8f2; --pane:rgba(122,140,148,.20);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sky:#1b2220; --sky2:#131917; --ink:#e6e0d4; --dim:#9a9284;
+      --edge:rgba(200,190,170,.34); --fall:rgba(150,180,190,.6); --rise:rgba(210,175,120,.62);
+      --turn:#c99a63; --form:#2a251d; --pane:rgba(150,180,190,.18);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:linear-gradient(to bottom,var(--sky2),var(--sky));color:var(--ink);
+    font:400 14px/1.55 ui-serif,Georgia,"Iowan Old Style",serif;
+    -webkit-font-smoothing:antialiased;overflow:hidden}
+  #wrap{display:flex;height:100%}
+  #left{flex:0 0 44%;position:relative;min-width:300px}
+  #c{position:absolute;inset:0;display:block;touch-action:none;cursor:grab}
+  #c:active{cursor:grabbing}
+  #cap{position:absolute;left:18px;bottom:14px;right:18px;font-size:11px;color:var(--dim);
+    font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;line-height:1.6}
+  #hint{position:absolute;left:18px;top:16px;font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);font-family:ui-sans-serif,system-ui,sans-serif}
+  #right{flex:1;overflow-y:auto;padding:22px 26px 60px;border-left:1px solid var(--edge)}
+  h1{font:400 19px/1.3 ui-serif,Georgia,serif;margin:0 0 3px;letter-spacing:.01em}
+  .sub{color:var(--dim);font-size:12.5px;margin:0 0 4px}
+  .said{margin:14px 0 20px;padding-left:13px;border-left:2px solid var(--edge);
+    color:var(--dim);font-size:12.5px;line-height:1.65}
+  .band{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--dim);margin:26px 0 10px;
+    padding-bottom:6px;border-bottom:1px solid var(--edge)}
+  .band:first-of-type{margin-top:18px}
+  ol{list-style:none;margin:0;padding:0}
+  li.lv{padding:11px 12px 12px;margin:0 -12px;border-radius:3px;cursor:default;
+    border-left:2px solid transparent}
+  li.lv:hover,li.lv.on{background:var(--pane);border-left-color:var(--edge)}
+  .hd{display:flex;align-items:baseline;gap:9px}
+  .no{font-size:10.5px;color:var(--dim);font-family:ui-sans-serif,system-ui,sans-serif;
+    letter-spacing:.1em;min-width:2.2em}
+  .ends{font-size:14.5px;letter-spacing:.02em}
+  .kind{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+    font-family:ui-sans-serif,system-ui,sans-serif}
+  .kind.t{color:var(--turn)}
+  .stand{margin-left:auto;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);font-family:ui-sans-serif,system-ui,sans-serif}
+  .tool{margin:5px 0 0 3.4em;font-size:13px}
+  .tool b{font-weight:400;color:var(--turn)}
+  .meta{margin:3px 0 0 3.4em;font-size:11.5px;color:var(--dim);
+    font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.02em}
+  .meta a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--edge)}
+  .meta a:hover,.meta a:focus-visible{color:var(--ink);outline:none}
+  .r{display:inline-block;padding:0 4px;border:1px solid var(--edge);border-radius:2px;
+    font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:4px}
+  td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid var(--edge)}
+  td.k{color:var(--dim);white-space:nowrap;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px}
+  p.note{font-size:12.5px;color:var(--dim);margin:9px 0 0}
+  a.back{color:var(--dim);text-decoration:none;font-size:12px;border-bottom:1px solid var(--edge)}
+  a.back:hover{color:var(--ink)}
+  @media (max-width:820px){
+    body{overflow:auto}
+    #wrap{display:block;height:auto}
+    #left{height:56vh;min-width:0}
+    #right{border-left:none;border-top:1px solid var(--edge);overflow:visible}
+  }
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <div id="left">
+    <canvas id="c"></canvas>
+    <div id="hint">turn it</div>
+    <div id="cap"></div>
+  </div>
+  <div id="right">
+    <a class="back" href="index.html">the door</a>
+    <h1 style="margin-top:12px">THE DESCENT</h1>
+    <p class="sub">twelve members, the bowl they assemble, and what each puts in the hand</p>
+    <div class="said">
+      &ldquo;the 12 layer of descent assemble into the bottom half of the cubedecohedron,
+      and form the lens array, as a level 12 reveal. Each level opens a new tool, or way
+      for ones own hand to process and change and work with their own writing.&rdquo;
+      <br>— 2026-08-17
+    </div>
+    <div id="body"></div>
+  </div>
+</div>
+
+<script src="solid.js"></script>
+<script>
+(function(){
+  var S = window.SOLID;
+  var body = document.getElementById("body");
+
+  if(!S || !S.MEMBERS || !S.EMBED){
+    document.getElementById("hint").textContent = "the solid could not be read";
+    body.innerHTML = "<p class='note'>solid.js did not load, so the twelve are not drawn. " +
+      "They are filtered out of its member table rather than copied here, so there is no " +
+      "second list to fall back to — that is deliberate. <a class='back' href='index.html'>the door</a></p>";
+    return;
+  }
+
+  /* ── THE FILTER. One predicate, and the twelve fall out of the twenty-four. ── */
+  var z = function(n){ return S.EMBED[n][2]; };
+  var LOW  = S.MEMBERS.filter(function(m){ return z(m.a) >= 0 && z(m.b) >= 0; });
+  var HIGH = S.MEMBERS.filter(function(m){ return z(m.a) <= 0 && z(m.b) <= 0; });
+  var PANES = [].concat(
+    S.TRIANGLES.filter(function(t){ return t.seats.every(function(s){ return z(s) >= 0; }); })
+               .map(function(t){ return t.seats; }),
+    S.SQUARES.filter(function(q){ return q.seats.every(function(s){ return z(s) >= 0; }); })
+             .map(function(q){ return q.seats; })
+  );
+  var borders = function(m, f){ return f.indexOf(m.a) >= 0 && f.indexOf(m.b) >= 0; };
+  var panesOf = function(m){ return PANES.filter(function(f){ return borders(m, f); }); };
+
+  /* ── THE READING. Everything below this line is a session's, tagged and unmarked.
+        Keyed by member so a changed circuit table orphans the reading loudly
+        instead of sliding it onto a member it was never written for.
+
+        KEYED THE WAY SOLID.JS KEYS, which is [a,b].sort() and NOT walk order.
+        Written first in walk order, five of the twelve missed and printed
+        "unread" on the running page while every instrument in check_all was
+        green — the suite reads source text and cannot see a lookup miss.
+        Found by walking. The fallback is kept rather than removed: a reading
+        that goes missing must say so on screen, which is the only reason this
+        was caught. Lookup normalises, so the two orders cannot diverge again. */
+  var READ = {
+    "DAM—STATIONS": {
+      tool: "the release that must be aimed",
+      says: "What was held is let go, and the letting-go arrives already needing a destination. The hand cannot release into nowhere here.",
+      where: [["the dam","ascent.html#dam"],["the stations","ascent.html#stations"]],
+      built: "both ends built · the transit between them is not"
+    },
+    "DEEP—STATIONS": {
+      tool: "THE SOUNDING — the line is yours",
+      says: "What you sent on keeps falling. A line dropped after it brings back one, and which one is not yours to choose.",
+      where: [["the ascent","ascent.html"]],
+      built: "built as a run · homeless on the map until now"
+    },
+    "DEEP—HELIOSTAT": {
+      tool: "the aim, taken from what sank",
+      says: "What sank is what the light rises from. The hand aims a world it has already let go of, and the aim is live only while held.",
+      where: [["the heliostat","ascent.html#heliostat"]],
+      built: "built"
+    },
+    "DAM—GROUND": {
+      tool: "THE CHANNEL — water cuts where the grain already runs",
+      says: "What power moves, it deposits. The hand cuts a route from the release into the bed, and the bed keeps the cut.",
+      where: [["the ascent","ascent.html"],["the land","hand.js"]],
+      built: "built as a run · homeless on the map until now"
+    },
+    "FILTER—GROUND": {
+      tool: "separation by behaviour, by hand",
+      says: "You cannot sort what has not settled. Three speeds — one sinks, one hangs, one films — and a hand takes one out at a time.",
+      where: [["the filter","ascent.html#filter"]],
+      built: "built · its held form is not"
+    },
+    "FILTER—HELIOSTAT": {
+      tool: "the clear pane",
+      says: "Clarity is what lets light through. What the hand took out of suspension is what the world can now be seen by.",
+      where: [],
+      built: "open — no transit built"
+    },
+    "GROUND—TANK": {
+      tool: "THE RAIN — the world receives without reading",
+      says: "Writing becomes water and the water sets something down. The first proof that words become terrain, and nothing reads them on the way.",
+      where: [["the daily surface","daily.html"],["the ascent","ascent.html"]],
+      built: "built as a run · homeless on the map until now"
+    },
+    "GROUND—STATIONS": {
+      tool: "THE SHOAL — arrangement, never a verdict",
+      says: "What has settled can be arranged before it is routed. Moving a thing is not judging it, and the arrangement says nothing back.",
+      where: [["the ascent","ascent.html"]],
+      built: "built as a run · homeless on the map until now"
+    },
+    "LENS—STATIONS": {
+      tool: "the three-face read",
+      says: "What you chose to send on is the material the hand works into a lens. Routing was already a first cut, and a thing held across all three faces is the lens.",
+      where: [["the lens","ascent.html#lens"]],
+      built: "built"
+    },
+    "DEEP—FILTER": {
+      tool: "the returned sort",
+      says: "What came back from the deep is what there is to sort. You separate what returned, not what you sent.",
+      where: [],
+      built: "open — no transit built"
+    },
+    "FILTER—TANK": {
+      tool: "THE WITHDRAWAL — and it is the only way out of the line",
+      says: "A sentence taken off the page leaves by way of the filter, and the bank keeps it. Separation runs back into intake; nothing is deleted, it is withdrawn.",
+      where: [["the ascent","ascent.html"]],
+      built: "the route is found in the solid · the tombstone organ is named and unbuilt"
+    },
+    "DEEP—LENS": {
+      tool: "the lens set into the bowl",
+      says: "The worked lens falls to the bottom. What you shaped is what sinks — and this member is the one that closes the descent half.",
+      where: [],
+      built: "open — and it is the twelfth"
+    }
+  };
+
+  /* ── WHICH RUN A SEAT IS, so standing can be derived from his real store. ── */
+  var RUN = { TANK:1, DAM:3, FILTER:5, STATIONS:6, GROUND:7, DEEP:10,
+              HELIOSTAT:"heliostat", LENS:"lens" };
+  var DONE = (function(){
+    try{
+      var r = localStorage.getItem("nesi.ascent");
+      if(!r) return {};
+      return (JSON.parse(r) || {}).done || {};
+    }catch(e){ return {}; }
+  })();
+  var worked = function(seat){ return !!DONE[RUN[seat]]; };
+  var stands = function(m){ return worked(m.a) && worked(m.b); };
+
+  var ORDER = LOW.slice();          /* the circuit table's own order, not a choice made here */
+  var closed = ORDER.every(stands);
+
+  /* ── the list ─────────────────────────────────────────────────────────────── */
+  var CIRCUIT_NAME = ["the release, the depth, and the departure",
+                      "the release, the separation, and the frame",
+                      "the intake, the deposit, and the lens",
+                      "the intake, the depth, and the departure"];
+  var html = "", lastC = -1;
+  html += "<div class='band'>the twelve</div><ol>";
+  ORDER.forEach(function(m, i){
+    var c = m.circuits[0], r = READ[m.key] || {tool:"unread", says:"", where:[], built:""};
+    if(c !== lastC){
+      html += "</ol><div class='band' style='border:0;margin:20px 0 2px;padding:0'>" +
+              CIRCUIT_NAME[c] + "</div><ol>";
+      lastC = c;
+    }
+    var rim = panesOf(m).length === 1;
+    html += "<li class='lv' data-k='" + m.key + "'>" +
+      "<div class='hd'><span class='no'>" + (i+1) + "</span>" +
+      "<span class='ends'>" + (S.SEATS[m.a].fall ? "↓" : "↑") + m.a +
+      " &mdash; " + (S.SEATS[m.b].fall ? "↓" : "↑") + m.b + "</span>" +
+      "<span class='kind" + (m.kind === "fall" ? "" : " t") + "'>" + m.kind + "</span>" +
+      "<span class='stand'>" + (stands(m) ? "stands" : "open") + "</span></div>" +
+      "<div class='tool'><b>" + r.tool + "</b> &nbsp;" + r.says + "</div>" +
+      "<div class='meta'>" + (rim ? "rim strut" : "floor strut") +
+      "<span class='r'>reading</span>" +
+      (r.built ? " &nbsp;·&nbsp; " + r.built : "") +
+      (r.where && r.where.length
+        ? " &nbsp;·&nbsp; " + r.where.map(function(w){
+            return "<a href='" + w[1] + "'>" + w[0] + "</a>"; }).join(" &nbsp;")
+        : " &nbsp;·&nbsp; no surface holds it") +
+      "</div></li>";
+  });
+  html += "</ol>";
+
+  /* ── the twelfth ──────────────────────────────────────────────────────────── */
+  html += "<div class='band'>the twelfth</div>" +
+    "<p style='margin:0'>The last member of the descent half, in the circuit table's own order, is " +
+    "<b style='font-weight:400'>↑LENS &mdash; ↓DEEP</b>. It was not placed there. Filtering " +
+    "solid.js by one predicate returns the twelve in that order, and the lens member " +
+    "is last.</p>" +
+    "<p class='note'>The bowl is " + (closed ? "closed." : "open.") +
+    " It closes when all twelve stand and it re-opens the moment anything prior changes — " +
+    "there is no bit stored anywhere saying it happened. Undo a merge, withdraw a sentence, " +
+    "unseat a lens, and the twelfth is a live member again.</p>";
+
+  /* ── what the geometry decided, and what it did not ──────────────────────── */
+  var floorSq = S.SQUARES.filter(function(q){ return q.seats.every(function(s){ return z(s) >= 0; }); })[0];
+  var rimSeats = S.NAMES.filter(function(n){ return z(n) === 0; });
+  var tri = PANES.length - 1;
+  html += "<div class='band'>what the solid decided</div><table>" +
+    "<tr><td class='k'>the axis</td><td>Of the three fourfold axes only one has pure square faces — one all falling, one all rising. " +
+      "The descent was not given a direction; the seat table already had one.</td></tr>" +
+    "<tr><td class='k'>the split</td><td>The equator carries no members at all, so the twenty-four part into " +
+      LOW.length + " below and " + HIGH.length + " above with nothing shared and nothing double-counted.</td></tr>" +
+    "<tr><td class='k'>the arrival</td><td>Each of the four circuits gives the descent exactly three of its six: two falls and one crossing.</td></tr>" +
+    "<tr><td class='k'>the bowl</td><td>" + PANES.length + " panes — " + tri + " triangles and the floor square " +
+      floorSq.seats.map(function(s){return "↓"+s;}).join(" · ") +
+      " — braced by eight rim struts and four floor struts. V − E + F = 1: a disk, not a solid.</td></tr>" +
+    "<tr><td class='k'>the rim</td><td>" + rimSeats.map(function(s){return (S.SEATS[s].fall?"↓":"↑")+s;}).join(" · ") +
+      ", and no two of them touch. The bowl's edge is an octagon that alternates a rim seat and a floor seat all the way round.</td></tr>" +
+    "</table>";
+
+  html += "<div class='band'>what is a reading, and is yours to strike</div>" +
+    "<p style='margin:0'>Every line marked <span class='r'>reading</span> above — the tool each " +
+    "member puts in the hand, and the siting of the five runs that had nowhere to live " +
+    "(RAIN, CHANNEL, SHOAL, SOUNDING, STILLING). THE_24 §3 counted those five as built, " +
+    "walked and homeless. The geometry says why: <b style='font-weight:400'>they are transits, " +
+    "not places</b> — there are twelve members in the descent half and only eight seats, and " +
+    "a mechanism with no vertex is a mechanism that belongs on an edge.</p>" +
+    "<p class='note'>That much is arithmetic. <em>Which</em> five members they land on is not, " +
+    "and neither is any tool line. THE_SOLID §5 measured what happens when a session " +
+    "reaches past the computation into a semantic tie-break: computed claims 4 for 4, " +
+    "reasoned-from-meaning claims 0 for 4. So they are on screen as readings, in the open, " +
+    "and a struck one costs only that row.</p>";
+
+  html += "<div class='band'>what is not answered here</div>" +
+    "<p style='margin:0'>What a lens <em>is</em> in the array, and how many the array holds. " +
+    "The bowl offers three counts and picks none: twelve struts, nine facets if the four " +
+    "cut squares count as panes, five whole panes if they do not.</p>" +
+    "<p class='note'>And the walking order. PROGRESSION §3 left it open — the solid permits " +
+    "many orders and enforces none. The order above is the circuit table's own, which is " +
+    "why the lens member falls twelfth; another order moves it.</p>";
+
+  body.innerHTML = html;
+
+  /* ── the figure ───────────────────────────────────────────────────────────── */
+  var cv = document.getElementById("c"), g = cv.getContext("2d"), cap = document.getElementById("cap");
+  var yaw = 0.62, pitch = 0.30, drag = null, W = 0, H = 0, R = 1, cx = 0, cy = 0, lit = null;
+
+  cap.textContent = "the whole solid, faint · the descent half solid · the panes fill as their members stand";
+
+  /* +z is the world's floor, so it is drawn downward. The seat table's own
+     vertical, not a view chosen to look right. */
+  function project(v){
+    var p = [v[0], -v[2], v[1]];
+    var cyw = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var x = p[0] * cyw + p[2] * sy;
+    var zz = -p[0] * sy + p[2] * cyw;
+    var y = p[1] * cp - zz * sp;
+    return [cx + x * R, cy - y * R, p[1] * sp + zz * cp];
+  }
+
+  function size(){
+    var d = window.devicePixelRatio || 1, box = document.getElementById("left").getBoundingClientRect();
+    W = box.width; H = box.height;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d);
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    g.setTransform(d, 0, 0, d, 0, 0);
+    cx = W / 2; cy = H / 2;
+    R = Math.max(50, Math.min(W / 2 - 74, H / 2 - 62) / Math.SQRT2);
+  }
+
+  function draw(){
+    g.clearRect(0, 0, W, H);
+    var css = getComputedStyle(document.documentElement);
+    var col = function(n){ return css.getPropertyValue(n).trim() || "#888"; };
+    var P = {}; S.NAMES.forEach(function(n){ P[n] = project(S.EMBED[n]); });
+
+    /* the rising half, faint — the bowl is a HALF of something and says so */
+    HIGH.forEach(function(m){
+      g.strokeStyle = col("--edge"); g.globalAlpha = 0.16; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(P[m.a][0], P[m.a][1]); g.lineTo(P[m.b][0], P[m.b][1]); g.stroke();
+    });
+    S.MEMBERS.filter(function(m){ return LOW.indexOf(m) < 0 && HIGH.indexOf(m) < 0; })
+      .forEach(function(m){
+        g.strokeStyle = col("--edge"); g.globalAlpha = 0.16; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(P[m.a][0], P[m.a][1]); g.lineTo(P[m.b][0], P[m.b][1]); g.stroke();
+      });
+    g.globalAlpha = 1;
+
+    /* the panes — filled only where every member bounding them stands */
+    PANES.forEach(function(f){
+      var full = LOW.filter(function(m){ return borders(m, f); }).every(stands);
+      if(!full) return;
+      g.beginPath();
+      f.forEach(function(s, i){ var p = P[s]; i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); });
+      g.closePath(); g.fillStyle = col("--pane"); g.fill();
+    });
+
+    /* the twelve */
+    LOW.slice().sort(function(a, b){
+      return (P[a.a][2] + P[a.b][2]) - (P[b.a][2] + P[b.b][2]);
+    }).forEach(function(m){
+      var on = lit === m.key, st = stands(m);
+      g.strokeStyle = on ? col("--turn")
+        : m.kind === "fall" ? col("--fall") : col("--turn");
+      g.globalAlpha = on ? 1 : (st ? 0.92 : 0.42);
+      g.lineWidth = on ? 3 : (st ? 2 : 1.2);
+      g.beginPath(); g.moveTo(P[m.a][0], P[m.a][1]); g.lineTo(P[m.b][0], P[m.b][1]); g.stroke();
+    });
+    g.globalAlpha = 1;
+
+    /* the eight seats of the bowl, named; the four above it are not labelled */
+    g.font = "11px ui-sans-serif,system-ui,sans-serif";
+    g.textAlign = "center"; g.textBaseline = "middle";
+    S.NAMES.filter(function(n){ return z(n) >= 0; }).forEach(function(n){
+      var p = P[n];
+      g.beginPath(); g.arc(p[0], p[1], 3.4, 0, 7);
+      g.fillStyle = col("--form"); g.strokeStyle = col("--edge"); g.fill(); g.stroke();
+      g.fillStyle = col("--dim");
+      g.fillText((S.SEATS[n].fall ? "↓" : "↑") + n, p[0], p[1] - 13);
+    });
+  }
+
+  cv.addEventListener("pointerdown", function(e){ drag = {x:e.clientX, y:e.clientY}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointerup", function(){ drag = null; });
+  cv.addEventListener("pointercancel", function(){ drag = null; });
+  cv.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    yaw += (e.clientX - drag.x) * 0.008;
+    pitch = Math.max(-1.35, Math.min(1.35, pitch + (e.clientY - drag.y) * 0.006));
+    drag = {x:e.clientX, y:e.clientY}; draw();
+  });
+  window.addEventListener("resize", function(){ size(); draw(); });
+
+  [].forEach.call(document.querySelectorAll("li.lv"), function(li){
+    li.addEventListener("mouseenter", function(){ lit = li.getAttribute("data-k"); draw(); });
+    li.addEventListener("mouseleave", function(){ lit = null; draw(); });
+  });
+
+  size(); draw();
+})();
+</script>
+</body>
+</html>

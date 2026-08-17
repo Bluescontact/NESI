@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE TRAVERSAL</title>
+
+<!-- ■ 2026-08-17 — THE TRAVERSAL ORGAN, given a door.
+
+     Kevin: "build the traversal organ." And, the same evening, the image this
+     surface is drawn from:
+
+       "Imagine one sentence stored verbatim at the centre of a small graph.
+        NESI never opens the sentence for analysis. Around it accumulate events."
+       "The word can remain still while the world develops around it."
+
+     So the object is drawn STILL, at the centre, and its crossings stand around
+     it. The centre does not move when arms are added. That is the same figure
+     the solid already carries — twelve radii, member:null, "it is not a walk and
+     never becomes one" — a relation you can measure and cannot travel.
+
+     WHAT REACHES THE SCREEN, AND WHERE IT COMES FROM. Every display state here
+     derives from the display law's FOURTH source, admitted today: what the
+     writing has crossed. Nothing derives from what it says, and there is nothing
+     on this page that could — the store has no field for a return's content and
+     `traversal_check` T1/T2 refuse if one ever appears.
+
+     NO NUMBER REACHES THE SCREEN. The organ's reading counts; the FORM does not.
+     "arms: many" is on the glass, "thrown: 4" is not, and T8 asserts every value
+     that reaches a display state is a shape word or a boolean.
+
+     THE HAND'S LABEL IS SHOWN AND IS NOT CONTENT. Each object carries a `what`
+     the hand wrote. Per the tagging rule — player-applied or position-derived,
+     never inferred — that is lawful. No model wrote a word on this page.
+
+     WHAT IS WRITTEN, AND WHERE. Crossings a hand records here go to
+     localStorage under `nesi.traversals`, never to TRAVERSALS.jsonl and never
+     to his water. The seeded record is read-only and is drawn beneath them. -->
+
+<style>
+  :root{
+    --sky:#dfe6e3; --sky2:#f1ede4; --ink:#3b372f; --dim:#7d766a;
+    --edge:rgba(90,84,74,.5); --arm:rgba(74,92,102,.72); --hold:rgba(140,116,74,.8);
+    --turn:#8a5a2b; --form:#faf8f2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sky:#171d1b; --sky2:#131917; --ink:#e6e0d4; --dim:#9a9284;
+      --edge:rgba(200,190,170,.32); --arm:rgba(150,180,190,.6); --hold:rgba(210,175,120,.6);
+      --turn:#c99a63; --form:#2a251d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:linear-gradient(to bottom,var(--sky2),var(--sky));color:var(--ink);
+    font:15px/1.6 ui-serif,Georgia,"Iowan Old Style",serif;padding:26px 20px 70px;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto}
+  a.back{color:var(--dim);text-decoration:none;font-size:12px;border-bottom:1px solid var(--edge)}
+  a.back:hover{color:var(--ink)}
+  h1{font-size:21px;font-weight:400;margin:12px 0 3px;letter-spacing:.01em}
+  .sub{color:var(--dim);font-size:12.5px;margin-bottom:16px}
+  .said{margin:0 0 22px;padding-left:13px;border-left:2px solid var(--edge);
+    color:var(--dim);font-size:12.5px;line-height:1.65}
+  h2{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--dim);margin:30px 0 10px;
+    padding-bottom:6px;border-bottom:1px solid var(--edge)}
+  #fig{display:block;width:100%;height:380px;margin:0 0 6px}
+  .cap{font-size:11.5px;color:var(--dim);font-family:ui-sans-serif,system-ui,sans-serif;
+    letter-spacing:.03em;margin-bottom:8px}
+  .obj{padding:10px 12px;margin:0 -12px;border-left:2px solid transparent;border-radius:3px;cursor:pointer}
+  .obj:hover,.obj.on{background:var(--form);border-left-color:var(--edge)}
+  .oid{font:10.5px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--dim)}
+  .what{font-size:14px;margin-top:2px}
+  .form{margin-top:4px}
+  .f{display:inline-block;font:9.5px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--dim);border:1px solid var(--edge);border-radius:2px;
+    padding:1px 5px;margin:2px 4px 0 0}
+  .f.on{color:var(--turn);border-color:var(--turn)}
+  form{background:var(--form);border:1px solid var(--edge);padding:14px;border-radius:3px}
+  label{display:block;font:9.5px ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);margin:0 0 4px}
+  select,input,button{font:14px ui-serif,Georgia,serif;padding:6px 8px;
+    border:1px solid var(--edge);background:var(--sky2);color:var(--ink);border-radius:2px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:11px}
+  .row>div{flex:1;min-width:150px}
+  button{cursor:pointer;background:var(--form)}
+  button:hover{border-color:var(--turn);color:var(--turn)}
+  .note{font-size:12px;color:var(--dim);margin-top:9px}
+  .gsay{font-size:12.5px;color:var(--dim);margin-top:5px;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">the door</a>
+  <h1>THE TRAVERSAL</h1>
+  <p class="sub">what a writing has undergone, and nothing about what it says</p>
+  <div class="said">
+    &ldquo;Imagine one sentence stored verbatim at the centre of a small graph. NESI never
+    opens the sentence for analysis. Around it accumulate events. The word can remain
+    still while the world develops around it.&rdquo;<br>— 2026-08-17
+  </div>
+
+  <svg id="fig" viewBox="0 0 900 380" aria-label="the still object and its crossings"></svg>
+  <p class="cap" id="cap"></p>
+
+  <h2>the siting — the twelve radii</h2>
+  <svg id="rad" viewBox="0 0 900 300" aria-label="the twelve radii"></svg>
+  <p class="cap">a radius reads one seat and nothing else &middot; it can be measured and never travelled
+    &middot; <b style="font-weight:400">every one is drawn the same length on purpose</b> &mdash;
+    whether working draws a seat nearer the game or stands it further off is unmarked,
+    so no length here implies one</p>
+
+  <h2>the record</h2>
+  <div id="list"></div>
+
+  <h2>record a crossing</h2>
+  <form id="rec" autocomplete="off">
+    <div class="row">
+      <div><label for="from">from</label><select id="from"></select></div>
+      <div><label for="gest">gesture</label><select id="gest"></select></div>
+      <div><label for="surf">surface</label><input id="surf" placeholder="a label, in your words"></div>
+    </div>
+    <div class="row">
+      <div><label for="what">what came back — your own label, if anything came back</label>
+        <input id="what" placeholder="leave empty if it is still out"></div>
+    </div>
+    <button type="submit">record it</button>
+    <p class="gsay" id="gsay"></p>
+    <p class="note">A surface is a label and nothing else — nothing on this page reads it,
+      compares it, or attaches a property to it. Leave the last field empty and the branch
+      is <b style="font-weight:400">still out</b>: not ended, not held. Nothing asks after it.</p>
+  </form>
+  <p class="note" id="mine"></p>
+</div>
+
+<script src="solid.js"></script>
+<script>
+(function(){
+/* THE SEVEN, and there is no eighth. Mirrored from tools/traversal.js — the one
+   copy that is not read from source, because this page must open with no server.
+   traversal_check T4 holds the canonical set; if these ever disagree the page is
+   wrong and the instrument is right. */
+var GESTURES = {
+  branch:{says:"I branched this",        produces:true},
+  expose:{says:"I exposed this to another rendering", produces:true},
+  join:  {says:"I brought these two returns together", produces:true},
+  reopen:{says:"I reopened this ancestor", produces:true},
+  carry: {says:"I carried this forward unchanged", produces:true},
+  end:   {says:"I let this branch end",   produces:false},
+  hold:  {says:"I held this",             produces:false}
+};
+
+/* the seeded record, read-only, mirroring TRAVERSALS.jsonl */
+var SEED = {
+  objects:{
+    "doc:0":{seat:"LENS",what:"the vision draft as first written", sha:"a1f0c3"},
+    "doc:1":{seat:"LENS",what:"the audit branch, as sent", sha:"b7d221"},
+    "doc:2":{seat:"LENS",what:"the ground branch, as sent", sha:"c3e884"},
+    "doc:3":{seat:"LENS",what:"the diverge branch, as sent", sha:"d0a915"},
+    "doc:4":{seat:"LENS",what:"after the dream pass — same bytes", sha:"a1f0c3"},
+    "doc:5":{seat:"LENS",what:"rebuilt around irreversibility", sha:"e6b47c"},
+    "doc:6":{seat:"LENS",what:"the display law's fourth source", sha:"f2c118"}
+  },
+  crossings:[
+    {from:["doc:0"],to:"doc:1",gesture:"branch",surface:"the audit"},
+    {from:["doc:0"],to:"doc:2",gesture:"branch",surface:"the ground"},
+    {from:["doc:0"],to:"doc:3",gesture:"branch",surface:"the diverge"},
+    {from:["doc:1"],to:null,   gesture:"expose",surface:"the audit"},
+    {from:["doc:2"],to:null,   gesture:"expose",surface:"the ground"},
+    {from:["doc:3"],to:null,   gesture:"expose",surface:"the diverge"},
+    {from:["doc:0"],to:"doc:4",gesture:"carry", surface:"the hand"},
+    {from:["doc:4"],to:"doc:5",gesture:"reopen",surface:"the hand"},
+    {from:["doc:5"],to:"doc:6",gesture:"reopen",surface:"the hand"}
+  ]
+};
+
+var KEY="nesi.traversals";
+function mine(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null") || {objects:{},crossings:[]}; }
+                 catch(e){ return {objects:{},crossings:[]}; } }
+function saveMine(m){ try{ localStorage.setItem(KEY, JSON.stringify(m)); }catch(e){} }
+
+function store(){
+  var m=mine(), S={objects:{},crossings:[]};
+  Object.keys(SEED.objects).forEach(function(k){ S.objects[k]=SEED.objects[k]; });
+  Object.keys(m.objects).forEach(function(k){ S.objects[k]=m.objects[k]; });
+  S.crossings=SEED.crossings.concat(m.crossings);
+  return S;
+}
+
+/* the reading — every line a fact about the object's life */
+function readingOf(S,id){
+  var out=S.crossings.filter(function(c){return c.from.indexOf(id)>=0;});
+  var inn=S.crossings.filter(function(c){return c.to===id;});
+  var sha=(S.objects[id]||{}).sha||null;
+  var anc=(function up(x,seen){ if(seen[x])return seen; seen[x]=1;
+    S.crossings.filter(function(c){return c.to===x;})
+      .forEach(function(c){ c.from.forEach(function(f){ up(f,seen); }); });
+    return seen; })(id,{});
+  delete anc[id];
+  return {
+    thrown: out.filter(function(c){return GESTURES[c.gesture].produces && c.to;}).length,
+    inflight: out.filter(function(c){return GESTURES[c.gesture].produces && !c.to;}).length,
+    ended: out.filter(function(c){return c.gesture==="end";}).length,
+    held:  out.filter(function(c){return c.gesture==="hold";}).length,
+    unchanged: inn.filter(function(c){
+      var src=c.from.map(function(f){return (S.objects[f]||{}).sha;}).filter(Boolean);
+      return sha && src.length===1 && src[0]===sha; }).length,
+    surfaces: (function(){var s={},n=0;
+      out.concat(inn).forEach(function(c){ if(!s[c.surface]){s[c.surface]=1;n++;} }); return n;})(),
+    returnedToAncestor: out.some(function(c){ return c.to && anc[c.to]; }),
+    depth: Object.keys(anc).length,
+    open: out.length===0
+  };
+}
+
+/* THE FORM — the only thing that reaches the screen. No numbers. */
+function formOf(r){
+  return { arms: r.thrown===0?"none":r.thrown<=2?"few":"many",
+           tempered:r.unchanged>0, pruned:r.ended>0, resting:r.held>0,
+           circled:r.returnedToAncestor,
+           lineage:r.depth===0?"origin":r.depth<=2?"shallow":"deep",
+           travelled:r.surfaces>1, waiting:r.inflight>0, open:r.open };
+}
+
+var sel=null;
+
+var ns="http://www.w3.org/2000/svg";
+function el(t,a){ var e=document.createElementNS(ns,t);
+  for(var k in a) e.setAttribute(k,a[k]); return e; }
+
+function render(){
+  var S=store(), ids=Object.keys(S.objects);
+  if(!sel || !S.objects[sel]) sel=ids[0];
+
+  /* the list */
+  var L=document.getElementById("list"); L.innerHTML="";
+  ids.forEach(function(id){
+    var f=formOf(readingOf(S,id));
+    var d=document.createElement("div");
+    d.className="obj"+(id===sel?" on":"");
+    var tags=Object.keys(f).filter(function(k){ return f[k] && f[k]!=="none"; })
+      .map(function(k){ return "<span class='f"+(id===sel?" on":"")+"'>"+
+        (f[k]===true?k:k+" &middot; "+f[k])+"</span>"; }).join("");
+    d.innerHTML="<div class='oid'>"+id+"</div><div class='what'>"+
+      S.objects[id].what+"</div><div class='form'>"+tags+"</div>";
+    d.addEventListener("click",function(){ sel=id; render(); });
+    L.appendChild(d);
+  });
+
+  /* the figure — the object still at the centre, crossings standing around it */
+  var g=document.getElementById("fig"); g.innerHTML="";
+  var cx=450, cy=185, R=118;
+  var out=S.crossings.filter(function(c){return c.from.indexOf(sel)>=0;});
+  var inn=S.crossings.filter(function(c){return c.to===sel;});
+  var arms=inn.map(function(c){return {c:c,dir:-1};})
+    .concat(out.map(function(c){return {c:c,dir:1};}));
+
+  arms.forEach(function(a,i){
+    var th=(i/Math.max(arms.length,1))*Math.PI*2 - Math.PI/2;
+    var x=cx+Math.cos(th)*R, y=cy+Math.sin(th)*R;
+    var open=GESTURES[a.c.gesture].produces && !a.c.to;
+    var ln=el("line",{x1:cx,y1:cy,x2:x,y2:y,
+      stroke:"var("+(a.c.gesture==="hold"||a.c.gesture==="end"?"--hold":"--arm")+")",
+      "stroke-width":a.dir<0?2.2:1.4,
+      "stroke-dasharray":open?"4 4":"", opacity:open?0.55:0.95});
+    g.appendChild(ln);
+    g.appendChild(el("circle",{cx:x,cy:y,r:open?3:4.6,
+      fill:open?"var(--sky2)":"var(--form)",stroke:"var(--edge)"}));
+    var t=el("text",{x:x+(Math.cos(th)>0?9:-9),y:y+4,
+      "text-anchor":Math.cos(th)>0?"start":"end",
+      fill:"var(--dim)","font-size":"10.5","font-family":"ui-sans-serif,system-ui,sans-serif"});
+    t.textContent=a.c.gesture+(open?" · still out":"")+" — "+a.c.surface;
+    g.appendChild(t);
+  });
+
+  /* the still centre. It is drawn as a sealed mark: no text of the object
+     itself ever appears here, only the hand's own label, below. */
+  g.appendChild(el("circle",{cx:cx,cy:cy,r:15,fill:"var(--form)",
+    stroke:"var(--turn)","stroke-width":1.4}));
+  g.appendChild(el("circle",{cx:cx,cy:cy,r:5,fill:"var(--turn)",opacity:.5}));
+  var lab=el("text",{x:cx,y:cy+34,"text-anchor":"middle",fill:"var(--dim)",
+    "font-size":"10.5","font-family":"ui-sans-serif,system-ui,sans-serif"});
+  lab.textContent=sel; g.appendChild(lab);
+
+  /* ── THE SITING, drawn from solid.js's own radii ─────────────────────────
+     Kevin's mark: "site traversal on the radii." The figure is READ from the
+     module, never drawn by hand — same rule as the door. A radius is drawn at
+     ONE FIXED LENGTH for every seat, because the direction of displacement is
+     his open fork and a varying length would rule it by picture. Working shows
+     as weight instead, which carries magnitude and no sign. */
+  var rg=document.getElementById("rad");
+  if(rg && window.SOLID && window.SOLID.NAMES){
+    rg.innerHTML=""; var RX=450, RY=150, RR=104;
+    var worked={};
+    Object.keys(S.objects).forEach(function(id){
+      var st=S.objects[id].seat; if(!st) return;
+      var d=readingOf(S,id).depth;
+      if(!(st in worked) || d>worked[st]) worked[st]=d;
+    });
+    rg.appendChild(el("circle",{cx:RX,cy:RY,r:13,fill:"var(--form)",
+      stroke:"var(--turn)","stroke-width":1.4}));
+    rg.appendChild(el("circle",{cx:RX,cy:RY,r:4,fill:"var(--turn)",opacity:.5}));
+    window.SOLID.NAMES.forEach(function(n,i){
+      var th=(i/12)*Math.PI*2 - Math.PI/2;
+      var x=RX+Math.cos(th)*RR, y=RY+Math.sin(th)*RR;
+      var w=worked[n]||0;
+      rg.appendChild(el("line",{x1:RX,y1:RY,x2:x,y2:y,
+        stroke:w?"var(--turn)":"var(--edge)",
+        "stroke-width":w?(w<=2?1.9:3):0.9, opacity:w?0.95:0.42}));
+      rg.appendChild(el("circle",{cx:x,cy:y,r:3.2,fill:"var(--form)",stroke:"var(--edge)"}));
+      var t=el("text",{x:RX+Math.cos(th)*(RR+16),y:RY+Math.sin(th)*(RR+16)+3.5,
+        "text-anchor":Math.abs(Math.cos(th))<0.3?"middle":(Math.cos(th)>0?"start":"end"),
+        fill:w?"var(--turn)":"var(--dim)","font-size":"10",
+        "font-family":"ui-sans-serif,system-ui,sans-serif"});
+      t.textContent=n+(w?(w<=2?" · worked":" · deeply worked"):"");
+      rg.appendChild(t);
+    });
+  }
+
+  document.getElementById("cap").textContent =
+    arms.length ? "the object holds still; what it crossed stands around it · dashed is still out"
+                : "nothing has crossed this one yet";
+
+  /* the form */
+  var fsel=document.getElementById("from"); fsel.innerHTML="";
+  ids.forEach(function(id){ var o=document.createElement("option");
+    o.value=id; o.textContent=id+" — "+S.objects[id].what;
+    if(id===sel) o.selected=true; fsel.appendChild(o); });
+
+  var m=mine();
+  document.getElementById("mine").textContent = m.crossings.length
+    ? "crossings you have recorded here are kept in this browser only, and never reach the seeded record or your writing."
+    : "";
+}
+
+var gs=document.getElementById("gest");
+Object.keys(GESTURES).forEach(function(k){
+  var o=document.createElement("option"); o.value=k; o.textContent=k; gs.appendChild(o); });
+function saySel(){ document.getElementById("gsay").textContent =
+  "“"+GESTURES[gs.value].says+"”"; }
+gs.addEventListener("change",saySel); saySel();
+
+document.getElementById("rec").addEventListener("submit",function(e){
+  e.preventDefault();
+  var from=document.getElementById("from").value,
+      gest=gs.value,
+      surf=document.getElementById("surf").value.trim(),
+      what=document.getElementById("what").value.trim();
+  if(!surf){ document.getElementById("surf").focus(); return; }
+  var m=mine(), to=null;
+  if(GESTURES[gest].produces && what){
+    /* a new object, carrying the HAND'S label and no digest — the page has no
+       text to hash and does not invent one. `tempered` therefore cannot be
+       claimed by anything recorded here, which is correct: this surface cannot
+       witness that bytes were unchanged, so it never says they were. */
+    var n=0; while(m.objects["hand:"+n] || SEED.objects["hand:"+n]) n++;
+    to="hand:"+n; m.objects[to]={what:what, sha:null};
+  }
+  m.crossings.push({from:[from],to:to,gesture:gest,surface:surf});
+  saveMine(m);
+  document.getElementById("surf").value=""; document.getElementById("what").value="";
+  if(to) sel=to;
+  render();
+});
+
+render();
+})();
+</script>
+</body>
+</html>
