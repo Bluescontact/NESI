@@ -369,5 +369,25 @@ ok("and that is a fact about THIS STATE, not about the shape: at the octahedron 
 ok("each diameter is one antipodal pair reading the game from opposite sides",
    S.DIAMETERS.every(([a,b])=>S.antipodeOf(a)===b));
 
+/* ── KEVIN'S RULING, 2026-08-16: "twelve radials, two to each pair — 36 stands."
+   It closed a live collision between two of his own marks. F10 put a root with
+   a CIRCUIT PAIR; the count of 36 needs twelve roots; and six pairs cannot hold
+   twelve roots unless each holds two. He ruled belonging rather than identity —
+   a root is a radial, and the pair it belongs to is the pair its seat sits on.
+   ASSERTED HERE SO IT CANNOT DRIFT BACK. A ruling with no instrument is the
+   pattern this build has already been bitten by once. ─────────────────────── */
+const pairKey = s => S.circuitsOf(s).slice().sort().join("&");
+const byPair = {};
+S.RADII.forEach(r => (byPair[pairKey(r.seat)] = byPair[pairKey(r.seat)] || []).push(r.seat));
+ok("twelve radials — one per seat, and a root is a radial, not a diameter",
+   S.RADII.length === 12);
+ok("six circuit pairs, and every one of them holds exactly two roots",
+   Object.keys(byPair).length === 6 &&
+   Object.values(byPair).every(v => v.length === 2));
+ok("a root shares its pair with its own antipode, all twelve, no exceptions",
+   S.RADII.every(r => pairKey(r.seat) === pairKey(S.antipodeOf(r.seat))));
+ok("THIRTY-SIX LEVELS — twenty-four seams and twelve roots",
+   S.MEMBERS.length + S.RADII.length === 36);
+
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);

@@ -83,6 +83,49 @@ Sweep against these only. Anything else is refused however good.
 | W7 | the circuit end to end, held by an instrument | walked once by hand; no instrument holds it |
 | W8 | a projected membrane at four unclosed stars | gate `THE FOUR UNCLOSED STARS` (2026-08-16) — station, water, writer, three arms: node and three arms, no face |
 
+### W4, MEASURED — the `nesiseed` predicate filter, run against this build 2026-08-16
+
+Kevin handed in the **`nesiseed`** repository, whose `DECISIONS.md` CLOSED-2
+records that "routed" had been one predicate doing three jobs, and states of the
+replacement: **"Unverified against `nesi/game2d/`. The filter has only been run
+against `fixtures/predicate_shape/`."**
+
+**It has now been run against this build.** `node tools/predicate_filter.mjs
+--root <this dir> --door index.html`:
+
+```
+files 59      REACHABLE from index.html      3
+EXISTS 59  ·  MENTIONED 42 (live 32 · comment-only 10)  ·  REACHABLE 3
+
+EXISTS but not REACHABLE .......... 56    ← the disagreement
+MENTIONED but not REACHABLE ....... 39    ← an old index would call these routed
+```
+
+**Three of fifty-nine.** W4 named `ascent.html` alone; the shape is wider — and
+the filter's three-way split makes one distinction `route_map.js` does not:
+
+- **`ascent.html` is NAMED-IN-CODE, not comment-only.** The instruments read it
+  with real `fs` calls. **Named in live code is not reachable by a player** — the
+  check suite can open it and the hand cannot. A single-predicate index calls
+  that routed; this is exactly the conflation CLOSED-2 was written against, and
+  it fires on the largest surface in the build.
+- **The three 08-16 surfaces split three ways.** `field.html` and
+  `regathered.html` are **NAMED-IN-COMMENT** (by `index.html`'s own comment
+  block). **`tiles.html` is an ORPHAN** — not named anywhere, in code or comment.
+  Against *"all three surfaces should be inside the final nesi"* that is the
+  measurement, not an impression.
+- **LIVE-EDGE-UNREACHED (4):** `field_items.js` 272K · `world.html` 71K ·
+  `world_water.js` · `level_one_water.js` — real edges that fire, no path from the
+  door.
+
+**Its one known limit, seen here:** three "DEAD LINKS" are regex literals inside
+`daily_walk.js`, `refusal_check.js` and `scope_check.js` being parsed as
+filenames. False positives, not missing files.
+
+**Standing:** `nesiseed` OPEN-1 (*"the build is not in this repository"*) is
+unchanged — nothing was deposited. What closed is CLOSED-2's own caveat: the
+filter is no longer unverified against the real build.
+
 ### NOT SWEEPABLE — reserved to Kevin, and not capacity gaps
 
 Do not bring candidates for these. Each names a direction and reserves the

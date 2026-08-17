@@ -34,6 +34,7 @@ const NODE = [
   ["world_check",     "the figure drawn IS the solid"],
   ["cut_check",       "the hand cuts where it wants"],
   ["solid_check",     "the solid's own arithmetic"],
+  ["hand_check",      "the bed's own arithmetic — conserved, deterministic, and it holds"],
   ["scope_check",     "every instrument reads the live build"],
 ];
 
@@ -45,6 +46,19 @@ const NODE = [
    if python is missing. */
 const PY = [
   ["assertion_audit", "27 register rules, each satisfiable only by a world that is there"],
+];
+
+/* THE PREDICATE FILTER, REGISTERED 2026-08-16 on Kevin's "save the filter to be
+   persistent." It is ESM (.mjs) so it gets its own row rather than being folded
+   into NODE and silently skipped by the .js path.
+   IT IS HERE BECAUSE IT WENT MISSING ONCE. `nesiseed`'s filter did not exist in
+   this corpus while COVERAGE.md quoted its numbers as the authority on what the
+   build reaches and THE_BUILD_SHAPE.md:93 asserted it had been run. A
+   measurement with no instrument. This register is presence-asserting — it
+   refuses if it finds fewer instruments than it knows about — so from now on
+   the filter cannot vanish quietly a second time. */
+const ESM = [
+  ["predicate_filter", "EXISTS, MENTIONED and REACHABLE kept apart — a mention is not a route"],
 ];
 
 /* THE ONES THAT RUN IN THE PAGE. Not failures, and not silence either — a hand
@@ -62,6 +76,8 @@ for (const [name] of NODE.concat(IN_PAGE))
   if (!fs.existsSync(path.join(HERE, name + ".js"))) missing.push(name);
 for (const [name] of PY)
   if (!fs.existsSync(path.join(HERE, name + ".py"))) missing.push(name);
+for (const [name] of ESM)
+  if (!fs.existsSync(path.join(HERE, name + ".mjs"))) missing.push(name);
 
 console.log("");
 for (const [name, holds] of NODE) {
@@ -109,6 +125,20 @@ for (const [name, holds] of PY) {
   }
 }
 
+for (const [name, holds] of ESM) {
+  if (missing.includes(name)) { console.log("  GONE   " + name.padEnd(16) + holds); continue; }
+  try {
+    execFileSync(process.execPath, [path.join(HERE, name + ".mjs")],
+      { stdio: "pipe", cwd: path.join(HERE, "..") });
+    console.log("  ok    " + name.padEnd(16) + holds);
+  } catch (e) {
+    crash++;
+    console.log("  CRASH " + name.padEnd(16) + holds);
+    const out = String(e.stdout || "") + String(e.stderr || "");
+    console.log(" ".repeat(25) + (out.split("\n").filter(Boolean).pop() || "did not run").trim());
+  }
+}
+
 console.log("\n  in the page, not covered by this run:");
 for (const [name, holds] of IN_PAGE)
   console.log("      " + (missing.includes(name) ? "GONE " : "     ") + name.padEnd(16) + holds);
@@ -120,7 +150,7 @@ if (missing.length) {
   process.exit(1);
 }
 
-const n = NODE.length + PY.length;
+const n = NODE.length + PY.length + ESM.length;
 if (fail || crash) {
   console.error("\n[check_all] " + (n - fail - crash) + " of " + n + " hold · " +
     fail + " refused · " + crash + " crashed");

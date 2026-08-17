@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NESI · the option spaces</title>
+<!--
+  THE OPTION SPACES, 2026-08-16, on Kevin's ask: "show me the option spaces...
+  and offer me an interactive html to navigate my decisions."
+
+  WHY THIS IS A SECOND SURFACE AND NOT AN EDIT OF decisions.html: that page is
+  the 2026-08-14 offer and its convention is that a closed fork LEAVES the page.
+  Its forks are about levels, palette and gestures. These are at a different
+  altitude — the physics, the count, and what the two deposits of 2026-08-16 do
+  to both. Its marks live in nesi.marks and are not touched by anything here.
+  This page stores under nesi.options.
+
+  BUILT TO THE SAME CHASSIS LAWS, and they are not decoration:
+  · A MARK COPIES. Nothing is sent, nothing submitted, no path leaves this page.
+    No fetch, no font, no script, no image from anywhere. The file is the whole
+    of it.
+  · READING IS NEVER GATED BEHIND THE ACT. Every fork's object — what it is,
+    where it is live in the code, what each branch costs — renders above its own
+    control, before any mark is asked for.
+  · PRE-AUTHORED EXITS. Every fork carries "hold — not tonight", written at
+    authoring time. Nothing here requires typing in order to leave.
+  · DEPTH ZERO. All of them on one surface, at once. The map at the top is a
+    view of that surface, never a gate on it — no fork is unreachable until
+    another is marked, and marking nothing still shows everything.
+  · NOTHING IS DEFAULTED. No fork opens with an option chosen. Where I have a
+    read it is printed as MY READ, in its own mark, attached to no button.
+  · WHAT IS MEASURED IS NOT OFFERED. The four facts at the top were computed
+    today against solid.js and carry no control, because a marked opinion about
+    arithmetic is not a decision.
+
+  Nothing on this page directs a body, a day, or a schedule. No score, no
+  progress bar, no streak, no nag to return.
+-->
+<style>
+  :root{ --bg:#f7f5f0; --sf:#fffdf8; --sf2:#f1ede4; --g:#6f6a5e; --gb:#8d8578;
+         --gd:#2a2822; --gf:#17171a; --bdr:#d8d2c5; --mk:#4f7a63; --op:#a8564a; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--gf);
+    font:15px/1.6 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+    padding:34px 22px 90px;}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:22px;font-weight:normal;letter-spacing:.01em;margin-bottom:4px}
+  .sub{color:var(--g);font-size:13px;margin-bottom:18px}
+  .floor{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--g);
+    border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);
+    padding:9px 0;margin-bottom:22px}
+  h2{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--g);
+    font-weight:normal;margin:34px 0 10px}
+
+  /* ── the map ─────────────────────────────────────────────────────────── */
+  .map{background:var(--sf);border:1px solid var(--bdr);padding:14px 10px 8px;
+    margin-bottom:8px;overflow-x:auto}
+  .map svg{display:block;margin:0 auto}
+  .map text{font:11px/1 ui-sans-serif,system-ui,sans-serif;fill:var(--gd)}
+  .map .lbl{font-size:9.5px;letter-spacing:.1em;fill:var(--g)}
+  .mapnote{font-size:11.5px;color:var(--g);margin-bottom:26px;padding-left:2px}
+  .nd{cursor:pointer}
+  .nd:focus-visible{outline:2px solid var(--mk);outline-offset:2px}
+
+  /* ── cards ───────────────────────────────────────────────────────────── */
+  .f{background:var(--sf);border:1px solid var(--bdr);padding:16px 18px;margin-bottom:12px}
+  .f.marked{border-left:3px solid var(--mk)}
+  .f.open{border-left:3px solid var(--op)}
+  .f .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .f h3{font-size:16px;font-weight:normal;margin-bottom:8px;letter-spacing:.01em}
+  .f p{font-size:13.5px;line-height:1.68;color:var(--gd);margin-bottom:8px}
+  .f .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    background:var(--sf2);padding:6px 9px;margin-bottom:9px;display:block;
+    overflow-x:auto;white-space:pre-wrap}
+  .f .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
+    padding-left:11px;margin-bottom:10px}
+  .f .read{font-size:12.5px;color:var(--gd);border-left:2px solid var(--gb);
+    padding-left:11px;margin-bottom:10px}
+  .f .read b{font-weight:normal;letter-spacing:.12em;font-size:10px;
+    text-transform:uppercase;color:var(--g);display:block;margin-bottom:3px}
+  .f .up{font-size:12px;color:var(--mk);border-left:2px solid var(--mk);
+    padding-left:11px;margin-bottom:10px}
+  /* WHAT A MARK DID IN CODE. Rendered only when that fork is marked, and it
+     reports what was built, never what the mark "means". */
+  .f .landed{font-size:12.5px;color:var(--gd);background:var(--sf2);
+    border-left:2px solid var(--mk);padding:9px 11px;margin-bottom:10px}
+  .f .landed b{font-weight:normal;letter-spacing:.12em;font-size:10px;
+    text-transform:uppercase;color:var(--mk);display:block;margin-bottom:3px}
+  .f.ready{border-left:3px solid var(--gb)}
+  .f .ready-line{font-size:12.5px;color:var(--gd);border-left:2px solid var(--gb);
+    padding-left:11px;margin-bottom:10px}
+  .opts{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .opt{font:13px/1.4 inherit;text-align:left;background:var(--sf2);color:var(--gd);
+    border:1px solid var(--bdr);padding:8px 12px;cursor:pointer;max-width:100%}
+  .opt:hover{border-color:var(--gb)}
+  .opt:focus-visible{outline:2px solid var(--mk);outline-offset:1px}
+  .opt.on{background:var(--mk);border-color:var(--mk);color:#fffdf8}
+  .opt.hold{font-style:italic;color:var(--g)}
+  .opt.hold.on{color:#fffdf8;font-style:italic}
+
+  /* a marker: reading only, no control */
+  .mk{background:var(--sf);border:1px solid var(--bdr);border-left:3px solid var(--gb);
+    padding:16px 18px;margin-bottom:12px}
+  .mk .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .mk h3{font-size:15px;font-weight:normal;margin-bottom:7px}
+  .mk p{font-size:13px;line-height:1.66;color:var(--gd);margin-bottom:7px}
+  .mk .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    background:var(--sf2);padding:6px 9px;display:block;white-space:pre-wrap}
+
+  /* ── foot ────────────────────────────────────────────────────────────── */
+  #foot{position:fixed;left:0;right:0;bottom:0;background:var(--sf);
+    border-top:1px solid var(--bdr);padding:10px 22px;
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--g)}
+  #foot button{font:12px/1.4 inherit;background:var(--sf2);border:1px solid var(--bdr);
+    color:var(--gd);padding:6px 11px;cursor:pointer}
+  #foot button:hover{border-color:var(--gb)}
+  #st{color:var(--mk)}
+  #fallback{display:none;width:100%;max-width:820px;height:120px;font:11.5px/1.5
+    ui-monospace,Consolas,monospace;border:1px solid var(--bdr);padding:8px;
+    background:var(--sf2);color:var(--gd)}
+  a{color:var(--gd)}
+</style>
+
+<div class="wrap">
+  <h1>The option spaces</h1>
+  <div class="sub">Every fork this build is standing on tonight, flat, unranked, and markable where it lies.</div>
+  <div class="floor">nothing here is sent · a mark copies to your clipboard and is kept in this browser · nothing is chosen for you</div>
+  <div id="list"></div>
+</div>
+
+<div id="foot">
+  <span id="count"></span>
+  <button id="copyall">copy every mark</button>
+  <button id="clear">clear my marks</button>
+  <span id="st"></span>
+  <textarea id="fallback" readonly aria-label="your marks, to copy by hand"></textarea>
+</div>
+
+<script>
+"use strict";
+
+/* ═══ MEASURED TODAY — facts, not forks. No control, by design. ════════════
+   Each was computed against solid.js in this session. Two of them answer
+   questions the 2026-08-16 deposit explicitly marked NOT YET RATIFIED, and one
+   of those answers is no. */
+const MEASURED = [
+ { n:"the twelve roots do not close the figure",
+   p:"The deposit asked for this to be demonstrated rather than assumed. Admit the centre as a thirteenth node and all twelve radials as real struts: 36 bars, rank 32, four redundant, and one mechanism still standing. The claim fails in both halves — roots neither remove the six nor do it cleanly.",
+   c:"solid.js RIGIDITY · baseline 24 bars, rank 24, 0 redundant, 6 mechanisms\nartifact §VIII — \"must be demonstrated, not assumed\"" },
+ { n:"the six from C(4,2) names the roots, not the windows",
+   p:"Every square carries all four circuits, one seat each — there is no pair to match, and all six squares return the same set. But each PAIR of circuits meets at exactly one antipodal seat pair, all six, bijectively: C2&C3 meet at TANK/LENS, which is the lens traverse you already settled.",
+   c:"solid.js:239 — \"Each square carries all four circuits, one seat each, and\n           contains no antipodal pair.\"\nartifact §VIII correspondence 1 — false as stated, true one object over" },
+ { n:"the eight tools DO come from four circuits taken three at a time",
+   p:"Every triangle's three edges come from three distinct circuits; all four triples appear; each is used exactly twice. And the two orientations are not a guess — TRIANGLES already carries tetra:\"A\"|\"B\", the two tetrahedra of the stella octangula. This one is ratified.",
+   c:"solid.js TRIANGLES · 4 triples × 2 tags = 8\nartifact §VIII correspondence 2 — holds" },
+ { n:"one window sited is one mechanism spent",
+   p:"Bracing the six squares one at a time takes the mechanism count 6 → 5 → 4 → 3 → 2 → 1 → 0, one per window, in either direction. The eight triangles are already braced, so the tools are free and only the windows cost. This is what prices fork 6.",
+   c:"measured this session, order-independent\nsolid.js:277 — \"anything ever sited in one of them stops the container moving\"" }
+];
+
+/* ═══ SETTLED BY BOTH DEPOSITS — offered for confirmation, not as an open fork.
+   It carries a control because overturning it is yours; it is grouped apart
+   because leaving an answered thing in the open list is what turned the gate
+   ledger into a log nobody could read. */
+const SETTLED = [
+ { k:"S1", n:"Re-entry creates descendants; nothing upstream is rewritten",
+   q:"Both deposits rule it the same way, independently, and it matches THE ONE-WRITING REBUILD already on your record — held arrivals, edits never propagate without your click. This was ALIGNMENT B8 and it is the one open question the deposits closed.",
+   cite:"ALIGNMENT.md:128 B8 · artifact §3, §13, §X.11\nfirst paste §10 invariants 2 and 7 — same ruling, different words",
+   o:["confirmed — it stands", "not this — I will say why"] }
+];
+
+/* ═══ THE OPEN FORKS ══════════════════════════════════════════════════════
+   Order is the order they arose. `gates` is drawn in the map above and never
+   hides anything: a gated fork renders whole whether or not its parent is
+   marked. It says what it now reads against, and that is all. */
+const FORKS = [
+
+{ k:"F1", g:"THE ROOT FORK", n:"Is light a half of the member set, or a third physics over the whole of it?",
+  gates:["F2","F5","F7"],
+  q:"The build splits the 24 members 12 water / 12 light at the turn — solid.js calls the turn \"the moment water becomes light\", and the split falls out rather than being assigned. The 2026-08-16 deposit reads the same geometry differently: root, water and light are three EQUAL physics, each addressing all 24, and the full circuit — three falls, the turn, three rises, the return — is water's own round trip, with light a separate optical layer of lenses, crossings and refraction. This is a position, not loose vocabulary: its stage 9 names the circuit and assigns it to water outright.",
+  cite:"solid.js:62 — turn: falling → rising, the moment water becomes light\nTHE_GROWTH.md:79 — water = fall 8 + turn 4 · light = rise 8 + return 4\nartifact §II three physics · §V stage 9 CIRCULATE, verb \"return\", foreground water",
+  cost:"TWO HALVES: the 12/12 costs nothing, it is already computed, and the 36 levels are counted from it — but light still has no mechanic, and THE_GROWTH.md:135 says so in as many words. THREE PHYSICS: light gets its own machinery and a reason to exist, and the deposit's levels 6, 7, 10 are built on it — but the 12/12 stops being the level count and the 36 must be re-derived from something else.",
+  read:"They are not reconcilable by wording. Everything downstream on this page reads differently depending on which one you mark, which is why it is first.",
+  inCode:true,
+  landed:"The 12/12 reading is gone from the build. It was asserted in NO code — only THE_GROWTH.md:79 and ALIGNMENT.md:25, and both now carry a supersession mark rather than an edit. Its one reach into code was day_one.html's seam labels, which called rise/return \"light\"; seams now print kind and direction (fall · falling, return · rising), both facts of the solid, claiming no physics. Verified: the words water and light no longer appear on any seam.",
+  o:["two halves of one member set — light is the upper twelve",
+     "three equal physics — each addresses all twenty-four",
+     "a different cut — I will say it"] },
+
+{ k:"F2", g:"THE ROOT FORK", n:"The count: 24 stages, or 36 levels, or both on different axes",
+  gates:[], up:["F1"],
+  q:"You ruled roots are levels, which makes 36 — twenty-four seams plus twelve roots. The deposit's spine is 24 developmental stages, and its own §VIII knows about the 36 and prints it as an alternative. Its first four stages are the growth you already have: one node, two, three, four.",
+  cite:"THE_GROWTH.md:54 · ALIGNMENT.md B1 — your ruling\nartifact §V spine 1–24 · §VII index · §VIII \"36 levels if 24 seams + 12 roots\"",
+  cost:"DIFFERENT AXES: both stand, nothing collides, and a stage is a phase while a level is an inhabited seam — but the deposit calls its stages \"levels\" throughout and that naming will cost every time. SAME AXIS: 24 stages must land on 36 seams and twelve are unaccounted for. THE SPINE REPLACES: the roots stop being levels, which overturns your own ruling.",
+  landed:"Nothing built from this yet, and nothing needed to be. It is a ruling that stops two axes being conflated: the 24-stage spine is developmental, the 36 levels are inhabited seams. It costs no code today and governs every count from here.",
+  o:["different axes — stages are developmental, levels are inhabited seams",
+     "same axis — and I will say how the twelve are accounted for",
+     "the 36 stand; the spine is a reading, not a structure",
+     "the spine replaces the 36"] },
+
+{ k:"F3", g:"WHAT THE DEPOSITS ASK FOR", n:"Adopt Fruit / Seed / Traversal / WritingObject?",
+  gates:["F4","F5"],
+  q:"None of it exists in the live build. I checked the live surfaces rather than assuming: the only two hits anywhere are a comment in solid.js about how the circuits were derived, and one line of open prose in daily.html — \"what the fruit carries stays Kevin's question.\" So the word is already on your record, held open, and the deposit fills it in.",
+  cite:"verified absent: solid.js · hand.js · day_one.html · daily.html · index.html · node.html\ndaily.html:88 — the fruit question, held open in your own file\nartifact §12 object model · first paste §6, §7",
+  cost:"WHOLE: a real data layer, and every surface has to learn it. PROVENANCE ONLY: the two-axis instrument — origin (quoted / introduced / inherited) crossed with disposition (unresolved / yes / no), where accepting something never rewrites where it came from. That is the piece that lets a root be SHOWN to have survived without anything being counted. DECLINE: day_one.html's two hand-gestures stay the whole of it.",
+  read:"If one piece comes across, provenance is the one I would take, and I would sever it from the completion test in F5 so it stops dragging that in with it.",
+  inCode:true,
+  landed:"Built in day_one.html. Every banked sentence carries an ORIGIN, fixed at bank time, printed with no control on it at all — because it is not a decision. Sorting cannot reach it. Verified by driving: four sentences sorted into four fractions, all four origins still `quoted` afterwards. No Fruit, no Seed, no Traversal, no WritingObject — none of it entered.",
+  o:["adopt whole",
+     "adopt provenance only — origin × disposition",
+     "decline — the two gestures are enough",
+     "a smaller piece — I will say which"] },
+
+{ k:"F4", g:"WHAT THE DEPOSITS ASK FOR", n:"Does inference get to be an origin?",
+  gates:[], up:["F3"],
+  q:"The deposit makes INFERRED one of four legitimate origins — surfaced by NESI, visibly marked, never able to masquerade as source. The discipline is real. But law 4 forbids inferred categories on the player path, law 5 says the hand runs the filter with no classifier deciding, and whatever produces the inference would trip law 3. The deposit does not smuggle this: §7 calls the mapping candidate and §XI holds it open.",
+  cite:"artifact §15 four origins · §7 \"This is not yet a law\" · §XI open edges\nALIGNMENT.md:110 B7 — the same collision from the other side\nrefusal_check enforces law 3 and currently passes",
+  cost:"YES costs an exemption in refusal_check, and you have said that check is not to be touched without your word. NO costs nothing — three origins stand and the fourth is dropped. CANDIDATE is where the deposit already leaves it.",
+  inCode:true,
+  landed:"Built as an absence. ORIGINS carries three keys and `inferred` is not one of them. refusal_check untouched and passing.",
+  o:["no — three origins; inference is not one of them",
+     "yes, and refusal_check is amended by this mark",
+     "hold it as candidate, as the deposit does"] },
+
+{ k:"F5", g:"WHAT THE DEPOSITS ASK FOR", n:"What makes a thing complete",
+  gates:[], up:["F1","F3"], readyWhen:["F1","F3"],
+  q:"The build's answer is structural: facesAlong returns a named pair, one tool and one window, always, because the solid is quasiregular. The deposit's answer is a tally — every deposited relation settled, unresolved = 0, required positions inhabited. I called this a return of the thousand-word gate and that was too strong: §17 defines unresolved as material deposited and not yet settled by your hand, which counts your acting, not your producing.",
+  cite:"solid.js facesAlong — one triangle, one square, never a list\nartifact §18 fruiting condition · §17 \"unresolvedness is mechanical\"\nPROMPT_NEXT.md:49 — returned, not earned · ALIGNMENT.md:218 — the counter is lawful if nothing draws it",
+  cost:"The tally is not the removed gate. The live risk is downstream of it and you already named it: the score never arrives through the counter, it arrives through whatever renders progress next, built by someone who does not know they are deciding anything.",
+  o:["the named pair — a seam completes when its two faces are inhabited",
+     "the tally — every deposited relation settled",
+     "both, at different scales — I will say which is which",
+     "neither — completion is not mechanical here"] },
+
+{ k:"F6", g:"MEASURED AND PRICED, NOT RULED", n:"The jitterbug price — displays, or portability",
+  gates:[], up:["F2"],
+  q:"Six windows sited is six mechanisms spent is a world that cannot fold, cannot pack, cannot be carried out. The deposit's stages 13–18 build exactly those display surfaces — workshop, commons, persistence — and its stages 21–24 require the collapse to reach RELEASE. Both arcs draw on the same account. This is priced, not blocked, and the price is order-independent.",
+  cite:"measured this session: 6 → 5 → 4 → 3 → 2 → 1 → 0, one per window, either direction\nTHE_GROWTH.md:139 — the collapse is available only while a window is still unsited\nartifact §35 JITTERBUG · §36 CONDENSE · §38 RELEASE",
+  cost:"THE PRICE IS THE MECHANIC gives the ending its cost and makes the whole arc mean something — and it means the finished world is one you cannot keep looking at. CAP AT FIVE keeps the fold alive and leaves one window permanently empty, which the build would have to explain. DROP THE COLLAPSE keeps every display and the world lives without travelling.",
+  read:"The deposit's own line is 12 the world can live, 24 the world can travel. The measurement says those are the same account, and that is either the best thing in the arc or the thing that breaks it.",
+  landed:"Held, so nothing was built and nothing was foreclosed. The price stands measured either way: 6 → 5 → 4 → 3 → 2 → 1 → 0, one mechanism per window, order-independent.",
+  o:["the price is the mechanic — portability costs the displays",
+     "cap at five — one window stays unsited so the fold survives",
+     "drop the collapse — the world lives and does not travel",
+     "a different route — I will say it"] },
+
+{ k:"F7", g:"STILL STANDING FROM ALIGNMENT", n:"What the sort sorts into",
+  gates:[], up:["F1"],
+  q:"The hand sorts — law 5 makes it binding and refusal_check enforces it. What the fractions ARE on the page is unwritten, and day_one.html records that the hand acted while naming no fraction. Nothing may be invented here.",
+  cite:"ALIGNMENT.md B3 · THE_GROWTH.md:133\nday_one.html — the hand acts, no fraction named\nthe governing brief — dissolved, suspended, bedload, contaminant",
+  cost:"The four fractions are already in the brief with behaviours attached — sinks fast, hangs, films, clumps — which satisfies law 10 without colour. Yes/no is the deposit's membrane and is the smallest thing that can fruit. Unnamed means the surface has to hold a gesture with no label, which is buildable but has never been drawn.",
+  inCode:true,
+  landed:"Built in day_one.html. The sort names a fraction — dissolved · suspended · bedload · contaminant — and your hand picks it; nothing computes or infers. Law 10 required behaviour over colour, so each moves differently in the water: three behaviours are the brief's own words, contaminant's film is mine and the file says so in place. ALIGNMENT B3 is closed.",
+  o:["the four fractions — dissolved · suspended · bedload · contaminant",
+     "yes and no, as the deposit's membrane",
+     "it stays unnamed — the hand decides each time and nothing is labelled",
+     "a different set — I will say it"] },
+
+{ k:"F8", g:"STILL STANDING FROM ALIGNMENT", n:"Where the library lives",
+  gates:[],
+  q:"By halfway you hold a library of projects, domains, tools, skills, resources, ideas — lenses accumulate. node.html already proves the file path and uses no localStorage at all. daily.html uses the store. These are opposite architectures and the library has to sit in one.",
+  cite:"ALIGNMENT.md B5 · MAP_TO_BOOT named this the largest single gap\nnode.html — export/import, no browser state\ndaily.html — the store",
+  cost:"The store is one world in one browser and dies with it. Files survive the browser and make the deposit's DETACH stage buildable at all — a world that must be explained by its author is not detached. Both means the store is a cache and the files are the truth, which is more machinery than either.",
+  o:["the store — one world, one browser",
+     "files you hold — export and import, like node.html",
+     "both — the store is a cache; the files are the world"] },
+
+{ k:"F9", g:"STILL STANDING FROM ALIGNMENT", n:"The AI collision",
+  gates:[],
+  q:"You want the last twelve levels demonstrating how to use AI and light to build from your own lens into shareable gifts. Law 3 says no model call on the core loop; the game runs with no network and no LLM. refusal_check enforces it and passes today. I will not touch that check without your word.",
+  cite:"ALIGNMENT.md:110 B7 — the sharpest collision on the record\nrefusal_check — currently passing",
+  cost:"Reading one costs nothing and builds a teacher rather than a tool. Reading two needs \"core loop\" defined in a way that holds, or the exemption widens on its own later. Reading three is a change to one of the few lines in the corpus that actually binds.",
+  o:["the game teaches the move and never makes the call",
+     "the last twelve are outside the core loop by definition",
+     "law 3 is amended by this mark",
+     "not yet — this waits on the first twelve existing"] },
+
+{ k:"F10", g:"STILL STANDING FROM ALIGNMENT", n:"Does a root belong to a seat, or a circuit",
+  gates:[],
+  q:"Twelve roots, four circuits, and each seat sits on two circuits — the mapping is not one-to-one and the geometry did not hand it over. TODAY IT DID, in a form that did not exist when this question was written: each PAIR of circuits meets at exactly one antipodal seat pair, all six, bijectively. A root read as a diameter is where two circuits cross.",
+  cite:"THE_GROWTH.md:134 — the question as it stood\nmeasured this session: C0&C1→DAM/HELIOSTAT · C0&C2→STATIONS/OVERWINTERING\n  C0&C3→DEEP/CAST · C1&C2→GROUND/GARDEN · C1&C3→FILTER/SEATING · C2&C3→TANK/LENS",
+  cost:"Seat gives twelve roots and twelve seats, one each, and says nothing about circuits. Circuit does not divide — twelve into four leaves each circuit three roots and no rule for which. Circuit-pair gives SIX diameters, not twelve roots, so it halves the count and would move F2.",
+  read:"The third option is new information on an old fork, not a preference. It is also the only one the geometry supplies free — but it costs six, not twelve, and that lands on the count.",
+  o:["to a seat — twelve roots, twelve seats",
+     "to a circuit",
+     "to a circuit PAIR — the six diameters, as measured today",
+     "the question is wrong — I will say why"] },
+
+{ k:"F11", g:"STILL STANDING FROM ALIGNMENT", n:"What activates a route",
+  gates:[],
+  q:"The path between two nodes becomes a route that can be activated with writing. Four routes leave TANK, so day one either offers a choice or makes one.",
+  cite:"ALIGNMENT.md B9 · ADJ — every seat degree four, no dead end constructible",
+  cost:"Writing at the route means you choose your path through the solid and the game never deals. Writing anywhere means the solid deals and you never have to know the map. Choosing from four is a menu, which is the thing this build refuses everywhere else.",
+  o:["writing AT the route — you are on it, you write, it opens",
+     "writing anywhere — the next unopened route takes it",
+     "you pick from the four that leave",
+     "a different rule — I will say it"] },
+
+{ k:"F12", g:"STILL STANDING FROM ALIGNMENT", n:"Does the corpus ever enter the game",
+  gates:[],
+  q:"Roughly 1,257 open items across three ledgers sit outside the build, and PROMPT_NEXT.md rules the library a record and not a source. My read is that the game is fed by writing done inside it — but that is a read and not your word, and it decides whether I ever build an intake path.",
+  cite:"ALIGNMENT.md B10 · PROMPT_NEXT.md:9 — \"DO NOT READ THE CORPUS\"\nDownloads/ — an unwatched intake, two artifacts crossed by hand and drifted",
+  cost:"No means no intake path is ever built and the corpus stays a record. Yes means an intake, and every intake this system has built has drifted. By hand means one at a time, with your mark on each, which is the only version that has ever held.",
+  o:["no — the game is fed only by writing done inside it",
+     "yes, and I will say what crosses",
+     "only what you carry in by hand, one at a time"] },
+
+{ k:"F13", g:"STILL STANDING FROM ALIGNMENT", n:"Two surfaces claim TANK",
+  gates:[],
+  q:"daily.html is the one you have actually walked and the door points at it. day_one.html gives TANK its five levels and records two hand-gestures, and it has never been opened by a person. Both are TANK.",
+  cite:"PROMPT_NEXT.md:72 — do not displace daily.html\nday_one.html — built 2026-08-16, unwalked",
+  cost:"Nothing is lost either way — day_one.html writes only to nesi.dayone and touches none of your writing. What it costs is which surface the next twelve levels are built on top of.",
+  o:["daily.html is the seat — day_one folds into it",
+     "day_one.html is the seat",
+     "they are different levels and both stand",
+     "I will walk it first, then say"] },
+
+{ k:"F14", g:"STILL STANDING FROM ALIGNMENT", n:"The unit of work you want back",
+  gates:[],
+  q:"Left alone I overshoot — that is measured, not modest: one session produced a 260K reading, an HTML deposit, five prompts, a rebuilt instrument and a door. Naming the unit is the only thing that has ever stopped it.",
+  cite:"ALIGNMENT.md B11 · ALIGNMENT.md:196 — what I do wrong unless stopped",
+  cost:"This one costs nothing to mark and changes every session after it.",
+  o:["one route, built and walked, then stop",
+     "one level",
+     "one gesture",
+     "built and reported — I will walk it myself"] }
+];
+
+/* ══ storage. Yours, kept in this browser, never sent. ═════════════════════ */
+const KEY = "nesi.options";
+let M = {};
+try { M = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { M = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(M)); } catch (e) {} };
+
+const list = document.getElementById("list");
+const esc = s => String(s).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]));
+const ALL = SETTLED.concat(FORKS);
+const byKey = k => ALL.find(f => f.k === k);
+
+/* ══ the map. Drawn from `gates`, so it cannot drift from the cards. ═══════
+   It is a VIEW of the surface below and never a gate on it: clicking a node
+   scrolls, and nothing here is required before anything down there is legible. */
+function renderMap(){
+  const COLS = [["F1","F3"],["F2","F5","F4"],["F6","F7"],
+                ["F8","F9","F10"],["F11","F12","F13","F14"]];
+  const W = 840, colw = 168, top = 34, rowh = 30, pad = 16;
+  const rows = Math.max(...COLS.map(c => c.length));
+  const H = top + rows * rowh + 18;
+  const pos = {};
+  COLS.forEach((col, ci) => col.forEach((k, ri) => {
+    pos[k] = { x: pad + ci * colw + 8, y: top + ri * rowh };
+  }));
+
+  let edges = "", nodes = "", heads = "";
+  ["gates it","and these","then these","","" ].forEach((t, i) => {
+    if (t) heads += '<text class="lbl" x="' + (pad + i * colw + 8) + '" y="20">' + t + '</text>';
+  });
+  heads = '<text class="lbl" x="' + (pad + 8) + '" y="20">ROOT FORKS</text>' +
+          '<text class="lbl" x="' + (pad + colw + 8) + '" y="20">WHAT THEY GATE</text>' +
+          '<text class="lbl" x="' + (pad + 3 * colw + 8) + '" y="20">INDEPENDENT</text>';
+
+  for (const f of FORKS) for (const g of (f.gates || [])) {
+    if (!pos[f.k] || !pos[g]) continue;
+    const a = pos[f.k], b = pos[g];
+    const x1 = a.x + 138, y1 = a.y - 4, x2 = b.x - 4, y2 = b.y - 4;
+    edges += '<path d="M' + x1 + ' ' + y1 + ' C' + (x1 + 14) + ' ' + y1 + ' ' +
+             (x2 - 14) + ' ' + y2 + ' ' + x2 + ' ' + y2 +
+             '" fill="none" stroke="var(--bdr)" stroke-width="1.5"/>';
+  }
+  for (const f of FORKS) {
+    const p = pos[f.k]; if (!p) continue;
+    const on = !!M[f.k];
+    nodes += '<g class="nd" tabindex="0" role="link" data-k="' + f.k + '">' +
+      '<title>' + esc(f.n) + '</title>' +
+      '<rect x="' + (p.x - 4) + '" y="' + (p.y - 15) + '" width="142" height="22" rx="2" ' +
+        'fill="' + (on ? "var(--mk)" : "var(--sf2)") + '" stroke="' +
+        (on ? "var(--mk)" : "var(--bdr)") + '"/>' +
+      '<text x="' + (p.x + 3) + '" y="' + p.y + '" fill="' + (on ? "#fffdf8" : "var(--gd)") + '">' +
+        f.k + ' · ' + esc(f.n.slice(0, 17)) + (f.n.length > 17 ? "…" : "") + '</text></g>';
+  }
+
+  const box = document.createElement("div");
+  box.className = "map";
+  box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H +
+    '" role="img" aria-label="the fourteen forks and which gate which">' +
+    heads + edges + nodes + '</svg>';
+  box.querySelectorAll(".nd").forEach(g => {
+    const go = () => { const el = document.getElementById("c-" + g.dataset.k);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); };
+    g.addEventListener("click", go);
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+  list.appendChild(box);
+  const note = document.createElement("div");
+  note.className = "mapnote";
+  note.textContent = "A line means the fork on the left changes what the one on the right is asking — " +
+    "not that it locks it. Every fork below reads whole whether or not anything is marked.";
+  list.appendChild(note);
+}
+
+function card(f, isSettled){
+  const d = document.createElement("div");
+  d.className = "f " + (M[f.k] ? "marked" : "open");
+  d.id = "c-" + f.k;
+  let h = '<div class="n">' + f.k + (isSettled ? " · settled by both deposits" :
+      (f.gates && f.gates.length ? " · gates " + f.gates.join(", ") : " · independent")) + '</div>' +
+    '<h3>' + esc(f.n) + '</h3>' +
+    '<p>' + esc(f.q) + '</p>' +
+    '<span class="cite">' + esc(f.cite) + '</span>';
+
+  /* what it now reads against — printed only when the upstream fork is marked,
+     and it reports his mark back, never a consequence I inferred from it. */
+  if (f.up) for (const u of f.up) if (M[u]) {
+    h += '<div class="up">' + u + ' is marked: “' + esc(M[u]) + '” — this fork reads against that.</div>';
+  }
+  /* WHAT THE MARK DID IN CODE — only once it is marked, and only what was
+     actually built. Not what the mark means; that is yours. */
+  if (M[f.k] && f.landed)
+    h += '<div class="landed"><b>what this mark did in the build</b>' + esc(f.landed) + '</div>';
+
+  /* A FORK WHOSE GATES ARE NOW MARKED. Computed from your marks, never from my
+     memory of them — clear the marks and this line goes with them. */
+  if (f.readyWhen && f.readyWhen.every(k => M[k]) && !M[f.k]) {
+    d.className += " ready";
+    h += '<div class="ready-line">Both gates on this fork are marked now — ' +
+      f.readyWhen.join(" and ") + '. It was waiting on them and it is not waiting any more. ' +
+      'Nothing has been built on it either way.</div>';
+  }
+  if (f.cost) h += '<div class="cost">' + esc(f.cost) + '</div>';
+  if (f.read) h += '<div class="read"><b>my read, attached to no button</b>' + esc(f.read) + '</div>';
+  d.innerHTML = h;
+
+  const box = document.createElement("div");
+  box.className = "opts";
+  f.o.concat(["hold — not tonight"]).forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt" + (o.indexOf("hold —") === 0 ? " hold" : "") + (M[f.k] === o ? " on" : "");
+    b.textContent = o;
+    b.addEventListener("click", () => {
+      if (M[f.k] === o) { delete M[f.k]; save(); render(); status("unmarked"); return; }
+      M[f.k] = o; save(); render();
+      copy("NESI · MARK · " + f.k + "\n" + f.n + "\n→ " + o + "\n");
+    });
+    box.appendChild(b);
+  });
+  d.appendChild(box);
+  return d;
+}
+
+function render(){
+  list.textContent = "";
+  renderMap();
+
+  /* WHERE THE SPACE STANDS — read off your marks every render, never stored and
+     never remembered by me. Clear the marks and this disappears with them. It
+     names what is BUILT separately from what is RULED, because a ruling that
+     changed no code is not a smaller decision, it is a different kind. */
+  const marked = ALL.filter(f => M[f.k]);
+  /* THREE STATES, AND THEY ARE NOT DEGREES OF THE SAME THING. `inCode` is set
+     on the fork when the mark actually changed a file; a hold is read off your
+     own words, not guessed at; everything else is a ruling that cost no code
+     today and still governs what comes after. An earlier pass sniffed the text
+     of `landed` for the word "Built" and put F1 in the wrong band — it changed
+     day_one.html's seam labels and said so in a sentence that did not begin
+     with that word. A flag cannot make that mistake. */
+  const held   = marked.filter(f => String(M[f.k]).indexOf("hold —") === 0);
+  const built  = marked.filter(f => f.inCode);
+  const ruled  = marked.filter(f => !f.inCode && held.indexOf(f) < 0);
+  const ready  = FORKS.filter(f => f.readyWhen && f.readyWhen.every(k => M[k]) && !M[f.k]);
+  if (marked.length) {
+    const s = document.createElement("div");
+    s.className = "mk";
+    let t = '<div class="n">where the space stands · read off your marks</div>' +
+      '<h3>' + marked.length + ' marked · ' + (ALL.length - marked.length) + ' still standing</h3>';
+    if (built.length)
+      t += '<p><b>In the build:</b> ' + built.map(f => f.k).join(", ") +
+           ' — these changed code, and each card says what.</p>';
+    if (ruled.length)
+      t += '<p><b>Ruled, no code:</b> ' + ruled.map(f => f.k).join(", ") +
+           ' — a ruling that costs nothing today still governs everything after it.</p>';
+    if (held.length)
+      t += '<p><b>Held:</b> ' + held.map(f => f.k).join(", ") +
+           ' — nothing built, and nothing foreclosed.</p>';
+    if (ready.length)
+      t += '<p><b>Waiting on nothing now:</b> ' + ready.map(f => f.k).join(", ") +
+           ' — the forks these were gated on are marked.</p>';
+    s.innerHTML = t;
+    list.appendChild(s);
+  }
+
+  const h1 = document.createElement("h2");
+  h1.textContent = "measured today — no control, because these are arithmetic";
+  list.appendChild(h1);
+  for (const m of MEASURED) {
+    const d = document.createElement("div");
+    d.className = "mk";
+    d.innerHTML = '<div class="n">computed against solid.js in this session</div>' +
+      '<h3>' + esc(m.n) + '</h3><p>' + esc(m.p) + '</p><span class="cite">' + esc(m.c) + '</span>';
+    list.appendChild(d);
+  }
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "closed by the deposits — confirm or overturn";
+  list.appendChild(h2);
+  for (const s of SETTLED) list.appendChild(card(s, true));
+
+  let group = "";
+  for (const f of FORKS) {
+    if (f.g !== group) {
+      group = f.g;
+      const h = document.createElement("h2");
+      h.textContent = group.toLowerCase();
+      list.appendChild(h);
+    }
+    list.appendChild(card(f, false));
+  }
+
+  const n = ALL.filter(f => M[f.k]).length;
+  document.getElementById("count").textContent =
+    ALL.length + " on the surface · " + n + " marked · " + (ALL.length - n) + " still standing";
+}
+
+/* ══ a mark copies. Nothing is sent. Three fallbacks, no path outward. ═════ */
+const stEl = document.getElementById("st");
+let stT = 0;
+function status(s){ stEl.textContent = s; clearTimeout(stT);
+  stT = setTimeout(() => { stEl.textContent = ""; }, 2600); }
+
+function copy(text){
+  const manual = () => {
+    const fb = document.getElementById("fallback");
+    fb.style.display = "block"; fb.value = text; fb.select();
+    status("select and copy by hand");
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => status("marked · copied"))
+      .catch(() => { try {
+        const t = document.createElement("textarea"); t.value = text;
+        document.body.appendChild(t); t.select();
+        const okd = document.execCommand("copy"); document.body.removeChild(t);
+        okd ? status("marked · copied") : manual();
+      } catch (e) { manual(); } });
+  } else manual();
+}
+
+document.getElementById("copyall").addEventListener("click", () => {
+  const lines = ALL.filter(f => M[f.k])
+    .map(f => f.k + " · " + f.n + "\n  → " + M[f.k]);
+  if (!lines.length) { status("nothing marked yet"); return; }
+  copy("NESI · THE OPTION SPACES · marks\n\n" + lines.join("\n\n") + "\n");
+});
+
+document.getElementById("clear").addEventListener("click", () => {
+  M = {}; save(); render();
+  document.getElementById("fallback").style.display = "none";
+  status("cleared");
+});
+
+render();
+</script>

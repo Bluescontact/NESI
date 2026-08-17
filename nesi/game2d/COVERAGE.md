@@ -3,6 +3,18 @@
 Live, from the front door: `index.html` → `daily.html`, plus `ascent.html`,
 `decisions.html`, `level_one.html`, and `solid.js`.
 
+> **■ 2026-08-16 — THE FRONT DOOR NOW REACHES THE ASCENT, and that sentence
+> above was not true when it was written.** `index.html` redirected to
+> `daily.html`, and `daily.html` named `ascent.html` only inside comments. The
+> `nesiseed` predicate filter measured it: **3 of 59 files reachable.** The sill
+> — the member ↓TANK—↑CAST, already built as a 900ms hold — built a `.txt` blob
+> instead of landing anywhere. It now walks to `ascent.html#cast`, the seat that
+> member actually reaches, and the same instrument reads **5 of 59.** Walked with
+> real pointer events: early release returns the sill to rest and goes nowhere;
+> held past the reach it crosses and arrives at `view:"level"`, `cur.key:"cast"`.
+> The remaining 54 are the work, and `field.html`, `regathered.html` and
+> `tiles.html` are among them — their siting is an open fork, not a routing bug.
+
 ---
 
 ## THE BUILD, COUNTED
@@ -126,13 +138,31 @@ F4 now asks that **exactly one** seat carry all three — not "at least one",
 because a second would mean the third output leaked back into the world it was
 ruled out of. `THE_WORK_SURFACES.md` carries the ruling at its field header.
 
-**F7 stands open.** TANK's hung arrivals and the STATIONS' lip are the two held
-forms that exist. My read, offered rather than assumed: the two that have one are
-the two seats where the act cannot be taken back — pouring the morning, and
-routing with no undo. That would make the held form a property of irreversibility
-rather than of every seat, and the ten without one may be correct as they are.
-The instrument asks for twelve because the counsel pass did; it is not a
-statement about which answer is right.
+~~**F7 stands open.**~~ **CLOSED BY RULING, 2026-08-16.** The read below was
+offered rather than assumed, and Kevin took it: **the held form is a property of
+irreversibility.** TANK's hung arrivals and the STATIONS' lip are the two seats
+where the act cannot be taken back — a morning is poured once, and a routing has
+no undo. The ten without one are correct as they are. The instrument was asking
+for twelve because the counsel pass did.
+
+The row now asserts **where**, not how many — `IRREVERSIBLE = {'TANK',
+'STATIONS'}` in `assertion_audit.py`, named at the top rather than buried in a
+lambda. That makes it breakable from both sides: strip the held form and the
+control still fails on F7 alone, which is the loss the row exists to catch; add
+one at a *retakeable* seat and it fails too, because held is a claim that an act
+is final and the old `all()` could never see that second failure.
+
+*The original read, kept as the record:* TANK's hung arrivals and the STATIONS'
+lip are the two held forms that exist. My read, offered rather than assumed: the
+two that have one are the two seats where the act cannot be taken back — pouring
+the morning, and routing with no undo. That would make the held form a property
+of irreversibility rather than of every seat, and the ten without one may be
+correct as they are.
+
+**Standing: all ten instruments hold.** `check_all` reads
+`10 hold · 0 refused · 0 crashed` — the first fully green run. The audit itself
+is 27/27 on the live world, 0/27 on a blank, and the control still fails on F7
+alone, so nothing was bought by loosening the suite.
 
 Three rules have no instrument yet, and each names its own first move.
 

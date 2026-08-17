@@ -51,7 +51,27 @@ const path = require("path");
 
    The default is every live surface now. Naming one on the command line still
    works, for looking at a single file. */
-const LIVE = ["ascent.html", "daily.html", "decisions.html", "index.html", "level_one.html"];
+/* THIS LIST WENT STALE AND A BREACH RODE THROUGH IT, 2026-08-16.
+   `day_one.html` was built on 2026-08-16 and never added here. On the same day
+   its root card was given the line "circuits 2 and 3" — raw circuit INDICES on
+   a player-facing surface, which solid.js's own header forbids in as many
+   words: "NO NUMBER IN HERE REACHES THE PLAYER." check_all printed all twelve
+   holding while that was on screen, because no instrument was pointed at the
+   file. The breach was found by an ad-hoc digit count typed by hand, not by
+   anything in this repo.
+   THE LIST IS THE WEAK PART, NOT THE RULES. It is hand-maintained, so it
+   shrinks relative to the build every time a surface is added and nobody
+   remembers this line. check_all is presence-asserting for INSTRUMENTS and
+   nothing is presence-asserting for SURFACES. That gap is named here and not
+   quietly patched: closing it means deciding what counts as a player surface,
+   and that is Kevin's ruling, not a build session's.
+   NOT ADDED, AND WHY: options.html fails this check on the single token
+   "score", which occurs there only in Kevin's own reasoning ABOUT law 2 on a
+   bench page — the same shape as the exemptions below. Loosening a refusal
+   check is his word, not mine, so it stands outside the list and is named
+   rather than exempted. */
+const LIVE = ["ascent.html", "daily.html", "day_one.html", "decisions.html",
+              "index.html", "level_one.html"];
 const targets = process.argv[2]
   ? [path.resolve(process.cwd(), process.argv[2])]
   : LIVE.map(f => path.join(__dirname, "..", f)).filter(f => fs.existsSync(f));

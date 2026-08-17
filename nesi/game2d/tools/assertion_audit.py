@@ -19,6 +19,12 @@ EMPTY = world(seats=[], drops=[], answers_available=[], record=[], siting={},
 
 SEAT_KEYS = ['gesture', 'material_in', 'surface', 'outputs', 'persists', 'cost', 'held']
 
+# The seats where the act cannot be taken back — Kevin's ruling 2026-08-16, and
+# the reason F7 below asks for these two rather than for all twelve. Named here
+# rather than inline so that changing which acts are final is one edit in one
+# place, and so the claim is legible without reading a lambda.
+IRREVERSIBLE = {'TANK', 'STATIONS'}
+
 def full_seat(name):
     return {'name': name, 'gesture': 'I ' + name.lower(), 'material_in': 'from prior face',
             'surface': 'a named input', 'outputs': ['a', 'b', 'c'],
@@ -121,7 +127,24 @@ STATED = [
   lambda w: len([s for s in S(w) if len(s['outputs'] or [])==3])>=1),
  ('F5','field','5 · what persists', lambda w: bool(S(w)) and all(s['persists'] for s in S(w))),
  ('F6','field','6 · the cost', lambda w: bool(S(w)) and all(s['cost'] for s in S(w))),
- ('F7','field','7 · the held form', lambda w: bool(S(w)) and all(s['held'] for s in S(w))),
+ # F7 — KEVIN'S RULING 2026-08-16: the held form belongs to IRREVERSIBILITY.
+ # This row asked all twelve and refused at ten for a day. The two seats that
+ # carry one — ↓TANK's hung arrivals and ↓STATIONS' lip — are the two acts that
+ # cannot be taken back: a morning is poured once, and a routing has no undo.
+ # Everywhere else the act is retakeable, and there is nothing to hold a hand
+ # over. So the ten without a held form are correct as they are; the instrument
+ # was asking for twelve because a counsel pass did, not because the world owed
+ # twelve. Same shape as F4's ruling the day before — a field of every seat,
+ # corrected to the job of the seats that actually do it.
+ #
+ # IT NOW ASSERTS WHERE, NOT HOW MANY, so it can be broken from both sides. The
+ # CONTROL (the live world with the held form stripped) still fails on F7 alone,
+ # which is the loss this row exists to detect. And adding a held form at a
+ # retakeable seat fails it too — held is a claim that an act is final, and a
+ # world making that claim where it is not true is the second failure the old
+ # `all()` could never see.
+ ('F7','field','7 · the held form — at the two seats that cannot be taken back',
+  lambda w: bool(S(w)) and {s['name'] for s in S(w) if s['held']} == IRREVERSIBLE),
 
  ('E1','ending','WALKABLE — walked, screenshots read',
   lambda w: w['pass']['state']!='WALKABLE' or bool(w['pass']['produced'])),
@@ -230,7 +253,7 @@ INVERTED = [
  ('F4', lambda w: len([s for s in S(w) if len(s['outputs'] or [])==3])==1),
  ('F5', lambda w: bool(S(w)) and all(s['persists'] for s in S(w))),
  ('F6', lambda w: bool(S(w)) and all(s['cost'] and s['cost']!='none' for s in S(w))),
- ('F7', lambda w: bool(S(w)) and all(s['held'] for s in S(w))),
+ ('F7', lambda w: bool(S(w)) and {s['name'] for s in S(w) if s['held']} == IRREVERSIBLE),
  # every ending state now requires evidence. HELD is no longer the exit.
  ('E1', lambda w: bool(w['pass']['produced'])),
  ('E2', lambda w: bool(w['pass']['produced'])),

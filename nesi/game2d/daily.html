@@ -957,13 +957,34 @@ if(!DOOR){
   sill.addEventListener("pointerleave", release);
 
   /* WALKING IT. The writing leaves along the member; nothing here is removed and
-     nothing is counted on the way out. */
-  function walk(){
-    const a=document.getElementById("carry");
-    const url=URL.createObjectURL(new Blob([carriedText()],{type:"text/plain;charset=utf-8"}));
-    a.href=url; a.download="nesi-writing-"+(S.today||"today")+".txt";
-    a.click(); setTimeout(()=>URL.revokeObjectURL(url), 4000);
-  }
+     nothing is counted on the way out.
+
+     ═══ THE MEMBER NOW LANDS SOMEWHERE — 2026-08-16, Kevin's mark: the door,
+     one world. ═══
+
+     This used to build a .txt blob and click it. So the sill said "the writing
+     leaves along the member" while the member led out of the browser instead of
+     into the world, and `ascent.html` — 152K, twelve seats, the largest surface
+     in the build — had no way in at all: `index.html` redirects here, and this
+     file named it only inside comments. Measured the same day by the nesiseed
+     predicate filter: 3 of 59 files reachable from the front door, and that one
+     among the 56 that were not.
+
+     WHAT CROSSES IS THE HAND, NOT A FILE. The writing already crosses, by the
+     internal open loop above — it leaves `nesi.water` and arrives in
+     `nesi.ascent`, arrival written first. This member is walked by the player.
+
+     AND THE DEPARTURE IS NOT LOST, IT IS SITED. ↑CAST is the seat this member
+     reaches and the seat that owns leaving: `emit()` there makes a gift that is
+     dated, numbered, and carries only what has not been given before, and the
+     shelf remembers it was taken. That is a better departure than the blob this
+     made — the blob handed back the whole bank every time. Reversible in one
+     line if the plain download is wanted here as well.
+
+     THE COST IS UNCHANGED AND IT STAYS HIS. The 900ms reach is the candidate
+     cost the header above leaves standing. Crossing charges nothing new, and no
+     currency is invented here — that is reserved. */
+  function walk(){ location.href = "ascent.html#cast"; }
   window.__walkDoor=walk;             /* the walk reaches it; nothing on the page does */
 }
 

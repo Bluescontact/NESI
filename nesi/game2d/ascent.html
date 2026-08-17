@@ -76,6 +76,7 @@
      three outputs rather than guessing — failing toward silence, never toward
      a confirmation. -->
 <script src="solid.js"></script>
+<script src="hand.js"></script>
 <script>
 "use strict";
 
@@ -204,7 +205,26 @@ let S = {
   // WATER THAT ARRIVED FROM THE DAILY SURFACE and has not yet been reached for.
   // Written only by daily.html's internal open loop; emptied only by a hand at
   // the head of THE TANK. Never read for content, never counted at any door.
-  arrived:[]
+  arrived:[],
+  // ═══ THE LAND. THE LAND IS THE SAVE FILE. ═══════════════════════════════
+  // A packed bed from hand.js — one small integer per column, the height of the
+  // ground there. Built 2026-08-16 on Kevin's mark "build the hand".
+  //
+  // THIS IS THE ONLY KEY IN S THAT IS A RECORD OF WHAT HE DID RATHER THAN OF
+  // WHAT HE FINISHED. Everything else here is progress — what is done, what is
+  // seated, which faces were worked. This is the shape of the world itself, and
+  // it carries no marks, no order, and no account of how it got that way. Two
+  // hands that cut the same valley by different routes leave the same land.
+  //
+  // Declared here because load() only restores keys that already stand in S —
+  // a field invented at runtime is saved once and silently dropped the next
+  // morning, which for this key would mean the land quietly reverting while
+  // every level stayed finished.
+  //
+  // WATER AND SILT ARE NOT HERE, and that is law 8: the world runs while you
+  // are in it and stops when you leave. What the water was doing is not kept;
+  // what it had already made of the land is.
+  bed:null
 };
 /* ═══ THE WATER — one body, twelve edges, no owner ══════════════════════════
    "each game level, affects all other levels."
@@ -1332,30 +1352,128 @@ rain:{ g:"draw", enter(){ const w=W_();
    You drag a course across the bed. The cut PERSISTS in the one water, and every
    later level runs down it. This is the clearest instance of an edge reaching
    every other edge: what you carve here is the ground THE GROUND settles on. */
-channel:{ g:"draw", enter(){ const w=W_(); L._d={path:w.cut.slice(), drawing:false}; L.startLen=L._d.path.length; },
-  step(){ const w=W_();
-    /* THE DRAW, in the shared verb. The course is the verb's; what it means to
-       the bed is the stage's. The minimum is measured from what was already cut,
-       so adding to an old channel counts as a course and re-tracing it does not. */
-    const d=draw(L.startLen+8);
-    L.path=d.path;
-    if(d.landed){
-      // WRITES: a channel is permanent. It raises the load (cutting stirs the
-      // bed) and it steers what comes after.
-      w.cut=L.path.slice(0,240);
+/* 4 · THE CHANNEL — "you draw where the water goes."
+   ═══ REBUILT 2026-08-16, Kevin's mark: "build the hand." ═══
+
+   WHAT THIS ROOM USED TO BE. A flat brown field with a decorative grain drawn
+   on it, and a blue polyline that followed your pointer. Drawing enough of a
+   line stored the line in `w.cut`, raised a load counter and finished the
+   level. Nothing flowed down it. Nothing eroded. Nothing about the land was
+   different afterwards except a list of points nobody read back. `THE_VISION.md`
+   § 2 calls this half of the game "the part that is actually a game, with hands
+   and skill in it", and it was a signature pad.
+
+   WHAT IT IS NOW. The land is real: a row of columns from `hand.js`, each with
+   a height, a depth of water standing on it, and what that water is carrying.
+   Put your hand into the ground and move, and the ground goes. Water finds what
+   you cut, runs where you let it, and takes the bed with it — quickly where it
+   runs fast, and setting it back down wherever it slows. THE LAND IS THE SAVE
+   FILE: what you leave is in `S.bed`, and it is there in the morning.
+
+   THE THREE VERBS ARE ALL HERE AND THERE IS NO FOURTH. `draw` cuts. The water
+   flowing is what a `wait` is for — stand still and the load it carries settles
+   out as ground, which is `hand.js`'s arithmetic and not a rule written twice.
+   And nothing here asks for a fifth gesture. */
+/* AND IT DECLARES NO COST, WHICH THE GEOMETRY ENFORCED RATHER THAN ME. This
+   rebuild first carried `cost:"the bed you cut is the bed you keep"`, and
+   `solid_check` refused the whole solid for it: THE_CENTRE.md § 11 sites the
+   eight costless mechanics on the eight triangles precisely because "a seat is
+   where the hand gives something up; these eight take nothing" — and it re-tests
+   that every run, so adding a cost here would have voided this mechanic's siting
+   on DAM·STATIONS·GROUND and made it a seat with no vertex to be.
+
+   The refusal was right and the line was wrong. Cutting spends nothing: the mass
+   is conserved to the last bit (`hand_check` H22), the spoil is on the banks,
+   and what I had written as a cost was a consequence — the land keeps its shape,
+   which is the point of the room and not a price paid for entering it. */
+channel:{ g:"draw",
+  enter(){ const w=W_();
+    /* the land as he left it, or the land at rest if he has never been here */
+    L.f = S.bed ? HAND.unpack(S.bed) : HAND.make();
+    L.f0 = HAND.pack(L.f);                 /* what it looked like on the way in */
+    /* THE WATER IN THE ROOM IS THE WATER THE WORLD IS HOLDING. A dry tank is a
+       dry valley — the same fact THE RAIN reads, asked of the same body. */
+    HAND.pour(L.f, 6, 0.25 + w.level*0.75);
+    L.was=-1; L.cutting=0; L.moved=0; },
+  step(dt){ const w=W_();
+    /* THE DRAW, in the shared verb. Where the hand is, and whether it is down,
+       is the verb's; what that does to the bed is this stage's. */
+    const d=draw(9999);                    /* landing is this stage's own test, below */
+    const col = Math.max(0, Math.min(L.f.n-1, Math.round(mouse.x / Math.max(1,W) * (L.f.n-1))));
+    /* DIG BY PUTTING YOUR HAND IN THE GROUND. How deep you are below the surface
+       of the land is how hard you are cutting, so the act is one continuous
+       thing rather than a click with a fixed size, and a hand held above the
+       ground cuts nothing at all. Nothing says this; the ground moving under
+       your hand is what says it. */
+    if(d.drawing){
+      const surface = bedY(L.f, col), into = (mouse.y - surface) / Math.max(1, H*0.22);
+      if(into > 0){
+        const from = (L.was<0 ? col : L.was);
+        /* THE SPOIL GOES OUTSIDE THE WHOLE STROKE, not outside this step of it —
+           see hand.js. The stroke's reach is tracked from its first cut, so the
+           heaps stay at the two ends of the trench however the hand wanders
+           inside it, and a hand that goes back over its own work deepens the
+           trench instead of filling it in. */
+        L.lo = (L.lo==null) ? Math.min(from,col) : Math.min(L.lo, from, col);
+        L.hi = (L.hi==null) ? Math.max(from,col) : Math.max(L.hi, from, col);
+        HAND.carve(L.f, from, col, Math.min(0.05, into*0.012), [L.hi+1]);
+        L.cutting = 1; L.moved += Math.abs(col-from) + 1;
+      }
+      L.was = col;
+    } else { L.was=-1; L.cutting *= 0.9; }
+
+    /* the world runs while you are in it */
+    HAND.step(L.f, dt);
+
+    /* A COURSE LANDS WHEN THE HAND COMES UP off a stroke that actually moved
+       ground. `landed` in the shared verb counts points in a path; what counts
+       here is bed, because a hand can wave a long path over the sky and change
+       nothing. */
+    if(d.started && !mouse.down && L.moved > 10 && !L.done){ L.done=true;
+      // WRITES: the land, and it is the only thing here that persists.
+      S.bed = HAND.pack(L.f);
       w.load=clamp01(w.load+0.22); w.clarity=clamp01(w.clarity-0.18); w.still=0;
       reading(4,"cut"); save(); finish(); } },
-  draw(){ sky(); const fy=H-140; ground(fy*0.0+0);
-    g.fillStyle="#a89f8e"; g.fillRect(0,0,W,H);
-    g.strokeStyle="rgba(140,132,120,.25)"; g.lineWidth=1;
-    for(let x=0;x<W;x+=44){ g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
-    // the grain already in the bed — you cut with it or across it, and nothing says which
-    g.strokeStyle="rgba(120,112,100,.30)"; g.lineWidth=2;
-    for(let i=0;i<7;i++){ const y=H*0.16+i*H*0.11; g.beginPath();
-      for(let x=0;x<=W;x+=24) g.lineTo(x, y+Math.sin(x*0.006+i)*14); g.stroke(); }
-    if(L.path.length>1){ g.strokeStyle="rgba(74,108,122,.85)"; g.lineWidth=9; g.lineCap="round"; g.lineJoin="round";
-      g.beginPath(); L.path.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.stroke(); }
-    ring(mouse.x,mouse.y,14); }
+  draw(){ sky();
+    const f=L.f, n=f.n, cw=W/(n-1);
+    /* THE WATER, drawn under the land's own edge so the land reads as solid and
+       the water as a body inside it. Its surface is where the surface is —
+       there is no separate line to keep in step with anything. */
+    g.beginPath(); g.moveTo(0,H);
+    for(let i=0;i<n;i++) g.lineTo(i*cw, bedY(f,i) - f.water[i]*H*0.9);
+    g.lineTo(W,H); g.closePath();
+    g.fillStyle="rgba(74,108,122,.62)"; g.fill();
+
+    /* WHAT THE WATER IS CARRYING — and it is separated by BEHAVIOUR, not by
+       colour (law 10). The bed is solid with a hard top edge; the water is
+       translucent with a surface that moves; the load is a grain that thickens
+       where the water works and thins out on its own when it stops. Three
+       different things to watch, and the palette is doing none of the telling. */
+    for(let i=0;i<n;i++){ const s=f.silt[i];
+      if(s>1e-5 && f.water[i]>HAND.WET){
+        const top=bedY(f,i)-f.water[i]*H*0.9, h=bedY(f,i)-top;
+        g.fillStyle="rgba(168,159,142,"+Math.min(0.8, s*70).toFixed(3)+")";
+        g.fillRect(i*cw-cw*0.5, top, cw+1, h); } }
+
+    /* THE LAND */
+    g.beginPath(); g.moveTo(0,H);
+    for(let i=0;i<n;i++) g.lineTo(i*cw, bedY(f,i));
+    g.lineTo(W,H); g.closePath();
+    g.fillStyle="#a89f8e"; g.fill();
+    g.strokeStyle="rgba(90,84,74,.45)"; g.lineWidth=1.5;
+    g.beginPath(); for(let i=0;i<n;i++) g.lineTo(i*cw, bedY(f,i)); g.stroke();
+
+    /* THE HAND'S OWN MARK — where a cut would fall, and how deep, before any
+       ground has moved. It answers a hand that has not committed to anything,
+       and it says nothing when the hand is above the ground, because there is
+       nothing to say. */
+    const col = Math.max(0, Math.min(n-1, Math.round(mouse.x/Math.max(1,W)*(n-1))));
+    const surface = bedY(f,col);
+    if(mouse.y > surface){
+      g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=2;
+      g.beginPath(); g.moveTo(mouse.x, surface); g.lineTo(mouse.x, mouse.y); g.stroke();
+      ring(mouse.x, mouse.y, 6+ (L.cutting||0)*5);
+    } else ring(mouse.x, mouse.y, 14); }
 },
 
 /* 8 · THE SHOAL — "Your sentences are shoals. They stand up out of the water
@@ -1883,6 +2001,12 @@ function breathe(y){
 function ground(y){ g.fillStyle="#a89f8e"; g.fillRect(0,y,W,H-y);
   g.strokeStyle="rgba(90,84,74,.25)"; g.lineWidth=1;
   for(let x=0;x<W;x+=44){ g.beginPath(); g.moveTo(x,y); g.lineTo(x,H); g.stroke(); } }
+/* WHERE A COLUMN'S GROUND IS ON THE GLASS. One function, so the land, the water,
+   the load and the hand's own mark can never disagree about where the surface
+   is — every one of them asks this. The scale puts a bed at rest across the
+   middle of the screen with room above it for water to stand and room below for
+   a hand to dig into. */
+function bedY(f,i){ return H - f.bed[i]*H*1.15; }
 function dot(x,y){ g.fillStyle="#2a2a30"; g.beginPath(); g.arc(x,y,9,0,7); g.fill();
   g.strokeStyle="rgba(242,239,232,.85)"; g.lineWidth=2; g.stroke(); }
 function ring(x,y,r,c){ g.strokeStyle=c||"rgba(40,40,44,.45)"; g.lineWidth=1.5;
@@ -2610,5 +2734,44 @@ function frame(now){ const dt=Math.min(48,now-last); last=now;
   else { const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false; }
   drawCase();
   requestAnimationFrame(frame); }
+
+/* ═══ ARRIVING BY THE MEMBER ═══════════════════════════════════════════════
+   THE DOOR, 2026-08-16, Kevin's mark: one world.
+
+   This file existed at 152K with no way in. `index.html` redirects to
+   `daily.html`, and `daily.html` named this file only inside comments —
+   3 of 59 files reachable from the front door, measured by the nesiseed
+   predicate filter, and this the largest among the 56 that were not. The check
+   suite could open it with `fs`; a hand could not reach it at all. Named in
+   live code is not the same as reachable, which is the whole reason that
+   instrument keeps its three predicates apart.
+
+   A HAND ARRIVES HERE BY WALKING A MEMBER, NEVER BY A LINK IN A MENU. The sill
+   in `daily.html` is ↓TANK—↑CAST, held nine hundred milliseconds until it
+   gives. This is the other end of that member, so this is where it lands.
+
+   THE HASH NAMES A SEAT, AND IS REFUSED IF IT NAMES ANYTHING ELSE. `faceOf`
+   is the only gate: an address that is not a real face of this world opens
+   nothing and the map stands, so nothing outside can address a room in here by
+   guessing. It says nothing when it refuses — a wrong address is simply the
+   map, which is where you would have started.
+
+   NOTHING IS ANNOUNCED ON ARRIVAL. No banner, no "welcome", no marker saying
+   you came by the door rather than the map. You are at the seat; the seat is
+   what you see.
+
+   AND IT IS GUARDED FOR THE INSTRUMENTS. The node harnesses — `first_four`,
+   `door_check`, `cut_check` — evaluate this script body with no browser around
+   it, so `location` does not exist there and reaching for it crashed all three
+   the first time this was built. An instrument that cannot parse the world
+   cannot check it, so the address is only read where there is one to read. */
+(function arriveByMember(){
+  if(typeof location==="undefined" || !location) return;   /* no browser: no address */
+  const k=(location.hash||"").replace(/^#/,"").trim().toLowerCase();
+  if(!k) return;                    /* opened directly: the map, as always */
+  if(!faceOf(k)) return;            /* not a face of this world: the map stands */
+  enterFace(k);
+})();
+
 requestAnimationFrame(frame);
 </script>

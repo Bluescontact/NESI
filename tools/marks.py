@@ -29,6 +29,12 @@ Usage:
 """
 import json, os, sys, argparse, datetime, glob, re
 
+# 2026-08-16: compost had never fired once in 1068 marks. It was not unused — it
+# CRASHED, UnicodeEncodeError on cp1252, at the first mark containing "→". His own
+# punctuation killed the only subtraction organ in the system, silently, every time.
+try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception: pass
+
 ROOT   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG    = os.path.join(ROOT, "MARKS_LOG.jsonl")
