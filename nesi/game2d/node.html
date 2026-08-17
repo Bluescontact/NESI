@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Node</title>
+<style>
+:root{
+  --bg:#0c0e0d;--panel:#131715;--edge:#232a26;--edge2:#2f3831;
+  --ink:#e2e7e3;--dim:#8b9591;--faint:#5a6461;
+  --gold:#c9a55c;--moss:#7fa87f;--rust:#c07a55;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --serif:Georgia,"Iowan Old Style",serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:56px 24px 120px}
+h1{font-family:var(--mono);font-size:24px;font-weight:600;margin:0 0 4px;color:#fff;letter-spacing:.01em}
+.sub{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.09em;
+  text-transform:uppercase;margin-bottom:14px}
+h2{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin:72px 0 4px}
+h2 .n{color:var(--faint);margin-right:9px}
+h3{font-family:var(--mono);font-size:14px;color:#fff;margin:26px 0 6px;font-weight:600}
+hr.r{height:1px;background:var(--edge);border:0;margin:12px 0 24px}
+p{margin:0 0 15px}
+.dim{color:var(--dim)}
+.small{font-size:15px}
+.mono{font-family:var(--mono)}
+pre{font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--moss);
+  background:var(--panel);border:1px solid var(--edge);border-left:2px solid var(--moss);
+  padding:14px 16px;margin:18px 0;white-space:pre-wrap;overflow-x:auto}
+
+/* ---- solid ---- */
+.stage{background:var(--panel);border:1px solid var(--edge);margin:22px 0 0}
+canvas{display:block;width:100%;height:400px;touch-action:none;cursor:grab}
+canvas:active{cursor:grabbing}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--edge);
+  font-family:var(--mono)}
+.readout div{padding:12px 14px;border-right:1px solid var(--edge)}
+.readout div:last-child{border-right:0}
+.readout .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:block}
+.readout .v{font-size:17px;color:var(--ink);display:block;margin-top:3px}
+.readout .v.eq{color:var(--gold)}
+.ctl{border-top:1px solid var(--edge);padding:16px 16px 18px}
+input[type=range]{width:100%;accent-color:#c9a55c;background:transparent}
+.phases{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;
+  color:var(--faint);letter-spacing:.06em;margin-top:6px;text-transform:uppercase}
+.phases button{background:none;border:0;color:var(--faint);font:inherit;letter-spacing:.06em;
+  cursor:pointer;padding:2px 0;text-transform:uppercase}
+.phases button:hover{color:var(--gold)}
+.phases button.on{color:var(--gold)}
+.note{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:14px;line-height:1.7}
+
+/* ---- gate ---- */
+.gate{background:var(--panel);border:1px solid var(--edge);margin:22px 0}
+.gh{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);padding:13px 18px;border-bottom:1px solid var(--edge)}
+.blank{padding:34px 18px;text-align:center;font-family:var(--mono);font-size:12px;
+  color:var(--faint);letter-spacing:.08em}
+.item{padding:16px 18px;border-bottom:1px solid var(--edge)}
+.item:last-child{border-bottom:0}
+.item .txt{font-size:16px;margin-bottom:4px}
+.item .who{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.05em}
+.acts{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+button.act{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;background:transparent;
+  color:var(--dim);border:1px solid var(--edge2);padding:7px 13px;cursor:pointer}
+button.act:hover{color:var(--ink);border-color:var(--dim)}
+button.act.yes:hover{color:var(--moss);border-color:var(--moss)}
+button.act.close:hover{color:var(--gold);border-color:var(--gold)}
+.add{padding:16px 18px;border-top:1px solid var(--edge);display:grid;gap:8px}
+.add .row{display:grid;grid-template-columns:1fr 190px;gap:8px}
+input[type=text]{font-family:var(--serif);font-size:15px;background:#0b0d0c;color:var(--ink);
+  border:1px solid var(--edge2);padding:10px 12px;width:100%}
+input[type=text]:focus{outline:0;border-color:var(--dim)}
+input::placeholder{color:#4c5552}
+.age{font-family:var(--mono);font-size:11px;color:var(--rust);letter-spacing:.05em}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+/* ---- laws ---- */
+.law{font-family:var(--mono);font-size:13.5px;line-height:1.7;color:#fff;background:#0f1310;
+  border:1px solid #2b3327;border-left:3px solid var(--gold);padding:15px 18px;margin:16px 0;
+  white-space:pre-wrap}
+blockquote{margin:12px 0;padding:2px 0 2px 16px;border-left:2px solid var(--edge);
+  font-size:15.5px;color:var(--dim);font-style:italic}
+blockquote cite{display:block;font-style:normal;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;color:var(--faint);margin-top:7px;text-transform:uppercase}
+.foot{margin-top:80px;border-top:1px solid var(--edge);padding-top:20px}
+@media(max-width:660px){
+  .wrap{padding:36px 16px 90px}
+  .readout{grid-template-columns:repeat(2,1fr)}
+  .readout div:nth-child(2){border-right:0}
+  .readout div:nth-child(1),.readout div:nth-child(2){border-bottom:1px solid var(--edge)}
+  .add .row{grid-template-columns:1fr}
+  canvas{height:320px}
+  body{font-size:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>THE NODE</h1>
+<div class="sub">a way in · an act · a consequence · a way out</div>
+
+<p class="dim small">Everything from one session, made runnable. Three parts: a solid you can turn by hand, a gate that works, and the laws underneath both. Nothing here scores you, keeps a profile, or requires maintenance. Reload and it's empty — the node is the file you hold, not the page.</p>
+
+<h2><span class="n">§ 01</span> The solid</h2>
+<hr class="r">
+
+<p>Twelve vertices, twenty-four struts. Drag to turn it. Move the slider and the struts stay rigid while the whole thing contracts — this is the jitterbug, and it is the real transformation, not an interpolation between shapes.</p>
+
+<p>Watch the <span class="mono" style="color:var(--gold)">R / e</span> readout. There is exactly one position where the distance from the center to any vertex equals the length of a strut. That position is vector equilibrium. Everywhere else, reach and hold have come apart.</p>
+
+<div class="stage">
+  <canvas id="c"></canvas>
+  <div class="readout">
+    <div><span class="k">Phase</span><span class="v" id="rPhase">—</span></div>
+    <div><span class="k">R / e</span><span class="v" id="rRatio">—</span></div>
+    <div><span class="k">Struts</span><span class="v" id="rStrut">24</span></div>
+    <div><span class="k">State</span><span class="v" id="rState">—</span></div>
+  </div>
+  <div class="ctl">
+    <input type="range" id="s" min="4500" max="8900" value="4500">
+    <div class="phases">
+      <button data-a="4500" class="on">Equilibrium</button>
+      <button data-a="5828">Icosahedron</button>
+      <button data-a="7200">Contracting</button>
+      <button data-a="8900">Octahedron</button>
+    </div>
+    <div class="note">Solid lines are the 24 rigid struts. Dashed lines are the six square-face diagonals — the gaps. They are the only degrees of freedom in the whole structure, and they are what allows the collapse. At the icosahedral moment they close to strut length and the thing briefly becomes rigid.</div>
+  </div>
+</div>
+
+<p style="margin-top:26px">Two facts survive falsification, and only two.</p>
+
+<p><strong>R = e.</strong> At equilibrium, what you hold and what you extend are the same length. Your reach to a neighbour cannot exceed your own radius. That is not a metaphor about generosity — it is the definition of the solid, and it is checkable above.</p>
+
+<p><strong>Twelve around one.</strong> Closest packing of equal spheres puts exactly twelve around a nucleus, and their centres describe this shape. In a packed lattice every sphere is simultaneously the nucleus of its own twelve. Move your attention one sphere over and the identical structure reappears, centred there. There is no privileged position and no view from above.</p>
+
+<p class="dim small">Equilibrium is not a structure. It bears no load and cannot be built with — the moment force is applied it collapses through icosahedron toward octahedron. So equilibrium is not the goal. It is the resting condition in which contact can be detected without anyone being pushed.</p>
+
+<h2><span class="n">§ 02</span> The gate</h2>
+<hr class="r">
+
+<p>A working membrane, reduced to what actually has to exist.</p>
+
+<p>Something arrives. You are asked one question and only at the moment of asking: <em>can you hold this today?</em> Nothing about you is stored — no radius, no profile, no history of what you declined. There is nothing to keep current and nothing to feed on the day you have nothing.</p>
+
+<p><strong>Silence is legal.</strong> An unanswered contact stays unanswered. It is a complete state. No badge, no count, no decay into a debt. You never have to perform a refusal, which is most of what refusing costs.</p>
+
+<div class="gate">
+  <div class="gh">At the gate — unanswered</div>
+  <div id="gateList"></div>
+  <div class="add">
+    <div class="row">
+      <input type="text" id="gText" placeholder="What arrived">
+      <input type="text" id="gFrom" placeholder="From (optional)">
+    </div>
+    <div><button class="act" id="gAdd">Bring it to the gate</button></div>
+  </div>
+</div>
+
+<p class="small dim">Answering <em>I can hold this</em> opens a vector — the symmetry breaks, someone gave and someone received, and the structure has left equilibrium. That is supposed to happen. What matters is whether it comes back.</p>
+
+<div class="gate">
+  <div class="gh">Open vectors — not yet returned to zero</div>
+  <div id="openList"></div>
+</div>
+
+<p class="small dim">This is the only thing the node persists, and note what it is <em>not</em> about. Not people, not reputation, not what anyone is owed. Just exchanges that started and haven't closed. That's the smallest possible state, and it happens to be the thing nobody tracks and the thing that actually breaks relationships — not the unmet need, the unclosed loop neither party will name.</p>
+
+<div class="tools">
+  <button class="act" id="bExport">Export node → file</button>
+  <button class="act" id="bImport">Import node ← file</button>
+  <input type="file" id="fIn" accept="application/json" style="display:none">
+</div>
+<p class="note" style="font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:12px">
+No server, no account, no sync. The node is a file you hold and hand to someone the way you'd hand them a key. Reloading this page empties it — that is the design, not a limitation.</p>
+
+<h2><span class="n">§ 03</span> The laws</h2>
+<hr class="r">
+
+<h3>Contact precedes model</h3>
+<p>Responding to your model of someone is not responding to them. Every failure below is a version of this one — the institution responds to its category, the giver responds to an imagined receiver, the withdrawal responds to an assumed capacity.</p>
+<blockquote>Response to a projected state is not response to an actual state.</blockquote>
+
+<h3>The reciprocity gate</h3>
+<p>The commons movement hit the problem of free contribution being absorbed and filed, and built a clause for it. Full use by common-good bodies, by self-owned enterprises, by for-profits that contribute. Those who extract without returning, pay. The condition is reciprocity, not money.</p>
+<blockquote>the idea is less the money flow, but the recreation of a moral economy and social charter about reciprocity<cite>Peer Production License</cite></blockquote>
+<div class="law">Circulation is open to whoever returns capacity.
+Extraction is priced.
+
+Giving into a body with no channel for reception is not
+generosity. It is giving from depletion, which corrupts
+the gift — it just doesn't feel like depletion when no
+money changes hands.</div>
+
+<h3>Anti-islanding</h3>
+<p>A grid-tie inverter will not export into a dead line. Not stinginess — a lineman is down there with his hands on the conductor. It keeps no model of the grid at all; it checks continuously, in the moment, and cuts out in two seconds. Its reliability comes from having no memory.</p>
+<div class="law">Check whether the line is live before exporting.
+Enthusiasm is not a live line. It is a voltage reading
+taken on an isolated segment.</div>
+
+<h3>The fork test</h3>
+<p>Open projects tolerate leadership by demonstrated competence only because exit is free. Remove the fork and the identical arrangement becomes plain authority — same people, same decisions, completely different structure.</p>
+<div class="law">No withdrawal without a named fork.
+
+Can they continue without you? Not comfortably — at all.
+
+If yes, stepping back is construction.
+If no, it is the collapse of a dependency you built,
+and the failure happened while you were building
+something with no second source.
+
+Build the fork first. Then step back.</div>
+<p class="small dim">Limit, stated plainly: you can build a fork into a system you control. You cannot build one into a person. Where the thing being withdrawn from is a relationship, this test does not transfer and there is no replacement for it here.</p>
+
+<h3>Surplus</h3>
+<p>Wolfhagen, Germany, 2012. The municipality and an 814-member citizens' cooperative jointly own the local energy utility. The co-op holds 25% of the equity. Member dividends are capped at roughly 4%; everything above the cap routes to efficiency work through member-controlled boards, and the association is required to put surplus toward establishing further partnerships.</p>
+<div class="law">Cap the draw. Route the remainder to capacity.
+
+A movement's return is spent on the next movement's
+way in, or it did not return.</div>
+<p class="small dim">One town is not a proof. One town with a capped dividend and fourteen years of operating history is worth more than any amount of theory about circulation.</p>
+
+<h3>No score</h3>
+<p>An open-source value-accounting project built an algorithm to assign equity by contribution, ran it, and retreated — renaming itself contribution accounting on the grounds that value is subjective and cannot be counted. They kept the ledger and abandoned the score. That failure is available for free.</p>
+<div class="law">The register logs. It does not score.
+A metric on capacity is the proving impulse wearing a hat.</div>
+
+<h2><span class="n">§ 04</span> What stays open</h2>
+<hr class="r">
+
+<p>Three, unresolved, deposited as open rather than closed comfortably.</p>
+
+<p><strong>The question the design still asks you to carry.</strong> <em>Can you hold this today?</em> has to be answerable on the day it matters most — the depleted day, when the honest answer is hardest to reach and the habit of overstating is strongest. Nothing above solves that. It is a body question, not a design question.</p>
+
+<p><strong>The fork test on a person.</strong> Stated above. No replacement offered.</p>
+
+<p><strong>Both bodies of work remain unfalsified in the same direction.</strong> Neither the commons literature nor the geometry names a system that <em>lacks</em> the pattern in a way that would test it. If everything that works can be read as a cuboctahedron and nothing that fails can, the mapping carries no information. R = e and twelve-around-one survive because both could be wrong. The rest is decoration.</p>
+
+<div class="foot">
+<pre>ORDERED   nothing
+BLANK     a complete state
+THE NODE  yours to fork; nothing here needs its author</pre>
+</div>
+
+</div>
+
+<script>
+(function(){
+/* ============ SOLID ============ */
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const PHI=(1+Math.sqrt(5))/2, ICO=Math.atan(PHI); // 58.2825 deg
+
+function verts(a){const c=Math.cos(a),s=Math.sin(a);
+  return [[0,c,s],[0,c,-s],[0,-c,s],[0,-c,-s],
+          [s,0,c],[-s,0,c],[s,0,-c],[-s,0,-c],
+          [c,s,0],[c,-s,0],[-c,s,0],[-c,-s,0]];}
+const dist=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);
+
+// topology fixed at equilibrium
+const VE=verts(Math.PI/4);
+let all=[];
+for(let i=0;i<12;i++)for(let j=i+1;j<12;j++)all.push([i,j,dist(VE[i],VE[j])]);
+all.sort((x,y)=>x[2]-y[2]);
+const e0=all[0][2];
+const STRUT=all.filter(p=>p[2]<e0*1.02).map(p=>[p[0],p[1]]);           // 24
+const DIAG =all.filter(p=>p[2]>e0*1.3&&p[2]<e0*1.5).map(p=>[p[0],p[1]]); // 6 square diagonals
+
+let alpha=Math.PI/4, yaw=0.6, pitch=-0.35, drag=null, spin=true;
+
+function project(p,w,h){
+  const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+  let x=p[0]*cy - p[2]*sy, z=p[0]*sy + p[2]*cy;
+  let y=p[1]*cp - z*sp;   z=p[1]*sp + z*cp;
+  const d=4.2, k=d/(d-z);
+  const s=Math.min(w,h)*0.30;
+  return [w/2 + x*s*k, h/2 - y*s*k, z];
+}
+function draw(){
+  const dpr=window.devicePixelRatio||1;
+  const w=cv.clientWidth,h=cv.clientHeight;
+  if(cv.width!==w*dpr||cv.height!==h*dpr){cv.width=w*dpr;cv.height=h*dpr;}
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+
+  const V=verts(alpha);
+  const e=dist(V[STRUT[0][0]],V[STRUT[0][1]]);
+  const R=Math.hypot(V[0][0],V[0][1],V[0][2]);
+  const scale=1/e;                       // struts rigid: normalise to e = 1
+  const P=V.map(v=>project([v[0]*scale,v[1]*scale,v[2]*scale],w,h));
+
+  // diagonals first (behind)
+  ctx.lineWidth=1;
+  ctx.setLineDash([3,4]);
+  DIAG.forEach(([i,j])=>{
+    const zm=(P[i][2]+P[j][2])/2;
+    ctx.strokeStyle='rgba(192,122,85,'+(0.16+0.22*(zm+1)/2)+')';
+    ctx.beginPath();ctx.moveTo(P[i][0],P[i][1]);ctx.lineTo(P[j][0],P[j][1]);ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // struts
+  const ratio=R/e;
+  const eq=Math.abs(ratio-1)<0.0015;
+  STRUT.forEach(([i,j])=>{
+    const zm=(P[i][2]+P[j][2])/2, t=(zm+1)/2;
+    ctx.lineWidth=0.7+1.5*t;
+    ctx.strokeStyle=eq?'rgba(201,165,92,'+(0.35+0.6*t)+')'
+                      :'rgba(127,168,127,'+(0.24+0.55*t)+')';
+    ctx.beginPath();ctx.moveTo(P[i][0],P[i][1]);ctx.lineTo(P[j][0],P[j][1]);ctx.stroke();
+  });
+
+  // radius spokes at equilibrium
+  if(eq){
+    ctx.setLineDash([2,5]);ctx.lineWidth=1;
+    const C=project([0,0,0],w,h);
+    P.forEach(p=>{ctx.strokeStyle='rgba(201,165,92,0.30)';
+      ctx.beginPath();ctx.moveTo(C[0],C[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();});
+    ctx.setLineDash([]);
+  }
+
+  // vertices
+  P.forEach(p=>{
+    const t=(p[2]+1)/2;
+    ctx.fillStyle=eq?'rgba(226,231,227,'+(0.5+0.5*t)+')':'rgba(226,231,227,'+(0.35+0.5*t)+')';
+    ctx.beginPath();ctx.arc(p[0],p[1],1.6+2.4*t,0,7);ctx.fill();
+  });
+
+  // readouts
+  const deg=alpha*180/Math.PI;
+  document.getElementById('rRatio').textContent=ratio.toFixed(4);
+  document.getElementById('rRatio').className='v'+(eq?' eq':'');
+  let phase='transitional', state='under load';
+  if(eq){phase='vector equilibrium';state='zero force';}
+  else if(Math.abs(deg-ICO*180/Math.PI)<0.35){phase='icosahedron';state='rigid';}
+  else if(deg>88){phase='octahedron';state='fully contracted';}
+  document.getElementById('rPhase').textContent=phase;
+  document.getElementById('rState').textContent=state;
+}
+function loop(){ if(spin&&!drag) yaw+=0.0028; draw(); requestAnimationFrame(loop); }
+
+const sl=document.getElementById('s');
+sl.addEventListener('input',()=>{alpha=(+sl.value/100)*Math.PI/180; setBtns();});
+function setBtns(){
+  const deg=+sl.value;
+  document.querySelectorAll('.phases button').forEach(b=>
+    b.classList.toggle('on',Math.abs(+b.dataset.a-deg)<40));
+}
+document.querySelectorAll('.phases button').forEach(b=>b.addEventListener('click',()=>{
+  const target=+b.dataset.a, start=+sl.value, t0=performance.now();
+  (function anim(t){
+    const k=Math.min(1,(t-t0)/650), ease=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    sl.value=start+(target-start)*ease;
+    alpha=(+sl.value/100)*Math.PI/180;
+    if(k<1)requestAnimationFrame(anim); else setBtns();
+  })(t0);
+}));
+
+function pos(e){const r=cv.getBoundingClientRect();
+  const t=e.touches?e.touches[0]:e;return {x:t.clientX-r.left,y:t.clientY-r.top};}
+cv.addEventListener('pointerdown',e=>{drag=pos(e);spin=false;cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{ if(!drag)return; const p=pos(e);
+  yaw+=(p.x-drag.x)*0.008; pitch+=(p.y-drag.y)*0.006;
+  pitch=Math.max(-1.35,Math.min(1.35,pitch)); drag=p;});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>
+  cv.addEventListener(ev,()=>{drag=null;setTimeout(()=>{if(!drag)spin=true;},1600);}));
+loop();
+
+/* ============ GATE ============ */
+let state={gate:[],open:[]};
+let seq=1;
+const gl=document.getElementById('gateList'), ol=document.getElementById('openList');
+const days=ts=>Math.floor((Date.now()-ts)/86400000);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function render(){
+  if(!state.gate.length){
+    gl.innerHTML='<div class="blank">nothing at the gate · blank is a complete state</div>';
+  } else {
+    gl.innerHTML=state.gate.map(i=>`<div class="item">
+      <div class="txt">${esc(i.text)}</div>
+      ${i.from?`<div class="who">from ${esc(i.from)}</div>`:''}
+      <div class="acts">
+        <button class="act yes" data-hold="${i.id}">I can hold this</button>
+        <button class="act" data-no="${i.id}">Not today</button>
+      </div></div>`).join('');
+  }
+  if(!state.open.length){
+    ol.innerHTML='<div class="blank">no open vectors · at equilibrium</div>';
+  } else {
+    ol.innerHTML=state.open.map(i=>{const d=days(i.at);
+      return `<div class="item">
+      <div class="txt">${esc(i.text)}</div>
+      <div class="who">${i.from?'with '+esc(i.from)+' · ':''}<span class="age">open ${d===0?'today':d+' day'+(d>1?'s':'')}</span></div>
+      <div class="acts"><button class="act close" data-zero="${i.id}">Returned to zero</button></div>
+      </div>`;}).join('');
+  }
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  const h=b.dataset.hold,n=b.dataset.no,z=b.dataset.zero;
+  if(h){const i=state.gate.findIndex(x=>x.id==h);
+    if(i>-1){const it=state.gate.splice(i,1)[0]; it.at=Date.now(); state.open.push(it); render();}}
+  if(n){state.gate=state.gate.filter(x=>x.id!=n); render();}   // no trace kept
+  if(z){state.open=state.open.filter(x=>x.id!=z); render();}
+});
+function add(){
+  const t=document.getElementById('gText'),f=document.getElementById('gFrom');
+  if(!t.value.trim())return;
+  state.gate.push({id:'i'+(seq++),text:t.value.trim(),from:f.value.trim(),at:Date.now()});
+  t.value='';f.value='';t.focus();render();
+}
+document.getElementById('gAdd').addEventListener('click',add);
+['gText','gFrom'].forEach(id=>document.getElementById(id)
+  .addEventListener('keydown',e=>{if(e.key==='Enter')add();}));
+
+document.getElementById('bExport').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify({node:1,exported:new Date().toISOString(),
+    gate:state.gate,open:state.open},null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='node-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById('bImport').addEventListener('click',()=>document.getElementById('fIn').click());
+document.getElementById('fIn').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);
+    state={gate:d.gate||[],open:d.open||[]};
+    seq=1+state.gate.concat(state.open).reduce((m,x)=>Math.max(m,+String(x.id).slice(1)||0),0);
+    render();}catch(err){alert('Not a node file.');}};
+  r.readAsText(f); e.target.value='';
+});
+render();
+})();
+</script>
+</body>
+</html>
