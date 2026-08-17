@@ -984,6 +984,120 @@
         "probe_in": "code",
         "finding": "Once-only is on the CONTENT — emit() gives only what has not been given, so no sentence returns doubled. It was graded partial for not being once-only on the ARTIFACT; his ruling 2026-08-16 says the artifact SHOULD be re-takeable, so the grade was wrong and the seat was complete as written."
       }
+    },
+    {
+      "organ": "the computed cell",
+      "seat": "—",
+      "socket": "THE 12 RADII",
+      "form": "mechanism",
+      "path": "either",
+      "mechanism": "a value derived from its inputs, readable, with NO SETTER. Recomputed when its inputs change; assigning to it is an error rather than a write.",
+      "extract": "the getter without the setter. Vue warns 'computed value is readonly'; MobX recomputes lazily and caches; a spreadsheet cell holding a formula cannot be typed into without destroying the formula. THE REFUSAL TO ACCEPT A WRITE IS THE ORGAN.",
+      "why_this_socket": "a radius is one seat's distance from the game, derived from where the seat is and never set. And the equilibrium — every radius equal to the edge — is a property of the derived values, not something anything can write. The same organ already scaffolds CENTRE.at(), which is a point in its favour and a caution: one organ serving two sockets may mean the two sockets are one thing.",
+      "sightings": [
+        {
+          "where": "MobX computeds",
+          "domain": "ui-reactivity"
+        },
+        {
+          "where": "Vue computed properties",
+          "domain": "ui-reactivity"
+        },
+        {
+          "where": "SQL generated / .NET DataColumn.Expression columns",
+          "domain": "database"
+        },
+        {
+          "where": "a spreadsheet formula cell",
+          "domain": "spreadsheets"
+        }
+      ],
+      "members": {},
+      "contact": {},
+      "built": {
+        "state": "absent",
+        "at": "—",
+        "probe": null,
+        "probe_in": "code",
+        "finding": "the radii are derived in solid.js but nothing in the running game reads one. The socket is open."
+      }
+    },
+    {
+      "organ": "the tombstone",
+      "seat": "FILTER",
+      "form": "mechanism",
+      "path": "either",
+      "mechanism": "a deletion recorded as a MARKER, never an erasure. The removed thing keeps its place in the order and can be walked past, counted against, or restored.",
+      "extract": "delete writes a marker; it does not unwrite. Xi-editor's note is the clearest statement of why — 'retaining it guarantees that its order relative to its context is preserved.'",
+      "why_this_socket": "THE_24.md level 20 already describes this and calls it the withdrawal route: 'a deleted sentence leaves the line by way of the filter, and the bank keeps it.' A tombstone is that, exactly. It also satisfies law 12 and law 4 by construction — nothing is lost and nothing is rewritten, because deletion never touches the text.",
+      "sightings": [
+        {
+          "where": "CRDT tombstones (xi-editor)",
+          "domain": "text"
+        },
+        {
+          "where": "Kafka tombstone records",
+          "domain": "messaging"
+        },
+        {
+          "where": "Cassandra / ScyllaDB tombstones",
+          "domain": "storage"
+        },
+        {
+          "where": "Docker distribution soft-delete tombstone files",
+          "domain": "containers"
+        }
+      ],
+      "members": {
+        "TANK": "the withdrawn sentence returns to the bank",
+        "DEEP": "and what is not taken falls past"
+      },
+      "contact": {},
+      "built": {
+        "state": "absent",
+        "at": "—",
+        "probe": null,
+        "probe_in": "code",
+        "finding": "replaces 'the diff hunk', which Kevin struck 2026-08-16 — the filter is a process the hand assembles, and a diff is a supplied comparison. A tombstone is not supplied: the hand makes it by withdrawing."
+      }
+    },
+    {
+      "organ": "the paired entry",
+      "seat": "—",
+      "socket": "THE 6 PYRAMID CELLS",
+      "form": "mechanism",
+      "path": "either",
+      "mechanism": "two quantities that can only be written together and always sum to zero. There is no operation that moves one without moving the other by the same amount.",
+      "extract": "the transaction is the unit, never the line. A single-sided entry is not a small error — it is unrepresentable.",
+      "why_this_socket": "a pyramid cell was measured to close one diagonal exactly as it opens the other. That IS a paired entry: the exchange is the unit and half of it cannot be performed. Six cells, six exchanges, each with its price fixed in advance.",
+      "sightings": [
+        {
+          "where": "double-entry bookkeeping",
+          "domain": "finance"
+        },
+        {
+          "where": "XPBD constraint projection",
+          "domain": "physics"
+        },
+        {
+          "where": "conservation of momentum in a solver",
+          "domain": "physics"
+        },
+        {
+          "where": "Cassowary paired constraints",
+          "domain": "ui"
+        }
+      ],
+      "members": {},
+      "contact": {},
+      "built": {
+        "state": "absent",
+        "at": "—",
+        "probe": null,
+        "probe_in": "code",
+        "finding": "the trades are derived in solid.js as TRADES but nothing performs one. The socket is open, and law 2 governs anything drawn from it."
+      }
     }
-  ]
+  ],
+  "_sockets": "Three organs added 2026-08-16 on Kevin's line 'do open source research on all potential organs, and un place sockets'. Each names the SOCKET it was found for rather than a seat, because two of the three fill interior positions that are not seats at all. All three are state:absent — found in the commons, not built here. Not one is marked."
 }

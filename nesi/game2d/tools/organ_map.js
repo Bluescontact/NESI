@@ -72,7 +72,16 @@ function judge(e) {
   const o = { organ: e.organ, seat: e.seat, path: e.path || "either", form: e.form,
               broken: [], refusals: [], warnings: [] };
 
-  if (!NAMES.includes(e.seat)) { o.broken.push(`'${e.seat}' is not a seat of this solid`); }
+  /* AN ORGAN MAY FILL A SOCKET THAT IS NOT A SEAT. Added 2026-08-16: the interior
+     opened, and the radii and the pyramid cells are positions with no vertex. An
+     organ found for one of those carries `socket` instead of `seat`, and the
+     seat-shaped checks below do not apply to it — there is no adjacency to test
+     because it is not on the graph. */
+  if (e.socket && (!e.seat || e.seat === "—")) {
+    o.seat = null; o.socket = e.socket;
+    o.warnings.push(`fills the interior socket ${e.socket} — not a seat, so it has no members to name`);
+  }
+  else if (!NAMES.includes(e.seat)) { o.broken.push(`'${e.seat}' is not a seat of this solid`); }
   else {
     o.circuits = circuitsOf(e.seat).map(i => "C" + (i + 1)).join("∩");
     o.antipode = antipodeOf(e.seat);
@@ -168,6 +177,27 @@ for (const seat of (only ? [only] : NAMES)) {
     j.warnings.forEach(w => L(`      ~  ${w}`));
   }
   L("");
+}
+
+/* ── the interior sockets — positions with no vertex ──────────────────────── */
+{
+  const sock = judged.filter(j => j.socket);
+  if (sock.length) {
+    L("");
+    L("THE INTERIOR SOCKETS  —  positions the surface never had");
+    L("  " + "-".repeat(74));
+    for (const j of sock) {
+      const e = M.organs.find(x => x.organ === j.organ);
+      L("");
+      L(`  ${MARK[j.verdict]}   ${j.organ}   [${j.path}] [${j.form}]   ← ${j.socket}`);
+      L(`      mechanism: ${e.mechanism}`);
+      L(`      extract:   ${e.extract}`);
+      L(`      seen in ${j.sightings} places across ${j.domains.length} domains:`);
+      e.sightings.forEach(s => L(`                 ${s.domain.padEnd(20)} ${s.where}`));
+      j.warnings.forEach(w => L(`      ~  ${w}`));
+    }
+    L("");
+  }
 }
 
 if (only) process.exit(0);
