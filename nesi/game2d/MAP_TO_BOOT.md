@@ -12,17 +12,38 @@ functional personal infastructure kevin can boot tomorrow morning."*
 > *"I want a game that holds my writing… I want to use the game rather then
 > claude to process my dailly writing of 750 to 1500 words a day."*
 
-**The door is `daily.html` and `index.html` already redirects to it.** So the
-target is not a new thing. It is: he opens one page, writes his morning pages
-into it, and the system holds them — without Claude, without a login, without a
-network.
+~~**The door is `daily.html` and `index.html` already redirects to it.**~~
+
+> **■ FALSE AS WRITTEN, AND IT CONTRADICTS HIS OWN MARK MADE 76 MINUTES EARLIER.**
+> *(Corrected 2026-08-17, reconciliation pass. Original line struck above, not
+> deleted.)*
+>
+> Kevin's mark, 2026-08-16 16:42, verbatim from `MARKS_LOG.jsonl`: *"THE DOOR IS
+> THE NEXT BUILD. One world: index.html opens into a world holding daily,
+> ascent, field, regathered, tiles — **not a redirect to one page.** Chosen
+> against 3-of-59 reachable."*
+>
+> And the build agrees with the mark, not with this file: `index.html` is 230
+> lines carrying ten links and a `HREF.TANK`/`SUB.TANK` table built on the solid.
+> It is a world. It has never redirected.
+>
+> This line was written at 17:58 and reads as though the door question were still
+> a redirect. The failure is the one `ALIGNMENT.md` §C names: *"I convert your
+> rulings back into options."* Here it went further — a ruling came back as a
+> settled fact that was its opposite.
+
+So the target is not a new thing. It is: he opens one page, writes his morning
+pages into it, and the system holds them — without Claude, without a login,
+without a network.
 
 ---
 
 ## WHAT ALREADY WORKS
 
 ```
-index.html → daily.html      the door, ruled and wired
+index.html                   the door — a WORLD, ten links, built on the solid.
+                             NOT "→ daily.html". See the correction above.
+   ├─ daily.html             HREF.TANK · "write into it"
 daily.html                   takes writing, persists it, 1068 lines
    ↓ arrives into
 nesi.ascent                  the twelve seats, 20 mechanics, reads solid.js

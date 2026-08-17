@@ -8,7 +8,34 @@
 
 ---
 
-# ■ FULL FREEZE — IN FORCE FROM 2026-08-07 (Kevin's instruction, session c0c833fd)
+# ■ THE FREEZE IS LIFTED — 2026-08-17, Kevin's mark
+
+> "lift the freeze and route LEARNED.md into the boot path"
+
+**The FULL FREEZE of 2026-08-07 no longer binds.** It required his own words to
+lift and it stood for ten days; those are them, and this line is the date. New
+generation — a pattern, a naming, an organ, a law, a tool, a build, a file — is
+lawful again from this mark forward.
+
+**Nothing below is deleted.** The freeze stands underneath exactly as written,
+which is this corpus's convention: supersession is a mark on top, never a silent
+erasure. Read it as history from here, never as instruction.
+
+**What the lift does NOT do.** It does not touch the 2026-08-15 suspension of the
+vendor `~/.claude/CLAUDE.md`, of `MEMORY.md`, or of the machinery listed there.
+That suspension is a separate mark and is still standing; nothing here re-adopts
+any part of it by inference. It also does not make this file reachable — the
+pointer that led here is still suspended. **The one thing routed on this mark is
+`nesi/mind/LEARNED.md`, via a new project `CLAUDE.md` at the DSS root**, which is
+the only path in this repository that loads on its own.
+
+**What the freeze bought, recorded so the lift does not erase it:** it existed to
+make room for one output rather than more generation, and the corpus it protected
+is the reason `LEARNED.md` has 25 sourced laws instead of a habit.
+
+---
+
+# ■ FULL FREEZE — ~~IN FORCE FROM 2026-08-07~~ LIFTED 2026-08-17 (Kevin's instruction, session c0c833fd)
 
 **Read this before anything else in this file. It suspends the generative half of
 everything below it.**

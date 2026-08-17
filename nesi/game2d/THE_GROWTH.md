@@ -51,7 +51,8 @@ Every figure below is computed, not chosen.
 seats            12
 members          24        the perimeter
 roots            12        one per seat, radial
-LEVELS           36        24 + 12, per Kevin's ruling that roots are levels
+LEVELS           30        24 seams + 6 diameters, per Kevin's F10 mark 2026-08-17
+                 ~~36~~    was 24 + 12, when a root was read as one per seat
 
 faces            14        8 triangles (tools) + 6 squares (windows)
 cells            14        8 tetra (volume 1 each) + 6 pyramids (volume 2 each)
@@ -140,7 +141,7 @@ three-step ways, or the root. That is the only one-step crossing in the solid.
 
 Named so the plan cannot be read as complete.
 
-1. **The order of growth.** Nothing in the geometry sequences the 36. Which root grows second is yours.
+1. **The order of growth.** Nothing in the geometry sequences the 30. Which root grows second is yours.
 2. **What the sort sorts into.** The hand sorts — law 5 makes that binding and `refusal_check` enforces it. What the fractions are on the page is unwritten. `day_one.html` records that the hand acted and names no fraction.
 3. **Whether a root belongs to a seat or to a circuit.** There are twelve roots and four circuits and a seat sits on two circuits. The mapping is not one-to-one and the geometry does not hand it over.
 4. **What light does mechanically.** Water is sorting and pattern recognition and I can picture it. "Shareable form" I can define and cannot yet build.

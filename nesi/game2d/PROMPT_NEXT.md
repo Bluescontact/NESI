@@ -1,5 +1,18 @@
 # PASTE THIS INTO A FRESH SESSION
 
+> **■ COLLISION — TWO BOOT PROMPTS, ONE EVENING, MUTUALLY EXCLUSIVE.** *(Named
+> 2026-08-17, reconciliation pass. Not resolved — this is Kevin's word, not
+> mine.)*
+>
+> `THE_NEXT_SESSION.md`, written the same evening, opens with **"Read these six
+> before proposing anything"** and the six include four corpus files. This file
+> opens with **"DO NOT READ THE CORPUS."** They cannot both be pasted. They are
+> not a difference of emphasis: one says the library is the input, the other says
+> the library is the failure mode.
+>
+> Both are on the record and neither has his mark. **Whoever pastes one should
+> know the other exists.**
+
 ---
 
 You are building NESI, a 2D game with 3D objects, in `nesi/game2d/`. Kevin
@@ -32,8 +45,8 @@ node tools/check_all.js && node tools/predicate_filter.mjs
 Everything here was computed from `solid.js` and verified. `solid.js` is the
 authority; read it rather than a document about it.
 
-- **12 seats · 24 members · 12 radials.** Kevin ruled the roots are levels, so **36 levels**.
-- **12 water = fall 8 + turn 4. 12 light = rise 8 + return 4.** This falls out exactly; it was not assigned.
+- **12 seats · 24 members · 12 radials · 6 diameters.** Kevin ruled the roots are levels, and on 2026-08-17 marked F10 to the circuit PAIR — a root is a **diameter**, not one per seat. So **30 levels: 24 seams + 6 diameters.** ~~36~~ was counted from twelve roots and is stale. The six roots are the six lens traverses; every seat still sits on exactly one. Computed against `solid.js`, which already exports `DIAMETERS`.
+- ~~**12 water = fall 8 + turn 4. 12 light = rise 8 + return 4.**~~ **■ SUPERSEDED, and this file was the last place still asserting it.** Kevin's mark on fork F1, 2026-08-16: *"three equal physics — each addresses all twenty-four."* The arithmetic is untouched and still true — `fall` and `turn` number 12, `rise` and `return` number 12 — but those are member KINDS, water's own circuit, **not a split between two physics, and light is not a member kind.** `THE_GROWTH.md:78` and `ALIGNMENT.md:25` both carry this supersession; this line did not, which is worse than the others because this is the file that gets pasted. *(Layered 2026-08-17, reconciliation pass — nothing edited away.)*
 - **Every seam holds one triangle and one square** — one tool, one window, always. `facesAlong` returns a named pair. 8 tools × 3 seams = 6 windows × 4 seams = 24.
 - **Every seat has degree four.** A dead end is not constructible.
 - **`RIGIDITY`: 24 bars, 6 mechanisms.** The edges alone cannot hold a shape — which is why the figure does not visualise until roots grow. That is structural, not aesthetic.

@@ -3,6 +3,17 @@
 Written 2026-08-16 at the close, on Kevin's ask for a recalibration prompt and a
 cleaned lens set.
 
+> **■ COLLISION — TWO BOOT PROMPTS, ONE EVENING, MUTUALLY EXCLUSIVE.** *(Named
+> 2026-08-17, reconciliation pass. Not resolved — Kevin's word, not mine.)*
+>
+> `PROMPT_NEXT.md`, written later the same evening, opens with **"DO NOT READ THE
+> CORPUS — the library is a record, not a source"** and names the twelve-lens
+> audit as evidence that reading it returns it. This file opens with **"Read
+> these six before proposing anything,"** four of them corpus files, and makes
+> `already_answered.js` a precondition on asking. They cannot both be pasted.
+>
+> Both are on the record and neither has his mark.
+
 ---
 
 ## THE PROMPT

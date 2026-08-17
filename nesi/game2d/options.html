@@ -85,6 +85,14 @@
     border-left:2px solid var(--mk);padding:9px 11px;margin-bottom:10px}
   .f .landed b{font-weight:normal;letter-spacing:.12em;font-size:10px;
     text-transform:uppercase;color:var(--mk);display:block;margin-bottom:3px}
+  /* HIS WORDS, SAID OFF THIS PAGE. The mirror of `landed`: rendered only while
+     the fork is still OPEN, and gone the moment he marks it. Added 2026-08-17
+     because three forks he had already answered in conversation were reading as
+     untouched — the page was hiding his own answer back from him. */
+  .f .said{font-size:12.5px;color:var(--gd);background:var(--sf2);
+    border-left:2px dashed var(--mk);padding:9px 11px;margin-bottom:10px}
+  .f .said b{font-weight:normal;letter-spacing:.12em;font-size:10px;
+    text-transform:uppercase;color:var(--mk);display:block;margin-bottom:3px}
   .f.ready{border-left:3px solid var(--gb)}
   .f .ready-line{font-size:12.5px;color:var(--gd);border-left:2px solid var(--gb);
     padding-left:11px;margin-bottom:10px}
@@ -173,7 +181,16 @@ const SETTLED = [
 /* ═══ THE OPEN FORKS ══════════════════════════════════════════════════════
    Order is the order they arose. `gates` is drawn in the map above and never
    hides anything: a gated fork renders whole whether or not its parent is
-   marked. It says what it now reads against, and that is all. */
+   marked. It says what it now reads against, and that is all.
+
+   ■ KEY NAMESPACE COLLISION — named 2026-08-17, reconciliation pass.
+   The keys F1, F5 and F7 are REUSED. MARKS_LOG.jsonl already carries, from an
+   earlier era, "F1 RULED: the two tetras meet face to face" and "F5 RULED: the
+   operator's hand runs the filter" — different questions entirely, both still
+   standing as marks. A session grepping MARKS_LOG for "F1 RULED" gets the tetra
+   interface, not the root fork. When marking anything on this page, write the
+   date and the question with the key, never the key alone. Not resolved here:
+   renaming these keys is Kevin's, and the old marks must not be rewritten. */
 const FORKS = [
 
 { k:"F1", g:"THE ROOT FORK", n:"Is light a half of the member set, or a third physics over the whole of it?",
@@ -206,7 +223,7 @@ const FORKS = [
   cost:"WHOLE: a real data layer, and every surface has to learn it. PROVENANCE ONLY: the two-axis instrument — origin (quoted / introduced / inherited) crossed with disposition (unresolved / yes / no), where accepting something never rewrites where it came from. That is the piece that lets a root be SHOWN to have survived without anything being counted. DECLINE: day_one.html's two hand-gestures stay the whole of it.",
   read:"If one piece comes across, provenance is the one I would take, and I would sever it from the completion test in F5 so it stops dragging that in with it.",
   inCode:true,
-  landed:"Built in day_one.html. Every banked sentence carries an ORIGIN, fixed at bank time, printed with no control on it at all — because it is not a decision. Sorting cannot reach it. Verified by driving: four sentences sorted into four fractions, all four origins still `quoted` afterwards. No Fruit, no Seed, no Traversal, no WritingObject — none of it entered.",
+  landed:"OVERTURNED BY YOUR MARK, 2026-08-17: adopt whole. What the build had done up to then was the narrow half — every banked sentence in day_one.html carries an ORIGIN, fixed at bank time, printed with no control on it, sorting unable to reach it; verified by driving four sentences into four fractions with all four origins still `quoted` afterwards. That stands and is not undone. What your mark adds is the rest of the object model — Fruit, Seed, Traversal, WritingObject — which no surface has yet. Read with F5: you marked completion as the named pair, which severs the deposit's tally from the object model, so the model comes across WITHOUT its completion test.",
   o:["adopt whole",
      "adopt provenance only — origin × disposition",
      "decline — the two gestures are enough",
@@ -218,7 +235,7 @@ const FORKS = [
   cite:"artifact §15 four origins · §7 \"This is not yet a law\" · §XI open edges\nALIGNMENT.md:110 B7 — the same collision from the other side\nrefusal_check enforces law 3 and currently passes",
   cost:"YES costs an exemption in refusal_check, and you have said that check is not to be touched without your word. NO costs nothing — three origins stand and the fourth is dropped. CANDIDATE is where the deposit already leaves it.",
   inCode:true,
-  landed:"Built as an absence. ORIGINS carries three keys and `inferred` is not one of them. refusal_check untouched and passing.",
+  landed:"OVERTURNED BY YOUR MARK, 2026-08-17: yes, and refusal_check is amended by this mark. It had been built as an absence — ORIGINS carrying three keys with `inferred` not among them, refusal_check untouched. Your mark is the word I said I would not move without. ITS SCOPE IS SET BY F9, WHICH YOU MARKED IN THE SAME PASS: the last twelve are outside the core loop by definition. So `inferred` is lawful THERE and unlawful in the core loop, where laws 4 and 5 still bind — the hand runs the filter, no computed pass, no inferred category on the player path. That reading is the only one that makes both of your marks true at once; it is mine, and it is stated rather than assumed silently.",
   o:["no — three origins; inference is not one of them",
      "yes, and refusal_check is amended by this mark",
      "hold it as candidate, as the deposit does"] },
@@ -239,7 +256,7 @@ const FORKS = [
   cite:"measured this session: 6 → 5 → 4 → 3 → 2 → 1 → 0, one per window, either direction\nTHE_GROWTH.md:139 — the collapse is available only while a window is still unsited\nartifact §35 JITTERBUG · §36 CONDENSE · §38 RELEASE",
   cost:"THE PRICE IS THE MECHANIC gives the ending its cost and makes the whole arc mean something — and it means the finished world is one you cannot keep looking at. CAP AT FIVE keeps the fold alive and leaves one window permanently empty, which the build would have to explain. DROP THE COLLAPSE keeps every display and the world lives without travelling.",
   read:"The deposit's own line is 12 the world can live, 24 the world can travel. The measurement says those are the same account, and that is either the best thing in the arc or the thing that breaks it.",
-  landed:"Held, so nothing was built and nothing was foreclosed. The price stands measured either way: 6 → 5 → 4 → 3 → 2 → 1 → 0, one mechanism per window, order-independent.",
+  landed:"RULED 2026-08-17: cap at five. It had been held. One window stays permanently unsited so the fold survives, which means five display surfaces, not six, and the world can still be carried out. The build has to explain the empty window rather than explain the loss of portability — and the price stands measured: 6 → 5 → 4 → 3 → 2 → 1 → 0, one mechanism per window, order-independent. Five sited leaves exactly one mechanism, which is the minimum that still folds.",
   o:["the price is the mechanic — portability costs the displays",
      "cap at five — one window stays unsited so the fold survives",
      "drop the collapse — the world lives and does not travel",
@@ -282,6 +299,7 @@ const FORKS = [
   cite:"THE_GROWTH.md:134 — the question as it stood\nmeasured this session: C0&C1→DAM/HELIOSTAT · C0&C2→STATIONS/OVERWINTERING\n  C0&C3→DEEP/CAST · C1&C2→GROUND/GARDEN · C1&C3→FILTER/SEATING · C2&C3→TANK/LENS",
   cost:"Seat gives twelve roots and twelve seats, one each, and says nothing about circuits. Circuit does not divide — twelve into four leaves each circuit three roots and no rule for which. Circuit-pair gives SIX diameters, not twelve roots, so it halves the count and would move F2.",
   read:"The third option is new information on an old fork, not a preference. It is also the only one the geometry supplies free — but it costs six, not twelve, and that lands on the count.",
+  landed:"RULED 2026-08-17: the circuit PAIR — the six diameters. It needed no new geometry; solid.js already exports DIAMETERS (6) alongside RADII (12), and RADII[i].circuits already carries the pair. Computed against solid.js on the mark: all six are true antipodal pairs, every one of the twelve seats sits on exactly ONE diameter — so no seat loses its root — and TANK–LENS is not a member, so a root is still not an edge. THE COUNT MOVES, AND THIS IS ARITHMETIC, NOT A SECOND DECISION: twenty-four seams plus six diameters is THIRTY, not thirty-six. The 36 was counted from twelve roots. Under this mark the six roots ARE the six lens traverses, which is why TANK ↔ LENS worked as a root move in the first place. THE_GROWTH.md and PROMPT_NEXT.md both still print 36 and are now stale on it.",
   o:["to a seat — twelve roots, twelve seats",
      "to a circuit",
      "to a circuit PAIR — the six diameters, as measured today",
@@ -302,29 +320,110 @@ const FORKS = [
   q:"Roughly 1,257 open items across three ledgers sit outside the build, and PROMPT_NEXT.md rules the library a record and not a source. My read is that the game is fed by writing done inside it — but that is a read and not your word, and it decides whether I ever build an intake path.",
   cite:"ALIGNMENT.md B10 · PROMPT_NEXT.md:9 — \"DO NOT READ THE CORPUS\"\nDownloads/ — an unwatched intake, two artifacts crossed by hand and drifted",
   cost:"No means no intake path is ever built and the corpus stays a record. Yes means an intake, and every intake this system has built has drifted. By hand means one at a time, with your mark on each, which is the only version that has ever held.",
+  said:"ANSWERED IN PROSE 2026-08-17, NOT THROUGH THIS PAGE, so this surface was still calling it open. Your words: \"The corpus doesn't enter... but a condensed pattern library can be brought into the first working version built for kevin.\" That was none of the three offered — it is a bounded import, not one-at-a-time by hand — so it is now the fourth option below and the click is still yours. Nothing built: what bounds \"condensed\" is not something I can derive, and read with F8 the library arrives as files you hold rather than into the store.",
   o:["no — the game is fed only by writing done inside it",
      "yes, and I will say what crosses",
-     "only what you carry in by hand, one at a time"] },
+     "only what you carry in by hand, one at a time",
+     "the corpus does not enter — but a condensed pattern library comes into the first working version"] },
 
 { k:"F13", g:"STILL STANDING FROM ALIGNMENT", n:"Two surfaces claim TANK",
   gates:[],
   q:"daily.html is the one you have actually walked and the door points at it. day_one.html gives TANK its five levels and records two hand-gestures, and it has never been opened by a person. Both are TANK.",
   cite:"PROMPT_NEXT.md:72 — do not displace daily.html\nday_one.html — built 2026-08-16, unwalked",
   cost:"Nothing is lost either way — day_one.html writes only to nesi.dayone and touches none of your writing. What it costs is which surface the next twelve levels are built on top of.",
+  said:"ANSWERED IN PROSE 2026-08-17, NOT THROUGH THIS PAGE. Your words: \"bring the features of both, and weave them together in a version to bring forward.\" That is a fourth thing, not option three — both standing as separate levels is not the same as one woven surface — so it is added below and the click is yours. Nothing built yet: this is the largest unbuilt unit on the page. daily.html is 1068 lines with nineteen asserted properties in daily_walk, and anything lifted into it runs against that check before it counts.",
   o:["daily.html is the seat — day_one folds into it",
      "day_one.html is the seat",
      "they are different levels and both stand",
-     "I will walk it first, then say"] },
+     "I will walk it first, then say",
+     "weave both — the features of each, carried forward as one version"] },
 
 { k:"F14", g:"STILL STANDING FROM ALIGNMENT", n:"The unit of work you want back",
   gates:[],
   q:"Left alone I overshoot — that is measured, not modest: one session produced a 260K reading, an HTML deposit, five prompts, a rebuilt instrument and a door. Naming the unit is the only thing that has ever stopped it.",
   cite:"ALIGNMENT.md B11 · ALIGNMENT.md:196 — what I do wrong unless stopped",
   cost:"This one costs nothing to mark and changes every session after it.",
+  said:"ANSWERED IN PROSE 2026-08-17, NOT THROUGH THIS PAGE. Your words: \"run full development on the units of work in nesi.\" None of the four offered said that — every one of them rations, and you did the opposite — so it is added below and the click is yours. This one has already taken effect: the F4 amendment, the F10 arithmetic and this page's own correction were done in one pass under it rather than stopping after the first.",
   o:["one route, built and walked, then stop",
      "one level",
      "one gesture",
-     "built and reported — I will walk it myself"] }
+     "built and reported — I will walk it myself",
+     "full development on the units of work — not rationed"] },
+
+/* ═══ ARRIVED AFTER THE FOURTEEN — 2026-08-17 ═══════════════════════════════
+   These six were not on this page when you marked it, which is why it read
+   "12 marked · 3 still standing" as though the space were nearly closed. Four
+   came out of the reconciliation and had been living in a chat window only,
+   which is the one place a fork cannot be marked. Two are the residue of your
+   own marks: F19 is what F12 needs before it can be built, F20 is what F10 did
+   to F9. Same rule as everything above — nothing is chosen for you, and a key
+   is never written to the log without its date and its question. */
+
+{ k:"F15", g:"ARRIVED AFTER THE FOURTEEN", n:"The freeze — does it still bind?",
+  gates:["F16","F18"],
+  q:"PROTOCOLS.md reads \"■ FULL FREEZE — IN FORCE FROM 2026-08-07 … no new spec, brief, report, or .md file of any kind\" and carries no notice of the 2026-08-15 suspension. Twenty commits on 08-16 did exactly what it forbids. Its only route into a session is the vendor pointer, and the pointer is suspended — so it may have fallen without anyone lifting it.",
+  cite:"nesi/mind/PROTOCOLS.md:12 — the freeze, unamended\nCLAUDE.md — the 2026-08-15 suspension, which names the pointer but not this file\nMARKS_LOG — \"the freeze binds machine initiative, never his\"",
+  cost:"FELL WITH THE POINTER means the twentieth commit was lawful and nothing is owed. NEVER FELL means yesterday ran against it and the record should say so. LIFTED NOW is the only option that leaves a dated line anyone can find later. BINDS MACHINE INITIATIVE ONLY costs nothing and is how I have actually been operating — I built today on your instruction and would not have started any of it alone.",
+  read:"My read is the last one, and I have been acting on it rather than waiting, because your own record states it in those words. That is a read, not your word, and it gates F16 and F18 — I will not open the nesi/mind tree or admit a card under an inference.",
+  o:["it fell with the pointer on 2026-08-15",
+     "it never fell — yesterday ran against it",
+     "lifted now, and this mark is the date",
+     "it stands, and binds machine initiative only — never me"] },
+
+{ k:"F16", g:"ARRIVED AFTER THE FOURTEEN", n:"Which NESI does the work serve?",
+  gates:["F18"], up:["F15"],
+  q:"There are two systems sharing the name. The game is nesi/game2d — solid.js, twelve seats, twenty-four members, verified, twenty commits yesterday. The gate is nesi/mind — cards, Daily Mode, Deep Review, the Escalation Rule, Terminal Law, the smuggle detector — last touched 2026-08-11 and untouched since.",
+  cite:"measured: \"Terminal Law\" · \"Daily Mode\" · \"Deep Review\" · \"Escalation Rule\" return ZERO hits in nesi/game2d and 16–61 across the corpus, all in nesi/mind\nnesi/mind/ESCALATION_CONDITIONS.md · NESI_RECONCILED_VISION.md · ROUTER.md — 2026-08-11",
+  cost:"THE GAME has a verified authority and a walkable surface, and every mark on this page lands in it. THE GATE has no build and now has fifty-eight cards pointed at it. BOTH is honest but needs the seam named, because nothing currently connects them and each has been developed as if the other did not exist.",
+  read:"The game, on the evidence — but note what that costs: it strands the four extractions you deposited today, every one of which is addressed to the gate.",
+  o:["the game — nesi/game2d",
+     "the gate — nesi/mind",
+     "both, and I will name the seam between them",
+     "the split is wrong — I will say why"] },
+
+{ k:"F17", g:"ARRIVED AFTER THE FOURTEEN", n:"Does NOT CANON still stand on the Carry-Forward?",
+  gates:[],
+  q:"NESI_Rooted_World_Carry_Forward_v0.3.docx stamps DEVELOPMENTAL / NOT CANON on its own first page and marks its three laws [HARDENED]. Your correction yesterday named the same three as the constitutional layer — the things that may never be violated. Both are yours, eight days apart in tone and one document apart in force.",
+  cite:"the docx, page 1 — \"DEVELOPMENTAL / NOT CANON\"\nyour correction — \"The constitution names what must remain true\"\nthe fruit ruling, already in the build — a cast carries physics and NOT ONE CHARACTER OF HIS TEXT; two unrelated texts of equal length produced a BYTE-IDENTICAL cast",
+  cost:"THE STAMP STANDS keeps them liftable and means no check may cite them. PROMOTED makes them citable and means a build can be failed against them. OPERATING WITHOUT THE NAME is what is actually true today — two of the three are already enforced in code under other names — and costs nothing but leaves them unciteable.",
+  read:"The third. The code already enforces changed-conditions-are-not-changed-content and ancestry-survives-transformation; naming them canon would ratify what is running rather than add anything. But the document says NOT CANON in your hand and I will not overwrite that by inference.",
+  o:["the stamp stands — developmental, not canon",
+     "promoted — the three laws are constitutional",
+     "they operate as constraints without being named canon",
+     "a different reading — I will say it"] },
+
+{ k:"F18", g:"ARRIVED AFTER THE FOURTEEN", n:"The fifty-eight cards",
+  gates:[], up:["F15","F16"],
+  q:"Four external extractions deposited 2026-08-17 carry 58 cards between them — 15 GitHub, 14 OpenCivics, 14 systemeducation, 15 P2P. Every one routes to the gate: capacity input, the Escalation Rule, Daily Mode, the smuggle detector, the mark ledger. Measured across all four files: game2d 0, solid.js 0, cuboctahedron 0, the solid 0, jitterbug 0, fruit 0. Two cite the Godot build, retired 2026-08-14.",
+  cite:"the four .md deposits, 2026-08-17\nverified by count, not by reading impression",
+  cost:"HOLD costs nothing and is what they themselves ask — \"Cards order nothing. They wait at the gate.\" ROUTE TO nesi/mind opens a tree that has not moved in six days and is gated on F15 and F16. COMPOST loses genuinely new instruments — the strongest is unearned equivalence, which returns zero hits corpus-wide and names the disease your twelve refusals have each been treating one symptom of. THE FEW is the only option that admits any of it to the game.",
+  read:"Their own unanimous finding is the argument for holding: a schema shipped without its fill rate. Fifty-eight cards at a gate with no build behind it would be the first thing in this tree to fail that test — and this page passing it is the only reason the test is worth quoting.",
+  o:["hold at the gate, unopened",
+     "route them to nesi/mind and open that tree",
+     "compost them",
+     "the few that survive contact with the game — I will say which"] },
+
+{ k:"F19", g:"THE RESIDUE OF YOUR OWN MARKS", n:"What bounds \"condensed\"?",
+  gates:[], up:["F12"],
+  q:"You marked F12: a condensed pattern library comes into the first working version. patterns/ is the source. I cannot derive what condensed means and will not pick a number — every intake this system has built has drifted, and an unbounded one is the landfill all four deposits describe.",
+  cite:"your F12 words, 2026-08-17\nF8 — the store is a cache; the files are the world",
+  cost:"A COUNT is checkable and arbitrary. YOUR SELECTION is the only version that has ever held on this record and costs you an act. A DERIVATION needs a rule, and a rule that selects patterns is a classifier, which laws 4 and 5 now forbid on the core loop — so it would have to be your hand or a declared surface outside it.",
+  read:"Read with F8: the library arrives as files you hold, not into the store, or it stops being condensed the first time it grows.",
+  o:["a count — I will say the number",
+     "my selection, one at a time",
+     "a derivation — and I will say the rule",
+     "not yet — the first working version comes first"] },
+
+{ k:"F20", g:"THE RESIDUE OF YOUR OWN MARKS", n:"Which twelve are \"the last twelve\"?",
+  gates:[], up:["F9","F10"],
+  q:"F9 put the last twelve outside the core loop. F10 then moved the count from 36 to 30, so which twelve are last is no longer settled by anything. I built the boundary as a declaration in code rather than a level range precisely so nothing hangs on this — but the phrase is in your mark and the range is not derivable.",
+  cite:"your F9 and F10 marks, both 2026-08-17\nrefusal_check — CORE_LOOP = false plus a reason, four falsifiers driven\n24 seams + 6 diameters = 30, computed against solid.js",
+  cost:"THE DECLARATION STANDS means no range is ever needed and a surface says what it is. A RANGE gives a number and needs re-deriving every time the count moves — it already moved once today. THE SIX ROOTS is the one reading the geometry offers free, since the six diameters are exactly the six lens traverses.",
+  read:"The declaration is already built and proven, and it is the only version that cannot widen quietly. A range would have to be re-cut the next time you move the count.",
+  o:["the declaration stands — no range, a surface declares itself",
+     "a range — and I will say which levels",
+     "the six roots are the outside — the diameters, not a tail of twelve",
+     "a different cut — I will say it"] }
 ];
 
 /* ══ storage. Yours, kept in this browser, never sent. ═════════════════════ */
@@ -418,6 +517,11 @@ function card(f, isSettled){
      actually built. Not what the mark means; that is yours. */
   if (M[f.k] && f.landed)
     h += '<div class="landed"><b>what this mark did in the build</b>' + esc(f.landed) + '</div>';
+  /* the mirror: his words when he answered somewhere other than here. Renders
+     only while the fork is open, and it is NOT a mark — the tally still counts
+     this fork as standing, because only his click marks. */
+  if (!M[f.k] && f.said)
+    h += '<div class="said"><b>you answered this off the page — the click is still yours</b>' + esc(f.said) + '</div>';
 
   /* A FORK WHOSE GATES ARE NOW MARKED. Computed from your marks, never from my
      memory of them — clear the marks and this line goes with them. */

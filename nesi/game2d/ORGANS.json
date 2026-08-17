@@ -1,1103 +1,1254 @@
 {
-  "_": "THE ORGANS — the mechanisms that populate the vector equilibrium.",
-  "__": "Kevin's correction 2026-08-16: 'I want to extract from projects, and use code bits,",
-  "___": "rather than importing whole projects. I'm searching for patterns, and mechanism,",
-  "____": "and the organs that populate the VE.'",
-  "_____": "THE UNIT IS THE MECHANISM, NEVER THE PROJECT. A sighting names where the organ",
-  "______": "was seen in the wild; it is evidence the pattern is real, not a dependency.",
-  "_______": "form:mechanism = written from the pattern, no licence event. form:verbatim = copied",
-  "________": "source text, which IS a licence event and is flagged as one.",
-  "_________": "THE RECURRENCE TEST: an organ is confirmed at three or more sightings in three or",
-  "__________": "more UNRELATED domains. One project doing a clever thing is a trick. The same",
-  "___________": "mechanism in storage, in graphics and in biology is an organ.",
-  "gestures": {
-    "TANK": "I POUR",
-    "DAM": "I HOLD, THEN I LET GO",
-    "FILTER": "I TAKE THIS ONE OUT",
-    "STATIONS": "I SEND THIS THERE",
-    "GROUND": "I LET IT SETTLE",
-    "DEEP": "I LET IT GO DOWN",
-    "LENS": "I WORK IT UNTIL IT HOLDS",
-    "HELIOSTAT": "I AIM",
-    "SEATING": "I FEED THE FRAME",
-    "OVERWINTERING": "I COME BACK",
-    "GARDEN": "I LET IT GROW",
-    "CAST": "I GIVE IT AWAY"
-  },
-  "organs": [
+ "_": "THE ORGANS — the mechanisms that populate the vector equilibrium.",
+ "__": "Kevin's correction 2026-08-16: 'I want to extract from projects, and use code bits,",
+ "___": "rather than importing whole projects. I'm searching for patterns, and mechanism,",
+ "____": "and the organs that populate the VE.'",
+ "_____": "THE UNIT IS THE MECHANISM, NEVER THE PROJECT. A sighting names where the organ",
+ "______": "was seen in the wild; it is evidence the pattern is real, not a dependency.",
+ "_______": "form:mechanism = written from the pattern, no licence event. form:verbatim = copied",
+ "________": "source text, which IS a licence event and is flagged as one.",
+ "_________": "THE RECURRENCE TEST: an organ is confirmed at three or more sightings in three or",
+ "__________": "more UNRELATED domains. One project doing a clever thing is a trick. The same",
+ "___________": "mechanism in storage, in graphics and in biology is an organ.",
+ "gestures": {
+  "TANK": "I POUR",
+  "DAM": "I HOLD, THEN I LET GO",
+  "FILTER": "I TAKE THIS ONE OUT",
+  "STATIONS": "I SEND THIS THERE",
+  "GROUND": "I LET IT SETTLE",
+  "DEEP": "I LET IT GO DOWN",
+  "LENS": "I WORK IT UNTIL IT HOLDS",
+  "HELIOSTAT": "I AIM",
+  "SEATING": "I FEED THE FRAME",
+  "OVERWINTERING": "I COME BACK",
+  "GARDEN": "I LET IT GROW",
+  "CAST": "I GIVE IT AWAY"
+ },
+ "organs": [
+  {
+   "organ": "the append-only log",
+   "seat": "TANK",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "append(bytes) → offset. Nothing is ever edited in place; the offset is the only handle and it is not a count.",
+   "extract": "one write path, one fsync, no update and no delete. The refusal to implement update IS the organ.",
+   "why_this_seat": "what banks cannot be un-banked, and the tank keeps sentences verbatim forever",
+   "sightings": [
     {
-      "organ": "the append-only log",
-      "seat": "TANK",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "append(bytes) → offset. Nothing is ever edited in place; the offset is the only handle and it is not a count.",
-      "extract": "one write path, one fsync, no update and no delete. The refusal to implement update IS the organ.",
-      "why_this_seat": "what banks cannot be un-banked, and the tank keeps sentences verbatim forever",
-      "sightings": [
-        {
-          "where": "SQLite WAL",
-          "domain": "storage"
-        },
-        {
-          "where": "Kafka log segments",
-          "domain": "messaging"
-        },
-        {
-          "where": "git loose objects",
-          "domain": "version-control"
-        },
-        {
-          "where": "tree rings / varve deposition",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "GROUND": "the log is the bed, oldest deepest",
-        "OVERWINTERING": "offsets outlive the session, so a return reads what elapsed"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "kept:\\s*\\[\\]",
-        "probe_in": "code",
-        "finding": "S.kept — appended, never trimmed, never reordered, never counted at any door. The comment above it states all four refusals and the code keeps them."
-      }
+     "where": "SQLite WAL",
+     "domain": "storage"
     },
     {
-      "organ": "the uncommitted buffer",
-      "seat": "TANK",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "two stores, one shadowing the other. Typed state is not state until one keystroke promotes it; abandoning it costs nothing.",
-      "extract": "draft + committed, and a single promote(). Escape discards the draft and says nothing.",
-      "why_this_seat": "the tank's held form, already built — everything typed sits uncommitted until Ctrl+Enter",
-      "sightings": [
-        {
-          "where": "git index / staging area",
-          "domain": "version-control"
-        },
-        {
-          "where": "vim insert-mode buffer",
-          "domain": "text"
-        },
-        {
-          "where": "a database transaction before COMMIT",
-          "domain": "storage"
-        },
-        {
-          "where": "double-buffered rendering",
-          "domain": "graphics"
-        }
-      ],
-      "members": {
-        "FILTER": "a committed line enters suspension",
-        "GROUND": "a committed line falls and settles"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.kept=\\(S\\.kept\\|\\|\\[\\]\\)\\.concat",
-        "probe_in": "code",
-        "finding": "typed text is not state until Ctrl+Enter; Escape sets the whole panel down and says nothing."
-      }
+     "where": "Kafka log segments",
+     "domain": "messaging"
     },
     {
-      "organ": "the token bucket",
-      "seat": "DAM",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "level = min(cap, level + rate·dt). A take spends it; there is only as much head as actually accrued.",
-      "extract": "four lines. The level is drawn as form and never as a figure.",
-      "why_this_seat": "the head is spent, and what was held is not held any more",
-      "sightings": [
-        {
-          "where": "golang.org/x/time/rate",
-          "domain": "systems"
-        },
-        {
-          "where": "nginx limit_req",
-          "domain": "network"
-        },
-        {
-          "where": "TCP congestion window",
-          "domain": "network"
-        },
-        {
-          "where": "a reservoir with a spillway",
-          "domain": "hydrology"
-        }
-      ],
-      "members": {
-        "STATIONS": "a spent token arrives already needing a destination",
-        "GROUND": "what the release moves, it deposits"
-      },
-      "contact": {
-        "number": true
-      },
-      "number_suppressible": true,
-      "built": {
-        "state": "partial",
-        "at": "ascent.html",
-        "probe": "held:\\s*0,[\\s\\S]{0,80}released:\\s*0",
-        "probe_in": "code",
-        "finding": "w.held / w.level / w.released are the reservoir, but the head refills FROM WRITING, not from elapsed time. That is a deliberate divergence from the wild organ and it is the better one here — a clock-filled bucket would hand the player head they did not pour."
-      }
+     "where": "git loose objects",
+     "domain": "version-control"
     },
     {
-      "organ": "charge-and-release",
-      "seat": "DAM",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a value builds while the input is held and decays if the hand stops. Release fires with whatever was built; abandonment undoes it.",
-      "extract": "while(down) c = min(1, c + dt/T); on up → fire(c); if idle → c *= decay",
-      "why_this_seat": "the gathering IS the holding — and the same organ is the built mechanic at ↑CAST, which is a real member of this seat",
-      "sightings": [
-        {
-          "where": "a drawn bow / pull-back launcher",
-          "domain": "games"
-        },
-        {
-          "where": "ADSR envelope attack stage",
-          "domain": "audio"
-        },
-        {
-          "where": "capacitor charge curve",
-          "domain": "electronics"
-        },
-        {
-          "where": "CSS :active held state",
-          "domain": "ui"
-        }
-      ],
-      "members": {
-        "CAST": "the pull that departs",
-        "SEATING": "the shape of the head decides the next frame"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "function hold\\(dt, ?secs\\)",
-        "probe_in": "code",
-        "finding": "hold(dt,secs) is one shared verb serving dam · heliostat · cast. The decay-on-abandon lives at CAST alone: L.pull = holding() ? hp.held : max(0, L.pull-dt/900)."
-      }
-    },
-    {
-      "organ": "behaviour-typed motion",
-      "seat": "FILTER",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "each item moves by its own law — sinks fast, hangs, films — so its kind is readable from motion alone. Nothing labels it.",
-      "extract": "per-item v(t) from a drag constant; the hand hit-tests position. Colour is redundant, which is law 10 satisfied by construction, and NOTHING CLASSIFIES, which is law 5 satisfied by construction.",
-      "why_this_seat": "separation by behaviour, by hand — this is the seat's whole definition, mechanised",
-      "sightings": [
-        {
-          "where": "Stokes settling velocity by grain size",
-          "domain": "sedimentology"
-        },
-        {
-          "where": "per-type drag in a particle system",
-          "domain": "graphics"
-        },
-        {
-          "where": "density-gradient centrifugation",
-          "domain": "biology"
-        },
-        {
-          "where": "sieve analysis / hydrometer test",
-          "domain": "materials"
-        }
-      ],
-      "members": {
-        "GROUND": "what is not taken settles",
-        "DEEP": "what is not taken falls past"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "kinds=\\[\\{k:\"bedload\",v:2\\.6,w:0\\},\\{k:\"suspended\",v:0\\.7,w:1\\.4\\},\\{k:\"film\",v:0\\.12,w:0\\.2\\}\\]",
-        "probe_in": "code",
-        "finding": "three sink rates and three lateral wanders. Kind is readable from motion alone, so law 5 and law 10 are satisfied BY CONSTRUCTION — there is no classifier to remove because there was never one to add. The cleanest organ in the tree."
-      }
-    },
-    {
-      "organ": "the diff hunk",
-      "seat": "FILTER",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "two sequences reduced to runs of same and different. It produces the separation and takes nothing — which run is taken is the hand's.",
-      "extract": "the diff, never the patch. Patch application rewrites, which law 4 forbids on the player path.",
-      "why_this_seat": "it makes the separation available without making the choice",
-      "sightings": [
-        {
-          "where": "Myers diff in git",
-          "domain": "version-control"
-        },
-        {
-          "where": "rsync rolling checksum",
-          "domain": "network"
-        },
-        {
-          "where": "dynamic time warping alignment",
-          "domain": "audio"
-        },
-        {
-          "where": "sequence alignment (Needleman–Wunsch)",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "TANK": "a taken hunk returns to the page",
-        "DEEP": "an untaken hunk falls past"
-      },
-      "contact": {},
-      "built": {
-        "state": "absent",
-        "at": "—",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "nothing compares two states and offers the runs. The withdrawal route (a deleted sentence leaving by way of the filter) is where it would sit."
-      },
-      "struck": {
-        "by": "kevin",
-        "on": "2026-08-16",
-        "his_words": "Filter is the porcess the user builds through their own desciions, gestures and clicks.",
-        "what_it_closes": "The second FILTER organ is not a supplied comparison. It is a process ASSEMBLED BY THE HAND out of its own acts. The slot is open and the candidate is named in the session, unsited."
-      }
-    },
-    {
-      "organ": "the void return",
-      "seat": "STATIONS",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "the send returns nothing. Not a boolean, not a subscriber count, not a promise. A void signature CANNOT leak a confirmation.",
-      "extract": "law 6 made enforceable by type. The set-down is the call whose return type makes feedback impossible to add by accident.",
-      "why_this_seat": "no destination, no animation, no confirmation — the absence is the feedback",
-      "sightings": [
-        {
-          "where": "NATS core publish",
-          "domain": "messaging"
-        },
-        {
-          "where": "UDP sendto",
-          "domain": "network"
-        },
-        {
-          "where": "window.postMessage",
-          "domain": "ui"
-        },
-        {
-          "where": "an event emitter with no listeners",
-          "domain": "systems"
-        }
-      ],
-      "members": {
-        "DEEP": "drop to the lake",
-        "LENS": "send it on to be worked",
-        "DAM": "the send is what the release spends"
-      },
-      "set_down": true,
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "const on = memberFor\\(out\\);[\\s\\S]{0,120}if\\(!on\\) return;",
-        "probe_in": "code",
-        "finding": "BUILT 2026-08-16. Was one identical branch for all three bays. send() is now the only way a piece leaves and its return value is the only thing the draw may read; the value is the member it left on, asked of solid.js, and the solid gives the set-down none. Verified in the page: send('spire') and send('lake') return objects, send('set') returns undefined. A confirmation on the set-down is un-writable, not merely unwritten."
-      }
-    },
-    {
-      "organ": "the null sink",
-      "seat": "STATIONS",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "a named destination that consumes and does nothing. It is a real output with a real name and no effect — engineered, not an error path.",
-      "extract": "the third bay is a sink, not a missing case. An unmatched route returning 404 is a confirmation and fails this seat; fakesink returning nothing passes.",
-      "why_this_seat": "set it down, and it has somewhere to have gone that is nowhere",
-      "sightings": [
-        {
-          "where": "GStreamer fakesink",
-          "domain": "media"
-        },
-        {
-          "where": "/dev/null",
-          "domain": "systems"
-        },
-        {
-          "where": "syslog discard target",
-          "domain": "logging"
-        },
-        {
-          "where": "a no-op tracer / null object pattern",
-          "domain": "software-design"
-        }
-      ],
-      "members": {
-        "DEEP": "the sink is below",
-        "GROUND": "the two sited outputs deposit"
-      },
-      "set_down": true,
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "if\\(L\\.ack\\)\\{ L\\.ackT=",
-        "probe_in": "code",
-        "finding": "BUILT 2026-08-16. The third bay was already a real named destination; it is now genuinely null. The departure mark is drawn from send()'s return and is unreachable for the set-down — not skipped by a name test the next hand could delete, but unreachable because there is no value. The count still rises for all three, which is the seat's field five and never reaches the player."
-      }
-    },
-    {
-      "organ": "relaxation to rest",
-      "seat": "GROUND",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "integrate with damping until velocity falls under a threshold, then freeze. The hand cannot hurry it because dt is wall-clock.",
-      "extract": "alpha *= decay; if (alpha < min) sleep(). No placement anywhere in the loop.",
-      "why_this_seat": "you do not place them — they land where they land, and the cost to the hand is none",
-      "sightings": [
-        {
-          "where": "d3-force alpha decay",
-          "domain": "graphics"
-        },
-        {
-          "where": "Box2D sleeping bodies",
-          "domain": "physics"
-        },
-        {
-          "where": "simulated annealing cooling",
-          "domain": "optimisation"
-        },
-        {
-          "where": "sediment settling to angle of repose",
-          "domain": "sedimentology"
-        }
-      ],
-      "members": {
-        "TANK": "what was poured is what falls",
-        "STATIONS": "what has settled can be routed"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "y:-40-i\\*70,v:0,set:false",
-        "probe_in": "code",
-        "finding": "blocks carry their own velocity and come to rest; the hand does not place them and cannot hurry them. Arrival order, oldest deepest."
-      }
-    },
-    {
-      "organ": "background compaction",
-      "seat": "GROUND",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "a merge pass that runs when nobody is looking. Newest shallow, oldest deep, and returning later finds it already done.",
-      "extract": "the work happens between visits, not during them — the one output that costs the hand nothing.",
-      "why_this_seat": "return later and find it already settled; the world does this while you are not here",
-      "sightings": [
-        {
-          "where": "RocksDB LSM compaction",
-          "domain": "storage"
-        },
-        {
-          "where": "git gc / packfile repack",
-          "domain": "version-control"
-        },
-        {
-          "where": "generational GC promotion by age",
-          "domain": "runtime"
-        },
-        {
-          "where": "compost thermophilic phase",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "DAM": "a write spends the head",
-        "FILTER": "compaction is what makes separation possible"
-      },
-      "contact": {},
-      "built": {
-        "state": "by-law",
-        "at": "—",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "law 8 — the world runs while you are in it and stops when you leave. No offline progression, so nothing may compact between visits. NOT A GAP. See the tension named at the foot of this report."
-      }
-    },
-    {
-      "organ": "content-addressed store with no list()",
-      "seat": "DEEP",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "put(bytes)→hash, get(hash)→bytes, and NO enumerate. The missing operation is the organ.",
-      "extract": "refusing to implement list() is what makes it the deep. Contents cannot be inspected before they come back, because there is no call that would inspect them.",
-      "why_this_seat": "the deep never renders, so everything in it is held by definition",
-      "sightings": [
-        {
-          "where": "git object database",
-          "domain": "version-control"
-        },
-        {
-          "where": "Nix store paths",
-          "domain": "systems"
-        },
-        {
-          "where": "Docker layer digests",
-          "domain": "containers"
-        },
-        {
-          "where": "a seed bank / soil seed reserve",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "LENS": "an object retrieved is material to work",
-        "FILTER": "what came back is what there is to sort"
-      },
-      "contact": {},
-      "built": {
-        "state": "by-law",
-        "at": "ascent.html",
-        "probe": "keptAtX",
-        "probe_in": "code",
-        "finding": "NOT A DEFECT — Kevin ruled 2026-08-16: \"the deep... only on screen. it exists in code, but it doesnt render to the user... its pure back end.\" This audit had called the tree INVERTED for indexing the deep by position. It read law 9 as a claim about storage; law 9 is a claim about drawing. The construct is correct and the siting was wrong."
-      },
-      "struck": {
-        "by": "kevin",
-        "on": "2026-08-16",
-        "his_words": "the deep... only on screen. it exists in code, but it doesnt render to the user... its pure back end.",
-        "what_it_closes": "Law 9 is a RENDERING law and this siting read it as a storage law. keptAtX/keptDepth are correct and the tree was never inverted — the error was mine, in the catalogue, not his, in the code. DEEP keeps visibility culling and carries one open slot."
-      }
-    },
-    {
-      "organ": "visibility culling",
-      "seat": "DEEP",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "geometry outside the volume is never submitted for drawing. Not drawn dark, not drawn small — never submitted.",
-      "extract": "law 9 as a hot path rather than a rule. The cheapest thing in the frame is the thing below the line.",
-      "why_this_seat": "a reach above the line sounds it; nothing below is ever drawn",
-      "sightings": [
-        {
-          "where": "three.js frustum culling",
-          "domain": "graphics"
-        },
-        {
-          "where": "Doom BSP potentially-visible sets",
-          "domain": "games"
-        },
-        {
-          "where": "database partition pruning",
-          "domain": "storage"
-        },
-        {
-          "where": "photic zone / aphotic boundary",
-          "domain": "limnology"
-        }
-      ],
-      "members": {
-        "HELIOSTAT": "what is not drawn is what light does not reach",
-        "STATIONS": "what sank was routed there"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "below the line: nothing[,.] ?ever",
-        "probe_in": "prose",
-        "finding": "law 9 is honoured by a flat fill below H*0.45 — a refusal to draw rather than a culling test. Correct at this size; the probe matches a comment, so this is a stated intent verified by the adjacent fillRect, not by a construct."
-      }
-    },
-    {
-      "organ": "the closure predicate",
-      "seat": "LENS",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a boolean true only when every boundary is matched. Derived, never asserted, and there is no partial credit.",
-      "extract": "holds() = every edge used exactly twice. Two faces of three is not two-thirds of a lens; it is no lens.",
-      "why_this_seat": "it takes three readings, and two is nothing — the seat cannot be half-walked",
-      "sightings": [
-        {
-          "where": "watertight-manifold check (Manifold, CGAL)",
-          "domain": "geometry"
-        },
-        {
-          "where": "balanced-delimiter parse",
-          "domain": "text"
-        },
-        {
-          "where": "double-entry books balancing to zero",
-          "domain": "finance"
-        },
-        {
-          "where": "Kirchhoff current law at a node",
-          "domain": "electronics"
-        }
-      ],
-      "members": {
-        "SEATING": "a form that holds is what a frame can be fed",
-        "GARDEN": "a worked form can be planted"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.lenses",
-        "probe_in": "code",
-        "finding": "a lens forms only when a thing is held across all three faces. Two of three is not partial credit — there is no partial branch in the code to give it."
-      }
-    },
-    {
-      "organ": "three-view quorum",
-      "seat": "LENS",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a thing is accepted only when N independent views agree. No single view can carry it, and the views are walked, not summed.",
-      "extract": "three faces held IS a 3-of-3 quorum. The seat's mechanic and a consensus protocol are the same organ.",
-      "why_this_seat": "when a thing can be held across all three, that is the lens",
-      "sightings": [
-        {
-          "where": "Raft / Paxos quorum",
-          "domain": "distributed-systems"
-        },
-        {
-          "where": "photogrammetry bundle adjustment",
-          "domain": "graphics"
-        },
-        {
-          "where": "GPS trilateration from three satellites",
-          "domain": "navigation"
-        },
-        {
-          "where": "triangulation in qualitative method",
-          "domain": "research"
-        }
-      ],
-      "members": {
-        "STATIONS": "what was routed is the material",
-        "DEEP": "the worked form falls to the bottom"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "facePts\\(\\)",
-        "probe_in": "code",
-        "finding": "the same construct as the closure predicate, seen from the other side: three faces at -90/30/150 degrees, all three required. It is a 3-of-3 quorum and it is already written."
-      }
-    },
-    {
-      "organ": "sample-and-hold",
-      "seat": "HELIOSTAT",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a continuous value tracks the input while engaged and holds its last value when released. Releasing settles it; it does not reset.",
-      "extract": "if (held) aim = track(input); /* else keep */ — the else branch is empty and that is the organ.",
-      "why_this_seat": "the aim is live only while held; a seated mirror keeps its own aim",
-      "sightings": [
-        {
-          "where": "sample-and-hold circuit",
-          "domain": "electronics"
-        },
-        {
-          "where": "DMX fixture pan/tilt latch",
-          "domain": "stage-lighting"
-        },
-        {
-          "where": "servo hold torque at setpoint",
-          "domain": "robotics"
-        },
-        {
-          "where": "a PID setpoint between updates",
-          "domain": "control"
-        }
-      ],
-      "members": {
-        "DEEP": "the bottom is the source",
-        "GARDEN": "light lands and something grows"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "the aim is live only while a hand holds it",
-        "probe_in": "prose",
-        "finding": "the aim tracks while held and a SEATED mirror keeps its own aim when the hand leaves. Unseated mirrors fall slack. The else-branch that keeps the value is the organ."
-      }
-    },
-    {
-      "organ": "the partition of unity",
-      "seat": "HELIOSTAT",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a finite quantity distributed across targets, summing to one. Giving here is arithmetically taking from there.",
-      "extract": "weights normalised to 1. Scarcity is not a rule laid over the aim; it is the aim's data type.",
-      "why_this_seat": "light is the scarce resource and aiming it here is not aiming it there",
-      "sightings": [
-        {
-          "where": "importance sampling weights in a path tracer",
-          "domain": "graphics"
-        },
-        {
-          "where": "shadow-map cascade budget",
-          "domain": "graphics"
-        },
-        {
-          "where": "softmax attention distribution",
-          "domain": "ml"
-        },
-        {
-          "where": "leaf area index competition for light",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "OVERWINTERING": "strength is how many times the cycle has run",
-        "FILTER": "clarity is what lets light through"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "w\\.clarity=clamp01\\(w\\.clarity \\+ 0\\.12\\*L\\.light\\)",
-        "probe_in": "code",
-        "finding": "BUILT 2026-08-16. The cost string had said it since the seat was built and nothing enforced it. One unit of light per visit; each shoot spends a fifth; the remainder returns to the water as clarity. Verified in the page: spent + returned = 1 exactly, and five shoots leave zero. Read as form only — the beam dims and nothing says why."
-      }
-    },
-    {
-      "organ": "the flexibility-not-coordinate contract",
-      "seat": "SEATING",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a child declares how it may give, never where it goes. Where it lands follows from the frame and from what is already fed.",
-      "extract": "grow/shrink/basis, no x and no y. The hand cannot aim at a socket from either end because the child has no vocabulary for a socket.",
-      "why_this_seat": "the seat's cost line, exactly",
-      "sightings": [
-        {
-          "where": "flexbox / Yoga",
-          "domain": "ui"
-        },
-        {
-          "where": "TeX box-and-glue",
-          "domain": "typesetting"
-        },
-        {
-          "where": "Cassowary constraint solver",
-          "domain": "ui"
-        },
-        {
-          "where": "a mortise-and-tenon frame taking its own load",
-          "domain": "carpentry"
-        }
-      ],
-      "members": {
-        "LENS": "a worked thing is what gets fed",
-        "GARDEN": "what grew unprompted feeds the frame"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.seated",
-        "probe_in": "code",
-        "finding": "S.seated holds seat indices and there is no second registry. The hand cannot pick a mirror; where a lens rests follows from drift and from what is already fed. 'The hand never aims at a socket — from either end.'"
-      }
-    },
-    {
-      "organ": "the caller-supplied cut",
-      "seat": "SEATING",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "the split index is an argument, never computed. No midpoint is drawn, no seam is suggested, and there is no default.",
-      "extract": "the ABSENCE of a computed seam is the organ. Any parser that offers the boundary — however good — is refused here for being good at it.",
-      "why_this_seat": "no midpoint drawn, no suggested seam, no default",
-      "sightings": [
-        {
-          "where": "git add -p manual hunk split",
-          "domain": "version-control"
-        },
-        {
-          "where": "slice(i) with caller-chosen i",
-          "domain": "software-design"
-        },
-        {
-          "where": "B-tree split at a chosen key",
-          "domain": "storage"
-        },
-        {
-          "where": "grafting at a cut the grafter chooses",
-          "domain": "horticulture"
-        }
-      ],
-      "members": {
-        "CAST": "what departed leaves a seat behind it",
-        "DAM": "a fed frame changes what may be held"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "function cutLayout",
-        "probe_in": "code",
-        "finding": "the best-documented organ in the tree, and it was installed as a CORRECTION on 2026-08-14 — the machine used to cut at its own exact middle. No suggested seam, no midpoint drawn, no default; an uncut writing stays uncut. NOTE: the old Math.ceil(w.length/2) still appears in the tree, in the comment recording its removal, and a comment-blind probe reports this organ as broken."
-      }
-    },
-    {
-      "organ": "the wall-clock gate",
-      "seat": "OVERWINTERING",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a transition whose only guard is a real date boundary. There is no call that advances it — the mechanism's value is that it CANNOT be invoked.",
-      "extract": "if (today() !== lastDay) { advance(); lastDay = today() }. No fast-forward exists to be found and abused.",
-      "why_this_seat": "the only seat where the cost is not the hand's to pay",
-      "sightings": [
-        {
-          "where": "cron / at",
-          "domain": "systems"
-        },
-        {
-          "where": "certificate notBefore/notAfter",
-          "domain": "security"
-        },
-        {
-          "where": "TTL and lease expiry",
-          "domain": "distributed-systems"
-        },
-        {
-          "where": "vernalisation chill-hour requirement",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "TANK": "the morning after a winter is a new intake",
-        "GARDEN": "growth is held between visits"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.lastDay===today\\(\\)",
-        "probe_in": "code",
-        "finding": "the guard is a real date boundary and there is no call anywhere that advances it. The mechanism's value is that it cannot be invoked."
-      }
-    },
-    {
-      "organ": "dormancy without a queue",
-      "seat": "OVERWINTERING",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "state strengthens across absence and nothing tracks whether you came back. There is no due list, because a due list is a demand.",
-      "extract": "elapsed time is READ when you arrive, never accumulated into a debt while you are gone. Every spaced-repetition scheduler fails exactly here.",
-      "why_this_seat": "a fallow season is a correct state, and law 7 forbids the queue that would say otherwise",
-      "sightings": [
-        {
-          "where": "seed dormancy broken by elapsed cold",
-          "domain": "biology"
-        },
-        {
-          "where": "generational GC age promotion",
-          "domain": "runtime"
-        },
-        {
-          "where": "a legal cooling-off period",
-          "domain": "law"
-        },
-        {
-          "where": "cask maturation",
-          "domain": "brewing"
-        }
-      ],
-      "members": {
-        "HELIOSTAT": "light needs returns to strengthen",
-        "CAST": "only what has wintered is worth giving"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.rooted\\+\\+",
-        "probe_in": "code",
-        "finding": "elapsed time is READ on arrival and never accumulated into a debt while away. There is no due list anywhere in the tree, which is law 7 built rather than obeyed."
-      }
-    },
-    {
-      "organ": "the local rule with no objective",
-      "seat": "GARDEN",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "next = rule(neighbourhood(current)), iterated. There is no fitness, no target and no score — the ABSENCE of an objective function is the organ.",
-      "extract": "any optimiser is refused at this seat by definition, because an objective is a statement about what the growth means.",
-      "why_this_seat": "it never says what it means, and it is not a score and not a record of you",
-      "sightings": [
-        {
-          "where": "Lenia continuous automata",
-          "domain": "artificial-life"
-        },
-        {
-          "where": "Gray–Scott reaction–diffusion",
-          "domain": "chemistry"
-        },
-        {
-          "where": "diffusion-limited aggregation",
-          "domain": "physics"
-        },
-        {
-          "where": "L-system production rules",
-          "domain": "botany"
-        }
-      ],
-      "members": {
-        "HELIOSTAT": "light lands and something grows",
-        "OVERWINTERING": "real only across a night you were not there for"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "const v=f\\[i\\]\\+D\\*\\(l\\+r-2\\*f\\[i\\]\\)-decay\\*f\\[i\\]",
-        "probe_in": "code",
-        "finding": "BUILT 2026-08-16. The garden listed deposits; it now grows by a local rule with no fitness, no target and no score. Screened diffusion from the shoots as held sources, run to a fixed point ON ENTRY and then stopped — because the seat says it fills from play and NOT from attention, so iterating while the hand stands here would be attention feeding the garden. Verified: 400 step() calls change the bed by nothing; same seeds give the identical bed; an empty garden stays empty."
-      }
-    },
-    {
-      "organ": "the side-effect accumulator",
-      "seat": "GARDEN",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "growth driven by what already happened elsewhere, never by a request. Nothing asks for it and looking does not feed it.",
-      "extract": "it fills from play and not from attention — so the read path must have no write in it.",
-      "why_this_seat": "material in is everything that happened, without being asked for",
-      "sightings": [
-        {
-          "where": "an event-sourced projection",
-          "domain": "software-design"
-        },
-        {
-          "where": "desire paths worn by traffic",
-          "domain": "urbanism"
-        },
-        {
-          "where": "patina and wear maps",
-          "domain": "graphics"
-        },
-        {
-          "where": "dendrochronology growth rings",
-          "domain": "biology"
-        }
-      ],
-      "members": {
-        "LENS": "a grown form is material",
-        "SEATING": "what grew feeds the frame"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "S\\.shoots\\.forEach",
-        "probe_in": "code",
-        "finding": "the garden's read path has no write in it — looking does not feed it, and it fills from what happened at other seats. Of the two garden organs this is the one built, and it is the one laws 2 and 7 require."
-      }
-    },
-    {
-      "organ": "the destructive handoff",
-      "seat": "CAST",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "ownership transfers and the SOURCE IS INVALIDATED. Not a copy with a copy left behind — a move, after which the sender genuinely does not have it.",
-      "extract": "postMessage(buf, [buf]) neuters the sender: buf.byteLength becomes 0, in the page, with no network. THE WORLD LOSES WHAT IT GIVES, provably, offline. This is the organ the whole-project pass could not find.",
-      "why_this_seat": "the corpus calls this seat half-built and dishonest because the file leaves and the world loses nothing. A move rather than a copy is the honest version.",
-      "sightings": [
-        {
-          "where": "Transferable objects in postMessage",
-          "domain": "ui"
-        },
-        {
-          "where": "Rust move semantics / linear types",
-          "domain": "language-design"
-        },
-        {
-          "where": "std::unique_ptr release",
-          "domain": "language-design"
-        },
-        {
-          "where": "rename(2) across a directory",
-          "domain": "systems"
-        }
-      ],
-      "members": {
-        "TANK": "writing departs directly — the door out",
-        "SEATING": "what departed leaves a seat behind it"
-      },
-      "contact": {},
-      "built": {
-        "state": "by-law",
-        "at": "ascent.html",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "REVERTED 2026-08-16 on his ruling. This siting caused a real change to the running game and the change was wrong. The organ is real in the wild and does not belong at this seat."
-      },
-      "struck": {
-        "by": "kevin",
-        "on": "2026-08-16",
-        "his_words": "the gifts arent depleted by giving.",
-        "what_it_closes": "The seat is not where the loss lives. A cost at the CAST is upstream — what was cast, and what wintered before it was worth casting — never a deletion on the shelf. The code was reverted; ascent.html had said this in its own comment before the siting overrode it."
-      }
-    },
-    {
-      "organ": "the one-time consumable",
-      "seat": "CAST",
-      "form": "mechanism",
-      "path": "player",
-      "mechanism": "a handle valid for exactly one use, which burns on use. A second attempt is not an error to report; there is simply nothing there.",
-      "extract": "the pull is a held state that decays if the hand stops — the one gesture in the world that undoes itself when abandoned.",
-      "why_this_seat": "the door out is never a wall and never a demand, and it is not reusable",
-      "sightings": [
-        {
-          "where": "a cryptographic nonce",
-          "domain": "security"
-        },
-        {
-          "where": "Promise settling exactly once",
-          "domain": "language-design"
-        },
-        {
-          "where": "a channel close()",
-          "domain": "concurrency"
-        },
-        {
-          "where": "a spent match",
-          "domain": "physical"
-        }
-      ],
-      "members": {
-        "OVERWINTERING": "only what has wintered is worth giving",
-        "DAM": "giving empties the head"
-      },
-      "contact": {},
-      "built": {
-        "state": "built",
-        "at": "ascent.html",
-        "probe": "const given=new Set\\(S\\.shop\\.flatMap",
-        "probe_in": "code",
-        "finding": "Once-only is on the CONTENT — emit() gives only what has not been given, so no sentence returns doubled. It was graded partial for not being once-only on the ARTIFACT; his ruling 2026-08-16 says the artifact SHOULD be re-takeable, so the grade was wrong and the seat was complete as written."
-      }
-    },
-    {
-      "organ": "the computed cell",
-      "seat": "—",
-      "socket": "THE 12 RADII",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "a value derived from its inputs, readable, with NO SETTER. Recomputed when its inputs change; assigning to it is an error rather than a write.",
-      "extract": "the getter without the setter. Vue warns 'computed value is readonly'; MobX recomputes lazily and caches; a spreadsheet cell holding a formula cannot be typed into without destroying the formula. THE REFUSAL TO ACCEPT A WRITE IS THE ORGAN.",
-      "why_this_socket": "a radius is one seat's distance from the game, derived from where the seat is and never set. And the equilibrium — every radius equal to the edge — is a property of the derived values, not something anything can write. The same organ already scaffolds CENTRE.at(), which is a point in its favour and a caution: one organ serving two sockets may mean the two sockets are one thing.",
-      "sightings": [
-        {
-          "where": "MobX computeds",
-          "domain": "ui-reactivity"
-        },
-        {
-          "where": "Vue computed properties",
-          "domain": "ui-reactivity"
-        },
-        {
-          "where": "SQL generated / .NET DataColumn.Expression columns",
-          "domain": "database"
-        },
-        {
-          "where": "a spreadsheet formula cell",
-          "domain": "spreadsheets"
-        }
-      ],
-      "members": {},
-      "contact": {},
-      "built": {
-        "state": "absent",
-        "at": "—",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "the radii are derived in solid.js but nothing in the running game reads one. The socket is open."
-      }
-    },
-    {
-      "organ": "the tombstone",
-      "seat": "FILTER",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "a deletion recorded as a MARKER, never an erasure. The removed thing keeps its place in the order and can be walked past, counted against, or restored.",
-      "extract": "delete writes a marker; it does not unwrite. Xi-editor's note is the clearest statement of why — 'retaining it guarantees that its order relative to its context is preserved.'",
-      "why_this_socket": "THE_24.md level 20 already describes this and calls it the withdrawal route: 'a deleted sentence leaves the line by way of the filter, and the bank keeps it.' A tombstone is that, exactly. It also satisfies law 12 and law 4 by construction — nothing is lost and nothing is rewritten, because deletion never touches the text.",
-      "sightings": [
-        {
-          "where": "CRDT tombstones (xi-editor)",
-          "domain": "text"
-        },
-        {
-          "where": "Kafka tombstone records",
-          "domain": "messaging"
-        },
-        {
-          "where": "Cassandra / ScyllaDB tombstones",
-          "domain": "storage"
-        },
-        {
-          "where": "Docker distribution soft-delete tombstone files",
-          "domain": "containers"
-        }
-      ],
-      "members": {
-        "TANK": "the withdrawn sentence returns to the bank",
-        "DEEP": "and what is not taken falls past"
-      },
-      "contact": {},
-      "built": {
-        "state": "absent",
-        "at": "—",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "replaces 'the diff hunk', which Kevin struck 2026-08-16 — the filter is a process the hand assembles, and a diff is a supplied comparison. A tombstone is not supplied: the hand makes it by withdrawing."
-      }
-    },
-    {
-      "organ": "the paired entry",
-      "seat": "—",
-      "socket": "THE 6 PYRAMID CELLS",
-      "form": "mechanism",
-      "path": "either",
-      "mechanism": "two quantities that can only be written together and always sum to zero. There is no operation that moves one without moving the other by the same amount.",
-      "extract": "the transaction is the unit, never the line. A single-sided entry is not a small error — it is unrepresentable.",
-      "why_this_socket": "a pyramid cell was measured to close one diagonal exactly as it opens the other. That IS a paired entry: the exchange is the unit and half of it cannot be performed. Six cells, six exchanges, each with its price fixed in advance.",
-      "sightings": [
-        {
-          "where": "double-entry bookkeeping",
-          "domain": "finance"
-        },
-        {
-          "where": "XPBD constraint projection",
-          "domain": "physics"
-        },
-        {
-          "where": "conservation of momentum in a solver",
-          "domain": "physics"
-        },
-        {
-          "where": "Cassowary paired constraints",
-          "domain": "ui"
-        }
-      ],
-      "members": {},
-      "contact": {},
-      "built": {
-        "state": "absent",
-        "at": "—",
-        "probe": null,
-        "probe_in": "code",
-        "finding": "the trades are derived in solid.js as TRADES but nothing performs one. The socket is open, and law 2 governs anything drawn from it."
-      }
+     "where": "tree rings / varve deposition",
+     "domain": "biology"
     }
-  ],
-  "_sockets": "Three organs added 2026-08-16 on Kevin's line 'do open source research on all potential organs, and un place sockets'. Each names the SOCKET it was found for rather than a seat, because two of the three fill interior positions that are not seats at all. All three are state:absent — found in the commons, not built here. Not one is marked."
+   ],
+   "members": {
+    "GROUND": "the log is the bed, oldest deepest",
+    "OVERWINTERING": "offsets outlive the session, so a return reads what elapsed"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "kept:\\s*\\[\\]",
+    "probe_in": "code",
+    "finding": "S.kept — appended, never trimmed, never reordered, never counted at any door. The comment above it states all four refusals and the code keeps them."
+   }
+  },
+  {
+   "organ": "the uncommitted buffer",
+   "seat": "TANK",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "two stores, one shadowing the other. Typed state is not state until one keystroke promotes it; abandoning it costs nothing.",
+   "extract": "draft + committed, and a single promote(). Escape discards the draft and says nothing.",
+   "why_this_seat": "the tank's held form, already built — everything typed sits uncommitted until Ctrl+Enter",
+   "sightings": [
+    {
+     "where": "git index / staging area",
+     "domain": "version-control"
+    },
+    {
+     "where": "vim insert-mode buffer",
+     "domain": "text"
+    },
+    {
+     "where": "a database transaction before COMMIT",
+     "domain": "storage"
+    },
+    {
+     "where": "double-buffered rendering",
+     "domain": "graphics"
+    }
+   ],
+   "members": {
+    "FILTER": "a committed line enters suspension",
+    "GROUND": "a committed line falls and settles"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.kept=\\(S\\.kept\\|\\|\\[\\]\\)\\.concat",
+    "probe_in": "code",
+    "finding": "typed text is not state until Ctrl+Enter; Escape sets the whole panel down and says nothing."
+   }
+  },
+  {
+   "organ": "the token bucket",
+   "seat": "DAM",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "level = min(cap, level + rate·dt). A take spends it; there is only as much head as actually accrued.",
+   "extract": "four lines. The level is drawn as form and never as a figure.",
+   "why_this_seat": "the head is spent, and what was held is not held any more",
+   "sightings": [
+    {
+     "where": "golang.org/x/time/rate",
+     "domain": "systems"
+    },
+    {
+     "where": "nginx limit_req",
+     "domain": "network"
+    },
+    {
+     "where": "TCP congestion window",
+     "domain": "network"
+    },
+    {
+     "where": "a reservoir with a spillway",
+     "domain": "hydrology"
+    }
+   ],
+   "members": {
+    "STATIONS": "a spent token arrives already needing a destination",
+    "GROUND": "what the release moves, it deposits"
+   },
+   "contact": {
+    "number": true
+   },
+   "number_suppressible": true,
+   "built": {
+    "state": "partial",
+    "at": "ascent.html",
+    "probe": "held:\\s*0,[\\s\\S]{0,80}released:\\s*0",
+    "probe_in": "code",
+    "finding": "w.held / w.level / w.released are the reservoir, but the head refills FROM WRITING, not from elapsed time. That is a deliberate divergence from the wild organ and it is the better one here — a clock-filled bucket would hand the player head they did not pour."
+   }
+  },
+  {
+   "organ": "charge-and-release",
+   "seat": "DAM",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a value builds while the input is held and decays if the hand stops. Release fires with whatever was built; abandonment undoes it.",
+   "extract": "while(down) c = min(1, c + dt/T); on up → fire(c); if idle → c *= decay",
+   "why_this_seat": "the gathering IS the holding — and the same organ is the built mechanic at ↑CAST, which is a real member of this seat",
+   "sightings": [
+    {
+     "where": "a drawn bow / pull-back launcher",
+     "domain": "games"
+    },
+    {
+     "where": "ADSR envelope attack stage",
+     "domain": "audio"
+    },
+    {
+     "where": "capacitor charge curve",
+     "domain": "electronics"
+    },
+    {
+     "where": "CSS :active held state",
+     "domain": "ui"
+    }
+   ],
+   "members": {
+    "CAST": "the pull that departs",
+    "SEATING": "the shape of the head decides the next frame"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "function hold\\(dt, ?secs\\)",
+    "probe_in": "code",
+    "finding": "hold(dt,secs) is one shared verb serving dam · heliostat · cast. The decay-on-abandon lives at CAST alone: L.pull = holding() ? hp.held : max(0, L.pull-dt/900)."
+   }
+  },
+  {
+   "organ": "behaviour-typed motion",
+   "seat": "FILTER",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "each item moves by its own law — sinks fast, hangs, films — so its kind is readable from motion alone. Nothing labels it.",
+   "extract": "per-item v(t) from a drag constant; the hand hit-tests position. Colour is redundant, which is law 10 satisfied by construction, and NOTHING CLASSIFIES, which is law 5 satisfied by construction.",
+   "why_this_seat": "separation by behaviour, by hand — this is the seat's whole definition, mechanised",
+   "sightings": [
+    {
+     "where": "Stokes settling velocity by grain size",
+     "domain": "sedimentology"
+    },
+    {
+     "where": "per-type drag in a particle system",
+     "domain": "graphics"
+    },
+    {
+     "where": "density-gradient centrifugation",
+     "domain": "biology"
+    },
+    {
+     "where": "sieve analysis / hydrometer test",
+     "domain": "materials"
+    }
+   ],
+   "members": {
+    "GROUND": "what is not taken settles",
+    "DEEP": "what is not taken falls past"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "kinds=\\[\\{k:\"bedload\",v:2\\.6,w:0\\},\\{k:\"suspended\",v:0\\.7,w:1\\.4\\},\\{k:\"film\",v:0\\.12,w:0\\.2\\}\\]",
+    "probe_in": "code",
+    "finding": "three sink rates and three lateral wanders. Kind is readable from motion alone, so law 5 and law 10 are satisfied BY CONSTRUCTION — there is no classifier to remove because there was never one to add. The cleanest organ in the tree."
+   }
+  },
+  {
+   "organ": "the diff hunk",
+   "seat": "FILTER",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "two sequences reduced to runs of same and different. It produces the separation and takes nothing — which run is taken is the hand's.",
+   "extract": "the diff, never the patch. Patch application rewrites, which law 4 forbids on the player path.",
+   "why_this_seat": "it makes the separation available without making the choice",
+   "sightings": [
+    {
+     "where": "Myers diff in git",
+     "domain": "version-control"
+    },
+    {
+     "where": "rsync rolling checksum",
+     "domain": "network"
+    },
+    {
+     "where": "dynamic time warping alignment",
+     "domain": "audio"
+    },
+    {
+     "where": "sequence alignment (Needleman–Wunsch)",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "TANK": "a taken hunk returns to the page",
+    "DEEP": "an untaken hunk falls past"
+   },
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "nothing compares two states and offers the runs. The withdrawal route (a deleted sentence leaving by way of the filter) is where it would sit."
+   },
+   "struck": {
+    "by": "kevin",
+    "on": "2026-08-16",
+    "his_words": "Filter is the porcess the user builds through their own desciions, gestures and clicks.",
+    "what_it_closes": "The second FILTER organ is not a supplied comparison. It is a process ASSEMBLED BY THE HAND out of its own acts. The slot is open and the candidate is named in the session, unsited."
+   }
+  },
+  {
+   "organ": "the void return",
+   "seat": "STATIONS",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "the send returns nothing. Not a boolean, not a subscriber count, not a promise. A void signature CANNOT leak a confirmation.",
+   "extract": "law 6 made enforceable by type. The set-down is the call whose return type makes feedback impossible to add by accident.",
+   "why_this_seat": "no destination, no animation, no confirmation — the absence is the feedback",
+   "sightings": [
+    {
+     "where": "NATS core publish",
+     "domain": "messaging"
+    },
+    {
+     "where": "UDP sendto",
+     "domain": "network"
+    },
+    {
+     "where": "window.postMessage",
+     "domain": "ui"
+    },
+    {
+     "where": "an event emitter with no listeners",
+     "domain": "systems"
+    }
+   ],
+   "members": {
+    "DEEP": "drop to the lake",
+    "LENS": "send it on to be worked",
+    "DAM": "the send is what the release spends"
+   },
+   "set_down": true,
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "const on = memberFor\\(out\\);[\\s\\S]{0,120}if\\(!on\\) return;",
+    "probe_in": "code",
+    "finding": "BUILT 2026-08-16. Was one identical branch for all three bays. send() is now the only way a piece leaves and its return value is the only thing the draw may read; the value is the member it left on, asked of solid.js, and the solid gives the set-down none. Verified in the page: send('spire') and send('lake') return objects, send('set') returns undefined. A confirmation on the set-down is un-writable, not merely unwritten."
+   }
+  },
+  {
+   "organ": "the null sink",
+   "seat": "STATIONS",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a named destination that consumes and does nothing. It is a real output with a real name and no effect — engineered, not an error path.",
+   "extract": "the third bay is a sink, not a missing case. An unmatched route returning 404 is a confirmation and fails this seat; fakesink returning nothing passes.",
+   "why_this_seat": "set it down, and it has somewhere to have gone that is nowhere",
+   "sightings": [
+    {
+     "where": "GStreamer fakesink",
+     "domain": "media"
+    },
+    {
+     "where": "/dev/null",
+     "domain": "systems"
+    },
+    {
+     "where": "syslog discard target",
+     "domain": "logging"
+    },
+    {
+     "where": "a no-op tracer / null object pattern",
+     "domain": "software-design"
+    }
+   ],
+   "members": {
+    "DEEP": "the sink is below",
+    "GROUND": "the two sited outputs deposit"
+   },
+   "set_down": true,
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "if\\(L\\.ack\\)\\{ L\\.ackT=",
+    "probe_in": "code",
+    "finding": "BUILT 2026-08-16. The third bay was already a real named destination; it is now genuinely null. The departure mark is drawn from send()'s return and is unreachable for the set-down — not skipped by a name test the next hand could delete, but unreachable because there is no value. The count still rises for all three, which is the seat's field five and never reaches the player."
+   }
+  },
+  {
+   "organ": "relaxation to rest",
+   "seat": "GROUND",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "integrate with damping until velocity falls under a threshold, then freeze. The hand cannot hurry it because dt is wall-clock.",
+   "extract": "alpha *= decay; if (alpha < min) sleep(). No placement anywhere in the loop.",
+   "why_this_seat": "you do not place them — they land where they land, and the cost to the hand is none",
+   "sightings": [
+    {
+     "where": "d3-force alpha decay",
+     "domain": "graphics"
+    },
+    {
+     "where": "Box2D sleeping bodies",
+     "domain": "physics"
+    },
+    {
+     "where": "simulated annealing cooling",
+     "domain": "optimisation"
+    },
+    {
+     "where": "sediment settling to angle of repose",
+     "domain": "sedimentology"
+    }
+   ],
+   "members": {
+    "TANK": "what was poured is what falls",
+    "STATIONS": "what has settled can be routed"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "y:-40-i\\*70,v:0,set:false",
+    "probe_in": "code",
+    "finding": "blocks carry their own velocity and come to rest; the hand does not place them and cannot hurry them. Arrival order, oldest deepest."
+   }
+  },
+  {
+   "organ": "background compaction",
+   "seat": "GROUND",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a merge pass that runs when nobody is looking. Newest shallow, oldest deep, and returning later finds it already done.",
+   "extract": "the work happens between visits, not during them — the one output that costs the hand nothing.",
+   "why_this_seat": "return later and find it already settled; the world does this while you are not here",
+   "sightings": [
+    {
+     "where": "RocksDB LSM compaction",
+     "domain": "storage"
+    },
+    {
+     "where": "git gc / packfile repack",
+     "domain": "version-control"
+    },
+    {
+     "where": "generational GC promotion by age",
+     "domain": "runtime"
+    },
+    {
+     "where": "compost thermophilic phase",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "DAM": "a write spends the head",
+    "FILTER": "compaction is what makes separation possible"
+   },
+   "contact": {},
+   "built": {
+    "state": "by-law",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "law 8 — the world runs while you are in it and stops when you leave. No offline progression, so nothing may compact between visits. NOT A GAP. See the tension named at the foot of this report."
+   }
+  },
+  {
+   "organ": "content-addressed store with no list()",
+   "seat": "DEEP",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "put(bytes)→hash, get(hash)→bytes, and NO enumerate. The missing operation is the organ.",
+   "extract": "refusing to implement list() is what makes it the deep. Contents cannot be inspected before they come back, because there is no call that would inspect them.",
+   "why_this_seat": "the deep never renders, so everything in it is held by definition",
+   "sightings": [
+    {
+     "where": "git object database",
+     "domain": "version-control"
+    },
+    {
+     "where": "Nix store paths",
+     "domain": "systems"
+    },
+    {
+     "where": "Docker layer digests",
+     "domain": "containers"
+    },
+    {
+     "where": "a seed bank / soil seed reserve",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "LENS": "an object retrieved is material to work",
+    "FILTER": "what came back is what there is to sort"
+   },
+   "contact": {},
+   "built": {
+    "state": "by-law",
+    "at": "ascent.html",
+    "probe": "keptAtX",
+    "probe_in": "code",
+    "finding": "NOT A DEFECT — Kevin ruled 2026-08-16: \"the deep... only on screen. it exists in code, but it doesnt render to the user... its pure back end.\" This audit had called the tree INVERTED for indexing the deep by position. It read law 9 as a claim about storage; law 9 is a claim about drawing. The construct is correct and the siting was wrong."
+   },
+   "struck": {
+    "by": "kevin",
+    "on": "2026-08-16",
+    "his_words": "the deep... only on screen. it exists in code, but it doesnt render to the user... its pure back end.",
+    "what_it_closes": "Law 9 is a RENDERING law and this siting read it as a storage law. keptAtX/keptDepth are correct and the tree was never inverted — the error was mine, in the catalogue, not his, in the code. DEEP keeps visibility culling and carries one open slot."
+   }
+  },
+  {
+   "organ": "visibility culling",
+   "seat": "DEEP",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "geometry outside the volume is never submitted for drawing. Not drawn dark, not drawn small — never submitted.",
+   "extract": "law 9 as a hot path rather than a rule. The cheapest thing in the frame is the thing below the line.",
+   "why_this_seat": "a reach above the line sounds it; nothing below is ever drawn",
+   "sightings": [
+    {
+     "where": "three.js frustum culling",
+     "domain": "graphics"
+    },
+    {
+     "where": "Doom BSP potentially-visible sets",
+     "domain": "games"
+    },
+    {
+     "where": "database partition pruning",
+     "domain": "storage"
+    },
+    {
+     "where": "photic zone / aphotic boundary",
+     "domain": "limnology"
+    }
+   ],
+   "members": {
+    "HELIOSTAT": "what is not drawn is what light does not reach",
+    "STATIONS": "what sank was routed there"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "below the line: nothing[,.] ?ever",
+    "probe_in": "prose",
+    "finding": "law 9 is honoured by a flat fill below H*0.45 — a refusal to draw rather than a culling test. Correct at this size; the probe matches a comment, so this is a stated intent verified by the adjacent fillRect, not by a construct."
+   }
+  },
+  {
+   "organ": "the closure predicate",
+   "seat": "LENS",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a boolean true only when every boundary is matched. Derived, never asserted, and there is no partial credit.",
+   "extract": "holds() = every edge used exactly twice. Two faces of three is not two-thirds of a lens; it is no lens.",
+   "why_this_seat": "it takes three readings, and two is nothing — the seat cannot be half-walked",
+   "sightings": [
+    {
+     "where": "watertight-manifold check (Manifold, CGAL)",
+     "domain": "geometry"
+    },
+    {
+     "where": "balanced-delimiter parse",
+     "domain": "text"
+    },
+    {
+     "where": "double-entry books balancing to zero",
+     "domain": "finance"
+    },
+    {
+     "where": "Kirchhoff current law at a node",
+     "domain": "electronics"
+    }
+   ],
+   "members": {
+    "SEATING": "a form that holds is what a frame can be fed",
+    "GARDEN": "a worked form can be planted"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.lenses",
+    "probe_in": "code",
+    "finding": "a lens forms only when a thing is held across all three faces. Two of three is not partial credit — there is no partial branch in the code to give it."
+   }
+  },
+  {
+   "organ": "three-view quorum",
+   "seat": "LENS",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a thing is accepted only when N independent views agree. No single view can carry it, and the views are walked, not summed.",
+   "extract": "three faces held IS a 3-of-3 quorum. The seat's mechanic and a consensus protocol are the same organ.",
+   "why_this_seat": "when a thing can be held across all three, that is the lens",
+   "sightings": [
+    {
+     "where": "Raft / Paxos quorum",
+     "domain": "distributed-systems"
+    },
+    {
+     "where": "photogrammetry bundle adjustment",
+     "domain": "graphics"
+    },
+    {
+     "where": "GPS trilateration from three satellites",
+     "domain": "navigation"
+    },
+    {
+     "where": "triangulation in qualitative method",
+     "domain": "research"
+    }
+   ],
+   "members": {
+    "STATIONS": "what was routed is the material",
+    "DEEP": "the worked form falls to the bottom"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "facePts\\(\\)",
+    "probe_in": "code",
+    "finding": "the same construct as the closure predicate, seen from the other side: three faces at -90/30/150 degrees, all three required. It is a 3-of-3 quorum and it is already written."
+   }
+  },
+  {
+   "organ": "sample-and-hold",
+   "seat": "HELIOSTAT",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a continuous value tracks the input while engaged and holds its last value when released. Releasing settles it; it does not reset.",
+   "extract": "if (held) aim = track(input); /* else keep */ — the else branch is empty and that is the organ.",
+   "why_this_seat": "the aim is live only while held; a seated mirror keeps its own aim",
+   "sightings": [
+    {
+     "where": "sample-and-hold circuit",
+     "domain": "electronics"
+    },
+    {
+     "where": "DMX fixture pan/tilt latch",
+     "domain": "stage-lighting"
+    },
+    {
+     "where": "servo hold torque at setpoint",
+     "domain": "robotics"
+    },
+    {
+     "where": "a PID setpoint between updates",
+     "domain": "control"
+    }
+   ],
+   "members": {
+    "DEEP": "the bottom is the source",
+    "GARDEN": "light lands and something grows"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "the aim is live only while a hand holds it",
+    "probe_in": "prose",
+    "finding": "the aim tracks while held and a SEATED mirror keeps its own aim when the hand leaves. Unseated mirrors fall slack. The else-branch that keeps the value is the organ."
+   }
+  },
+  {
+   "organ": "the partition of unity",
+   "seat": "HELIOSTAT",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a finite quantity distributed across targets, summing to one. Giving here is arithmetically taking from there.",
+   "extract": "weights normalised to 1. Scarcity is not a rule laid over the aim; it is the aim's data type.",
+   "why_this_seat": "light is the scarce resource and aiming it here is not aiming it there",
+   "sightings": [
+    {
+     "where": "importance sampling weights in a path tracer",
+     "domain": "graphics"
+    },
+    {
+     "where": "shadow-map cascade budget",
+     "domain": "graphics"
+    },
+    {
+     "where": "softmax attention distribution",
+     "domain": "ml"
+    },
+    {
+     "where": "leaf area index competition for light",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "OVERWINTERING": "strength is how many times the cycle has run",
+    "FILTER": "clarity is what lets light through"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "w\\.clarity=clamp01\\(w\\.clarity \\+ 0\\.12\\*L\\.light\\)",
+    "probe_in": "code",
+    "finding": "BUILT 2026-08-16. The cost string had said it since the seat was built and nothing enforced it. One unit of light per visit; each shoot spends a fifth; the remainder returns to the water as clarity. Verified in the page: spent + returned = 1 exactly, and five shoots leave zero. Read as form only — the beam dims and nothing says why."
+   }
+  },
+  {
+   "organ": "the flexibility-not-coordinate contract",
+   "seat": "SEATING",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a child declares how it may give, never where it goes. Where it lands follows from the frame and from what is already fed.",
+   "extract": "grow/shrink/basis, no x and no y. The hand cannot aim at a socket from either end because the child has no vocabulary for a socket.",
+   "why_this_seat": "the seat's cost line, exactly",
+   "sightings": [
+    {
+     "where": "flexbox / Yoga",
+     "domain": "ui"
+    },
+    {
+     "where": "TeX box-and-glue",
+     "domain": "typesetting"
+    },
+    {
+     "where": "Cassowary constraint solver",
+     "domain": "ui"
+    },
+    {
+     "where": "a mortise-and-tenon frame taking its own load",
+     "domain": "carpentry"
+    }
+   ],
+   "members": {
+    "LENS": "a worked thing is what gets fed",
+    "GARDEN": "what grew unprompted feeds the frame"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.seated",
+    "probe_in": "code",
+    "finding": "S.seated holds seat indices and there is no second registry. The hand cannot pick a mirror; where a lens rests follows from drift and from what is already fed. 'The hand never aims at a socket — from either end.'"
+   }
+  },
+  {
+   "organ": "the caller-supplied cut",
+   "seat": "SEATING",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "the split index is an argument, never computed. No midpoint is drawn, no seam is suggested, and there is no default.",
+   "extract": "the ABSENCE of a computed seam is the organ. Any parser that offers the boundary — however good — is refused here for being good at it.",
+   "why_this_seat": "no midpoint drawn, no suggested seam, no default",
+   "sightings": [
+    {
+     "where": "git add -p manual hunk split",
+     "domain": "version-control"
+    },
+    {
+     "where": "slice(i) with caller-chosen i",
+     "domain": "software-design"
+    },
+    {
+     "where": "B-tree split at a chosen key",
+     "domain": "storage"
+    },
+    {
+     "where": "grafting at a cut the grafter chooses",
+     "domain": "horticulture"
+    }
+   ],
+   "members": {
+    "CAST": "what departed leaves a seat behind it",
+    "DAM": "a fed frame changes what may be held"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "function cutLayout",
+    "probe_in": "code",
+    "finding": "the best-documented organ in the tree, and it was installed as a CORRECTION on 2026-08-14 — the machine used to cut at its own exact middle. No suggested seam, no midpoint drawn, no default; an uncut writing stays uncut. NOTE: the old Math.ceil(w.length/2) still appears in the tree, in the comment recording its removal, and a comment-blind probe reports this organ as broken."
+   }
+  },
+  {
+   "organ": "the wall-clock gate",
+   "seat": "OVERWINTERING",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a transition whose only guard is a real date boundary. There is no call that advances it — the mechanism's value is that it CANNOT be invoked.",
+   "extract": "if (today() !== lastDay) { advance(); lastDay = today() }. No fast-forward exists to be found and abused.",
+   "why_this_seat": "the only seat where the cost is not the hand's to pay",
+   "sightings": [
+    {
+     "where": "cron / at",
+     "domain": "systems"
+    },
+    {
+     "where": "certificate notBefore/notAfter",
+     "domain": "security"
+    },
+    {
+     "where": "TTL and lease expiry",
+     "domain": "distributed-systems"
+    },
+    {
+     "where": "vernalisation chill-hour requirement",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "TANK": "the morning after a winter is a new intake",
+    "GARDEN": "growth is held between visits"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.lastDay===today\\(\\)",
+    "probe_in": "code",
+    "finding": "the guard is a real date boundary and there is no call anywhere that advances it. The mechanism's value is that it cannot be invoked."
+   }
+  },
+  {
+   "organ": "dormancy without a queue",
+   "seat": "OVERWINTERING",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "state strengthens across absence and nothing tracks whether you came back. There is no due list, because a due list is a demand.",
+   "extract": "elapsed time is READ when you arrive, never accumulated into a debt while you are gone. Every spaced-repetition scheduler fails exactly here.",
+   "why_this_seat": "a fallow season is a correct state, and law 7 forbids the queue that would say otherwise",
+   "sightings": [
+    {
+     "where": "seed dormancy broken by elapsed cold",
+     "domain": "biology"
+    },
+    {
+     "where": "generational GC age promotion",
+     "domain": "runtime"
+    },
+    {
+     "where": "a legal cooling-off period",
+     "domain": "law"
+    },
+    {
+     "where": "cask maturation",
+     "domain": "brewing"
+    }
+   ],
+   "members": {
+    "HELIOSTAT": "light needs returns to strengthen",
+    "CAST": "only what has wintered is worth giving"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.rooted\\+\\+",
+    "probe_in": "code",
+    "finding": "elapsed time is READ on arrival and never accumulated into a debt while away. There is no due list anywhere in the tree, which is law 7 built rather than obeyed."
+   }
+  },
+  {
+   "organ": "the local rule with no objective",
+   "seat": "GARDEN",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "next = rule(neighbourhood(current)), iterated. There is no fitness, no target and no score — the ABSENCE of an objective function is the organ.",
+   "extract": "any optimiser is refused at this seat by definition, because an objective is a statement about what the growth means.",
+   "why_this_seat": "it never says what it means, and it is not a score and not a record of you",
+   "sightings": [
+    {
+     "where": "Lenia continuous automata",
+     "domain": "artificial-life"
+    },
+    {
+     "where": "Gray–Scott reaction–diffusion",
+     "domain": "chemistry"
+    },
+    {
+     "where": "diffusion-limited aggregation",
+     "domain": "physics"
+    },
+    {
+     "where": "L-system production rules",
+     "domain": "botany"
+    }
+   ],
+   "members": {
+    "HELIOSTAT": "light lands and something grows",
+    "OVERWINTERING": "real only across a night you were not there for"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "const v=f\\[i\\]\\+D\\*\\(l\\+r-2\\*f\\[i\\]\\)-decay\\*f\\[i\\]",
+    "probe_in": "code",
+    "finding": "BUILT 2026-08-16. The garden listed deposits; it now grows by a local rule with no fitness, no target and no score. Screened diffusion from the shoots as held sources, run to a fixed point ON ENTRY and then stopped — because the seat says it fills from play and NOT from attention, so iterating while the hand stands here would be attention feeding the garden. Verified: 400 step() calls change the bed by nothing; same seeds give the identical bed; an empty garden stays empty."
+   }
+  },
+  {
+   "organ": "the side-effect accumulator",
+   "seat": "GARDEN",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "growth driven by what already happened elsewhere, never by a request. Nothing asks for it and looking does not feed it.",
+   "extract": "it fills from play and not from attention — so the read path must have no write in it.",
+   "why_this_seat": "material in is everything that happened, without being asked for",
+   "sightings": [
+    {
+     "where": "an event-sourced projection",
+     "domain": "software-design"
+    },
+    {
+     "where": "desire paths worn by traffic",
+     "domain": "urbanism"
+    },
+    {
+     "where": "patina and wear maps",
+     "domain": "graphics"
+    },
+    {
+     "where": "dendrochronology growth rings",
+     "domain": "biology"
+    }
+   ],
+   "members": {
+    "LENS": "a grown form is material",
+    "SEATING": "what grew feeds the frame"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "S\\.shoots\\.forEach",
+    "probe_in": "code",
+    "finding": "the garden's read path has no write in it — looking does not feed it, and it fills from what happened at other seats. Of the two garden organs this is the one built, and it is the one laws 2 and 7 require."
+   }
+  },
+  {
+   "organ": "the destructive handoff",
+   "seat": "CAST",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "ownership transfers and the SOURCE IS INVALIDATED. Not a copy with a copy left behind — a move, after which the sender genuinely does not have it.",
+   "extract": "postMessage(buf, [buf]) neuters the sender: buf.byteLength becomes 0, in the page, with no network. THE WORLD LOSES WHAT IT GIVES, provably, offline. This is the organ the whole-project pass could not find.",
+   "why_this_seat": "the corpus calls this seat half-built and dishonest because the file leaves and the world loses nothing. A move rather than a copy is the honest version.",
+   "sightings": [
+    {
+     "where": "Transferable objects in postMessage",
+     "domain": "ui"
+    },
+    {
+     "where": "Rust move semantics / linear types",
+     "domain": "language-design"
+    },
+    {
+     "where": "std::unique_ptr release",
+     "domain": "language-design"
+    },
+    {
+     "where": "rename(2) across a directory",
+     "domain": "systems"
+    }
+   ],
+   "members": {
+    "TANK": "writing departs directly — the door out",
+    "SEATING": "what departed leaves a seat behind it"
+   },
+   "contact": {},
+   "built": {
+    "state": "by-law",
+    "at": "ascent.html",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "REVERTED 2026-08-16 on his ruling. This siting caused a real change to the running game and the change was wrong. The organ is real in the wild and does not belong at this seat."
+   },
+   "struck": {
+    "by": "kevin",
+    "on": "2026-08-16",
+    "his_words": "the gifts arent depleted by giving.",
+    "what_it_closes": "The seat is not where the loss lives. A cost at the CAST is upstream — what was cast, and what wintered before it was worth casting — never a deletion on the shelf. The code was reverted; ascent.html had said this in its own comment before the siting overrode it."
+   }
+  },
+  {
+   "organ": "the one-time consumable",
+   "seat": "CAST",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a handle valid for exactly one use, which burns on use. A second attempt is not an error to report; there is simply nothing there.",
+   "extract": "the pull is a held state that decays if the hand stops — the one gesture in the world that undoes itself when abandoned.",
+   "why_this_seat": "the door out is never a wall and never a demand, and it is not reusable",
+   "sightings": [
+    {
+     "where": "a cryptographic nonce",
+     "domain": "security"
+    },
+    {
+     "where": "Promise settling exactly once",
+     "domain": "language-design"
+    },
+    {
+     "where": "a channel close()",
+     "domain": "concurrency"
+    },
+    {
+     "where": "a spent match",
+     "domain": "physical"
+    }
+   ],
+   "members": {
+    "OVERWINTERING": "only what has wintered is worth giving",
+    "DAM": "giving empties the head"
+   },
+   "contact": {},
+   "built": {
+    "state": "built",
+    "at": "ascent.html",
+    "probe": "const given=new Set\\(S\\.shop\\.flatMap",
+    "probe_in": "code",
+    "finding": "Once-only is on the CONTENT — emit() gives only what has not been given, so no sentence returns doubled. It was graded partial for not being once-only on the ARTIFACT; his ruling 2026-08-16 says the artifact SHOULD be re-takeable, so the grade was wrong and the seat was complete as written."
+   }
+  },
+  {
+   "organ": "the computed cell",
+   "seat": "—",
+   "socket": "THE 12 RADII",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a value derived from its inputs, readable, with NO SETTER. Recomputed when its inputs change; assigning to it is an error rather than a write.",
+   "extract": "the getter without the setter. Vue warns 'computed value is readonly'; MobX recomputes lazily and caches; a spreadsheet cell holding a formula cannot be typed into without destroying the formula. THE REFUSAL TO ACCEPT A WRITE IS THE ORGAN.",
+   "why_this_socket": "a radius is one seat's distance from the game, derived from where the seat is and never set. And the equilibrium — every radius equal to the edge — is a property of the derived values, not something anything can write. The same organ already scaffolds CENTRE.at(), which is a point in its favour and a caution: one organ serving two sockets may mean the two sockets are one thing.",
+   "sightings": [
+    {
+     "where": "MobX computeds",
+     "domain": "ui-reactivity"
+    },
+    {
+     "where": "Vue computed properties",
+     "domain": "ui-reactivity"
+    },
+    {
+     "where": "SQL generated / .NET DataColumn.Expression columns",
+     "domain": "database"
+    },
+    {
+     "where": "a spreadsheet formula cell",
+     "domain": "spreadsheets"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "the radii are derived in solid.js but nothing in the running game reads one. The socket is open."
+   }
+  },
+  {
+   "organ": "the tombstone",
+   "seat": "FILTER",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a deletion recorded as a MARKER, never an erasure. The removed thing keeps its place in the order and can be walked past, counted against, or restored.",
+   "extract": "delete writes a marker; it does not unwrite. Xi-editor's note is the clearest statement of why — 'retaining it guarantees that its order relative to its context is preserved.'",
+   "why_this_socket": "THE_24.md level 20 already describes this and calls it the withdrawal route: 'a deleted sentence leaves the line by way of the filter, and the bank keeps it.' A tombstone is that, exactly. It also satisfies law 12 and law 4 by construction — nothing is lost and nothing is rewritten, because deletion never touches the text.",
+   "sightings": [
+    {
+     "where": "CRDT tombstones (xi-editor)",
+     "domain": "text"
+    },
+    {
+     "where": "Kafka tombstone records",
+     "domain": "messaging"
+    },
+    {
+     "where": "Cassandra / ScyllaDB tombstones",
+     "domain": "storage"
+    },
+    {
+     "where": "Docker distribution soft-delete tombstone files",
+     "domain": "containers"
+    }
+   ],
+   "members": {
+    "TANK": "the withdrawn sentence returns to the bank",
+    "DEEP": "and what is not taken falls past"
+   },
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "replaces 'the diff hunk', which Kevin struck 2026-08-16 — the filter is a process the hand assembles, and a diff is a supplied comparison. A tombstone is not supplied: the hand makes it by withdrawing."
+   }
+  },
+  {
+   "organ": "the paired entry",
+   "seat": "—",
+   "socket": "THE 6 PYRAMID CELLS",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "two quantities that can only be written together and always sum to zero. There is no operation that moves one without moving the other by the same amount.",
+   "extract": "the transaction is the unit, never the line. A single-sided entry is not a small error — it is unrepresentable.",
+   "why_this_socket": "a pyramid cell was measured to close one diagonal exactly as it opens the other. That IS a paired entry: the exchange is the unit and half of it cannot be performed. Six cells, six exchanges, each with its price fixed in advance.",
+   "sightings": [
+    {
+     "where": "double-entry bookkeeping",
+     "domain": "finance"
+    },
+    {
+     "where": "XPBD constraint projection",
+     "domain": "physics"
+    },
+    {
+     "where": "conservation of momentum in a solver",
+     "domain": "physics"
+    },
+    {
+     "where": "Cassowary paired constraints",
+     "domain": "ui"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "the trades are derived in solid.js as TRADES but nothing performs one. The socket is open, and law 2 governs anything drawn from it."
+   }
+  }
+ ],
+ "_sockets": "Three organs added 2026-08-16 on Kevin's line 'do open source research on all potential organs, and un place sockets'. Each names the SOCKET it was found for rather than a seat, because two of the three fill interior positions that are not seats at all. All three are state:absent — found in the commons, not built here. Not one is marked.",
+ "_gate": "THE WEAVE, 2026-08-17, on Kevin's ruling \"the two systems should be merged and woven together into the geometry coherently\". These are HIS OWN BUILT ORGANS from nesi/mind — the gate, last touched 2026-08-11 — sited on the twelve seats by the SAME rule the commons organs use: the gesture matches, or it is not sited. They are a different provenance class from the 27 above, which are sightings in the wild and unbuilt; these are running code and prose in his own tree, so `sightings` names his files. THE SEAT IS DERIVED, NOT ASSIGNED — where the gesture does not match exactly, the entry says so and stays unsited rather than being placed to fill the table.",
+ "gate": [
+  {
+   "organ": "the router",
+   "seat": "STATIONS",
+   "gesture": "I SEND THIS THERE",
+   "match": "exact",
+   "mechanism": "seven conditions, each exiting to Deep Review; none of the seven exits to Daily. A trip names the condition that fired.",
+   "why_this_seat": "STATIONS is the routing seat and its gesture is literally the router's act — send this there",
+   "sightings": [
+    {
+     "where": "nesi/mind/ROUTER.md",
+     "domain": "his tree"
+    },
+    {
+     "where": "nesi/mind/ESCALATION_CONDITIONS.md",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "outputsOf('STATIONS') returns THREE outputs — send, drop, set. The router has TWO exits. Its `set` is missing, and `set` is the output with member:null that goes nowhere. Law 6 and law 7 both live in that third output. Weaving the router into the geometry adds exactly one thing: the gate learns to set a movement down.",
+   "built": true
+  },
+  {
+   "organ": "the mark ledger",
+   "seat": "TANK",
+   "gesture": "I POUR",
+   "match": "exact — AND IT IS ALREADY HERE",
+   "mechanism": "append-only jsonl, 1,376 entries; a mark is caught, never edited in place.",
+   "why_this_seat": "the same organ as `the append-only log` already sited at TANK above. The gate's ledger and the game's tank organ are ONE ORGAN, found twice from opposite directions.",
+   "sightings": [
+    {
+     "where": "MARKS_LOG.jsonl",
+     "domain": "his tree"
+    },
+    {
+     "where": "tools/marks.py",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "a merge, not an addition — the seat was already occupied by the same mechanism.",
+   "built": true
+  },
+  {
+   "organ": "deep review",
+   "seat": "LENS",
+   "gesture": "I WORK IT UNTIL IT HOLDS",
+   "match": "exact",
+   "mechanism": "the heavy path; the only exit the router's seven conditions lead to.",
+   "why_this_seat": "the lens is worked writing that has come to hold — the gesture is the review",
+   "sightings": [
+    {
+     "where": "nesi/mind/ROUTER.md",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "TANK and LENS are antipodes and the diameter between them is a root under F10 — so the traverse from poured material to worked-until-it-holds is a ROOT MOVE, which the geometry already named the lens traverse.",
+   "built": true
+  },
+  {
+   "organ": "daily mode",
+   "seat": "OVERWINTERING",
+   "gesture": "I COME BACK",
+   "match": "exact",
+   "mechanism": "the cheap default path; runs when none of the seven conditions fires.",
+   "why_this_seat": "the game's OVERWINTERING roots only on a day LATER than the last — a return across a day boundary IS the daily cycle, and neither can be forced by volume in one sitting",
+   "sightings": [
+    {
+     "where": "nesi/mind/ROUTER.md",
+     "domain": "his tree"
+    },
+    {
+     "where": "skills/daily-cycle",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "the game already enforces what daily mode assumes: a thousand releases in one afternoon root nothing.",
+   "built": true
+  },
+  {
+   "organ": "the composter",
+   "seat": "DEEP",
+   "gesture": "I LET IT GO DOWN",
+   "match": "exact",
+   "mechanism": "unheld marks degrade past a seven-day window and drop; 293 fired on 2026-08-16 alone.",
+   "why_this_seat": "the deep takes what is let go, and law 9 says the deep never renders — compost is not shown, it is gone down",
+   "sightings": [
+    {
+     "where": "tools/marks.py compost",
+     "domain": "his tree"
+    },
+    {
+     "where": "RETIRED.jsonl",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "law 9 already governs it — nothing composted may be drawn.",
+   "built": true
+  },
+  {
+   "organ": "the constraint registry",
+   "seat": "SEATING",
+   "gesture": "I FEED THE FRAME",
+   "match": "exact",
+   "mechanism": "thirteen boundaries, each naming what it keeps, each liftable by his hand via unbind, read before every refusal.",
+   "why_this_seat": "SEATING's own cost line — you feed the frame; where it comes to rest is not yours, and it does not move again — is a description of a constitution",
+   "sightings": [
+    {
+     "where": "ascent.html CONSTRAINTS",
+     "domain": "his tree"
+    },
+    {
+     "where": "tools/constraint_lint.js",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "this is the self-editing organ, and it is the one the wire map found reachable by two conditional links from an unwalked surface.",
+   "built": true
+  },
+  {
+   "organ": "the smuggle detector",
+   "seat": null,
+   "gesture": "—",
+   "match": "NO CLEAN GESTURE",
+   "mechanism": "three signatures: cost unnamed, beneficiary unnamed, purpose unnamed.",
+   "why_this_seat": "FILTER's gesture is I TAKE THIS ONE OUT, which is removal by hand. The detector does not remove — it NAMES. No seat's gesture is `I name what this costs`. Left unsited on purpose rather than pushed into FILTER to complete the table.",
+   "sightings": [
+    {
+     "where": "nesi/mind/ESCALATION_CONDITIONS.md condition 5",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "unsited. Condition 5 is the only one of the seven marked `always named when it fires`, which is a naming act and not a filtering act.",
+   "built": true
+  },
+  {
+   "organ": "the local classifier",
+   "seat": null,
+   "gesture": "—",
+   "match": "BLOCKED BY LAW 3",
+   "mechanism": "hermes3:8b runs the routing classification and the Daily exit; Deep Review escalates to a frontier model.",
+   "why_this_seat": "unsited because the seam is a law, not a gesture. Law 3 forbids a model call on the core loop, and refusal_check enforces it. Under Kevin's F9 mark the router could declare itself outside the core loop — the mechanism for that declaration was built 2026-08-17 and requires a real const plus a reason, printed at every run.",
+   "sightings": [
+    {
+     "where": "nesi/mind/ROUTER.md tiering identity",
+     "domain": "his tree"
+    }
+   ],
+   "geometry_rules": "this is the single hard seam between the two systems. The game may make no model call; the gate makes one on every front turn.",
+   "built": true
+  }
+ ]
 }

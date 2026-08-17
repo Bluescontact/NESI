@@ -253,8 +253,30 @@ const WATER0 = {
   held:0,         // what the dam is holding right now
   released:0,     // what has ever been let go
   still:1,        // 1 the surface is at rest, 0 it is moving
+  /* FOG — quarried 2026-08-17 from nesi.html, the closed lineage, on Kevin's
+     order "take the quarry into the live build". There it was produced by a
+     COUPLING (spin + warm → the spiral) whose output was explicitly "not in the
+     basin — fog only", and it thinned whenever the spiral stopped turning.
+     Both halves carried: it accumulates only while a coupling runs, and it
+     decays whenever that coupling stops.
+
+     IT IS NOT `clarity`, and merging them would lose the mechanic. Clarity
+     recovers ONLY IN STILLNESS; fog thins whenever the coupling ends, stillness
+     or not. Two different laws, so two fields.
+
+     It changes what can be seen and nothing that is there — which is the
+     constitutional law "changed conditions are not changed content" made
+     mechanical rather than asserted. Never rendered as a number (law 2). */
+  fog:0,          // 0 clear air, 1 fully veiled — rises only under an over-held beam
   readings:[]     // {edge, what} — the trace the twelve leave for the lens and the light
 };
+/* QUARRIED CONSTANTS — carried at their original values from nesi.html
+   (BURN_AT=3400, WT_FOG_RATE=0.34, WT_FOG_FADE=0.045). Not retuned: a quarried
+   mechanism that arrives with new numbers is a different mechanism wearing the
+   same name. The fog rates are per-second there and are divided by 1000 at the
+   call site, because this step() is handed dt in milliseconds. */
+const HELIO_BURN=3400, HELIO_FOG_RATE=0.34, HELIO_FOG_FADE=0.045;
+
 function W_(){ if(!S.water || typeof S.water!=="object") S.water=JSON.parse(JSON.stringify(WATER0));
                for(const k in WATER0) if(!(k in S.water)) S.water[k]=WATER0[k];
                return S.water; }
@@ -422,6 +444,17 @@ const CONSTRAINTS = [
  { id:"no-number", mine:false, where:"*",
    says:"No number reaches you. No score, count, rank, percentage or progress bar.",
    keeps:"what you see is form — how high, how clear, how far down" },
+ /* REGISTERED 2026-08-17 on Kevin's F4 mark. Laws 4 and 5 were enforced by
+    nothing anywhere in the build until that mark; this is the boundary they
+    became, stated where a hand can see and lift it. */
+ /* QUARRIED 2026-08-17 from nesi.html on Kevin's order. mine:false — it is his
+    own prior build carried across, not a boundary this build invented. */
+ { id:"burn", mine:false, where:"heliostat",
+   says:"A beam held on one mirror too long closes that mirror for good. It never throws light again, and the last unclosed mirror cannot be closed.",
+   keeps:"holding has a cost that cannot be undone — so aiming is a decision, not a thing you can hold forever and take back" },
+ { id:"no-machine-sort", mine:false, where:"*",
+   says:"No machine decides a category. An origin may say a thing was inferred; nothing computes which fraction it is. Outside the core loop a surface may lift this by declaring itself, in code, with a reason.",
+   keeps:"the sort stays your hand's — what a thing IS is never handed to you already decided" },
  { id:"no-call",   mine:false, where:"*",
    says:"No model call and no network request, anywhere on the path you walk.",
    keeps:"the world runs in your hands, with nothing listening" },
@@ -1216,7 +1249,7 @@ stations:{ g:"reach", cost:"a route spends the water on one destination, and the
      seating, never by holding harder.
 
    So this level teaches the array, and level 9 is what makes any of it keep. */
-heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity, and the day is one day", enter(){ L.a=-0.9; L.grown=0;
+heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity, and the day is one day", enter(){ L.a=-0.9; L.grown=0; L.burn={};
     /* THE PARTITION — the day is one day, and now that is arithmetic ─────────
        The cost line above has said "light spent on growth is light not spent on
        clarity" since the seat was built, and nothing anywhere enforced it: you
@@ -1242,8 +1275,43 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
     // every mirror that is currently throwing light: your hand's aim on the
     // unseated ones, plus each seated mirror on its own locked bearing
     let anyHit=false;
-    mirrors().forEach((m,i)=>{ const a=seatedAim(i); const ang=(a!==null)?a:(holding()?L.a:null);
+    mirrors().forEach((m,i)=>{ if((S.scorch||[])[i]) return;   /* a closed receiver throws nothing */
+      const a=seatedAim(i); const ang=(a!==null)?a:(holding()?L.a:null);
       if(ang===null) return; if(beamCrossesWater(m,ang)) anyHit=true; });
+    /* ═══ THE SCORCH — quarried 2026-08-17 from nesi.html ═══════════════════
+       There: `if(!S.scorch[k] && performance.now()-beamT > BURN_AT){ S.scorch[k]=true }`
+       — hold the beam on one receiver long enough and it closes FOR GOOD. It is
+       the only irreversible act in that file, and this seat had nothing like it:
+       over-holding cost you budget, and budget came back as clarity, so holding
+       forever cost exactly nothing.
+
+       BURN_AT is carried at its original 3400. nesi.html measures against
+       performance.now() in ms and this step() is handed dt in ms, so the
+       threshold transfers unchanged; the fog rates below are per-second there
+       and are converted.
+
+       THE GUARD, AND IT IS NOT OPTIONAL: scorch may never take the last
+       unscorched mirror. Law — no dead ends; a seat you cannot leave is not
+       constructible. The stage finishes on three shoots and growth needs one
+       mirror that still throws, so the last one is not burnable. */
+    const SC = S.scorch || (S.scorch = []);
+    L.burn = L.burn || {};
+    mirrors().forEach((m,i)=>{ if(SC[i]) return;
+      const a=seatedAim(i); const ang=(a!==null)?a:(holding()?L.a:null);
+      if(ang!==null && beamCrossesWater(m,ang)){
+        L.burn[i]=(L.burn[i]||0)+dt;
+        /* asks the registry before it fires, so his hand can switch it off in
+           his own store — a refusal nobody can lift is not a boundary, it is a
+           wall. The last-mirror guard is NOT liftable and sits outside bound(). */
+        if(bound("burn") && L.burn[i]>HELIO_BURN && SC.filter(Boolean).length < 11){
+          SC[i]=true; L.burn[i]=0; save(); }   /* closes, and does not reopen */
+      } else L.burn[i]=0; });
+    /* FOG rises only while a beam is being over-held — the coupling — and thins
+       whenever no beam is landing, exactly as it thinned when the spiral stopped.
+       The over-held beam is work that puts nothing in the basin. */
+    { const w2=W_(), overheld = Object.keys(L.burn).some(k=>L.burn[k] > HELIO_BURN*0.5);
+      w2.fog = overheld ? Math.min(1, w2.fog + HELIO_FOG_RATE*dt/1000)
+                        : Math.max(0, w2.fog - HELIO_FOG_FADE*dt/1000); }
     if(anyHit){ L.on=(L.on||0)+dt;
       /* a shoot spends a fifth of the day. With none left the beam still lands
          and still lights the water — it simply has nothing more to give, and
@@ -1274,6 +1342,11 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
     if(full){ g.strokeStyle="rgba(200,230,240,.7)"; g.lineWidth=1.5;
       g.beginPath(); g.ellipse(W/2,ly,Math.min(W*0.34,360),58,0,0,7); g.stroke(); }
     mirrors().forEach((m,i)=>{ const locked=seatedAim(i);
+      /* A CLOSED RECEIVER IS LEGIBLE AS CLOSED, and by behaviour rather than by
+         colour (law 10): it throws no beam at all, which no working mirror ever
+         does. It is drawn lying flat and dark, and nothing says why. */
+      if((S.scorch||[])[i]){ g.save(); g.translate(m.x,m.y); g.rotate(Math.PI/2);
+        g.fillStyle="#5a4a42"; g.fillRect(-3,-26,6,52); g.restore(); return; }
       const ang=(locked!==null)?locked:(holding()?L.a:null);
       if(ang!==null){ const hit=beamCrossesWater(m,ang);
         /* THE BUDGET IS READ AS FORM. A day with light left throws a full beam;
@@ -1290,7 +1363,15 @@ heliostat:{ g:"hold", cost:"light spent on growth is light not spent on clarity,
       g.fillRect(-3,-26,6,52); g.restore(); });
     S.shoots.forEach(x=>{ g.strokeStyle="#4f6a3d"; g.lineWidth=3;
       g.beginPath(); g.moveTo(x%W,ly+70); g.lineTo(x%W,ly+40); g.stroke(); });
-    ground(ly+92); }
+    ground(ly+92);
+    /* THE FOG, LAST — over everything, because it is a condition of encounter
+       and not a thing in the world. It veils what is already there and changes
+       none of it: lift the beam and it thins, and what was under it is exactly
+       what it was. NEVER A FIGURE — no bar, no percentage, no count. The veil
+       IS the reading, which is the only form law 2 permits. */
+    { const fg=W_().fog||0;
+      if(fg>0.02){ g.fillStyle="rgba(236,238,240,"+(0.55*fg).toFixed(3)+")";
+        g.fillRect(0,0,W,H); } } }
 },
 
 /* 8 · THE OVERWINTERING — "ground fed again on a later day roots; a thousand

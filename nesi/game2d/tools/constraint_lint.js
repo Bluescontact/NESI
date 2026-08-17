@@ -60,7 +60,13 @@ const HELD_ELSEWHERE = {
   "no-number": "refusal_check — no figure reaches the screen",
   "verbatim":  "wire_check R4 — one text door, his words only",
   "deep":      "refusal_check — the deep is never drawn",
-  "fifth":     "kit_check K1/K4 — four gestures, every stage declares one"
+  "fifth":     "kit_check K1/K4 — four gestures, every stage declares one",
+  /* ADDED 2026-08-17, Kevin's F4 mark. Held by the law 4/5 group in
+     refusal_check, proven by four falsifiers: a classifier on a core-loop
+     surface fails; the same classifier passes once the surface declares
+     CORE_LOOP = false with a reason; a declaration in a comment buys nothing;
+     and a declared-outside surface still fails law 2. */
+  "no-machine-sort": "refusal_check law 4/5 — no classifier decides a fraction; F9's lift must declare itself in code"
 };
 const dead = ids.filter(id => calls.indexOf(id) < 0 && !HELD_ELSEWHERE[id]);
 ok("C3 every registered constraint is actually reached by the code",

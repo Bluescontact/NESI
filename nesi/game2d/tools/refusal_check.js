@@ -167,6 +167,35 @@ const groups = {
     "toast(",
     ".showToast",
   ],
+  /* ═══ ADDED 2026-08-17 ON KEVIN'S F4 MARK ════════════════════════════════
+     His mark: "yes, and refusal_check is amended by this mark." Checked before
+     amending: this file enforced laws 3/11, 2 and 6 and NOTHING ELSE. It never
+     forbade inference, classification or categories — so the F4 collision as
+     written ("YES costs an exemption in refusal_check") was false, in BOTH
+     directions. `inferred` as an origin never tripped this check, and laws 4
+     and 5 — the ones that actually bind inference — were enforced by nothing
+     anywhere in the build. Unenforced prose.
+
+     So the amendment his mark authorises is not an exemption. It is the
+     opposite: laws 4 and 5 become enforced for the first time, which is what
+     makes the yes SAFE rather than unbounded.
+
+     WHAT IS FORBIDDEN IS THE ACT, NEVER THE LABEL. Storing, printing or
+     carrying an origin whose value is `inferred` is lawful — that is his mark.
+     A machine DECIDING which category a thing is remains forbidden: law 4, no
+     inferred categories on the player path; law 5, the hand runs the filter,
+     no automatic sorting, no computed pass, no classifier deciding what a
+     fraction is. The token `inferred` is deliberately absent below. */
+  "law 4/5 — the hand runs the filter; no machine decides a category": [
+    "classify(",
+    "autoClassify",
+    "autoSort",
+    "inferCategory",
+    "detectFraction",
+    "guessFraction",
+    "categorize(",
+    ".predict(",
+  ],
 };
 
 const hits = [];
@@ -222,7 +251,42 @@ for (const [law, tokens] of Object.entries(groups)) {
 
 const base = path.basename(target);
 const ex = EXEMPT[base] || {};
-const real = hits.filter(h => !ex[h.tok]);
+
+/* ═══ THE CORE LOOP, DEFINED IN A WAY THAT HOLDS ═════════════════════════════
+   Kevin's F9 mark, 2026-08-17: "the last twelve are outside the core loop by
+   definition." The fork's own cost line warned what that needs — *"reading two
+   needs 'core loop' defined in a way that holds, or the exemption widens on its
+   own later."* This is that definition, and it is built so it cannot widen
+   quietly.
+
+   A SURFACE IS INSIDE THE CORE LOOP UNLESS IT SAYS OTHERWISE, IN CODE. The
+   declaration must be a real const — comments are stripped before this runs, so
+   a claim in prose cannot buy an exemption — and it must carry a reason string.
+   Nothing is inferred from a filename, a level number or a directory.
+
+   Deliberately NOT keyed to "the last twelve": under his F10 mark the count
+   moved from 36 to 30, so which twelve are last is no longer settled, and a
+   check that guessed would be asserting his ruling for him.
+
+   The lift is narrow: laws 4/5 and the model-call half of law 3/11. Law 2 (no
+   number), law 6 (no reward cue) and the outward-reach half are NEVER lifted —
+   a surface outside the core loop is still forbidden to score the player or
+   phone home. And every declaration PRINTS, so the widening is always counted. */
+const declared = code.match(
+  /CORE_LOOP\s*=\s*false\s*[,;]?\s*[\/*]*\s*(?:REASON|reason)\s*[:=]\s*["'`]([^"'`]+)["'`]/
+);
+const outside = !!declared;
+const LIFTABLE = /law 4\/5|no model call/;
+const MODEL_ONLY = new Set([
+  "fetch(", "XMLHttpRequest", "WebSocket", "sendBeacon", "navigator.sendBeacon",
+]);
+const lifted = outside
+  ? hits.filter(h => LIFTABLE.test(h.law) &&
+      (h.law.indexOf("law 4/5") === 0 || MODEL_ONLY.has(h.tok)))
+  : [];
+const isLifted = h => lifted.indexOf(h) >= 0;
+
+const real = hits.filter(h => !ex[h.tok] && !isLifted(h));
 const allowed = hits.filter(h => ex[h.tok]);
 
 if (missing.length) {
@@ -234,6 +298,14 @@ if (missing.length) {
     "(", code.split("\n").length, "code lines · " + need.length + " presence(s) bound )");
   for (const n of need) console.log("      bound to:", n.is);
   for (const h of allowed) console.log("      allowed:", h.tok, "—", ex[h.tok]);
+  /* the widening is never silent — F9's boundary announces itself or it is not
+     doing its job. Laws 2 and 6 are named as still binding on purpose. */
+  if (outside) {
+    console.log("      ■ DECLARED OUTSIDE THE CORE LOOP —", declared[1]);
+    console.log("        law 4/5 and the model call lifted here on Kevin's F9 mark;",
+                "laws 2, 6 and no-outward-reach still bind.");
+    for (const h of lifted) console.log("        lifted:", h.tok, "—", h.law);
+  }
 } else {
   anyFail += real.length;
   console.error("[refusal_check] FAIL —", base, "·", real.length, "forbidden construct(s):");
