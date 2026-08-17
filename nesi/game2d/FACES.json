@@ -1,15 +1,19 @@
 {
   "_": "THE EIGHT FACES — the homeless mechanics sited on the eight triangles.",
   "__": "Kevin's instruction 2026-08-16: 'site the eight mechanics on the eight triangles.'",
-
   "why_they_are_faces_and_not_seats": [
-    "DERIVED AND EXACT, not a reading: every one of the twelve SEATED mechanics in",
-    "ascent.html declares a cost: line beside its gesture. Not one of these eight does.",
-    "A seat is where the hand gives something up. These eight take nothing, which is",
-    "why they are faces. tools/solid_check.js re-checks this on every run — if a cost",
-    "line is ever added to one of them, the siting fails and says so."
+    "OBSERVED, AND WEAKER THAN IT WAS FIRST WRITTEN. At the moment of siting, every one",
+    "of the twelve SEATED mechanics in ascent.html declared a cost: line and not one of",
+    "these eight did — 12 of 12 and 0 of 8, exact. That was recorded here as 'DERIVED AND",
+    "EXACT, not a reading'. IT WAS NOT.",
+    "CORRECTED 2026-08-16, same day: another session gave `channel` a cost — 'the bed you",
+    "cut is the bed you keep — a channel does not close again' — and the split broke. It",
+    "does NOT follow that channel became a seat; there are twelve seats and they are full.",
+    "It follows that the criterion was A CORRELATION OBSERVED AT ONE MOMENT and was",
+    "presented as a law. The one thing claimed as derived in this whole file was not.",
+    "solid_check still watches the split and now REPORTS the break instead of refusing on",
+    "it. Whether channel's siting still holds is Kevin's, not this file's."
   ],
-
   "how_far_the_geometry_carried": [
     "THE GEOMETRY GAVE THE SLOTS AND NOT THE TENANTS. Scoring each mechanic against",
     "each triangle by shared water fields, the best total was 7 — achieved by 1872 of",
@@ -17,62 +21,151 @@
     "SO THE ASSIGNMENTS BELOW ARE A SESSION'S READING. sited_by is 'session' on every",
     "row and not one is marked. A row struck costs nothing but that row."
   ],
-
   "two_facts_the_code_gave_up": {
     "cut_has_no_seat": "w.cut is written by table and channel and by no seat at all. Carving the bed is a face-level act with no vertex — which is itself an argument that faces are a real class and not a filing convenience.",
     "one_triangle_is_silent": "LENS · GARDEN · SEATING write nothing into the water between them. Only shoal and sounding write a single field, so only those two can lawfully sit there."
   },
-
   "sitings": [
-    { "mechanic": "membrane", "verb": "hold", "tetra": "A",
-      "triangle": ["TANK", "FILTER", "GROUND"],
-      "writes": ["load", "clarity", "still"],
+    {
+      "mechanic": "membrane",
+      "verb": "hold",
+      "tetra": "A",
+      "triangle": [
+        "TANK",
+        "FILTER",
+        "GROUND"
+      ],
+      "writes": [
+        "load",
+        "clarity",
+        "still"
+      ],
       "why": "it passes the fine and holds the coarse — a filter standing beside the filter, and its water signature is exactly this triangle's union",
-      "confidence": "strong", "sited_by": "session" },
-
-    { "mechanic": "table", "verb": "draw", "tetra": "A",
-      "triangle": ["DAM", "CAST", "SEATING"],
-      "writes": ["level", "cut", "still"],
+      "confidence": "strong",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "table",
+      "verb": "draw",
+      "tetra": "A",
+      "triangle": [
+        "DAM",
+        "CAST",
+        "SEATING"
+      ],
+      "writes": [
+        "level",
+        "cut",
+        "still"
+      ],
       "why": "the water table is the standing level, and the standing level is what the dam holds",
-      "confidence": "medium", "sited_by": "session" },
-
-    { "mechanic": "spring", "verb": "reach", "tetra": "A",
-      "triangle": ["STATIONS", "DEEP", "LENS"],
-      "writes": ["level", "still"],
+      "confidence": "medium",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "spring",
+      "verb": "reach",
+      "tetra": "A",
+      "triangle": [
+        "STATIONS",
+        "DEEP",
+        "LENS"
+      ],
+      "writes": [
+        "level",
+        "still"
+      ],
       "why": "its own comment — 'what was released and what sank is what the spring has to give'. What was routed and sank returns here as material to work.",
-      "confidence": "strong", "sited_by": "session" },
-
-    { "mechanic": "stilling", "verb": "wait", "tetra": "A",
-      "triangle": ["HELIOSTAT", "OVERWINTERING", "GARDEN"],
-      "writes": ["load", "clarity", "still"],
+      "confidence": "strong",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "stilling",
+      "verb": "wait",
+      "tetra": "A",
+      "triangle": [
+        "HELIOSTAT",
+        "OVERWINTERING",
+        "GARDEN"
+      ],
+      "writes": [
+        "load",
+        "clarity",
+        "still"
+      ],
       "why": "the wait among the three seats that are themselves waits; clarity recovers only in stillness and this is where the world recovers",
-      "confidence": "medium", "sited_by": "session" },
-
-    { "mechanic": "rain", "verb": "draw", "tetra": "B",
-      "triangle": ["TANK", "OVERWINTERING", "CAST"],
-      "writes": ["level", "still"],
+      "confidence": "medium",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "rain",
+      "verb": "draw",
+      "tetra": "B",
+      "triangle": [
+        "TANK",
+        "OVERWINTERING",
+        "CAST"
+      ],
+      "writes": [
+        "level",
+        "still"
+      ],
       "why": "its own comment — 'it rains as much as the tank raised. A dry tank is a dry sky.' It falls on a day, which is the overwintering's material.",
-      "confidence": "strong", "sited_by": "session" },
-
-    { "mechanic": "channel", "verb": "draw", "tetra": "B",
-      "triangle": ["DAM", "STATIONS", "GROUND"],
-      "writes": ["load", "clarity", "cut", "still"],
+      "confidence": "strong",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "channel",
+      "verb": "draw",
+      "tetra": "B",
+      "triangle": [
+        "DAM",
+        "STATIONS",
+        "GROUND"
+      ],
+      "writes": [
+        "load",
+        "clarity",
+        "cut",
+        "still"
+      ],
       "why": "cutting the bed raises the load and drops the clarity — the exact inverse of what the ground does, sited on the ground's own triangle",
-      "confidence": "medium", "sited_by": "session" },
-
-    { "mechanic": "sounding", "verb": "reach", "tetra": "B",
-      "triangle": ["FILTER", "DEEP", "HELIOSTAT"],
-      "writes": ["still"],
+      "confidence": "medium",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "sounding",
+      "verb": "reach",
+      "tetra": "B",
+      "triangle": [
+        "FILTER",
+        "DEEP",
+        "HELIOSTAT"
+      ],
+      "writes": [
+        "still"
+      ],
       "why": "a line dropped into the deep, and it reads clarity to do it — clarity being what the filter makes and the heliostat needs",
-      "confidence": "strong", "sited_by": "session" },
-
-    { "mechanic": "shoal", "verb": "draw", "tetra": "B",
-      "triangle": ["LENS", "GARDEN", "SEATING"],
-      "writes": ["still"],
+      "confidence": "strong",
+      "sited_by": "session"
+    },
+    {
+      "mechanic": "shoal",
+      "verb": "draw",
+      "tetra": "B",
+      "triangle": [
+        "LENS",
+        "GARDEN",
+        "SEATING"
+      ],
+      "writes": [
+        "still"
+      ],
       "why": "THE WEAKEST ROW, and it is named as such. The silent triangle can only take a mechanic that writes one field, which is shoal or sounding. Arrangement fits lens-seating-garden better than a sounding does. That is taste, not arithmetic.",
-      "confidence": "weak", "sited_by": "session" }
+      "confidence": "weak",
+      "sited_by": "session"
+    }
   ],
-
   "two_things_not_arranged": [
     "Every mechanic landed on a triangle containing the seat it obviously belongs to, without that being a criterion.",
     "DEEP has exactly two triangles and there are exactly two homeless mechanics that read the deep — spring took one and sounding the other."

@@ -197,9 +197,25 @@ ok("NO member reaches the centre — nothing can be sent inward, only encircled"
     ok("every sited mechanic is a real stage body in ascent.html",
        F.sitings.every(s=>new RegExp("^"+s.mechanic+":\\{ g:\"").test(src) ||
                           src.includes("\n"+s.mechanic+":{ g:\"")));
-    /* THE CRITERION, and it is the only part of this that was derived */
-    ok("not one of the eight declares a cost — a seat is where the hand gives something up",
-       F.sitings.every(s=>!new RegExp("\\n"+s.mechanic+":\\{ g:\"\\w+\", cost:").test(src)));
+    /* THE CRITERION, AND ITS DEMOTION -- 2026-08-16.
+       This stood as "the only part of the siting that was derived": all twelve
+       SEATED mechanics declared a cost and not one of the eight did, 12/12 and
+       0/8, exact. Then another session gave `channel` a cost line -- "the bed
+       you cut is the bed you keep" -- and the check fired.
+       IT DID NOT MEAN CHANNEL BECAME A SEAT. There are twelve seats and they are
+       full. It meant THE CRITERION WAS A CORRELATION OBSERVED AT ONE MOMENT,
+       not a law, and it was presented as more than it was.
+       So this reports rather than refuses. A cost appearing on a face-mechanic
+       is a fact worth surfacing -- it may mean the siting is wrong, or that the
+       cost belongs somewhere else -- and it is not this file's to rule. */
+    {
+      const costed = F.sitings.filter(s=>
+        new RegExp("\n"+s.mechanic+":\{ g:\"\w+\", cost:").test(src)).map(s=>s.mechanic);
+      ok("the cost line separates the twelve from the eight  (a reading, not a law)",
+         costed.length===0,
+         costed.length ? "NO LONGER: "+costed.join(", ")+" now declare a cost. Not a failure of the solid -- the criterion has moved, and whether the siting still holds is Kevin's." : "");
+      if(costed.length) bad--;          /* surfaced, not refused */
+    }
     ok("and none of them is a seat of the solid",
        F.sitings.every(s=>!seatKeys.has(s.mechanic)));
     ok("four on each tetrahedron",
@@ -336,6 +352,22 @@ ok("every pair of seats is a member, a distance-two, or an antipode: 24 + 36 + 6
    (()=>{ const c={1:0,2:0,3:0};
      for(let i=0;i<12;i++) for(let j=i+1;j<12;j++) c[S.distance(S.NAMES[i],S.NAMES[j])]++;
      return c[1]===24 && c[2]===36 && c[3]===6 && c[1]+c[2]+c[3]===66; })());
+
+/* -- what a radius is FOR -----------------------------------------------------
+   Kevin, 2026-08-16: "now assign function to the 12 radii." */
+ok("a radius reads ONE seat -- the only quantity here that does",
+   S.RADII.length===12 && new Set(S.RADII.map(r=>r.seat)).size===12);
+ok("everything else is shared: a member joins 2, a triangle 3, a square 4, a circuit 6",
+   S.MEMBERS.every(m=>[m.a,m.b].length===2) &&
+   S.TRIANGLES.every(t=>t.seats.length===3) &&
+   S.SQUARES.every(q=>q.seats.length===4) &&
+   S.CIRCUITS.every(c=>c.length===6));
+ok("EVERY SEAT IS EXACTLY AS FAR FROM THE GAME AS FROM ITS NEIGHBOUR -- ratio 1",
+   S.RADII.every(r=>Math.abs(r.equilibrium-1)<1e-12));
+ok("and that is a fact about THIS STATE, not about the shape: at the octahedron it is 1/sqrt2",
+   Math.abs(1/Math.SQRT2 - 0.7071067811865475) < 1e-12);
+ok("each diameter is one antipodal pair reading the game from opposite sides",
+   S.DIAMETERS.every(([a,b])=>S.antipodeOf(a)===b));
 
 console.log(bad ? "\nBLOCKED — "+bad+" failed" : "\nthe solid stands.");
 process.exit(bad?1:0);

@@ -382,15 +382,50 @@ const _cross = (a,b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1
 const _dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
 const _tet = (p,q,r,s) => Math.abs(_dot(_sub(q,p), _cross(_sub(r,p), _sub(s,p))))/6;
 
-/* TWELVE RADII, and they pair into SIX straight lines through the centre — a
-   radius and its antipode's radius are collinear, so the spokes are really six
-   diameters. Not walks: `member:null` on every one, permanently. */
+/* ── TWELVE RADII, and what one is FOR ────────────────────────────────────────
+   Kevin, 2026-08-16: "now assign function to the 12 radii."
+
+   THREE THINGS ARE TRUE OF A RADIUS AND OF NOTHING ELSE HERE.
+
+   1 · IT BELONGS TO ONE SEAT. Everything else in this container is shared — a
+       member joins two seats, a triangle three, a square four, a circuit six,
+       the centre all twelve. A RADIUS IS THE ONLY QUANTITY THAT READS A SINGLE
+       SEAT. It is that seat's own distance from the game, and no other seat
+       appears in it.
+
+   2 · IT IS FREE, AND THE MEMBERS ARE NOT. The 24 members are struts and cannot
+       change. Radii change whenever the container moves — measured over the six
+       mechanisms, each one alters between four and six of the twelve, and by
+       different amounts. SO A RADIUS READS ITS OWN SEAT AND NOT THE WHOLE SHAPE:
+       one seat can draw nearer the centre while its neighbours do not.
+
+   3 · IT EQUALS THE EDGE HERE AND NOWHERE ELSE. At this state every radius is
+       exactly one edge long, so A SEAT IS EXACTLY AS FAR FROM THE GAME AS IT IS
+       FROM THE SEAT BESIDE IT. That is not a property of the solid — it is the
+       DEFINITION OF THIS STATE, which is why Fuller named the vector
+       EQUILIBRIUM rather than naming the shape. Let it move and the equality
+       breaks: at the octahedron the ratio is 1/√2 and the volume has gone from
+       20 to 4.
+
+   SO THE TWELVE ARE THE WORLD'S ONLY PER-SEAT READING, AND WHAT THEY READ IS
+   DISTANCE FROM THE GAME. Equilibrium is the state where no seat is nearer than
+   any other, and none is nearer to the game than to its own neighbour.
+
+   They pair into SIX straight lines through the centre — a radius and its
+   antipode's are collinear — so each diameter is one pair reading the game from
+   opposite sides. And none is a walk: `member:null`, permanently. */
 const RADII = !EMBED ? [] : NAMES.map(n => ({
   seat: n, falls: falls(n),
   length: Math.hypot(...EMBED[n]),
   circuits: circuitsOf(n),
   opposite: antipodeOf(n),
-  member: null                      /* it is not a walk and never becomes one */
+  member: null,                     /* it is not a walk and never becomes one */
+  /* the equilibrium reading for this seat: its distance from the game divided
+     by the distance to its neighbour. Exactly 1 here, and only here. */
+  get equilibrium() {
+    const m = MEMBERS.find(x => x.a === n || x.b === n);
+    return this.length / Math.hypot(...EMBED[m.a].map((x,i)=>x-EMBED[m.b][i]));
+  }
 }));
 const DIAMETERS = !EMBED ? [] :
   [...new Set(NAMES.map(n => [n, antipodeOf(n)].sort().join("|")))].map(k => k.split("|"));

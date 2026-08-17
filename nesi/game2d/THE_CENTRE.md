@@ -619,3 +619,61 @@ pyramid cells is walled by exactly two cells of body A and two of body B.**
 
 No trade is braced by one body alone. Whatever the two bodies are, every
 exchange in the world is held between them equally — and that was not arranged.
+
+---
+
+## 16 · WHAT THE TWELVE RADII DO
+
+**Kevin, 2026-08-16:** *"now assign function to the 12 radii."*
+
+Three things are true of a radius and of nothing else in the container.
+
+**1 · IT BELONGS TO ONE SEAT.** Everything else here is shared — a member joins
+two seats, a triangle three, a square four, a circuit six, the centre all twelve.
+**A radius is the only quantity that reads a single seat.** It is that seat's own
+distance from the game, and no other seat appears in it.
+
+**2 · IT IS FREE, AND THE MEMBERS ARE NOT.** The 24 members are struts and cannot
+change. Radii change whenever the container moves — measured across the six
+mechanisms, each alters between **four and six** of the twelve, and by different
+amounts. **So a radius reads its own seat and not the whole shape.** One seat can
+draw nearer the game while its neighbours do not.
+
+**3 · IT EQUALS THE EDGE HERE AND NOWHERE ELSE.** At this state every radius is
+exactly one edge long, so **a seat is exactly as far from the game as it is from
+the seat beside it.** That is not a property of the solid — it is the *definition
+of this state*, which is why Fuller named the vector **equilibrium** rather than
+naming the shape. Let it move and the equality breaks: at the octahedron the
+ratio is 1/√2 and the volume has gone from 20 to 4.
+
+> **THE FUNCTION.** The twelve are the world's only per-seat reading, and what
+> they read is **distance from the game**. Equilibrium is the state in which no
+> seat is nearer than any other, and none is nearer to the game than to its own
+> neighbour.
+
+They pair into six straight lines through the centre, so each diameter is one
+antipodal pair reading the game from opposite sides.
+
+---
+
+## 17 · A CRITERION DEMOTED — and the check that caught it
+
+**§11 called one thing derived: that all twelve seated mechanics declare a
+`cost:` line and not one of the eight does.** 12 of 12 and 0 of 8, exact. It was
+written into `FACES.json` as *"DERIVED AND EXACT, not a reading."*
+
+**Within the day another session gave `channel` a cost** — *"the bed you cut is
+the bed you keep — a channel does not close again"* — and `solid_check` refused.
+
+**It does not follow that `channel` became a seat.** There are twelve seats and
+they are full. What follows is that **the criterion was a correlation observed at
+one moment and was presented as a law.** The one thing claimed as derived in the
+whole siting was not derived.
+
+The check now **reports** the break instead of refusing on it, and `FACES.json`
+carries the correction in place of the claim. Whether `channel`'s siting still
+holds is Kevin's.
+
+**The lesson is about the instruments, not the geometry.** A check earns its keep
+by firing when a premise moves. This one did — and what it caught was not a
+change in the world but an overstatement in the record.
