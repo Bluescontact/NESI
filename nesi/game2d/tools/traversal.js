@@ -143,8 +143,18 @@ function readingOf(store, id) {
     joined:   store.crossings.filter(c => c.gesture === "join" && c.from.includes(id)).length,
     /* the shape of what arrived */
     arrived:  inn.length,
-    /* survived a crossing without changing — digests only */
+    /* Survived a crossing without changing — digests only, and NOT counting a
+       branch.
+       ── THE SECOND FAULT THE FIRST REAL EVENT FOUND ────────────────────────
+       `branch` makes a copy to send. The copy is byte-identical by definition,
+       so every freshly-thrown branch read as `tempered` — "survived pressure
+       unchanged" — before it had been through anything at all. The word was
+       true of the digests and false of the world, which is the exact failure
+       this organ exists to refuse one level down.
+       A branch is not a passage. Pressure is `expose`, `carry`, `reopen` and
+       `join`; those are the crossings a thing can come back from. */
     unchanged: inn.filter(c => {
+      if (c.gesture === "branch") return false;
       const src = c.from.map(f => (store.objects[f] || {}).sha).filter(Boolean);
       return sha && src.length === 1 && src[0] === sha;
     }).length,
@@ -155,9 +165,21 @@ function readingOf(store, id) {
     returnedToAncestor: out.some(c => c.to && ancestors.has(c.to)),
     /* how deep the line runs behind it */
     depth: ancestors.size,
-    /* branches still out: a producing crossing that has not come back. Not
-       ended, not held — nothing has been done to it. */
-    inflight: out.filter(c => GESTURES[c.gesture].produces && !c.to).length,
+    /* Branches still out: a producing crossing that has not come back AND has
+       not since been closed by the hand.
+       ── FOUND BY USING IT, 2026-08-17 ──────────────────────────────────────
+       The first real event this organ witnessed was three branches being
+       stopped, and it reported all three as `pruned` AND `waiting` — ended, and
+       still out. Both cannot be true. The fault was that an `end` recorded on an
+       object did not retire the open crossing it closes, so an exposure with no
+       `to` stayed in flight forever.
+       `end` and `hold` are acts on the object, and an act closes an open branch.
+       Subtracting them is what makes "still out" mean nothing-has-been-done
+       rather than nothing-came-back. T14 refuses the contradiction directly, so
+       this cannot silently return. */
+    inflight: Math.max(0,
+      out.filter(c => GESTURES[c.gesture].produces && !c.to).length
+      - out.filter(c => c.gesture === "end" || c.gesture === "hold").length),
     /* still open — produced nothing, was not ended, was not held */
     open: out.length === 0
   };
@@ -284,7 +306,31 @@ function load(file) {
     else if (r.crossing) crossings.push(cross(r.crossing));
     else throw new Error("a row is neither an object nor a crossing: " + JSON.stringify(r).slice(0, 80));
   }
-  return { objects, crossings };
+
+  /* ── A RETURN SUPERSEDES ITS OWN EXPOSURE ────────────────────────────────
+     Found the first time a branch actually came back, 2026-08-17.
+
+     The file is append-only, which is right — it is the same discipline as the
+     append-only log at TANK, where the refusal to implement update IS the organ.
+     But an exposure is recorded WITHOUT a `to` while it is still out, and there
+     was no way to say it had come back: appending the completed crossing left
+     the open one beside it, so an object would read `waiting` forever, next to
+     the very return that ended the wait.
+
+     So the rule is last-write-wins ON ONE EDGE, and an edge is (from, gesture,
+     surface). A later crossing carrying a `to` supersedes an earlier one on the
+     same edge that carried none. NOTHING IS DELETED and nothing is rewritten —
+     both rows stand in the file, and this is a reading of them, which is the
+     corpus's own convention: supersession is a mark on top, never an erasure.
+
+     It only ever closes an open crossing. A completed crossing is never
+     superseded by anything, so no return can be quietly replaced by a later
+     one. */
+  const edge = c => c.from.join("+") + "|" + c.gesture + "|" + c.surface;
+  const closed = new Set(crossings.filter(c => c.to).map(edge));
+  const live = crossings.filter(c => c.to || !closed.has(edge(c)));
+
+  return { objects, crossings: live };
 }
 
 module.exports = { GESTURES, cross, load, readingOf, formOf, radiusOf, radiusFormOf, idOf };

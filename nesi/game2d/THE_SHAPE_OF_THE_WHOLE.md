@@ -179,8 +179,15 @@ grading the writer, and it does not matter how gently.
 > a fact about a crossing — it is a reading of one, and it is the fifth source
 > wearing the fourth's coat.
 >
-> **The test is mechanical:** strip every model's output text out of the record.
-> If a display state changes, that state was reading content.
+> **And the bound sits at the WRITE, not at the render.** Stripping the model's
+> output and re-rendering does not test it: source four is stored as flags, and
+> deciding that a crossing BRANCHED rather than CAME BACK UNCHANGED is already a
+> judgement about what returned. Strip the text afterwards, the flag survives,
+> the display does not change, and the test prints green. So the law names who
+> assigns the outcome — the hand does — and the only comparison the machine may
+> make is byte-identity on a digest. *(Corrected 2026-08-17 after an adversarial
+> read found the render-test admitted content laundered through a
+> classification.)*
 
 You already enforce this once. `drawKept(i, x, y)` takes an index and never a
 string, so machine wording cannot reach the screen through it. **The display law

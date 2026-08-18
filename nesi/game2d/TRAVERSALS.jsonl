@@ -60,3 +60,53 @@
 // then it was worked, twice, on his marks
 {"crossing":{"from":"doc:4","to":"doc:5","gesture":"reopen","surface":"the hand","at":"2026-08-17"}}
 {"crossing":{"from":"doc:5","to":"doc:6","gesture":"reopen","surface":"the hand","at":"2026-08-17"}}
+
+// ── 2026-08-17, later ──────────────────────────────────────────────────────
+// THE THREE BRANCHES ENDED. They were still out; the hand stopped them, and a
+// stopped branch cannot be resumed — its transcript is cancelled. So `end` is
+// the honest gesture: the hand let them end. This is the first thing the organ
+// was built to witness, and it is recorded because a store that goes stale on
+// the day it is built is a record of nothing.
+//
+// Note what is NOT recorded: no reason, no reading of why they were stopped,
+// and nothing about what they might have found. The organ holds the fact and
+// the shape of a crossing. It has no field for either.
+{"crossing":{"from":"doc:1","gesture":"end","surface":"the audit","at":"2026-08-17"}}
+{"crossing":{"from":"doc:2","gesture":"end","surface":"the ground","at":"2026-08-17"}}
+{"crossing":{"from":"doc:3","gesture":"end","surface":"the diverge","at":"2026-08-17"}}
+
+// the draft was worked again — four ruling contradictions corrected
+{"object":{"store":"doc","i":7,"seat":"LENS","sha":"c74e02","what":"the draft with the four ruling corrections"}}
+{"crossing":{"from":"doc:6","to":"doc:7","gesture":"reopen","surface":"the hand","at":"2026-08-17"}}
+
+// and thrown again, from the corrected draft rather than the original. These
+// are fresh crossings, not the old ones continued.
+{"object":{"store":"doc","i":8,"seat":"LENS","sha":"c74e02","what":"the audit branch, sent again"}}
+{"object":{"store":"doc","i":9,"seat":"LENS","sha":"c74e02","what":"the ground branch, sent again"}}
+{"object":{"store":"doc","i":10,"seat":"LENS","sha":"c74e02","what":"the diverge branch, sent again"}}
+{"crossing":{"from":"doc:7","to":"doc:8","gesture":"branch","surface":"the audit","at":"2026-08-17"}}
+{"crossing":{"from":"doc:7","to":"doc:9","gesture":"branch","surface":"the ground","at":"2026-08-17"}}
+{"crossing":{"from":"doc:7","to":"doc:10","gesture":"branch","surface":"the diverge","at":"2026-08-17"}}
+{"crossing":{"from":"doc:8","gesture":"expose","surface":"the audit","at":"2026-08-17"}}
+{"crossing":{"from":"doc:9","gesture":"expose","surface":"the ground","at":"2026-08-17"}}
+{"crossing":{"from":"doc:10","gesture":"expose","surface":"the diverge","at":"2026-08-17"}}
+
+// ── the first return ───────────────────────────────────────────────────────
+// The diverge branch came back. The crossing below carries a `to`, and it
+// supersedes the open one on the same edge above — both rows stand in the file
+// and the later one is read. Nothing was deleted.
+//
+// NO DIGEST ON THE RETURN, and that is not an omission. The organ has no field
+// for what came back, so it cannot hash it. `tempered` therefore cannot be
+// claimed for this object, which is correct: nothing here witnessed that any
+// bytes survived unchanged. The label is the hand's own.
+{"object":{"store":"doc","i":11,"seat":"LENS","sha":null,"what":"five shapes and four openings, returned"}}
+{"crossing":{"from":"doc:10","to":"doc:11","gesture":"expose","surface":"the diverge","at":"2026-08-17"}}
+
+// the ground branch came back
+{"object":{"store":"doc","i":12,"seat":"LENS","sha":null,"what":"the counterexample table and the minimal reformulation, returned"}}
+{"crossing":{"from":"doc:9","to":"doc:12","gesture":"expose","surface":"the ground","at":"2026-08-17"}}
+
+// the audit branch came back, last of the three
+{"object":{"store":"doc","i":13,"seat":"LENS","sha":null,"what":"twenty-seven defects, returned"}}
+{"crossing":{"from":"doc:8","to":"doc:13","gesture":"expose","surface":"the audit","at":"2026-08-17"}}

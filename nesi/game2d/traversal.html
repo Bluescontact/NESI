@@ -199,10 +199,16 @@ function readingOf(S,id){
   delete anc[id];
   return {
     thrown: out.filter(function(c){return GESTURES[c.gesture].produces && c.to;}).length,
-    inflight: out.filter(function(c){return GESTURES[c.gesture].produces && !c.to;}).length,
+    /* an end or a hold closes an open branch - kept in step with
+       tools/traversal.js, where the fault was found */
+    inflight: Math.max(0,
+      out.filter(function(c){return GESTURES[c.gesture].produces && !c.to;}).length
+      - out.filter(function(c){return c.gesture==="end"||c.gesture==="hold";}).length),
     ended: out.filter(function(c){return c.gesture==="end";}).length,
     held:  out.filter(function(c){return c.gesture==="hold";}).length,
+    /* a branch is a copy, not a passage - kept in step with the organ */
     unchanged: inn.filter(function(c){
+      if(c.gesture==="branch") return false;
       var src=c.from.map(function(f){return (S.objects[f]||{}).sha;}).filter(Boolean);
       return sha && src.length===1 && src[0]===sha; }).length,
     surfaces: (function(){var s={},n=0;

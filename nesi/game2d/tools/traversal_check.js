@@ -121,6 +121,20 @@ if (S) {
   /* NO DIRECTION IS COMPUTED. Whether a worked seat draws nearer the game or
      stands further off is his fork; a sign appearing here would be a session
      ruling it by implementation. */
+  /* T14 · THE FORM MAY NOT CONTRADICT ITSELF. Added the day the organ met its
+     first real event and reported three objects as both ended and still out.
+     A display state that says two incompatible things is worse than one that
+     says nothing, because it reads as detail. */
+  const contradictions = Object.keys(S.objects)
+    .map(id => ({ id, f: T.formOf(T.readingOf(S, id)) }))
+    .filter(x => (x.f.pruned && x.f.waiting) || (x.f.resting && x.f.waiting) ||
+                 (x.f.open && x.f.arms !== "none"));
+  ok("T14 no object's form says two incompatible things at once",
+     contradictions.length === 0,
+     contradictions.length
+       ? contradictions.map(x => x.id + ": " + JSON.stringify(x.f)).join("; ")
+       : "checked " + Object.keys(S.objects).length + " objects");
+
   const rforms = SD.NAMES.map(n => T.radiusFormOf(T.radiusOf(S, n)));
   const signed = /nearer|further|toward|inward|outward|shorten|lengthen/
      .test(organ);
