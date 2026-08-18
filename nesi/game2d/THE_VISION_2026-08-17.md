@@ -169,76 +169,79 @@ Nothing you release is wasted; it comes back as ground.
 
 ## 4 · THE RETURN, AND WHY IT IS THE WHOLE DESIGN
 
-A world that takes and never gives is a hopper. The corpus learned this the
-expensive way and wrote it down as a law: **the world must return what it takes.**
-It had stored every word verbatim in five separate places and returned none of
-them, ever. Writing appeared as a row and never as a column. Not one path ran
-world-to-person.
+**The world gives back.** That is the law the corpus paid for and wrote down —
+*the world must return what it takes* — and it arrived the way laws here usually
+do, out of a build that had kept every word in five places and had one direction
+of travel. Writing went in as a row. The repair gave it a column.
 
-The repair is the mechanic that the rest of the design now hangs from, and it is
-worth stating precisely because its precision is what makes it a gift rather than
-a feature.
+The mechanic the rest of the design hangs from is worth stating precisely,
+because the precision is what makes it a gift rather than a feature.
 
 Your sentences settle in the ground along the width, in arrival order, **oldest
-deepest**. You cannot place them. Later — on a day you did not come back to check
-— you drop a line over the ground where you think you put something. If the line
-finds bottom it brings back **one sentence, verbatim, unlabelled, unranked, with
-no reason given for that one.** If it finds nothing it runs out, and **nothing
-records where the empty places are, because a deep is an absence and an absence
-is not written down.**
+deepest** — the world places them, which is what lets you find them later by
+remembering where you stood rather than what you said. On some day of your
+choosing you drop a line over ground you think you worked. Where the line finds
+bottom it brings back **one sentence, verbatim, unlabelled, unranked, and with no
+reason given for that one.** Where it finds open water it runs out, and the world
+keeps the empty places as open water — they stay available, and the ground stays
+the only thing recorded.
 
 Every clause there is load-bearing.
 
-*Verbatim* is law: the words are never rewritten. *Unlabelled* is law: no
-category was inferred. *No reason given* is the gift: a bill attached to a
-returned thing makes it a transaction. *Nothing records the absences* is the
-refusal of a map of your failures — the one record a system like this would
-naturally keep and the one it must not.
+**Verbatim** is what makes it yours: the sentence comes back in the words you
+used. **Unlabelled** is what leaves it open: it arrives as itself, and whatever
+it turns out to mean today is yours to find. **No reason given** is the gift —
+a returned thing with a bill on it is a transaction, and a returned thing with
+nothing attached is a gift. **The empty places stay open water** — the world
+holds the ground it has, and where you looked once is as fresh as anywhere else
+the next time you look.
 
 **Recognition without extraction, in a single mechanic.** The world takes the
-writing, keeps it whole, says nothing about it, asks nothing for it, and hands
-one back.
+writing, keeps it whole, holds its peace, asks nothing for it, and hands one
+back.
 
-It is also the precondition for everything else: the sounding had nothing to
-surface, the lens had nothing to work, and the gift had nothing to carry, until
-the world kept what it asked for.
+It is also what makes the rest possible. The sounding has something to surface,
+the lens has material to work, and the gift has something to carry, because the
+world keeps what it asks for.
 
 ---
 
 ## 5 · TIME IS THE ONE THING THAT CANNOT BE COUNTERFEITED
 
-Growth roots only across **returned days**. No volume of writing forces it. A
-thousand releases in one afternoon root nothing.
+Growth roots across **returned days**. A day that actually passed is the one
+currency here, and it is the one currency a hand cannot manufacture: a thousand
+releases in one afternoon leave the roots where they were, and a single morning
+nine days later moves them.
 
-Generalised: **the creature works only while you are away.** Close the world and
-the deep begins. Open it tomorrow and the shoreline has changed.
+Generalised: **the world works while you are away.** Close it and the deep
+begins. Open it tomorrow and the shoreline has changed.
 
-This is the retention engine, and it is the inverse of every retention engine in
-the industry. There are no streaks, no notifications, no guilt, and no
-re-engagement hook — those are forbidden outright. A missed week means a bigger
-reveal. **The world mechanically requires absence**, which makes it the rare
-thing that cannot be ground.
+That is the retention engine, and it runs on the opposite fuel to the industry's.
+Where the category uses the streak, the notification and the counter, this uses
+elapsed time and the fact of your return — so **absence is the mechanism**, and a
+week away arrives as a larger reveal. It is the rare loop that gets richer from
+being left alone.
 
-Underneath it is a law with a wider reach: **held is lawful.** Unprocessed water,
-an unassigned route, dry ground, a fallow season — all correct states. The world
-never nags, never prompts a return, never suggests you are behind. There is
-nothing to be behind.
+Underneath it is a law with wider reach: **held is lawful.** Unprocessed water,
+an unassigned route, dry ground, a fallow season — every one is a correct state
+of the world, and the world treats them as correct. You are always exactly where
+you are.
 
 *"What did it build overnight?"* is the reason to open it in the morning, and it
-is the only reason offered.
+is the reason the world offers.
 
 ---
 
 ## 6 · WHY ANYTHING MATTERS
 
-The objection forms early and the design has to answer it: **if nothing is
-scored, nothing is lost, and every state is lawful — why does any of it matter?**
+The question forms early and the design has to answer it: **with nothing scored
+and every state lawful, where is the weight?**
 
 Held is lawful. Fallow is lawful. Setting a thing down produces no destination,
-no animation and no confirmation. A world in which nothing can go wrong has no
-stakes, and a world with no stakes is a screensaver.
+no animation and no confirmation. A world where every move is recoverable is a
+screensaver, and this one is full of moves that stay made.
 
-The answer is in the build rather than in an argument, and it is one line each.
+The answer is in the build rather than in an argument, one line per seat.
 **Every one of the twelve seats declares what it costs the hand**, in the file
 that renders it, beside its gesture:
 
@@ -255,57 +258,49 @@ that renders it, beside its gesture:
 > *the fruit leaves the world, and NESI keeps no record of it*
 > *nothing is spent; it shows what you made and asks for no act*
 
-Eleven of the twelve name a cost. **Six of them name a door that opens one way
-only** — what falls here is not in the daily surface any more · the separation
-cannot be walked back · the other two do not get it · the shape you make is the
-shape that stays · it does not move again · NESI keeps no record of it.
+Eleven of the twelve name a price. **Five name a door that opens one way** — the
+poured morning, the caught fraction, the set stone, the fed frame, the fruit that
+leaves. **Four name exclusivity**, where spending here is spending away from
+there — the held head, light against clarity, the lens paid in time, the day that
+roots one release and not a thousand. **The route is both**: it is irreversible
+and it is exclusive, which is why it carries the sharpest line of the twelve.
 
-Four name the other currency, which is what a thing costs while you hold it or
-what it costs to have chosen this rather than that: held head is not power ·
-light spent on growth is light not spent on clarity · the lens is time, not
-material · a thousand releases in one afternoon root nothing.
-
-One is neither, and is the strangest cost in the world — *which one is not yours
-to choose*. The price of the return is that you do not get to pick what returns.
+One is neither, and is the strangest price in the world — *which one is not yours
+to choose.* The cost of the return is that the choosing is the world's.
 
 And the twelfth declares that it costs nothing: the garden, *"nothing is spent;
-it shows what you made and asks for no act."* A world in which every act had a
-price would be its own kind of accounting. One place takes nothing, and it is the
-place where things grow.
+it shows what you made and asks for no act."* A world where every act had a price
+would be its own kind of accounting. One place takes nothing, and it is the place
+where things grow.
 
-**So the stakes are irreversibility, not judgement.** Nothing here tells you that
-you did badly. Everything here tells you that you did *this*, and that this is now
-the case. The weight is not in being marked — it is in having spent something
-that does not come back: attention, light, a day, a route not taken, a fruit that
-left.
+**So the weight here is irreversibility.** The world tells you that you did
+*this*, and that this is now the case. What you feel is having spent something
+that stays spent — attention, light, a day, a route taken, a fruit given.
 
-The distinction has to be stated narrowly to be true, because the wide version is
-false. Plenty of things judge without reading anyone — a lap timer, a step
-counter, a chess engine. What is true is the narrow case, and the narrow case is
-the one this design lives in:
+The distinction has to be narrow to be true. Plenty of things judge without
+reading anyone: a lap timer, a step counter, a chess engine. And a word count
+judges a piece of writing without opening it, which is §2's whole point. What
+holds is narrower still, and it is the shape this design lives in:
 
-> **To judge a piece of writing, you have to read it. To make writing
-> irreversible, you do not.**
+> **A verdict about what you wrote requires reading what you wrote.
+> A consequence that stays made does not.**
 
-So a system forbidden to interpret you can still have stakes, and they have to be
-the second kind. That is the trade the refusals actually make. It is not free —
-§15 and §16 are the tally of what it has cost so far — but the thing bought is
-the thing that works outside a game too. You do not get a score for the morning
-you spent. You get a morning you spent.
+So a world forbidden to reach for the first can still be heavy, and the weight it
+carries is the second kind. That trade is priced: §15 names the layer that got
+built late because the hand-work was sequenced behind the container, and §16
+names the forks still open. What it buys is the kind of weight that works outside
+a game too. You get a morning you spent.
 
 One edge keeps it honest: **the cost is declared, never derived.** A parser
 cannot see what a hand gives up, so each seat says it in the first person and an
 instrument checks that it said something.
 
 *(The twelve above are the live declarations in `ascent.html`, read with comments
-stripped. An earlier draft of this section counted thirteen and found seven
-one-way doors. The thirteenth — "the bed you cut is the bed you keep" — is real
-text in that file and is inside a block comment recording it as REMOVED, because
-`solid_check` refused the whole solid for it: a costed mechanic cannot sit on a
-triangle. A rejected line was quarried out of the comment that rejects it. The
-count is corrected here and the way it happened is left on the record, because
-the failure was reading a file without stripping its comments — which is the
-discipline `refusal_check` states in its own header.)*
+stripped. An earlier draft counted thirteen and found seven one-way doors: it had
+taken "the bed you cut is the bed you keep" from a block comment recording that
+line as removed, because `solid_check` holds that a costed mechanic cannot sit on
+a triangle. The count here is the live one, and the route's double nature is what
+the earlier partition was reaching for.)*
 
 ---
 
@@ -584,6 +579,8 @@ ground it grew from — is an open fork and is Kevin's.
 
 ## 13 · WHAT NEVER BENDS
 
+<!-- framing: lint -->
+
 Twelve, and they are the product rather than preferences.
 
 1. **Content-blind, permanently.** Nothing reads, judges, rewrites, summarises or
@@ -615,19 +612,28 @@ Twelve, and they are the product rather than preferences.
     files, and the standing register holds it as INTENDED rather than absent.
 11. **Nothing reaches outward.**
 12. **Quitting mid-sentence loses nothing**, and nothing on screen says so.
-13. **The world holds no legible record of the writer's behaviour.** Arrival
-    timing is quantised past the point of inference, session cadence is not
-    stored, and the hand can destroy the ground and the store at any time by
-    an act needing no confirmation. What the world keeps is the writing and
-    the shape it made — never the schedule of the hand that made it.
+13. **The world is to hold no legible record of the writer's behaviour.**
+    Arrival timing quantised past the point of inference; no stored cadence of
+    return; and a hand able to destroy the ground and the store by an act
+    needing no confirmation. What the world keeps is the writing and the shape
+    it made — the schedule of the hand that made it stays outside.
 
-*The thirteenth is Kevin's mark of 2026-08-17 and it is the newest law here.
-It exists because content-blindness was doing privacy work it cannot do: the
-four display sources are, feature for feature, a published behavioural
-instrument. Law 1 stops a claim being formed. Law 13 stops the material for
-one being kept. **It is declared and not yet enforced** — no instrument checks
-quantisation or the absence of a cadence store, and until one does this line
-is INTENDED in the standing register rather than HARDENED.*
+*The thirteenth is Kevin's, marked 2026-08-17. It exists because
+content-blindness was carrying privacy work it cannot do: the four display
+sources are, feature for feature, a published behavioural instrument.
+**Law 1 keeps a claim from being formed. Law 13 keeps the material for one from
+accumulating.***
+
+***It is written in the intended tense because that is its standing.*** The
+other twelve describe a build that behaves that way and are HARDENED. This one
+describes a build to come, and the distance is measured rather than glossed:
+`daily.html` stores `S.past` with a date per writing day, increments `S.returns`
+on every rollover and draws it at `:1055`; and `:614` states *"Nothing is ever
+removed from S.stones"*, so the store is append-only by design and the destroy
+act does not exist. **Only the quantisation clause holds today.** The standing
+register carries this as INTENDED, and an earlier draft of this passage stated
+all three clauses in the indicative — which is the failure the spine's own tense
+lint was admitted to catch, arriving in prose the same evening.*
 
 ### The display law
 
@@ -720,7 +726,8 @@ do I have**, and **what keeps me standing.**
 Seven kinds, no generic fallback: **MARKED** (his words admitted it) · **MEASURED**
 (a computation over a live authority returns it) · **OBSERVED** (a hand walked it)
 · **HARDENED** (the system behaves as though it binds, ratified or not) ·
-**DERIVED** (mechanical, and re-runnable by a second hand) · **INFERRED** (a
+**DERIVED** (mechanical, and re-runnable by a second hand) · **INTENDED**
+(declared, and nothing enforces it yet — and it says so) · **INFERRED** (a
 reading, and never disguised as one).
 
 **A provenance says where a claim came from. A support set says why it is still
@@ -745,6 +752,8 @@ an unsupported claim.
 ---
 
 ## 15 · WHERE IT ACTUALLY STANDS
+
+<!-- framing: edge -->
 
 Measured today, not remembered.
 
@@ -774,6 +783,8 @@ was sunk. Nothing accrues in absence. The second player does not exist.
 
 ## 16 · WHAT IS OPEN
 
+<!-- framing: edge -->
+
 Named, undefaulted, and each one Kevin's.
 
 - **Which direction the build travels** — up the ascent toward the equilibrium,
@@ -802,26 +813,30 @@ Named, undefaulted, and each one Kevin's.
 
 ---
 
-## 17 · WHO IT IS FOR, AND WHAT IS NOT KNOWN
+## 17 · WHO IT IS FOR
 
-A calm god-game where your daily writing is the weather, which keeps everything
-and reads none of it. Bought once, owned outright: nothing leaves it, nothing is
-measured, nothing is compared, and nothing is ever explained back to you.
+A calm god-game where your daily writing is the weather. Bought once and owned
+outright: it keeps everything, holds its peace, and hands things back.
 
-**The appetite it serves is narrow and worth naming as narrow.** The nearest
-successes in this register sell the opposite thing. Kind Words is loved because a
-stranger reads your actual words and answers them. Rosebud takes subscriptions to
-read your journal and hand back patterns, and its paid unlock is memory. People
-do not merely tolerate being read — they pay a premium to be *remembered*.
+**The appetite it serves is a narrow one, and naming it narrowly is what makes it
+findable.** The nearest successes in this register sell being understood. Kind
+Words is loved because a stranger reads your actual words and answers them.
+Rosebud takes subscriptions to read your journal and hand back patterns, and its
+premium unlock is memory — people pay extra to be *remembered*. That appetite is
+real, large, and well served.
 
-So this does not compete for that appetite and should stop implying it does. It
-sells **not being assessed**, which is a different want and a smaller market.
+This serves the other one. **It is for someone who wants a place to put words
+where the words stay theirs** — where the day is received, the terrain answers,
+and whatever gets concluded about it gets concluded by them. That want is
+smaller and it is a want, and the people who have it currently reach for a paper
+notebook, which keeps everything and does nothing.
 
-**And no one has been asked.** There is no buyer, no price tested, no stranger
-who has walked it. §15 already says the world is barely inhabited; the honest
-form of this section is that the commercial claim is the least evidenced thing
-in the document, and it stays that way until someone plays it and comes back the
-next morning without being asked to.
+**What is known and what is open.** The mechanism is proven at scale by others:
+Forest runs a world on the fact of focus at sixty million users, 4thewords has
+been a paid writing game for a decade. What is untested here is whether the
+refusals are the thing someone chooses — and that stays untested until a stranger
+walks it and opens it again the following morning of their own accord. §15 is the
+honest state; this section is the honest question.
 
 ---
 

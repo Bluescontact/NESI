@@ -148,6 +148,8 @@ It is a very small, very connected world. The twelve-level sequence is a reading
 order laid over a shape that permits many orders and enforces none.
 ---
 ## V · WATER AND LIGHT — the display law
+
+<!-- framing: lint -->
 Your constraint: appearance may carry feeling, and must never carry judgment.
 Here is the rule that makes that hold under engineering pressure.
 ### THE DISPLAY LAW
@@ -247,6 +249,8 @@ loop**, and there are only two open loops in the design and neither is built.
 because the world has no open loop to carry them.** That is one finding, not two.
 ---
 ## VII · AT THE GATE — opened this pass, none defaulted
+
+<!-- framing: edge -->
 **1 · The twelve-level ascent is not enforced by the shape.**
 The solid is three members across and every level lies on two closed loops.
 The geometry offers this as *reading, not ruling*: the ascent behaves like a

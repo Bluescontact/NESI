@@ -1,0 +1,354 @@
+<title>NESI Measured</title>
+<style>
+:root{
+  --ground:#edf0f2; --surface:#ffffff; --surface-2:#f5f7f9; --surface-3:#e4e9ee;
+  --ink:#12161b; --ink-2:#47505b; --ink-3:#737d89;
+  --rule:#ccd3da; --rule-2:#e1e6eb;
+  --fall:#1f4fbf; --rise:#8a6410; --alive:#2b6e4a; --dead:#a8402a; --centre:#6b3560;
+  --fall-bg:#e6ecfa; --rise-bg:#f4ecd8; --alive-bg:#e3f0e8; --dead-bg:#f8e7e2; --centre-bg:#f1e6ee;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono","IBM Plex Mono",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--mono);font-size:0.94rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem 6rem}
+h1,h2,h3,h4{font-family:var(--mono);font-weight:600;margin:0;text-wrap:balance}
+.prose{font-family:var(--serif);font-size:1.05rem;line-height:1.62;color:var(--ink-2);max-width:70ch}
+.prose strong{color:var(--ink);font-weight:600}
+.prose em{font-style:italic}
+.label{font-family:var(--mono);font-size:0.67rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-3);padding:.08em .32em;border-radius:2px;color:var(--ink)}
+
+header.top{background:var(--surface);border-bottom:1px solid var(--rule);padding:3.2rem 0 2.2rem}
+header.top .inner{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+header.top h1{font-size:2.6rem;letter-spacing:-.02em;line-height:1.05;margin:1.3rem 0 1rem}
+header.top .thesis{font-family:var(--serif);font-size:1.26rem;line-height:1.5;color:var(--ink);max-width:62ch;margin:0 0 1.5rem}
+header.top .thesis b{font-weight:600}
+.stamp{font-size:.7rem;line-height:1.8;color:var(--ink-3);border-top:1px solid var(--rule-2);padding-top:.9rem;max-width:84ch}
+
+section{margin-top:4.5rem}
+.sec-head{display:flex;align-items:baseline;gap:1rem;border-bottom:1px solid var(--rule);padding-bottom:.6rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.sec-head .z{font-size:.67rem;letter-spacing:.14em;color:var(--ink-3);font-weight:600;border:1px solid var(--rule);padding:.14rem .45rem;border-radius:2px}
+.sec-head h2{font-size:1.35rem;letter-spacing:-.01em}
+.sec-head .k{color:var(--ink-3);font-size:.7rem;letter-spacing:.1em;margin-left:auto}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule);margin-bottom:1.6rem}
+.stat{background:var(--surface);padding:1rem 1.05rem .95rem}
+.stat .n{font-size:1.7rem;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.stat .n.a{color:var(--alive)} .stat .n.d{color:var(--dead)} .stat .n.w{color:var(--fall)} .stat .n.c{color:var(--centre)}
+.stat .c{font-size:.71rem;color:var(--ink-3);line-height:1.45;margin-top:.42rem;display:block}
+
+.pull{font-family:var(--serif);font-size:1.28rem;line-height:1.45;color:var(--ink);border-left:3px solid var(--fall);padding:.35rem 0 .35rem 1.05rem;margin:1.7rem 0 0;max-width:58ch}
+.pull.warn{border-left-color:var(--dead)}
+
+.panel{border:1px solid var(--rule);background:var(--surface);padding:1.2rem 1.3rem 1.35rem;margin-top:1.5rem}
+.panel h3{font-size:.96rem;margin-bottom:.5rem}
+.panel .prose{margin:.4rem 0 0}
+
+.dirs{border:1px solid var(--rule);background:var(--surface);margin-top:1.5rem;padding:.5rem 0}
+.drow{display:grid;grid-template-columns:11rem 1fr 4.5rem 6rem;gap:.75rem;align-items:center;padding:.24rem 1.1rem;font-size:.76rem}
+.drow .dn{color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drow .dbar{background:var(--surface-3);height:9px;border-radius:1px;overflow:hidden}
+.drow .dbar i{display:block;height:100%;background:var(--ink-3)}
+.drow .dc,.drow .dd{font-variant-numeric:tabular-nums;color:var(--ink-3);text-align:right}
+.drow.alive .dn{color:var(--alive);font-weight:600} .drow.alive .dbar i{background:var(--alive)}
+.drow.retired .dn{color:var(--dead);font-weight:600} .drow.retired .dbar i{background:var(--dead)}
+.drow.empty .dn,.drow.empty .dd{color:#a9b2bc} .drow.empty .dbar i{background:#c6cdd5}
+.dkey{display:flex;gap:1.1rem;flex-wrap:wrap;padding:.6rem 1.1rem 0;margin-top:.4rem;border-top:1px solid var(--rule-2);font-size:.68rem;color:var(--ink-3);letter-spacing:.04em}
+.dkey b{font-weight:600}
+.dkey .s{display:inline-block;width:9px;height:9px;border-radius:1px;margin-right:.32rem;vertical-align:-1px}
+
+table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:1.2rem}
+.tw{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+.tw table{margin:0}
+th{text-align:left;font-weight:600;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:.6rem .9rem;border-bottom:1px solid var(--rule)}
+td{padding:.36rem .9rem;border-bottom:1px solid var(--rule-2);vertical-align:top;color:var(--ink-2)}
+tr:last-child td{border-bottom:none}
+td.nm{color:var(--ink);font-weight:600;white-space:nowrap}
+td.i{font-variant-numeric:tabular-nums;color:var(--ink-3);white-space:nowrap}
+td.m{font-weight:600;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+td.m.ok{color:var(--alive)} td.m.no{color:var(--dead)} td.m.wait{color:var(--ink-3)}
+td.k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;font-weight:600;white-space:nowrap}
+.k-fall{color:var(--fall)} .k-rise{color:var(--rise)} .k-turn{color:var(--centre)} .k-return{color:var(--dead)}
+
+figure{margin:1.6rem 0 0;border:1px solid var(--rule);background:var(--surface)}
+figure .fbody{overflow-x:auto;padding:1.1rem .8rem .4rem}
+figure svg{display:block;min-width:620px;width:100%;height:auto}
+figcaption{font-family:var(--serif);font-size:.96rem;color:var(--ink-2);border-top:1px solid var(--rule-2);padding:.8rem 1.2rem 1rem;line-height:1.55}
+figcaption b{color:var(--ink);font-weight:600}
+.flegend{display:flex;gap:1.1rem;flex-wrap:wrap;padding:.7rem 1.2rem;border-top:1px solid var(--rule-2);font-size:.68rem;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase}
+.flegend i{display:inline-block;width:16px;height:0;border-top-width:2px;border-top-style:solid;margin-right:.35rem;vertical-align:4px}
+svg .ct{font-family:var(--mono);font-size:10px;letter-spacing:.14em;fill:var(--ink-3);font-weight:600}
+svg .sl{font-family:var(--mono);font-size:10px;letter-spacing:.04em;font-weight:600}
+svg .sl.f{fill:var(--fall)} svg .sl.r{fill:var(--rise)}
+svg .n-fall{fill:var(--fall)} svg .n-rise{fill:var(--rise)}
+svg .e-fall{stroke:var(--fall);stroke-width:1.6;color:var(--fall)}
+svg .e-rise{stroke:var(--rise);stroke-width:1.6;color:var(--rise)}
+svg .e-turn{stroke:var(--centre);stroke-width:2.4;color:var(--centre)}
+svg .e-ret{stroke:var(--dead);stroke-width:2.4;stroke-dasharray:5 3;color:var(--dead)}
+svg .sq-side{stroke:var(--ink-3);stroke-width:1.3;fill:none}
+svg .d-close{stroke:var(--alive);stroke-width:1.8;color:var(--alive)}
+svg .d-open{stroke:var(--dead);stroke-width:1.5;stroke-dasharray:4 3;color:var(--dead)}
+
+ul.anti{list-style:none;padding:0;margin:1.2rem 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule)}
+ul.anti li{background:var(--surface);padding:.8rem 1rem .9rem;font-size:.8rem;display:flex;align-items:baseline;gap:.55rem}
+ul.anti li em{font-style:normal;color:var(--ink-3);font-size:.72rem}
+ul.anti li .f{color:var(--fall);font-weight:600} ul.anti li .r{color:var(--rise);font-weight:600}
+
+.corr{display:flex;flex-direction:column;gap:1px;background:var(--rule-2);border:1px solid var(--rule);margin-top:1.4rem}
+.corr .c{background:var(--surface);padding:1.05rem 1.2rem 1.15rem}
+.corr h3{font-size:.94rem;margin-bottom:.45rem}
+.corr .said{font-family:var(--serif);font-size:.98rem;color:var(--ink-3);font-style:italic;border-left:2px solid var(--rule);padding-left:.8rem;margin:0 0 .55rem}
+.corr p{font-family:var(--serif);font-size:1rem;line-height:1.58;color:var(--ink-2);margin:0;max-width:76ch}
+.corr p strong{color:var(--ink);font-weight:600}
+
+ul.open{list-style:none;padding:0;margin:1.2rem 0 0;border-top:1px solid var(--rule-2)}
+ul.open li{font-family:var(--serif);font-size:1.01rem;line-height:1.55;color:var(--ink-2);padding:.8rem 0;border-bottom:1px solid var(--rule-2);max-width:78ch}
+ul.open li b{color:var(--ink);font-weight:600}
+
+footer{margin-top:4.5rem;border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.74rem;line-height:1.7;color:var(--ink-3);max-width:84ch}
+footer strong{color:var(--ink-2)}
+
+@media (max-width:680px){
+  header.top h1{font-size:2rem}
+  .drow{grid-template-columns:8.5rem 1fr 3.6rem;gap:.5rem}
+  .drow .dd{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="inner">
+    <p class="label">Derived 2026-08-18 · supersedes THE_MAP_2026-08-11.html, which stands unedited</p>
+    <h1>NESI Measured</h1>
+    <p class="thesis">Three layers, read outward to inward: <b>the corpus on disk, the build that runs, and the solid underneath it.</b> Every number here was derived at build time — the geometry out of <code>solid.js</code>, the census off the filesystem, the instrument row out of a live run.</p>
+    <p class="stamp">
+      BUILT BY · <code>nesi/game2d/tools/map_build.js</code>. Re-run it and the numbers move with the thing they measure; nothing on this page is transcribed.<br>
+      AUTHORITY · <code>solid.js</code> for every claim about the geometry, per the boot path. The corpus layer is <code>fs.statSync</code> over <code>nesi/</code>. The build layer is whatever <code>tools/check_all.js</code> printed on this run.<br>
+      STANDING · MEASURED throughout. The three corrections in section 4 are measurements against documents, not rulings. Nothing here closes a fork and nothing was written to <code>MARKS_LOG.jsonl</code>.
+    </p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="sec-head"><span class="z">LAYER 1</span><h2>The corpus</h2><span class="k">WHAT IS ON DISK</span></div>
+  <div class="stats">
+    <div class="stat"><span class="n">1,636</span><span class="c">files under <code>nesi/</code>, across 26 directories.</span></div>
+    <div class="stat"><span class="n a">2</span><span class="c">directories touched in the last two days — <b>mind, game2d</b>. Everything else is older.</span></div>
+    <div class="stat"><span class="n d">21</span><span class="c">dormant directories holding files nothing has opened. Oldest: 2026-07-20.</span></div>
+    <div class="stat"><span class="n d">778</span><span class="c">files in <code>world3d/</code> — retired 2026-08-14, marked at its own site, and <b>gitignored</b>: kept on this machine, absent from history.</span></div>
+    <div class="stat"><span class="n">1,381</span><span class="c">marks in <code>MARKS_LOG.jsonl</code>, the last on 2026-08-17.</span></div>
+    <div class="stat"><span class="n w">65</span><span class="c">gates still open — 205 opened against 140 closed. Last gate event 2026-08-16.</span></div>
+  </div>
+
+  <div class="dirs">
+    <div class="dkey" style="border-top:none;padding-top:0;padding-bottom:.6rem;border-bottom:1px solid var(--rule-2);margin-top:0">
+      <span><span class="s" style="background:var(--alive)"></span><b>alive</b> — touched since 2026-08-16</span>
+      <span><span class="s" style="background:var(--dead)"></span><b>retired</b> — marked dead at its own site</span>
+      <span><span class="s" style="background:var(--ink-3)"></span><b>dormant</b> — holds files, nothing opened them</span>
+      <span><span class="s" style="background:#c6cdd5"></span><b>empty</b></span>
+    </div>
+      <div class="drow alive"><span class="dn">mind</span><span class="dbar"><i style="width:100.0%"></i></span><span class="dc">178</span><span class="dd">2026-08-17</span></div>
+      <div class="drow alive"><span class="dn">game2d</span><span class="dbar"><i style="width:64.6%"></i></span><span class="dc">115</span><span class="dd">2026-08-17</span></div>
+      <div class="drow retired"><span class="dn">world3d</span><span class="dbar"><i style="width:437.1%"></i></span><span class="dc">778</span><span class="dd">2026-08-14</span></div>
+      <div class="drow dormant"><span class="dn">world2d</span><span class="dbar"><i style="width:77.5%"></i></span><span class="dc">138</span><span class="dd">2026-08-12</span></div>
+      <div class="drow dormant"><span class="dn">net</span><span class="dbar"><i style="width:3.4%"></i></span><span class="dc">6</span><span class="dd">2026-08-12</span></div>
+      <div class="drow dormant"><span class="dn">_intake_quarantine_2026-08-10</span><span class="dbar"><i style="width:6.2%"></i></span><span class="dc">11</span><span class="dd">2026-08-10</span></div>
+      <div class="drow dormant"><span class="dn">spec</span><span class="dbar"><i style="width:28.1%"></i></span><span class="dc">50</span><span class="dd">2026-08-08</span></div>
+      <div class="drow dormant"><span class="dn">conductor</span><span class="dbar"><i style="width:38.8%"></i></span><span class="dc">69</span><span class="dd">2026-08-05</span></div>
+      <div class="drow dormant"><span class="dn">world</span><span class="dbar"><i style="width:3.4%"></i></span><span class="dc">6</span><span class="dd">2026-08-02</span></div>
+      <div class="drow dormant"><span class="dn">bench</span><span class="dbar"><i style="width:51.1%"></i></span><span class="dc">91</span><span class="dd">2026-07-31</span></div>
+      <div class="drow dormant"><span class="dn">nesi_bench_v0</span><span class="dbar"><i style="width:28.1%"></i></span><span class="dc">50</span><span class="dd">2026-07-31</span></div>
+      <div class="drow dormant"><span class="dn">__pycache__</span><span class="dbar"><i style="width:1.7%"></i></span><span class="dc">3</span><span class="dd">2026-07-27</span></div>
+      <div class="drow dormant"><span class="dn">trade_notes</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">1</span><span class="dd">2026-07-27</span></div>
+      <div class="drow dormant"><span class="dn">_compost</span><span class="dbar"><i style="width:18.5%"></i></span><span class="dc">33</span><span class="dd">2026-07-26</span></div>
+      <div class="drow dormant"><span class="dn">boundary</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">2</span><span class="dd">2026-07-26</span></div>
+      <div class="drow dormant"><span class="dn">soil</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">1</span><span class="dd">2026-07-26</span></div>
+      <div class="drow dormant"><span class="dn">continuity</span><span class="dbar"><i style="width:9.0%"></i></span><span class="dc">16</span><span class="dd">2026-07-25</span></div>
+      <div class="drow dormant"><span class="dn">staged</span><span class="dbar"><i style="width:5.6%"></i></span><span class="dc">10</span><span class="dd">2026-07-25</span></div>
+      <div class="drow dormant"><span class="dn">workbench</span><span class="dbar"><i style="width:3.4%"></i></span><span class="dc">6</span><span class="dd">2026-07-25</span></div>
+      <div class="drow dormant"><span class="dn">forest</span><span class="dbar"><i style="width:1.7%"></i></span><span class="dc">3</span><span class="dd">2026-07-25</span></div>
+      <div class="drow dormant"><span class="dn">inbox</span><span class="dbar"><i style="width:1.7%"></i></span><span class="dc">3</span><span class="dd">2026-07-25</span></div>
+      <div class="drow dormant"><span class="dn">returns</span><span class="dbar"><i style="width:16.3%"></i></span><span class="dc">29</span><span class="dd">2026-07-24</span></div>
+      <div class="drow dormant"><span class="dn">marks</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">2</span><span class="dd">2026-07-24</span></div>
+      <div class="drow dormant"><span class="dn">interrogator</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">2</span><span class="dd">2026-07-20</span></div>
+      <div class="drow empty"><span class="dn">inbox_external</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">0</span><span class="dd">empty</span></div>
+      <div class="drow empty"><span class="dn">seed</span><span class="dbar"><i style="width:1.2%"></i></span><span class="dc">0</span><span class="dd">empty</span></div>
+  </div>
+
+  <p class="pull warn">Two directories out of 26 carry everything this week. One is marked dead. The rest have no mark either way.</p>
+  <p class="prose" style="margin-top:1.4rem">Only <code>world3d/</code> was ever given a terminal mark, and it is the one directory the repository cannot see. The other 21 stopped being opened and nothing recorded that they had — which is the same asymmetry the gift-territory census measures at scale: adding is a contribution, ending is an accusation, so only the beginnings get written down.</p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="z">LAYER 2</span><h2>The build</h2><span class="k">WHAT RUNS</span></div>
+  <p class="prose">Entry is <code>nesi/game2d/index.html</code> → <code>ascent.html</code>. The suite runs from <code>nesi/game2d/</code> with <code>node tools/check_all.js</code>, and this row is what it printed on this build.</p>
+  <div class="stats" style="margin-top:1.5rem">
+    <div class="stat"><span class="n a">18 / 18</span><span class="c">instruments hold. 3 more run in the page and were not covered by this run.</span></div>
+    <div class="stat"><span class="n">115</span><span class="c">files in <code>game2d/</code> — 37 markdown, 71 runnable.</span></div>
+    <div class="stat"><span class="n w">2.1 : 1</span><span class="c">code lines to markdown lines in the live build — 27,039 against 12,707.</span></div>
+    <div class="stat"><span class="n c">12</span><span class="c">of 36 products are set-downs: no member, no destination, permanently unsited.</span></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:4rem">Mark</th><th style="width:11rem">Instrument</th><th>What it holds</th></tr></thead>
+      <tbody>
+        <tr><td class="m ok">ok</td><td class="nm">refusal_check</td><td>no model call, nothing outward, no score or reward cue</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">kit_check</td><td>four verbs used, one palette, every page</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">constraint_lint</td><td>every boundary registered, announced, liftable, and naming what it keeps</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">first_four</td><td>LEVEL ONE walks from a cleared store, on a copy of his writing</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">door_check</td><td>every level reachable from the map</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">world_check</td><td>the figure drawn IS the solid</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">cut_check</td><td>the hand cuts where it wants</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">solid_check</td><td>the solid's own arithmetic</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">hand_check</td><td>the bed's own arithmetic — conserved, deterministic, and it holds</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">scope_check</td><td>every instrument reads the live build</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">organ_map</td><td>27 organs sited by gesture, and the sockets still open</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">organ_audit</td><td>what each organ would cost the build if it were taken in</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">crossing_audit</td><td>what may leave the world, and what stays</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">standing_check</td><td>what kind of standing a claim has, and what keeps it standing</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">display_law_checkone</td><td>law, stated in three places, and the copies agree</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">traversal_check</td><td>the fourth source stays the fourth</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">assertion_audit</td><td>27 register rules, each satisfiable only by a world that is there</td></tr>
+        <tr><td class="m ok">ok</td><td class="nm">predicate_filterEXISTS,</td><td>MENTIONED and REACHABLE kept apart — a mention is not a route</td></tr>
+        <tr><td class="m wait">wait</td><td class="nm">answer_check</td><td>every act answers a hand before it is taken</td></tr>
+        <tr><td class="m wait">wait</td><td class="nm">daily_walk</td><td>nineteen properties of the surface he writes in</td></tr>
+        <tr><td class="m wait">wait</td><td class="nm">store_guard</td><td>his writing is the same before and after any work</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="prose" style="margin-top:1.3rem"><code>[check_all] all 18 hold · 3 more wait for a page</code></p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="z">LAYER 3</span><h2>The solid</h2><span class="k">WHAT IS UNDERNEATH</span></div>
+  <p class="prose">Two tables are written down in <code>solid.js</code> — twelve seats, and four closed walks of six. Everything below is derived from those two and nothing else is stored, so a claim here cannot go stale while the shape moves underneath it.</p>
+
+  <div class="stats" style="margin-top:1.5rem">
+    <div class="stat"><span class="n">12</span><span class="c">seats — 6 falling, 6 rising.</span></div>
+    <div class="stat"><span class="n">24</span><span class="c">members: 8 fall, 8 rise, 4 turns, 4 returns.</span></div>
+    <div class="stat"><span class="n">8 · 6</span><span class="c">triangles and squares. Every member borders exactly one of each.</span></div>
+    <div class="stat"><span class="n">6</span><span class="c">mechanisms, against 6 squares — 24 bars, rank 24, <b>0 redundant.</b> Not one member is spare.</span></div>
+    <div class="stat"><span class="n">20</span><span class="c">tetrahedral units, in 14 cells: 8 tetrahedra at 1, 6 pyramids at 2.</span></div>
+    <div class="stat"><span class="n c">0</span><span class="c">members reach the centre. It sits on all 4 circuits, equidistant from every seat, and every radius equals the edge exactly.</span></div>
+  </div>
+
+  <figure>
+    <div class="fbody"><svg viewBox="0 0 800 660" role="img" aria-label="The four circuits: each a closed walk of six seats, three falling then three rising, with one turn and one return."><defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs><text x="76" y="68" class="ct">CIRCUIT 1</text><line x1="200.0" y1="114.0" x2="142.8" y2="147.0" class="e-fall" marker-end="url(#ar)"/><line x1="142.8" y1="147.0" x2="142.8" y2="213.0" class="e-fall" marker-end="url(#ar)"/><line x1="142.8" y1="213.0" x2="200.0" y2="246.0" class="e-turn" marker-end="url(#ar)"/><line x1="200.0" y1="246.0" x2="257.2" y2="213.0" class="e-rise" marker-end="url(#ar)"/><line x1="257.2" y1="213.0" x2="257.2" y2="147.0" class="e-rise" marker-end="url(#ar)"/><line x1="257.2" y1="147.0" x2="200.0" y2="114.0" class="e-ret" marker-end="url(#ar)"/><circle cx="200.0" cy="114.0" r="5.5" class="n-fall"/><text x="200.0" y="100.0" text-anchor="middle" class="sl f">DAM</text><circle cx="142.8" cy="147.0" r="5.5" class="n-fall"/><text x="131.8" y="151.0" text-anchor="end" class="sl f">STATIONS</text><circle cx="142.8" cy="213.0" r="5.5" class="n-fall"/><text x="131.8" y="217.0" text-anchor="end" class="sl f">DEEP</text><circle cx="200.0" cy="246.0" r="5.5" class="n-rise"/><text x="200.0" y="268.0" text-anchor="middle" class="sl r">HELIOSTAT</text><circle cx="257.2" cy="213.0" r="5.5" class="n-rise"/><text x="268.2" y="217.0" text-anchor="start" class="sl r">OVERWINTERING</text><circle cx="257.2" cy="147.0" r="5.5" class="n-rise"/><text x="268.2" y="151.0" text-anchor="start" class="sl r">CAST</text><text x="476" y="68" class="ct">CIRCUIT 2</text><line x1="600.0" y1="114.0" x2="542.8" y2="147.0" class="e-fall" marker-end="url(#ar)"/><line x1="542.8" y1="147.0" x2="542.8" y2="213.0" class="e-fall" marker-end="url(#ar)"/><line x1="542.8" y1="213.0" x2="600.0" y2="246.0" class="e-turn" marker-end="url(#ar)"/><line x1="600.0" y1="246.0" x2="657.2" y2="213.0" class="e-rise" marker-end="url(#ar)"/><line x1="657.2" y1="213.0" x2="657.2" y2="147.0" class="e-rise" marker-end="url(#ar)"/><line x1="657.2" y1="147.0" x2="600.0" y2="114.0" class="e-ret" marker-end="url(#ar)"/><circle cx="600.0" cy="114.0" r="5.5" class="n-fall"/><text x="600.0" y="100.0" text-anchor="middle" class="sl f">DAM</text><circle cx="542.8" cy="147.0" r="5.5" class="n-fall"/><text x="531.8" y="151.0" text-anchor="end" class="sl f">GROUND</text><circle cx="542.8" cy="213.0" r="5.5" class="n-fall"/><text x="531.8" y="217.0" text-anchor="end" class="sl f">FILTER</text><circle cx="600.0" cy="246.0" r="5.5" class="n-rise"/><text x="600.0" y="268.0" text-anchor="middle" class="sl r">HELIOSTAT</text><circle cx="657.2" cy="213.0" r="5.5" class="n-rise"/><text x="668.2" y="217.0" text-anchor="start" class="sl r">GARDEN</text><circle cx="657.2" cy="147.0" r="5.5" class="n-rise"/><text x="668.2" y="151.0" text-anchor="start" class="sl r">SEATING</text><text x="76" y="368" class="ct">CIRCUIT 3</text><line x1="200.0" y1="414.0" x2="142.8" y2="447.0" class="e-fall" marker-end="url(#ar)"/><line x1="142.8" y1="447.0" x2="142.8" y2="513.0" class="e-fall" marker-end="url(#ar)"/><line x1="142.8" y1="513.0" x2="200.0" y2="546.0" class="e-turn" marker-end="url(#ar)"/><line x1="200.0" y1="546.0" x2="257.2" y2="513.0" class="e-rise" marker-end="url(#ar)"/><line x1="257.2" y1="513.0" x2="257.2" y2="447.0" class="e-rise" marker-end="url(#ar)"/><line x1="257.2" y1="447.0" x2="200.0" y2="414.0" class="e-ret" marker-end="url(#ar)"/><circle cx="200.0" cy="414.0" r="5.5" class="n-fall"/><text x="200.0" y="400.0" text-anchor="middle" class="sl f">TANK</text><circle cx="142.8" cy="447.0" r="5.5" class="n-fall"/><text x="131.8" y="451.0" text-anchor="end" class="sl f">GROUND</text><circle cx="142.8" cy="513.0" r="5.5" class="n-fall"/><text x="131.8" y="517.0" text-anchor="end" class="sl f">STATIONS</text><circle cx="200.0" cy="546.0" r="5.5" class="n-rise"/><text x="200.0" y="568.0" text-anchor="middle" class="sl r">LENS</text><circle cx="257.2" cy="513.0" r="5.5" class="n-rise"/><text x="268.2" y="517.0" text-anchor="start" class="sl r">GARDEN</text><circle cx="257.2" cy="447.0" r="5.5" class="n-rise"/><text x="268.2" y="451.0" text-anchor="start" class="sl r">OVERWINTERING</text><text x="476" y="368" class="ct">CIRCUIT 4</text><line x1="600.0" y1="414.0" x2="542.8" y2="447.0" class="e-fall" marker-end="url(#ar)"/><line x1="542.8" y1="447.0" x2="542.8" y2="513.0" class="e-fall" marker-end="url(#ar)"/><line x1="542.8" y1="513.0" x2="600.0" y2="546.0" class="e-turn" marker-end="url(#ar)"/><line x1="600.0" y1="546.0" x2="657.2" y2="513.0" class="e-rise" marker-end="url(#ar)"/><line x1="657.2" y1="513.0" x2="657.2" y2="447.0" class="e-rise" marker-end="url(#ar)"/><line x1="657.2" y1="447.0" x2="600.0" y2="414.0" class="e-ret" marker-end="url(#ar)"/><circle cx="600.0" cy="414.0" r="5.5" class="n-fall"/><text x="600.0" y="400.0" text-anchor="middle" class="sl f">DEEP</text><circle cx="542.8" cy="447.0" r="5.5" class="n-fall"/><text x="531.8" y="451.0" text-anchor="end" class="sl f">FILTER</text><circle cx="542.8" cy="513.0" r="5.5" class="n-fall"/><text x="531.8" y="517.0" text-anchor="end" class="sl f">TANK</text><circle cx="600.0" cy="546.0" r="5.5" class="n-rise"/><text x="600.0" y="568.0" text-anchor="middle" class="sl r">CAST</text><circle cx="657.2" cy="513.0" r="5.5" class="n-rise"/><text x="668.2" y="517.0" text-anchor="start" class="sl r">SEATING</text><circle cx="657.2" cy="447.0" r="5.5" class="n-rise"/><text x="668.2" y="451.0" text-anchor="start" class="sl r">LENS</text></svg></div>
+    <div class="flegend">
+      <span><i style="border-color:var(--fall)"></i>fall</span>
+      <span><i style="border-color:var(--rise)"></i>rise</span>
+      <span><i style="border-color:var(--centre)"></i>turn — water becomes light</span>
+      <span><i style="border-color:var(--dead);border-top-style:dashed"></i>return — the world comes back down</span>
+    </div>
+    <figcaption><b>The four circuits.</b> Each is a closed walk of six: three falling seats, then three rising, contiguous — so every circuit carries exactly one turn and one return, and the edge signature of all four is identical. It was not designed that way; it fell out of the solid. Every seat appears on exactly two of the four, which is why the second circuit walked returns you to a room you have already furnished, from a direction that should not exist.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="fbody"><svg viewBox="0 0 900 400" role="img" aria-label="The six squares drawn as trades: in each, one diagonal closes exactly as the other opens."><defs><marker id="aI" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs><line x1="150" y1="68" x2="192" y2="110" class="sq-side"/><line x1="192" y1="110" x2="150" y2="152" class="sq-side"/><line x1="150" y1="152" x2="108" y2="110" class="sq-side"/><line x1="108" y1="110" x2="150" y2="68" class="sq-side"/><line x1="150" y1="74" x2="150" y2="102" class="d-close" marker-end="url(#aI)"/><line x1="150" y1="146" x2="150" y2="118" class="d-close" marker-end="url(#aI)"/><line x1="142" y1="110" x2="112" y2="110" class="d-open" marker-end="url(#aI)"/><line x1="158" y1="110" x2="188" y2="110" class="d-open" marker-end="url(#aI)"/><circle cx="150" cy="68" r="4.5" class="n-fall"/><circle cx="192" cy="110" r="4.5" class="n-fall"/><circle cx="150" cy="152" r="4.5" class="n-rise"/><circle cx="108" cy="110" r="4.5" class="n-rise"/><text x="150" y="57" text-anchor="middle" class="sl f">TANK</text><text x="201" y="114" text-anchor="start" class="sl f">FILTER</text><text x="150" y="172" text-anchor="middle" class="sl r">HELIOSTAT</text><text x="99" y="114" text-anchor="end" class="sl r">OVERWINTERING</text><line x1="450" y1="68" x2="492" y2="110" class="sq-side"/><line x1="492" y1="110" x2="450" y2="152" class="sq-side"/><line x1="450" y1="152" x2="408" y2="110" class="sq-side"/><line x1="408" y1="110" x2="450" y2="68" class="sq-side"/><line x1="450" y1="74" x2="450" y2="102" class="d-close" marker-end="url(#aI)"/><line x1="450" y1="146" x2="450" y2="118" class="d-close" marker-end="url(#aI)"/><line x1="442" y1="110" x2="412" y2="110" class="d-open" marker-end="url(#aI)"/><line x1="458" y1="110" x2="488" y2="110" class="d-open" marker-end="url(#aI)"/><circle cx="450" cy="68" r="4.5" class="n-fall"/><circle cx="492" cy="110" r="4.5" class="n-fall"/><circle cx="450" cy="152" r="4.5" class="n-rise"/><circle cx="408" cy="110" r="4.5" class="n-rise"/><text x="450" y="57" text-anchor="middle" class="sl f">DAM</text><text x="501" y="114" text-anchor="start" class="sl f">STATIONS</text><text x="450" y="172" text-anchor="middle" class="sl r">LENS</text><text x="399" y="114" text-anchor="end" class="sl r">SEATING</text><line x1="750" y1="68" x2="792" y2="110" class="sq-side"/><line x1="792" y1="110" x2="750" y2="152" class="sq-side"/><line x1="750" y1="152" x2="708" y2="110" class="sq-side"/><line x1="708" y1="110" x2="750" y2="68" class="sq-side"/><line x1="750" y1="74" x2="750" y2="102" class="d-close" marker-end="url(#aI)"/><line x1="750" y1="146" x2="750" y2="118" class="d-close" marker-end="url(#aI)"/><line x1="742" y1="110" x2="712" y2="110" class="d-open" marker-end="url(#aI)"/><line x1="758" y1="110" x2="788" y2="110" class="d-open" marker-end="url(#aI)"/><circle cx="750" cy="68" r="4.5" class="n-fall"/><circle cx="792" cy="110" r="4.5" class="n-fall"/><circle cx="750" cy="152" r="4.5" class="n-fall"/><circle cx="708" cy="110" r="4.5" class="n-rise"/><text x="750" y="57" text-anchor="middle" class="sl f">TANK</text><text x="801" y="114" text-anchor="start" class="sl f">GROUND</text><text x="750" y="172" text-anchor="middle" class="sl f">DAM</text><text x="699" y="114" text-anchor="end" class="sl r">CAST</text><line x1="150" y1="248" x2="192" y2="290" class="sq-side"/><line x1="192" y1="290" x2="150" y2="332" class="sq-side"/><line x1="150" y1="332" x2="108" y2="290" class="sq-side"/><line x1="108" y1="290" x2="150" y2="248" class="sq-side"/><line x1="150" y1="254" x2="150" y2="282" class="d-close" marker-end="url(#aI)"/><line x1="150" y1="326" x2="150" y2="298" class="d-close" marker-end="url(#aI)"/><line x1="142" y1="290" x2="112" y2="290" class="d-open" marker-end="url(#aI)"/><line x1="158" y1="290" x2="188" y2="290" class="d-open" marker-end="url(#aI)"/><circle cx="150" cy="248" r="4.5" class="n-fall"/><circle cx="192" cy="290" r="4.5" class="n-rise"/><circle cx="150" cy="332" r="4.5" class="n-rise"/><circle cx="108" cy="290" r="4.5" class="n-rise"/><text x="150" y="237" text-anchor="middle" class="sl f">DEEP</text><text x="201" y="294" text-anchor="start" class="sl r">HELIOSTAT</text><text x="150" y="352" text-anchor="middle" class="sl r">GARDEN</text><text x="99" y="294" text-anchor="end" class="sl r">LENS</text><line x1="450" y1="248" x2="492" y2="290" class="sq-side"/><line x1="492" y1="290" x2="450" y2="332" class="sq-side"/><line x1="450" y1="332" x2="408" y2="290" class="sq-side"/><line x1="408" y1="290" x2="450" y2="248" class="sq-side"/><line x1="450" y1="254" x2="450" y2="282" class="d-close" marker-end="url(#aI)"/><line x1="450" y1="326" x2="450" y2="298" class="d-close" marker-end="url(#aI)"/><line x1="442" y1="290" x2="412" y2="290" class="d-open" marker-end="url(#aI)"/><line x1="458" y1="290" x2="488" y2="290" class="d-open" marker-end="url(#aI)"/><circle cx="450" cy="248" r="4.5" class="n-fall"/><circle cx="492" cy="290" r="4.5" class="n-fall"/><circle cx="450" cy="332" r="4.5" class="n-fall"/><circle cx="408" cy="290" r="4.5" class="n-fall"/><text x="450" y="237" text-anchor="middle" class="sl f">FILTER</text><text x="501" y="294" text-anchor="start" class="sl f">GROUND</text><text x="450" y="352" text-anchor="middle" class="sl f">STATIONS</text><text x="399" y="294" text-anchor="end" class="sl f">DEEP</text><line x1="750" y1="248" x2="792" y2="290" class="sq-side"/><line x1="792" y1="290" x2="750" y2="332" class="sq-side"/><line x1="750" y1="332" x2="708" y2="290" class="sq-side"/><line x1="708" y1="290" x2="750" y2="248" class="sq-side"/><line x1="750" y1="254" x2="750" y2="282" class="d-close" marker-end="url(#aI)"/><line x1="750" y1="326" x2="750" y2="298" class="d-close" marker-end="url(#aI)"/><line x1="742" y1="290" x2="712" y2="290" class="d-open" marker-end="url(#aI)"/><line x1="758" y1="290" x2="788" y2="290" class="d-open" marker-end="url(#aI)"/><circle cx="750" cy="248" r="4.5" class="n-rise"/><circle cx="792" cy="290" r="4.5" class="n-rise"/><circle cx="750" cy="332" r="4.5" class="n-rise"/><circle cx="708" cy="290" r="4.5" class="n-rise"/><text x="750" y="237" text-anchor="middle" class="sl r">OVERWINTERING</text><text x="801" y="294" text-anchor="start" class="sl r">CAST</text><text x="750" y="352" text-anchor="middle" class="sl r">SEATING</text><text x="699" y="294" text-anchor="end" class="sl r">GARDEN</text></svg></div>
+    <div class="flegend">
+      <span><i style="border-color:var(--alive)"></i>closes</span>
+      <span><i style="border-color:var(--dead);border-top-style:dashed"></i>opens</span>
+      <span>sides are members and cannot change · diagonals are free</span>
+    </div>
+    <figcaption><b>The six squares, and each one is a trade.</b> A square's four sides are members and cannot change length; its two diagonals are the only free lengths in it. Folding one therefore closes one diagonal exactly as it opens the other — two seats may be brought together, and the price is fixed in advance: the other two are pushed apart by the same motion. There is no way to do half of it and no way to do it anywhere else. <b>Six squares, six mechanisms, each available alone</b> — so anything ever sited in a square glues that hinge shut and the count runs 6 → 5 → … → 0.</figcaption>
+  </figure>
+
+  <div class="panel">
+    <h3>The six antipodal pairs</h3>
+    <p class="prose">A seat's opposite shares both its circuits and is not adjacent to it. Derived, never listed — and because the solid is vertex-transitive, all six sit at exactly the same distance.</p>
+    <ul class="anti"><li><span class="r">LENS</span> <em>↔</em> <span class="f">TANK</span></li><li><span class="f">DAM</span> <em>↔</em> <span class="r">HELIOSTAT</span></li><li><span class="f">FILTER</span> <em>↔</em> <span class="r">SEATING</span></li><li><span class="r">OVERWINTERING</span> <em>↔</em> <span class="f">STATIONS</span></li><li><span class="r">GARDEN</span> <em>↔</em> <span class="f">GROUND</span></li><li><span class="r">CAST</span> <em>↔</em> <span class="f">DEEP</span></li></ul>
+    <p class="prose" style="margin-top:1rem">Two seats carry neither a turn nor a return — <b>GROUND and GARDEN</b> — and they are one of the six pairs. The one place that spends nothing is opposite the one place everything settles into.</p>
+  </div>
+
+  <div class="panel">
+    <h3>The named members the build sites things on</h3>
+    <p class="prose">Found rather than written, so that if a circuit ever changes and the member stops existing, the lookup returns null and the caller says so instead of drawing a door onto nothing.</p>
+    <div class="tw" style="margin-top:.9rem">
+      <table>
+        <tbody>
+          <tr><td class="nm" style="width:11rem">DOOR&nbsp;OUT</td><td>CAST—TANK — circuit four's turn</td></tr>
+          <tr><td class="nm">WITHDRAWAL</td><td>TANK → FILTER → DEEP — the only two-step path, and it is not written down anywhere; it is found</td></tr>
+          <tr><td class="nm">CENTRE</td><td>unreachable by construction — no <code>to</code>, no <code>receive</code>, no field to fill. Twelve radii can be measured and none can be travelled.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tw" style="margin-top:1.6rem">
+    <table>
+      <thead><tr><th style="width:3rem">#</th><th style="width:6rem">Kind</th><th style="width:11rem">From</th><th style="width:11rem">To</th><th>Circuit</th></tr></thead>
+      <tbody>
+        <tr><td class="i">01</td><td class="k k-fall">fall</td><td class="nm">DAM</td><td class="nm">STATIONS</td><td class="i">1</td></tr>
+        <tr><td class="i">02</td><td class="k k-fall">fall</td><td class="nm">STATIONS</td><td class="nm">DEEP</td><td class="i">1</td></tr>
+        <tr><td class="i">03</td><td class="k k-turn">turn</td><td class="nm">DEEP</td><td class="nm">HELIOSTAT</td><td class="i">1</td></tr>
+        <tr><td class="i">04</td><td class="k k-rise">rise</td><td class="nm">HELIOSTAT</td><td class="nm">OVERWINTERING</td><td class="i">1</td></tr>
+        <tr><td class="i">05</td><td class="k k-rise">rise</td><td class="nm">OVERWINTERING</td><td class="nm">CAST</td><td class="i">1</td></tr>
+        <tr><td class="i">06</td><td class="k k-return">return</td><td class="nm">CAST</td><td class="nm">DAM</td><td class="i">1</td></tr>
+        <tr><td class="i">07</td><td class="k k-fall">fall</td><td class="nm">DAM</td><td class="nm">GROUND</td><td class="i">2</td></tr>
+        <tr><td class="i">08</td><td class="k k-fall">fall</td><td class="nm">GROUND</td><td class="nm">FILTER</td><td class="i">2</td></tr>
+        <tr><td class="i">09</td><td class="k k-turn">turn</td><td class="nm">FILTER</td><td class="nm">HELIOSTAT</td><td class="i">2</td></tr>
+        <tr><td class="i">10</td><td class="k k-rise">rise</td><td class="nm">HELIOSTAT</td><td class="nm">GARDEN</td><td class="i">2</td></tr>
+        <tr><td class="i">11</td><td class="k k-rise">rise</td><td class="nm">GARDEN</td><td class="nm">SEATING</td><td class="i">2</td></tr>
+        <tr><td class="i">12</td><td class="k k-return">return</td><td class="nm">SEATING</td><td class="nm">DAM</td><td class="i">2</td></tr>
+        <tr><td class="i">13</td><td class="k k-fall">fall</td><td class="nm">TANK</td><td class="nm">GROUND</td><td class="i">3</td></tr>
+        <tr><td class="i">14</td><td class="k k-fall">fall</td><td class="nm">GROUND</td><td class="nm">STATIONS</td><td class="i">3</td></tr>
+        <tr><td class="i">15</td><td class="k k-turn">turn</td><td class="nm">STATIONS</td><td class="nm">LENS</td><td class="i">3</td></tr>
+        <tr><td class="i">16</td><td class="k k-rise">rise</td><td class="nm">LENS</td><td class="nm">GARDEN</td><td class="i">3</td></tr>
+        <tr><td class="i">17</td><td class="k k-rise">rise</td><td class="nm">GARDEN</td><td class="nm">OVERWINTERING</td><td class="i">3</td></tr>
+        <tr><td class="i">18</td><td class="k k-return">return</td><td class="nm">OVERWINTERING</td><td class="nm">TANK</td><td class="i">3</td></tr>
+        <tr><td class="i">19</td><td class="k k-fall">fall</td><td class="nm">DEEP</td><td class="nm">FILTER</td><td class="i">4</td></tr>
+        <tr><td class="i">20</td><td class="k k-fall">fall</td><td class="nm">FILTER</td><td class="nm">TANK</td><td class="i">4</td></tr>
+        <tr><td class="i">21</td><td class="k k-turn">turn</td><td class="nm">TANK</td><td class="nm">CAST</td><td class="i">4</td></tr>
+        <tr><td class="i">22</td><td class="k k-rise">rise</td><td class="nm">CAST</td><td class="nm">SEATING</td><td class="i">4</td></tr>
+        <tr><td class="i">23</td><td class="k k-rise">rise</td><td class="nm">SEATING</td><td class="nm">LENS</td><td class="i">4</td></tr>
+        <tr><td class="i">24</td><td class="k k-return">return</td><td class="nm">LENS</td><td class="nm">DEEP</td><td class="i">4</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="z">LAYER 4</span><h2>Where the documents and the disk disagree</h2><span class="k">MEASURED, NOT RULED</span></div>
+  <p class="prose">Three claims stated in prose that this build measured differently. None of them is a fault in the thing measured; all three are counts that moved while the sentence stayed still — which is the exact failure <code>solid.js</code>'s own header records and the reason this map is generated rather than written.</p>
+
+  <div class="corr">
+    <div class="c">
+      <h3>The instrument count</h3>
+      <p class="said">"Twelve instruments hold or refuse; three more run in the page." — <code>CLAUDE.md</code>, the boot path</p>
+      <p>Measured today: <strong>18 hold</strong>, 3 more wait for a page. Six were registered on 2026-08-17 alone — the three trim-tab surveys, the standing spine, the display law, and the traversal organ. The sentence was right when it was written and the suite grew past it inside a week. <strong>A count in prose beside a register that grows is a claim with an expiry nobody set.</strong></p>
+    </div>
+    <div class="c">
+      <h3>Specification against build</h3>
+      <p class="said">"This repo has far more specification than game." — carried forward from the 3D brief</p>
+      <p>True of <code>nesi/</code> whole: 382 markdown files against 204 runnable ones. <strong>False of the live build, and by a wide margin.</strong> <code>game2d/</code> holds 12,707 markdown lines against 27,039 lines of code — <strong>2.1 to 1 the other way.</strong> The ratio inverted when the 3D tree was retired and nobody updated the sentence. The warning it carries is still worth keeping; the measurement it rests on is no longer the live one.</p>
+    </div>
+    <div class="c">
+      <h3>The gate ledger stopped before the marks did</h3>
+      <p class="said">205 opens, 140 closes, 65 still open — <code>OPEN_GATES.jsonl</code></p>
+      <p>Its last event is <strong>2026-08-16</strong>. <code>MARKS_LOG.jsonl</code> ran on to <strong>2026-08-17</strong>, and the six instruments above were registered in that gap. <strong>65 gates stand open and nothing has opened or closed one since the retirement</strong> — so the surface that records what is undecided has been still for three days while the build moved. That is not a backlog. It is a ledger that stopped being written in, which is the one state a ledger cannot report about itself.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="z">LAYER 5</span><h2>Open</h2><span class="k">NAMED, UNDEFAULTED</span></div>
+  <p class="prose">Two of these the build carries in its own source, in headers written to be read rather than smoothed. The rest are the corpus's, and none is this map's to close.</p>
+  <ul class="open">
+    <li><b>Is a level an edge or a tetra of four faces?</b> Both models are live. Held together they give 24 × 4 = 96 faces against 17 built mechanisms. <code>solid.js</code> assumes the edge reading and forecloses nothing — <code>MEMBERS</code> carries no face field, so adding one costs nothing. Carried in the file's own header, undecided.</li>
+    <li><b>What is a set-down's trace?</b> One of every seat's three outputs leaves none by design; whether "none" means invisible-but-recorded or genuinely nothing is unmarked. The build's candidate answer is genuinely nothing — <code>member: null</code>, and no caller stores it. 12 products hang on this.</li>
+    <li><b>Whether the collapse's price is the mechanic or a wall.</b> 6 display windows sited is 6 mechanisms spent is a world that cannot fold, cannot pack, and cannot be carried out — which lands directly on the last four levels, where the fold is assumed to be available.</li>
+    <li><b>Density or emptiness at the centre.</b> The deposit's endpoint is a tetrahedron dense with history; the solid's is a centre that cannot be reached, cannot be filled, and has no field to fill. The second is enforced in code by a parameter that does not exist, which is why it is the deepest of the seven seams rather than the loudest.</li>
+    <li><b>65 gates in <code>OPEN_GATES.jsonl</code></b>, unmoved since 2026-08-16, and 21 dormant directories with no terminal mark of any kind.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Provenance.</strong> Generated 2026-08-18 by <code>nesi/game2d/tools/map_build.js</code>. Geometry from <code>nesi/game2d/solid.js</code>, whose two written tables are the twelve seats and the four circuits; everything else in this map's third layer is derived from those. Corpus layer measured with <code>fs</code> over <code>nesi/</code>. Build layer is the parsed output of a live <code>node tools/check_all.js</code>. Ledger counts read from <code>MARKS_LOG.jsonl</code>, <code>OPEN_GATES.jsonl</code> at the DSS root.</p>
+  <p><strong>Standing.</strong> MEASURED throughout — a computation over a live authority returned it, and re-running the generator re-runs the computation. The three disagreements in layer 4 are measurements against sentences, not rulings; the five items in layer 5 are named and left standing. <strong>No number on this page reaches the player.</strong> This is the world's skeleton, not its face.</p>
+  <p><strong>Supersession.</strong> This map replaces <code>nesi/THE_MAP_2026-08-11.html</code> as the current one. That file stands unedited where it is, as the convention requires — a mark on top, never a silent erasure.</p>
+</footer>
+
+</div>

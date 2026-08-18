@@ -67,6 +67,16 @@ const NODE = [
      properties. Both are asserted against the source rather than asked for in a
      comment, and both were control-tested the day they were written. */
   ["traversal_check", "the fourth source stays the fourth"],
+  /* REGISTERED 2026-08-17 on Kevin's "build the instrument first", after he read
+     a response of mine and saw negative assertion across the whole of it. His
+     framing law has been in the boot path since that morning and NOTHING READ
+     IT. Every other instrument here tests whether a claim is TRUE; a true
+     sentence in negative form passes all of them and still narrows the aperture,
+     which is how one section sat at 41 per thousand through an adversarial
+     audit, a ground pass and a full converge.
+     It REFUSES on structure — the law on disk, a section declaring itself — and
+     REPORTS the inversions, because a red suite would reward deleting words. */
+  ["framing_check",   "negative form sits in a lint or at an edge, never in the prose"],
 ];
 
 /* HIS AUDIT RUNS HERE TOO. tools/assertion_audit.py encodes the register —
@@ -92,6 +102,33 @@ const ESM = [
   ["predicate_filter", "EXISTS, MENTIONED and REACHABLE kept apart — a mention is not a route"],
 ];
 
+/* THE GATE, REGISTERED 2026-08-17 on Kevin's mark, "wire it into check_all."
+   It is not in tools/ and it is not one more instrument. It is a second
+   jurisdiction with its own runner, its own ledger and its own verdict grammar,
+   sited at ../gate/. It gets a row here so the build has ONE front door rather
+   than two, which is this file's whole reason for existing.
+
+   ── ITS THIRD EXIT CODE GETS ITS OWN WORD, AND THAT IS NOT FUSSINESS ────────
+   The gate exits 0 when every active instrument examined something and held,
+   1 when one refused, and 3 when one EXAMINED NOTHING. Three is the verdict
+   this suite had no word for. Folding it into FAIL would report a breach where
+   none was looked for; folding it into ok is the exact false green the gate was
+   built to prevent — LEARNED 4, a blank screen passes every refusal test. So it
+   is reported as THIN, on the reasoning this file already applies to CRASH: an
+   instrument that checked nothing and one that checked everything and found a
+   breach need different hands. THIN counts against the run.
+
+   ── IT CARRIES ITS OWN WORDS UP, INCLUDING THE YES ──────────────────────────
+   The gate's output is relayed verbatim, never re-judged here: its `made
+   possible` lines whenever something landed, and its verdict line whenever it
+   does not hold. Nothing in this file re-implements the reading. The admissions
+   print FIRST, for the same reason the gate prints them first — a summary that
+   opens with failures teaches its reader that the best available outcome is
+   nothing going wrong. */
+const GATE = [
+  ["gate", "gate/gate.mjs", "what the build made possible, and what it refuses to call progress"],
+];
+
 /* THE ONES THAT RUN IN THE PAGE. Not failures, and not silence either — a hand
    reading this list must be able to see what was NOT covered by this run. */
 const IN_PAGE = [
@@ -100,7 +137,7 @@ const IN_PAGE = [
   ["store_guard",  "his writing is the same before and after any work"],
 ];
 
-let fail = 0, crash = 0;
+let fail = 0, crash = 0, thin = 0;
 const missing = [];
 
 for (const [name] of NODE.concat(IN_PAGE))
@@ -109,6 +146,8 @@ for (const [name] of PY)
   if (!fs.existsSync(path.join(HERE, name + ".py"))) missing.push(name);
 for (const [name] of ESM)
   if (!fs.existsSync(path.join(HERE, name + ".mjs"))) missing.push(name);
+for (const [name, rel] of GATE)
+  if (!fs.existsSync(path.join(HERE, "..", rel))) missing.push(name);
 
 console.log("");
 for (const [name, holds] of NODE) {
@@ -170,6 +209,38 @@ for (const [name, holds] of ESM) {
   }
 }
 
+/* ── THE GATE ─────────────────────────────────────────────────────────────── */
+const strip = (x) => String(x).replace(/\x1b\[[0-9;]*m/g, "");
+
+for (const [name, rel, holds] of GATE) {
+  if (missing.includes(name)) { console.log("  GONE   " + name.padEnd(16) + holds); continue; }
+  let out = "", code = 0;
+  try {
+    out = strip(execFileSync(process.execPath, [path.join(HERE, "..", rel)],
+                             { stdio: "pipe", cwd: path.join(HERE, "..") }));
+  } catch (e) {
+    code = typeof e.status === "number" ? e.status : 1;
+    out = strip(String(e.stdout || "") + String(e.stderr || ""));
+  }
+
+  const said = out.split("\n").filter((l) => l.trim());
+  const verdict = said.length ? said[said.length - 1].trim().replace(/^──\s*/, "") : "no output";
+  const landed = said.filter((l) => l.trim().startsWith("· ")).map((l) => l.trim().slice(2));
+
+  /* Tested before the exit code: a module that failed to load exits non-zero
+     looking exactly like a refusal, and a gate that never reached its own
+     instruments checked nothing. */
+  let mark;
+  if (/ReferenceError|SyntaxError|TypeError|Cannot find module/.test(out)) { mark = "CRASH "; crash++; }
+  else if (code === 0) mark = "ok    ";
+  else if (code === 3) { mark = "THIN  "; thin++; }
+  else { mark = "FAIL  "; fail++; }
+
+  console.log("  " + mark + name.padEnd(16) + holds);
+  for (const m of landed) console.log(" ".repeat(25) + "made possible: " + m);
+  if (mark !== "ok    ") console.log(" ".repeat(25) + verdict);
+}
+
 console.log("\n  in the page, not covered by this run:");
 for (const [name, holds] of IN_PAGE)
   console.log("      " + (missing.includes(name) ? "GONE " : "     ") + name.padEnd(16) + holds);
@@ -181,10 +252,11 @@ if (missing.length) {
   process.exit(1);
 }
 
-const n = NODE.length + PY.length + ESM.length;
-if (fail || crash) {
-  console.error("\n[check_all] " + (n - fail - crash) + " of " + n + " hold · " +
-    fail + " refused · " + crash + " crashed");
+const n = NODE.length + PY.length + ESM.length + GATE.length;
+if (fail || crash || thin) {
+  console.error("\n[check_all] " + (n - fail - crash - thin) + " of " + n + " hold · " +
+    fail + " refused · " + crash + " crashed" +
+    (thin ? " · " + thin + " examined nothing" : ""));
   process.exit(1);
 }
 console.log("\n[check_all] all " + n + " hold · " + IN_PAGE.length + " more wait for a page");

@@ -64,6 +64,6 @@
 
 {"id": "record.no.intention.as.enforcement", "kind": "MARKED", "says": "A record of the system is bound by the same law as the system: it may state what the hand declared, what occurred, and what the build enforces, and it may not state an intention in the tense of an enforcement.", "support": [{"of": "mark", "match": "admit that sentence to the spine"}, {"of": "line", "file": "nesi/game2d/tools/standing.js", "match": "THE TENSE LINT"}]}
 
-{"id": "fraction.contaminant", "kind": "INTENDED", "says": "The sort has four fractions — dissolved, suspended, bedload and contaminant. Three of them behave in the build; the fourth is declared and has no mechanism.", "support": [{"of": "mark", "match": "the four fractions"}, {"of": "line", "file": "nesi/game2d/THE_VISION_2026-08-17.md", "match": "ruled and unbuilt"}]}
+{"id": "fraction.contaminant", "kind": "INTENDED", "says": "The sort is to carry four fractions in the ascent — dissolved, suspended, bedload and contaminant. The ascent moves three; day_one carries contaminant and dissolved is the one with no motion anywhere.", "support": [{"of": "mark", "match": "the four fractions"}, {"of": "line", "file": "nesi/game2d/day_one.html", "match": "contaminant"}]}
 
 {"id": "spine.first.resolution", "kind": "INTENDED", "says": "The spine is to keep a record of whether a support resolved when the claim was admitted, so that a badly-written support and a lost one can be told apart. It has no such record.", "support": [{"of": "line", "file": "nesi/game2d/CLAIMS.jsonl", "match": "spine.first.resolution"}]}

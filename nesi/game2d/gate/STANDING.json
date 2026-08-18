@@ -1,0 +1,50 @@
+{
+  "asOf": "2026-08-17",
+  "jurisdiction": "builder",
+  "standing": "DEVELOPMENTAL",
+  "mark": false,
+  "note": "Executable development surface. This file does not mark or close any constitutional fork. 06-landed is the counterweight to the other five: the first build was assembled entirely from a census of deaths and had no path by which anything could be admitted, so its ceiling was zero.",
+  "activeMechanisms": [
+    "01-motion",
+    "02-selfuse",
+    "04-horizon",
+    "06-landed"
+  ],
+  "heldCandidateMechanisms": [
+    {
+      "id": "03-blanks",
+      "fork": "whether blanks get asserted, and where"
+    },
+    {
+      "id": "05-subtract",
+      "fork": "where the subtraction quota lives"
+    }
+  ],
+  "openForksNotImplemented": [
+    "whether the project gets a capacity scalar at all",
+    "whether the gate binds at the session, the day, or the corpus",
+    "whether set-it-down stays free"
+  ],
+  "recalibrated": [
+    {
+      "id": "01-motion",
+      "was": "struts detected by file extension; .md and .html could not count",
+      "now": "the strut is declared, never derived — a commit says what it now does that it did not before",
+      "why": "the extension rule was imported from a census of software repos into a project whose substance is language, and told the writer that writing is not work"
+    },
+    {
+      "id": "gate.conf · repo",
+      "was": "repo = . — the gate read git at its own directory, which has no history",
+      "now": "repo = ../../.. resolved against the gate directory by 01-motion, so the reading is the same wherever the shell stands",
+      "why": "siting the gate inside the build made the motion window depend on cwd; a gate that reads a different repo depending on where it is invoked is an exhortation, not a filesystem fact"
+    },
+    {
+      "id": "ORGANS.txt",
+      "was": "placeholder vocabulary shipped with the gate — intake, sounding, ground, deep, solid, standing, instruments",
+      "now": "the twelve seats read off solid.js const SEATS, in its own order, asserted identical to solid.js NAMES",
+      "why": "CLAUDE.md names solid.js the authority for every countable claim about the geometry; a second hand-maintained list of the seats would be the one object written down twice"
+    }
+  ],
+  "sitedAt": "nesi/game2d/gate",
+  "sited": "2026-08-17"
+}

@@ -384,6 +384,8 @@ Gift → witnessed → answered from your own past.
 
 ## 7 · WHAT NEVER BENDS
 
+<!-- framing: lint -->
+
 1. **Content-blind, permanently.** Nothing reads, judges, rewrites, summarises,
    paraphrases or infers categories from the player's words. Verbatim only.
 2. **No number reaches the player.** No scores, counts, ranks, percentages,
@@ -485,6 +487,8 @@ records where you stood, not what you meant.
 ---
 
 ## 9 · WHERE IT STANDS, AND WHAT IS UNSETTLED
+
+<!-- framing: edge -->
 
 > ### ■ THE FRESH WALK WAS RUN — 2026-08-16
 >
