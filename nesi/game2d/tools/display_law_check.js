@@ -40,7 +40,22 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
-const ROOT = path.join(__dirname, "..", "..", "..");
+/* SCOPED TO THE NESI TREE, AND BOUNDED — repaired 2026-08-17, same day it was
+   written, after it hung the suite for 25s+ and had to be killed.
+   THE FAULT WAS MINE AND IT WAS THE COST OF THE GOOD PROPERTY. Discovering
+   statements instead of listing them means walking a tree, and I pointed it at
+   the whole DSS corpus — which is OneDrive-backed, so a cold read fetches from
+   the cloud one file at a time. It passed three times on a warm cache and then
+   stopped finishing. `find` over the same root does not finish either.
+   The repair keeps the property and pays for it honestly: the walk is scoped to
+   `nesi/`, which is where a statement of a NESI law lives, and it is capped. The
+   scope is PRINTED at D1 rather than assumed, so a statement placed outside it
+   is a visible gap and not a silent one. A cap that is hit is reported as a
+   refusal, never as a pass — an instrument that ran out of budget checked less
+   than it claims to. */
+const ROOT = path.join(__dirname, "..", "..");        /* nesi/ */
+const BUDGET = 4000;                                   /* files opened, hard cap */
+let opened = 0, capped = false;
 
 const OPENING = "The machine may never read the words to decide how the words appear.";
 const SKIP = new Set([".git", "node_modules", "__pycache__", "worktrees", ".night", "coldwalk", "retired"]);
@@ -60,14 +75,15 @@ const found = [];
        that tries to tell a quotation from a statement is the kind of thing that
        silently stops finding real ones. */
     if (path.resolve(p) === path.resolve(__filename)) continue;
+    if (opened >= BUDGET) { capped = true; return; }
     let t;
-    try { t = fs.readFileSync(p, "utf8"); } catch (err) { continue; }
+    try { t = fs.readFileSync(p, "utf8"); opened++; } catch (err) { continue; }
     if (!t.includes(OPENING)) continue;
     /* the statement is the opening line through the closing refusal */
     const i = t.indexOf(OPENING);
     const m = t.slice(i).match(/Never from a (\w+): what the writing says\./);
     found.push({
-      file: path.relative(ROOT, p).replace(/\\/g, "/"),
+      file: path.relative(path.join(ROOT, ".."), p).replace(/\\/g, "/"),
       body: m ? t.slice(i, i + t.slice(i).indexOf(m[0]) + m[0].length) : t.slice(i, i + 900),
       closing: m ? m[1] : null,
       whole: t
@@ -79,8 +95,11 @@ const results = [];
 const ok = (n, pass, note) => results.push({ n, pass: !!pass, note: note == null ? "" : String(note) });
 
 /* ── D1 · presence ────────────────────────────────────────────────────────── */
-ok("D1 the law is stated in at least two places", found.length >= 2,
-   found.length + " found: " + found.map(f => f.file).join(", "));
+ok("D1 the law is stated in at least two places", found.length >= 2 && !capped,
+   (capped ? "REFUSED — the " + BUDGET + "-file cap was hit, so the walk is incomplete. "
+           : "") +
+   found.length + " found in " + path.basename(ROOT) + "/ · " + opened + " files opened of " +
+   BUDGET + " · " + found.map(f => f.file).join(", "));
 
 if (found.length) {
   /* ── parse each statement's sources ─────────────────────────────────────── */

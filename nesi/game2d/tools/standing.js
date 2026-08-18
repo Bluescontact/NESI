@@ -116,6 +116,11 @@ const KINDS = {
     needs: "rule",
     note: "requires a `rule` naming the mechanical step. Without the step written down it is INFERRED wearing a better word."
   },
+  INTENDED: {
+    is: "declared, and nothing enforces it yet — and it says so",
+    wants: ["mark", "line", "claim"],
+    note: "ADMITTED 2026-08-17 on Kevin's mark, and it is the half of that mark that keeps it from being a lever. A law that only refuses the overstatement leaves an intention with nowhere lawful to sit, so the next session files it under a kind that flatters it. This kind is where an intention goes. It is not a lesser claim — the corpus's own 'held is lawful' says an unbuilt thing is a correct state — it is a claim whose supports establish that it was DECLARED and make no claim that it holds."
+  },
   INFERRED: {
     is: "a session read it from other claims, and the reading is not re-runnable",
     wants: ["claim"],
@@ -227,6 +232,37 @@ function evaluateAll(claims) {
     } else if (K.needs && !c[K.needs]) {
       r.verdict = "misfiled";
       r.broken.push(c.kind + " requires a `" + K.needs + "` naming the mechanical step");
+    } else {
+      /* ── THE TENSE LINT ────────────────────────────────────────────────────
+         Kevin's mark, 2026-08-17: admit this sentence to the spine —
+
+           "A record of the system is bound by the same law as the system. It may
+            state what the hand declared, what occurred, and what the build
+            enforces. IT MAY NOT STATE AN INTENTION IN THE TENSE OF AN
+            ENFORCEMENT."
+
+         Quarried from an audit of an independently-built kernel (fb-0.21),
+         where the same failure was found and named: a record that overstates its
+         own enforcement is the same category of error as a renderer colouring a
+         contradiction orange — "an unearned claim wearing the clothes of a
+         derived fact."
+
+         THE SPINE ALREADY HAD THE MECHANISM AND NOT THE SENTENCE. Its kinds ask
+         WHAT KIND OF STANDING and WHAT KEEPS IT STANDING. Neither asks whether
+         the claim's own wording matches its kind, so an intention filed as
+         INTENDED could still be written "the build refuses X" and read as law.
+
+         WHAT THIS CANNOT DO, said out loud rather than left as silence: it is a
+         word list over prose, so it catches the plain case and not a sentence
+         that means enforcement without using one of these verbs. It is a lint at
+         a gate, not a parser. The kinds remain the load-bearing part. */
+      const ENFORCEMENT = new RegExp("\\b(enforces|enforced|refuses|refused|guarantees|prevents|forbids|binds|is asserted by|cannot happen|holds by construction)\\b", "i");
+      if (c.kind === "INTENDED" && ENFORCEMENT.test(c.says || "")) {
+        r.verdict = "misfiled";
+        r.broken.push("an INTENDED claim is written in the tense of an enforcement — \"" +
+          (c.says.match(ENFORCEMENT) || [""])[0] + "\". State what is intended, or " +
+          "file it under the kind whose supports reach the code that does it.");
+      }
     }
 
     if (r.verdict === "misfiled") { inflight.delete(c.id); out.set(c.id, r); return r; }

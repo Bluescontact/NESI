@@ -6,8 +6,16 @@
 // to start a file whose whole subject is warrant: a spine seeded from memory
 // would be the exact fault it exists to catch.
 //
-// ADMISSION: a claim needs a kind from the six and a support set that could
+// ADMISSION: a claim needs a kind from the SEVEN and a support set that could
 // establish a claim of that kind. There is no generic kind and no fallback.
+//
+// THE SEVENTH IS `INTENDED`, admitted 2026-08-17 on Kevin's mark, together with
+// the sentence it serves: a record may state what the hand declared, what
+// occurred, and what the build enforces — and MAY NOT STATE AN INTENTION IN THE
+// TENSE OF AN ENFORCEMENT. An INTENDED claim written as though it were enforced
+// comes back MISFILED. The kind exists so that an intention has somewhere
+// lawful to sit; a law that only refused the overstatement would push the next
+// session to file it under a kind that flatters it.
 // A claim whose supports cannot establish it comes back MISFILED rather than
 // being quietly downgraded — the downgrade would be a classifier deciding, and
 // nothing here decides.
@@ -53,3 +61,9 @@
 {"id": "display.law.four.sources", "kind": "MARKED", "says": "The display law names four sources. Traversal — what a writing has crossed — is the fourth, admitted 2026-08-17.", "support": [{"of": "mark", "match": "traversal is a fourth source"}, {"of": "line", "file": "nesi/game2d/THE_SHAPE_OF_THE_WHOLE.md", "match": "exactly four sources"}, {"of": "line", "file": "nesi/game2d/THE_VISION.md", "match": "exactly four sources"}]}
 
 {"id": "display.law.fourth.bounded", "kind": "HARDENED", "says": "The fourth source records the fact and shape of a crossing, never a return's content and never a judgement made inside one; an instrument refuses any statement of four sources that drops the bounding clause.", "support": [{"of": "line", "file": "nesi/game2d/tools/display_law_check.js", "match": "the fourth source carries its bounding lint"}, {"of": "line", "file": "nesi/game2d/tools/check_all.js", "match": "the copies agree"}]}
+
+{"id": "record.no.intention.as.enforcement", "kind": "MARKED", "says": "A record of the system is bound by the same law as the system: it may state what the hand declared, what occurred, and what the build enforces, and it may not state an intention in the tense of an enforcement.", "support": [{"of": "mark", "match": "admit that sentence to the spine"}, {"of": "line", "file": "nesi/game2d/tools/standing.js", "match": "THE TENSE LINT"}]}
+
+{"id": "fraction.contaminant", "kind": "INTENDED", "says": "The sort has four fractions — dissolved, suspended, bedload and contaminant. Three of them behave in the build; the fourth is declared and has no mechanism.", "support": [{"of": "mark", "match": "the four fractions"}, {"of": "line", "file": "nesi/game2d/THE_VISION_2026-08-17.md", "match": "ruled and unbuilt"}]}
+
+{"id": "spine.first.resolution", "kind": "INTENDED", "says": "The spine is to keep a record of whether a support resolved when the claim was admitted, so that a badly-written support and a lost one can be told apart. It has no such record.", "support": [{"of": "line", "file": "nesi/game2d/CLAIMS.jsonl", "match": "spine.first.resolution"}]}

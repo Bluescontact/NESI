@@ -267,8 +267,20 @@ in the first person: *I pour · I hold, then I let go · I take this one out · 
 send this there · I let it settle · I let it go down · I work it until it holds ·
 I aim · I feed the frame · I come back · I let it grow · I give it away.*
 
-**Twenty-four members**, each one a level: not a place but a transit, and its
+**Twenty-four members**, each one a seam: not a place but a transit, and its
 mechanic is what its two ends do to each other.
+
+**And the levels are thirty, not twenty-four** — 24 seams and 6 diameters, since
+F10 (marked 2026-08-17) put a root on a circuit *pair* rather than on a seat,
+which took the roots from twelve to six. A diameter is a radius and its
+antipode's, straight through the centre, and it is the one crossing in the solid
+that is not a walk. So a level is a seam **or** a root, and the six roots are the
+half of the count that cannot be travelled.
+
+*(That mark's own note says it "moves F2's arithmetic; not resolved by him and
+not guessed by me." What is settled is six roots and thirty levels. What the
+thirty are called, and whether stages and levels are counted on one axis or two,
+is not.)*
 
 **Four circuits.** The solid has exactly four central hexagonal sections, and
 each is a closed walk of six real edges running **three falling, then three
@@ -315,7 +327,7 @@ moves underneath.
 Kevin's ruling, and it reorganises everything above it: **"the centre is the
 game. everything else serves it."**
 
-The twelve seats, the twenty-four levels, the faces, the instruments — all of it
+The twelve seats, the thirty levels, the faces, the instruments — all of it
 is **apparatus**. It is not the game.
 
 What makes this a description rather than a mood is that the middle already
@@ -364,10 +376,20 @@ Kevin's definitions, and they are the clearest statement of what a level is for:
 as shareable form.** It is *returned*, not earned. Each root is a level
 inhabited, and the figure only becomes visible as roots grow.
 
-The two halves of that sentence are the two halves of the solid. Falling is
-water: intake, holding, separation, routing, settling, the deep. Rising is light:
-working the material, aiming, feeding the frame, waiting out a season, growth,
-giving it away. Down is the sort. Up is the form.
+The two halves of that sentence are the two directions of the walk. Falling is
+intake, holding, separation, routing, settling, the deep. Rising is working the
+material, aiming, feeding the frame, waiting out a season, growth, giving it
+away. **Down is the sort. Up is the form.**
+
+**But the halves are not a division of the world's physics, and that is his
+ruling rather than a nicety.** F1, marked 2026-08-17: *"three equal physics — each
+addresses all twenty-four."* Root, water and light are not two halves and a
+leftover; **each addresses the whole member set.** What splits six and six is the
+*seats* — a seat falls or it rises, and `solid.js` stores that and nothing else
+about direction. The circuit's own shape, three falls, the turn, three rises, the
+return, is **water's round trip**, not a map of where light is allowed to act.
+Light is not a member kind, and any count that reads "water = 12, light = 12" is
+reading a superseded division.
 
 Because the solid is quasiregular, **every level holds exactly one triangle and
 one square — one tool and one window, always.** No level ever feeds two tools or
@@ -405,12 +427,21 @@ top of one and the first frame of the other. Same point, two directions, and
 which way the build travels is open.
 
 **The collapse has a price, and the price is computed.** The six mechanisms *are*
-the jitterbug, and they live entirely in the six squares. Six display windows
-built is six mechanisms spent is a world that cannot fold, cannot pack, and
-cannot be carried out. **The collapse is available only while a window is still
-unsited.** Whether that reads as the mechanic — *the world becomes portable by
-giving up its displays* — or as a wall to route around is Kevin's, and has not
-been chosen.
+the jitterbug, and they live entirely in the six squares. Bracing them one at a
+time takes the count 6 → 5 → 4 → 3 → 2 → 1 → 0, exactly one per window, in any
+order. So a display window built is a mechanism spent, and six built is a world
+that cannot fold, cannot pack, and cannot be carried out. **The collapse is
+available only while a window is still unsited.**
+
+**And that is answered.** F6, marked 2026-08-17: ***"cap at five — one window
+stays unsited so the fold survives."***
+
+Which is a design decision made as a structural one. The world may have five of
+its six displays and never the sixth, and the sixth is not withheld for effect —
+**it is the last degree of freedom, and spending it is what would make the world
+unfoldable.** The incompleteness is load-bearing: a place the build structurally
+cannot fill, kept open on purpose, so that the thing which can be carried out of
+the world still can be.
 
 **The reveal needs no cutscene.** The player is shown true cross-sections and
 never a lie: a triangular face, then a square, then one hexagon — *the whole
@@ -497,7 +528,10 @@ Twelve, and they are the product rather than preferences.
    deep, the one designed exception and the whole retention engine.
 9. **The deep never renders.**
 10. **Colour is never the only carrier of a distinction.** Fractions separate by
-    behaviour — sinks fast, hangs, films — with colour redundant.
+    behaviour, with colour redundant. **The fractions are four** — *dissolved ·
+    suspended · bedload · contaminant* (F7, marked 2026-08-17). Three of them
+    behave on screen today — one sinks fast, one hangs, one films. **The fourth
+    is ruled and unbuilt:** `contaminant` appears nowhere in `ascent.html`.
 11. **Nothing reaches outward.**
 12. **Quitting mid-sentence loses nothing**, and nothing on screen says so.
 
@@ -633,9 +667,10 @@ Named, undefaulted, and each one Kevin's.
 
 - **Which direction the build travels** — up the ascent toward the equilibrium,
   or down the jitterbug away from it. Both are written; they run opposite.
-- **Whether the collapse's price is the mechanic or a wall.** Six windows built is
-  a world that cannot be carried out.
 - **The walking order of the levels.** The solid permits many and enforces none.
+- **Whether a worked seat draws nearer the game or stands further off.** Traversal
+  sits on the twelve radii and a radius reads distance from the game; the organ
+  returns a magnitude and no sign, and no surface draws one.
 - **What a lens is in the array, and how many it holds.** The descent bowl offers
   twelve struts, nine facets, or five whole panes and picks none.
 - **What actually departs at the cast** — the fruit only, or the stand and the
@@ -671,7 +706,7 @@ That is the only promise the world makes, and it has two halves:
 
 > **Nothing you release is wasted. Nothing you release is read.**
 
-Everything else in this document — twelve seats, twenty-four levels, six hinges,
+Everything else in this document — twelve seats, thirty levels, six hinges,
 a centre that cannot be reached, a bowl of twelve that closes on a lens — is the
 apparatus that lets those two sentences stand next to each other.
 
