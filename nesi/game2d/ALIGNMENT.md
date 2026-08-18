@@ -13,6 +13,21 @@ both sides and I have never given you mine.
 them owes a reason. Nothing here is a fork menu; where the geometry already
 decides, I have said so and not asked.
 
+> **■ FOLDED 2026-08-17, reconciliation pass — HE ANSWERED, AND THIS FILE HAD NOT
+> HEARD IT.** Kevin marked fourteen of these at 09:15:32–34 on 2026-08-17, as S1
+> and F1–F14 in `MARKS_LOG.jsonl`. This file was written 2026-08-16 23:22 and
+> carried its questions open through the whole of the following day — while
+> `PROMPT_NEXT.md` named it one of exactly three files a fresh session should
+> read. The handoff was therefore sending each new session to ask him what he had
+> already ruled, which is LEARNED law 20's shape: a mechanism working as a lever
+> to hand him less.
+>
+> **Everything below is kept whole.** Each answered question keeps its full text
+> and gains an ANSWERED block carrying his words verbatim with the mark's date.
+> **Two questions — B2 and B4 — have no mark and stand exactly as written.** Five
+> further marks landed the same minute on matters this file never asked about;
+> they are recorded in a new section E, so the day's rulings sit in one place.
+
 ---
 
 ## A · SETTLED — do not answer these
@@ -48,6 +63,15 @@ twelve, but **no member reaches the centre** — a root is not an edge.
 EMPTY` is a rule about the centre or a description of what happens when you pass
 through it. I will not guess this one — it is the largest open thing.
 
+**■ ANSWERED 2026-08-17, marks F2 and F10.** On the count: *"different axes —
+stages are developmental, levels are inhabited seams."* On whether a root belongs
+to a seat or a circuit: *"to a circuit PAIR — the six diameters, as measured
+today."* So roots **are** levels, on an axis of their own, and there are **six**
+of them rather than twelve — the progression is **30: 24 seams + 6 diameters.**
+The F10 mark carries its own note that this halves the root count and moves F2's
+arithmetic, and that the consequence was left with him rather than guessed.
+`PROMPT_NEXT.md` already carries the 30; `solid.js` already exports `DIAMETERS`.
+
 ### B2 · What is the tetra at day one?
 
 You said *"the tetra with the writing surfaces."* The cuboctahedron has **8
@@ -61,6 +85,9 @@ tetra has four faces.
 the four faces of a cell. These are different objects and I would build the
 wrong one.
 
+**■ STANDS OPEN 2026-08-17.** No mark bears on this. It is one of the two
+questions in this file the day did not reach, and it stays exactly as written.
+
 ### B3 · What falls out of a face while you write?
 
 *"things start falling out of what ever face they are using."*
@@ -71,6 +98,12 @@ boundary (a sentence closing, a pause, a commit)?
 
 **What changes:** everything about the first build. This is the actual game and
 I have no read on it.
+
+**■ ANSWERED IN PART 2026-08-17, mark F7 — what the sort sorts into.** *"the four
+fractions — dissolved · suspended · bedload · contaminant."* The object is named,
+and it is the same four the governing brief already carries. **The timing half of
+this question stands open:** whether it falls while typing or at a boundary has no
+mark.
 
 ### B4 · Is the lens made by hand, or computed?
 
@@ -84,6 +117,10 @@ derived from it.
 gesture. If any part is computed, tell me which part, because I will otherwise
 build no computation at all.
 
+**■ STANDS OPEN 2026-08-17.** No mark bears on this. The reading stated in the
+question — hand-made, under law 5 — is a reading and not his word, and it is
+recorded here as still being mine.
+
 ### B5 · Where does the library live?
 
 By halfway you hold *"a library of multiple projects, domains, tools, skills,
@@ -96,6 +133,11 @@ resources, ideas."* Lenses accumulate.
 architectures and the library has to pick one. `MAP_TO_BOOT` named this as the
 largest single gap before today.
 
+**■ ANSWERED 2026-08-17, mark F8.** *"both — the store is a cache; the files are
+the world."* The two architectures stand in a relation rather than a contest: the
+files carry authority, and the store holds a copy of them for speed. This settles
+collision D2 below.
+
 ### B6 · What is light, mechanically?
 
 Water is word sorting and pattern recognition — I can picture it. Light I
@@ -106,6 +148,12 @@ cannot. The heliostat rises, light quality depends on cycles run.
 
 **What changes:** whether the upper twelve reuse the lower twelve's machinery or
 need their own.
+
+**■ ANSWERED 2026-08-17, mark F1.** *"three equal physics — each addresses all
+twenty-four."* Light is a third physics over the whole member set, so it is
+something other than the lower machinery run upward and something other than a
+half of the twenty-four. Row 2 of section A already carried this supersession;
+this question did not.
 
 ### B7 · The AI collision — and this one I cannot resolve for you
 
@@ -125,6 +173,11 @@ Three readings and they build differently:
 nothing. I will not touch that check without your word — it is one of the few
 things in the corpus that actually binds.
 
+**■ ANSWERED 2026-08-17, mark F9.** *"the last twelve are outside the core loop by
+definition."* Reading 2 of the three offered. `refusal_check` keeps its full force
+and needs no exemption, no amendment and no new law. This settles collision D1
+below.
+
 ### B8 · Does re-entry re-unlock?
 
 You said the player can *"return upstream to previous levels at any point,
@@ -139,6 +192,12 @@ frightening. The second matches `THE ONE-WRITING REBUILD` on your record —
 second unless told otherwise, and I am telling you that's my default rather than
 doing it silently.
 
+**■ ANSWERED 2026-08-17, mark S1, confirmed as standing.** *"Re-entry creates
+descendants; nothing upstream is rewritten."* The second reading holds, and it
+now rests on his word rather than on my default. Note the shape he gave it: a
+re-entry produces a **descendant** — which says more than downstream merely
+keeping what it was given.
+
 ### B9 · What activates a route?
 
 *"the path between the two nodes becomes a route that can be activated with
@@ -151,6 +210,10 @@ writing."*
 solid deals it to them. Four routes leave TANK, so day one either offers a
 choice or makes one.
 
+**■ ANSWERED 2026-08-17, mark F11.** *"writing anywhere — the next unopened route
+takes it."* The second reading: the solid deals the route, and writing at the
+route is one way in rather than the requirement.
+
 ### B10 · Where does the corpus enter, if at all?
 
 `Downloads/` is currently an unwatched intake — two artifacts crossed by hand and
@@ -159,6 +222,14 @@ sit outside the build.
 
 - Does any of it come into the game, ever?
 - Or is the game fed **only** by writing done inside it, from now on?
+
+**■ ANSWERED 2026-08-17, mark F12, in his own words.** *"The corpus doesnt
+enter... but a condensed pattern library can be brought into the first working
+version built for kevin."* Neither option as written: a bounded **condensed
+pattern library** crosses, into the first working version, and the rest of the
+corpus stays a record. An intake path is built for that library alone — and the
+mark's own note is that this is a library brought in whole, rather than items
+crossed one at a time by hand.
 
 **What changes:** whether I ever build an intake path. My read is that the game
 is fed by writing and the corpus is a record — but that's a read, not your word.
@@ -173,6 +244,11 @@ loop.
 - And do you want it **shown and walked**, or **built and reported**?
 
 **What changes:** how much I do before stopping. Left alone I overshoot.
+
+**■ ANSWERED 2026-08-17, mark F14, in his own words.** *"run full development on
+the units of work in nesi."* None of the four rations offered — **full**, and not
+cut down to one route, one level or one gesture. The mark records explicitly that
+this was not one of the options on the table.
 
 ---
 
@@ -213,10 +289,47 @@ Stated as fact so you can plan against it rather than discover it.
 Not questions. Things where two true statements in your own record disagree, and
 someone has to rule.
 
-1. **AI in the last twelve vs. law 3.** B7 above. The sharpest one.
-2. **`node.html` stores nothing; `daily.html` stores everything.** The library (B5) has to sit in one of these and they are opposite.
-3. **1000 words unlocking a level vs. law 2** — no number reaches the player. The counter is lawful if nothing draws it. But the score does not arrive through the counter; it arrives through whatever renders progress next, later, built by someone not making a governance decision. That was the strongest external finding of the day and it applies directly here.
+1. ~~**AI in the last twelve vs. law 3.**~~ **RULED 2026-08-17, mark F9:** *"the
+   last twelve are outside the core loop by definition."* `refusal_check` keeps
+   its force untouched. B7 above carries it.
+2. ~~**`node.html` stores nothing; `daily.html` stores everything.**~~ **RULED
+   2026-08-17, mark F8:** *"both — the store is a cache; the files are the
+   world."* They stand in a relation rather than a contest — the files hold
+   authority, the store holds a copy. B5 above carries it.
+3. ~~**1000 words unlocking a level vs. law 2**~~ **CLOSED 2026-08-16 — the
+   thousand-word gate was removed from the build**, on the reasoning stated in
+   this same item, and `PROMPT_NEXT.md` carries the removal. The reasoning below
+   is kept because it is the reason a threshold stays out in any future form.
+   Original text follows.
+
+   **1000 words unlocking a level vs. law 2** — no number reaches the player. The counter is lawful if nothing draws it. But the score does not arrive through the counter; it arrives through whatever renders progress next, later, built by someone not making a governance decision. That was the strongest external finding of the day and it applies directly here.
 4. **The gift claim narrowed.** It holds for non-rival artifacts and probably not for things that cost the giver. Your last twelve produce files, so the narrowing does not hurt — but it does mean the claim should be stated with its scope rather than as a general theory.
+
+---
+
+## E · MARKED 2026-08-17, OUTSIDE THESE QUESTIONS
+
+*Added by the reconciliation pass. Five of the fourteen marks Kevin made at
+09:15:32–34 answer matters this file never raised. They are recorded here so the
+day's rulings sit in one place, and because two of them **overturn** answers that
+had already landed — which is a thing a later session would otherwise rebuild
+from the older answer.*
+
+| mark | his ruling |
+|---|---|
+| **F3** · Adopt Fruit / Seed / Traversal / WritingObject? | **Adopt whole.** Recorded as **overturning** the landed answer, which had been provenance-only. |
+| **F4** · Does inference get to be an origin? | **Yes** — and `refusal_check` is amended by this mark. Recorded as **overturning** the landed answer, which had been built as an absence. |
+| **F5** · What makes a thing complete | **The named pair** — a seam completes when its two faces are inhabited. |
+| **F6** · The jitterbug price — displays, or portability | **Cap at five** — one window stays unsited so the fold survives. |
+| **F13** · Two surfaces claim TANK | His words: *"bring the features of both, and weave them together in a version to bring forward."* Neither surface displaces the other; a woven third carries forward. |
+
+**■ F6 CARRIES A GAP, NAMED IN THE CONVERGE OF 2026-08-17 22:09 AND LEFT OPEN.**
+The mark stands. The reason recorded beside it does not: each of the six
+mechanisms folds **one** square and leaves the other five rigid — `solid.js`
+solved this with PyRigi and all six localise. So the **first** window sited ends
+the coordinated fold, not the sixth, and a cap at five preserves one localised
+fold rather than portability. The mark is his and it holds; the gap between it
+and the geometry is his to close.
 
 ---
 

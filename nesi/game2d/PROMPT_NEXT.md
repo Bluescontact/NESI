@@ -13,6 +13,20 @@
 > Both are on the record and neither has his mark. **Whoever pastes one should
 > know the other exists.**
 
+> **■ FOLDED 2026-08-17 evening, reconciliation pass — THIS FILE WAS SAVED AT
+> 09:18 AND THE DAY RAN TO 22:31.** Six commits landed after it. Four of the five
+> items under WHAT IS OPEN below were marked by Kevin at **09:15:32–34**, three
+> minutes before this file was last written — the geometry section took the F10
+> mark, and the open list did not. Corrected below, layered, nothing removed.
+>
+> **Also landed after this file was written, and worth knowing before you paste
+> it:** a second jurisdiction now sits at `nesi/game2d/gate/` and is wired into
+> `check_all.js`, which is why the suite shows **20 rows and one THIN** rather
+> than all green. `predicate_filter` is inside `check_all` now, so the single
+> command below covers it. A truth-bearing spine (`tools/standing.js`,
+> `CLAIMS.jsonl`), a display-law check, a traversal check and a framing check
+> were all built and registered the same day.
+
 ---
 
 You are building NESI, a 2D game with 3D objects, in `nesi/game2d/`. Kevin
@@ -37,8 +51,14 @@ nesi/game2d/day_one.html       the surface that exists
 Then run these two, which take seconds and tell you the truth:
 
 ```bash
-node tools/check_all.js && node tools/predicate_filter.mjs
+node tools/check_all.js
 ```
+
+*(Amended 2026-08-17 evening: `predicate_filter` is registered inside `check_all`
+now, so the one command covers both. Expect **20 rows**, 19 holding and the
+`gate` row reading **THIN** — that row is a second jurisdiction reporting that
+two of its four active instruments examined nothing yet. It is the gate's first
+run, and it is telling the truth.)*
 
 ## THE GEOMETRY IS SETTLED — DO NOT RE-DERIVE ANY OF IT
 
@@ -79,11 +99,40 @@ to it.
 
 ## WHAT IS OPEN — GUESS NONE OF IT, ASK OR LEAVE IT
 
-1. **What the sort sorts into.** The hand sorts (law 5, enforced by `refusal_check`). No fraction is named on any surface yet and none may be invented.
+> **■ FOUR OF THESE FIVE WERE ANSWERED AT 09:15 ON 2026-08-17**, three minutes
+> before this file was last saved. Struck through and kept whole, each carrying
+> his words verbatim. `ALIGNMENT.md` was folded in the same pass and now carries
+> all fourteen marks against its own questions.
+
+1. ~~**What the sort sorts into.**~~ **ANSWERED, mark F7:** *"the four fractions —
+   dissolved · suspended · bedload · contaminant."* The hand still sorts — law 5,
+   enforced by `refusal_check` — and now what it sorts into is named.
+   **Open, and unmarked:** whether a fraction falls while typing, or at a
+   boundary.
 2. **What "shareable form" is as a gesture.** Definable, not yet buildable.
-3. **Whether a root belongs to a seat or a circuit.** 12 roots, 4 circuits, each seat on two. Not one-to-one, and the geometry does not decide it.
-4. **Two surfaces claim TANK** — `daily.html` (which the door points at, and which Kevin has walked) and `day_one.html`. Which is the seat is his word. Do not displace `daily.html`.
-5. **The AI collision.** The last twelve levels demonstrate using AI; law 3 forbids a model call on the core loop; `refusal_check` enforces it and passes. Do not touch that check.
+   **Open — no mark bears on it.**
+3. ~~**Whether a root belongs to a seat or a circuit.**~~ **ANSWERED, mark F10:**
+   *"to a circuit PAIR — the six diameters, as measured today."* **Six** roots
+   rather than twelve, so the progression is **30: 24 seams + 6 diameters** —
+   which the geometry section above already carries. The mark's own note is that
+   this moves F2's arithmetic, and that the consequence was left with him.
+4. ~~**Two surfaces claim TANK.**~~ **ANSWERED, mark F13, in his own words:**
+   *"bring the features of both, and weave them together in a version to bring
+   forward."* Neither surface displaces the other — a woven third carries
+   forward. `daily.html` stays where it is.
+5. ~~**The AI collision.**~~ **ANSWERED, mark F9:** *"the last twelve are outside
+   the core loop by definition."* `refusal_check` keeps its full force, needs no
+   exemption, and stays untouched.
+
+**Carried in from `ALIGNMENT.md` by the same pass — open, and no mark bears on
+either:**
+
+6. **Is the day-one node one seat, or one cell?** TANK with its four members out,
+   or a tetra cell — three seats and the centre. These are different objects.
+   (`ALIGNMENT.md` B2.)
+7. **Is the lens made by hand, or computed?** The reading on file is hand-made,
+   under law 5. That reading is the machine's and not his word. (`ALIGNMENT.md`
+   B4.)
 
 ## HOW TO NOT WASTE THE SESSION
 
@@ -103,6 +152,13 @@ Not one thing plus a document about it. Not one thing plus two proposals for the
 next. If you finish early, stop early.
 
 ## THE FIRST MOVE, UNLESS KEVIN SAYS OTHERWISE
+
+> **■ BEARS ON THIS, 2026-08-17:** mark **F13** ruled that `daily.html` and
+> `day_one.html` are woven together into a third version carried forward, rather
+> than one being picked over the other. And mark **F14** — *"run full development
+> on the units of work in nesi"* — names a larger unit than the one this section
+> proposes. Whether the first move below still is the first move is his word,
+> and this pass has not replaced it.
 
 `day_one.html` gives TANK its five levels and records two hand-gestures — *sort*
 and *form* — on each banked sentence. **It has never been opened by a person.**
