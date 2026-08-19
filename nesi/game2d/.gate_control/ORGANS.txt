@@ -1,0 +1,42 @@
+# THE ORGANS — one per line. An organ is something you route through, not
+# something you own. 02-selfuse reads this; if it is empty, the run is vacuous,
+# not green.
+#
+# ── SEEDED 2026-08-17, FROM THE BUILD'S OWN AUTHORITY ─────────────────────────
+# These are the twelve seats, read off `../solid.js` — `const SEATS`, in its own
+# order: six falling, then six rising. They are not composed here and they are
+# not a second list. CLAUDE.md names solid.js the authority for every countable
+# claim about the geometry, so this file quotes it rather than restating it.
+#
+#   re-derive:  node -e "console.log(Object.keys(require('../solid.js').SEATS ?? {}).join('\n'))"
+#   cross-check: ../THE_WORK_SURFACES.md carries one entry per seat, seven fields.
+#
+# The first seed shipped with the gate (intake, sounding, ground, deep, solid,
+# standing, instruments) was placeholder vocabulary from before it was sited.
+#
+# ── WHAT A ROUTE IS, AND WHOSE HAND WRITES IT ────────────────────────────────
+# `node instruments/02-selfuse.mjs route <organ>` records that the hand arrived.
+# Nothing here infers one. The build already holds this same law at
+# `../tools/played.js`: "the fact of a play is not observable by the machine,
+# and the runner does not try to infer it." No route was seeded, because none
+# has happened at this gate yet and a written one would be a state declared
+# rather than a state observed.
+#
+# Then delete the ones you have not opened in a month — that is 05-subtract's
+# first target.
+
+# ── falling ──
+TANK
+DAM
+FILTER
+STATIONS
+GROUND
+DEEP
+
+# ── rising ──
+HELIOSTAT
+OVERWINTERING
+CAST
+LENS
+GARDEN
+SEATING

@@ -139,3 +139,11 @@ around it** (if it strengthens none, it is scaffold), leaving **the void**
 intact (space that should stay empty — e.g. the held tray — stays empty), and
 carrying **inner calm** (its one thing, without ornament; calm is earned last).
 Use this reading as a cross-check on a filled spec, not as a second form.
+
+**■ CONFIRMED AS THE SAME LAW, not an analogy, 2026-08-18.** `solid.js`'s F5
+ruling — a seam completes when both its faces are inhabited, never by one act
+alone — is "strengthens the centers around it" stated in geometry instead of
+architecture. Found independently, five weeks apart, by two different
+disciplines applied to two different scales (an organ's worth; a seam's
+completion). See `nesi/game2d/THE_CENTRE.md` and `nesi/game2d/tank.html`'s
+seam-completion logic.

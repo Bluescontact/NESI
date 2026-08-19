@@ -99,10 +99,11 @@ sorted, and an unsorted water is a lawful water).
 a clearer, lighter water.
 **THE COST** — clarity is bought with attention, one piece at a time. Nothing
 sorts in bulk and nothing sorts for you.
-**HELD FORM** — **NOT BUILT.** A taken bit goes straight into `S.caught`.
-*Candidate:* the hand lifts a bit and it rides at the top of the room, held,
-until a second reach settles it — so a separation can be walked around and set
-back down. **This pass leaves it standing.**
+**HELD FORM** — **■ BUILT 2026-08-14, this doc not updated until now.** A taken
+bit rides at the top of the room, held, until a second reach settles it into
+the bank; a reach on the water below returns it, still falling. Nothing
+settles on one touch, nothing expires — the exact candidate named below,
+built. — `ascent.html:1105-1112`, comment cites this file by name.
 
 ---
 
@@ -119,9 +120,9 @@ proves field five:** send two on and drop two to the lake and the load returns
 exactly where it started, while the record of where each went is complete and
 permanent. A consequence that persists is not always a consequence in the water.
 **THE COST** — routing is irreversible and there is no unroute.
-**HELD FORM** — **NOT BUILT**, and the brief names it: *hold the route before
-walking it.* *Candidate:* a piece rests on the lip of a bay and only a second
-reach sends it. **This pass leaves it standing.**
+**HELD FORM** — **■ BUILT, this doc not updated until now.** A piece rests on
+the lip of a bay (`L.lip`) and only a second reach sends it — the exact
+candidate named below, built. — `ascent.html:1205-1206`.
 
 ---
 

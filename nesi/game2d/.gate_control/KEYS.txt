@@ -1,0 +1,11 @@
+# One key per line. Each must be asserted on a dated line — including, and
+# especially, when the answer is zero.
+#
+# NOTE the structural guard in 03-blanks: keys under ground.* surface.*
+# sounding.* deep.* player.* are refused. Blanks are asserted in the builder's
+# ledger only. That split is INFERRED and the fork is open.
+
+marks-installed
+gates-closed
+struts-moved
+cards-refused

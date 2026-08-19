@@ -452,9 +452,36 @@ is irreversible in practice once a session reads it, and it changes what is CHEA
 a seventh manifest now requires an act (a fresh boot) rather than merely continuing.
 It does not exhort any session to restrain itself.
 
+**MODIFIED, 2026-08-18, Kevin's mark — the boundary is now the tetra, not the
+boot.** *"Maybe one manifest per tetra?"*, confirmed directly. A tetra completes
+at most one manifest, slice, or build order; a second manifest on the *same*
+tetra collides regardless of session or day, and a fresh tetra opens a fresh
+allowance independent of the clock. This layers over the text above rather than
+replacing it — "fresh boot" as the unblocking act is superseded by "fresh tetra,"
+but nothing here is a filesystem fact yet: there is no instrument that checks
+tetra-completion the way `runner.js`'s six gates check their own preconditions.
+Until one exists, this boundary is read and complied with, not enforced — which
+is the exact gap law 22 warns about.
+
 Before any heavy operation, write a manifest block and pause. Kevin's next message is the consent — no auto-execution.
 
-**Heavy operations:** any multi-agent workflow, substrate run, deep-research, transmission-engine invocation, daily-cycle close-out, or any operation estimated >20k tokens.
+**Heavy operations, RE-SCOPED 2026-08-18, Kevin's mark** (interface-friction pass, same
+session as the LEARNED.md split): reading, analysis, drafting, and any pass that only
+produces something Kevin reviews before it touches anything real — an extraction, a
+proposal, a diagram, a document — is **never heavy, regardless of size.** What gates is
+**consequence, not token count**: any multi-agent workflow, substrate run,
+deep-research, transmission-engine invocation, daily-cycle close-out, or any operation
+that writes to a real file, sends something outward, or is not trivially undoable.
+*Why:* checked against what this session actually did — a 50-file corpus read, an
+extraction, a bucket compost, three live config rewrites — none of it triggered a
+manifest under the rule as written, and the read/draft/analysis half of that list was
+never the part that needed one. Token volume was a proxy for "heavy" that didn't track
+what the gate exists to protect, which is consent before something changes. The
+config-rewrite half still gated — three edits to real files (`~/.claude/CLAUDE.md`,
+`MEMORY.md`, `LEARNED.md`) were each confirmed by a direct question first, in effect
+already running this rule before it was written down. This makes that practice the
+written law instead of an unstated habit.
+~~any operation estimated >20k tokens~~ — struck; token count is no longer the trigger.
 
 **Manifest — six fields, in order:**
 

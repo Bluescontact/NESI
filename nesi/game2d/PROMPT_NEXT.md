@@ -1,5 +1,11 @@
 # PASTE THIS INTO A FRESH SESSION
 
+> **■ SUPERSEDED 2026-08-18 — PASTE `THE_BOOT_2026-08-18.md` INSTEAD.** Kevin's
+> order: *"do a full redevelopment of the successor prompt."* This file and
+> `THE_NEXT_SESSION.md` are both kept whole, neither deleted; the collision
+> notice below stays as the record of why a redevelopment was needed rather
+> than a third vote between them.
+
 > **■ COLLISION — TWO BOOT PROMPTS, ONE EVENING, MUTUALLY EXCLUSIVE.** *(Named
 > 2026-08-17, reconciliation pass. Not resolved — this is Kevin's word, not
 > mine.)*
@@ -72,7 +78,7 @@ authority; read it rather than a document about it.
 - **`RIGIDITY`: 24 bars, 6 mechanisms.** The edges alone cannot hold a shape — which is why the figure does not visualise until roots grow. That is structural, not aesthetic.
 - **R = e exactly. The twelve radials sum to `[0,0,0]`.** The centre holds nothing by arithmetic.
 - **8 tetra + 6 pyramids = volume 20.** The tetra is the unit, volume 1, and it is the only cell with `deforms: false`.
-- **Day one is TANK.** Four members — GROUND, FILTER (fall), CAST (turn), OVERWINTERING (return) — pairing its two tools against its two windows in all four combinations, once each. Plus its root to LENS, which has `member: null` and therefore **no faces and no sideways deposit**.
+- ~~**Day one is TANK.** Four members — GROUND, FILTER (fall), CAST (turn), OVERWINTERING (return) — pairing its two tools against its two windows in all four combinations, once each.~~ **■ OVERTURNED, 2026-08-18, Kevin: "one cell."** This line stated the *seat* reading of `ALIGNMENT.md` B2 as if settled; B2 was open the whole time this file called the geometry "settled" and told a fresh session not to re-derive it. Day-one is **one tetra cell** — three seats and the centre, e.g. `TANK · FILTER · GROUND` per `solid.js`'s own `CELLS` — not TANK alone with four members out. "The four faces" are the cell's four faces, not TANK's four members. Which specific cell, and what falls out of each of its three seats plus the centre, is not decided here — that is real design work sitting downstream of this ruling, not a mechanical fix. `THE_SIX_MANIFESTS.md` Manifest 1 and Manifest 4 assumed the same wrong reading and are not yet corrected. The plus-its-root-to-LENS clause above depended on the seat reading and stands unverified against the cell reading.
 
 **Kevin's definitions, verbatim, which govern everything:**
 > *"the roots are a representation of writing that has survived water, and light. the roots represent a level inhabited"*
@@ -127,12 +133,12 @@ to it.
 **Carried in from `ALIGNMENT.md` by the same pass — open, and no mark bears on
 either:**
 
-6. **Is the day-one node one seat, or one cell?** TANK with its four members out,
-   or a tetra cell — three seats and the centre. These are different objects.
-   (`ALIGNMENT.md` B2.)
-7. **Is the lens made by hand, or computed?** The reading on file is hand-made,
-   under law 5. That reading is the machine's and not his word. (`ALIGNMENT.md`
-   B4.)
+6. ~~**Is the day-one node one seat, or one cell?**~~ **ANSWERED 2026-08-18,
+   Kevin: "one cell."** Three seats and the centre, not TANK alone. See the
+   overturned geometry line above. (`ALIGNMENT.md` B2.)
+7. ~~**Is the lens made by hand, or computed?**~~ **ANSWERED 2026-08-18, Kevin's
+   own words.** The hand picks the raw material; the machine assembles and
+   optimizes the lens's structure from it. (`ALIGNMENT.md` B4.)
 
 ## HOW TO NOT WASTE THE SESSION
 

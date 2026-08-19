@@ -24,8 +24,9 @@ decides, I have said so and not asked.
 >
 > **Everything below is kept whole.** Each answered question keeps its full text
 > and gains an ANSWERED block carrying his words verbatim with the mark's date.
-> **Two questions — B2 and B4 — have no mark and stand exactly as written.** Five
-> further marks landed the same minute on matters this file never asked about;
+> **Both questions this file's own reconciliation pass left untouched — B2 and
+> B4 — are now answered, both outside the 09:15 batch and both on 2026-08-18.**
+> Five further marks landed at 09:15 on matters this file never asked about;
 > they are recorded in a new section E, so the day's rulings sit in one place.
 
 ---
@@ -85,8 +86,24 @@ tetra has four faces.
 the four faces of a cell. These are different objects and I would build the
 wrong one.
 
-**■ STANDS OPEN 2026-08-17.** No mark bears on this. It is one of the two
-questions in this file the day did not reach, and it stays exactly as written.
+**■ ANSWERED 2026-08-18, Kevin: "one cell."** Day-one is **one tetra cell** —
+three seats and the centre — not TANK alone as a single seat with four members
+out. "The four faces" are the four faces of the cell, not the four members out
+of TANK. This closes the second and last of the two questions the 08-17
+reconciliation pass left untouched (B4 closed 2026-08-18 earlier the same
+session).
+
+**This overturns a silent assumption, not just answers an open question.**
+`PROMPT_NEXT.md`'s geometry section states *"Day one is TANK. Four members —
+GROUND, FILTER (fall), CAST (turn), OVERWINTERING (return)"* — that is the
+seat reading, now ruled wrong. `THE_SIX_MANIFESTS.md`'s Manifest 1 and
+Manifest 4 (which sites the tank as "the source pool above the valley") both
+assumed the seat reading without the fork being closed at the time either was
+written. Neither document has been corrected yet — flagged here rather than
+silently rewritten, since which cell (which three seats plus the centre) is a
+real design decision, not a mechanical correction. The live build
+(`day_one.html`, `daily.html`) was also built against the seat reading and is
+not yet reconciled to this ruling.
 
 ### B3 · What falls out of a face while you write?
 
@@ -117,9 +134,16 @@ derived from it.
 gesture. If any part is computed, tell me which part, because I will otherwise
 build no computation at all.
 
-**■ STANDS OPEN 2026-08-17.** No mark bears on this. The reading stated in the
-question — hand-made, under law 5 — is a reading and not his word, and it is
-recorded here as still being mine.
+**■ ANSWERED 2026-08-18, in his own words.** *"the lens are made by compression
+of sentences an pattern, and assebled structurally by the machine. The hand
+pics the stock material, lens frames ect, and the machine automaticly makes
+the lens optimized for maximal options with current sontraints."* Neither
+option offered above — the hand selects the raw material and the frame; the
+machine assembles and optimizes the lens's structure from that material, for
+maximal options under whatever constraints hold at the time. The reading
+recorded here as "mine" (hand-made under law 5) was closer than "computed"
+but still wrong in the same way: it left the machine's assembly step out
+entirely. — `MARKS_LOG.jsonl`, 2026-08-18T18:34:55.
 
 ### B5 · Where does the library live?
 

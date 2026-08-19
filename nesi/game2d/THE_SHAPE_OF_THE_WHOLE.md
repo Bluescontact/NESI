@@ -264,10 +264,14 @@ in a single step, and nothing structural forbids it.
 **3 · What routes a writing to a colour.**
 The display law forbids the machine inferring it. That leaves two:
 → `the hand colours it` · `the site colours it — the light at that place` · `both, and I will say which is which`
-**4 · The missing internal open loop.**
-Fuller's sea of tension is water leaving one store and arriving in another. It
-does not exist. Building it is the join; a shared store is not.
-→ `build the internal open loop` · `the stores stay islands` · `not yet — name it and hold`
+**4 · The missing internal open loop.** ~~Fuller's sea of tension is water
+leaving one store and arriving in another. It does not exist.~~ **■ CLOSED BY
+BUILD, 2026-08-18 — this pass's own answer was built, just never reported
+back here.** `daily.html`'s `toTheLake()` (2026-08-14) is exactly this: a
+stone leaves `nesi.water` and arrives in `nesi.ascent`, arrival written
+first so nothing is ever in flight or nowhere. Carried unchanged into
+`tank.html`. Not a shared store — a real member between two stores, which is
+what this gate item asked for and named the difference from a merge.
 ---
 ```text
 SET: the skeleton, its concealment ladder, the accounting,

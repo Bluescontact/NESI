@@ -8,14 +8,21 @@
    ITERATE rule 2, from daily.html:36-40: values derive; the derivation lives in
    one function. This is that function, for the whole world.
 
-   ── ITS OWN OPEN QUESTION, carried in the header rather than smoothed ─────────
-   THE QUESTION: is a level an EDGE (24 of them) or a TETRA OF FOUR FACES (which
-   is what LEVEL ONE is actually built as)? Both models are live. Held together
-   they give 24 × 4 = 96 faces against 17 built mechanisms.
-   THE CANDIDATE ANSWER this file assumes: a member is an edge, and a face is
-   something a member can be given later. Nothing here forecloses the tetra
-   reading — MEMBERS carries no face field, so adding one costs nothing.
-   THIS PASS LEAVES IT STANDING. It is not decided here.
+   ── RULED, 2026-08-18, Kevin's mark ────────────────────────────────────────
+   THE QUESTION THIS FILE ONCE LEFT STANDING: is a level an EDGE (24 of them)
+   or a TETRA OF FOUR FACES? His words: "a Level is an edge connecting two
+   faces, and two nodes." This confirms the candidate this file already
+   assumed (a member is an edge) and completes it: every level connects
+   exactly two nodes (its two seats) and borders exactly two faces — never
+   two of the same kind, per facesAlong() below, which already returns one
+   triangle and one square per member and needed no change to be correct.
+
+   THE FULL STRUCTURE, NOW CLOSED AT EVERY LAYER: 12 nodes (SEATS) · 24 levels
+   (MEMBERS, each an edge between two nodes, bordering two faces) · 14 faces
+   (TRIANGLES + SQUARES, 8 + 6) · 14 cells (CELLS, the interior volume behind
+   each face, apexed at the centre, volume 20). tank.html's seam strip already
+   modeled a level exactly this way — .tool and .window as the two faces,
+   SEAT/.to as the two nodes — before this ruling existed to name it.
    ─────────────────────────────────────────────────────────────────────────────
 
    PROVENANCE. The circuits are the four hexagonal great circles of the

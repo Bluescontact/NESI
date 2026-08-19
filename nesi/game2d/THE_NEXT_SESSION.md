@@ -1,5 +1,11 @@
 # THE NEXT SESSION — the prompt, and six lenses
 
+> **■ SUPERSEDED 2026-08-18 — PASTE `THE_BOOT_2026-08-18.md` INSTEAD.** This
+> file collided directly with `PROMPT_NEXT.md` (one said read the corpus
+> first, this one said do not) and neither carried Kevin's mark. Kept whole
+> as the record of what a recalibration pass looked like on 2026-08-16, not
+> as a live boot path.
+
 Written 2026-08-16 at the close, on Kevin's ask for a recalibration prompt and a
 cleaned lens set.
 

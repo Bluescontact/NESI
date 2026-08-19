@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NESI</title>
+<!--
+  THE WOVEN TANK. Built 2026-08-18 on Kevin's mark: "build the new weave from
+  both, and supersede them with the version that brings the strongest elements
+  of each." Supersedes daily.html and day_one.html — neither is deleted, both
+  are marked at their own headers, and this file is what a fresh session
+  should open at TANK from here.
+
+  ── WHAT WAS ACTUALLY WOVEN, STATED RATHER THAN LEFT TO BE DISCOVERED ────────
+
+  THE INSIGHT: these were never two designs competing for the same job.
+  daily.html (2026-08-14/15) built ONE of TANK's four real exit members — the
+  sill, walking TANK—CAST, with a real cost model (a held reach, not a click)
+  and years of real bugs already found and fixed against it (duplicate
+  banking, the bedY collision, phantom bands). day_one.html (2026-08-16) built
+  the GEOMETRY for all four of TANK's members — GROUND, FILTER, CAST,
+  OVERWINTERING — as seam cards, gated by an "earned" count, with two rulings
+  neither prior file had: F5 (a seam completes when both its faces are
+  inhabited, walked or not) and F7 (the sort names one of four fractions —
+  dissolved, suspended, bedload, contaminant — each with its own behaviour,
+  never a computed pass, the hand always picks).
+
+  So the weave is not a merge of two writing surfaces. It is daily.html's
+  tested SILL MECHANIC, generalized across day_one.html's full GEOMETRY,
+  running on daily.html's writing engine, unchanged.
+
+  KEPT WHOLE, UNTOUCHED, FROM daily.html: the watermark and band cut, the held
+  arrival, tiles and the table, the load member (yes/no/i-dont-know/i-dont-
+  want-to), the internal open loop to nesi.ascent. These are a different
+  question than the fraction sort below — the load member asks whether a
+  sentence calls on effort or relationship; the fraction asks what kind of
+  water it is. A stone can carry both and they do not collide.
+
+  ADDED FROM day_one.html: the seam strip (collapsed by default — a small tab,
+  not a bar across the screen, because "NOTHING NAGS" governs this page too),
+  reading TANK's real members live from solid.js; the four-fraction sort,
+  added as a per-tile control at the table, alongside the load member rather
+  than replacing it; F5's completion rule; the ROOT (TANK→LENS), drawn as
+  having no faces because a radial is not an edge.
+
+  GENERALIZED, NOT COPIED: the sill's hold-to-open mechanic — REACH=900,
+  gives back faster than it takes, no bar/percentage/count, the sill's own
+  depth is the readout — now runs once per open seam instead of once for
+  CAST alone. Each seam unlocks the same way day_one.html ruled: a sentence
+  must be sorted into a fraction AND formed before it counts as returned, and
+  returned minus taken must be positive for the NEXT seam to open. The ROOT
+  (through the centre to LENS) is offered once earned() reaches its own
+  threshold and carries no faces to deposit into, exactly as day_one.html
+  found.
+
+  ONE STORE, NOT TWO — closing a real fragmentation this session found. Both
+  source files kept separate stores (nesi.water, nesi.dayone) that could not
+  see each other. This file writes ONLY nesi.water. On first load it adopts
+  nesi.dayone if present (read-only, once, the same pattern daily.html
+  already used to adopt nesi.level_one and nesi.ascent) so nothing written at
+  day_one.html is stranded, and nesi.dayone is never written to again.
+
+  WHAT THIS DOES NOT DO, LEFT OPEN ON PURPOSE. B2 was ruled "one cell" on
+  2026-08-18, after this weave's underlying geometry (both source files) was
+  built against the SEAT reading — TANK alone, not a cell of three seats plus
+  a centre. Which cell, and what that means for a seat that currently has
+  four members and a root, is real design work this file does not attempt.
+  TANK is built here exactly as both source files built it, flagged as
+  provisional against B2 rather than silently carried forward as settled.
+  THE_SIX_MANIFESTS.md's own siting of TANK is unresolved for the same
+  reason. Fractions vs. load member interaction, whether a "returned" stone
+  should also satisfy the load law, and what departs along a non-CAST member
+  (↑CAST's own emit() carries shape, not text; the other three do not have an
+  emit() at all) are none of them decided here — named, not guessed.
+-->
+<style>
+  /* ═══ THE PALETTE — one world, one set of materials ═══════════════════════
+     The canonical set, byte-identical with the PAL block in ascent.html.
+     palette_check.js fails if the two ever drift: "one palette" that depends on
+     someone remembering is two palettes with a delay. There are no assets in
+     this game — everything is drawn — so the palette IS the asset library.
+     Named by material, never by use. Colour never carries a distinction on its
+     own (law 10); these are the world's substances and nothing else. */
+  :root{
+    --ink:      #17171a;   /* his words, and only his words */
+    --paper:    #f2efe8;   /* anything his words are set on */
+    --water:    #4a6c7a;   /* the body, deep — pooled, held, carried */
+    --shallow:  #6f93a4;   /* the same body at the surface, where writing sits */
+    --deep:     #40606f;   /* what the deep would be, if the deep rendered */
+    --ground:   #a89f8e;   /* what the water sets down */
+    --stone:    #6f675a;   /* gate, wall, dam, anything built */
+    --sky:      #cdd5d2;   /* above, near */
+    --horizon:  #b6ae9f;   /* above, far */
+    --shoot:    #4f6a3d;   /* what grows */
+    --taken:    #8d9298;   /* what the world already has */
+    --lit:      #2f5d50;   /* a seam that has opened or completed */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:var(--sky)}
+  body{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif}
+  #c{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+  /* The page is drawn twice: the backdrop carries the words and shows which of
+     them the world has taken; the field carries the caret and is invisible. */
+  #bg,#page{position:fixed;inset:0;font:inherit;font-size:19px;line-height:1.85;
+    padding:8vh max(6vw,24px) 42vh;white-space:pre-wrap;word-wrap:break-word;
+    overflow-y:auto;overflow-x:hidden}
+  #bg{color:var(--ink);pointer-events:none}
+  #bg .taken{color:var(--taken)}            /* what the world already has */
+  #page{border:none;outline:none;resize:none;background:transparent;
+    color:transparent;caret-color:var(--ink)}
+  /* what the line brought up. Your words only — the machine's never appear. */
+  #up{position:fixed;left:50%;top:12vh;transform:translateX(-50%);
+    width:min(680px,86vw);background:var(--paper);border:1px solid rgba(90,84,74,.45);
+    padding:18px 20px;font-size:17px;line-height:1.62;display:none;
+    box-shadow:0 16px 44px rgba(0,0,0,.18);max-height:64vh;overflow-y:auto}
+  #up .stand{outline:none;white-space:pre-wrap}
+  /* the arrival rides attached beneath the standing text, and taking it is a click */
+  #up .arr{margin-top:14px;padding:12px 14px;background:#e8eef1;
+    border-left:3px solid var(--water);white-space:pre-wrap;cursor:pointer}
+  #up .arr:hover{background:#dfe8ec}
+  /* TILES on THE TABLE. Each sentence its own tile, in written order, where your
+     hand left it. A merged tile carries its seams; a tile with an arrival is
+     ringed. No colour carries a distinction on its own. */
+  #table{position:fixed;inset:0;background:#cfc9bd;display:none;overflow:auto}
+  #table .tile{position:absolute;width:230px;background:#faf8f2;border:1px solid rgba(90,84,74,.5);
+    padding:9px 11px;font-size:12.5px;line-height:1.5;cursor:grab;white-space:pre-wrap;
+    box-shadow:0 2px 6px rgba(0,0,0,.07)}
+  #table .tile.drag{cursor:grabbing;box-shadow:0 12px 28px rgba(0,0,0,.20);z-index:9}
+  #table .tile.over{border-color:var(--deep);border-width:2px}
+  #table .tile.arr{border-left:3px solid var(--shallow)}
+  #table .tile.seamed{border-style:double;border-width:3px}
+  #table .src{display:block;margin-top:6px;font-size:10px;color:#7d766a;letter-spacing:.04em}
+  #seams{position:fixed;left:50%;top:10vh;transform:translateX(-50%);width:min(620px,86vw);
+    background:var(--paper);border:1px solid rgba(90,84,74,.5);padding:18px 20px;display:none;
+    max-height:70vh;overflow-y:auto;font-size:13.5px;line-height:1.6;
+    box-shadow:0 16px 44px rgba(0,0,0,.2)}
+  #seams .part{padding:8px 0;border-top:1px solid rgba(90,84,74,.22);white-space:pre-wrap}
+  #seams .part:first-child{border-top:none}
+  /* THE DOOR OUT — a sill along the top of the world, above the water and above
+     the writing. It is the only way anything leaves. It is always there and it
+     never says anything. */
+  #sill{position:fixed;left:0;right:0;top:0;height:22px;cursor:pointer;
+    background:linear-gradient(to bottom,rgba(20,22,26,.14),transparent)}
+  #sill:hover{background:linear-gradient(to bottom,rgba(20,22,26,.26),transparent)}
+  /* ═══ THE LOAD MEMBER ══════════════════════════════════════════════════════
+     Four words on a stone. The slot is drawn ALWAYS — hollow while the member
+     is unanswered, filled when a hand has answered it. That hollow square is
+     the visible third thing: held is not the same pixel as not-built, and it
+     is not the same pixel as answered. Nothing here is preselected and there
+     is no submit; the words are the control. */
+  .load{margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    font-size:12.5px;letter-spacing:.02em;color:var(--stone)}
+  .load .slot{width:11px;height:11px;flex:0 0 auto;border:1px solid rgba(90,84,74,.75)}
+  .load .slot.pre{background:rgba(90,84,74,.34)}     /* under a hand, not answered */
+  .load .slot.ans{background:var(--stone);border-color:var(--stone)}
+  .load .w{cursor:pointer;padding:1px 0;border-bottom:1px solid transparent}
+  .load .w:hover{color:var(--ink);border-bottom-color:rgba(90,84,74,.6)}
+  .load .said{color:var(--ink);cursor:pointer;border-bottom:1px dotted rgba(90,84,74,.55)}
+  #up .load{font-size:13.5px}
+  #table .tile .load{margin-top:7px;gap:7px;font-size:10.5px}
+  #table .tile .load .slot{width:9px;height:9px}
+  .leaving{opacity:.42}                              /* what a yes would send out */
+
+  /* ═══ THE FRACTION SORT, from day_one.html — F7. Additive to the load member,
+     never a replacement: the load member asks what this costs; the fraction
+     asks what kind of water it is. Colour is never the only carrier — law 10 —
+     so each fraction also names its own behaviour in its title text. ═══ */
+  .frac{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px}
+  .frac button{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;
+    text-transform:uppercase;background:transparent;border:1px solid rgba(90,84,74,.5);
+    border-radius:2px;padding:4px 7px;color:#7d766a;cursor:pointer;white-space:nowrap}
+  .frac button:hover{color:var(--ink);border-color:#5a5348}
+  .frac button.on{font-weight:600;border-width:1px}
+  .frac button.dissolved.on{color:#4f7a63;border-color:#4f7a63}
+  .frac button.suspended.on{color:#5f7f92;border-color:#5f7f92}
+  .frac button.bedload.on{color:#6b5a44;border-color:#6b5a44}
+  .frac button.contaminant.on{color:#a8564a;border-color:#a8564a}
+  #table .tile .frac{margin-top:6px}
+  #table .tile .frac button{font-size:8.5px;padding:3px 5px}
+
+  /* ═══ THE SEAM STRIP — collapsed by default. A tab, not a bar: "NOTHING
+     NAGS" governs this file exactly as it governs daily.html's own header.
+     Opened by a hand, closed by a hand, never by a timer. ═══ */
+  #seamtab{position:fixed;right:0;top:26px;z-index:5;background:rgba(242,239,232,.92);
+    border:1px solid rgba(90,84,74,.4);border-right:0;border-radius:4px 0 0 4px;
+    padding:7px 10px;font:400 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;
+    text-transform:uppercase;color:#7d766a;cursor:pointer;writing-mode:vertical-rl}
+  #seamtab:hover{color:var(--ink)}
+  #seamstrip{position:fixed;right:0;top:0;bottom:0;width:min(320px,84vw);z-index:6;
+    background:var(--paper);border-left:1px solid rgba(90,84,74,.4);
+    box-shadow:-14px 0 34px rgba(0,0,0,.14);display:none;overflow-y:auto;
+    padding:44px 18px 24px;font-size:13px;line-height:1.55}
+  #seamstrip h6{font:400 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;
+    text-transform:uppercase;color:#7d766a;margin-bottom:10px}
+  #seamstrip .close{position:absolute;top:12px;right:14px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:#7d766a;cursor:pointer;background:none;border:0}
+  #seamstrip .close:hover{color:var(--ink)}
+  .seam{border:1px solid rgba(90,84,74,.4);border-radius:3px;padding:9px 11px 10px;
+    margin-bottom:8px;opacity:.42;transition:opacity .3s,border-color .3s}
+  .seam .to{font-size:13px;display:block}
+  .seam .kd{font:400 9px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;
+    text-transform:uppercase;color:#7d766a;display:block;margin-top:2px}
+  .seam .fc{font-size:10px;color:#7d766a;display:block;margin-top:4px}
+  .seam .fs{font:400 9px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--lit);display:block;margin-top:3px}
+  .seam .fs.none{color:#7d766a}
+  .seam.open{opacity:1;cursor:pointer;border-color:var(--lit)}
+  .seam.open:hover{background:rgba(47,93,80,.06)}
+  .seam.taken{opacity:1;border-color:rgba(90,84,74,.55);background:rgba(90,84,74,.05)}
+  .seam.complete{opacity:1;border-style:double;border-width:3px;border-color:var(--lit)}
+  /* ARMED — the mark half. Click again to unmark; see walkSeam/walkRoot. */
+  .seam.armed{opacity:1;border-width:2px;border-color:var(--lit);background:rgba(47,93,80,.1)}
+  .seam.armed .to{font-weight:600}
+  /* the persistent readout — visible with the strip CLOSED, so holding the
+     sill is never a leap of faith once the strip is dismissed. */
+  #armedlabel{position:fixed;top:26px;right:60px;z-index:5;font:400 10px/1 ui-sans-serif,
+    system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--lit);
+    background:rgba(242,239,232,.9);border:1px solid var(--lit);border-radius:3px;
+    padding:5px 9px;display:none;pointer-events:none}
+  #seamnote{font-size:10.5px;color:#7d766a;margin-top:6px;min-height:1.4em}
+
+  .leaving{opacity:.42}
+  @media (max-width:640px){ #bg,#page{font-size:17px;padding:6vh 20px 46vh} }
+</style>
+
+<canvas id="c"></canvas>
+<div id="bg" aria-hidden="true"></div>
+<textarea id="page" spellcheck="false" autocomplete="off" autocorrect="off"></textarea>
+<div id="up"></div>
+<div id="table"></div>
+<div id="seams"></div>
+<div id="sill" title="the door out"></div>
+<a id="carry" style="display:none"></a>
+
+<div id="armedlabel"></div>
+<button id="seamtab">the seams</button>
+<div id="seamstrip">
+  <button class="close" id="seamclose">close</button>
+  <h6>seams out of TANK</h6>
+  <div id="seamrow"></div>
+  <div id="seamnote"></div>
+</div>
+
+<script src="solid.js"></script>
+<script>
+"use strict";
+
+/* ═══ WHERE THIS PAGE IS ════════════════════════════════════════════════════
+   TANK's face — one seat, provisional against B2 ("one cell," 2026-08-18);
+   see the header. Every member below is FOUND in the solid, never written
+   here. If solid.js is absent the page still writes, still banks, still
+   returns — it simply has no doors and no seams, and says so by not drawing
+   them. */
+const SEAT="TANK";
+const G = (typeof SOLID!=="undefined") ? SOLID : null;
+const DOOR = G ? G.DOOR_OUT : null;                 /* ↓TANK—↑CAST */
+const WITHDRAW = G ? G.WITHDRAWAL : null;           /* ↓TANK—↓FILTER—↓DEEP */
+const OUTPUTS = G ? G.outputsOf(SEAT) : null;       /* send · drop · set */
+
+/* THE SEAMS — read, not designed. Every member out of TANK, its tool and its
+   window, exactly as day_one.html read them. */
+const SEAMS = (G && G.ADJ && G.ADJ.TANK) ? G.ADJ.TANK.map(function(o){
+  var m = G.memberBetween(SEAT, o), f = G.facesAlong(SEAT, o);
+  return { id:m.key, to:o, kind:m.kind,
+           tool:"tetra " + f.triangle.tetra, window:f.square.axis };
+}) : [];
+const ROOT = (G && G.RADII) ? G.RADII.filter(function(x){ return x.seat===SEAT; })[0] : null;
+
+/* ═══ the store — one, and it adopts the others ═════════════════════════════ */
+const KEY="nesi.water", SCHEMA="water.3";     /* .3 — the woven tank: seams + fractions */
+let S={ schema:SCHEMA, today:"", text:"", mark:0, stones:[], past:[], returns:0, n:1,
+        deposits:{}, seamsTaken:[], rootTaken:false };
+
+const dayStamp=()=>{ const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+
+function load(){
+  try{ const r=localStorage.getItem(KEY);
+    if(r){ const d=JSON.parse(r);
+      if(d && (d.schema===SCHEMA || d.schema==="water.2" || d.schema==="water.1")){
+        S.today=d.today||""; S.text=typeof d.text==="string"?d.text:"";
+        S.past=Array.isArray(d.past)?d.past:[]; S.returns=d.returns|0;
+        S.mark=d.mark|0; S.stones=Array.isArray(d.stones)?d.stones:[]; S.n=d.n||1;
+        S.deposits=(d.deposits&&typeof d.deposits==="object")?d.deposits:{};
+        S.seamsTaken=Array.isArray(d.seamsTaken)?d.seamsTaken:[];
+        S.rootTaken=!!d.rootTaken;
+        /* water.1 kept whole days and no stones. Cut its days into stones ONCE,
+           so nothing written before the watermark existed is stranded. */
+        if(d.schema==="water.1" && !S.stones.length){
+          S.past.forEach(b=> cut(b.text).forEach(t=> S.stones.push({n:S.n++, t, d:b.d}) ));
+          cut(S.text).forEach(t=> S.stones.push({n:S.n++, t, d:S.today}) );
+          S.mark=S.text.length;
+        }
+      }
+      S.lastSeen=S.text;      /* the page as it stands is what the next edit is against */
+      return;
+    }
+  }catch(e){}
+  adopt();
+}
+
+/* ADOPT — the join, done without deleting anything. Reads whatever
+   nesi.level_one, nesi.ascent AND nesi.dayone kept and lays it down as
+   ground. NO OLD KEY IS WRITTEN OR DELETED — this file only ever writes
+   nesi.water, closing the ten-store fragmentation without erasing anyone
+   else's record of it. */
+function adopt(){
+  const gather=k=>{ try{ const r=localStorage.getItem(k); if(!r) return [];
+      const d=JSON.parse(r); return Array.isArray(d && d.kept) ? d.kept.filter(x=>typeof x==="string") : [];
+    }catch(e){ return []; } };
+  gather("nesi.level_one").concat(gather("nesi.ascent"))
+    .forEach(t=> S.stones.push({n:S.n++, t, d:"earlier"}) );
+  /* nesi.dayone kept its own shape (D.banked, an array of raw strings), not
+     the {kept:[...]} shape the other two use — read it on its own terms. */
+  try{
+    const r=localStorage.getItem("nesi.dayone");
+    if(r){ const d=JSON.parse(r);
+      if(d && Array.isArray(d.banked)) d.banked.forEach(t=>{
+        if(typeof t==="string") S.stones.push({n:S.n++, t, d:"day_one"});
+      });
+    }
+  }catch(e){}
+  if(S.stones.length) S.past.push({d:"earlier", text:S.stones.map(s=>s.t).join(" ")});
+}
+
+/* pad → read back → commit. A bad write never destroys a good record.
+   AND A FAILED WRITE IS NEVER FORGOTTEN — the header promises that quitting
+   loses nothing; a promise with an expiry date and no alarm is not one. */
+function save(){
+  try{ const j=JSON.stringify(S);
+    localStorage.setItem(KEY+".pad", j);
+    if(localStorage.getItem(KEY+".pad")!==j) return false;
+    localStorage.setItem(KEY,j); localStorage.removeItem(KEY+".pad");
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ═══ THE BAND CUT ══════════════════════════════════════════════════════════
+   Carried from world.html:472-496, which carries it from nesi.html:342-358.
+   A .!?… completes a sentence and the trailing cluster leaves with it; a period
+   between two digits is inside a number; bare punctuation is not a sentence.
+   Nothing here looks at meaning. */
+const isEnd=c=> ".!?…".indexOf(c)>=0;
+function cut(v){                     /* the same rule, over a whole string */
+  const out=[]; let i=0, start=0;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){ i++; continue; }
+      let j=i; while(j+1<v.length&&isEnd(v[j+1])) j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) out.push(seg);
+      start=j+1; i=j+1;
+    } else i++;
+  }
+  return out;
+}
+
+load();
+
+/* the day rolls over. Yesterday's whole text goes down as its own band; its
+   stones are already banked and are not re-cut. */
+const stamp=dayStamp();
+if(S.today && S.today!==stamp){
+  if(S.text.trim()) S.past.push({ d:S.today, text:S.text });
+  S.text=""; S.mark=0; S.today=stamp; S.returns++; save();
+} else if(!S.today){ S.today=stamp; save(); }
+
+/* ═══ the page ══════════════════════════════════════════════════════════════ */
+const page=document.getElementById("page"), bg=document.getElementById("bg");
+page.value=S.text;
+if(S.mark>page.value.length) S.mark=page.value.length;
+page.focus(); page.setSelectionRange(page.value.length, page.value.length);
+page.addEventListener("scroll", ()=>{ bg.scrollTop=page.scrollTop; });
+
+let quiet=0, stirred=0, level=0, target=0, still=true, dirty=false, mouseY=0;
+addEventListener("pointermove", e=>{ mouseY=e.clientY; });
+
+const words = t => t.trim() ? t.trim().split(/\s+/).length : 0;
+const REST = 0.28;
+const heightFor = n => REST + (1-REST)*(1 - Math.exp(-n/620));
+
+function paint(){
+  const v=page.value, w=Math.max(0,Math.min(S.mark|0,v.length));
+  bg.textContent="";
+  const gone=document.createElement("span"); gone.className="taken";
+  gone.appendChild(document.createTextNode(v.slice(0,w)));
+  bg.appendChild(gone);
+  bg.appendChild(document.createTextNode(v.slice(w)));
+  bg.scrollTop=page.scrollTop;
+}
+
+/* THE WATERMARK. A sentence banks live, at the keystroke, and never un-banks. */
+function bandCut(){
+  const v=page.value;
+  S.text=v; quiet=0; still=false;
+  if(v!==S.lastSeen){
+    const old=S.lastSeen||"";
+    let p=0; while(p<old.length && p<v.length && old[p]===v[p]) p++;
+    if(p<S.mark){
+      let b=0, k=0;
+      while(k<p){ if(isEnd(v[k])){ while(k+1<p&&isEnd(v[k+1])) k++; b=k+1; } k++; }
+      S.mark=b;
+    }
+    S.lastSeen=v;
+    S.stones.forEach(s=>{
+      if(s.d!==S.today || s.seams) return;
+      const there = v.indexOf(s.t)>=0;
+      if(!there && s.stage===undefined){ s.stage="withdrawn"; if(WITHDRAW) s.by=WITHDRAW.join(" — "); }
+      else if(there && s.stage==="withdrawn"){ delete s.stage; delete s.by; }
+    });
+  }
+  if(S.mark>v.length) S.mark=v.length;
+  let i=S.mark, start=S.mark;
+  while(i<v.length){
+    if(isEnd(v[i])){
+      if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){ i++; continue; }
+      let j=i; while(j+1<v.length&&isEnd(v[j+1])) j++;
+      const seg=v.slice(start,j+1).trim();
+      if(seg.length>1&&/[A-Za-z0-9]/.test(seg)
+         && !S.stones.some(s=>s.d===S.today && !s.seams && s.t===seg))
+        S.stones.push({n:S.n++, t:seg, d:S.today});
+      start=j+1; S.mark=j+1; i=j+1;
+    } else i++;
+  }
+  target=heightFor(words(v));
+  dirty=true; paint();
+}
+page.addEventListener("input", bandCut);
+
+/* THE NEWLINE LANDS, and banks what is held — carried from world.html:498-513. */
+page.addEventListener("keydown", e=>{
+  if(e.key!=="Enter") return;
+  setTimeout(()=>{
+    const seg=page.value.slice(S.mark).trim();
+    if(seg.length>1&&/[A-Za-z0-9]/.test(seg)) S.stones.push({n:S.n++, t:seg, d:S.today});
+    S.mark=page.value.length; S.text=page.value; dirty=true; paint(); save();
+  },0);
+});
+
+setInterval(()=>{ if(dirty && save()) dirty=false; }, 1500);
+addEventListener("beforeunload", ()=>{ S.text=page.value; save(); });
+addEventListener("visibilitychange", ()=>{ if(document.hidden){ S.text=page.value; save(); } });
+
+/* ═══ THE LINE, AND THE HELD ARRIVAL ════════════════════════════════════════ */
+const up=document.getElementById("up");
+let line=null, openStone=-1;
+
+function dayset(){
+  const d=new Set();
+  held().forEach(s=> String(s.d).split(" · ").forEach(x=> d.add(x)) );
+  return d;
+}
+
+const OPEN_WATER = 0.09;
+function bedY(){
+  const wy=innerHeight*(1-level*0.42);
+  const want=innerHeight - Math.min(innerHeight*0.30, 26+dayset().size*13);
+  return Math.max(want, wy + Math.max(58, innerHeight*OPEN_WATER));
+}
+function soundAt(x){
+  const h=held(); if(!h.length) return -1;
+  const i=Math.floor((x/innerWidth)*h.length);
+  if(i<0||i>=h.length) return -1;
+  return S.stones.indexOf(h[i]);
+}
+function paintUp(){
+  up.textContent="";
+  if(openStone<0){ up.style.display="none"; return; }
+  const st=S.stones[openStone];
+  const body=document.createElement("div");
+  body.className="stand"; body.textContent=st.t;
+  up.appendChild(body);
+  const stand=document.createElement("div");
+  stand.className="stand"; stand.contentEditable="true"; stand.spellcheck=false;
+  stand.style.marginTop="10px"; stand.style.opacity=".62";
+  stand.textContent=st.t;
+  up.appendChild(stand);
+  const arr=document.createElement("div");
+  arr.className="arr"; arr.style.display="none";
+  arr.addEventListener("click", ()=>{
+    if(!st.arrival) return;
+    st.t=st.arrival.t; delete st.arrival; dirty=true; save(); paintUp();
+  });
+  up.appendChild(arr);
+  const showArr=()=>{
+    if(st.arrival && st.arrival.t!==st.t){ arr.textContent=st.arrival.t; arr.style.display="block"; }
+    else arr.style.display="none";
+  };
+  stand.addEventListener("input", ()=>{
+    const t=stand.textContent;
+    if(t===st.t){ delete st.arrival; } else { st.arrival={t}; }
+    dirty=true; showArr();
+  });
+  showArr();
+  up.appendChild(loadMember(st, body, k=>{
+    if(k==="yes" || k==="dont_want_to"){ openStone=-1; paintUp(); return; }
+    paintUp();
+  }));
+  /* THE FRACTION, additive to the load member above it. */
+  up.appendChild(fractionMember(st, ()=>paintUp()));
+  up.style.display="block";
+}
+addEventListener("pointerdown", e=>{
+  if(e.target instanceof Node && (up.contains(e.target) || tableEl.contains(e.target)
+     || seamsEl.contains(e.target) || document.getElementById("seamstrip").contains(e.target))) return;
+  if(tableOpen) return;
+  const wy=innerHeight*(1-level*0.42);
+  if(e.clientY < wy){ return; }
+  if(e.clientY >= bedY()){ openTable(); return; }
+  const i=soundAt(e.clientX);
+  line={x:e.clientX, y:wy, d:0, max:innerHeight-wy, found:i>=0};
+  openStone=i; paintUp();
+  if(i>=0) save();
+});
+addEventListener("keydown", e=>{
+  if(e.key==="Escape"){
+    if(seamsEl.style.display==="block"){ seamsEl.style.display="none"; return; }
+    if(tableOpen){ closeTable(); return; }
+    openStone=-1; paintUp(); page.focus(); return;
+  }
+  if(tableOpen){
+    if(e.key.length===1 && !e.ctrlKey && !e.metaKey && !e.altKey){
+      closeTable(); page.focus(); still=false; quiet=0;
+    }
+    return;
+  }
+  if(document.activeElement!==page && !up.contains(document.activeElement)
+     && !e.ctrlKey && !e.metaKey && !e.altKey){ page.focus(); still=false; quiet=0; }
+});
+
+/* ═══ TILES AND THE TABLE ═══════════════════════════════════════════════════ */
+const tableEl=document.getElementById("table"), seamsEl=document.getElementById("seams");
+let tableOpen=false, carried=null, grabDX=0, grabDY=0;
+const EDGE=64;
+
+const OUT = ["merged","withdrawn","lake","set","unmerged"];
+const held = () => S.stones.filter(s=>OUT.indexOf(s.stage)<0);
+
+/* ═══ THE LOAD MEMBER (unchanged from daily.html) ═══════════════════════════ */
+const LOAD = [ {k:"yes",          w:"yes"},
+               {k:"no",           w:"no"},
+               {k:"dont_know",    w:"i don't know"},
+               {k:"dont_want_to", w:"i don't want to"} ];
+const LOADW = k => (LOAD.find(o=>o.k===k)||{}).w || "";
+
+function loadMember(st, body, after){
+  const el=document.createElement("div"); el.className="load";
+  const slot=document.createElement("span"); slot.className="slot";
+  el.appendChild(slot);
+  const clean=()=>{ if(body) body.classList.remove("leaving"); };
+
+  if(st.load){
+    slot.classList.add("ans");
+    const said=document.createElement("span");
+    said.className="said"; said.textContent=LOADW(st.load);
+    said.addEventListener("pointerdown", e=>e.stopPropagation());
+    said.addEventListener("click", e=>{ e.stopPropagation();
+      delete st.load; dirty=true; save(); if(after) after(null); });
+    el.appendChild(said);
+    return el;
+  }
+
+  LOAD.forEach(o=>{
+    const w=document.createElement("span"); w.className="w"; w.textContent=o.w;
+    w.addEventListener("pointerenter", ()=>{ slot.classList.add("pre");
+      if(o.k==="yes" && body) body.classList.add("leaving"); });
+    w.addEventListener("pointerleave", ()=>{ slot.classList.remove("pre"); clean(); });
+    w.addEventListener("pointerdown", e=>e.stopPropagation());
+    w.addEventListener("click", e=>{
+      e.stopPropagation(); clean();
+      st.load=o.k; dirty=true;
+      if(o.k==="yes") toTheLake(st);
+      else save();
+      if(after) after(o.k);
+    });
+    el.appendChild(w);
+  });
+  return el;
+}
+
+/* ═══ THE FRACTION SORT — from day_one.html, F7. The hand picks one; nothing
+   computes it, nothing infers it, and the machine never decides what the sort
+   found (law 5). A second pick of the same fraction takes it back to
+   unsorted, exactly as day_one.html built it. ═══ */
+const FRACTIONS = [
+  { k:"dissolved",   was:"invisible, feeds life",     does:"goes out of sight without falling" },
+  { k:"suspended",   was:"clouds, becomes ground",    does:"hangs, and does not reach the floor" },
+  { k:"bedload",     was:"rocks, goes to the deep",   does:"sinks past the floor; the deep never renders" },
+  { k:"contaminant", was:"named in the brief, given no behaviour there",
+                     does:"films at the surface and stays — this behaviour is mine, not read" }
+];
+function fractionMember(st, after){
+  const el=document.createElement("div"); el.className="frac";
+  FRACTIONS.forEach(fr=>{
+    const b=document.createElement("button");
+    b.className="fr "+fr.k+(st.fraction===fr.k?" on":"");
+    b.textContent=fr.k; b.title=fr.was+" — "+fr.does;
+    b.addEventListener("pointerdown", e=>e.stopPropagation());
+    b.addEventListener("click", e=>{
+      e.stopPropagation();
+      st.fraction = (st.fraction===fr.k) ? null : fr.k;
+      if(!st.fraction) st.formed=false;
+      dirty=true; save(); if(after) after();
+    });
+    el.appendChild(b);
+  });
+  const form=document.createElement("button");
+  form.className="fr"; form.textContent="form"; form.title="surviving light is the shareable form";
+  form.style.opacity = st.fraction ? "1" : ".4";
+  if(st.formed) form.classList.add("on");
+  form.addEventListener("pointerdown", e=>e.stopPropagation());
+  form.addEventListener("click", e=>{
+    e.stopPropagation();
+    if(!st.fraction) return;
+    st.formed = !st.formed; dirty=true; save(); if(after) after();
+    checkSeams();
+  });
+  el.appendChild(form);
+  return el;
+}
+/* RETURNED — a stone that has survived both water and light, day_one.html's
+   own test: sorted into a fraction, and formed. */
+function isReturned(s){ return !!s.fraction && !!s.formed; }
+function returnedCount(){ return S.stones.reduce((n,s)=> n + (isReturned(s)?1:0), 0); }
+
+/* ═══ THE SEAMS — generalized from daily.html's single sill to all four of
+   TANK's members, gated exactly as day_one.html ruled: a seam opens once
+   returned() exceeds the count already taken. ═══ */
+function inhabited(face){ return !!face && (S.deposits[face]||0) > 0; }
+function seamComplete(s){ return inhabited(s.tool) && inhabited(s.window); }
+function checkSeams(){ renderSeamStrip(); }
+
+function renderSeamStrip(){
+  const row=document.getElementById("seamrow"), note=document.getElementById("seamnote");
+  if(!row) return;
+  row.innerHTML="";
+  const open = returnedCount() - S.seamsTaken.length;
+  SEAMS.forEach(s=>{
+    const lit = S.seamsTaken.indexOf(s.id) >= 0;
+    const armed = !lit && pendingSeam && pendingSeam.id===s.id;
+    const el = document.createElement(lit ? "a" : "div");
+    el.className = "seam " + (seamComplete(s) ? "complete " : "") + (lit ? "taken" : (open>0 ? "open" : "")) + (armed ? " armed" : "");
+    if(lit) el.href = "ascent.html#" + s.to.toLowerCase();
+    el.innerHTML =
+      '<span class="to">to ' + s.to + '</span>' +
+      '<span class="kd">' + s.kind + '</span>' +
+      '<span class="fc">tool ' + s.tool + ' &nbsp;·&nbsp; window ' + s.window + '</span>' +
+      '<span class="fs' + (seamComplete(s)?"":" none") + '">' + (seamComplete(s)
+          ? "both faces inhabited"
+          : inhabited(s.tool) ? "tool inhabited · window empty"
+          : inhabited(s.window) ? "window inhabited · tool empty"
+          : "neither face inhabited") + '</span>';
+    if(!lit && open>0){
+      el.addEventListener("click", ()=>{ walkSeam(s); });
+    }
+    row.appendChild(el);
+  });
+  if(ROOT){
+    const rootLit = S.rootTaken;
+    const rootArmed = !rootLit && pendingRoot;
+    const el = document.createElement(rootLit ? "a" : "div");
+    el.className = "seam root " + (rootLit ? "taken" : (open>0 ? "open" : "")) + (rootArmed ? " armed" : "");
+    if(rootLit) el.href = "index.html";
+    el.innerHTML =
+      '<span class="to">through the centre to ' + ROOT.opposite + '</span>' +
+      '<span class="kd">root · radial</span>' +
+      '<span class="fc">no faces. a radial is not an edge, so nothing deposits sideways.</span>' +
+      '<span class="fs none">no faces to inhabit — this never completes this way</span>';
+    if(!rootLit && open>0){ el.addEventListener("click", ()=>{ walkRoot(); }); }
+    row.appendChild(el);
+  }
+  note.textContent = open>0
+    ? open + " seam" + (open>1?"s":"") + " earned — hold the sill to walk one"
+    : returnedCount()===0 ? "" : "no seam currently earned";
+}
+
+/* Walking a seam deposits into its two faces and hands the sill's own
+   hold-to-open mechanic that member — daily.html's tested cost model,
+   applied to whichever member the hand chose rather than only CAST. */
+/* MARK AND UNMARK — Kevin's own naming, 2026-08-18: these are the two biggest
+   movements of user authority, and arming a seam had only the first half. The
+   fraction sort already had both (pick twice, it un-sorts); this closes the
+   same gap here. Clicking the already-armed seam again un-arms it — no
+   different, structurally, from clicking an "on" fraction button again. */
+let pendingSeam=null, pendingRoot=false;
+function walkSeam(s){
+  if(pendingSeam && pendingSeam.id===s.id){ pendingSeam=null; armSill(); return; }
+  pendingSeam=s; pendingRoot=false; armSill();
+}
+function walkRoot(){
+  if(pendingRoot){ pendingRoot=false; armSill(); return; }
+  pendingSeam=null; pendingRoot=true; armSill();
+}
+
+/* ═══ THE INTERNAL OPEN LOOP (unchanged) ════════════════════════════════════ */
+function toTheLake(s){
+  const K="nesi.ascent";
+  let d=null;
+  try{ const r=localStorage.getItem(K); d=r?JSON.parse(r):null; }catch(e){ d=null; }
+  if(!d || typeof d!=="object") d={ schema:"ascent.2", kept:[] };
+  if(!Array.isArray(d.kept)) d.kept=[];
+  if(!Array.isArray(d.arrived)) d.arrived=[];
+  d.arrived.push(s.t);
+  const j=JSON.stringify(d);
+  try{
+    localStorage.setItem(K+".pad", j);
+    if(localStorage.getItem(K+".pad")!==j) return;
+    localStorage.setItem(K, j); localStorage.removeItem(K+".pad");
+  }catch(e){ return; }
+  s.stage="lake";
+  dirty=true; save(); paintTable();
+}
+
+function centreOf(s){ return {x:s.x+115, y:s.y+50}; }
+function targetUnder(s){
+  const c=centreOf(s);
+  return held().find(o=> o!==s && c.x>=o.x && c.x<=o.x+230 && c.y>=o.y && c.y<=o.y+100 ) || null;
+}
+function markTarget(s){
+  const t=targetUnder(s);
+  const tiles=[...tableEl.querySelectorAll(".tile")];
+  tiles.forEach((el,i)=>{ el.classList.toggle("over", held()[i]===t && !!t); });
+}
+function layout(){
+  const cols=Math.max(1,Math.floor((innerWidth-40)/250));
+  held().forEach((s,i)=>{ if(typeof s.x!=="number"){
+    s.x=20+(i%cols)*250; s.y=20+Math.floor(i/cols)*116; } });
+}
+function openTable(){ tableOpen=true; layout(); paintTable(); tableEl.style.display="block"; }
+function closeTable(){ tableOpen=false; tableEl.style.display="none"; seamsEl.style.display="none"; page.focus(); }
+
+function paintTable(){
+  tableEl.textContent="";
+  ["top","bottom"].forEach(side=>{
+    const e=document.createElement("div");
+    e.style.cssText="position:absolute;left:0;right:0;height:"+EDGE+"px;"+side+":0;"+
+      "background:linear-gradient(to "+(side==="top"?"bottom":"top")+
+      ",rgba(90,84,74,.13),transparent);pointer-events:none";
+    tableEl.appendChild(e);
+  });
+  held().forEach(s=>{
+    const el=document.createElement("div");
+    el.className="tile" + (s.arrival?" arr":"") + (s.seams?" seamed":"");
+    el.style.left=s.x+"px"; el.style.top=s.y+"px";
+    el.appendChild(document.createTextNode(s.t));
+    const src=document.createElement("span"); src.className="src";
+    src.textContent=s.d; el.appendChild(src);
+    el.appendChild(loadMember(s, el, ()=>paintTable()));
+    el.appendChild(fractionMember(s, ()=>paintTable()));
+    el.addEventListener("pointerdown", e=>{
+      e.stopPropagation();
+      if(s.seams && e.detail>1){ showSeams(s); return; }
+      carried=s; grabDX=e.clientX-s.x; grabDY=e.clientY-s.y;
+      el.classList.add("drag"); el.setPointerCapture(e.pointerId);
+    });
+    el.addEventListener("pointermove", e=>{
+      if(carried!==s) return;
+      s.x=e.clientX-grabDX; s.y=e.clientY-grabDY;
+      el.style.left=s.x+"px"; el.style.top=s.y+"px";
+      markTarget(s);
+    });
+    el.addEventListener("pointerup", e=>{
+      if(carried!==s) return;
+      el.classList.remove("drag");
+      const t=targetUnder(s);
+      carried=null;
+      const c=centreOf(s);
+      if(t){ merge(s,t); }
+      else if(c.y > innerHeight-EDGE){ toTheLake(s); }
+      else if(c.y < EDGE){ s.stage="set"; dirty=true; save(); paintTable(); }
+      else { dirty=true; save(); paintTable(); }
+    });
+    tableEl.appendChild(el);
+  });
+}
+function merge(a,b){
+  const parts=[a,b].sort((x,y)=> x.n-y.n);
+  const body=parts.map(p=>p.t).join("\n");
+  const days=[...new Set(parts.map(p=>p.d))].join(" · ");
+  const seams=parts.map(p=>({n:p.n, t:p.t, d:p.d}));
+  parts.forEach(p=>{ p.stage="merged"; });
+  S.stones.push({ n:S.n++, t:body, d:days, seams,
+                  x:Math.min(a.x,b.x), y:Math.min(a.y,b.y) });
+  dirty=true; save(); paintTable();
+}
+function showSeams(s){
+  seamsEl.textContent="";
+  (s.seams||[]).slice().sort((x,y)=>x.n-y.n).forEach(p=>{
+    const d=document.createElement("div"); d.className="part";
+    d.appendChild(document.createTextNode(p.t));
+    d.style.cursor="pointer";
+    d.addEventListener("click", ()=>unmerge(s));
+    seamsEl.appendChild(d);
+  });
+  seamsEl.style.display="block";
+}
+function unmerge(m){
+  if(!m.seams) return;
+  m.seams.forEach(p=>{ const part=S.stones.find(x=>x.n===p.n);
+    if(part && part.stage==="merged") delete part.stage; });
+  m.stage="unmerged";
+  seamsEl.style.display="none";
+  dirty=true; save(); paintTable();
+}
+tableEl.addEventListener("pointerdown", ()=>{ seamsEl.style.display="none"; });
+
+/* ═══ THE DOOR OUT — generalized from one member to all four, plus the root.
+   The sill's own mechanic is untouched: REACH=900, gives back faster than it
+   takes, no bar/percentage/count. What changed is which member it opens. ═══ */
+function carriedText(){
+  const L=[], line=s=>L.push(s);
+  line("NESI · the writing · " + S.today);
+  if(DOOR) line("left by " + DOOR.a + " — " + DOOR.b);
+  line("");
+  if(S.text.trim()){ line("── today ──"); line(""); line(S.text); line(""); }
+  const bank=S.stones.slice().sort((a,b)=>a.n-b.n);
+  if(bank.length){
+    line("── what the water holds ──");
+    bank.forEach(s=>{
+      line("");
+      line(s.t);
+      line("    " + s.d + (s.stage ? " · " + s.stage : "") + (s.by ? " · by " + s.by : "")
+                 + (s.load ? " · answered: " + LOADW(s.load) : "")
+                 + (s.fraction ? " · fraction: " + s.fraction + (s.formed ? " · formed" : "") : ""));
+      if(s.seams) s.seams.slice().sort((x,y)=>x.n-y.n)
+        .forEach(p=> line("    seam · " + p.d + " · " + p.t));
+    });
+  }
+  (S.past||[]).forEach(p=>{ line(""); line("── " + p.d + " ──"); line(""); line(p.text); });
+  return L.join("\n");
+}
+
+const sill=document.getElementById("sill");
+if(!SEAMS.length && !ROOT){
+  sill.style.display="none";
+} else {
+  const REACH=900;
+  let reach=0, onIt=false, iv=0, last=0;
+  const paintSill=()=>{
+    const k=Math.min(1,reach/REACH);
+    sill.style.height=(22+k*16)+"px";
+    sill.style.background="linear-gradient(to bottom,rgba(20,22,26,"+(0.14+k*0.44)+"),transparent)";
+  };
+  const stop=()=>{ clearInterval(iv); iv=0; };
+  const step=()=>{
+    const now=performance.now(), dt=Math.min(120, now-last); last=now;
+    reach += onIt ? dt : -dt*2.2;
+    if(reach<=0){ reach=0; paintSill(); stop(); return; }
+    if(reach>=REACH){ reach=0; onIt=false; paintSill(); stop(); walk(); return; }
+    paintSill();
+  };
+  const run=()=>{ if(!iv){ last=performance.now(); iv=setInterval(step,30); } };
+  const begin=()=>{
+    /* the seam under the hand's hold is whichever the seam strip last armed;
+       default to CAST/DOOR_OUT if nothing was armed, matching daily.html's
+       original single-member behaviour exactly when the strip is unopened */
+    if(!pendingSeam && !pendingRoot && DOOR){ pendingSeam=SEAMS.find(s=>s.id===("TANK—CAST")) || SEAMS[0]; }
+    onIt=true; run();
+  };
+  const release=()=>{ onIt=false; if(reach>0) run(); };
+  sill.addEventListener("pointerdown", e=>{ e.preventDefault(); begin(); });
+  addEventListener("pointerup", release);
+  addEventListener("pointercancel", release);
+  sill.addEventListener("pointerleave", release);
+
+  function walk(){
+    if(pendingRoot){
+      S.rootTaken=true; dirty=true; save();
+      location.href = "index.html"; return;
+    }
+    if(pendingSeam){
+      S.seamsTaken.push(pendingSeam.id);
+      S.deposits[pendingSeam.tool]=(S.deposits[pendingSeam.tool]||0)+1;
+      S.deposits[pendingSeam.window]=(S.deposits[pendingSeam.window]||0)+1;
+      dirty=true; save();
+      location.href = "ascent.html#" + pendingSeam.to.toLowerCase();
+      return;
+    }
+    location.href = "ascent.html#cast";
+  }
+  window.__walkDoor=function(){ pendingSeam=null; pendingRoot=false; begin(); };
+}
+
+/* the sill itself is the readout for the HOLD; this label is the readout for
+   the MARK, and it stays visible with the strip closed — a mark you cannot
+   see is not a mark you can trust yourself to unmark. No bar, no percentage,
+   no count: a name, or nothing. */
+function armSill(){
+  renderSeamStrip();
+  const lbl=document.getElementById("armedlabel");
+  if(!lbl) return;
+  if(pendingRoot){ lbl.textContent="armed · through the centre"; lbl.style.display="block"; }
+  else if(pendingSeam){ lbl.textContent="armed · to "+pendingSeam.to; lbl.style.display="block"; }
+  else { lbl.style.display="none"; }
+}
+
+/* seam strip open/close */
+const seamtab=document.getElementById("seamtab"), seamstrip=document.getElementById("seamstrip");
+seamtab.addEventListener("click", ()=>{ seamstrip.style.display="block"; renderSeamStrip(); });
+document.getElementById("seamclose").addEventListener("click", ()=>{ seamstrip.style.display="none"; });
+
+/* ═══ the surface ═══════════════════════════════════════════════════════════ */
+const cv=document.getElementById("c"), g=cv.getContext("2d");
+let W=0,H=0,DPR=1;
+function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=innerWidth; H=innerHeight;
+  cv.width=W*DPR; cv.height=H*DPR; g.setTransform(DPR,0,0,DPR,0,0); }
+addEventListener("resize",resize); resize();
+
+target=heightFor(words(S.text)); level=target;
+paint(); renderSeamStrip();
+
+let t=0, last=performance.now();
+function frame(dt){
+  t+=dt; quiet+=dt;
+  if(quiet>6000) still=true;
+  stirred += ((still?0:1)-stirred)*0.04;
+  level += (target-level)*0.035;
+  const wy=H*(1-level*0.42);
+  document.body.style.cursor = tableOpen ? "" :
+      (mouseY>=bedY() ? "grab" : mouseY>=wy ? "pointer" : "");
+  if(line) line.d=Math.min(line.max, line.d+14);
+  draw();
+}
+const PAL = (()=>{ const cs=getComputedStyle(document.documentElement), o={};
+  ["ink","paper","water","shallow","deep","ground","stone","sky","horizon","shoot","taken"]
+    .forEach(k=> o[k]=cs.getPropertyValue("--"+k).trim() );
+  return o; })();
+const rgba=(hex,a)=>{ const n=parseInt(hex.slice(1),16);
+  return "rgba("+(n>>16&255)+","+(n>>8&255)+","+(n&255)+","+a+")"; };
+function draw(){
+  const wy=H*(1-level*0.42);
+  const sky=g.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,rgba(PAL.sky,.55)); sky.addColorStop(1,PAL.sky);
+  g.fillStyle=sky; g.fillRect(0,0,W,H);
+
+  const bands=dayset().size;
+  const gy=bedY();
+  g.fillStyle=PAL.ground; g.fillRect(0,gy,W,H-gy);
+  for(let i=0;i<bands;i++){ const y=gy+10+i*13; if(y>H-6) break;
+    g.strokeStyle= i%2 ? "rgba(120,112,100,.40)" : "rgba(140,132,120,.32)";
+    g.lineWidth=1.5; g.beginPath();
+    for(let x=0;x<=W;x+=26) g.lineTo(x, y+Math.sin(x*0.008+i*1.3)*2.4);
+    g.stroke(); }
+
+  const wg=g.createLinearGradient(0,wy,0,H);
+  wg.addColorStop(0,rgba(PAL.shallow,.50)); wg.addColorStop(1,rgba(PAL.deep,.72));
+  g.fillStyle=wg; g.fillRect(0,wy,W,H-wy);
+
+  g.strokeStyle="rgba(240,244,246,.55)"; g.lineWidth=1.5; g.beginPath();
+  for(let x=0;x<=W;x+=8){ const a=stirred*3.2;
+    g.lineTo(x, wy + Math.sin(x*0.021+t*0.0026)*a + Math.sin(x*0.009-t*0.0017)*a*0.7); }
+  g.stroke();
+
+  for(let i=0;i<Math.min(S.returns,40);i++){
+    const x=W*0.06 + i*Math.max(16,(W*0.88)/40);
+    g.strokeStyle=PAL.shoot; g.lineWidth=2;
+    g.beginPath(); g.moveTo(x,gy+4); g.lineTo(x,gy-11); g.stroke();
+    g.fillStyle=PAL.shoot; g.beginPath(); g.arc(x,gy-13,2.6,0,7); g.fill(); }
+
+  if(line){
+    g.strokeStyle="rgba(240,244,246,.8)"; g.lineWidth=1.4;
+    g.beginPath(); g.moveTo(line.x,line.y); g.lineTo(line.x,line.y+line.d); g.stroke();
+    if(line.found && line.d>=line.max*0.6){ g.fillStyle="rgba(240,244,246,.92)";
+      g.beginPath(); g.arc(line.x,line.y+line.d,3.4,0,7); g.fill(); } }
+}
+(function tick(now){ const dt=Math.min(48,now-last); last=now; frame(dt); requestAnimationFrame(tick); })(performance.now());
+</script>

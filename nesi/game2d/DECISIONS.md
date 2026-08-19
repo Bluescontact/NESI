@@ -1,5 +1,16 @@
 # DECISIONS — the one surface for the active build
 
+> **■ COMPOSTED ENTIRELY, 2026-08-18, Kevin's mark: "the decisions.md can be
+> composted entirely, along with the stale citation."** Every RULED item below
+> cites `nesi.html:LINE` — a file with zero references to `solid.js`, and the
+> file `COUNSEL_ORDER_2026-08-15.md` names as gated, unreachable from the
+> door. This file called itself "the game that is actually built and walked"
+> while ruling on a world nobody could walk. See `RETIRED.jsonl`. Kept whole,
+> not deleted. Its still-real open items — the two RE-SEATED OPEN entries and
+> the two GATED entries near the bottom — outlive the file and get carried
+> forward by hand as each is actually worked, not bulk-migrated into a
+> replacement.
+
 This is the decisions surface for `nesi/game2d/`, the game that is actually
 built and walked. It supersedes `nesi/world3d/DECISIONS.md`, which is now a
 closed historical record pointing here.
