@@ -42,6 +42,14 @@ rhythm/.last_brief
 !/.claude/
 /.claude/*
 !/.claude/agents/
+# Widened 2026-08-19, Kevin's mark ("track .claude/skills in git too"). Four
+# skills built and adversarially proven the same day (cold-walk,
+# conservation-harness, threshold-sweep, the-closing-check — see
+# game-craft.md's own dated section on them) had no version history either,
+# same gap the line above already named for the agents. Still narrow:
+# skills/ only, alongside agents/ — settings.json and settings.local.json
+# stay out, unchanged from the original mark.
+!/.claude/skills/
 # The boot path, 2026-08-17 (Kevin's mark: "lift the freeze and route LEARNED.md
 # into the boot path"). It is the only file in this repo that loads on its own,
 # and the root's default-ignore would have made it vanish on clone — a boot path
