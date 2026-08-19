@@ -59,12 +59,85 @@
   /* THE CAP IS ROOM, NEVER A NUMBER. The unfilled strip is what is left. */
   .room{height:2px;background:#a49b8c;margin-top:14px;}
   .room i{display:block;height:2px;background:#17171a;width:100%;transition:width .12s linear}
+
+  /* ═══ THE SEAM DOOR — seam.js's DOM half, styled to this page's own
+     literals rather than tank.html's CSS custom properties (ascent.html has
+     none). Collapsed by default: a tab, not a bar — "NOTHING NAGS" governs
+     this page too. ═══ */
+  #seamtab{position:absolute;right:0;top:26px;z-index:5;background:rgba(242,239,232,.92);
+    border:1px solid rgba(90,84,74,.4);border-right:0;border-radius:4px 0 0 4px;
+    padding:7px 10px;font:400 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;
+    text-transform:uppercase;color:#7d766a;cursor:pointer;writing-mode:vertical-rl;display:none}
+  #seamtab:hover{color:#17171a}
+  #seamstrip{position:absolute;right:0;top:0;bottom:0;width:min(320px,84vw);z-index:6;
+    background:#f2efe8;border-left:1px solid rgba(90,84,74,.4);
+    box-shadow:-14px 0 34px rgba(0,0,0,.14);display:none;overflow-y:auto;
+    padding:44px 18px 24px;font-size:13px;line-height:1.55;color:#17171a}
+  #seamstrip h6{font:400 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;
+    text-transform:uppercase;color:#7d766a;margin-bottom:10px}
+  #seamstrip .close{position:absolute;top:12px;right:14px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:#7d766a;cursor:pointer;background:none;border:0}
+  #seamstrip .close:hover{color:#17171a}
+  .seam{border:1px solid rgba(90,84,74,.4);border-radius:3px;padding:9px 11px 10px;
+    margin-bottom:8px;opacity:.55;transition:opacity .3s,border-color .3s}
+  .seam .to{font-size:13px;display:block}
+  .seam .kd{font:400 9px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;
+    text-transform:uppercase;color:#7d766a;display:block;margin-top:2px}
+  .seam .fc{font-size:10px;color:#7d766a;display:block;margin-top:4px}
+  .seam .frac{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px}
+  .seam .frac button{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;
+    text-transform:uppercase;background:transparent;border:1px solid rgba(90,84,74,.5);
+    border-radius:2px;padding:4px 7px;color:#7d766a;cursor:pointer;white-space:nowrap}
+  .seam .frac button:hover{color:#17171a;border-color:#5a5348}
+  .seam .frac button.on{font-weight:600;border-width:1px}
+  .seam .frac button.dissolved.on{color:#4f7a63;border-color:#4f7a63}
+  .seam .frac button.suspended.on{color:#5f7f92;border-color:#5f7f92}
+  .seam .frac button.bedload.on{color:#6b5a44;border-color:#6b5a44}
+  .seam .frac button.contaminant.on{color:#a8564a;border-color:#a8564a}
+  .seam .frac button.win.on{color:#2f5d50;border-color:#2f5d50}
+  .seam .frac span.legacy{font-size:9px;color:#7d766a;letter-spacing:.02em;
+    padding:4px 0;text-transform:none;white-space:nowrap}
+  .seam.locked{opacity:.32}
+  .seam.open{opacity:1;cursor:pointer;border-color:#2f5d50}
+  .seam.open:hover{background:rgba(47,93,80,.06)}
+  .seam.taken{opacity:1;border-color:rgba(90,84,74,.55);background:rgba(90,84,74,.05)}
+  .seam.armed{opacity:1;border-width:2px;border-color:#2f5d50;background:rgba(47,93,80,.1)}
+  .seam.armed .to{font-weight:600}
+  .seam .fs{font:400 9px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;
+    text-transform:uppercase;color:#2f5d50;display:block;margin-top:3px}
+  .seam .fs.none{color:#7d766a}
+  #seamnote{font-size:10.5px;color:#7d766a;margin-top:6px;min-height:1.4em}
+  #seamsill{height:22px;margin-top:10px;border-radius:3px;cursor:pointer;
+    background:linear-gradient(to bottom,rgba(20,22,26,.14),transparent);
+    border:1px solid rgba(90,84,74,.3);display:none}
+  #seamsill.show{display:block}
+  #seamsill:hover{background:linear-gradient(to bottom,rgba(20,22,26,.26),transparent)}
+
+  /* ═══ THE 8-FACE MENU — ds-kit's own mount point ═══════════════════════════
+     Cut 2026-08-19/20 on Kevin's mark: the map "looks like crap" — replace the
+     ROOMS-driven top-level nav (drawMap/drawRoom, a hand-drawn canvas ring and
+     net) with an 8-face minimap built from ds-kit's real React components. This
+     div is shown only while view==="map" (showMenu()/hideMenu(), below); the
+     canvas is hidden underneath it so the two never draw over one another.
+     `.dss-root`'s own CSS (ds-kit/dist/tokens.css) supplies the background,
+     padding and type — nothing here overrides it. */
+  #menu{position:absolute;inset:0;overflow:auto;z-index:3;display:none}
 </style>
 
 <canvas id="c"></canvas>
+<div id="menu"></div>
 <div class="panel" id="wp">
   <textarea id="wt" spellcheck="false"></textarea>
   <div class="room"><i id="wr"></i></div>
+</div>
+
+<div id="seamtab">the seams</div>
+<div id="seamstrip">
+  <button class="close" id="seamclose">close</button>
+  <h6>seams out of <span id="seamseat"></span></h6>
+  <div id="seamrow"></div>
+  <div id="seamnote"></div>
+  <div id="seamsill" title="hold to walk"></div>
 </div>
 
 <script src="level_one_water.js"></script>
@@ -76,7 +149,17 @@
      three outputs rather than guessing — failing toward silence, never toward
      a confirmation. -->
 <script src="solid.js"></script>
+<!-- THE SEAM MODULE — seam.js, read this file's own header at the top for
+     what it is and why tank.html is not also wired to it this pass. -->
+<script src="seam.js"></script>
 <script src="hand.js"></script>
+<!-- ds-kit — the 8-face menu's own components, loaded exactly as
+     ds-kit/demo/index.html demonstrates: React/ReactDOM as page globals, the
+     kit's browser IIFE as a third (global `DssKit`), no build step, no CDN.
+     Paths are relative to this file, nesi/game2d/, back to the repo root. -->
+<script src="../../ds-kit/demo/vendor/react.production.min.js"></script>
+<script src="../../ds-kit/demo/vendor/react-dom.production.min.js"></script>
+<script src="../../ds-kit/dist/dss-kit.iife.js"></script>
 <script>
 "use strict";
 
@@ -224,7 +307,16 @@ let S = {
   // WATER AND SILT ARE NOT HERE, and that is law 8: the world runs while you
   // are in it and stops when you leave. What the water was doing is not kept;
   // what it had already made of the land is.
-  bed:null
+  bed:null,
+  // THE SEAM DOOR'S OWN STATE — one entry per member-id ("A—B"), the fraction
+  // and form asked of THAT SEAM (see seam.js's header for why the sort lands
+  // on the seam rather than on a stone here). Declared here for the same
+  // reason `bed` is: load() only restores keys already standing in S.
+  // NEVER the ledger of what has been WALKED — that lives in the shared
+  // nesi.water store (deposits/seamsTaken), the same two fields tank.html's
+  // own sill already writes, so a stone's passage through a seam is one fact
+  // in one place regardless of which page walked it.
+  seamState:{}
 };
 /* ═══ THE WATER — one body, twelve edges, no owner ══════════════════════════
    "each game level, affects all other levels."
@@ -380,6 +472,17 @@ let W=0,H=0,DPR=1;
 function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight;
   cv.width=W*DPR; cv.height=H*DPR; g.setTransform(DPR,0,0,DPR,0,0); }
 addEventListener("resize",resize); resize();
+
+/* THE MENU / CANVAS SWITCH. The 8-face menu (#menu, the trailing <script> at
+   the foot of this file) is a DOM tree, not a canvas painter, so it and the
+   canvas are shown one at a time rather than composited — nothing here decides
+   WHAT the menu shows, only WHETHER it or the canvas has the screen right now.
+   Pure DOM toggles, called from frame() below; harmless under the node
+   instruments' stub DOM, which hands back a mock element for any id. */
+function showMenu(){ const m=document.getElementById("menu"); if(m) m.style.display="block";
+  if(cv&&cv.style) cv.style.display="none"; }
+function hideMenu(){ const m=document.getElementById("menu"); if(m) m.style.display="none";
+  if(cv&&cv.style) cv.style.display="block"; }
 
 /* ── input ────────────────────────────────────────────────────────────────── */
 const keys=Object.create(null);
@@ -541,14 +644,14 @@ addEventListener("keydown",e=>{
   // TAB opens and closes the case. It is a view of the machine, never of you,
   // so it costs nothing to leave open and nothing to close.
   if(e.key==="Tab"){ e.preventDefault(); CASE.open=!CASE.open; }
-  /* ESCAPE STEPS OUT BY ONE, never all the way. Inside a face of a level it puts
-     you back in the level — leaving the face unworked and re-enterable, losing
-     nothing. Standing in the level it puts you on the map. This is what makes
-     the level a place you are inside rather than four doors in a row. */
+  /* ESCAPE STEPS OUT, to the map. It used to step out by one — a face into its
+     level's room, the room into the map — because a hand could be standing in
+     either. CUT 2026-08-19/20 with the room view itself (see the SUPERSEDED
+     note above ROOMS, and the 8-face menu note above #menu's CSS): a face is
+     now entered straight from the map, by enterFace(), so there is only ever
+     one step standing between a face and the map, and Escape takes it. */
   if(e.key==="Escape"){
-    if(view==="level" && room && room.faces.indexOf(cur&&cur.key)>=0){ view="room"; }
-    else if(view==="room"){ room=null; view="map"; }
-    else if(view!=="map"){ view="map"; }
+    if(view!=="map") view="map";
   }
 });
 addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
@@ -660,6 +763,28 @@ let room=null;                    // the level you are standing inside, if any
    THE RAIN both answered to 2, `enter(2)` resolved to the level, and THE RAIN
    was on the ring and unreachable. Found by counting ids before building on
    them. A level's id is now 100 + its place, which no mechanism can reach. */
+
+/* ■ SUPERSEDED, 2026-08-19, Kevin's mark: "i favor [the edge-by-edge shape],
+   lets route downstream decisions accordingly." An audit the same session
+   found every one of solid.js's 6 SQUARES splits 2-1-1 across three
+   different ROOMS below — not a near-miss, the general case across all six —
+   and that unlocked()/enter()/MAPRUNS read solid.js's geometry nowhere. Kevin
+   then named the original vision directly: a level is one EDGE (24 members +
+   6 diameters = 30, already ruled — solid.js:11-18), and water (the sort) /
+   light (the shareable form) / growth (a root, when a level has survived
+   both — THE_GROWTH.md) are mechanics INSIDE every level, not a room
+   grouping and not separate routes to choose between. That is already what
+   tank.html builds per seam for TANK's four members; it is the template for
+   all 30, not a TANK-only feature.
+
+   ROOMS, below, is this file's own five-room mechanic grouping — real,
+   built, currently the only thing gating progression — and it stands down
+   under that ruling. NOT TORN OUT: retiring live gating code is a real build
+   pass, not a documentation edit, and is not done here. Eight of the twenty
+   keys ROOMS gates (rain, channel, shoal, sounding, stilling, membrane,
+   spring, table) have no edge in solid.js at all and their fate — resite,
+   retire, or keep outside the 30 as a separate system — is Kevin's and is
+   still open. See MARKS_LOG.jsonl 2026-08-19 for the full chain. */
 const ROOMS = [
   { n:101, name:"THE REACH", mech:"a hand on a thing, and it answers",
     faces:["tank","filter","stations","sounding"] },
@@ -700,10 +825,17 @@ const faceOf = k => LEVELS.find(l=>l.key===k) || ASCENT.find(l=>l.key===k)
 const worked = k => !!(S.faces&&S.faces[k]);
 const levelDone = (r) => (r||room||ROOMS[0]).faces.every(worked);
 
+/* THE ROOM AS A VIEW IS RETIRED, 2026-08-19/20 (see the #menu CSS note and the
+   SUPERSEDED note above ROOMS). `enter(n)` used to open a room-id onto its own
+   canvas net of four faces and wait for a second click; a room-id now lands
+   straight on its first face, the same door `enterFace` already is for every
+   other arrival in this file — no second view, no second click. ROOMS itself
+   is NOT torn out: its grouping and names are still real data (still read by
+   `unlocked`'s ring order below), only the room AS A PLACE YOU STAND IN is gone. */
 function enter(n){
   if(!unlocked(n)) return;
   const r=roomOf(n);
-  if(r){ view="room"; room=r; S.at=n; save(); return; }            /* the level, not a face */
+  if(r){ S.at=n; save(); enterFace(r.faces[0]); return; }
   cur=runOf(n); if(!cur) return;
   view="level"; L={t:0}; S.at=n; save();
   const f=SET[cur.key]; if(f&&f.enter) f.enter();
@@ -717,8 +849,26 @@ function enterFace(k){
 /* THE ONE WAY OUT of a face is back into the level it belongs to. Only the
    level's completion reaches the map. */
 function finish(){
+  /* WORKED, INDEPENDENT OF THE ROOM. Set unconditionally, 2026-08-19/20 —
+     the room view is retired (see the cut above ROOMS and the #menu CSS
+     note) and enter() no longer ever sets `room`, so the room-only branch
+     below stopped running and S.faces stopped being written by any live
+     path. worked()/S.faces is read by seatDone() (the seam door) and by the
+     8-face menu's own "live" reading, neither of which is room-specific —
+     seatDone() already carried both checks for exactly this reason ("the
+     seam door works on the edge topology this pass is building even while
+     ROOMS still stands, unrepaired, underneath it"). This line is that
+     repair: which face was worked is a fact about the SEAT, not about
+     which door a hand walked through to reach it.
+
+     ONE FLAG STAYS UNCACHED. `S.done[room.n]` — a room's own "all four
+     worked" flag — is still written only in the room branch just below,
+     which no live path reaches any more (enter() no longer sets `room`).
+     Nothing invented to keep writing it: `levelDone(r)` answers the same
+     question live, off S.faces, which IS kept current above. A cached flag
+     nothing writes is worse than no flag. */
+  S.faces=S.faces||{}; S.faces[cur.key]=true;
   if(room && room.faces.indexOf(cur.key)>=0){
-    S.faces=S.faces||{}; S.faces[cur.key]=true;
     if(levelDone(room) || !bound("level-done")){ S.done[room.n]=true; save(); room=null; view="map"; return; }
     save(); view="room"; return;
   }
@@ -1192,7 +1342,22 @@ stations:{ g:"reach", cost:"a route spends the water on one destination, and the
              The COUNT still rises for all three. That is the seat's own field
              five — the record of where each went is complete and permanent —
              and it never reaches the player, which is the only thing law 2
-             asks. The record is not the acknowledgement. */
+             asks. The record is not the acknowledgement.
+
+             THE COUNT WAS NOT PERMANENT — FOUND 2026-08-19 BY A CONSERVATION
+             HARNESS, THE FIRST ONE THIS SEAT EVER HAD. `enter()` reads
+             L.queue from `S.caught.slice(0,6)` — a copy, not a cut. Nothing
+             anywhere removed a routed item from S.caught, so leaving and
+             re-entering this seat re-queued and re-routed the SAME caught
+             fractions, every time, forever: S.routed could grow without
+             bound from a S.caught that never grew at all, and w.load below
+             was reading a record that was counting replays as new water.
+             The fix is one line: consume the item from S.caught at the
+             instant it actually leaves, same end as L.queue started from
+             (the front), so a route can never be paid for twice and a
+             level abandoned partway leaves exactly its unrouted remainder
+             behind — nothing lost, nothing doubled. */
+          if(S.caught && S.caught.length) S.caught.shift();
           L.ack = send(k); L.i++;
           if(L.i>=L.queue.length){ const w=W_();
           // WRITES: sending downstream puts it back in the water; dropping to
@@ -1705,7 +1870,13 @@ deep:{ g:"reach", cost:"a line brings back one, and which one is not yours to ch
    So you release a lens and it drifts and settles by its own motion. Where you
    clicked has nothing to do with where it comes to rest. You feed the frame;
    you do not place anything in it. */
-seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not yours, and it does not move again", enter(){ L.free=[]; L.seated=S.seated||[]; L.asked=false;
+seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not yours, and it does not move again", enter(){ L.free=[];
+    // L.seated ALIASES S.seated — found 2026-08-19: `L.seated=S.seated||[]`
+    // only aliased on a SECOND visit, when S.seated already existed. On a
+    // player's first-ever visit it forked a private array that finish()
+    // later overwrote S.seated with — which worked, but only because the
+    // fork happened to be the only writer. The alias is now unconditional.
+    L.seated=(S.seated=S.seated||[]); L.asked=false;
     L.words=null; L.cut=null; L.lay=null;
     if(!L.asked){ L.asked=true;
       openWrite(500,(text)=>{
@@ -1715,7 +1886,23 @@ seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not you
         // A cut is a seam BETWEEN two words; one word has no seam in it, and a
         // word is never broken (law 4, verbatim). So a single word is a single
         // lens and there is nothing to cut.
-        if(L.words.length<2) release([L.words.join(" ")]);
+        //
+        // PERSISTED THE INSTANT IT'S COMMITTED — found 2026-08-19 by a cold
+        // walk applying conservation-harness's own question ("does this move
+        // or persist a unit of the player's own material, and is anything
+        // counting it") to every seat, the same way it found THE STATIONS'
+        // routing leak. It found a worse one here: nothing wrote to S at all
+        // until BOTH lens fragments finished a variable-length drift
+        // animation and physically landed near an open seat. Escape, or
+        // navigating to any other seat, resets L unconditionally
+        // (enterFace()) and freezes that drift forever — so a 500-word
+        // write, the single largest commitment this game asks for, could be
+        // watched, cut, and then silently destroyed in full by the one
+        // gesture (Escape) this whole build teaches nowhere but relies on
+        // constantly. Fixed the same way THE STATIONS was: persist at the
+        // instant of actual commitment, never batched on a physics outcome
+        // that might not finish.
+        if(L.words.length<2){ S.lenses.push(L.words.join(" ")); save(); release([L.words.join(" ")]); }
       }); } },
 
   step(dt){ if(typing) return;
@@ -1727,7 +1914,13 @@ seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not you
          nearestSeam owns which seam it came down on. */
       if(reach(mouse.x, mouse.y, 1e9)){ mouse.clicked=false;
         if(s){ L.cut=s.i;
-          release([ L.words.slice(0,L.cut).join(" "), L.words.slice(L.cut).join(" ") ]); } }
+          const parts=[ L.words.slice(0,L.cut).join(" "), L.words.slice(L.cut).join(" ") ];
+          // THE CUT IS THE COMMIT, not the landing — release() below only
+          // starts the drift that decides WHICH seat each half comes to
+          // rest at; whether the words exist in S at all no longer waits on
+          // where physics happens to carry them.
+          S.lenses.push(...parts.filter(t=>t.length)); save();
+          release(parts); } }
       return; }
     const P=seats();
     L.free.forEach(f=>{ if(f.rest!==null) return;
@@ -1736,10 +1929,14 @@ seating:{ g:"reach", cost:"you feed the frame; where it comes to rest is not you
       let best=-1,bd=1e9;
       P.forEach((p,i)=>{ if(L.seated.includes(i)) return;
         const d=Math.hypot(f.x-p.x,f.y-p.y); if(d<bd){bd=d;best=i;} });
-      if(best>=0&&bd<38){ f.rest=best; L.seated.push(best); f.x=P[best].x; f.y=P[best].y; }
+      // SAVED THE INSTANT IT LANDS, not batched on both fragments landing —
+      // L.seated IS S.seated (aliased above, never copied), so a fragment
+      // that lands and is then interrupted before its sibling lands keeps
+      // its seat rather than losing it to the next enter()'s reset of L.
+      if(best>=0&&bd<38){ f.rest=best; L.seated.push(best); f.x=P[best].x; f.y=P[best].y; save(); }
       if(f.y<-60||f.y>H+60||f.x<-60||f.x>W+60){ f.vy=-1.2; f.y=H-120; f.x=W*0.5; } });
     if(L.free.length&&L.free.every(f=>f.rest!==null)){
-      S.seated=L.seated; L.free.forEach(f=>S.lenses.push(f.t)); save(); finish(); } },
+      save(); finish(); } },
   draw(){
     if(L.words && L.cut===null){ drawCut(); return; }
     // THE JOIN, drawn in one frame: the twelve seats above, the twelve mirrors
@@ -2261,199 +2458,65 @@ function beamCrossesWater(m,ang){
    unbuilt and on the decision surface with candidate answers. So the ring is nine runs, not twelve,
    and it will be a different number again when he says how the rest gather. */
 /* the levels, then whatever is still loose — derived, so gathering another one
-   removes it from the ring without a second list to keep in step */
+   removes it from the ring without a second list to keep in step. KEPT as data
+   after the 2026-08-19/20 cut below: `unlocked()`'s ring-order branch still
+   reads it, even though nothing draws a ring any more. */
 const INSIDE = ROOMS.reduce((a,r)=>a.concat(r.faces),[]);
 const MAPRUNS = ROOMS.map(r=>({n:r.n, key:"__room"+r.n, name:r.name, mech:r.mech}))
   .concat(LEVELS.filter(l=>INSIDE.indexOf(l.key)<0));
-function mapNodes(){
-  const R=Math.min(W,H)*0.34, cy2=H*0.50, n=MAPRUNS.length;
-  return Array.from({length:n},(_,i)=>{ const a=(i/n)*Math.PI*2 - Math.PI/2;
-    return {x:W/2+R*Math.cos(a)*1.24, y:cy2+R*Math.sin(a)}; });
-}
-/* THE UPPER TETRA, DRAWN THE SAME WAY THE CIRCUIT IS — three joints, three runs
-   between them, the level at each run's midpoint. Nothing new was invented for
-   it: the twin tetrahedra meeting face to face are RULED
-   (THE_FOUR_RULINGS_2026-08-07.md:44), the lower one is already the twelve-edge
-   circuit around the lake, and ASCENT already held exactly three. Three runs is
-   what three entries on a closed figure ARE — the same arithmetic the twelve
-   came from, one ring up.
 
-   It sits ABOVE the water because light rises and water falls, which is the
-   world's own direction and not a layout choice.
+/* ═══ CUT, 2026-08-19/20, Kevin's mark: the map "looks like crap." ═══════════
+   Removed here: mapNodes/ascentTop/ascentNodes/ascentPts/mapPts (the ring and
+   upper-tetra layout geometry), drawMap() and drawRoom() (the two canvas
+   painters), netFaces/inTri/faceUnder (the room's net-of-four hit-testing) and
+   hovered() (the ring's mouse-proximity test) — the whole hand-drawn top-level
+   nav this session's own SUPERSEDED note (above ROOMS) already flagged as
+   standing on a grouping the edge-based world no longer uses. None of it took
+   any per-seat mechanic, `faceOf`/`enterFace`, or the seam door with it — see
+   those functions, untouched, below.
 
-   ITS SIZE IS DERIVED FROM THE CIRCUIT, NOT PICKED. It is sized and placed so
-   its lowest edge — and the two lines of name under that edge — clear the
-   circuit's topmost joint. At any window size the two figures stand apart
-   rather than crossing, because a run of one that overlaps a run of the other
-   would be two different things under one hand. */
-function ascentTop(){ return H*0.50 - Math.min(W,H)*0.34; }   // the circuit's crown
-function ascentNodes(){
-  // The band it has to live in: 12px below the top of the window, 40px above the
-  // crown — the 40 is the two lines of name that hang under its lowest edge. The
-  // figure is then the largest one that fits that band, never larger. On a wide
-  // short window the crown rides high and the tetra is small; that is correct,
-  // and sizing it off min(W,H) alone pushed its apex off the top of the screen.
-  const crown=ascentTop(), baseY=crown-40;
-  const r=Math.max(14, Math.min(Math.min(W,H)*0.075, (crown-52)/1.5));
-  const cy2=baseY-r/2;
-  return [-90,30,150].map(d=>{ const a=d*Math.PI/180;
-    return {x:W/2+r*Math.cos(a)*1.35, y:cy2+r*Math.sin(a)}; });
-}
-function ascentPts(){
-  const N=ascentNodes();
-  return ASCENT.map((l,i)=>{ const a=N[i], b=N[(i+1)%3];
-    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2, a, b, l}; });
-}
-/* Edge i runs from joint i to joint i+1, and the level sits at its midpoint. */
-function mapPts(){
-  const N=mapNodes(), n=MAPRUNS.length;
-  return MAPRUNS.map((l,i)=>{ const a=N[i], b=N[(i+1)%n];
-    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2, a, b, l}; });
-}
-function drawMap(){
-  const gr=g.createLinearGradient(0,0,0,H);
-  gr.addColorStop(0,"#e2e5dd"); gr.addColorStop(.5,"#c6c3b6"); gr.addColorStop(1,"#98a29e");
-  g.fillStyle=gr; g.fillRect(0,0,W,H);
-  const N=mapNodes(), P=mapPts(), w=W_();
-
-  // THE ONE WATER, standing in the middle of the circuit that made it. Its
-  // height and its clarity are the twelve edges' combined doing, read as form
-  // and never as a figure.
-  const lr=Math.min(W,H)*0.15*(0.45+0.55*w.level);
-  g.fillStyle="rgba(74,108,122,"+(0.16+0.34*(1-w.clarity)+0.14*w.level).toFixed(3)+")";
-  g.beginPath(); g.ellipse(W/2,H*0.50,lr*1.6,lr*0.44,0,0,7); g.fill();
-  // what the hand carved in THE CHANNEL, lying where every edge can see it
-  if(w.cut&&w.cut.length>1){ g.strokeStyle="rgba(60,80,92,.35)"; g.lineWidth=4;
-    g.beginPath(); w.cut.forEach((p,i)=>{ const x=W/2+(p.x-W/2)*0.32, y=H*0.50+(p.y-H*0.52)*0.28;
-      i?g.lineTo(x,y):g.moveTo(x,y); }); g.stroke(); }
-
-  // THE TWELVE EDGES. A run that has been walked carries water; one that has not
-  // is the dry bed it is, and dry is a correct state.
-  P.forEach(p=>{ const done=!!S.done[p.l.n], open=unlocked(p.l.n);
-    g.strokeStyle= done ? "rgba(74,108,122,.85)" : open ? "rgba(90,84,74,.55)" : "rgba(90,84,74,.20)";
-    g.lineWidth= done ? 5 : 2;
-    g.beginPath(); g.moveTo(p.a.x,p.a.y); g.lineTo(p.b.x,p.b.y); g.stroke(); });
-
-  // the joints, where one run hands to the next. They carry nothing — the seats
-  // are the equilibrium's twelve vertices and those belong to the lenses.
-  N.forEach(n=>{ g.beginPath(); g.arc(n.x,n.y,3,0,7);
-    g.fillStyle="rgba(60,54,44,.45)"; g.fill(); });
-
-  P.forEach(p=>{ const open=unlocked(p.l.n), out = p.y<H*0.50 ? -20 : 24;
-    if(open){
-      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif"; g.textAlign="center";
-      g.fillText(p.l.name, p.x, p.y+out);
-      g.fillStyle="rgba(90,84,74,.85)"; g.font="10px Georgia,serif";
-      g.fillText(p.l.mech, p.x, p.y+out+(out<0?-12:12)); }
-    if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
-      g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
-
-  // THE UPPER TETRA. Its three runs are drawn in the same hand as the twelve —
-  // walked runs carry light, unwalked ones are the dry bed they are, and a run
-  // the water cannot yet reach is drawn faint with no name on it. Nothing says
-  // "locked" here either.
-  const AN=ascentNodes(), AP=ascentPts(), up=unlocked("lens");
-  AP.forEach(p=>{ const done=!!S.done[p.l.n];
-    g.strokeStyle= done ? "rgba(200,185,138,.85)" : up ? "rgba(90,84,74,.55)" : "rgba(90,84,74,.18)";
-    g.lineWidth= done ? 5 : 2;
-    g.beginPath(); g.moveTo(p.a.x,p.a.y); g.lineTo(p.b.x,p.b.y); g.stroke(); });
-  AN.forEach(n=>{ g.beginPath(); g.arc(n.x,n.y,3,0,7);
-    g.fillStyle= up ? "rgba(60,54,44,.45)" : "rgba(90,84,74,.18)"; g.fill(); });
-  // Names sit OUTSIDE the figure, pushed away from its centre, so the two side
-  // runs never write over each other and the base run never writes onto the
-  // circuit below it.
-  const acx0=(AN[0].x+AN[1].x+AN[2].x)/3, acy0=(AN[0].y+AN[1].y+AN[2].y)/3;
-  AP.forEach(p=>{ const dx=p.x-acx0, dy=p.y-acy0, side=Math.abs(dx)>Math.abs(dy);
-    if(up){
-      g.fillStyle="rgba(30,30,34,.88)"; g.font="11.5px Georgia,serif";
-      g.textAlign = side ? (dx>0?"left":"right") : "center";
-      const lx = side ? p.x+(dx>0?22:-22) : p.x, ly = side ? p.y : p.y+18;
-      g.fillText(p.l.name, lx, ly);
-      g.fillStyle="rgba(90,84,74,.85)"; g.font="10px Georgia,serif";
-      g.fillText(p.l.mech, lx, ly+12); }
-    if(hovered()===p.l.n){ g.strokeStyle="rgba(40,40,44,.5)"; g.lineWidth=1.5;
-      g.beginPath(); g.arc(p.x,p.y,20,0,7); g.stroke(); } });
-
-  // WHAT THE TWELVE HAVE SEEDED — one lens per three edges that left a trace.
-  // Nothing counts them out loud; there are simply more of them, or there are not.
-  // They sit at the centre of the upper tetra because that is what they are: the
-  // thing the twelve send up, standing inside the figure it opens.
-  const s=seeded(), acx=(AN[0].x+AN[1].x+AN[2].x)/3, acy=(AN[0].y+AN[1].y+AN[2].y)/3;
-  for(let i=0;i<4;i++){ const x=acx+(i-1.5)*22, y=acy;
-    g.beginPath(); g.arc(x,y,6,0,7);
-    if(i<s){ g.fillStyle="#c8b98a"; g.fill(); }
-    g.strokeStyle= i<s ? "rgba(60,54,44,.7)" : "rgba(90,84,74,.25)"; g.lineWidth=1.5; g.stroke(); }
-
-  g.font="11px Georgia,serif";
-  g.textAlign="left";  g.fillStyle="rgba(58,78,90,.85)";
-  g.fillText("TWELVE EDGES · one water · each reaches the others", W*0.06, H-26);
-  g.textAlign="right"; g.fillStyle="rgba(118,102,52,.9)";
-  g.fillText("what the water seeds", W*0.94, 32);
-}
-/* ═══ THE ROOM — LEVEL ONE, seen from inside ════════════════════════════════
-   The four faces of one tetra, vertex down, laid out as its net so all four are
-   in front of you at once. A face you have worked stays open: you can go back
-   into it, and going back undoes nothing.
-
-   NOTHING IS RANKED, ORDERED OR NUMBERED HERE. There is no first face and no
-   next face — the four sit where the tetra puts them, and which you enter is
-   your hand's. A worked face is drawn as a face that has been worked (filled,
-   its edge doubled), never as a tick, a count or a colour alone. */
-/* RENAMED 2026-08-17. It collided with solid.js:543 `const facesOf`, and a
-   const at script scope makes a later function of the same name a SyntaxError —
-   so this entire script never ran on any page that also loaded solid.js. The two
-   are different jobs: solid.js answers which faces a SEAT touches; this lays out
-   the net for drawing. */
-function netFaces(){
-  const cx=W/2, cy=H*0.50, r=Math.min(W,H)*0.21;
-  /* the net: the centre triangle and three folded off its sides */
-  const A={x:cx,y:cy-r}, B={x:cx-r*0.87,y:cy+r*0.5}, C={x:cx+r*0.87,y:cy+r*0.5};
-  const out=(p,q,s)=>({x:p.x+q.x-s.x, y:p.y+q.y-s.y});
-  const f=(room||ROOMS[0]).faces;
-  return [
-    {k:f[0], t:[A,B,C],          c:{x:cx,y:cy}},
-    {k:f[1], t:[A,B,out(A,B,C)], c:{x:(A.x+B.x+out(A,B,C).x)/3, y:(A.y+B.y+out(A,B,C).y)/3}},
-    {k:f[2], t:[B,C,out(B,C,A)], c:{x:(B.x+C.x+out(B,C,A).x)/3, y:(B.y+C.y+out(B,C,A).y)/3}},
-    {k:f[3], t:[A,C,out(A,C,B)], c:{x:(A.x+C.x+out(A,C,B).x)/3, y:(A.y+C.y+out(A,C,B).y)/3}}
-  ];
-}
-function inTri(p,t){
-  const s=(a,b,c)=>(a.x-c.x)*(b.y-c.y)-(b.x-c.x)*(a.y-c.y);
-  const d1=s(p,t[0],t[1]), d2=s(p,t[1],t[2]), d3=s(p,t[2],t[0]);
-  return !((d1<0||d2<0||d3<0) && (d1>0||d2>0||d3>0));
-}
-function faceUnder(){ return netFaces().find(f=>inTri(mouse,f.t)) || null; }
-function drawRoom(){
-  const gr=g.createLinearGradient(0,0,0,H);
-  gr.addColorStop(0,"#cdd5d2"); gr.addColorStop(1,"#b6ae9f"); g.fillStyle=gr; g.fillRect(0,0,W,H);
-  const hot=faceUnder();
-  netFaces().forEach(f=>{
-    const w=worked(f.k), on=hot&&hot.k===f.k;
-    g.beginPath(); f.t.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.closePath();
-    /* worked faces are FILLED; unworked are open. The distinction is the fill and
-       the doubled edge, not the colour — a face reads the same to any eye. */
-    g.fillStyle = w ? "rgba(74,108,122,.34)" : (on? "rgba(242,239,232,.55)" : "rgba(242,239,232,.28)");
-    g.fill();
-    g.strokeStyle= on ? "rgba(40,40,44,.85)" : "rgba(40,40,44,.45)";
-    g.lineWidth = w ? 3.5 : 1.5; g.stroke();
-    if(w){ g.lineWidth=1; g.strokeStyle="rgba(40,40,44,.35)";
-      g.beginPath(); f.t.forEach((p,i)=> i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)); g.closePath(); g.stroke(); }
-    const l=faceOf(f.k);
-    g.fillStyle="rgba(30,30,34,.82)"; g.font="12px Georgia,serif"; g.textAlign="center";
-    g.fillText(l.name, f.c.x, f.c.y);
-    g.fillStyle="rgba(60,58,52,.62)"; g.font="10.5px Georgia,serif";
-    g.fillText(l.mech, f.c.x, f.c.y+14);
+   IN ITS PLACE: THE EIGHT FACES, replacing the ring — the ds-kit React menu
+   mounted at #menu (showMenu()/hideMenu(), used from frame() below) reads the
+   table just below, not a canvas. Content is THE_CENTRE.md §11 ("THE EIGHT
+   FACES," sited 2026-08-16): one mechanic sited on each of solid.js's 8
+   TRIANGLES. Verified against the live SOLID.TRIANGLES export before this was
+   built, not trusted from the doc — see the mounting script at the end of this
+   file for the actual React tree. */
+/* SEAT_KEY translates a solid.js seat NAME to this file's own key: solid.js
+   says OVERWINTERING, this file's LEVELS entry for that seat is key "winter"
+   (n:12, chosen before the SEATING/OVERWINTERING id collision on 2026-08-17;
+   see the LEVEL IDS note above). Every other seat's key is its lowercase name. */
+const SEAT_KEY = { OVERWINTERING:"winter" };
+const toSeatKey = s => SEAT_KEY[s] || s.toLowerCase();
+/* the pairing itself is corpus content (THE_CENTRE.md §11), not something
+   solid.js's geometry can derive — so it is named here, once, by seat-set,
+   and matched against whatever order SOLID.TRIANGLES actually returns rather
+   than trusted positionally. */
+const FACE_MECH = [
+  { set:["TANK","FILTER","GROUND"],             mech:"membrane" },
+  { set:["DAM","CAST","SEATING"],                mech:"table" },
+  { set:["STATIONS","DEEP","LENS"],              mech:"spring" },
+  { set:["HELIOSTAT","OVERWINTERING","GARDEN"],  mech:"stilling" },
+  { set:["TANK","OVERWINTERING","CAST"],         mech:"rain" },
+  { set:["DAM","STATIONS","GROUND"],             mech:"channel" },
+  { set:["FILTER","DEEP","HELIOSTAT"],           mech:"sounding" },
+  { set:["LENS","GARDEN","SEATING"],             mech:"shoal" }
+];
+/* Guarded for the node instruments (door_check, first_four, cut_check, …):
+   they run this script in a VM against a stub DOM with no solid.js loaded
+   alongside it, so SOLID is undefined there. eightFaces() is a table lookup,
+   not a mechanic, so it returning [] under that harness costs those
+   instruments nothing — none of them read it. */
+function eightFaces(){
+  const T = (typeof SOLID!=="undefined" && SOLID.TRIANGLES) || [];
+  return T.map(t=>{
+    const seats = t.seats.slice();
+    const hit = FACE_MECH.find(f => f.set.length===seats.length && f.set.every(s=>seats.indexOf(s)>=0));
+    const key = hit ? hit.mech : null;
+    const l = key ? faceOf(key) : null;
+    return { mech: key, mechName: l ? l.name : key, seats: seats.map(toSeatKey), rawSeats: seats };
   });
-  g.fillStyle="rgba(60,58,52,.55)"; g.font="11px Georgia,serif"; g.textAlign="left";
-  const r=room||ROOMS[0];
-  g.fillText(r.name + " · " + r.mech + (r.mixed ? "  — mixed, not a gesture level" : ""), W*0.06, H-26);
-  /* the way back to the map is the same one every room has: Escape. */
 }
-
-function hovered(){
-  for(const p of ascentPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
-  for(const p of mapPts()){ if(Math.hypot(mouse.x-p.x,mouse.y-p.y)<26 && unlocked(p.l.n)) return p.l.n; }
-  return 0; }
 
 /* ═══ THE 3D WINDOWS ════════════════════════════════════════════════════════
    Kevin, 2026-08-14: "I'm imagining a 2d game with 3d windows, objects, and
@@ -2751,41 +2814,199 @@ function boundsClick(){
   unbind(r.c.id); mouse.clicked=false; return true;
 }
 
+/* ═══ THE SEAM DOOR ═══════════════════════════════════════════════════════
+   Built 2026-08-19 on Kevin's ruling that a level is one edge and water,
+   light and growth happen INSIDE it — see seam.js's own header, and this
+   file's arriveByMember() below, which is the other half of the same
+   mechanism (a hand walking a member in, this is a hand walking one out).
+
+   SCOPE: the six seats whose own water mechanic already runs in SET above —
+   DAM, FILTER, STATIONS, GROUND, DEEP, HELIOSTAT — each get a door onto
+   THEIR OWN water-half members (fall + turn only; light's twelve and the six
+   diameters are excluded by seam.js's own filter, not merely unbuilt). LENS
+   needed nothing added: it was already a valid arrival face (in ASCENT,
+   reachable through faceOf/enterFace), and STATIONS' new door reaches it. */
+const SEAM = (typeof window!=="undefined" && window.NESI_SEAM) || null;
+const SEAM_SEATS = { dam:"DAM", filter:"FILTER", stations:"STATIONS",
+                      ground:"GROUND", deep:"DEEP", heliostat:"HELIOSTAT" };
+const WKEY="nesi.water";
+/* THE SHARED LEDGER. Read the whole blob tank.html left (its stones, its
+   text, everything), touch only deposits/seamsTaken, write the whole blob
+   back. tank.html's own save() round-trips only the keys it declares in its
+   own S — anything else written here would be silently dropped the next
+   time tank.html saves, so this never adds a field tank.html does not
+   already know. */
+function loadLedger(){
+  try{ const r=localStorage.getItem(WKEY);
+    if(r){ const d=JSON.parse(r);
+      if(d && typeof d==="object")
+        return { raw:d, deposits:(d.deposits&&typeof d.deposits==="object")?d.deposits:{},
+                 seamsTaken:Array.isArray(d.seamsTaken)?d.seamsTaken:[] };
+    }
+  }catch(e){}
+  return { raw:{schema:"water.3"}, deposits:{}, seamsTaken:[] };
+}
+function saveLedger(L){
+  try{ const raw=L.raw||{schema:"water.3"};
+    raw.deposits=L.deposits; raw.seamsTaken=L.seamsTaken;
+    const j=JSON.stringify(raw);
+    localStorage.setItem(WKEY+".pad", j);
+    if(localStorage.getItem(WKEY+".pad")!==j) return false;
+    localStorage.setItem(WKEY, j); localStorage.removeItem(WKEY+".pad");
+    return true;
+  }catch(e){ return false; }
+}
+
+let pendingSeam=null;
+function currentSeamSeat(){
+  return (view==="level" && cur && SEAM_SEATS[cur.key]) ? SEAM_SEATS[cur.key] : null;
+}
+function seamState(id){
+  S.seamState = S.seamState || {};
+  S.seamState[id] = S.seamState[id] || { fraction:null, formed:false, light:null };
+  /* migrateLight — a state left from before 2026-08-19 carries `formed`
+     (a toggle) and no `light` (a window pick); see seam.js's own header. */
+  const st = S.seamState[id];
+  if(!SEAM) return st;
+  SEAM.migrateLight(st);
+  /* migrateRoot/growRoot — this level's own root (seam.js: rooted, grown
+     asymptotically, gated once per calendar day). Called every time this
+     seam's state is read, which is every renderSeamStrip pass while the
+     strip is open — the same "touched while lit" granularity world.html's
+     own feed() used, applied to a state that persists instead of a beam
+     that has to stay aimed. */
+  SEAM.migrateRoot(st);
+  SEAM.growRoot(st);
+  return st;
+}
+/* HAS THIS SEAT'S OWN WATER BEEN WALKED? `worked()` (S.faces) is set only by
+   finish() taking the ROOM branch — the superseded five-room grouping. A
+   hand that arrives at a seat by its member (tank.html's sill, or this same
+   door) never passes through a room, so finish() takes its OTHER branch and
+   sets S.done[cur.n] instead. Both are "this seat's water was walked"; only
+   the first fires under the legacy grouping. Checking both means the seam
+   door works on the edge topology this pass is building even while ROOMS
+   still stands, unrepaired, underneath it. */
+function seatDone(){
+  if(!cur) return false;
+  if(worked(cur.key)) return true;
+  return !!(S.done && S.done[cur.n]);
+}
+/* Called every frame (cheap: one tab-visibility check); rebuilds the row
+   list only while the strip is actually open, same as tank.html's own
+   renderSeamStrip. */
+function renderSeamStrip(){
+  if(typeof document==="undefined") return;
+  const tab=document.getElementById("seamtab"), strip=document.getElementById("seamstrip");
+  if(!tab||!strip) return;
+  const seat=currentSeamSeat();
+  if(!SEAM || !seat){ tab.style.display="none"; strip.style.display="none"; pendingSeam=null; return; }
+  tab.style.display="block";
+  const seatLbl=document.getElementById("seamseat"); if(seatLbl) seatLbl.textContent=seat;
+  if(strip.style.display!=="block") return;
+  const row=document.getElementById("seamrow"), note=document.getElementById("seamnote");
+  const L=loadLedger();
+  const seams=SEAM.waterSeamsFor(seat);
+  const seatWorked = seatDone();
+  row.innerHTML="";
+  seams.forEach(function(s){
+    const lit = L.seamsTaken.indexOf(s.id)>=0;
+    const st = seamState(s.id);
+    const armed = !lit && pendingSeam && pendingSeam.id===s.id;
+    const el=document.createElement("div");
+    el.className="seam "+(lit?"taken":(seatWorked?"open":"locked"))+(armed?" armed":"");
+    /* THE ROOT, SHOWN — no number, no bar: the card's own border and fill
+       deepen by how far this level has rooted, the same law world.html's
+       standing() uses to scale a shoot's silhouette (0.16 floor so a fresh
+       seed is never invisible, only small). Only a level that has actually
+       survived water and light (SEAM.isReturned) carries this at all. */
+    if(SEAM.isReturned(st)){
+      const g = SEAM.rootStanding(st);
+      el.classList.add("rooted");
+      el.style.borderWidth = (1 + g*2.4).toFixed(2) + "px";
+      el.style.boxShadow = "inset 0 0 " + (3+g*16).toFixed(0) + "px rgba(47,93,80," + (0.10+g*0.34).toFixed(2) + ")";
+    }
+    const head=document.createElement("span"); head.className="to"; head.textContent="to "+s.to;
+    const kd=document.createElement("span"); kd.className="kd"; kd.textContent=s.kind;
+    const fc=document.createElement("span"); fc.className="fc";
+    fc.textContent="tool "+s.tool+"  ·  window "+s.window;
+    el.appendChild(head); el.appendChild(kd); el.appendChild(fc);
+    if(!lit) el.appendChild(SEAM.fractionControl(st, seat, function(){ save(); renderSeamStrip(); }));
+    const fsEl=document.createElement("span");
+    fsEl.className="fs"+(SEAM.seamComplete(L.deposits,s)?"":" none");
+    fsEl.textContent = lit ? "walked"
+                      : !seatWorked ? "walk " + seat + "’s own water first"
+                      : SEAM.isReturned(st) ? "sorted and aimed — hold the sill below"
+                      : "pick a fraction and aim it at a window to open this door";
+    el.appendChild(fsEl);
+    if(!lit && seatWorked && SEAM.isReturned(st)){
+      el.addEventListener("click", function(){
+        pendingSeam = (pendingSeam && pendingSeam.id===s.id) ? null : s;
+        renderSeamStrip();
+      });
+    }
+    row.appendChild(el);
+  });
+  const sill=document.getElementById("seamsill");
+  if(sill) sill.classList.toggle("show", !!pendingSeam);
+  if(note) note.textContent = pendingSeam ? "armed · to "+pendingSeam.to+" — hold the sill below"
+                    : seams.length ? "pick a seam, sort it and aim it to arm the door"
+                    : "no water seam leaves here";
+}
+/* Walking the armed seam: deposit into its tool and window, mark it taken in
+   the shared ledger, then arrive at the far seat exactly the way arriveByMember
+   below does for an external hand — no full reload, straight into enterFace. */
+function walkPendingSeam(){
+  if(!pendingSeam || !SEAM) return;
+  const L=loadLedger();
+  SEAM.walk(L, pendingSeam);
+  saveLedger(L);
+  const to=pendingSeam.to.toLowerCase();
+  pendingSeam=null;
+  const strip=document.getElementById("seamstrip"); if(strip) strip.style.display="none";
+  if(typeof location!=="undefined" && location) location.hash=to;
+  enterFace(to);
+}
+(function initSeamUI(){
+  if(typeof document==="undefined") return;
+  const tab=document.getElementById("seamtab"), strip=document.getElementById("seamstrip"),
+        closeBtn=document.getElementById("seamclose"), sill=document.getElementById("seamsill");
+  if(!tab||!strip||!sill) return;
+  tab.addEventListener("click", function(){ strip.style.display="block"; renderSeamStrip(); });
+  if(closeBtn) closeBtn.addEventListener("click", function(){ strip.style.display="none"; });
+  if(SEAM) SEAM.sillMechanic(sill, walkPendingSeam);
+})();
+
 /* ── loop ─────────────────────────────────────────────────────────────────── */
 let last=performance.now();
 function frame(now){ const dt=Math.min(48,now-last); last=now;
   /* THE CASE HELD OPEN HOLDS THE WORLD. Draw what is there, take a hand only on
-     the boundaries, and let nothing else move or be reached. */
+     the boundaries, and let nothing else move or be reached. The map view no
+     longer paints a ring to hold still behind the glass (see the 2026-08-19/20
+     cut above) — the menu is a DOM tree and is hidden outright while the case
+     is open, same as any other reach is refused under it. */
   if(CASE.open){
-    if(view==="map") drawMap(); else if(view==="room") drawRoom();
-    else { const f=SET[cur.key]; if(f.draw) f.draw(); }
+    hideMenu();
+    if(view==="map") sky(); else { const f=SET[cur.key]; if(f.draw) f.draw(); }
     g.fillStyle="rgba(18,22,25,.42)"; g.fillRect(0,0,W,H);   // the world, held still behind glass
     boundsClick(); drawCase(); mouse.clicked=false;
     requestAnimationFrame(frame); return;
   }
+  /* THE MAP IS NOW THE 8-FACE MENU (#menu), not a canvas. showMenu() surfaces
+     it and hides the canvas; the menu's own onClick handlers (the trailing
+     <script>, at the foot of this file) call enterFace() directly — the same
+     door arriveByMember and every seam already use — so there is nothing for
+     frame() itself to hit-test here any more. */
   if(view==="map"){
-    drawMap();
-    shelf();                       /* the shop stands on the map when it holds something */
-    if(shelfReach()){ requestAnimationFrame(frame); return; }
-    // The whole solid, standing behind an aperture in the map's own surface.
-    /* THE APERTURE SHOWS THE WORLD ITSELF, and the seats a hand has worked are
-       lit in it. Nothing is labelled and nothing is counted — it is the shape,
-       with what you have touched standing brighter. */
-    const wsolid=SOLIDS.world;
-    const litSeats=Object.keys(S.faces||{}).map(k=>wsolid.idx[k]).filter(i=>i!==undefined);
-    const r=window3d(W-Math.min(230,W*0.24)-16, 16, Math.min(230,W*0.24), Math.min(190,H*0.24),
-                     "world", Math.min(46,W*0.048), litSeats);
-    const onWin=windowDrag(r);
-    if(mouse.clicked && !onWin && !win.grabbed){ const h=hovered(); if(h) enter(h); }
+    showMenu();
     mouse.clicked=false;
   }
-  else if(view==="room"){
-    drawRoom();
-    if(mouse.clicked){ const f=faceUnder(); if(f) enterFace(f.k); }
-    mouse.clicked=false;
+  else{
+    hideMenu();
+    const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false;
   }
-  else { const f=SET[cur.key]; if(f.step) f.step(dt); if(f.draw) f.draw(); mouse.clicked=false; }
   drawCase();
+  renderSeamStrip();
   requestAnimationFrame(frame); }
 
 /* ═══ ARRIVING BY THE MEMBER ═══════════════════════════════════════════════
@@ -2827,4 +3048,162 @@ function frame(now){ const dt=Math.min(48,now-last); last=now;
 })();
 
 requestAnimationFrame(frame);
+</script>
+
+<!-- ═══ THE 8-FACE MENU — mounted OUTSIDE the game's own <script> on purpose.
+     The node instruments (door_check, first_four, cut_check, …) extract and
+     vm-run only the FIRST bare `<script>` tag in this file — the one just
+     above — so keeping the menu's React tree out of it means those
+     instruments never need jsdom, React, or solid.js loaded to walk the game
+     headless, exactly as before this pass. Everything this script calls —
+     enterFace, faceOf, worked, eightFaces, showMenu/hideMenu, S — is declared
+     with `function`/`const`/`let` at the top level of that first script;
+     classic (non-module) <script> tags on one page share a single global
+     scope, so it is reachable here with no window.* plumbing of its own.
+     Integration pattern is ds-kit/demo/index.html's own, followed exactly:
+     React.createElement, DssRoot > HeaderBlock / Locator > Board > RoomCard. -->
+<script>
+(function(){
+  "use strict";
+  var mount = document.getElementById("menu");
+  if (!mount) return;
+
+  /* THE GUARD THAT DIDN'T GUARD, FOUND 2026-08-19 BY A COLD WALK.
+     This comment used to say "fail toward the map standing empty, never
+     toward a crash" and then dereferenced React one line above the check
+     that was supposed to prevent exactly that. Under this project's own
+     documented serving mode (`--directory "nesi/game2d"`, named in
+     PROMPT_NEXT.md, THE_ASCENT.md, THE_GIFT.md), ../../ds-kit/... 404s,
+     React is undefined, and `var h = React.createElement` threw before this
+     line ever ran. The failure reached the one gesture this whole build
+     teaches nowhere but relies on constantly: Escape, mid-seat, routes here.
+     A crash with no fallback content is not "the map standing empty" — it
+     is a permanently blank pane with no way back except editing the URL by
+     hand. Fixed by building the same seat list without React, from data
+     (`eightFaces`) already available in the first script block, so Escape
+     always lands somewhere navigable regardless of whether ds-kit loaded. */
+  if (typeof React === "undefined" || typeof ReactDOM === "undefined" || typeof DssKit === "undefined") {
+    var faces0 = typeof eightFaces === "function" ? eightFaces() : [];
+    var frag = document.createElement("div");
+    frag.style.cssText = "padding:1.2rem;line-height:1.9";
+    var note = document.createElement("p");
+    note.textContent = "the room menu did not load (ds-kit was unreachable). every seat, plainly:";
+    frag.appendChild(note);
+    faces0.forEach(function(f){
+      (f.seats || []).forEach(function(k){
+        var a = document.createElement("a");
+        a.href = "#" + k;
+        a.textContent = k.toUpperCase();
+        a.style.cssText = "display:inline-block;margin:0 .8rem .5rem 0;cursor:pointer;border-bottom:1px dotted currentColor";
+        a.onclick = function(ev){
+          ev.preventDefault();
+          if (typeof faceOf === "function" && faceOf(k)) {
+            if (typeof location !== "undefined" && location) location.hash = k;
+            enterFace(k);
+            if (typeof hideMenu === "function") hideMenu();
+          }
+        };
+        frag.appendChild(a);
+      });
+    });
+    mount.innerHTML = "";
+    mount.appendChild(frag);
+    return;
+  }
+
+  var h = React.createElement;
+  var K = DssKit;
+
+  /* A FACE READS "live" IF ANY OF ITS THREE SEATS HAS BEEN WORKED — the same
+     two places seatDone() already checks (S.faces, set by the old room path,
+     and S.done, set by enterFace's own arrival path), so a face lights up
+     regardless of which door a seat was reached through. */
+  function seatLive(key){
+    if (typeof worked === "function" && worked(key)) return true;
+    var l = typeof faceOf === "function" ? faceOf(key) : null;
+    return !!(l && typeof S !== "undefined" && S.done && S.done[l.n]);
+  }
+  function faceLive(f){ return f.seats.some(seatLive); }
+
+  /* THE ONE GATE. Same doctrine as arriveByMember and every seam door: faceOf
+     is the only check, never an unlock order — a face that is not real opens
+     nothing, and nothing here decides which seat a hand may reach for. */
+  function go(key, ev){
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    if (typeof faceOf !== "function" || !faceOf(key)) return;
+    if (typeof location !== "undefined" && location) location.hash = key;
+    enterFace(key);
+    if (typeof hideMenu === "function") hideMenu();
+  }
+
+  /* THE THREE SEATS, AS THE NEXT CHOICE — not folded into one silent pick.
+     Kevin's task named both options and asked for the reasoning either way:
+     here, clicking a seat's own name goes straight to that seat; clicking the
+     card body anywhere else (its icon or its mechanic name) goes to the first
+     of the three, `f.seats[0]`, so a hand that does not care which one still
+     gets in with one click. Neither choice is hidden from the other. */
+  function SeatRow(props){
+    return h("span", { style:{ display:"inline-flex", flexWrap:"wrap", gap:"10px" } },
+      props.seats.map(function(k){
+        var l = typeof faceOf === "function" ? faceOf(k) : null;
+        var live = seatLive(k);
+        return h("span", {
+          key: k,
+          onClick: function(ev){ go(k, ev); },
+          title: "go to " + (l ? l.name : k),
+          style: {
+            cursor: "pointer",
+            borderBottom: live ? "1px solid currentColor" : "1px dotted currentColor",
+            opacity: live ? 1 : 0.8
+          }
+        }, k.toUpperCase());
+      })
+    );
+  }
+
+  function App(){
+    var faces = typeof eightFaces === "function" ? eightFaces() : [];
+    return h(K.DssRoot, null,
+      h(K.HeaderBlock, {
+        eyebrow: "NESI · THE ASCENT",
+        name: "the world, from above",
+        sub: "eight faces of the solid — a mechanic per face, three seats on each"
+      }),
+      h(K.Locator, { label: "◆ where this stands" },
+        h("p", null,
+          "Each card below is one of solid.js's eight triangles, named for the mechanic sited on it (THE_CENTRE.md §11). Its three seats sit at the triangle's corners — click a seat's own name to go straight there, or click the card for the first of the three."),
+        h("p", null,
+          "Arriving by a member — a seam door, or a link like tank.html's — still lands you directly at a seat, bypassing this menu entirely, exactly as it always has.")
+      ),
+      h(K.Board, null,
+        faces.length
+          ? faces.map(function(f, i){
+              return h(K.RoomCard, {
+                key: f.mech || ("face" + i),
+                icon: "◆",
+                name: (f.mechName || f.mech || "?"),
+                hint: h(SeatRow, { seats: f.seats }),
+                status: faceLive(f) ? "live" : "quiet",
+                onClick: function(){ go(f.seats[0]); }
+              });
+            })
+          : h("div", { className: "room-hint" }, "the solid did not answer — solid.js may not have loaded")
+      )
+    );
+  }
+
+  var root = (ReactDOM.createRoot ? ReactDOM.createRoot(mount) : null);
+  function render(){
+    if (root) root.render(h(App));
+    else ReactDOM.render(h(App), mount);
+  }
+  render();
+  /* Refreshed on its own loop, separate from the game's frame() — and only
+     while the menu actually has the screen, so a seat that is open (menu
+     hidden) is not paying for a React render it never sees. */
+  (function tick(){
+    if (mount.style.display === "block") render();
+    requestAnimationFrame(tick);
+  })();
+})();
 </script>

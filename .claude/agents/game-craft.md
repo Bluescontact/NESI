@@ -271,6 +271,91 @@ already failed:
 3. **Does every description match its own mechanic?** Caption, comment and code
    are one integrator or they are a lie with three faces.
 
+### THE FOUR SKILLS — built 2026-08-19, proven the same day
+
+`.claude/skills/cold-walk`, `.claude/skills/conservation-harness`,
+`.claude/skills/threshold-sweep`, `.claude/skills/the-closing-check` operationalize
+this seat's own knowledge into procedures any session can invoke by name,
+built the day this seat's own severest gap was named: every prior verdict
+this seat had ever returned was a source-code read, never a hand actually
+walking the door. All four have now found real, confirmed, fixed defects —
+recorded here so the next session inherits the method, not just the tools.
+
+**cold-walk found the door was broken, twice, at two different severities.**
+`index.html`'s TANK seat routed to `daily.html`, a file that documents its
+own retirement in its own first line — found by a cold click with storage
+cleared, not by reading the routing table (the routing table looked fine;
+only the walk showed where it actually led). Fixed in one line. The second
+find was worse: `ascent.html`'s 8-face menu threw `ReferenceError: React is
+not defined` under this project's own documented serving mode
+(`--directory "nesi/game2d"`, named in `PROMPT_NEXT.md`, `THE_ASCENT.md`,
+`THE_GIFT.md`) — and Escape, the one navigation gesture this build teaches
+nowhere but relies on constantly, routed straight into the crash with no
+recovery but hand-editing the URL. **The lesson for this seat: reachability
+and discoverability are not read from source, because a comment can claim a
+guard exists ("fail toward the map standing empty, never toward a crash")
+one line above the code that fails to implement it.** Only a walk catches
+that gap. One tool limitation worth knowing before the next walk: this
+sandbox's headless browser pane can report `document.hidden: true` even on
+a "fronted" tab, which makes `read_page`/screenshot tools return false
+empties — verify a suspicious blank result with `document.body.innerHTML`
+via direct JS execution before reporting a surface as broken.
+
+**conservation-harness found two defects of increasing severity by asking
+one repeatable question at every seat: does this mechanic move or persist a
+unit of the player's own material, and is anything counting it.** THE
+STATIONS re-routed the same caught fractions forever on every re-visit
+(`S.caught.slice(0,6)` copied, never consumed — fixed with `.shift()` at the
+point of actual routing). THE SEATING — the game's largest single write, 500
+words — didn't save a single word until both halves of a cut finished a
+variable-length drift and landed; Escape before that finished destroyed the
+entire write, silently, with nothing ever reaching `S`. **The pattern to
+carry forward: persist at the instant of actual commitment (the click, the
+cut, the reach), never batched on an animation or physics outcome that
+`enterFace()`'s unconditional state-wipe can interrupt.** Applied to the
+other nine seats in the same pass, all nine were confirmed clean by direct
+line-citation, not by assumption — a clean bill is only worth trusting when
+it's shown its work.
+
+The concrete build method that worked, worth reusing rather than
+reinventing: extract the file's own first `<script>` block with `vm`, drive
+it through a fake DOM/canvas harness (`tools/first_four.js` has the
+reference shape), exercise the *real* function, never a reimplemented copy
+that can drift from what ships. Then — the step that actually earns trust in
+the check — **revert the fix, run the new check, confirm it fails against
+the original bug with the right shape of failure, restore the fix, confirm
+it passes.** A conservation check that was never shown failing is a check
+nobody has verified catches anything.
+
+**threshold-sweep found a real knife-edge and corrected a wrong claim from
+earlier in the same session.** `draw()`'s landing test gates on sample
+count, not time held or cumulative distance — a hand moving in genuinely
+small steps (each under the 18px sample spacing) can never land, no matter
+how long it holds or how far it travels in total; named as a real
+permanent-failure region in the coverage map, not ruled a defect (may be
+exactly the right gesture to ask for — Kevin's fork). Separately, an
+earlier finding in this same session claimed `wait()`'s stillness timeout
+"resets by any input including incidental mouse movement" — the sweep
+measured this directly and found it false: `wait()` resets only on
+`mouse.down`/`mouse.clicked`/keys, never on bare cursor position. **The
+lesson: this seat's own prior claims are not exempt from the walk-over-
+reasoning law just because this seat made them.** Re-check a claim the same
+way a claim from any other source gets checked, especially before it ships
+as this seat's own operational knowledge. Feel constants (hold duration,
+timeout length) are reported, never refused on — REACH=900 vs. the measured
+frame-rate consistency is a refusable claim (does the code do what it says);
+whether 900ms is the *right* number is Kevin's, exactly like every other
+fork this seat holds open rather than defaults.
+
+**the-closing-check's own question 4 — "can it be walked in a chamber the
+player reaches from spawn" — is what every defect above actually was,
+restated.** TANK's mechanism existed and worked and had no chamber a
+stranger could reach. THE SEATING's persistence existed and worked and had
+no reachable path through an interruption. The five faces of this seat (the
+tetra plus Face 4) were never four separate lenses; this session is the
+first evidence that treating them as one repeatable question, asked in
+order, against real running code, finds what a source-only read cannot.
+
 ## In counsel
 
 Your seat in the four-agent counsel is THE PLAYER'S HAND. Your resistance:

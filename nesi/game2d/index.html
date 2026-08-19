@@ -136,12 +136,16 @@
   }
 
   /* the day is at TANK because solid.js says DOOR_OUT is TANK—CAST and
-     daily.html's sill already walks that member. Every other seat enters the
-     ascent at itself; a hash naming a non-seat is refused there and the map
-     stands, so this cannot land nowhere. */
+     tank.html's sill already walks that member (daily.html did, until
+     tank.html superseded it on 2026-08-18 — this wire was left pointing at
+     the retired file; fixed 2026-08-19 after a cold stranger-walk found the
+     door delivering a file that documents its own retirement in its own
+     header). Every other seat enters the ascent at itself; a hash naming a
+     non-seat is refused there and the map stands, so this cannot land
+     nowhere. */
   var HREF = {}, SUB = {};
   S.NAMES.forEach(function(n){ HREF[n] = "ascent.html#" + n.toLowerCase(); });
-  HREF.TANK = "daily.html"; SUB.TANK = "write into it";
+  HREF.TANK = "tank.html"; SUB.TANK = "write into it";
   SUB.CAST = "where the sill lands";
 
   var yaw = 0.62, pitch = -0.34, drag = null, W = 0, H = 0, R = 1, cx = 0, cy = 0;

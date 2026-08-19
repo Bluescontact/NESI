@@ -70,9 +70,13 @@ const path = require("path");
    bench page — the same shape as the exemptions below. Loosening a refusal
    check is his word, not mine, so it stands outside the list and is named
    rather than exempted. */
+/* tank.html added 2026-08-19: it supersedes daily.html (2026-08-18) and is
+   index.html's actual TANK destination as of this fix, but was reading
+   nothing here for a day — the same hand-maintained-list gap this file's
+   own header already names above. */
 const LIVE = ["ascent.html", "daily.html", "day_one.html", "decisions.html",
               "descent.html", "index.html", "level_one.html",
-              "traversal.html"];
+              "tank.html", "traversal.html"];
 const targets = process.argv[2]
   ? [path.resolve(process.cwd(), process.argv[2])]
   : LIVE.map(f => path.join(__dirname, "..", f)).filter(f => fs.existsSync(f));

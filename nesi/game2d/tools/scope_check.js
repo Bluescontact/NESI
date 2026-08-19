@@ -38,7 +38,13 @@ const live = new Set();
 
 /* the surfaces a hand can open directly are live too, even without a link in —
    they are addresses he has been given and uses */
-["daily.html", "ascent.html", "decisions.html", "level_one.html"].forEach(f => {
+["daily.html", "ascent.html", "decisions.html", "level_one.html",
+ "tank.html" /* added 2026-08-19: index.html's TANK seat now points here
+   (HREF.TANK = "tank.html" is a JS assignment, not a literal href=, so
+   follow()'s crawl above cannot see it — same blind spot that let the
+   door point at daily.html, retired 2026-08-18, go unwitnessed by this
+   file until a stranger-walk found it) */
+].forEach(f => {
   if (fs.existsSync(path.join(ROOT, f))) live.add(f);
 });
 

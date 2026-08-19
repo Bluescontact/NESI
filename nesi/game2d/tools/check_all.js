@@ -77,6 +77,29 @@ const NODE = [
      It REFUSES on structure — the law on disk, a section declaring itself — and
      REPORTS the inversions, because a red suite would reward deleting words. */
   ["framing_check",   "negative form sits in a lint or at an edge, never in the prose"],
+  /* REGISTERED 2026-08-19 on the conservation-harness skill's first real run.
+     hand_check conserves the terrain bed; nothing conserved the player's own
+     material moving through THE STATIONS, and the gap was not theoretical —
+     enter() was re-queuing S.caught by COPY, so a re-visited seat re-routed
+     the same caught fractions forever, unbounded, feeding straight into the
+     water's own load. Fixed the same pass (ascent.html, S.caught.shift() at
+     the point of send()); this check is what keeps it fixed. It refuses. */
+  ["conserve_stations","one caught fraction, one landing, however many visits it takes"],
+  /* REGISTERED 2026-08-19, same pass, same skill, applied to the next seat.
+     THE SEATING asked for 500 words — the largest write in the game — and
+     did not save a single one of them until BOTH halves of the player's own
+     cut finished a variable-length drift and physically landed. Escape, the
+     one navigation gesture this build relies on constantly, reset the
+     level's state unconditionally and froze that drift forever: a full
+     write, cut and all, could be silently and totally lost with nothing
+     ever having reached S. Fixed by making the cut itself the commit. */
+  ["conserve_seating", "the cut is the commit, not the landing"],
+  /* REGISTERED 2026-08-19, threshold-sweep's first run (see the two
+     conserve_* entries above for conservation-harness's). REPORTS on feel
+     (Kevin's fork, never defaulted here) and REFUSES only where a
+     threshold's real measured behavior would contradict its own claimed
+     number — the same standard organ_map/organ_audit already hold to. */
+  ["sweep_thresholds", "five feel constants, swept across their real input space, none ruled on"],
 ];
 
 /* HIS AUDIT RUNS HERE TOO. tools/assertion_audit.py encodes the register —
