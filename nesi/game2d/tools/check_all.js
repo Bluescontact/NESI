@@ -27,12 +27,14 @@ const HERE = __dirname;
    renamed, and print green over the gap. */
 const NODE = [
   ["refusal_check",   "no model call, nothing outward, no score or reward cue"],
-  ["kit_check",       "four verbs used, one palette, every page"],
-  ["constraint_lint", "every boundary registered, announced, liftable, and naming what it keeps"],
-  ["first_four",      "LEVEL ONE walks from a cleared store, on a copy of his writing"],
+  /* kit_check, constraint_lint, first_four, cut_check, conserve_stations,
+     conserve_seating — RETIRED 2026-08-21 to tools/retired/, same pass
+     ascent.html was rebuilt from scratch (Kevin's mark: "cut the ascent
+     entirely"). They tested GESTURES/CONSTRAINTS/FACES.json content the
+     rebuild dropped on purpose, not an interface that merely changed shape.
+     See tools/retired/RETIRED.md's own "second wave" note. */
   ["door_check",      "every level reachable from the map"],
   ["world_check",     "the figure drawn IS the solid"],
-  ["cut_check",       "the hand cuts where it wants"],
   ["solid_check",     "the solid's own arithmetic"],
   ["hand_check",      "the bed's own arithmetic — conserved, deterministic, and it holds"],
   ["scope_check",     "every instrument reads the live build"],
@@ -77,40 +79,33 @@ const NODE = [
      It REFUSES on structure — the law on disk, a section declaring itself — and
      REPORTS the inversions, because a red suite would reward deleting words. */
   ["framing_check",   "negative form sits in a lint or at an edge, never in the prose"],
-  /* REGISTERED 2026-08-19 on the conservation-harness skill's first real run.
-     hand_check conserves the terrain bed; nothing conserved the player's own
-     material moving through THE STATIONS, and the gap was not theoretical —
-     enter() was re-queuing S.caught by COPY, so a re-visited seat re-routed
-     the same caught fractions forever, unbounded, feeding straight into the
-     water's own load. Fixed the same pass (ascent.html, S.caught.shift() at
-     the point of send()); this check is what keeps it fixed. It refuses. */
-  ["conserve_stations","one caught fraction, one landing, however many visits it takes"],
-  /* REGISTERED 2026-08-19, same pass, same skill, applied to the next seat.
-     THE SEATING asked for 500 words — the largest write in the game — and
-     did not save a single one of them until BOTH halves of the player's own
-     cut finished a variable-length drift and physically landed. Escape, the
-     one navigation gesture this build relies on constantly, reset the
-     level's state unconditionally and froze that drift forever: a full
-     write, cut and all, could be silently and totally lost with nothing
-     ever having reached S. Fixed by making the cut itself the commit. */
-  ["conserve_seating", "the cut is the commit, not the landing"],
+  /* conserve_stations, conserve_seating — RETIRED 2026-08-21 alongside the
+     rest of the second wave, above: both conserved material specific to
+     THE STATIONS'/THE SEATING's own retired ROOMS-era mechanics, neither of
+     which exists in the rebuilt ascent.html. hand_check's own conservation
+     (the terrain bed) is untouched and still runs. */
   /* REGISTERED 2026-08-19, threshold-sweep's first run (see the two
      conserve_* entries above for conservation-harness's). REPORTS on feel
      (Kevin's fork, never defaulted here) and REFUSES only where a
      threshold's real measured behavior would contradict its own claimed
-     number — the same standard organ_map/organ_audit already hold to. */
-  ["sweep_thresholds", "five feel constants, swept across their real input space, none ruled on"],
+     number — the same standard organ_map/organ_audit already hold to.
+     TRIMMED 2026-08-21: its own S1-S3 (hold/draw/wait as generic verbs)
+     tested the retired GESTURES vocabulary; S4-S5 (seam.js's own
+     sillMechanic/growRoot) are untouched and still the whole of what it
+     checks now — see its own header. */
+  ["sweep_thresholds", "two feel constants, swept across their real input space, none ruled on"],
+  /* REGISTERED 2026-08-20 on Kevin's mark, closing a fact-lens gap the
+     process-geometry reconciliation pass found: "zero dependencies, ever"
+     (THE_BUILD_SHAPE.md, THE_KIT.md, THE_HAND_FROM_THE_COMMONS.md) was
+     standing law with nothing checking it. Now something does. */
+  ["zero_dependencies_check", "no package.json, no node_modules, no remote script/fetch/import — a fact, not a claim"],
 ];
 
-/* HIS AUDIT RUNS HERE TOO. tools/assertion_audit.py encodes the register —
-   the standing rules, the load alphabet, the seven fields, the ending states,
-   the siting — as predicates, and gates on three facts: a blank passes none,
-   the control fails on F7 alone, the live world holds. It is python, so it gets
-   its own row rather than being folded into the node list and quietly skipped
-   if python is missing. */
-const PY = [
-  ["assertion_audit", "27 register rules, each satisfiable only by a world that is there"],
-];
+/* assertion_audit.py and its own upstream, seats.js — RETIRED 2026-08-21,
+   third wave, to tools/retired/. Both ran entirely on ascent.html's old
+   SET table (the GESTURES-era per-seat stage bodies), which the rebuild
+   dropped. See tools/retired/RETIRED.md's own "third wave" note. */
+const PY = [];
 
 /* THE PREDICATE FILTER, REGISTERED 2026-08-16 on Kevin's "save the filter to be
    persistent." It is ESM (.mjs) so it gets its own row rather than being folded

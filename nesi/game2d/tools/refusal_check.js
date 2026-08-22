@@ -84,24 +84,15 @@ const targets = process.argv[2]
 if (!targets.length) { console.error("[refusal_check] nothing to check"); process.exit(1); }
 
 /* ═══ THE EXEMPTIONS, EACH ONE NAMED AND REASONED ════════════════════════════
-   Pointing it at the game turned up three, and all three are the laws working
-   rather than breaking. They are listed by file and by token with the reason —
-   never as a blanket suppression, so a real breach cannot hide behind one.
-
-   XMLHttpRequest in ascent.html — THE CLEAR CASE WRAPS IT, to count requests and
-     show "network · no request" on the glass. It is the proof, not a breach:
-     take it out and the only evidence the world makes no call goes with it.
-   score / progress bar in ascent.html — the BOUNDARY LINE that tells a hand
-     "No number reaches you. No score, count, rank, percentage or progress bar."
-     The forbidden vocabulary appears exactly once, inside the sentence denying
-     it. A law that cannot state what it forbids cannot be announced at a gate. */
-const EXEMPT = {
-  "ascent.html": {
-    "XMLHttpRequest": "the clear case wraps it to prove no request is made",
-    "score":          "inside the boundary line that says no score reaches you",
-    "progress bar":   "inside the boundary line that says no progress bar exists"
-  }
-};
+   Pointing it at the game turned up three, all in the retired ascent.html
+   (the CASE glass overlay, and the boundary line that named "score"/
+   "progress bar" only to forbid them). ■ REMOVED, 2026-08-21, same pass
+   ascent.html was rebuilt from scratch — the rebuild contains none of these
+   three tokens at all (confirmed: 0 occurrences), so the exemptions have
+   nothing left to exempt. Never as a blanket suppression, so a real breach
+   cannot hide behind one — this file now trusts the wildcard presence check
+   below for ascent.html, same as every other page. */
+const EXEMPT = {};
 
 let anyFail = 0;
 for (const target of targets) {
@@ -224,14 +215,13 @@ const PRESENCE = {
     { needs: /addEventListener\(|onCommit|reach\(|holding\(|draw\(|wait\(|location\.replace|opt\.addEventListener/,
       is: "a hand can act on this surface at all — a page with no act refuses nothing" }
   ],
-  "ascent.html": [
-    { needs: /CASE\.net|CASE\.model/,
-      is: "the clear case SHOWS the machine making no call — the proof, not the promise" },
-    { needs: /const CONSTRAINTS\s*=\s*\[/,
-      is: "every boundary is registered, so the one saying no number reaches you is announced" },
-    { needs: /set\s*:\s*\{|routed\[k\]|"set"/,
-      is: "the third output is there to take, which is what makes set-it-down a choice" }
-  ],
+  /* ascent.html's own three PRESENCE entries — REMOVED, 2026-08-21, same
+     pass ascent.html was rebuilt from scratch. All three checked for
+     ROOMS-era content (the CASE glass overlay, the CONSTRAINTS registry,
+     THE STATIONS' three-output send) that the rebuild dropped on purpose.
+     ascent.html now falls through to the wildcard "*" entry above, the
+     same as every other page — "a hand can act on this surface at all,"
+     which the rebuild's write/sort/aim/sill controls satisfy plainly. */
   "daily.html": [
     { needs: /localStorage\.setItem\(KEY\s*\+\s*"\.pad"/,
       is: "pad, read back, commit — quitting loses nothing, which is the law it protects" },

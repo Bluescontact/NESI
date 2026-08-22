@@ -173,69 +173,19 @@ ok("NO member reaches the centre — nothing can be sent inward, only encircled"
 
 /* ── the eight faces ──────────────────────────────────────────────────────────
    Kevin's instruction 2026-08-16: "site the eight mechanics on the eight
-   triangles." FACES.json holds the assignment. THE ASSIGNMENT IS A READING AND
-   IS NOT CHECKED HERE — 1872 matchings tied on the water evidence, so no test
-   could confirm it. What IS checked is that the reading stays WELL-FORMED
-   against the solid and against the running build: real mechanics, real
-   triangles, one each, and still costless. If a cost line is ever added to one
-   of the eight, it has become a seat and its siting is void. */
-{
-  const fs=require("fs"), path=require("path");
-  let F=null, src="";
-  try { F=JSON.parse(fs.readFileSync(path.join(__dirname,"..","FACES.json"),"utf8")); } catch(e){}
-  try { src=fs.readFileSync(path.join(__dirname,"..","ascent.html"),"utf8"); } catch(e){}
-  ok("FACES.json reads, and sites eight", !!F && F.sitings.length===8);
-  if(F && src){
-    const key=a=>a.slice().sort().join("|");
-    const real=new Set(S.TRIANGLES.map(t=>key(t.seats)));
-    const seatKeys=new Set(S.NAMES.map(n=>n.toLowerCase())); seatKeys.add("winter");
-    ok("every sited triangle is a real triangle of this solid",
-       F.sitings.every(s=>real.has(key(s.triangle))));
-    ok("eight distinct triangles — one tenant each, none doubled",
-       new Set(F.sitings.map(s=>key(s.triangle))).size===8);
-    ok("eight distinct mechanics", new Set(F.sitings.map(s=>s.mechanic)).size===8);
-    ok("every sited mechanic is a real stage body in ascent.html",
-       F.sitings.every(s=>new RegExp("^"+s.mechanic+":\\{ g:\"").test(src) ||
-                          src.includes("\n"+s.mechanic+":{ g:\"")));
-    /* THE CRITERION, AND ITS DEMOTION -- 2026-08-16.
-       This stood as "the only part of the siting that was derived": all twelve
-       SEATED mechanics declared a cost and not one of the eight did, 12/12 and
-       0/8, exact. Then another session gave `channel` a cost line -- "the bed
-       you cut is the bed you keep" -- and the check fired.
-       IT DID NOT MEAN CHANNEL BECAME A SEAT. There are twelve seats and they are
-       full. It meant THE CRITERION WAS A CORRELATION OBSERVED AT ONE MOMENT,
-       not a law, and it was presented as more than it was.
-       So this reports rather than refuses. A cost appearing on a face-mechanic
-       is a fact worth surfacing -- it may mean the siting is wrong, or that the
-       cost belongs somewhere else -- and it is not this file's to rule. */
-    {
-      const costed = F.sitings.filter(s=>
-        new RegExp("\n"+s.mechanic+":\{ g:\"\w+\", cost:").test(src)).map(s=>s.mechanic);
-      ok("the cost line separates the twelve from the eight  (a reading, not a law)",
-         costed.length===0,
-         costed.length ? "NO LONGER: "+costed.join(", ")+" now declare a cost. Not a failure of the solid -- the criterion has moved, and whether the siting still holds is Kevin's." : "");
-      if(costed.length) bad--;          /* surfaced, not refused */
-    }
-    ok("and none of them is a seat of the solid",
-       F.sitings.every(s=>!seatKeys.has(s.mechanic)));
-    ok("four on each tetrahedron",
-       F.sitings.filter(s=>s.tetra==="A").length===4 && F.sitings.filter(s=>s.tetra==="B").length===4);
-    ok("each row's tetra tag matches the solid's own",
-       F.sitings.every(s=>{ const t=S.TRIANGLES.find(t=>key(t.seats)===key(s.triangle));
-         return t && t.tetra===s.tetra; }));
-    /* the one hard constraint the water evidence did give */
-    ok("the silent triangle holds a mechanic that writes a single field",
-       (()=>{ const silent=S.TRIANGLES.find(t=>t.seats.every(n=>
-              !/w\.(level|load|clarity|cut|held|released|still)\s*=/.test(
-                (src.split("\n"+(n==="OVERWINTERING"?"winter":n.toLowerCase())+":{ g:\"")[1]||"").split("\n},")[0])));
-          if(!silent) return false;
-          const s=F.sitings.find(x=>key(x.triangle)===key(silent.seats));
-          return s && s.writes.length===1; })());
-    ok("every triangle of the solid now has a tenant", real.size===8 &&
-       F.sitings.length===8 && new Set(F.sitings.map(s=>key(s.triangle))).size===real.size);
-    console.log("        (the ASSIGNMENT is a session's reading — 1872 matchings tied; only its form is checked)");
-  }
-}
+   triangles." FACES.json holds the assignment.
+
+   ■ RETIRED, 2026-08-21, same pass ascent.html was rebuilt from scratch on
+   Kevin's mark ("cut the ascent entirely"). This block checked that
+   FACES.json's eight sited mechanics were each a real, costless stage body
+   in ascent.html's own source (`hold:{ g:"...", ...}` — the ROOMS-era
+   per-triangle mechanic pattern). The rebuild dropped every one of those
+   stage bodies on purpose, along with the GESTURES/CONSTRAINTS vocabulary
+   they were written in — not an interface change this block could be
+   repointed through. organ_map/organ_audit cover the standing question of
+   what's sited where against the live build now; this block tested a
+   specific, now-gone implementation of that siting. Original block
+   preserved in git history. */
 
 /* ── the container's motion, and the frame it is measured in ──────────────────
    Kevin's instruction 2026-08-16: "arrange them into the scaffold for the

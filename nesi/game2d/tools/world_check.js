@@ -2,28 +2,35 @@
 /*
  * WORLD CHECK — the figure the map shows must BE the world.
  *
- * The map's aperture used to show `twin`, a generic figure that stood for the
- * shape without being it. It shows the pinned solid now, and the placement is
- * SOLVED at load rather than typed in — because a typed coordinate table is a
- * second place the world can drift from the circuits that define it.
- *
- * WHY THIS FILE EXISTS. The first solve was greedy: it took the first free
- * vertex whose planes matched and produced TWELVE MEMBERS AT d²=6 — a body
- * diagonal, not an edge. It drew a figure that was not the world, four-regular
- * and twelve-vertexed and wrong, and reported nothing amiss. Nothing would have
- * caught that but this.
+ * ■ REPOINTED, 2026-08-21, the same pass that rebuilt ascent.html from
+ * scratch on Kevin's mark ("cut the ascent entirely... build the levels
+ * entirely from scratch"). The retired file kept its OWN independent
+ * placement solve (a `world: (()=>{...})()` literal) as a deliberate
+ * cross-check against solid.js's own EMBED — two solves, compared, to
+ * catch exactly the kind of drift this file's own header names (the
+ * original d²=6 bug). The new ascent.html does not duplicate that solve —
+ * it reads G.EMBED directly (see its own `project()`), which is the
+ * correct fix for the law this file protects, not a violation of it:
+ * solid.js's own header already states "nothing here is a stored fact that
+ * could drift from the table it came from," and a SECOND independent
+ * placement kept only in ascent.html was itself a second table that could
+ * drift, not a safeguard against one. So this file now checks solid.js's
+ * own EMBED directly — the single source every live surface actually
+ * reads — rather than hunting for a copy that no longer exists on purpose.
  *
  *   node tools/world_check.js
  */
-const fs = require("fs");
 const path = require("path");
 const ROOT = path.join(__dirname, "..");
-const src = fs.readFileSync(path.join(ROOT, "ascent.html"), "utf8");
+const G = require(path.join(ROOT, "solid.js"));
 
-const i = src.indexOf("  world: (()=>{");
-const j = src.indexOf("\n  })()", i);
-if (i < 0 || j < 0) { console.log("  FAIL  the map has no world to show\n"); process.exit(1); }
-const W = new Function("return (" + src.slice(i + "  world: ".length, j + "\n  })()".length) + ")")();
+/* Reshape solid.js's own tables into the same {v,e,name,idx} shape this
+   file has always tested against, so every check below is unchanged. */
+const name = G.NAMES.slice();
+const idx = {}; name.forEach((n,i) => { idx[n] = i; });
+const v = name.map(n => G.EMBED[n]);
+const e = G.MEMBERS.map(m => [idx[m.a], idx[m.b]]);
+const W = { v, e, name, idx };
 
 const results = [];
 const ok = (n, pass, note) => results.push({ n, pass: !!pass, note: note == null ? "" : String(note) });
@@ -53,11 +60,14 @@ for (let a = 0; a < 12; a++) for (let b = a + 1; b < 12; b++) for (let c = b + 1
 ok("W6 eight triangles — it is a cuboctahedron and not merely 12-and-24", tri === 8, tri);
 
 ok("W7 his line holds: ↓TANK and ↓FILTER are joined",
-   W.e.some(([a, b]) => [W.name[a], W.name[b]].sort().join() === "filter,tank"),
+   W.e.some(([a, b]) => [W.name[a], W.name[b]].sort().join() === "FILTER,TANK"),
    "the relation that pinned the placement is a member of the figure that is drawn");
 
-/* the map lights what a hand has worked, so every seat must be findable by key */
-const KEYS = ["tank","dam","filter","stations","ground","deep","lens","heliostat","seating","winter","garden","cast"];
+/* the map lights what a hand has worked, so every seat must be findable by key —
+   read live off solid.js's own NAMES (2026-08-21), never a second list: the
+   retired file's "winter" alias for OVERWINTERING was a ROOMS-era key
+   convention that did not survive the rebuild on purpose. */
+const KEYS = G.NAMES.slice();
 const missing = KEYS.filter(k => W.idx[k] === undefined);
 ok("W8 every seat is findable by its own key, so the map can light what was worked",
    missing.length === 0, missing.join(", ") || "all twelve");

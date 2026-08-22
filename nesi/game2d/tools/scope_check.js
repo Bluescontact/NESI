@@ -79,8 +79,14 @@ for (const c of checks) {
    2026-08-13). So it names the instruments it expects to find and refuses if
    any is gone, and it requires the retired site to be marked rather than merely
    absent: a retirement nobody wrote down is indistinguishable from a deletion. */
-const EXPECTED = ["refusal_check.js", "kit_check.js", "constraint_lint.js", "first_four.js",
-                  "door_check.js", "world_check.js", "cut_check.js", "solid_check.js",
+/* kit_check.js, constraint_lint.js, first_four.js, cut_check.js — moved to
+   tools/retired/ 2026-08-21, second wave (see RETIRED.md), same pass
+   ascent.html was rebuilt from scratch. Dropped from this list for the
+   same reason the first ten were: EXPECTED names what should be found IN
+   tools/, and a retired file living at tools/retired/ is correctly gone
+   from here, not missing. */
+const EXPECTED = ["refusal_check.js",
+                  "door_check.js", "world_check.js", "solid_check.js",
                   "answer_check.js", "daily_walk.js", "store_guard.js"];
 const goneNow = EXPECTED.filter(f => !fs.existsSync(path.join(ROOT, "tools", f)));
 const retiredDir = path.join(ROOT, "tools", "retired");
