@@ -50,14 +50,14 @@ Open it by serving `nesi/game2d/` and walking `index.html` in a browser.
 | persistence: pad → read back → commit; a bad write never destroys a good one | `save()` in both surfaces | localStorage |
 | **the internal open loop** — water LEAVES one store and ARRIVES in another, arrival written first, real loss at this end | `daily.html:806` → `ascent.html:197` | two stores |
 | the door out — member ↓TANK–↑CAST, a 900ms hold on the sill | `daily.html` | — |
-| twelve seats, five levels, four faces each, 20 mechanisms (reach 8 · hold 4 · draw 4 · wait 4) | `ascent.html` | `nesi.ascent` |
+| ~~twelve seats, five levels, four faces each, 20 mechanisms (reach 8 · hold 4 · draw 4 · wait 4)~~ **RETIRED, 2026-08-21 — see note below the table.** | `ascent.html` | `nesi.ascent` |
 | the map, with the upper tetra drawn and entered by hand | `ascent.html` | — |
 | the hand-cut at THE SEATING — a seam the hand places, no midpoint drawn, no default | `ascent.html:1005-1058` | — |
 | the clear case — the machine shown operating, boundaries announced and liftable | `ascent.html` | — |
 | **the sounding** — TANK → GROUND → DEEP → his own sentence, verbatim → TANK. The only fully closed loop, and the only place a player's words return | `ascent.html` | — |
 | the solid: 12 seats · 24 members · 4 circuits · 36 products, all derived from two tables | `solid.js` | — |
 | the tile field — the solid drawn, self-checking, carrying the commons sweep | `tiles.html` | `nesi.tiles.1` |
-| 13 live instruments behind one front door | `node tools/check_all.js` | — |
+| ~~13 live instruments behind one front door~~ **stale, 2026-08-22 — 16 of 17 hold, 3 more named as not covered, today** | `node tools/check_all.js` | — |
 | the route map — what exists, where it routes, whether it crosses | `tools/route_map.js` | — |
 | his real poured water, copied in read-only | `kevins-water.json` via `tools/pour.js` | untouched |
 
@@ -65,6 +65,22 @@ Open it by serving `nesi/game2d/` and walking `index.html` in a browser.
 functions, plus — as of 2026-08-16 — **rendered frames** via headless Chrome
 `--screenshot` at a 15s virtual-time budget. Three prior sessions ended
 `UNWITNESSED` because the pane would not composite; that is answered.
+
+**■ SITED TABLE CORRECTION, 2026-08-22 — two rows above went stale on
+2026-08-21 and were never caught.** `ascent.html` was rebuilt from scratch
+that day (Kevin's mark: "cut the ascent entirely... build the levels entirely
+from scratch") — the ROOMS grouping, the five gestures, and all twenty
+mechanisms the first corrected row named are retired, not the live shape.
+Current, verified by reading the live file: **twelve seats, twenty-four
+edges**, one uniform mechanic (`seam.js`: sort, aim, write, hold) reached
+identically from every seat — its own h1 says so in as many words. The
+instrument-count row is stale for the same reason: the instruments that tested
+the retired mechanic (`seats.js`, `assertion_audit.py`, `kit_check`,
+`constraint_lint`, `cut_check`, `first_four`) are in `tools/retired/`, and
+`check_all.js`'s live run today reports 16 of 17 holding plus three more named
+as present in the page but not covered by that run — twenty named instruments
+total, not thirteen. Neither correction was found by looking for it; both
+surfaced from a corrective audit run the same day as the W4 fix above.
 
 ---
 
@@ -75,10 +91,10 @@ Sweep against these only. Anything else is refused however good.
 | # | capacity wanted | tied to |
 |---|---|---|
 | W1 | the cast leaves and **the world loses something** | OPEN: *"the cast writes a file but the world loses nothing when it leaves"* — a retention leak, B2's own test |
-| W2 | the other eleven stations' outputs | OPEN gate `THE OTHER ELEVEN STATIONS` — `solid.js` derives all 36, only ↓TANK's three are wired to a gesture. 33 unwired |
-| W3 | a held form at the seats that lack one | `assertion_audit` F7 fails at 10 of 12. Kevin's own read, offered not assumed: held form may be a property of irreversibility, in which case ten are correct |
+| W2 | ~~the other eleven stations' outputs~~ | **STALE, 2026-08-22 — cites the retired gesture system.** `solid.js` still derives all 36 products, but "wired to a gesture" described a mechanic that no longer exists; the 2026-08-21 rebuild reaches every one of the 24 edges through `seam.js` the same way, not through TANK's three gestures alone. Whether the OTHER PRODUCTS (`outputsOf`'s send/drop/set, beyond the edge-walk itself) are sited is a real, live, unanswered question — but not this one, as written. |
+| W3 | ~~a held form at the seats that lack one~~ | **STALE, 2026-08-22 — the citing instrument is retired.** `assertion_audit.py` and the `seats.js` it depends on are in `tools/retired/` as of 2026-08-21, because they read the pre-rebuild `SET` table that no longer exists; `RETIRED.md` states outright not to cite their output as evidence about the live build. The "F7 fails at 10 of 12" reading can't be reproduced against today's build. Whether a held form exists at each seat is a real, live, unanswered question — but this citation for it is dead. |
 | W4 | **a way into `ascent.html` from the front door** | found 2026-08-16 by `route_map.js`: `index.html` → `daily.html`, and `daily.html` names `ascent.html` only in comments. 139K with no way in — the `THE SEATING HAS NO DOOR` shape, one level up |
-| W5 | cold boot of the four levels never entered from a cleared store | `COVERAGE.md` — `first_four` cold-starts LEVEL ONE only |
+| W5 | ~~cold boot of the four levels never entered from a cleared store~~ | **STALE, 2026-08-22 — `first_four` is retired** (`tools/retired/RETIRED.md`, second wave, 2026-08-21), for testing the same pre-rebuild ROOMS mechanic as W3's instrument. Whether a cold boot reaches every one of the twelve seats cleanly is a real, live, unanswered question — but not measured by this instrument any more. |
 | W6 | empty-state coverage: a seat entered before the seat that feeds it | three found by walking — stations with an empty queue, the sounding over an empty lake, the garden before anything grew |
 | W7 | the circuit end to end, held by an instrument | walked once by hand; no instrument holds it |
 | W8 | a projected membrane at four unclosed stars | gate `THE FOUR UNCLOSED STARS` (2026-08-16) — station, water, writer, three arms: node and three arms, no face |

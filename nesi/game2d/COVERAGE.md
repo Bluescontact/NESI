@@ -1,5 +1,20 @@
 # COVERAGE — what each instrument holds, 2026-08-15
 
+> **■ SUPERSEDED, 2026-08-22 — the instrument suite this file describes is
+> retired, not live.** Everything below tests the ROOMS/five-gesture/
+> GESTURES-CONSTRAINTS/`SET`-table mechanics of the pre-2026-08-21 `ascent.html`
+> — `kit_check`, `constraint_lint`, `cut_check`, `first_four`, and
+> `assertion_audit.py`/`seats.js` (the F7/"10 of 12" reading this file's own
+> ruling leans on) are all in `tools/retired/` as of that day's rebuild.
+> `tools/retired/RETIRED.md` states plainly: *"Do not run them, do not extend
+> them, and do not cite their output as evidence about the live build."* The
+> current build is twelve seats, twenty-four edges, one uniform mechanic
+> (`seam.js`) — not five gestures or twenty mechanisms. The live instrument
+> count is `node tools/check_all.js`'s own output (16 of 17 hold, 3 more named
+> as not covered by that run, as of 2026-08-22) — not the "Ten instruments,
+> one exit code" this file states below. Nothing below this notice was
+> deleted, per this corpus's own layering convention; read it as history.
+
 Live, from the front door: `index.html` → `daily.html`, plus `ascent.html`,
 `decisions.html`, `level_one.html`, and `solid.js`.
 

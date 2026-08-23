@@ -156,21 +156,80 @@ Which is a hard engineering constraint, not a mood:
 | | state |
 |---|---|
 | the twelve seats | **built** — bodies for all twelve, walked |
-| the five gesture levels | **built** — 20 mechanisms, four faces each, every one walked to completion |
+| the five gesture levels | ~~**built** — 20 mechanisms, four faces each, every one walked to completion~~ **RETIRED, 2026-08-21 — see note below the table.** |
 | the placement | **pinned** — `THE_SOLID.md`, confirmed twice independently |
 | the map shows the solid | **built** — every member a real edge, seats lighting as they are worked |
 | the gift shop | **built** — a gift is his own sentences, and a hand takes it |
-| the 24 edges as levels | **open** — the file walks seats and levels; the edge-walk is the next shape |
+| the 24 edges as levels | **ruled, 2026-08-20** — a level is an edge; a tetra is a developed object, not the definition (Kevin, MARKS_LOG.jsonl 2026-08-20T20:45:00). 12 of 24 built as levels — "water's twelve," seam.js's sort/light/root mechanic, ~~verified live 2026-08-19 (MARKS_LOG.jsonl 2026-08-19T01:35:00–03:25:00)~~ **UNWITNESSED as of 2026-08-21 — see note below the table.** |
 | the four circuits as closed walks | **open** — the geometry is pinned, the walk is the build |
 | the two-second flash | **open** — its trigger is computable now that the solid is pinned |
 | NESI's reveal · the final gifts | **his naming** ▲ |
 | replay-after-change | **open** — a constraint on how the reveal is written, derived and never flagged |
+
+**■ CORRECTED, 2026-08-21, Kevin's mark — the "verified live 2026-08-19" citation
+above (and its twin at §"What this does to the count," below) no longer holds
+as evidence.** That day's walk was handed off to a fresh `game-craft` agent
+invocation for the verdict — which `cold-walk/SKILL.md`'s own step 6 named,
+uncorrected, as an acceptable stand-in for a stranger read. `LEARNED.md` law 3
+(reframed 2026-08-18, one day *before* that walk) already ruled this out: "a
+check holds a load because it is structural and general... never because a
+different hand ran it." A fresh agent invocation is a different hand, not a
+different kind of check. Step 6 was repaired 2026-08-21 to require an actual
+human hand for WALKABLE; applied backward, the 08-19 walk it used to cite as
+proof was never witnessed under this corpus's own standard.
+
+Separately, a `game-craft` read the same day (2026-08-21) found the write-gate
+(`seam.js`, built 2026-08-21) and the week-gate (`weekComplete`, ruled
+2026-08-20) both postdate that walk — so even setting the handoff problem
+aside, the walk was run against a version of the mechanic missing the two
+gates a hand now has to clear. Nobody has walked the *current* build through
+even one full edge's week-gate.
+
+**Corrected status: 12 of 24 edges are BUILT (the code is real, confirmed by
+direct read of `seam.js`/`solid.js`); whether they are WALKABLE is
+UNWITNESSED — the honest default per `cold-walk`'s own ending states, until a
+human hand actually clears one edge's write-gate and week-gate end to end and
+says so.** This is a status correction, not a rebuild; nothing above this
+notice was deleted, per this corpus's own layering convention.
+
+**■ SECOND CORRECTION, 2026-08-22 — "the five gesture levels" row, same table.**
+That row calls the ROOMS/five-gesture/twenty-mechanism system "built," citing
+this file's own 2026-08-21 timestamp as current. It is not current: the same
+day this file was last touched, `ascent.html` was rebuilt from scratch on
+Kevin's mark ("cut the ascent entirely... build the levels entirely from
+scratch") — the ROOMS grouping, the five gestures, and all twenty mechanisms
+were retired, not carried forward. `ascent.html`'s own header states it
+directly, and its live h1 reads "the ascent — twelve seats, twenty-four
+edges," not five gesture levels. The instruments that tested the retired
+system (`seats.js`, `assertion_audit.py`, `kit_check`, `constraint_lint`,
+`cut_check`, `first_four`) are now in `tools/retired/`, with that tree's own
+`RETIRED.md` naming exactly this: *"mechanics that no longer exist because the
+vision they verified was superseded."* This correction landed the same day as
+one other, unrelated line-by-line audit of stale build-status claims — see
+`THE_BUILD_SHAPE.md`'s own W4/SITED corrections, `COVERAGE.md`'s supersession
+notice, dated the same.
 
 this map, and lands inside circuit 3 and circuit 4 at their falling ends.
 
 ---
 
 ## 5 · A LEVEL IS NOT A MECHANISM — Kevin's correction, 2026-08-14
+
+> **■ THE DEFINITION BELOW IS SUPERSEDED. Marked 2026-08-20, not edited.**
+>
+> **"A level is a tetra with four faces"** (below) read as the definition of a
+> level for six days. Kevin's ruling, 2026-08-20: **"a level is an edge — a
+> tetra is a developed object."** The edge is the level; a tetra-of-four-faces
+> is one way a level can be *developed*, the way LEVEL ONE happens to be built —
+> not a requirement every level has to meet to count. The 96-faces arithmetic
+> and the "gap" framing in **What this does to the count**, below, were both
+> downstream of the superseded definition and are stale by the same ruling.
+> What still holds from 2026-08-14: **four doors is four levels was wrong** —
+> the correction that a single tetra's four faces are not four separate levels
+> stands untouched. Only the tetra-as-definition half is superseded.
+>
+> Everything else in this section stands as a record of how LEVEL ONE was
+> built, which remains true regardless of the definition question.
 
 Shown four walked runs, he said:
 
@@ -197,19 +256,35 @@ are filled with their edge doubled; the distinction is never colour alone.
 
 ### What this does to the count
 
+**■ Superseded, 2026-08-20 — see the notice at the top of this section.** The
+96-faces arithmetic below assumed every level has to be a developed tetra to
+count. Under the 2026-08-20 ruling it doesn't: a level is its edge, full stop,
+whether or not it's ever developed into a four-faced form. Kept for the record.
+
 | | |
 |---|---|
 | levels | 24 — the edges of the solid, unchanged |
-| faces per level | 4 |
-| faces in total | **96** |
+| faces per level | 4, *if developed as a tetra — not required* |
+| faces in total | ~~96~~ — moot; not every level needs faces |
 | mechanisms that exist today | **12** |
 
-**That gap is real.** Eight of the twelve mechanisms are still loose on the map,
-standing as themselves rather than pretending to be levels. The circuit shows
-nine runs today — one level and eight ungathered mechanisms.
+~~**That gap is real.** Eight of the twelve mechanisms are still loose on the
+map, standing as themselves rather than pretending to be levels. The circuit
+shows nine runs today — one level and eight ungathered mechanisms.~~
+**Corrected reading, 2026-08-20:** twelve of twenty-four edges are built as
+levels (seam.js's water/light/root mechanic, "water's twelve," ~~verified live
+2026-08-19 — MARKS_LOG.jsonl 2026-08-19T01:35:00–03:25:00~~ **UNWITNESSED as
+of 2026-08-21 — see §4's correction, above; BUILT still holds, WALKABLE does
+not**), not one level plus eight loose mechanisms. The eight orphan mechanisms named elsewhere (rain,
+channel, shoal, sounding, stilling, membrane, spring, table) are a separate,
+still-unresolved group — they have no edge in `solid.js` at all, so they don't
+enter this count either way.
 
-**The grouping is an open question with at least three workable answers**, and
-they are on the decision surface as options rather than as a wait:
+**Whether any of the twelve built levels — or the twelve still to build — get
+developed into tetra form like LEVEL ONE is now a per-level choice, not a
+requirement.** The three grouping answers below were framed as ways to gather
+mechanisms into tetra-shaped levels; they're still live options for *how to
+develop* a level, just no longer the only path to a level counting as one:
 
 1. **By circuit** — the solid already gives four closed walks of six, and each
    walk's members are a natural set.
