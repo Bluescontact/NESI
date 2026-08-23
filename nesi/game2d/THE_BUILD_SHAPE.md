@@ -126,7 +126,34 @@ filenames. False positives, not missing files.
 unchanged — nothing was deposited. What closed is CLOSED-2's own caveat: the
 filter is no longer unverified against the real build.
 
-### NOT SWEEPABLE — reserved to Kevin, and not capacity gaps
+### W4, RE-MEASURED 2026-08-22 — the 3-of-59 reading above is stale, not current
+
+The 2026-08-16 measurement stands, unedited, as the record of what was true that
+day (supersession is a mark on top, never an erasure). But `index.html` was
+rebuilt after it — its own header now dates from 2026-08-16/17 and links thirteen
+surfaces from a static, unconditional `<div id="bench">`, no JS gate required to
+see them. Re-run today, fresh, against the current tree:
+
+```
+node tools/predicate_filter.mjs --root . --door index.html
+SURFACES    15 of 18   reachable from index.html
+```
+
+**Fifteen of eighteen, not three of fifty-nine.** The door W4 named as broken has
+been open since before this session touched anything today — nothing here was
+fixed just now; the fix already happened (the 2026-08-21 rebuild, most likely)
+and this doc never caught up to it. **Do not spend a future session "fixing" W4
+— check whether it's still true before treating it as work.**
+
+**One live, opposite-direction blind spot, found the same re-run:** `tank.html`
+is real, reachable, and currently mis-scored as *NAMED-IN-CODE, not reachable* —
+the instrument's own static scanner can't see it. `index.html:148` builds its
+link at runtime (`HREF.TANK = "tank.html"`, read later by a click handler, never
+a literal `<a href="tank.html">`), so the scanner never traces the edge. This is
+the inverse of what W4 originally named: a page a *hand* can reach that the
+*instrument* can't see, rather than the other way round. Not fixed here — naming
+it is the whole of this correction, so the next hand that reads this table
+doesn't trust a false "unreachable" on a page that plays fine.
 
 Do not bring candidates for these. Each names a direction and reserves the
 naming; the code is built so every answer stays possible.

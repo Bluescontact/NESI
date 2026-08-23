@@ -33,11 +33,11 @@
 
 const waterKind = k => k==="fall" || k==="turn";
 
-/* Every member out of `seat`, filtered to the water half (fall + turn). Read
-   live from solid.js, exactly as tank.html read TANK's four — never written
-   down twice, so if solid.js's circuits ever change, this changes with them
-   or returns nothing rather than something stale. */
-function waterSeamsFor(seat){
+/* Every member out of `seat`, any kind, read live from solid.js — never
+   written down twice, so if solid.js's circuits ever change, this changes
+   with them or returns nothing rather than something stale. Factored out so
+   waterSeamsFor and seamsFor share one mapping and cannot drift apart. */
+function _seamsAt(seat){
   const G = (typeof window!=="undefined" && window.SOLID) || null;
   if(!G || !G.ADJ || !G.ADJ[seat]) return [];
   return G.ADJ[seat].map(function(o){
@@ -45,7 +45,61 @@ function waterSeamsFor(seat){
     if(!m || !f || !f.triangle || !f.square) return null;
     return { id:m.key, from:seat, to:o, kind:m.kind,
              tool:"tetra "+f.triangle.tetra, window:f.square.axis };
-  }).filter(function(s){ return s && waterKind(s.kind); });
+  }).filter(Boolean);
+}
+
+/* Every member out of `seat`, filtered to the water half (fall + turn) —
+   exactly what this returned before 2026-08-22. Still used wherever "water"
+   is the actual concept (windowCharge/seatAmbient/junctionSeams below), not
+   merely "whatever a seat page happens to show." */
+function waterSeamsFor(seat){
+  return _seamsAt(seat).filter(function(s){ return waterKind(s.kind); });
+}
+
+/* ═══ ALL FOUR — 2026-08-22, Kevin's mark ("fix #1, the shared spot"). The
+   one choke point the survey found: ascent.html's renderSeat() only ever
+   asked waterSeamsFor() for cards to show, so the rise+return half of every
+   circuit (12 of 24 members) could never be walked, so circuitComplete()
+   could never return true, so the gift shop / circuitWiring / yesterday's
+   flowOf-headOf-powerOf were all fully built and fully dead. This is the
+   widened door: every one of a seat's four real neighbors, any kind, so a
+   circuit's rise and return edges become walkable through the exact same
+   mechanic (fractionControl/sillMechanic/walk) that already runs the fall/
+   turn half — none of which ever checked kind to begin with. */
+function seamsFor(seat){
+  return _seamsAt(seat);
+}
+
+/* ═══ THE WORKBENCH TRIGGER — 2026-08-21. "At level 12 complete, we site the
+   full workbench" (THE_WORKBENCH.md's own citation, Kevin). Nothing computed
+   this before today: THE_THREE_DYNAMICS.md named the condition in prose
+   ("water's twelve" — the 8 fall + 4 turn edges, all returned) but no code
+   checked it. This does, and only this: whether every water member the solid
+   itself defines is in the walked set. Read live off solid.js's MEMBERS, the
+   same law waterSeamsFor already holds for one seat's own four — never a
+   fixed list of twelve keys that could drift from the partition if the solid
+   ever changed. Takes L.seamsTaken directly (the shared nesi.water ledger
+   ascent.html and tank.html both write through walk()) — not a second store. */
+function waterMembers(){
+  const G = (typeof window!=="undefined" && window.SOLID) || null;
+  if(!G || !G.MEMBERS) return [];
+  return G.MEMBERS.filter(function(m){ return waterKind(m.kind); });
+}
+function waterComplete(walkedKeys){
+  const keys = waterMembers().map(function(m){ return m.key; });
+  if(!keys.length) return false;
+  const done = {}; (walkedKeys || []).forEach(function(k){ done[k]=true; });
+  return keys.every(function(k){ return done[k]; });
+}
+/* 0..1, never shown as a number — how much of the twelve stands, for a
+   caller that wants to show approach rather than a hard on/off (a progress
+   bar toward the workbench would be exactly the number law forbids; this is
+   for driving something continuous, like a fade, never for printing). */
+function waterStanding(walkedKeys){
+  const keys = waterMembers().map(function(m){ return m.key; });
+  if(!keys.length) return 0;
+  const done = {}; (walkedKeys || []).forEach(function(k){ done[k]=true; });
+  return keys.filter(function(k){ return done[k]; }).length / keys.length;
 }
 
 function inhabited(deposits, face){ return !!face && ((deposits && deposits[face]) || 0) > 0; }
@@ -274,6 +328,54 @@ function circuitWiring(ci, states){
   });
   return out;
 }
+
+/* ═══ THE DAM'S LAW, PORTED — 2026-08-22, Kevin's mark: "we don't care about
+   how or why it was previously built, we care about what we can learn from
+   it, and what is worth building forward." nesi/world3d/scripts/dam.gd
+   (retired 2026-08-14 with the whole engine) held three pure functions with
+   no state, no coordinate, no file access — flow_of, head_of, power_of
+   (dam.gd:116-131). The ENGINE did not survive; the ARITHMETIC does, because
+   it never depended on Godot to begin with. Ported here as three lines, not
+   as a system.
+
+   APPLIED UNIFORMLY, TO EVERY CIRCUIT — never to one seat alone, per Kevin's
+   own fork (2026-08-22): every circuit's gift-fall carries the same law, the
+   same way FRACTIONS/WINDOW_AXES are one vocabulary for all twelve seats
+   rather than one entry per seat.
+
+   FLOW — a circuit either just completed or it didn't. Nothing flows while
+   it merely stands charged and unfinished, exactly dam.gd:117-118 ("a shut
+   gate passes none").
+   HEAD — how charged the completing circuit's own windows already stand
+   (windowStanding, 0..1, derived above, never stored) at the moment it
+   completes. Not the circuit's OWN charge — the charge OTHER levels already
+   left at the windows this circuit's own seams share, exactly as
+   windowCharge already reads "a window's charge, read by every seam that
+   can reach it."
+   POWER — flow x head, dam.gd:130 verbatim. A circuit that completes with
+   nothing charged behind its windows falls out at power 0 — a real gift
+   (the fall still happens; nothing here gates emit()), it simply carries no
+   weight. HOLDING IS NOT PRODUCING: a fully charged window that no circuit
+   ever completes through produces nothing, because flow stays 0 forever. */
+function flowOf(justCompleted){ return justCompleted ? 1 : 0; }
+function headOf(ci, states){
+  const G = (typeof window!=="undefined" && window.SOLID) || null;
+  if(!G || !G.MEMBERS || !G.facesAlong) return 0;
+  const keys = circuitKeys(ci);
+  if(!keys.length) return 0;
+  const charge = windowCharge(states);
+  const axes = new Set();
+  keys.forEach(function(k){
+    const m = G.MEMBERS.find(function(x){ return x.key===k; });
+    if(!m) return;
+    const f = G.facesAlong(m.a, m.b);
+    if(f && f.square) axes.add(f.square.axis);
+  });
+  if(!axes.size) return 0;
+  let sum=0; axes.forEach(function(ax){ sum += windowStanding(charge, ax); });
+  return sum / axes.size;
+}
+function powerOf(flow, head){ return Math.max(0,flow) * Math.max(0,head); }
 
 /* ═══ LEVEL-ID TAGGING — 2026-08-21, Kevin's own words: "the first 12 levels
    become the world guides... and act as the anchor for the library that can
@@ -656,7 +758,8 @@ function sillMechanic(sillEl, onGive){
   return { begin:begin };
 }
 
-const NESI_SEAM = { waterKind, waterSeamsFor, inhabited, seamComplete, isReturned,
+const NESI_SEAM = { waterKind, waterSeamsFor, seamsFor, waterMembers, waterComplete, waterStanding,
+                     inhabited, seamComplete, isReturned,
                      FRACTIONS, WINDOW_AXES, windowsFor, migrateLight,
                      seamToday, migrateRoot, growRoot, rootStanding,
                      windowCharge, windowStanding,
@@ -664,6 +767,7 @@ const NESI_SEAM = { waterKind, waterSeamsFor, inhabited, seamComplete, isReturne
                      WEEK_LEN, migrateWeek, weekStanding, weekComplete,
                      seatAmbient, junctionSeams, isJunction, migrateWires, routeWire,
                      circuitKeys, circuitComplete, completedCircuits, circuitWiring,
+                     flowOf, headOf, powerOf,
                      tagWritten, migrateKeptTags, keptAtLevel, hasWritten, WRITE_CAP,
                      walk, fractionControl, sillMechanic };
 if(typeof window!=="undefined") window.NESI_SEAM = NESI_SEAM;
