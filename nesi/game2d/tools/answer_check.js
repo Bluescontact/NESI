@@ -27,7 +27,7 @@
  */
 (() => {
   const R = [], ok = (n, pass, note) => R.push({ n, pass: !!pass, note: note == null ? "" : String(note) });
-  if (typeof SET === "undefined" || typeof ROOMS === "undefined")
+  if (typeof SET === "undefined" || typeof ROOMS === "undefined" || typeof enterFace === "undefined")
     return { REFUSED: "this is not the ascent" };
 
   const KEY = "nesi.ascent";
@@ -88,23 +88,18 @@
     return t;
   };
 
+  /* REWRITTEN 2026-08-19/20 with the map/room chrome cut (see ascent.html's
+     own notes above ROOMS and above #menu's CSS). This used to click a map
+     point into a room, then a room's own net-of-four into a face — both
+     canvas surfaces that no longer exist; the 8-face menu that replaced them
+     is DOM the same way, and calls enterFace() on a click. So this now opens
+     each stage the same way: by name, through the one door every arrival in
+     this file already goes through (a seam, a hash, the menu itself). */
   const enterFaceOf = key => {
-    const r = ROOMS.find(rr => rr.faces.indexOf(key) >= 0);
-    if (!r) return false;
     seed();
-    /* THE RING'S ORDER GATES EVERY RUN BUT THE FIRST, so a seed that clears
-       `done` can only ever reach level one — which is exactly what the first
-       version of this did: it reported sixteen acts unanswerable when it had
-       simply never got into their rooms. Every run BUT the one under test is
-       marked done, so the one under test is the next open one. */
-    ROOMS.forEach(rr => { if (rr.n !== r.n) S.done[rr.n] = true; });
+    mouse.clicked = false; step();
+    enterFace(key);
     step();
-    const p = mapPts().find(q => q.l.n === r.n);
-    if (!p) return false;
-    mouse.x = p.x; mouse.y = p.y; mouse.clicked = true; step();
-    const f = netFaces().find(q => q.k === key);
-    if (!f) return false;
-    mouse.x = f.c.x; mouse.y = f.c.y; mouse.clicked = true; step();
     return view === "level" && cur && cur.key === key;
   };
 

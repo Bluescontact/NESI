@@ -33,6 +33,14 @@ more accurate the claim, the more the writing stops being yours and starts being
 nothing has taken nothing. A tool that never opens the file and hands back a
 number about you has taken everything.
 
+*(■ noted 2026-08-20, process-geometry reconciliation: the BiAffect R²=.63
+figure and the alliance-correlation r=.278/.28 figures below are external
+research claims — real citations, but unverified within this corpus's own
+record. The master shape asks that evidence outrank fluency; these numbers
+haven't been independently checked against a source, only asserted with
+confidence. Not corrected — flagged so they're read as "cited" rather than
+"confirmed" until someone actually checks the papers.)*
+
 That distinction is not a nicety, and the evidence for it is published. BiAffect
 is a research keyboard whose stated principle is *how you type, not what you
 type*: it discards character content by design and keeps keypress timing,

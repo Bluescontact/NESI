@@ -1,5 +1,58 @@
 # TUNED SURFACE — PROJECT SCOPE + ASSEMBLY MANUAL
 
+> **■ SITED, NOT ADVANCED — 2026-08-20, Kevin's mark ("scatter and redevelop
+> the work bench and hold it for siting").** A full development pass ran
+> against this file and `tuned_surface_v0.html` (compost-and-scatter,
+> inventory, adversarial audit, ground, diverge, dream, converge — full
+> record in this session's transcript). Result below, per `LEARNED.md` law 9's
+> own instrument. Nothing below this notice was edited; no vertex was filled.
+>
+> ```
+> CONFIRM   A staged, unfinished 4-vertex scope manual (NAME/LIMIT/CONNECT/
+>           ARCHITECTURE, all empty since 2026-07-23) plus tuned_surface_v0.html,
+>           a working prototype this manual's own §3 already self-demotes:
+>           "carries no authority and crosses nothing." One incomplete object,
+>           untouched by any build attempt in the month since it was staged.
+>           THE FINDING: the manual's own falsifier — "if building from this
+>           manual still requires Kevin to improvise, it didn't hold" — has
+>           never actually been tested, because nobody has tried to build from
+>           it. That silence is itself a finding, not an absence of one.
+>
+>           IT IS NOT PRIOR ART for the game's proposed roots/wires mechanic
+>           (nesi/game2d/THE_THREE_DYNAMICS.md §3), a claim raised and
+>           adversarially audited this same pass, and it failed on every
+>           count that matters: tuned_surface_v0.html's `link()` accepts any
+>           two nodes with no adjacency check at all — the exact free-form
+>           linking the game mechanic explicitly wants to rule out in favor
+>           of tracing solid.js's own real, fixed 24 edges. The shared words
+>           ("node," "tether," "gate," "jitterbug") name unrelated things in
+>           each system; treating the overlap as evidence would have been the
+>           metaphor doing work it never earned. The one legitimate carryover:
+>           the SVG bezier-catenary technique for drawing a wire between two
+>           known points (stroke width/colour derived from distance) is a
+>           generic, reusable RENDERING snippet — cite it narrowly as that,
+>           nothing more, if a wire ever needs drawing anywhere in this corpus.
+>
+> COLLIDES  WITH nothing live and wired — no other file imports or depends on
+>           either of these two.
+>           RISK: this manual's own vertex-naming ("gate," "membrane," "canon
+>           zone") already carries different live meanings elsewhere in this
+>           corpus (`gate/gate.mjs`, the GATE ledger, canon in `LEARNED.md`).
+>           A name-collision pass is owed BEFORE vertex ① is ever filled, not
+>           after — named here so it isn't rediscovered the hard way.
+>
+> EXISTS    ALREADY: the pattern this manual reaches for — name before build,
+>           an elevator sequence, a falsifier per element — is already proven
+>           live in `LEARNED.md` and `gate/gate.mjs`. Resuming this manual
+>           would cite that pattern, not reinvent it.
+>
+> QUIET     No vertex filled. No build resumed. No mark taken beyond this
+>           siting. Whether this is worth building at all, given how far NESI
+>           has moved since 2026-07-23, is a live question nobody has asked —
+>           named, not answered, per "hold it for siting" meaning exactly
+>           that: prepared, not decided.
+> ```
+
 **Status:** SCOPE drafted · ASSEMBLY SPINE named · vertices STAGED (filled one per turn, on Kevin's mark).
 **Date:** 2026-07-23 · session 56d2727d.
 **Grammar:** built in Kevin's construction language ([[seed_construction_language]]) — tetrahedral vertices, elevator sequence (plumb before load), 9-field organ spec, falsifier per element.

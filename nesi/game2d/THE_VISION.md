@@ -257,6 +257,10 @@ argument for the world's generosity, stated as structure rather than sentiment.
 
 ## 4B · THE GEOMETRY DECIDES — Kevin's standing line, 2026-08-16
 
+> **■ CORRECTED, 2026-08-20** — reconciled via the process-geometry lens,
+> then rewritten on Kevin's mark to match `THE_CENTRE.md` §17's own
+> correction below.
+
 > *"The geometry decides what works or doesnt."*
 
 **A ruling about method, not about a mechanic.** It sets who arbitrates when a
@@ -301,13 +305,21 @@ the container moving. The jitterbug of § 5 is exactly that motion. So a design
 that fills a square is not against a preference — it has switched the
 progression engine off.
 
-### The eight faces are tenanted, and the criterion was derived
+### The eight faces are tenanted, and the criterion was a correlation — not derived
 
 Kevin's instruction, same day: *"site the eight mechanics on the eight
-triangles."* The criterion is exact and re-tested every run: **every seated
-mechanic declares a `cost:`; not one of the eight does.** A seat is where the
-hand gives something up; these eight take nothing. Add a cost to one and it has
-become a seat, and its siting is void.
+triangles."* The siting used a criterion — every seated mechanic declares a
+`cost:`, and not one of the eight did, 12 of 12 and 0 of 8, exact — that was
+written into `FACES.json` as *"DERIVED AND EXACT, not a reading."* **It
+wasn't.** Within the day, another session gave `channel` a cost and
+`solid_check` refused, catching the overstatement live (`THE_CENTRE.md`
+§17). It does not follow that `channel` became a seat — there are twelve
+seats and they are full. What follows is narrower: **the criterion was a
+correlation observed at one moment, presented as a law.** The check now
+reports the break instead of refusing on it; whether `channel`'s siting
+still holds is Kevin's. The eight faces are still tenanted as sited; only
+the claim that the tenanting followed necessarily from the geometry is
+withdrawn.
 
 **How far the geometry carried, stated because it did not carry far.** Scored by
 shared water fields the best total was 7 — achieved by **1872 of the 40320
@@ -384,10 +396,25 @@ Gift → witnessed → answered from your own past.
 
 ## 7 · WHAT NEVER BENDS
 
+> **■ SCOPE NOTED, then PROMOTED, 2026-08-20.** This list read in absolute
+> law-form while standing only as synthesis — sourced, per §11's provenance
+> table, to `THE_GAME.md`'s own "what is kept sacred" list, but not itself
+> one of this document's five ruled marks. Flagged via the process-geometry
+> lens, then put to Kevin directly: **he promoted it.** All twelve now carry
+> the same standing as §§1B/4/4B/5 — a sixth site where this document
+> decides rather than only describes. §11's "the four forks... none
+> defaulted" line is unaffected; this promotion is additive, not a new
+> default on anything still open.
+
 <!-- framing: lint -->
 
-1. **Content-blind, permanently.** Nothing reads, judges, rewrites, summarises,
-   paraphrases or infers categories from the player's words. Verbatim only.
+1. **Content-blind, permanently.** Nothing reads for meaning, judges, summarises,
+   paraphrases, or infers categories from what the player's words *say*. The
+   words remain live material for the world's mechanics — rendered, moved,
+   split, or restructured through geometry and relationship (position,
+   adjacency, arrival order, crossing) — but never through parsing content.
+   Verbatim only: a word's text is never rewritten, even when its structural
+   fate is. (Kevin, MARKS_LOG.jsonl 2026-08-20T20:22:00)
 2. **No number reaches the player.** No scores, counts, ranks, percentages,
    progress bars, streaks or word counts. Nothing compares regions to each
    other, ever, not even as a stub. Progress is **form** — water level, light,
@@ -620,3 +647,10 @@ wrote. It does **not** govern the five marks carried in §§ 1B, 4, 4B and 5 —
 those are Kevin's rulings, quoted verbatim, and they are the one part of this
 file that decides anything. The forks in § 9 are now **five**, none defaulted;
 the fifth is the siting of the three arms.
+
+**Amended 2026-08-20:** §7's twelve laws are promoted to the same standing —
+Kevin's ruling, not synthesis (see §7's own notice). *(Corrected same pass,
+consistency check: this was first written "six sites" — miscounted. §§1B, 4,
+4B, 5 and 7 is five sections.)* Five sections in this document now carry
+ruled content rather than only synthesis: §§1B, 4, 4B, 5 and 7 — holding the
+original five marks plus §7's twelve laws.

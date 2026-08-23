@@ -173,6 +173,9 @@
   .frac button.suspended.on{color:#5f7f92;border-color:#5f7f92}
   .frac button.bedload.on{color:#6b5a44;border-color:#6b5a44}
   .frac button.contaminant.on{color:#a8564a;border-color:#a8564a}
+  .frac button.win.on{color:var(--lit);border-color:var(--lit)}
+  .frac span.legacy{font-size:9px;color:#7d766a;letter-spacing:.02em;
+    padding:4px 0;text-transform:none;white-space:nowrap}
   #table .tile .frac{margin-top:6px}
   #table .tile .frac button{font-size:8.5px;padding:3px 5px}
 
@@ -215,6 +218,28 @@
     system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--lit);
     background:rgba(242,239,232,.9);border:1px solid var(--lit);border-radius:3px;
     padding:5px 9px;display:none;pointer-events:none}
+
+  /* ═══ THE FACE TABS — 2026-08-21, on Kevin's own cold-walk finding: "the tank
+     room should have all 4 writing faces in it, with tabs and buttons so you
+     dont have to drag and position the cubedecehedron." The four members were
+     already reachable via #seamstrip, but only behind a collapsed side tab a
+     stranger's hand didn't find — this makes the same four (GROUND, FILTER,
+     CAST, OVERWINTERING, plus the root) an always-visible row, no click to
+     open anything. Nothing new underneath: a tab click calls the same
+     walkSeam()/walkRoot() arm functions the strip already used, and holding
+     the sill is the same unchanged mechanic. One shared writing surface, per
+     his own choice — a tab changes which member a walked seam deposits into,
+     never a second page of text. ═══ */
+  #facetabs{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:5;
+    display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:92vw}
+  .ftab{font:400 10.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+    text-transform:uppercase;color:#7d766a;background:rgba(242,239,232,.86);
+    border:1px solid rgba(90,84,74,.4);border-radius:3px;padding:6px 11px;cursor:pointer;
+    white-space:nowrap;transition:opacity .15s,border-color .15s}
+  .ftab:hover{color:var(--ink);border-color:#5a5348}
+  .ftab.complete{border-color:var(--lit);color:var(--lit)}
+  .ftab.taken{opacity:.55;cursor:default}
+  .ftab.armed{border-width:2px;border-color:var(--lit);background:rgba(47,93,80,.12);color:var(--lit)}
   #seamnote{font-size:10.5px;color:#7d766a;margin-top:6px;min-height:1.4em}
 
   .leaving{opacity:.42}
@@ -231,6 +256,7 @@
 <a id="carry" style="display:none"></a>
 
 <div id="armedlabel"></div>
+<div id="facetabs"></div>
 <button id="seamtab">the seams</button>
 <div id="seamstrip">
   <button class="close" id="seamclose">close</button>
@@ -240,6 +266,7 @@
 </div>
 
 <script src="solid.js"></script>
+<script src="seam.js"></script>
 <script>
 "use strict";
 
@@ -251,6 +278,7 @@
    them. */
 const SEAT="TANK";
 const G = (typeof SOLID!=="undefined") ? SOLID : null;
+const SEAM = (typeof NESI_SEAM!=="undefined") ? NESI_SEAM : null;
 const DOOR = G ? G.DOOR_OUT : null;                 /* ↓TANK—↑CAST */
 const WITHDRAW = G ? G.WITHDRAWAL : null;           /* ↓TANK—↓FILTER—↓DEEP */
 const OUTPUTS = G ? G.outputsOf(SEAT) : null;       /* send · drop · set */
@@ -354,6 +382,24 @@ function cut(v){                     /* the same rule, over a whole string */
 }
 
 load();
+/* SCHEMA STEP — every stone written before 2026-08-19 carries the old
+   boolean `formed` and no `light`; migrateLight() turns that into the
+   "legacy" sentinel (still returned, never invents which window) exactly
+   once per stone, here rather than inside load() so it runs the same way
+   whether the stones came from a fresh water.3 read or from adopt(). */
+if(SEAM) S.stones.forEach(function(s){
+  SEAM.migrateLight(s);
+  /* migrateRoot/growRoot — seam.js's own root growth (rooted, asymptotic,
+     day-gated). Run in bulk here, same call site as migrateLight, so a
+     stone gets its day-check once per load even if its tile is never
+     opened for editing this session. fractionMember() below re-runs both
+     on every repaint, which is where growth becomes visible sooner if the
+     hand does open the tile. */
+  SEAM.migrateRoot(s);
+  SEAM.growRoot(s);
+  SEAM.migrateWeek(s);
+  SEAM.migrateDiversity(s);
+});
 
 /* the day rolls over. Yesterday's whole text goes down as its own band; its
    stones are already banked and are not re-cut. */
@@ -500,7 +546,8 @@ function paintUp(){
 }
 addEventListener("pointerdown", e=>{
   if(e.target instanceof Node && (up.contains(e.target) || tableEl.contains(e.target)
-     || seamsEl.contains(e.target) || document.getElementById("seamstrip").contains(e.target))) return;
+     || seamsEl.contains(e.target) || document.getElementById("seamstrip").contains(e.target)
+     || document.getElementById("facetabs").contains(e.target))) return;
   if(tableOpen) return;
   const wy=innerHeight*(1-level*0.42);
   if(e.clientY < wy){ return; }
@@ -541,6 +588,14 @@ const LOAD = [ {k:"yes",          w:"yes"},
                {k:"dont_want_to", w:"i don't want to"} ];
 const LOADW = k => (LOAD.find(o=>o.k===k)||{}).w || "";
 
+/* the carried-text label for a light pick — "aimed" plus the axis, or the
+   legacy note for a stone formed before this build could ask which window. */
+function lightLabel(light){
+  if(light==="legacy") return "formed (window not recorded)";
+  const ax = SEAM && SEAM.WINDOW_AXES ? SEAM.WINDOW_AXES[String(light)[0]] : null;
+  return "aimed: " + (ax ? ax.name + " " + light : light);
+}
+
 function loadMember(st, body, after){
   const el=document.createElement("div"); el.className="load";
   const slot=document.createElement("span"); slot.className="slot";
@@ -576,49 +631,22 @@ function loadMember(st, body, after){
   return el;
 }
 
-/* ═══ THE FRACTION SORT — from day_one.html, F7. The hand picks one; nothing
-   computes it, nothing infers it, and the machine never decides what the sort
-   found (law 5). A second pick of the same fraction takes it back to
-   unsorted, exactly as day_one.html built it. ═══ */
-const FRACTIONS = [
-  { k:"dissolved",   was:"invisible, feeds life",     does:"goes out of sight without falling" },
-  { k:"suspended",   was:"clouds, becomes ground",    does:"hangs, and does not reach the floor" },
-  { k:"bedload",     was:"rocks, goes to the deep",   does:"sinks past the floor; the deep never renders" },
-  { k:"contaminant", was:"named in the brief, given no behaviour there",
-                     does:"films at the surface and stays — this behaviour is mine, not read" }
-];
+/* ═══ THE FRACTION SORT AND THE AIM — seam.js, not a second copy. FOLDED
+   2026-08-19: this file's own fraction/form implementation was byte-for-
+   byte the one seam.js already carried for ascent.html's six doors; both
+   now call SEAM.fractionControl(st, SEAT, after), same function, same file.
+   Nothing about TANK's own water-sort UI changed — the fraction buttons
+   still read exactly as day_one.html built them (was/does titles, a second
+   click un-sorts). What changed is the light half, for every caller of
+   seam.js at once: "form" (a toggle) became the aim (a pick of one of
+   TANK's own two windows) — see seam.js's own header for why. ═══ */
 function fractionMember(st, after){
-  const el=document.createElement("div"); el.className="frac";
-  FRACTIONS.forEach(fr=>{
-    const b=document.createElement("button");
-    b.className="fr "+fr.k+(st.fraction===fr.k?" on":"");
-    b.textContent=fr.k; b.title=fr.was+" — "+fr.does;
-    b.addEventListener("pointerdown", e=>e.stopPropagation());
-    b.addEventListener("click", e=>{
-      e.stopPropagation();
-      st.fraction = (st.fraction===fr.k) ? null : fr.k;
-      if(!st.fraction) st.formed=false;
-      dirty=true; save(); if(after) after();
-    });
-    el.appendChild(b);
-  });
-  const form=document.createElement("button");
-  form.className="fr"; form.textContent="form"; form.title="surviving light is the shareable form";
-  form.style.opacity = st.fraction ? "1" : ".4";
-  if(st.formed) form.classList.add("on");
-  form.addEventListener("pointerdown", e=>e.stopPropagation());
-  form.addEventListener("click", e=>{
-    e.stopPropagation();
-    if(!st.fraction) return;
-    st.formed = !st.formed; dirty=true; save(); if(after) after();
-    checkSeams();
-  });
-  el.appendChild(form);
-  return el;
+  return SEAM.fractionControl(st, SEAT, function(){ dirty=true; save(); if(after) after(); checkSeams(); });
 }
-/* RETURNED — a stone that has survived both water and light, day_one.html's
-   own test: sorted into a fraction, and formed. */
-function isReturned(s){ return !!s.fraction && !!s.formed; }
+/* RETURNED — a stone that has survived both water and light: sorted into a
+   fraction, and aimed at a window. seam.js's own isReturned(), not a second
+   copy of day_one.html's test. */
+function isReturned(s){ return SEAM ? SEAM.isReturned(s) : (!!s.fraction && !!s.formed); }
 function returnedCount(){ return S.stones.reduce((n,s)=> n + (isReturned(s)?1:0), 0); }
 
 /* ═══ THE SEAMS — generalized from daily.html's single sill to all four of
@@ -626,7 +654,49 @@ function returnedCount(){ return S.stones.reduce((n,s)=> n + (isReturned(s)?1:0)
    returned() exceeds the count already taken. ═══ */
 function inhabited(face){ return !!face && (S.deposits[face]||0) > 0; }
 function seamComplete(s){ return inhabited(s.tool) && inhabited(s.window); }
-function checkSeams(){ renderSeamStrip(); }
+function checkSeams(){ renderSeamStrip(); renderFaceTabs(); }
+
+/* THE FACE TABS — always visible, same data renderSeamStrip already reads
+   (SEAMS, S.seamsTaken, pendingSeam/pendingRoot), just laid out as a row of
+   short buttons instead of a collapsed detail card. No new state: clicking
+   a tab calls the exact same walkSeam()/walkRoot() arm functions the strip's
+   own cards call, so holding the sill afterward is unchanged. */
+function renderFaceTabs(){
+  const row=document.getElementById("facetabs");
+  if(!row) return;
+  row.innerHTML="";
+  const open = returnedCount() - S.seamsTaken.length;
+  SEAMS.forEach(s=>{
+    const lit = S.seamsTaken.indexOf(s.id) >= 0;
+    const armed = !lit && pendingSeam && pendingSeam.id===s.id;
+    const b=document.createElement(lit ? "a" : "button");
+    b.className = "ftab" + (seamComplete(s) ? " complete" : "") + (lit ? " taken" : "") + (armed ? " armed" : "");
+    b.textContent = s.to;
+    b.title = "tool " + s.tool + " · window " + s.window + (lit ? " · already walked" : open>0 ? " · click to aim the sill here" : " · not yet earned");
+    if(lit){ b.href = "ascent.html#" + s.to.toLowerCase(); }
+    else{
+      b.type="button";
+      if(open>0) b.addEventListener("click", e=>{ e.stopPropagation(); walkSeam(s); renderFaceTabs(); });
+      else b.disabled=true;
+    }
+    row.appendChild(b);
+  });
+  if(ROOT){
+    const rootLit = S.rootTaken;
+    const rootArmed = !rootLit && pendingRoot;
+    const b=document.createElement(rootLit ? "a" : "button");
+    b.className = "ftab" + (rootLit ? " taken" : "") + (rootArmed ? " armed" : "");
+    b.textContent = "· " + ROOT.opposite;
+    b.title = "through the centre — no faces to inhabit" + (rootLit ? " · already walked" : "");
+    if(rootLit){ b.href="index.html"; }
+    else{
+      b.type="button";
+      if(open>0) b.addEventListener("click", e=>{ e.stopPropagation(); walkRoot(); renderFaceTabs(); });
+      else b.disabled=true;
+    }
+    row.appendChild(b);
+  }
+}
 
 function renderSeamStrip(){
   const row=document.getElementById("seamrow"), note=document.getElementById("seamnote");
@@ -740,6 +810,15 @@ function paintTable(){
     const el=document.createElement("div");
     el.className="tile" + (s.arrival?" arr":"") + (s.seams?" seamed":"");
     el.style.left=s.x+"px"; el.style.top=s.y+"px";
+    /* THE ROOT, SHOWN — same law as ascent.html's seam card: a stone that
+       has survived water and light deepens its own border/fill by how far
+       it has rooted (seam.js growRoot/rootStanding), never a number. */
+    if(isReturned(s)){
+      const g = SEAM.rootStanding(s);
+      el.classList.add("rooted");
+      el.style.borderWidth = (1 + g*2.4).toFixed(2) + "px";
+      el.style.boxShadow = "inset 0 0 " + (3+g*16).toFixed(0) + "px rgba(47,93,80," + (0.10+g*0.34).toFixed(2) + ")";
+    }
     el.appendChild(document.createTextNode(s.t));
     const src=document.createElement("span"); src.className="src";
     src.textContent=s.d; el.appendChild(src);
@@ -819,7 +898,7 @@ function carriedText(){
       line(s.t);
       line("    " + s.d + (s.stage ? " · " + s.stage : "") + (s.by ? " · by " + s.by : "")
                  + (s.load ? " · answered: " + LOADW(s.load) : "")
-                 + (s.fraction ? " · fraction: " + s.fraction + (s.formed ? " · formed" : "") : ""));
+                 + (s.fraction ? " · fraction: " + s.fraction + (s.light ? " · " + lightLabel(s.light) : "") : ""));
       if(s.seams) s.seams.slice().sort((x,y)=>x.n-y.n)
         .forEach(p=> line("    seam · " + p.d + " · " + p.t));
     });
@@ -885,6 +964,7 @@ if(!SEAMS.length && !ROOT){
    no count: a name, or nothing. */
 function armSill(){
   renderSeamStrip();
+  renderFaceTabs();
   const lbl=document.getElementById("armedlabel");
   if(!lbl) return;
   if(pendingRoot){ lbl.textContent="armed · through the centre"; lbl.style.display="block"; }
@@ -905,7 +985,7 @@ function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=innerWidth; H=innerHei
 addEventListener("resize",resize); resize();
 
 target=heightFor(words(S.text)); level=target;
-paint(); renderSeamStrip();
+paint(); renderSeamStrip(); renderFaceTabs();
 
 let t=0, last=performance.now();
 function frame(dt){

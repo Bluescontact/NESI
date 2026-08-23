@@ -1,0 +1,636 @@
+<!-- UI/UX PREFLIGHT — migrated onto DS_v1 (nesi/mind/DS_v1.html), 2026-08-19, on
+     Kevin's ask: "build something one layer up from that.. i want the mechanisms
+     migrated to nesi." The first version of this file (same name, same day)
+     hand-rolled its own picker, its own token values, and its own light-theme
+     CSS — a bespoke re-implementation of a mechanism nesi already has, shipped
+     and canonical, at nesi/mind/DS_v1.html. This version is that chassis,
+     copied whole per feedback_chassis_full_copy.md ("never hand-reconstruct
+     just the important part"), with only its documented slots filled: HEADER,
+     LOCATOR-LINE, BOARD-ROOMS, ROOM-VIEWS. The <style> block below is
+     byte-identical to DS_v1's.
+
+     WHAT'S DROPPED, AND WHY, NAMED RATHER THAN SILENT: DS_v1's tile body also
+     carries ZONE-DECIDE and ZONE-CROSS — reversible steer buttons and one
+     irreversible cross, each copying a mark to the clipboard via CARDDATA —
+     because DS_v1 is built for decisions. This file has none: it is reference
+     material, not a decision surface, and forcing a "hold / go" pair onto a
+     rule someone is just reading would be the exact category error the source
+     document's own § G warns about (a mechanism built for one surface, carried
+     uncritically onto a different one). So every tile here carries ZONE-READ
+     only. The mark/deposit/clipboard machinery, CARDDATA, and their functions
+     are removed from the script for the same reason — there is nothing here
+     to mark. Board/room navigation, the locator, and the tile open/close
+     toggle are unchanged from canonical.
+
+     Four rooms instead of three: the process rules that bind every surface
+     (§ F of the source doc) got their own room rather than a bolted-on
+     section outside the board/room model — the chassis already has a
+     vocabulary for "one more thing you can navigate to," so it's used instead
+     of inventing a second one. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX Preflight</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --grn:#2a6a1a;--grn-bg:#e8f2e4;
+  --red:#8a2010;--red-bg:#f5e8e6;
+  --yel:#7a5a10;--yel-bg:#f5f0e0;
+  --bdr:#ccc5b0;--bdrk:rgba(58,48,32,0.15);
+  --anc:#4a5a8a;--anc-bg:#e8ecf5;
+  --read-bg:#f2efe6;--decide-bg:#eee9da;--cross-bg:#f2ece0;
+}
+body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.65;padding:20px}
+.wrap{max-width:760px;margin:0 auto;padding-bottom:40px}
+.hd{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bdr)}
+.hd-eye{font-size:8px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.hd-name{font-size:18px;font-weight:bold;color:var(--gb);letter-spacing:2px;margin-bottom:4px}
+.hd-sub{font-size:10px;color:var(--gd)}
+.locator{font-size:10px;color:var(--gd);background:var(--sf2);border:1px solid var(--bdr);padding:10px 12px;margin-bottom:16px}
+.locator-lab{font-size:8px;letter-spacing:2px;color:var(--gf);font-weight:bold;text-transform:uppercase;margin-bottom:5px}
+.locator p{margin-bottom:6px}
+.locator p:last-child{margin-bottom:0}
+.view{display:none}
+.view.active{display:block}
+.room-list{display:flex;flex-direction:column;gap:8px}
+.room-card{border:1px solid var(--bdr);background:var(--sf);padding:13px 15px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.room-card:hover{border-color:var(--gd);background:var(--sf2)}
+.room-ico{font-size:14px;color:var(--gf);width:16px;padding-top:1px}
+.room-main{flex:1}
+.room-name{font-size:12.5px;color:var(--gb);font-weight:bold;line-height:1.5}
+.room-hint{font-size:9px;color:var(--gf);letter-spacing:0.3px;margin-top:3px}
+.room-status{font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--bdr);text-transform:uppercase;white-space:nowrap;color:var(--gd)}
+.room-status.live{color:var(--grn);background:var(--grn-bg);border-color:var(--grn)}
+.room-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.room-title{font-size:15px;color:var(--gb);font-weight:bold;letter-spacing:1px}
+.back-anchor{font-size:9px;letter-spacing:1px;color:var(--anc);background:var(--anc-bg);border:1px solid var(--anc);padding:5px 10px;cursor:pointer;text-decoration:none}
+.back-anchor:hover{background:var(--anc);color:#fff}
+.tiles{display:flex;flex-direction:column;gap:10px}
+.tile{border:1px solid var(--bdr);background:var(--sf);cursor:pointer}
+.tile:hover{border-color:var(--gd)}
+.tile.top{border-left:3px solid var(--gb)}
+.tile.open{background:var(--sf2)}
+.t-hd{padding:13px 15px;display:flex;gap:10px;align-items:flex-start}
+.t-car{font-size:11px;color:var(--gf);width:12px;padding-top:1px}
+.tile.open .t-car{color:var(--gb)}
+.t-main{flex:1}
+.t-one{font-size:12.5px;color:var(--gb);font-weight:bold;line-height:1.5}
+.t-hint{font-size:9px;color:var(--gf);letter-spacing:0.3px;margin-top:3px}
+.tag{font-size:8px;letter-spacing:1px;padding:1px 6px;border:1px solid var(--bdr);text-transform:uppercase;white-space:nowrap;margin-top:2px}
+.tag.grounded{color:var(--anc);background:var(--anc-bg);border-color:var(--anc)}
+.tag.reached{color:var(--yel);background:var(--yel-bg);border-color:var(--yel)}
+.tag-row{display:flex;gap:4px;flex-direction:column;align-items:flex-end}
+.t-bd{display:none;border-top:1px solid var(--bdr);padding:14px 15px;cursor:default}
+.tile.open .t-bd{display:block}
+.zone-read{background:var(--read-bg);border:1px solid var(--bdr);border-left:2px solid var(--gf);padding:9px 11px}
+.zone-read-lab{font-size:8px;letter-spacing:2px;color:var(--gf);text-transform:uppercase;margin-bottom:5px}
+.plain{font-size:11px;color:var(--g);line-height:1.75}
+.src-line{font-size:9px;color:var(--gf);letter-spacing:0.3px;margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr)}
+.type-note{margin-top:22px;padding-top:14px;border-top:1px solid var(--bdr)}
+.status{font-size:8px;color:var(--gf);letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="hd-eye">NESI · UI/UX KNOWLEDGE</div>
+    <div class="hd-name">UI/UX PREFLIGHT</div>
+    <div class="hd-sub">what binds the surface you're about to build, before you build it</div>
+  </div>
+
+  <div class="locator">
+    <div class="locator-lab">◆ where this thread stands</div>
+    <p>Every rule below is a pointer into nesi/mind/UI_UX_KNOWLEDGE.md, not a
+    replacement for it. Pick a room to see what actually binds that surface —
+    the source doc keeps these separate on purpose (§ G): a rule correct for
+    one is sometimes wrong on another.</p>
+  </div>
+
+  <div class="view active" id="view-board">
+    <div class="room-list">
+      <div class="room-card" onclick="showRoom('widget')">
+        <span class="room-ico">◆</span>
+        <div class="room-main">
+          <div class="room-name">Building a DSS decision-surface widget</div>
+          <div class="room-hint">9 tiles — gating, chassis laws, plain language</div>
+        </div>
+        <span class="room-status live">live</span>
+      </div>
+      <div class="room-card" onclick="showRoom('game')">
+        <span class="room-ico">◆</span>
+        <div class="room-main">
+          <div class="room-name">Building in the game world</div>
+          <div class="room-hint">8 tiles — visibility, verification, refusals</div>
+        </div>
+        <span class="room-status live">live</span>
+      </div>
+      <div class="room-card" onclick="showRoom('page')">
+        <span class="room-ico">◆</span>
+        <div class="room-main">
+          <div class="room-name">Building a public page or tool</div>
+          <div class="room-hint">6 tiles — voice, framing, demonstration</div>
+        </div>
+        <span class="room-status live">live</span>
+      </div>
+      <div class="room-card" onclick="showRoom('always')">
+        <span class="room-ico">◆</span>
+        <div class="room-main">
+          <div class="room-name">Always — binds every surface</div>
+          <div class="room-hint">5 tiles — process rules, no exceptions</div>
+        </div>
+        <span class="room-status live">live</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOM: WIDGET -->
+  <div class="view" id="view-widget">
+    <div class="room-hd">
+      <div class="room-title">DSS decision-surface widget</div>
+      <span class="back-anchor" onclick="showBoard()">◆ back to board</span>
+    </div>
+    <div class="locator">
+      <div class="locator-lab">◆ this room's depth</div>
+      <p>These bind the decision-surface chassis only — the same chassis this
+      page is built on (DS_v1). Do not carry them into the game world; § G of
+      the source doc names that split explicitly.</p>
+    </div>
+    <div class="tiles">
+
+      <div class="tile top open" id="c-w1">
+        <div class="t-hd" onclick="toggle('w1',event)"><span class="t-car">▾</span>
+          <div class="t-main"><div class="t-one">Reading and deciding are two separate acts.</div>
+          <div class="t-hint">the object of THIS decision renders before its control, always</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Never gate content behind the same click that
+          carries the decision. A file link is not a read surface — the text
+          must be physically present in the widget. Recurred four times
+          (2026-07-19 to 07-24) before it held.</div></div>
+          <div class="src-line">§ B — feedback_widget_read_gated_behind_decision.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w2">
+        <div class="t-hd" onclick="toggle('w2',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">The decision list is derived, never padded.</div>
+          <div class="t-hint">the floor, not the ceiling — see the pacing rule, always room</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Don't invent options to hit a count; don't pad
+          below what's actually live. How many appear at once is a separate
+          question, governed by felt-read pacing (always-room), not by this
+          rule.</div></div>
+          <div class="src-line">§ B — chassis law "B3"</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w3">
+        <div class="t-hd" onclick="toggle('w3',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">A steer control copies to clipboard — never auto-sends.</div>
+          <div class="t-hint">regressed twice before it froze</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Never an in-widget composer either. "SEND/COPY =
+          a mark copies" — the user's real chat input is the only place a
+          decision actually gets typed.</div></div>
+          <div class="src-line">§ B — feedback_click_populates_not_sends.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w4">
+        <div class="t-hd" onclick="toggle('w4',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Every exit is pre-authored.</div>
+          <div class="t-hint">a surface that requires typing to leave is a build failure here</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Typing stays available — it's just never made
+          the toll for leaving.</div></div>
+          <div class="src-line">§ B — chassis law "B1"</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w5">
+        <div class="t-hd" onclick="toggle('w5',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Manifests are pre-filled at authoring time.</div>
+          <div class="t-hint">never inferred at render</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Consequences show face-up before execution, not
+          after — this is why CARDDATA in the real chassis is filled by hand,
+          not computed live.</div></div>
+          <div class="src-line">§ B</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w6">
+        <div class="t-hd" onclick="toggle('w6',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">The widget is the entire response — no surrounding prose.</div>
+          <div class="t-hint">scoped to this chassis, not a general interface rule</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Most UIs need surrounding text for error/empty
+          states; this chassis's own completion state is built to cover that
+          instead. Trivial tool-status narration is exempt.</div></div>
+          <div class="src-line">§ B</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w7">
+        <div class="t-hd" onclick="toggle('w7',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Plain language, not internal jargon.</div>
+          <div class="t-hint">"delta feels like a military call sign"</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">"Delta file" → "holding file." The user's own
+          coined terms (gate, tray, compost, mark, membrane, felt-read) stay
+          as-is — only imported technical vocabulary gets translated.</div></div>
+          <div class="src-line">§ B / § D — feedback_plain_language_widgets.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w8">
+        <div class="t-hd" onclick="toggle('w8',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Never direct the user's physical body from inside a widget.</div>
+          <div class="t-hint">no "go paint" cards, even warm, even echoing their own plan</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Cards stay inside the system's own jurisdiction
+          — marks, files, builds. "You've been applying a force to the
+          user."</div></div>
+          <div class="src-line">§ B — feedback_never_direct_the_body.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-w9">
+        <div class="t-hd" onclick="toggle('w9',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Never prompt for a felt/somatic field.</div>
+          <div class="t-hint">a blank field is a complete record</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">"My body read is mine to hold." If volunteered
+          unprompted, place it verbatim, no follow-up.</div></div>
+          <div class="src-line">§ B — feedback_body_read_is_his.md</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /ROOM: WIDGET -->
+
+  <!-- ROOM: GAME -->
+  <div class="view" id="view-game">
+    <div class="room-hd">
+      <div class="room-title">The game world</div>
+      <span class="back-anchor" onclick="showBoard()">◆ back to board</span>
+    </div>
+    <div class="locator">
+      <div class="locator-lab">◆ this room's depth</div>
+      <p>These bind the game world only. The widget room's rules do not
+      transfer here — a status-overview panel that's correct for a widget
+      reads as "a completion meter with better typography" in-world.</p>
+    </div>
+    <div class="tiles">
+
+      <div class="tile top open" id="c-g1">
+        <div class="t-hd" onclick="toggle('g1',event)"><span class="t-car">▾</span>
+          <div class="t-main"><div class="t-one">Read the pixels, not the plan.</div>
+          <div class="t-hint">still an owed repair — see the always room</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Measure visibility in real screen pixels, never
+          the data model. A game object once sat at 7.8px — present,
+          data-correct, functionally invisible. No instrument in this corpus
+          formally asserts anything is VISIBLE.</div></div>
+          <div class="src-line">§ A — LEARNED law 5</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g2">
+        <div class="t-hd" onclick="toggle('g2',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Ask the object its own state — never infer it from a symptom.</div>
+          <div class="t-hint">"landed" inferred from stillness, while still falling</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">A controller once inferred "landed" from 20
+          frames of stillness while the character fell for 8 more seconds. A
+          full day of screenshots captured 240m in the air, believed to be
+          evidence.</div></div>
+          <div class="src-line">§ A — LEARNED law 23</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g3">
+        <div class="t-hd" onclick="toggle('g3',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Progression is physical, unnumbered — for this project specifically.</div>
+          <div class="t-hint">not general UX law; the accessibility gap is open, not solved</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">No scores, ranks, bars, streaks. Built
+          substitute: tank fill height, pool size, room brightness. No
+          non-visual equivalent exists — a real accessibility cost this
+          choice hasn't solved.</div></div>
+          <div class="src-line">§ A — "progression as physics, unnumbered"</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g4">
+        <div class="t-hd" onclick="toggle('g4',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">A blank screen can vacuously pass a rule.</div>
+          <div class="t-hint">a test passable by absence tests nothing</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">"No system text on screen" was once satisfied by
+          a world with zero text primitives at all — incapacity mistaken for
+          compliance.</div></div>
+          <div class="src-line">§ A — LEARNED law 4</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g5">
+        <div class="t-hd" onclick="toggle('g5',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">An ambient element must behave identically regardless of content.</div>
+          <div class="t-hint">candidate — never ratified</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Test: would it act the same for a thousand
+          words of grief as a thousand words of grocery lists? If not, it's a
+          judgment wearing atmosphere.</div></div>
+          <div class="src-line">§ A — "the indicator refusal," CANDIDATE_GRAMMAR.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g6">
+        <div class="t-hd" onclick="toggle('g6',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Guards refuse the act; they never rewrite what's already rendered.</div>
+          <div class="t-hint">enforce by refusing, never by correcting the result after</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">A word cap that truncated on `input` corrupted
+          the player's own typed text mid-stream. Fixed by refusing the
+          keystroke on `beforeinput` instead.</div></div>
+          <div class="src-line">§ C — LEARNED law 24</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g7">
+        <div class="t-hd" onclick="toggle('g7',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Social comparison, resistant exits, forced onboarding, dashboards — refused.</div>
+          <div class="t-hint">one lens's rulings for this build, not general UX claims</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Recorded as this project's own calls, not
+          proven law — see the source doc § G for what each substitute
+          actually is.</div></div>
+          <div class="src-line">§ G — counsel/gamecraft</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-g8">
+        <div class="t-hd" onclick="toggle('g8',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Silent autosave, no "saved" indicator — a held tradeoff, not a free win.</div>
+          <div class="t-hint">the cost (a cleared store loses the world) is kept visible on purpose</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Resolves save-anxiety without a status line;
+          the real cost is named rather than hidden behind the calm UI.</div></div>
+          <div class="src-line">§ G</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /ROOM: GAME -->
+
+  <!-- ROOM: PAGE -->
+  <div class="view" id="view-page">
+    <div class="room-hd">
+      <div class="room-title">Public page or tool</div>
+      <span class="back-anchor" onclick="showBoard()">◆ back to board</span>
+    </div>
+    <div class="locator">
+      <div class="locator-lab">◆ this room's depth</div>
+      <p>These bind public/authored pages and standalone tools — not the
+      widget chassis, not the game world.</p>
+    </div>
+    <div class="tiles">
+
+      <div class="tile top open" id="c-p1">
+        <div class="t-hd" onclick="toggle('p1',event)"><span class="t-car">▾</span>
+          <div class="t-main"><div class="t-one">No dark backgrounds on deployed public pages — for this audience.</div>
+          <div class="t-hint">not general UI law; this page follows the light-default choice</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Chosen for a projector/daylight-phone audience.
+          Dark mode is a real accessibility accommodation elsewhere
+          (photosensitivity, migraine) and an OLED battery win — this page
+          has not built that option.</div></div>
+          <div class="src-line">§ A / § E</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-p2">
+        <div class="t-hd" onclick="toggle('p2',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Demonstrate, don't describe.</div>
+          <div class="t-hint">cut text that tells the reader what the page will do</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Cut "why this matters," "how this works," and
+          "what this page isn't" framing where the structure already makes
+          the point.</div></div>
+          <div class="src-line">§ D</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-p3">
+        <div class="t-hd" onclick="toggle('p3',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Stay first-person as your own lived instance.</div>
+          <div class="t-hint">offer the transferable pattern separately</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Second-person copy about one person's specific
+          setup reads as projecting it onto the reader as something to
+          copy.</div></div>
+          <div class="src-line">§ D — "it reads as if the reader owns all of this"</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-p4">
+        <div class="t-hd" onclick="toggle('p4',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">A public tool demonstrates by being used, not by being read.</div>
+          <div class="t-hint">this page follows this rule</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Standalone, no external dependencies, nothing
+          graded by an AI, any donation ask stated once and never
+          pushed.</div></div>
+          <div class="src-line">§ D</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-p5">
+        <div class="t-hd" onclick="toggle('p5',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">No generalized negative framing in prose.</div>
+          <div class="t-hint">open gap: safety/warning copy is an unresolved exception</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Negative form belongs only in a lint refusing
+          one named thing, or the edge of a container.</div></div>
+          <div class="src-line">§ D</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-p6">
+        <div class="t-hd" onclick="toggle('p6',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Voice: direct, no apology, no padding.</div>
+          <div class="t-hint">soft openings and generic encouragement don't land</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Sentences end where the work ends.</div></div>
+          <div class="src-line">§ D</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /ROOM: PAGE -->
+
+  <!-- ROOM: ALWAYS -->
+  <div class="view" id="view-always">
+    <div class="room-hd">
+      <div class="room-title">Binds every surface</div>
+      <span class="back-anchor" onclick="showBoard()">◆ back to board</span>
+    </div>
+    <div class="locator">
+      <div class="locator-lab">◆ this room's depth</div>
+      <p>No separate governance track exists for "UI decisions" — these five
+      apply to everything this corpus builds, regardless of which other room
+      you came from.</p>
+    </div>
+    <div class="tiles">
+
+      <div class="tile top open" id="c-a1">
+        <div class="t-hd" onclick="toggle('a1',event)"><span class="t-car">▾</span>
+          <div class="t-main"><div class="t-one">Only the user's own click/mark counts as a decision.</div>
+          <div class="t-hint">the AI maps both sides, never marks on the user's behalf</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">The AI cannot read the somatic half of any
+          felt-gate — fail-closed when uncertain.</div></div>
+          <div class="src-line">§ F — feedback_map_both_sides.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-a2">
+        <div class="t-hd" onclick="toggle('a2',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Publishing, deploying, or deleting requires an explicit mark.</div>
+          <div class="t-hint">never inferred</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">Editing/drafting/staging inside the workspace
+          is free. Archiving beats deletion even when deletion is
+          authorized.</div></div>
+          <div class="src-line">§ F</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-a3">
+        <div class="t-hd" onclick="toggle('a3',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Don't build a UI feature unless it removes a real burden.</div>
+          <div class="t-hint">the load-test build gate</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">If it disappeared tomorrow and nothing changed
+          for the user, don't build it. Gates what gets built — never how
+          much the user gets.</div></div>
+          <div class="src-line">§ F — feedback_load_test_build_gate.md</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-a4">
+        <div class="t-hd" onclick="toggle('a4',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">Pace to felt-read capacity, not to what could be generated.</div>
+          <div class="t-hint">one decision surface per turn, not a list of five</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">If you're listing N options to choose among,
+          you've already cost-shifted.</div></div>
+          <div class="src-line">§ F</div>
+        </div>
+      </div>
+
+      <div class="tile" id="c-a5">
+        <div class="t-hd" onclick="toggle('a5',event)"><span class="t-car">▸</span>
+          <div class="t-main"><div class="t-one">No UI/visual claim is verified without a human actually looking.</div>
+          <div class="t-hint">a green suite is not a verdict — still an owed repair, see the game room</div></div>
+        </div>
+        <div class="t-bd">
+          <div class="zone-read"><div class="zone-read-lab">reading</div>
+          <div class="plain">"No WALKABLE without a stranger read" —
+          machine-proved surfaces are unwitnessed until someone looks.</div></div>
+          <div class="src-line">§ C</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /ROOM: ALWAYS -->
+
+  <div class="type-note">
+    <div class="status">pick a room · click a tile to open or close it · nothing here is gated · full source: nesi/mind/UI_UX_KNOWLEDGE.md</div>
+  </div>
+
+</div>
+<script>
+function showBoard(){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-board').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function showRoom(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const v=document.getElementById('view-'+id);
+  if(v) v.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function toggle(id, ev){
+  if(ev) ev.stopPropagation();
+  const c=document.getElementById('c-'+id);const open=c.classList.toggle('open');
+  c.querySelector('.t-car').textContent=open?'▾':'▸';
+}
+</script>
+</body>
+</html>

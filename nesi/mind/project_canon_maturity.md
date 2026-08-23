@@ -8,6 +8,18 @@ metadata:
   modified: 2026-07-22T21:43:17.907Z
 ---
 
+> **■ SCOPE NOTED, 2026-08-20** — reconciled via the process-geometry lens
+> (`nesi/mind/EXTRACTION_2026-08-20_process_geometry.md`): "default to
+> COLLAPSES_TO_EXISTING" below is the session's own analytical conclusion
+> from that day's two screens — no verbatim Kevin quote in this file
+> authorizes that specific default posture as a standing policy. The
+> screening judgment itself (patterns folding to existing canon) is real and
+> evidenced; converting it into a standing "default to X" rule is the part
+> that outran a mark. Left standing, not struck — this is a different,
+> older subsystem (the pattern-canon work, last touched 2026-07-22) than
+> tonight's NESI session, and reconciling it further is Kevin's to do if he
+> wants this canon revisited.
+
 As of 2026-06-08, two adversarial screens run back-to-back both returned near-total collapse:
 
 - **v6 phase-transition screen** — the four outward directions (§1 deposit-into-foreign-center · §2 refuse-to-merge-peers · §3 brake-turned-inward · §4 unpublishable-instrument) **all folded** to existing canon (recompositions of [[consented_ledger]] / [[the_governor]] on new axes). The only net-new piece was §0 witness-as-origin, now promoted to `patterns/witness_as_origin.md` as the genus-anchor. See [[project_v6]].

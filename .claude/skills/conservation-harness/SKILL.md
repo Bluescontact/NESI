@@ -114,3 +114,12 @@ honestly rather than fake a revert.
   reporting, not a failure to hide: a mechanic nobody can state a
   conservation law for is a mechanic nobody has decided what it's allowed to
   do to a player's material.
+
+## Sibling lenses
+
+One of six recurring checks named in `nesi/mind/DRAFT_SIX_SHAPES_2026-08-20.md`
+(seated 2026-08-21) — this one is lens 2, *does this material conserve, or
+does it leak, duplicate, or vanish*. The other five: `instrument-audit` (does
+the check prove anything), `boundary-audit` (is the boundary a fact or a
+sentence), `record-audit` (is the record honest), `authority-check` (whose
+call is this), and `unrouted-gifts` (is capacity found or left dead).

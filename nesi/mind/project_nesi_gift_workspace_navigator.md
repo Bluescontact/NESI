@@ -5,6 +5,16 @@ metadata:
   type: project
 ---
 
+> **■ TENSION NAMED, 2026-08-20** — reconciled via the process-geometry lens:
+> this file already labels THE NAVIGATOR REFRAME below "unmarked" in its own
+> header, which is honest — the violation isn't a mislabel, it's that an
+> admittedly-unmarked idea was still used to de-scope the whole two-person
+> build (the master shape's crossing beat requires the human's mark to be
+> what authorizes an act with real consequences, not just to be present
+> somewhere in the record). Nothing here rules whether NESI is a navigator
+> or a gift medium — that's still Kevin's. Left standing, not struck; a
+> different, older subsystem than tonight's session.
+
 **Session 2026-07-23 — the night NESI got a face and a resolved gift architecture.** Long, hard session; the honest outcomes:
 
 **LOCAL ENGINE (the center lit, locally).** `nesi/conductor/engine_local.py` — a no-login local articulation engine (stdlib urllib → Ollama `hermes3:8b`, `format:json`), registered into the real seam (`core._ARTICULATE_ENGINES["local"]`) and **persisted into `core.py`** (self-registers on import; `current_engine()` now defaults to `local`, no override). **First real metabolization ran** end-to-end (5 dispositions on a real pile, record: `nesi/returns/FIRST_LOCAL_METABOLIZATION_2026-07-23.md`). Honest read: the socket is the win; hermes3:8b is shallow — swappable later (bigger local model, or Claude once its login bug clears — same socket).

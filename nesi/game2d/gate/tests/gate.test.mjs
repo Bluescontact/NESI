@@ -86,7 +86,7 @@ test('admit and refuse carry equal mechanical weight', () => {
 // Run with no arguments each CLI must reach its own usage refusal, exit 2.
 test('every instrument CLI is reachable as main', () => {
   const here = dirname(fileURLToPath(import.meta.url));
-  for (const name of ['02-selfuse', '03-blanks', '04-horizon', '05-subtract']) {
+  for (const name of ['02-selfuse', '03-blanks', '04-horizon', '05-subtract', '07-magnitude', '09-dispute']) {
     let status = 0;
     try {
       execFileSync(process.execPath, [join(here, '..', 'instruments', name + '.mjs')], { stdio: 'pipe' });

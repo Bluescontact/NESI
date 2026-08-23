@@ -24,6 +24,11 @@
 #
 # Then delete the ones you have not opened in a month — that is 05-subtract's
 # first target.
+#
+# ── 08-return, ADDED 2026-08-21 ─────────────────────────────────────────────
+# Every organ named here must have a matching, non-empty line in RETURNS.txt
+# or 08-return refuses it as extractive by construction (McNamara's two-node
+# rule). Right now none of the twelve do — that refusal is honest, not a bug.
 
 # ── falling ──
 TANK

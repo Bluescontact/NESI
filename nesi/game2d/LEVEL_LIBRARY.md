@@ -83,6 +83,37 @@ The first four below are written assuming **(2)** — spans real days — becaus
 it's the only one of the three that costs nothing to start with today's
 build. If that's wrong, say so before more levels get authored to it.
 
+**■ CORRECTED, 2026-08-21, same day as the note it replaces.** The note below
+claimed the cold-walk Kevin started at TANK would answer this fork by itself.
+It won't, and the reason is a real ruling, not a bug: **"TANK always meant to
+be the on-ramp"** — Kevin's mark, 2026-08-21, closing the gate-mismatch
+`tank.html`/`ascent.html` comparison a dependency-map pass surfaced the same
+day. `tank.html`'s own `fractionMember()` calls `SEAM.fractionControl(st,
+SEAT, onChange)` with none of the write-gate/week-gate arguments the
+`ascent.html` call site passes (`ascent.html:361-362`) — confirmed by direct
+read, not inferred — and that is now ruled correct as built: TANK's exit is
+deliberately frictionless, the one edge a hand can walk the same day it
+arrives. So walking CAST from TANK answers nothing about pacing — it was
+never going to hit the week-gate or the write-gate at all.
+
+**What still answers this fork:** the same experiment, run against one of
+the *other* eleven tutorial edges instead — any seam reached through
+`ascent.html`, where `isReturned(st) && written && weekComplete(st)`
+(`ascent.html:370`) is the real, unedited gate. That walk hasn't started yet.
+
+*Superseded text, kept whole per this corpus's own convention —* This fork
+was never confirmed — a game-craft read the same day found the built
+mechanic actually stacks **(2)** (the week-gate, `weekComplete`, ruled
+2026-08-20) **on top of** a single-write requirement (`SEAM.WRITE_CAP`, built
+2026-08-21), compounding rather than choosing one of the three options above.
+Rather than deciding this from a chair, Kevin started a real cold-walk of one
+built edge the same day — cleared state, confirmed genuinely empty
+(`localStorage` verified `[]` before load), the actual human hand
+`cold-walk`'s own step 6 now requires. That walk, run to its natural close
+across whatever real days it takes, IS the answer to this open fork:
+whichever pacing it turns out to feel like is the pacing this library should
+write the remaining edges to, not a separate conversation held after.
+
 ---
 
 ## THE FIRST FOUR — DAY ONE, THE BOTTOM SQUARE

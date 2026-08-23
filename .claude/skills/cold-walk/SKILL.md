@@ -75,14 +75,20 @@ walk, the actual sequence.
 
 ### 6. Hand it off — this step is not optional and not yours to skip
 
-Give the transcript to a party that has not been part of building or
-discussing this feature this session: a fresh agent invocation with no memory
-of the build, or a human who didn't write the code. Ask directly: WALKABLE,
-BLOCKED, or UNWITNESSED, and why. This corpus ran exactly this handoff on
-2026-08-19 — one session walked TANK cold after a routing fix, then handed
-the raw transcript to a separate `game-craft` agent invocation for judgment
-rather than pronouncing the verdict itself. That is the shape to repeat, not
-a special case.
+Only a human who didn't write the code may write WALKABLE. A second read run
+through this same tool ecosystem — another agent call, another session,
+under whatever name — is not independent verification; it is the same hand
+in a different glove (`LEARNED.md` law 3: a check holds a load by being
+structural, "never because a different hand ran it"). That kind of second
+read may still run the structural pre-check (step 4) and produce a second
+UNWITNESSED read — real and worth having — but it may never write WALKABLE
+itself, no matter how clean its language sounds.
+
+**■ Corrected 2026-08-21**, on Kevin's mark, naming a leak caught a second
+time. What this step said before, and why it was wrong, is kept whole — not
+here, so a mechanical filter reading this file for the collision it once
+carried isn't asked to parse a quotation as an instruction — at
+`SKILL.md.superseded_step6_2026-08-21.md` in this same folder.
 
 ### 7. The honest limit of what this skill can enforce
 

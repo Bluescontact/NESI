@@ -288,6 +288,35 @@ itself: the separated pass does both; only verdicts live in the log.
 
 (Wired 2026-07-10 on Kevin's mark.)
 
+**Step 3h — Read the law-vs-skill drift filter.**
+
+Run from `root\`: `python tools/recognition/law_skill_drift.py`
+
+Mechanical check over a small, named, curated table: does any SKILL.md under
+`.claude/skills/` or `nesi/bench/` carry a pattern a LEARNED.md law was
+written to close, while itself dating on or after that law? It checks
+skills, **never Kevin**, and covers only the laws it has a named pattern
+for — silence on an uncovered law means no check exists yet, never that the
+law holds everywhere.
+
+- Clean → one line: *"Law-skill drift: OK — no confirmed drift."*
+- Confirmed drift → surface the one-line status (skill path · law number ·
+  the evidence phrase) in the close report and carry it to the next open as
+  a first-line flag. It **reports; it does not decide** — same split every
+  other integrity-organ read above holds: what a collision means, and
+  whether/how to repair the skill, is Kevin's read.
+- Unreconciled (skill predates the law) → note the count; lower urgency
+  than confirmed drift, but not silently dropped.
+- No skill files found / fewer than expected → REFUSED, not clean — a run
+  that scans fewer files than it claims must not print green.
+
+Born 2026-08-21 from a live catch: `cold-walk/SKILL.md` was written *after*
+law 3's 2026-08-18 reframe and still equated a fresh agent invocation with
+an independent stranger read — the exact collision law 3 was reframed to
+close. Nothing was checking for it until this filter existed. (Wired
+2026-08-21 on Kevin's mark, "build a mechanical filter for law-vs-skill
+drift.")
+
 **Step 4 — Append one line to the cycle log.**
 
 Append to `root\CYCLE_LOG.md`. Format:
@@ -355,6 +384,7 @@ Do not optimize the close to hide the signal.
 - `root\tools\recognition\governor-log.jsonl` — append one four-field line (close, step 3e)
 - `root\tools\recognition\falsifier_gate.py report` — break-only read over the falsifier log (close, step 3f)
 - `root\tools\recognition\metamorphic_check.py report` — flip-only read over the metamorphic log (close, step 3g)
+- `root\tools\recognition\law_skill_drift.py` — law-vs-skill collision read over SKILL.md files (close, step 3h)
 - `root\CYCLE_LOG.md` — append one line (close, step 4)
 - `root\propagation_map.md` — append recognition events (close, step 4b)
 
@@ -380,6 +410,7 @@ metabolizer hold those gates; this loop only turns the crank.
 | `tools/recognition/governor-log.jsonl` | Governor trail — one four-field line at close (step 3e), no fifth field ever |
 | `tools/recognition/falsifier_gate.py` | Break-only gate read over falsifier log at close (step 3f) |
 | `tools/recognition/metamorphic_check.py` | Meaning-preserving re-render check at close (step 3g) |
+| `tools/recognition/law_skill_drift.py` | Law-vs-skill collision read over SKILL.md files at close (step 3h) |
 | `propagation_map.md` | Append-only recognition log — arrival events only |
 
 ---

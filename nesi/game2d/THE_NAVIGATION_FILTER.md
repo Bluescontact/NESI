@@ -51,3 +51,16 @@ signal — the corpus already has language for it (`THE_UPSTREAM_FILTERS.md`
 that names its own missing upstream deposit. The composite solution gets
 built from naming that place, not from re-describing the refusal each time it
 recurs.
+
+**Built 2026-08-23: `gate/deposits.mjs`.** A read-only layer over
+`gate/LEDGER.jsonl`'s full run history — groups every REFUSE by instrument id
++ exact reason text, surfaces count and standing span for any that repeat.
+Runnable standalone (`node gate/deposits.mjs`) and printed automatically at
+the end of every `gate.mjs` run as a `named deposits` section. It never
+refuses, holds, or passes, has no exit code of its own, and is not registered
+into any suite — it changes how a repeat is *read*, exactly as law 27
+requires, and nothing about whether any of the nine instruments still fire.
+First real output, at build time: `08-return` refused identically 30 times
+since 2026-08-21; `02-selfuse` refused identically 27 times on 2026-08-18
+before its own condition changed. Both are the ledger naming itself, not this
+tool inventing a reading.

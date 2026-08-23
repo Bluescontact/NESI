@@ -1,5 +1,19 @@
 # NESI — THE SIX MANIFESTS
 
+> **■ COMPOSTED, 2026-08-20, Kevin's mark ("let's go ahead and compost past
+> level design").** `THE_BOOT_2026-08-18.md` had held this file open —
+> "reconciled, not retired, on Kevin's call, because gameplay hasn't been
+> sufficiently worked through with him." Gameplay has now been worked through
+> directly: a level is an edge, not a tetra (MARKS_LOG.jsonl
+> 2026-08-20T20:45:00); the sort keeps physical fractions AND a circuit-end
+> gift (2026-08-20T21:05:00); light is aim-plus-window-charge, built and
+> verified the same session. `LEVEL_LIBRARY.md` carries the progression
+> forward from here, level by level rather than manifest by manifest. Kept
+> whole, not deleted — this is still the real record of the 2026-08-12 ladder
+> and the beats it named are available to quarry (THE_HAND, HELIOSTAT,
+> OVERWINTERING's day-gated real-time model all trace back to here), just no
+> longer the build's own ladder of record.
+
 *Kevin's ladder, dropped into chat 2026-08-12 after the fun slice was built and
 committed (2e696ad). It existed nowhere on disk, so it is written here verbatim
 before anything acts on it — the same move THE_GAME.md and the mechanics catalog

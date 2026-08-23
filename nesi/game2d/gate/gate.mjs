@@ -17,6 +17,7 @@
 // the builder ledger with its grounds. No gate event has a player projection.
 
 import { declaresCost, append } from './lib.mjs';
+import { namedDeposits } from './deposits.mjs';
 
 const MODULES = [
   './instruments/01-motion.mjs',
@@ -25,6 +26,9 @@ const MODULES = [
   './instruments/04-horizon.mjs',
   './instruments/05-subtract.mjs',
   './instruments/06-landed.mjs',
+  './instruments/07-magnitude.mjs',
+  './instruments/08-return.mjs',
+  './instruments/09-dispute.mjs',
 ];
 
 const C = {
@@ -172,6 +176,18 @@ const landed = results
 if (landed.length) {
   console.log(`  ${C.grn('◆')} ${C.bold('made possible')}`);
   for (const m of landed) console.log(wrap('· ' + m, 8));
+  console.log('');
+}
+
+// Law 27: a refusal that repeats is read as the place naming its own missing
+// upstream deposit, not restated each run. Read-only over the ledger's full
+// history — never affects verdictKind or code above.
+const deposits = namedDeposits();
+if (deposits.length) {
+  console.log(`  ${C.cyan('◇')} ${C.bold('named deposits')}` + C.dim('  ·  what a repeated refusal is asking for'));
+  for (const d of deposits) {
+    console.log(`    ${C.bold(d.id)}  ${C.dim(`refused ${d.count}x, since ${d.firstSeen.slice(0, 10)}`)}`);
+  }
   console.log('');
 }
 

@@ -125,6 +125,12 @@ function groundY(x){
 }
 const GATE_H=42;                                /* how far the sluice can rise */
 const LIP=452;                                  /* the basin's own lip */
+/* THE MEMBRANE — a screen standing just past the sluice, in the same dry
+   stretch the water's own cut already runs through (x>DAM.x1&&x<344). Sited
+   as an offset from DAM.x1 rather than a fixed x, so it moves correctly
+   through the bloom's fold exactly as DAM itself does. */
+const MEM_DX=54, MEM_W=30, MEM_H=96;
+let MEM={x:0,y:0};
 let DAM={}, LAKE_L=VW, BODIES={};
 const BODYK=["res","basin","lake","basin2"];
 /* the seats, at each end of the fold. the third slides in from the world's edge
@@ -139,6 +145,7 @@ function siteStage(m){
   const b=bounds(m), mx=(a,c)=>a+(c-a)*m;
   DAM={x0:232*b.aR/VW, x1:258*b.aR/VW, crest:248, base:338};
   LAKE_L=b.aR;
+  MEM={x:DAM.x1+MEM_DX, y:DAM.base-MEM_H};
   /* the bodies are MUTATED, never replaced. a stage change that handed out fresh
      objects would silently orphan every reference already holding one — and the
      thing it holds is the area table, so the waterline would sit on a bed that
@@ -633,6 +640,17 @@ function waters(dt){
     S.wet[i]=Math.max(w,S.wet[i]-dt*0.012);
   }
 }
+/* MEMBRANE'S OWN STEP — mHeld is the visual ramp ONLY, exactly as seam.js's
+   own sillMechanic continuously animates its plate's height while held.
+   THE WRITE ITSELF IS NOT HERE. Ascent.html's own membrane is explicit that
+   HOLD's law is "the act is the release, not the hold itself" — its effect
+   fires once, in `letting_go`, sized by how much crossed while it was down.
+   An earlier pass of this station mutated load/silt every frame it was
+   held, which is HOLD wearing DRAW's clothes; caught on its own gesture
+   pass and moved to release() below, where a HOLD's effect belongs. */
+function membraneStep(dt){
+  mHeld = mHold ? Math.min(1,mHeld+dt*0.7) : Math.max(0,mHeld-dt*1.6);
+}
 function wetAt(x){const i=Math.max(0,Math.min(WN-1,Math.round(x/4)));return S.wet[i]}
 function waterYAt(x){const b=bodyAt(x);return b?surfOf(b):1e9}
 
@@ -933,8 +951,50 @@ function stones(dt){
   }
 }
 
-/* ------------------------------------------------------------------ input */
-let drag=null;
+/* ------------------------------------------------------------------ input
+   THE HAND'S LAW — four gestures, carried from ascent.html's own
+   CONSTRAINTS["fifth"]: "a stage may use only reach, hold, draw or wait.
+   There is no fifth gesture." world.html predates that law and already
+   was NOT true on first write — this comment claimed it, then a gesture
+   pass on 2026-08-21 actually checked every mechanic against the law
+   instead of the label attached to it. Two claims did not survive:
+
+   CLEAN MATCHES, checked against the definitions in ascent.html itself
+   (reach()/hold()/draw()/wait()), not against what this comment used to say:
+     REACH — resolves the instant a click lands, no drag needed at all.
+             THE SOUNDING (already was). now also SPRING (a built block,
+             clicked, comes back a stone — no drag, checked first-return).
+     HOLD  — the act is the RELEASE, not the press; nothing during the hold
+             writes anything real, only a visual ramp (mHeld). MEMBRANE was
+             built wrong on the first pass — it wrote load→silt every frame
+             it was held, which is HOLD wearing DRAW's clothes. Fixed: the
+             write is one line, in release(), sized by how deep mHeld had
+             ramped. A bare tap now gives back almost nothing, correctly.
+     DRAW  — a course, and it only counts once released with real length
+             (world.html's own `drag.moved>=8` gate, same shape as
+             ascent.html's `L.moved>10`). TABLE is this: a course through
+             settled ground, worked only past the threshold; a still tap on
+             the same ground still only sounds it, never tables it.
+     WAIT  — no input at all. THE STILLING already was, and still is.
+
+   NOT A CLEAN MATCH, found rather than assumed: the gate, the mirror, a
+   dragged stone, and a pulled cast do not fit any of the four as actually
+   defined. All four resolve UNCONDITIONALLY on release — no length
+   threshold, no accumulation, no minimum anything — and the gate and
+   mirror don't resolve on release AT ALL, they are a continuously-tracked
+   live value the whole time the hand is down, which is neither DRAW's
+   committed course nor HOLD's single fire. This is a real fifth shape —
+   call it LEVER — that predates ascent.html's "no fifth gesture" law
+   (world.html is older) and was never reconciled against it. CHANNEL, new
+   in this pass, was deliberately built to match this existing LEVER shape
+   (it carves continuously as the hand moves, no length gate) rather than
+   forced into DRAW's threshold-then-commit shape, because that is the
+   idiom the water's own erosion — the ledger channel shares — already
+   uses. Whether gate/mirror/stone/fruit should be brought into strict
+   four-gesture conformance, or whether LEVER should be named as a real
+   fifth member of the law, is not this pass's call to make; it is named
+   here, unresolved, rather than quietly forced either way. */
+let drag=null, mHold=false, mHeld=0;
 function toWorld(e){
   const r=cv.getBoundingClientRect();
   const sc=Math.min(r.width/W,r.height/H);
@@ -943,7 +1003,7 @@ function toWorld(e){
 }
 cv.addEventListener("pointerdown",e=>{
   if(bloom)return;          /* nothing reaches the world while it is unfolding */
-  const p=toWorld(e); cv.setPointerCapture(e.pointerId); stir();
+  const p=toWorld(e); try{cv.setPointerCapture(e.pointerId);}catch(err){} stir();
   soundEl.classList.remove("up");     /* the hand moves on; the line closes */
   /* a ripe cast under the hand — the one thing that leaves */
   for(const s of S.shoots){
@@ -955,8 +1015,33 @@ cv.addEventListener("pointerdown",e=>{
     const s=S.stones[i];
     if(!s.sinking&&Math.hypot(p.x-s.x,p.y-s.y)<s.r+13){s.held=true;drag={k:"stone",s};return}
   }
+  /* SPRING (REACH) — what the deep has already built comes back to the hand
+     as a stone, verbatim: the block carries its own `text` from the night it
+     rose (theNight() stamps it). Resolves the instant it lands, no drag, no
+     letting-go — checked ahead of the sluice/mirror because a block is a
+     thing to take, not a lever to pull. Does not compete with the night-
+     build: it only ever returns what the deep already finished making. */
+  for(let i=S.built.length-1;i>=0;i--){
+    const b=S.built[i];
+    if(p.x>b.x-b.w/2-6&&p.x<b.x+b.w/2+6&&p.y>b.y-6&&p.y<b.y+b.h+6){
+      S.built.splice(i,1);
+      S.stones.push({x:b.x,y:b.y-8,r:6+Math.random()*3,text:b.text||"",n:++S.nn,vy:0,held:false,sinking:0,seed:Math.random()*99});
+      rebuildBlocks();
+      return;
+    }
+  }
   /* the sluice */
   if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16){drag={k:"gate",y0:p.y,g0:S.gate};return}
+  /* MEMBRANE (HOLD) — a screen standing in the water's own cut. Pressed and
+     held, it pulls the basin's suspended load down faster than the passive
+     settling waters() already does, and lays exactly that much silt at its
+     own foot — the SAME two fields (load.basin, S.silt) water already
+     writes, hand-accelerated at one exact spot rather than a second ledger.
+     The act is the press; nothing here reads what the load IS, only how
+     much of it moves. */
+  if(p.x>MEM.x-MEM_W/2-8&&p.x<MEM.x+MEM_W/2+8&&p.y>MEM.y-8&&p.y<MEM.y+MEM_H+8){
+    mHold=true; drag={k:"membrane"}; return;
+  }
   /* the mirror is a lever, not a dial: the hand takes it where it is and turns
      it from there. grabbing it must never snap it, and holding it further out
      must give finer control — both fall out of tracking the DELTA. */
@@ -967,14 +1052,28 @@ cv.addEventListener("pointerdown",e=>{
       drag={k:"mirror",si:i,a0:Math.atan2(p.y-st.y,p.x-st.x),m0:S.mirrors[i]};return;
     }
   }
-  /* THE SOUNDING — carried from nesi.html, and the whole of why this build
-     exists again. Click the ground where a sentence was set down and it comes
-     back up, VERBATIM, because the hand asked for it. Nothing surfaces on its
-     own; a sounding that finds nothing shows nothing; and it is checked last,
-     so anything the hand could pick up is picked up first. */
+  /* CHANNEL (DRAW) — the hand's own cut, in the same dry stretch the water's
+     jet already cuts (x>DAM.x1&&x<344). Reuses S.silt exactly as the water
+     does; the difference is only who is moving it — direct and deliberate
+     here, incidental there. Requires the hand to be AT OR BELOW the ground:
+     held above it, nothing happens, same law channel had in ascent.html. */
+  if(p.x>DAM.x1+16&&p.x<344&&p.y>=groundY(p.x)-6){
+    drag={k:"channel"}; return;
+  }
+  /* THE SOUNDING — unchanged, still a true REACH: it fires the instant the
+     click lands, not on release, exactly as `reach()`'s own law states ("the
+     one frame a click lands near a thing"). TABLE (DRAW) layers on top of
+     the same start rather than replacing it: the sound surfaces right away,
+     and if the hand keeps moving from there, a course begins too — the two
+     are not exclusive, the same way a REACH and a DRAW never were in
+     ascent.html's own grammar, only ever sequenced. */
   for(let i=S.settled.length-1;i>=0;i--){
     const d=S.settled[i];
-    if(Math.abs(p.x-d.x)<20&&Math.abs(p.y-groundY(d.x))<24){sound(i,e);return}
+    if(Math.abs(p.x-d.x)<20&&Math.abs(p.y-groundY(d.x))<24){
+      sound(i,e);
+      drag={k:"course",x0:p.x,y0:p.y,i0:i,touched:new Set([i]),moved:0};
+      return;
+    }
   }
 });
 cv.addEventListener("pointermove",e=>{
@@ -991,12 +1090,29 @@ cv.addEventListener("pointermove",e=>{
   }
   else if(drag.k==="stone"){drag.s.x=Math.max(8,Math.min(W-8,p.x));drag.s.y=p.y;drag.s.vy=0}
   else if(drag.k==="fruit"){drag.x=p.x;drag.y=p.y}
+  else if(drag.k==="channel"){
+    if(p.x>DAM.x1+16&&p.x<344&&p.y>=groundY(p.x)-6){
+      const i=Math.max(0,Math.min(WN-1,Math.round(p.x/4)));
+      if(S.silt[i]>-CUT_CAP){S.silt[i]=Math.max(-CUT_CAP,S.silt[i]-0.35);siltDirty=true}
+    }
+  }
+  else if(drag.k==="course"){
+    drag.moved+=Math.hypot(p.x-(drag.px==null?drag.x0:drag.px),p.y-(drag.py==null?drag.y0:drag.py));
+    drag.px=p.x; drag.py=p.y;
+    for(let i=S.settled.length-1;i>=0;i--){
+      const d=S.settled[i];
+      if(Math.abs(p.x-d.x)<20&&Math.abs(p.y-groundY(d.x))<24)drag.touched.add(i);
+    }
+  }
 });
 function hover(p){
   for(const s of S.stones)if(!s.sinking&&Math.hypot(p.x-s.x,p.y-s.y)<s.r+13)return true;
+  for(const b of S.built)if(p.x>b.x-b.w/2-6&&p.x<b.x+b.w/2+6&&p.y>b.y-6&&p.y<b.y+b.h+6)return true;
   if(p.x>DAM.x0-16&&p.x<DAM.x1+16&&p.y>DAM.base-GATE_H-30&&p.y<DAM.base+16)return true;
+  if(p.x>MEM.x-MEM_W/2-8&&p.x<MEM.x+MEM_W/2+8&&p.y>MEM.y-8&&p.y<MEM.y+MEM_H+8)return true;
   for(let i=0;i<S.seated;i++)if(Math.hypot(p.x-SEATS[i].x,p.y-SEATS[i].y)<74)return true;
   for(const s of S.shoots){const f=fruitAt(s); if(f&&Math.hypot(p.x-f.x,p.y-f.y)<f.r+13)return true}
+  if(p.x>DAM.x1+16&&p.x<344&&p.y>=groundY(p.x)-6)return true;
   return false;
 }
 /* THE SOUNDING HAS A CURSOR. It was the one act in the world with no hand-signal
@@ -1047,6 +1163,30 @@ function release(){
     }
   }
   if(drag&&drag.k==="fruit")pullCast(drag.s);
+  if(drag&&drag.k==="membrane"){
+    mHold=false;
+    /* THE ACT IS THIS LINE, not the frames before it. Sized by how deep the
+       press had ramped (mHeld, 0..1) — a tap presses barely and gives
+       almost nothing back; a real hold gives its full pull. Same two real
+       fields as before (load.basin, S.silt), one write, on release. */
+    if(mHeld>0.02){
+      const i=Math.max(0,Math.min(WN-1,Math.round(MEM.x/4)));
+      const pull=Math.min(load.basin, mHeld*1.1);
+      if(pull>1e-6){
+        load.basin-=pull;
+        if(S.silt[i]<SILT_CAP){S.silt[i]=Math.min(SILT_CAP,S.silt[i]+pull*30);siltDirty=true}
+      }
+    }
+  }
+  if(drag&&drag.k==="course"&&drag.moved>=8&&drag.touched.size){
+    /* WRITES: every deposit the course touched is worked, the same act a
+       merge already is — one more seam, and the weather it draws follows.
+       Below the threshold nothing is written here at all: the sounding
+       already ran, at pointerdown, and a tap that never became a course
+       owes this ledger nothing more. */
+    drag.touched.forEach(function(i){ if(S.settled[i])S.settled[i].seams=(S.settled[i].seams||0)+1; });
+    rebuildWeather();
+  }
   drag=null;
 }
 cv.addEventListener("pointerup",release);
@@ -1153,7 +1293,7 @@ function frame(now){
     for(let i=0;i<SEATS.length;i++)beams[i]=cast(S.mirrors[i],i);
     if(bloom.t>=1)commitBloom();
   } else {
-    waters(dt); rain(dt); light(dt); deep(dt); stones(dt);
+    waters(dt); rain(dt); light(dt); deep(dt); stones(dt); membraneStep(dt);
   }
 
   g.clearRect(-400,-400,W+800,H+800);
@@ -1306,6 +1446,24 @@ function frame(now){
   g.fillStyle="#241f18";
   g.fillRect(DAM.x0+9,openY-GATE_H-7,DAM.x1-DAM.x0-18,7);
 
+  /* --- THE MEMBRANE, standing in the water's own cut -------------------- */
+  /* a screen: hatched lines fixed in place, and a plate that advances only
+     as far as mHeld — the press itself is the whole readout, no bar, no
+     count, same idiom the sill in seam.js already uses. */
+  g.save();
+  g.strokeStyle="rgba(90,84,74,.55)"; g.lineWidth=1.4;
+  for(let y=MEM.y;y<MEM.y+MEM_H;y+=8){
+    g.beginPath(); g.moveTo(MEM.x-MEM_W/2,y); g.lineTo(MEM.x-MEM_W/2,y+5); g.stroke();
+    g.beginPath(); g.moveTo(MEM.x+MEM_W/2,y); g.lineTo(MEM.x+MEM_W/2,y+5); g.stroke();
+  }
+  g.strokeStyle="rgba(90,84,74,.35)"; g.lineWidth=1;
+  g.beginPath(); g.moveTo(MEM.x-MEM_W/2,MEM.y); g.lineTo(MEM.x-MEM_W/2,MEM.y+MEM_H); g.stroke();
+  g.beginPath(); g.moveTo(MEM.x+MEM_W/2,MEM.y); g.lineTo(MEM.x+MEM_W/2,MEM.y+MEM_H); g.stroke();
+  const plateY=MEM.y+MEM_H*(1-mHeld*0.7);
+  g.fillStyle="rgba(90,84,74,"+(0.30+mHeld*0.35)+")";
+  g.fillRect(MEM.x-MEM_W/2-4,plateY,MEM_W+8,(MEM.y+MEM_H)-plateY);
+  g.restore();
+
   /* the jet, the spill, the splashes */
   g.fillStyle="rgba(206,232,232,.62)";
   for(const p of spray){g.beginPath();g.arc(p.x,p.y,1.6,0,7);g.fill()}
@@ -1433,6 +1591,21 @@ function frame(now){
     g.fillStyle="#2d3238"; g.beginPath(); g.arc(st.x,st.y,5,0,7); g.fill();
   }
 
+  /* --- a course, mid-draw ------------------------------------------------ */
+  /* TABLE, drawn while it is being drawn: every deposit the course has
+     touched so far reads warmer, so the hand can see what it has worked
+     before it lets go — the same "already picked" cue seam.js's own
+     fraction buttons use, translated to this canvas. */
+  if(drag&&drag.k==="course"){
+    g.strokeStyle="rgba(74,108,122,.55)"; g.lineWidth=2.4; g.lineCap="round";
+    g.beginPath(); g.moveTo(drag.x0,drag.y0); g.lineTo(drag.px==null?drag.x0:drag.px,drag.py==null?drag.y0:drag.py); g.stroke();
+    drag.touched.forEach(function(i){
+      const d=S.settled[i]; if(!d)return;
+      g.strokeStyle="rgba(255,214,120,.55)"; g.lineWidth=1.4;
+      g.beginPath(); g.arc(d.x,groundY(d.x)-1,12,0,7); g.stroke();
+    });
+  }
+
   /* --- a cast in the hand ---------------------------------------------- */
   if(drag&&drag.k==="fruit"){
     const fr=shootShape(drag.s).fr;
@@ -1484,7 +1657,8 @@ function frame(now){
      surfaces fall quiet on the same clock. ~66s after the last act. */
   const busy = bloom || swell>0.05 || drag || siltDirty || rainQueue>0 || flash>0.01
             || drops.length || splashes.length || spray.length || bubbles.length
-            || jetT>0.05 || spillT>0.05 || draining || stonesMoving || growing;
+            || jetT>0.05 || spillT>0.05 || draining || stonesMoving || growing
+            || mHold || mHeld>0.001;
   if(busy)requestAnimationFrame(frame); else running=false;
 }
 /* the first frame is a KICK, not a stir: the valley paints itself once and then

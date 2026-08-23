@@ -42,7 +42,7 @@ Endgame verb: grow a fruit (already designed — the cast, carrying shape never 
 
 ## What is kept sacred (the soul — these never bend)
 
-* Nothing ever reads, judges, or rewrites the words. Content-blind forever.
+* Nothing ever reads for meaning, judges, or rewrites what a word *says*. Content-blind forever — the mechanics touch words only as geometric/relational objects (position, adjacency, arrival order, crossing), never by parsing what they mean. Render and structural alteration through that geometry are not reading. (Kevin, MARKS_LOG.jsonl 2026-08-20T20:22:00)
 * No numbers, scores, streaks, or tallies reach the player. Progress is form: water level, light, terrain, the size of what surfaces.
 * Nothing leaves the world but fruit, by the hand.
 * Quitting loses nothing; absence is productive by design; blank is a complete state.
@@ -66,7 +66,18 @@ A calm god-game where your real journaling is the weather; a world that visibly 
 
 ---
 
-## THE ORDER THAT CAME WITH IT (verbatim, same drop)
+## THE ORDER THAT CAME WITH IT
+
+> **■ LABEL CORRECTED, then RATIFIED, 2026-08-20.** Only "a diagram is not a
+> game" was ever Kevin's own verbatim words; the rest of the order below is
+> the chief-of-staff seat's own expansion (a real, established role — see
+> `LEARNED.md`'s "chief-of-staff order" citations — not fabricated). Flagged
+> as a labeling gap via the process-geometry lens, then put to Kevin
+> directly: **he ratified it.** "Game-craft leads with full authority" and
+> "every other prior ruling is advisory" now stand as his own intent, not
+> merely the seat's — the seat's order and his ruling are the same thing.
+> Nothing below is withdrawn; the standing question about its provenance is
+> closed, not just labeled.
 
 > CHIEF-OF-STAFF · NEW STANDING PRIORITY, from Kevin's own words: "a diagram
 > is not a game." The attached design (NESI — THE GAME) supersedes the

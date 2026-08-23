@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pretensioned Vision</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#0f1614; --surface:#161f1c; --surface2:#1d2925;
+  --ink:#e9e4d6; --muted:#9aa39c; --faint:#5f6b64;
+  --water:#6f93a4; --water-dim:#3f5561;
+  --gold:#d1a54a; --gold-dim:#8a713c;
+  --line:rgba(233,228,214,0.13); --line-strong:rgba(233,228,214,0.26);
+}
+@media (prefers-color-scheme: light){
+  html:not([data-theme="dark"]){
+    --bg:#eef1ea; --surface:#f8f7f1; --surface2:#e9ede3;
+    --ink:#182420; --muted:#4d5952; --faint:#828d84;
+    --water:#3d6577; --water-dim:#8fadb9;
+    --gold:#96701f; --gold-dim:#c9a552;
+    --line:rgba(24,36,32,0.13); --line-strong:rgba(24,36,32,0.26);
+  }
+}
+html[data-theme="light"]{
+  --bg:#eef1ea; --surface:#f8f7f1; --surface2:#e9ede3;
+  --ink:#182420; --muted:#4d5952; --faint:#828d84;
+  --water:#3d6577; --water-dim:#8fadb9;
+  --gold:#96701f; --gold-dim:#c9a552;
+  --line:rgba(24,36,32,0.13); --line-strong:rgba(24,36,32,0.26);
+}
+html[data-theme="dark"]{
+  --bg:#0f1614; --surface:#161f1c; --surface2:#1d2925;
+  --ink:#e9e4d6; --muted:#9aa39c; --faint:#5f6b64;
+  --water:#6f93a4; --water-dim:#3f5561;
+  --gold:#d1a54a; --gold-dim:#8a713c;
+  --line:rgba(233,228,214,0.13); --line-strong:rgba(233,228,214,0.26);
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif; font-size:16px; line-height:1.65; margin:0; padding:0 0 100px}
+.wrap{max-width:900px; margin:0 auto; padding:0 28px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif; text-wrap:balance; font-weight:600; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+
+.hero{padding:88px 0 40px; border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"IBM Plex Mono"; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:16px}
+.hero h1{font-size:clamp(1.9rem,4.4vw,2.7rem); line-height:1.15}
+.hero p{color:var(--muted); font-size:1.02rem; max-width:64ch; margin-top:20px}
+
+section{padding:48px 0; border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-eyebrow{font-family:"IBM Plex Mono"; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-bottom:10px}
+
+figure{margin:8px 0 0}
+figure svg{width:100%; height:auto; display:block}
+figcaption{font-size:.86rem; color:var(--faint); margin-top:16px; max-width:60ch}
+
+.legend{display:flex; gap:24px; margin-top:18px; font-size:.85rem; color:var(--muted); flex-wrap:wrap}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.swatch{width:20px; height:3px; display:inline-block}
+.swatch.strut{background:var(--gold); height:5px}
+.swatch.cable{background:var(--water); height:1px; opacity:.8}
+.swatch.new{background:var(--gold); height:5px; opacity:.55; border:1px dashed var(--gold)}
+
+.members{display:flex; flex-direction:column; gap:0; margin-top:8px}
+.member{padding:24px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:34px 1fr; gap:18px}
+.member:first-child{border-top:none}
+.member .num{font-family:"Fraunces"; font-size:1.3rem; color:var(--gold); font-weight:500}
+.member.added .num{color:var(--water)}
+.member h3{font-size:1.08rem; margin-bottom:4px; display:flex; align-items:center; gap:9px}
+.tag-new{font-family:"IBM Plex Mono"; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--water); border:1px solid var(--water-dim); padding:1px 6px; border-radius:2px}
+.member .strut-text{font-family:"Fraunces"; font-style:italic; color:var(--ink); font-size:1rem; margin:0 0 12px}
+.cable-row{display:flex; gap:10px; align-items:flex-start; margin-top:10px}
+.cable-icon{color:var(--water); font-size:.9rem; margin-top:2px; flex:none}
+.cable-text{font-size:.92rem; color:var(--muted); margin:0}
+.cable-text cite{display:block; font-style:normal; color:var(--faint); font-size:.78rem; margin-top:5px}
+
+.close{background:var(--surface); border:1px solid var(--line-strong); padding:28px 26px; margin-top:8px}
+.close p{font-size:.97rem; color:var(--ink); max-width:none}
+.close strong{color:var(--gold); font-weight:600}
+
+footer{padding:44px 28px 0; text-align:center; color:var(--faint); font-size:.8rem; font-family:"IBM Plex Mono"}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">a resynthesis, developed 2026-08-21</div>
+    <h1>Nine load-bearing articulations, pretensioned against each other</h1>
+    <p>Not a document you read top to bottom — a structure. Nine of Kevin's own rulings about NESI stand as compression members, never touching. What keeps the whole thing standing isn't any one of them; it's the counter-articulations pulling each one back from overreach. Remove a cable and a strut doesn't fall — it drifts, unchecked, into a claim nobody actually made. Three of the nine were added in a second development pass, adversarially checked before being let in.</p>
+  </div>
+
+  <section>
+    <div class="section-eyebrow">the structure</div>
+    <figure role="img" aria-label="Nine struts arranged in a ring, none touching, held apart by a continuous ring of eighteen tension cables — a tensegrity structure representing nine load-bearing NESI rulings held in place by their own counter-articulations.">
+      <svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="440,170 498.1,180.2 549.3,209.8 587.2,255 607.5,310.4 607.5,369.6 587.2,425 549.3,470.2 498.1,499.8 440,510 381.9,499.8 330.7,470.2 292.8,425 272.5,369.6 272.5,310.4 292.8,255 330.7,209.8 381.9,180.2"
+          fill="none" stroke="var(--water)" stroke-width="1.4" stroke-opacity=".65"/>
+        <g stroke-linecap="round">
+          <g stroke="var(--gold)" stroke-width="5">
+            <line x1="440" y1="170" x2="549.3" y2="470.2"/>
+            <line x1="549.3" y1="209.8" x2="440" y2="510"/>
+            <line x1="607.5" y1="310.4" x2="330.7" y2="470.2"/>
+            <line x1="587.2" y1="425" x2="272.5" y2="369.6"/>
+            <line x1="498.1" y1="499.8" x2="292.8" y2="255"/>
+          </g>
+          <g stroke="var(--gold)" stroke-width="5" stroke-dasharray="2 6" stroke-opacity=".85">
+            <line x1="381.9" y1="499.8" x2="381.9" y2="180.2"/>
+            <line x1="292.8" y1="425" x2="498.1" y2="180.2"/>
+            <line x1="272.5" y1="310.4" x2="587.2" y2="255"/>
+            <line x1="330.7" y1="209.8" x2="607.5" y2="369.6"/>
+          </g>
+        </g>
+        <g fill="var(--water)">
+          <circle cx="440" cy="170" r="3.5"/><circle cx="498.1" cy="180.2" r="3.5"/>
+          <circle cx="549.3" cy="209.8" r="3.5"/><circle cx="587.2" cy="255" r="3.5"/>
+          <circle cx="607.5" cy="310.4" r="3.5"/><circle cx="607.5" cy="369.6" r="3.5"/>
+          <circle cx="587.2" cy="425" r="3.5"/><circle cx="549.3" cy="470.2" r="3.5"/>
+          <circle cx="498.1" cy="499.8" r="3.5"/><circle cx="440" cy="510" r="3.5"/>
+          <circle cx="381.9" cy="499.8" r="3.5"/><circle cx="330.7" cy="470.2" r="3.5"/>
+          <circle cx="292.8" cy="425" r="3.5"/><circle cx="272.5" cy="369.6" r="3.5"/>
+          <circle cx="272.5" cy="310.4" r="3.5"/><circle cx="292.8" cy="255" r="3.5"/>
+          <circle cx="330.7" cy="209.8" r="3.5"/><circle cx="381.9" cy="180.2" r="3.5"/>
+        </g>
+        <g font-family="IBM Plex Mono" font-size="11" fill="var(--ink)">
+          <text x="440" y="80" text-anchor="middle">1 · CENTRE</text>
+          <text x="600.8" y="138.5" text-anchor="start">2 · CONTENT-BLIND</text>
+          <text x="686.3" y="286.5" text-anchor="start">3 · LEVEL = EDGE</text>
+          <text x="656.5" y="455" text-anchor="start">4 · GAME-CRAFT</text>
+          <text x="525.5" y="565" text-anchor="middle">5 · A WORLD</text>
+          <text x="354.5" y="565" text-anchor="middle">6 · OVERWINTERING</text>
+          <text x="223.5" y="455" text-anchor="end">7 · THE BOWL</text>
+          <text x="193.7" y="286.5" text-anchor="end">8 · BIODIVERSITY</text>
+          <text x="279.2" y="138.5" text-anchor="end">9 · DAY ONE</text>
+        </g>
+      </svg>
+    </figure>
+    <div class="legend">
+      <span><i class="swatch strut"></i> strut, original six</span>
+      <span><i class="swatch new"></i> strut, added this pass</span>
+      <span><i class="swatch cable"></i> cable — the tension ring; the counter-articulations, named below</span>
+    </div>
+    <figcaption>The struts never meet. Everything holding the shape together runs through the ring — nine counter-articulations that keep each ruling honest about what it doesn't claim.</figcaption>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">the nine members</div>
+    <div class="members">
+
+      <div class="member">
+        <div class="num">1</div>
+        <div>
+          <h3>The centre</h3>
+          <p class="strut-text">"The centre is the game. Everything else serves it."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">Nothing can be sent to it — no edge reaches the centre. Any design where a seat delivers something to the centre is geometrically false. The strut stays a strut only because the cable makes it unreachable — the moment something touches it, it stops being the centre and becomes ordinary apparatus.<cite>THE_VISION.md §4, Kevin, 2026-08-16</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member">
+        <div class="num">2</div>
+        <div>
+          <h3>Content-blind</h3>
+          <p class="strut-text">"Content-blind, permanently. Nothing reads for meaning."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">The reason we can claim content-blindness isn't that we're reading the user's words directly — we're mapping the backend relationships and geometry between and through words. Without this cable the strut collapses into "nothing ever touches the words," which the sort, the aim, and the wireframe all contradict.<cite>MARKS_LOG.jsonl, Kevin, 2026-08-20T20:15–20:22</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member">
+        <div class="num">3</div>
+        <div>
+          <h3>A level is an edge</h3>
+          <p class="strut-text">"A level is an edge — a tetra is a developed object."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">Each level consists of a week. Without this cable the definition is pure topology — a level exists the instant it's touched, no duration, no pacing. The week cable is what turns a geometric position into something actually lived.<cite>MARKS_LOG.jsonl, Kevin, 2026-08-20T20:45 / 23:35</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member">
+        <div class="num">4</div>
+        <div>
+          <h3>Game-craft authority</h3>
+          <p class="strut-text">"Game-craft leads with full authority; every other prior ruling is advisory."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">"A diagram is not a game." One phrase, and it's the whole of what's actually verbatim — the sweeping grant of authority is the chief-of-staff seat's own order, issued off that one quote, ratified rather than assumed. The cable ties a strut wide enough to govern every other ruling back to the single sentence it was built to stand on.<cite>THE_GAME.md, Kevin, 2026-08-12; ratified 2026-08-20</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member">
+        <div class="num">5</div>
+        <div>
+          <h3>It is a world</h3>
+          <p class="strut-text">"Its a world" — three arms, one container, not a menu of three games.</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">daily.html names ascent.html, field.html, regathered.html and tiles.html only inside HTML comments — no link, no handler. The world currently exists as one reachable page and four unreachable addresses. The widest gap between any mark on this page and the build under it, and the cable that keeps "it's a world" a claim about intent rather than a claim about what's live.<cite>THE_VISION.md §1B's own gap-report, 2026-08-16</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member">
+        <div class="num">6</div>
+        <div>
+          <h3>The overwintering</h3>
+          <p class="strut-text">"Nothing you release is wasted; it comes back as ground."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">Growth roots only across returned days. No volume of writing can force it. Without this cable the promise is sentiment — pretty, unfalsifiable. The day-gate is the mechanism that makes it a mechanic instead of a mood.<cite>THE_GAME.md / THE_VISION.md §3</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member added">
+        <div class="num">7</div>
+        <div>
+          <h3>The heliostat bowl <span class="tag-new">added, 08-21</span></h3>
+          <p class="strut-text">"The loading screen between levels is the lines filled by completed levels... by level 12 a bowl has been made and it transforms into the full heliostat bowl."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">The wireframe draws only completed edges — never an unwalked one, not even faintly. Without this cable, showing the growing shape every loading screen would leak the whole solid's topology early, breaking PROGRESSION.md's own law that the two-second flash is "the first and only time the solid is seen as a solid." The strut only gets to reveal continuously because the cable makes sure it never reveals what hasn't been earned.<cite>MARKS_LOG.jsonl, Kevin, 2026-08-20; built and verified same night</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member added">
+        <div class="num">8</div>
+        <div>
+          <h3>Biodiversity <span class="tag-new">added, 08-21</span></h3>
+          <p class="strut-text">"The 4th of ecological succession, and biodiversity as a side effect of balancing the three cycles in a level."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">Before this mark, the game only ever remembered a level's <em>latest</em> fraction and window pick — picking the same one five times looked identical to picking it once. The strut was true in principle and false in the running code until <code class="mono">fractionsSeen</code>/<code class="mono">windowsSeen</code> tracking was built the same night. The cable is the memory the claim needed before it was actually true, not just intended.<cite>said mid-session, 2026-08-20; tracking built and verified same night</cite></p></div>
+        </div>
+      </div>
+
+      <div class="member added">
+        <div class="num">9</div>
+        <div>
+          <h3>Day one <span class="tag-new">added, 08-21</span></h3>
+          <p class="strut-text">"I think the first four stage is the bottom square of the cuboctahedron. And I think that the tank goes to the filter/dam. Both are the same thing."</p>
+          <div class="cable-row"><span class="cable-icon">↻</span><p class="cable-text">Checked against solid.js directly: TANK does not sit on the bottom square. FILTER is a direct member of TANK; DAM is one step outside it, adjacent to two of its corners. The geometry sustains "functionally interchangeable doors" — both fall-type, both water-holding — not literal identity. The cable is what keeps "both are the same thing" a statement about function, not a claim the solid itself would refuse.<cite>MARKS_LOG.jsonl, Kevin, 2026-08-19T00:00:00</cite></p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="close">
+    <p>None of the nine struts touch. That's not a gap in the synthesis — it's the actual shape of a pretensioned structure: every member's stability comes from the tension running through the others, not from any single one being strong enough to stand alone. Pull one cable out — read a strut without its counter-articulation — and it doesn't hold its shape. Three struts were added this pass, and each one only earned its place by surviving the same check: is it genuinely his own words, is it distinct from what's already there, and does it have a real cable — not a decorative one. <strong>The vision isn't the nine claims. It's the eighteen, held in the right relationship.</strong></p>
+  </div>
+
+  <footer>assembled from THE_VISION.md · THE_GAME.md · THE_THREE_DYNAMICS.md · MARKS_LOG.jsonl · developed 2026-08-21</footer>
+</div>
+</body>
+</html>

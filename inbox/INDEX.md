@@ -1,5 +1,16 @@
 # THE GATE
 
+## Unrouted gifts — oursharedgifts.org — 2026-08-22
+
+Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
+
+**System fact, not part of the ranking:** live-site check found `oursharedgifts.org` and `www.oursharedgifts.org` both returning "Site not found · GitHub Pages" (404), and `git fetch` against `github.com/Bluescontact/oursharedgifts` returns "Repository not found." Current-build comparison in this run used the local deploy clone at `C:\Users\KMEAR\Desktop\DSS content\oursharedgifts-deploy` (HEAD `4b292d7`, last commit 2026-06-25) as the best available proxy for "current," since the live site itself could not be read. This is a system state, not a gift — surfaced here because it changes what "current" means for every card below.
+
+1. gift_2026-08-22_02_the_membrane_page.md - a finished sixth face, built and never committed to the deploy repo at all (H cap - L effort - H conf)
+2. gift_2026-08-22_01_osg_organ.md - a full separate Flask app answering v6's own named blocker (the unbuilt commons relay), never hosted (H - M - H)
+3. gift_2026-08-22_03_village_market.md - shipped once with real commits, then pulled whole in the v5→v6 page-set rebuild; survives only in gitignored `_source/` (H - M - H)
+4. gift_2026-08-22_04_genesis_seed_share.md - the packaged, handoff-ready Genesis Seed, unlinked from any live page (M - L - M, lower confidence — may be meant for direct sharing, not the site)
+
 ## TRIBUTARIES - 2026-08-16 - the commons swept, under `TRIBUTARIES` (Kevin's instrument)
 
 Water made elsewhere, running today, unjoined. Ranked by capacity x ease of routing.

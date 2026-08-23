@@ -1,7 +1,11 @@
 # CANDIDATE GRAMMAR — proposed, unmarked, and not law
 
-**Everything in this file is a CANDIDATE.** Kevin has ruled none of it. No seat may promote
-any of it, cite it as governing, or apply it to refuse a build. The file is named for its
+**Everything in this file is a CANDIDATE, with one named exception below.**
+*(■ corrected 2026-08-20, consistency pass: this line said "Kevin has ruled
+none of it," which stopped being true the same night the words-edge
+exception below was promoted. One item is ruled; the rest of this file's
+own standing is unchanged.)* No seat may promote any of the rest of it, cite
+it as governing, or apply it to refuse a build. The file is named for its
 standing so that its location cannot argue for it — moved here from `MANDATE.md` on his order,
 2026-08-12: *"A disclaimed text in a law-named file is still wearing the law's coat. File it
 where its standing matches its name."*
@@ -25,7 +29,11 @@ instruments. Filed as **candidate grammar, not law.** No seat may promote them.
 3. **The control is a physical thing you press.**
 4. **The act is visible while it happens.**
 
-**THE WORDS-EDGE, unnamed and now load-bearing.** The gate states the exception without
+**THE WORDS-EDGE — RULED, 2026-08-20.** *(Flagged via the process-geometry reconciliation:
+"load-bearing" claimed more weight than this file's own "candidate, not law" masthead
+allowed. Put to Kevin directly — he promoted it. This one exception now carries real
+standing, the only item on this shelf that does; everything else here stays candidate,
+unmarked, exactly as the masthead states.)* The gate states the exception without
 naming it: *his own words may stand in the world; the system's vocabulary may not.* In the
 3D tree the Log Book stones would have failed rule 2 as written. In the 2D build the same
 edge is live and larger — `TEACH` (hover captions, ruled lawful 2026-08-11), `#here` (the
