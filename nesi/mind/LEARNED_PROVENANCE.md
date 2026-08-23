@@ -276,3 +276,34 @@ collision logged face-up and reasoned at length. Kevin reverted it in four words
 a base-fork ruling carefully does not make it yours to make.** The reasoning was
 sound and the fork still was not the session's. *Falsifier: a ruling that decides
 which tree, engine, or medium the work happens in.*
+
+**26 · ADVANCING STATE HANDS BACK NAVIGATION, NOT JUST A REPORT.** Citation as
+filed: *"Kevin, 2026-08-21."* **This entry could not locate a fuller incident.**
+`MARKS_LOG.jsonl`'s 2026-08-21 entries were searched in full and contain no line
+matching this law's language; two same-day counsel files
+(`counsel/cowan/RECONCILE_AND_DREAM_2026-08-21.md:13`,
+`counsel/gamecraft/RECONCILE_AND_DREAM_2026-08-21.md:41`) quote the law verbatim
+and note its own coherence with the cold-walk repair filed the same day, but both
+cite it, they do not source it — neither points to a marks-log line, a
+conversation excerpt, or a build record. The headline in `LEARNED.md` is not in
+question; what's missing is the concrete failure this file's own convention
+records for every other law. *If a session locates the exchange this mark was
+made in, replace this note with the actual incident rather than adding to it —
+per this file's own admission rule.*
+
+**27 · A DEAD END IS NAVIGATION DATA.** *"i think i need to institute a new
+filter. I want to strip negtive framing out of the returns i get. The negative
+framing has become increadingly problematic, and limiting, and i'd like
+positive framing. A dead end, a lititation, a failure can be navigation data,
+and used to develop composite solutions when recognized as an place that needs
+an upstream deposit."* — Kevin, 2026-08-22. Filed first as an extension to
+`CLAUDE.md`'s FRAMING section (itself built from his 2026-08-17 mark on negative
+framing leaking into the context lens); admitted into this file the same day on
+his direct follow-up mark, *"route this into LEARNED.md too."* Sited on both
+active working surfaces the same session: `nesi/game2d/THE_NAVIGATION_FILTER.md`
+(gates, seats, compost) and `nesi/mind/project_osg_navigation_filter.md` (the
+Field Kit Engine, the deploy loop, the Stage-0 zeros) — both explicit that the
+law governs how a block is read back, not whether any existing gate or refusal
+still fires. *Falsifier: a return that softens, omits, or delays reporting an
+actual block in order to read as positive — the law asks for a different
+reading of the same fact, never a different fact.*
