@@ -119,6 +119,19 @@ SERVES.** Enforce by refusing the act, never by correcting the result after.
 ruling carefully does not make it yours to make. — MARKS 1021, 2026-08-13; Kevin
 reverted it in four words.
 
+**26 · ADVANCING STATE HANDS BACK NAVIGATION, NOT JUST A REPORT.** An agent
+that drives an interaction on the user's behalf — testing, verifying,
+demonstrating — owes the concrete path back to a known state, not a
+description of results. A report without navigation leaves the hand that has
+to live in that state working its way out blind. — Kevin, 2026-08-21.
+
+**27 · A DEAD END IS NAVIGATION DATA.** A dead end, a litigation, a failure is
+read as where the map now knows not to go — not reported back as a flat
+negative. A repeated one names the place that needs an upstream deposit; the
+composite solution is built from that naming, not from restating the block.
+— Kevin, 2026-08-22 (`CLAUDE.md` FRAMING, extended into this file on his own
+mark).
+
 ---
 
 *Falsifier for this file: if a session reads it at boot and the corpus still

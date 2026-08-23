@@ -7,7 +7,7 @@ This file gives the deposit a boot path. Measured 2026-08-17: the vendor
 `~/.claude/CLAUDE.md` has been suspended since 08-15; `nesi/mind/PROTOCOLS.md`
 sits behind that pointer and names `LEARNED.md` zero times; the one project
 `CLAUDE.md` in this repository was inside the retired 3D tree. So the corpus's
-composite deposit — 25 laws, each sourced to the mark that bought it — reached
+composite deposit — 27 laws, each sourced to the mark that bought it — reached
 sessions by memory, and each session rebuilt a thinner copy of it. This file
 carries the deposit instead, and that is the whole of its job.
 
@@ -65,6 +65,20 @@ leaks into the lens and narrows what comes after it, invisibly and downstream.
 So: write what holds, what is available, and what a thing does. The refusals in
 `refusal_check` and the boundaries in the constraint registry are lints and
 container edges — they stay exactly as they are.
+
+**Extended, Kevin's mark, 2026-08-22:** *"i think i need to institute a new
+filter. I want to strip negtive framing out of the returns i get. The negative
+framing has become increadingly problematic, and limiting, and i'd like
+positive framing. A dead end, a lititation, a failure can be navigation data,
+and used to develop composite solutions when recognized as an place that needs
+an upstream deposit."*
+
+A dead end, a litigation, a failure: read as navigation data, not as a verdict
+to report back flat. Where a return would otherwise land as "this doesn't
+work" or "this is blocked," the same finding is available instead as *where
+the map now knows not to go*, and — when it repeats — as the place that names
+its own missing upstream deposit. The composite solution is built from that
+naming, not from restating the dead end.
 
 ## WHERE THE WORK IS
 
