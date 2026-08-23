@@ -576,6 +576,24 @@ def instrument_structural(obj_like: dict) -> dict:
     }
 
 
+def _autodetect(ref: str):
+    """Try staged, then canon pattern, then folded pattern, in that order.
+    Returns (kind, state) or (None, None) if ref matches nothing on disk."""
+    if (core.STAGED / f"{ref}.json").exists():
+        try:
+            obj = json.loads((core.STAGED / f"{ref}.json").read_text(encoding="utf-8"))
+        except Exception:
+            obj = {}
+        if (obj.get("object") or {}).get("body_markdown") is not None:
+            return "descendant", None
+        return "staged", None
+    if (core.CANON / f"{ref}.md").exists():
+        return "pattern", "canon"
+    if (core.FOLDED / f"{ref}.md").exists():
+        return "pattern", "folded"
+    return None, None
+
+
 def instrument_lineage_depth(slug: str, idx=None) -> dict:
     """BFS over EXTENDS edges — pure graph walk, no engine. Cycles guard
     against a malformed EXTENDS chain looping forever."""
@@ -604,3 +622,57 @@ def instrument_lineage_depth(slug: str, idx=None) -> dict:
         "not_measured": "whether the lineage is CORRECT — this only walks what's already written",
         "results": chain,
     }
+
+
+# --------------------------------------------------------------- CLI entry
+def _cli(argv) -> int:
+    """Shortest routing (2026-08-23 gift card): open one staged/canon/folded
+    object by id and print its three attributed verdict lines. No engine
+    call, no write — read-only, same load_chamber() the room itself uses.
+    Usage: python -m nesi.conductor.deepdive <ref> [--kind staged|pattern|descendant] [--state canon|folded]
+    """
+    import argparse
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")  # Windows console defaults to cp1252; the
+        sys.stderr.reconfigure(encoding="utf-8")  # verdict lines use em dashes and middots
+    except Exception:
+        pass
+    p = argparse.ArgumentParser(prog="deepdive", description=(
+        "Open one staged/canon object and print its three attributed verdict "
+        "lines (library, governor, center). Nothing else moves."))
+    p.add_argument("ref", help="staged object id, or pattern slug")
+    p.add_argument("--kind", choices=["staged", "pattern", "descendant"], default=None,
+                    help="override autodetection")
+    p.add_argument("--state", choices=["canon", "folded"], default=None,
+                    help="for kind=pattern: which shelf to read (default: autodetect)")
+    args = p.parse_args(argv)
+
+    kind, state = args.kind, args.state
+    if kind is None:
+        kind, detected_state = _autodetect(args.ref)
+        state = state or detected_state
+        if kind is None:
+            print(f"no staged, canon, or folded object found for '{args.ref}'", file=sys.stderr)
+            return 1
+    state = state or "canon"
+
+    chamber = load_chamber(kind, args.ref, state)
+    if "error" in chamber:
+        print(f"error: {chamber['error']}", file=sys.stderr)
+        return 1
+
+    print(f"{chamber['title']}  [{chamber['kind']}:{chamber['ref']}]")
+    print(f"  path: {chamber['path']}")
+    print()
+    for label in ("library", "governor", "center"):
+        print(f"  {label:8s} — {chamber['verdicts'][label]}")
+    if chamber.get("gaps"):
+        print()
+        print("  gaps:")
+        for g in chamber["gaps"]:
+            print(f"    - {g}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(_cli(sys.argv[1:]))

@@ -143,6 +143,7 @@
 
 <script src="solid.js"></script>
 <script src="seam.js"></script>
+<script src="visit-writer.js"></script>
 <script>
 "use strict";
 const G = (typeof window!=="undefined") && window.SOLID;
@@ -269,6 +270,10 @@ function faceOf(hash){
 function hashOf(){ return (typeof location!=="undefined" && location) ? location.hash : ""; }
 function enterSeat(seat){ cur=seat; view="seat";
   if(typeof location!=="undefined" && location) location.hash=seat.toLowerCase();
+  /* automatic, silent, every arrival — Kevin's mark, 2026-08-22. Local disk
+     only (visit-writer.js, File System Access API), never network; wrapped
+     so a write failure can never break seat navigation. */
+  try{ if(typeof window!=="undefined" && window.VisitWriter) window.VisitWriter.recordVisit(seat); }catch(e){}
   render(); }
 function toMap(){ cur=null; view="map"; render(); }
 if(typeof addEventListener==="function") addEventListener("hashchange", function(){

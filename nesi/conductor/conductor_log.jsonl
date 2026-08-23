@@ -165,3 +165,12 @@
 {"ts": "2026-07-26T12:02:25", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-07-26T12:02:25", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-08-05T16:00:54", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:19:38", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:19:42", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:19:58", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:20:06", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:20:07", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:20:08", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:21:01", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:21:08", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-22T23:22:10", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}

@@ -23,6 +23,10 @@ try:
     import engine_local  # noqa: E402  (self-registers the local engine into core)
 except Exception:
     engine_local = None
+try:
+    import front  # noqa: E402  (the plain-language ROUTE -> ASSEMBLE -> RETURN door)
+except Exception:
+    front = None
 
 LINKS_FILE = NESI / "surface_links.json"
 OLLAMA_URL = "http://localhost:11434/api/chat"
@@ -152,3 +156,18 @@ class Api:
     def engine(self):
         return {"engine": core.current_engine(),
                 "health": engine_local.health() if engine_local else {"ollama": False}}
+
+    # ---- front: the plain-language door — ROUTE -> ASSEMBLE -> RETURN over
+    # front.handle(). No brain of its own: routes to bench/interrogator/
+    # metabolizer/return_circuit/continuity, or returns one clarifying
+    # question. `pending` carries a confirm-in-waiting organ name back in on
+    # the next turn so a plain "yes" can complete it. ----
+    def front_handle(self, text, pending=None):
+        if front is None:
+            return {"ok": False, "error": "front.py unavailable"}
+        try:
+            r = front.handle(text, pending)
+            return {"ok": True, "kind": r.get("kind"), "lines": r.get("lines", []),
+                     "pending": r.get("pending"), "under": r.get("under", "")}
+        except Exception as e:
+            return {"ok": False, "error": str(e)[:300]}

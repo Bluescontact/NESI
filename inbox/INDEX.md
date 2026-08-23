@@ -1,5 +1,26 @@
 # THE GATE
 
+## Unrouted gifts — whole-corpus sweep — 2026-08-23
+
+Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
+
+**System fact, not part of the ranking:** the skill's own `scripts/ingest.mjs`/`scan.mjs`/`gate.mjs` referenced in `.claude/skills/unrouted-gifts/SKILL.md` do not exist on disk — only `SKILL.md` itself is present. This run performed the judge step directly (four parallel agents, adversarial, checking `inbox/` first to avoid duplicates) rather than through the documented ingest → scan pipeline. Surfaced here rather than silently worked around.
+
+Two of the four swept zones came back DRY: root subsystem folders (`village_app`, `mito-mcp`, `coherence-codex`, `kit`, `deposits`, `gifts`, and others — all either already carded, already live/routed, or spec-only with no built mechanism) and the root operator-instrument web (`THE_JANITOR.html`, `THE_KEEPER.html`, `THE_CONVERGER.html`, and 12 more — a maintained, cross-linked set, not orphaned).
+
+1. gift_2026-08-23_01_the_deepdive_chamber.md - a 606-line room to open one staged object in depth, orphaned when its GUI caller was composted (H cap - M effort - H conf)
+2. gift_2026-08-23_02_the_conversational_front.md - the plain-language door into the whole organ body, built, never opened (H - M - H)
+3. gift_2026-08-23_03_podcast_narrator.md - a complete script-to-MP3 desktop app with a compiled exe, nothing in the repo calls it (M - L - H)
+4. gift_2026-08-23_04_the_continuity_layer.md - a proven session checkpoint/resume system, 14 real snapshots on disk, gone silent since its caller retired (M - L - H)
+5. gift_2026-08-23_05_the_back_office_skill_suite.md - three finished skills (dispatch, status, register-audit) never copied where four of their siblings already run (M - L - M)
+6. gift_2026-08-23_06_cost_map.md - a four-question structural cost diagnostic, standalone, never linked in (M - L - M)
+7. gift_2026-08-23_07_operator_terminal.md - a movement/cost declaration ritual distinct from the live Governor/Decision Surface pair (M - L - M)
+8. gift_2026-08-23_08_the_annotations_sidecar.md - a way to note canon without touching it, built, folder never even created (M - L - M)
+9. gift_2026-08-23_09_the_capacity_hold_third_anchor.md - a second return-circuit question the live board never asks (M - L - M)
+10. gift_2026-08-23_10_the_bench_socket.md - the one generation seam, engine-dark, imported everywhere and invoked nowhere (M - M - M)
+11. gift_2026-08-23_11_the_preflight_signoff_check.md - a go-live readiness gate for the day an engine wires in, unrun (L - L - H)
+12. gift_2026-08-23_12_the_whole_body_close.md - a one-time coherence check, written once, never re-run (L - L - H)
+
 ## Unrouted gifts — oursharedgifts.org — 2026-08-22
 
 Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.

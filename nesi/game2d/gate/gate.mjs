@@ -18,6 +18,7 @@
 
 import { declaresCost, append } from './lib.mjs';
 import { namedDeposits } from './deposits.mjs';
+import { deriveRoutes } from './derive_routes.mjs';
 
 const MODULES = [
   './instruments/01-motion.mjs',
@@ -62,6 +63,23 @@ let held = 0;
 let uncosted = 0;
 
 console.log('\n' + C.bold('  GATE') + C.dim('  ·  builder jurisdiction  ·  refuse, do not advise') + '\n');
+
+// A quiet derive-and-append step, same shape as "made possible" / "named
+// deposits" below: no pass/refuse verdict, never affects exit code or any
+// instrument's own reading of the ledger it ran before this loop — it runs
+// first so a seat visited since the last run is already on record for
+// 02-selfuse to read in THIS run. Silent no-op if seat-visits.json (or
+// SEAT_VISITS_PATH) does not exist, per derive_routes.mjs's own header.
+try {
+  const derived = deriveRoutes();
+  if (derived.ran && derived.appended) {
+    console.log(`  ${C.dim('·')} derive_routes  ${C.dim(`appended ${derived.appended} route event(s) from ${derived.visitsPath}`)}`);
+    console.log(wrap(derived.seats.join(', ')));
+    console.log('');
+  }
+} catch (e) {
+  console.log(`  ${C.dim('·')} derive_routes  ${C.dim(`did not run: ${e.message}`)}`);
+}
 
 for (const path of MODULES) {
   let mod;

@@ -100,6 +100,7 @@ body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monos
       <button class="mode on" data-m="feed" onclick="setMode('feed')">feed</button>
       <button class="mode" data-m="map" onclick="setMode('map')">map</button>
       <button class="mode" data-m="chat" onclick="setMode('chat')">chat</button>
+      <button class="mode" data-m="front" onclick="setMode('front')">front</button>
       <button class="mode" data-m="sort" onclick="setMode('sort')">sort</button>
       <button class="mode" data-m="library" onclick="setMode('library')">library</button>
     </div>
@@ -125,6 +126,16 @@ body{background:var(--bg);color:var(--g);font-family:'Courier New',Courier,monos
         <div class="chat-in">
           <input id="chatInput" placeholder="Talk to NESI…" onkeydown="if(event.key==='Enter')send()">
           <button class="feedbtn" onclick="send()">send</button>
+        </div>
+      </div>
+    </div>
+    <div class="view" id="v-front">
+      <div class="hint" style="margin-top:2px">one line in plain language — the routed organ fires, or NESI asks one clarifying question. No brain here: it only routes.</div>
+      <div class="chat">
+        <div class="chat-log" id="frontLog"></div>
+        <div class="chat-in">
+          <input id="frontInput" placeholder="Say what you want, plainly…" onkeydown="if(event.key==='Enter')sendFront()">
+          <button class="feedbtn" onclick="sendFront()">go</button>
         </div>
       </div>
     </div>
@@ -182,7 +193,7 @@ async function refresh(){
   }
   render();
 }
-function render(){ updateCount(); if(mode==='feed')renderCards('feedCards',false); else if(mode==='sort')renderCards('sortCards',true); else if(mode==='map')renderMap(); else if(mode==='chat')renderChat(); else if(mode==='library')renderLibrary(); }
+function render(){ updateCount(); if(mode==='feed')renderCards('feedCards',false); else if(mode==='sort')renderCards('sortCards',true); else if(mode==='map')renderMap(); else if(mode==='chat')renderChat(); else if(mode==='front')renderFront(); else if(mode==='library')renderLibrary(); }
 function updateCount(){document.getElementById('count').textContent=NODES.filter(n=>n.tag!=='compost').length;}
 
 let mode='feed';
@@ -294,6 +305,28 @@ async function send(){const inp=document.getElementById('chatInput');const t=inp
     pushMsg('sys', WIRED? ('the local engine did not answer: '+esc(err.message||'error')+'. Is Ollama running?') :
       'local engine unreachable from a loose file (browser security). Open NESI from the app to wire it, or set <code>OLLAMA_ORIGINS=*</code>. Feed / map / sort work here regardless.');
   }
+}
+
+// ============ front (the plain-language door — front.handle(), no brain) ============
+let FRONT=[], frontPending=null;
+function renderFront(){const log=document.getElementById('frontLog');
+  if(!FRONT.length){log.innerHTML=`<div class="msg ai">Type one plain line — "write a note to Frank about the well pump", "what am I missing here", "hold onto this", "what's waiting", "where was I". This never answers or decides for you — it only routes, or asks.</div>`;}
+  else{log.innerHTML=FRONT.map(m=>`<div class="msg ${m.role}">${m.role==='sys'?m.text:esc(m.text)}</div>`).join('');}
+  log.scrollTop=log.scrollHeight;}
+function pushFront(role,text){FRONT.push({role,text});renderFront();}
+async function sendFront(){
+  const inp=document.getElementById('frontInput');const t=inp.value.trim();if(!t)return;inp.value='';
+  pushFront('me',t);
+  if(!WIRED){ pushFront('sys','the front lives inside NESI. Open NESI from the app to route through it.'); return; }
+  const log=document.getElementById('frontLog');const think=document.createElement('div');think.className='msg ai dotpulse';log.appendChild(think);log.scrollTop=log.scrollHeight;
+  try{
+    const r=await api.front_handle(t,frontPending);
+    think.remove();
+    if(!r||!r.ok){ pushFront('sys','the front did not answer: '+esc((r&&r.error)||'error')); frontPending=null; return; }
+    frontPending = (r.kind==='confirm') ? r.pending : null;
+    const lines=(r.lines&&r.lines.length)?r.lines:['(nothing came back)'];
+    pushFront(r.kind==='result'?'ai':'sys', lines.join('\n'));
+  }catch(err){ think.remove(); pushFront('sys','the front did not answer: '+esc(err.message||'error')); frontPending=null; }
 }
 
 // ============ library (the real canon patterns, read-only) ============

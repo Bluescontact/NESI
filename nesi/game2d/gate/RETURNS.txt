@@ -9,3 +9,22 @@
 # here would be worse than the gap 08-return currently reports honestly.
 # Fill in one line per organ as each one is actually understood well enough
 # to say.
+#
+# FILLED 2026-08-22 — not composed here. Each value below is quoted
+# verbatim from ORGANS.json's own `gestures` object, Kevin's own one-line
+# verb for what that seat does. That is exactly the already-ruled design
+# material this file was waiting for, not new text invented to satisfy the
+# instrument. Re-derive: node -e "console.log(JSON.stringify(JSON.parse(require('fs').readFileSync('ORGANS.json','utf8')).gestures,null,2))"
+
+TANK = I POUR
+DAM = I HOLD, THEN I LET GO
+FILTER = I TAKE THIS ONE OUT
+STATIONS = I SEND THIS THERE
+GROUND = I LET IT SETTLE
+DEEP = I LET IT GO DOWN
+HELIOSTAT = I AIM
+OVERWINTERING = I COME BACK
+CAST = I GIVE IT AWAY
+LENS = I WORK IT UNTIL IT HOLDS
+GARDEN = I LET IT GROW
+SEATING = I FEED THE FRAME
