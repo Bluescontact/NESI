@@ -32,7 +32,7 @@ structural decision becomes a separate item, detached from the order it
 arrived in. The order is the thing being tested — keep it and you will only
 ever defend it.
 
-Nothing is preserved at this stage because it is well written.
+Every item is judged on its own merit at this stage, regardless of how well it reads.
 
 ### 2. Inventory
 
@@ -132,8 +132,8 @@ The last message says exactly one of:
 - **BLOCKED** — here is the defect or counterexample that cannot be resolved
   without a decision only the author can make. Name the decision.
 
-There is no third option. "Strengthened throughout, ready for another pass" is
-the failure mode wearing a hat.
+Exactly one of these two applies. "Strengthened throughout, ready for another
+pass" is the failure mode wearing a hat.
 
 ## Deferral accounting
 
@@ -143,7 +143,7 @@ End every run by answering these three in one line each:
 - What did it name that it did not build?
 - What did it defer?
 
-Any non-empty answer is reported, not hidden. A clean-looking run with an
+Any non-empty answer gets reported in full. A clean-looking run with an
 unstated deferral is worse than an honest BLOCKED.
 
 ## What this procedure does not do

@@ -83,9 +83,9 @@ gets caught deterministically rather than by luck.
 
 ### 7. Refuse only where the number lies about itself; report everything else
 
-A threshold-sweep instrument has no standing to rule on feel — "should a
-hold take 300ms or 900ms" is exactly the kind of fork this corpus never
-defaults, the same as any other. What it *can* refuse on, the same way
+A threshold-sweep instrument's standing stops at feel — "should a hold take
+300ms or 900ms" is exactly the kind of fork this corpus holds open, the same
+as any other. What it *can* refuse on, the same way
 `hand_check`/`solid_check` refuse: whether the constant's **measured, real
 behavior matches its own claimed number** — a threshold that claims `900`
 but actually fires at a frame-rate-dependent value nowhere near 900 is the
@@ -101,7 +101,6 @@ refuse on a feel number; that manufactures authority the skill doesn't have.
 - **SWEPT** — here is the coverage map, here is where it's safe, here is the
   narrowest margin found and whether anything real would actually hit it.
 - **UNSWEPT** — say so plainly if there wasn't time or the input space
-  couldn't be enumerated yet. Never ship a constant silently un-swept while
-  implying it was checked — an eyeballed number that says nothing about
-  itself is honest; an eyeballed number presented next to a green checkmark
-  is not.
+  couldn't be enumerated yet. An eyeballed number that says nothing about
+  itself is honest; ship it under UNSWEPT, next to its own true label,
+  never beside a green checkmark it hasn't earned.

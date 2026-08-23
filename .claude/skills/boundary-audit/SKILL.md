@@ -21,17 +21,18 @@ boundary is actually at before depending on it.
 
 State the rule as a single sentence with its scope: what may not happen, to
 what, under what condition. "One manifest per tetra" and "never delete a
-comment thread" are boundaries; "be careful with X" is not specific enough
-to audit — narrow it first or report that it can't be audited as stated.
+comment thread" are boundaries specific enough to test; "be careful with X"
+needs narrowing first, or gets reported as needing that before it can be
+audited.
 
 ### 2. Find the enforcement point
 
 Locate where — if anywhere — this boundary is actually checked in code,
 config, permissions, or file structure, as opposed to where it is merely
-*described*. A line in a markdown file describing the rule is not an
-enforcement point. A function that returns early, a file lock, a schema
-constraint, a missing credential, a permission the caller doesn't have —
-those are.
+*described*. An enforcement point is a function that returns early, a file
+lock, a schema constraint, a missing credential, a permission the caller
+doesn't have; a line in a markdown file describing the rule is the separate,
+weaker thing.
 
 ### 3. Classify what you found
 

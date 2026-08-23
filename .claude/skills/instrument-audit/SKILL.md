@@ -5,8 +5,9 @@ description: Audit a verification instrument itself — a check, a script, a tes
 
 # Instrument audit
 
-A green check is evidence about the instrument, not automatically evidence
-about the thing it claims to verify. This corpus paid for that distinction
+A green check is direct evidence about the instrument. Whether it's also
+evidence about the thing it claims to verify is a separate question, and
+takes asking. This corpus paid for that distinction
 four separate times: a selector that read a neighboring label instead of the
 object it named (`cold_walk.js:162`), a pixel-accurate measurement that a
 human eye would still see as wrong the next day, a harness that inferred a
@@ -82,9 +83,8 @@ try it — feed the check a stub that does nothing and confirm it fails.
   confirmed without running it). Say which question, and what would need to
   happen to answer it.
 
-A weak answer to any question is the finding — do not go strengthen the
-check to make the audit read better, then re-run the audit. Report what the
-instrument actually does today.
+A weak answer to any question is the finding. Report what the instrument
+actually does today, before any strengthening pass.
 
 ## Sibling lenses
 

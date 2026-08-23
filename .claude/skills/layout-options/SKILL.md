@@ -12,7 +12,7 @@ the relationships between objects" are the same problem stated twice — the
 objects and their relationships exist in his head; the concrete geometry that
 would let him look at it and react does not yet exist anywhere.
 
-This skill does not design anything. It takes what Kevin already knows about
+This skill takes what Kevin already knows about
 a space — the objects, the fuzzy relationships, the real constraints — and
 turns it into two or three genuinely different rendered arrangements so the
 choice becomes something he can look at rather than something he has to

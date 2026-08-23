@@ -20,8 +20,8 @@ run that second check before the first draft ships, not after.
 
 For each claim in the record ("X happened," "Y was never marked," "Z is
 untracked"), name the exact file, command output, or quote it rests on. A
-claim with no traceable source is not yet a fact — flag it as unsourced
-rather than let it stand.
+claim earns "fact" only once it traces to a named source; until then, flag
+it as unsourced.
 
 ### 2. Check the adjacent source, not just the first one
 

@@ -13,18 +13,18 @@ own stranger."* No amount of care by the authoring session fixes this — it is
 a structural fact about who is asking the question, not a quality problem
 with the answer.
 
-**UNWITNESSED is the default, not something a session earns its way down
-from.** WALKABLE is a word only a second party gets to write, and this skill
-exists to force that handoff to actually happen rather than get skipped
-because it's the same session and it's faster to just say it works.
+**UNWITNESSED is the default state; WALKABLE is earned only by a second
+party's own hand writing it.** This skill exists to make that handoff actually
+happen, rather than let it get skipped because it's the same session and
+faster to just say it works.
 
 ## The procedure
 
 ### 1. Name the slice
 
 State the smallest complete unit under test in four parts: way in, act,
-consequence, way out. A mechanism with no way in is not a slice — don't test
-it, name that it has no door yet.
+consequence, way out. A mechanism needs a way in to count as a slice — if it
+has none yet, name that instead of testing it.
 
 ### 2. Clear the state, honestly
 
@@ -33,8 +33,8 @@ store), start from genuinely empty — not "empty in the parts I remember to
 reset." Prefer an isolated copy over the live store if one is easy to make;
 if it isn't, clear the live store deliberately and say so, the way
 `cold_walk_prepare.js` builds an isolated profile so the check "cannot touch
-live data." An instrument or a walk that silently runs against warmed-up
-state is not testing what a stranger meets.
+live data." An instrument or a walk tests what a stranger actually meets only when it
+runs against genuinely cleared state.
 
 ### 3. Walk it as a stranger would, not as the builder does
 
@@ -64,8 +64,9 @@ C1–C8):
 - Is the first act's consequence visible *outside* the act's own surface, at
   the moment it lands — not only inside the box the hand was typing into?
 
-A pre-check that passes all of these still says nothing about what the
-session was like. Record it as PRE-CHECK PASSES / FAILS, never as WALKABLE.
+A pre-check that passes all of these still covers geometry only, not what the
+session was like. Record it as PRE-CHECK PASSES / FAILS — that's a separate
+finding from WALKABLE.
 
 ### 5. Record the transcript verbatim
 
@@ -133,4 +134,4 @@ and conflating them produces a false BLOCKED.
   actually walked it yet, even if the pre-check passed clean. Say plainly
   what's still unanswered and who would need to answer it.
 
-There is no fourth state, and there is no "WALKABLE, pending confirmation."
+Exactly one of these three states applies, always.

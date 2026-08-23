@@ -57,17 +57,15 @@ for why question 4 is not decoration.
 
 ## The one rule that keeps this from being theater
 
-**A weak or missing answer is the finding.** Do not go back and strengthen
-the mechanic's design to make the answer read better, then re-answer the
-question — that reorders cause and effect and produces an honest-looking
-checklist over a decision that was never actually tested by it. Report the
-actual answer, including "no" and "none," and stop there. A weak answer on
-question 4 or 5 is not this skill's to override with a workaround; it is
-Kevin's fork, named and held open, not defaulted by the session that wants
-to keep building.
+**A weak or missing answer is the finding.** Answer once, from the design as
+it stands — going back to strengthen the mechanic so the answer reads better
+reorders cause and effect and produces an honest-looking checklist over a
+decision that was never actually tested by it. Report the actual answer,
+including "no" and "none," and stop there. A weak answer on question 4 or 5
+stays Kevin's fork, named and held open — the session that wants to keep
+building doesn't get to default it.
 
 ## Ending state
 
-Five answers, each quoted or explicitly `none`/`no chamber named`/etc. If any
-answer is weak, say so as the outcome of the check, not as a problem to
-quietly patch before anyone sees the checklist.
+Five answers, each quoted or explicitly `none`/`no chamber named`/etc. A weak
+answer is reported as the outcome of the check, visible, before any patching.

@@ -13,12 +13,12 @@ Three questions, and they are not one question.
 3 · WHETHER IT CROSSES  into the workspace GitHub actually holds
 ```
 
-Most sessions answer only the first and speak as though they answered all three.
-That is the failure this skill exists to stop.
+Most sessions answer only the first and speak as though they answered all
+three. This skill exists to answer all three, every time.
 
-**The harness is `nesi/game2d/tools/route_map.js`.** Run it before answering any
-question in this class. Do not answer from memory of a previous run — the third
-question changes every time a file is written.
+**The harness is `nesi/game2d/tools/route_map.js`.** Run it fresh before
+answering any question in this class — the third question changes every time
+a file is written.
 
 ```bash
 node nesi/game2d/tools/route_map.js
@@ -39,8 +39,8 @@ Everything else at the DSS root — legal, financial, personal, other project
 trees — is held outside **on purpose**, so that a `git add -A` can never sweep
 it in.
 
-**Never restate the exception list from memory, and never hand-roll a
-`.gitignore` parser.** Ask git:
+**Always ask git for the exception list, rather than reciting it from memory or
+hand-rolling a `.gitignore` parser:**
 
 ```bash
 git check-ignore -v <path>      # would this cross?
@@ -82,8 +82,8 @@ Two consequences that surprise people, both true today:
 ## PART B — ROUTING INTO THE GEOMETRY
 
 The twelve seats come from `nesi/game2d/solid.js`, which derives everything from
-two written tables. **Never type a seat name from memory** — if `solid.js` will
-not load, the harness refuses rather than falling back to a literal, and so
+two written tables. **Always read a seat name from `solid.js` itself** — if it
+will not load, the harness refuses rather than falling back to a literal, and so
 should you.
 
 ### A seat is declared, never inferred
@@ -100,10 +100,10 @@ when Kevin routes. It must never fall because the harness got cleverer.
 
 ### When you find capability that has no seat
 
-Bring it to the gate as a card in `inbox/`. Do not route it. Do not propose a
-seat and then build as though the proposal were a mark. `unrouted-gifts` handles
-capacity from past builds; `TRIBUTARIES` handles capacity from the commons; both
-end at the same gate.
+Bring it to the gate as a card in `inbox/` and leave the routing to Kevin — a
+proposed seat is a proposal, not a mark. `unrouted-gifts` handles capacity from
+past builds; `TRIBUTARIES` handles capacity from the commons; both end at the
+same gate.
 
 ---
 
