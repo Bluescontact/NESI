@@ -29,9 +29,9 @@ hands the claim back. The better the tool, the more accurate the claim — and t
 more accurate the claim, the more the writing stops being yours and starts being
 *material*.
 
-**The extraction is the claim, not the reading.** A tool that reads you and says
-nothing has taken nothing. A tool that never opens the file and hands back a
-number about you has taken everything.
+**The extraction is the claim; the reading is just intake.** A tool that reads
+you and stays silent has taken nothing. A tool that leaves the file closed and
+hands back a number about you has taken everything.
 
 *(■ noted 2026-08-20, process-geometry reconciliation: the BiAffect R²=.63
 figure and the alliance-correlation r=.278/.28 figures below are external
@@ -41,75 +41,81 @@ haven't been independently checked against a source, only asserted with
 confidence. Not corrected — flagged so they're read as "cited" rather than
 "confirmed" until someone actually checks the papers.)*
 
-That distinction is not a nicety, and the evidence for it is published. BiAffect
-is a research keyboard whose stated principle is *how you type, not what you
-type*: it discards character content by design and keeps keypress timing,
-inter-key delay, backspace rate and device motion. From those alone it predicts
-depression severity at conditional R² = .63. **Content-blindness is not the
-boundary of extraction. It is a validated method of it.**
+That distinction runs deeper than a nicety, and the evidence for it is
+published. BiAffect is a research keyboard whose stated principle is *how you
+type, not what you type*: it discards character content by design and keeps
+keypress timing, inter-key delay, backspace rate and device motion. From those
+alone it predicts depression severity at conditional R² = .63.
+**Content-blindness reaches past the boundary of extraction. It stands as a
+validated method of it.**
 
-So the question this design is the answer to has to be put precisely, or it is
-answering the wrong thing:
+So the question this design is the answer to has to be put precisely, or it
+ends up answering a different question entirely:
 
 > **Can a system be lavishly, visibly, daily responsive to a person's writing
 > without ever once forming a claim about the person who wrote it?**
 
-Most designs answer by going cold. If the machine must not interpret you, give it
-nothing to interpret — a blank file, an empty page, silence. That works and
-nobody wants it. Silence is not safety; it is the absence of the thing you came
-for.
+Most designs answer by going cold: hold the machine back from interpreting
+you, and it is left with nothing to interpret — a blank file, an empty page,
+silence. That approach succeeds, and everyone passes it by. Silence only looks
+like safety; it is the empty space where the thing you came for should be.
 
 **NESI's answer is that a world can respond to the fact of writing rather than
 its content, and that the fact is enough to run an entire world on.** That you
 wrote, how much fell, where you stood when you let it go, what your hand did to
-it afterward, how long ago. Those are real signals, dense enough to drive weather
-and terrain and growth, and not one of them requires opening the text.
+it afterward, how long ago. Those are real signals, dense enough to drive
+weather and terrain and growth, and each one leaves the text closed.
 
-**Content-blindness is how NESI gets there. It is not what the promise is.** The
-promise is that nothing is ever concluded about you and handed back. Every
-instrument in the build enforces that and nothing else: a centre with no `value`
-field, a draw call that takes an index and not a string, *verbatim, unlabelled,
-no reason given.* Not one of them prevents inference from timing — which is why
-§13 carries a thirteenth law that does.
+**Content-blindness is how NESI gets there — the mechanism. The promise sits
+at a different level.** The promise is that no conclusion about you ever
+forms or gets handed back. Every instrument in the build enforces exactly
+that, and only that: a centre with no `value` field, a draw call that takes an
+index and not a string, *verbatim, unlabelled, no reason given.* Timing
+inference sits outside what these cover, which is why §13 carries a thirteenth
+law that closes it.
 
 ### Why it has to be structural rather than restrained
 
-**Generosity is safe when it cannot vary with you.** Lavishness becomes judgement
-at the moment it becomes contingent: when more arrives on a good day and less on
-a bad one, the abundance is a verdict wearing a nicer coat. NESI's world cannot
-make its gift contingent, because nothing in it is permitted to hold an opinion
-to make it contingent with.
+**Generosity is safe exactly when it holds fixed, independent of you.**
+Lavishness becomes judgement at the moment it becomes contingent: when more
+arrives on a good day and less on a bad one, the abundance is a verdict
+wearing a nicer coat. NESI's world keeps its gift non-contingent, because the
+world holds no opinion capable of making it otherwise.
 
-Note what this does NOT claim. It does not claim that warmth from something which
-has read you is judgement — the psychotherapy literature flatly contradicts that,
-and it is the best-evidenced finding in the field: across 295 studies the
-alliance-outcome correlation is r = .278, and therapist empathy r = .28 across
-eighty-two samples. That warmth comes from a fully-reading party and is not felt
-as a verdict. Rogers' word is **unconditional** positive regard, not *uninformed*.
+Note what this stops short of claiming: that warmth from something which has
+read you is judgement. The psychotherapy literature runs against that
+reading, and holds the best-evidenced finding in the field: across 295
+studies the alliance-outcome correlation is r = .278, and therapist empathy r
+= .28 across eighty-two samples. That warmth comes from a fully-reading party
+and lands as felt care, not a verdict. Rogers' word is **unconditional**
+positive regard, not *uninformed*.
 
-What is true is narrower and it is the whole argument for building it this way: a
-person can hold warmth non-contingent, with training and supervision. **A product
-with a metrics dashboard has never once managed it.** So the design does not ask
-anyone to be disciplined. It removes the thing discipline would have to govern.
+What is true is narrower and it is the whole argument for building it this
+way: a person can hold warmth non-contingent, with training and supervision.
+**Every product with a metrics dashboard has fallen short of it, every time.**
+So the design leaves discipline out of the ask. It removes the thing
+discipline would have to govern.
 
-### And the mechanism is not new — the refusals are
+### The mechanism already exists — the refusals are new
 
-Stated plainly, because the opposite was claimed in an earlier draft and it is
-false. Worlds driven by the bare fact of an activity already exist and some are
-a decade old. **4thewords** is a paid role-playing game in which word count and
-elapsed time damage monsters. **Forest** grows a world from the fact that you
-focused, at sixty million users. **Pikmin Bloom** grows one from step count.
+Stated plainly, because the opposite was claimed in an earlier draft and the
+record runs against it. Worlds driven by the bare fact of an activity already
+exist and some are a decade old. **4thewords** is a paid role-playing game in
+which word count and elapsed time damage monsters. **Forest** grows a world
+from the fact that you focused, at sixty million users. **Pikmin Bloom** grows
+one from step count.
 
 And the closest ancestor is the sharpest warning. **750 Words** began exactly
 where this stands — private daily writing, recognition for the fact of writing —
 and then added lexical analysis that returns your emotions, concerns and mindset.
 It moved because that is what users pulled for.
 
-**So the mechanism is available elsewhere and the refusals are not.** What is
-unusual here is not a world that responds without reading. It is a world that
-refuses the next step, permanently, with the refusal written as a lint rather
-than an intention — and a design whose whole retention engine is absence, in a
-category whose survivors run on notification and streak.
+**So the mechanism is available elsewhere; the refusals are the rare part.**
+What is unusual here goes past a world that responds while leaving the text
+unread. It is a world that refuses the next step, permanently, with the
+refusal written as a lint rather than an intention — and a design whose whole
+retention engine rests on quiet, in a category whose survivors run on
+notification and streak.
 
 The corpus states the discipline in one line — *"NESI never responds to what you
 write. It responds to that you wrote."*
@@ -242,12 +248,9 @@ is the reason the world offers.
 
 ## 6 · WHY ANYTHING MATTERS
 
-The question forms early and the design has to answer it: **with nothing scored
-and every state lawful, where is the weight?**
+The question forms early and the design has to answer it: **with every state lawful and score set aside entirely, where is the weight?**
 
-Held is lawful. Fallow is lawful. Setting a thing down produces no destination,
-no animation and no confirmation. A world where every move is recoverable is a
-screensaver, and this one is full of moves that stay made.
+Held is lawful. Fallow is lawful. Setting a thing down leaves it exactly where it lands — plain, unmarked, unconfirmed. A world where every move is recoverable is a screensaver, and this one is full of moves that stay made.
 
 The answer is in the build rather than in an argument, one line per seat.
 **Every one of the twelve seats declares what it costs the hand**, in the file
@@ -273,21 +276,21 @@ there — the held head, light against clarity, the lens paid in time, the day t
 roots one release and not a thousand. **The route is both**: it is irreversible
 and it is exclusive, which is why it carries the sharpest line of the twelve.
 
-One is neither, and is the strangest price in the world — *which one is not yours
+One stands apart from both categories, and is the strangest price in the world — *which one is not yours
 to choose.* The cost of the return is that the choosing is the world's.
 
-And the twelfth declares that it costs nothing: the garden, *"nothing is spent;
+And the twelfth declares its price at zero: the garden, *"nothing is spent;
 it shows what you made and asks for no act."* A world where every act had a price
-would be its own kind of accounting. One place takes nothing, and it is the place
+would be its own kind of accounting. One place charges zero, and it is the place
 where things grow.
 
 **So the weight here is irreversibility.** The world tells you that you did
 *this*, and that this is now the case. What you feel is having spent something
 that stays spent — attention, light, a day, a route taken, a fruit given.
 
-The distinction has to be narrow to be true. Plenty of things judge without
-reading anyone: a lap timer, a step counter, a chess engine. And a word count
-judges a piece of writing without opening it, which is §2's whole point. What
+The distinction has to be narrow to be true. Plenty of things judge purely on output, blind to
+the person behind it: a lap timer, a step counter, a chess engine. And a word count
+judges a piece of writing while leaving it closed, which is §2's whole point. What
 holds is narrower still, and it is the shape this design lives in:
 
 > **A verdict about what you wrote requires reading what you wrote.
@@ -299,9 +302,9 @@ built late because the hand-work was sequenced behind the container, and §16
 names the forks still open. What it buys is the kind of weight that works outside
 a game too. You get a morning you spent.
 
-One edge keeps it honest: **the cost is declared, never derived.** A parser
-cannot see what a hand gives up, so each seat says it in the first person and an
-instrument checks that it said something.
+One edge keeps it honest: **the cost is declared, never derived.** A parser only
+sees what a hand gives up when the hand says so itself, so each seat says it in
+the first person and an instrument checks that it said something.
 
 *(The twelve above are the live declarations in `ascent.html`, read with comments
 stripped. An earlier draft counted thirteen and found seven one-way doors: it had
@@ -392,7 +395,7 @@ Kevin's ruling, and it reorganises everything above it: **"the centre is the
 game. everything else serves it."**
 
 The twelve seats, the thirty levels, the faces, the instruments — all of it
-is **apparatus**. It is not the game.
+is **apparatus**, in service to the game.
 
 What makes this a description rather than a mood is that the middle already
 behaves that way, measurably:
@@ -400,28 +403,30 @@ behaves that way, measurably:
 - it is **one edge-length from every one of the twelve seats** — radial
   equilibrium, the property Fuller singled out and one that only a few uniform
   polytopes have
-- it is the **only point lying in all four circuit planes at once** — not on the
-  circuits, which are walks of six edges, and no edge reaches it
+- it is the **only point lying in all four circuit planes at once** — distinct
+  from the circuits themselves, which are walks of six edges that pass around
+  it, keeping every edge at a remove from it
 - **it is the part everything else moves relative to** when the shape flexes
-- **nothing can be sent to it**, and nothing names it
+- **it stands beyond address and beyond naming**
 
 In `solid.js` this is structural rather than remembered: the centre object is
 frozen, carries no `name`, `value` or `content` field, and has no `receive`,
 `send`, `to` or `set`. **There is nothing to fill and nothing to send.** The
-standing instruction that the slot stays empty is not a rule a session has to
-recall — it is a parameter that does not exist.
+standing instruction that the slot stays empty is carried structurally rather
+than recalled each session — the parameter was simply never built into the
+object.
 
-And the geometry supplies the reason rather than a mystery: **a thing that is the
-game cannot also be a piece of the game.**
+And the geometry supplies the reason rather than a mystery: **a thing that is
+the game stands apart from being a piece of the game.**
 
-Twelve spokes do run from the middle to the seats, each exactly one strut long.
-Nothing travels them. They are the holding — the twelve hold the middle steady by
-standing exactly as far from it as they stand from each other. That is the word
-*held*, as a measurement.
+Twelve spokes do run from the middle to the seats, each exactly one strut
+long, existing purely as structure. They are the holding — the twelve hold
+the middle steady by standing exactly as far from it as they stand from each
+other. That is the word *held*, as a measurement.
 
-Every piece of apparatus now has a test it did not have before: **does it serve
-the centre, or does it serve itself?** Applying that test is Kevin's, and it has
-not been applied.
+Every piece of apparatus now has a test that is new to it: **does it serve
+the centre, or does it serve itself?** Applying that test is Kevin's, and it
+stands open, waiting for him.
 
 ---
 
@@ -564,11 +569,11 @@ menu of three games.
 
 ## 12 · THE OTHER PERSON
 
-The endgame verb: grow a **fruit** — carrying shape, never words — and hang it on
+The endgame verb: grow a **fruit** — carrying shape alone — and hang it on
 the membrane at your world's edge. Send an invitation.
 
 The invited person walks a bridge into your world's shallows. They see your
-terrain, your light, your standing structures. **Never your words.** They may
+terrain, your light, your standing structures. **Your words stay yours.** They may
 take the fruit.
 
 When they take it and mark it as a gift, the deep surfaces something for you: a
@@ -578,7 +583,8 @@ recognition built from what you had released long before they arrived.
 
 Two constraints hold this in place. **Nothing leaves the world but fruit, by the
 hand** — no telemetry, no analytics, no accounts, no sync. And **taking is not
-spending**: the world does not run out of a thing it has already given.
+spending**: the world retains a thing it has already given, undiminished by the
+taking.
 
 What actually departs when a fruit departs — the fruit only, or the stand and the
 ground it grew from — is an open fork and is Kevin's.
@@ -725,35 +731,35 @@ game.
 A corpus this size accumulates statements from different jurisdictions that look
 identical on the page. A click says a thing binds. `solid.js` says a thing is
 geometrically true. A walk says a thing was seen. A hardened convention says the
-system behaves as though something binds. **Those are not four ways of saying
-true.**
+system behaves as though something binds. **Those are four distinct ways of
+standing, not four synonyms for true.**
 
 So every consequential claim now answers two questions: **what kind of standing
 do I have**, and **what keeps me standing.**
 
-Seven kinds, no generic fallback: **MARKED** (his words admitted it) · **MEASURED**
-(a computation over a live authority returns it) · **OBSERVED** (a hand walked it)
-· **HARDENED** (the system behaves as though it binds, ratified or not) ·
-**DERIVED** (mechanical, and re-runnable by a second hand) · **INTENDED**
-(declared, and nothing enforces it yet — and it says so) · **INFERRED** (a
-reading, and never disguised as one).
+Seven kinds, each named explicitly: **MARKED** (his words admitted it) ·
+**MEASURED** (a computation over a live authority returns it) · **OBSERVED** (a
+hand walked it) · **HARDENED** (the system behaves as though it binds, ratified
+or not) · **DERIVED** (mechanical, and re-runnable by a second hand) ·
+**INTENDED** (declared, with enforcement still pending — and it says so) ·
+**INFERRED** (a reading, named plainly as one).
 
 **A provenance says where a claim came from. A support set says why it is still
 warranted.** Those are different things, and only the second survives the ground
-moving. So every support is a reference that resolves or fails to — a predicate
-re-run, a line present in a file or absent, a mark, another claim. Nothing is
-cached; re-evaluation *is* the mechanism.
+moving. So every support is a reference whose resolution holds or gives way — a
+predicate re-run, a line's presence in a file, a mark, another claim. Every check
+re-runs fresh; re-evaluation *is* the mechanism.
 
-When a support stops resolving the verdict is **UNSUPPORTED**, which is not
-false. It is *something beneath me changed; I no longer know whether I stand.*
-Nothing is rewritten and nothing is invalidated. The break is exposed and left
-for a hand — because a classifier deciding the answer would be the same organ
-law 4 already refuses, one level up.
+When a support stops resolving, the verdict is **UNSUPPORTED** — a status of its
+own, distinct from false. It is *something beneath me changed; whether I still
+stand is now open.* The claim stays exactly as written, still standing until
+reviewed; the break is surfaced and handed to a person — because a classifier
+deciding the answer would be the same organ law 4 already refuses, one level up.
 
 Its first run caught two live breaks; one has since been repaired by a mark, and
 the other stands on purpose. One was a document asserting the build's
 creative freeze still binds; the line it stood on had been superseded and the
-support no longer resolved. The other was the claim authorising the spine's own
+support's resolution lapsed. The other was the claim authorising the spine's own
 construction — **the spine priced its own build** and reported that it stands on
 an unsupported claim.
 
@@ -852,15 +858,16 @@ honest state; this section is the honest question.
 
 You will open it one morning months from now, for no reason, and drop a line over
 a part of the ground you do not remember making. It will come back with a
-sentence you wrote and forgot — verbatim, unlabelled, nothing attached saying why
-that one, and no record anywhere of the places where the line found nothing.
+sentence you wrote and forgot — verbatim, unlabelled, standing on its own with
+no reason attached for why that one, and holding a record only of the places
+where the line found something.
 
 That is the only promise the world makes, and it has two halves:
 
 > **Nothing you release is wasted. Nothing you release is read.**
 
 Everything else in this document — twelve seats, thirty levels, six hinges,
-a centre that cannot be reached, a bowl of twelve that closes on a lens — is the
+a centre that stays out of reach, a bowl of twelve that closes on a lens — is the
 apparatus that lets those two sentences stand next to each other.
 
 ---

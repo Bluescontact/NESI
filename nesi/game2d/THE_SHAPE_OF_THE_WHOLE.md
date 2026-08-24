@@ -120,32 +120,21 @@ it gives, stated as structure rather than as sentiment.
 | the four circuits | 3 falling → 3 rising → closes | geometric, walkable |
 | **the sounding** | TANK → GROUND → DEEP → *your own sentence, verbatim* → TANK | **built and walked** |
 | S.kept | append-only; drained only by the sounding | built |
-The sounding is the only fully closed, fully built loop in the world. It is also
-the only place a player's own words come back to them. Those two facts being the
-same fact is not an accident and should not be diluted.
+The sounding stands as the one fully closed, fully built loop in the world. It is also the one place a player's own words return to them. Those two facts being the same fact carries real weight, and deserves to stay in full view.
 ### Open — something departs
 | loop | departs to | state |
 |---|---|---|
 | **THE CAST** | a file, outside the world | **half-built and dishonest** — the file leaves, the world loses nothing |
 | **THE FIELD** | another person | **absent** — zero implementation |
-**There are exactly two open loops in the whole design.** One is broken. One
-does not exist. That is the entire diagnosis of why the world feels like a pile.
+**The whole design carries exactly two open loops.** One is partly built. One is yet to be built. That is the entire diagnosis of why the world feels like a pile.
 ### Fuller's charge, resolved
 > *"Islands of compression with no sea of tension is a pile, not a structure."*
-The three stores — `nesiworld`, `nesi.level_one`, `nesi.ascent` — are three
-closed systems with no member between them. Both designed open loops point
-**outward** (to a file, to a person). Neither points **sideways**.
-> The sea of tension is an **internal** open loop: water leaving one store and
-> arriving in another. There is not one. That is the missing member, named.
-This is not the same request as "join the surfaces." A shared store would be one
-island made bigger. An open loop between them is tension.
+The three stores — `nesiworld`, `nesi.level_one`, `nesi.ascent` — stand as three closed systems, each complete on its own, apart from the others. Both designed open loops point **outward** (to a file, to a person) — outward is the only direction either takes.
+> The sea of tension is an **internal** open loop: water leaving one store and arriving in another. That loop is open ground — the missing member, now named.
+This is a different request than "join the surfaces." A shared store would be one island made bigger. An open loop between them is tension.
 ### The short circuit
-**↓TANK and ↑CAST are directly connected by a real edge.** The shortest path
-from intake to departure is **one member**. The twelve-level ascent is eleven
-steps; the solid permits one.
-The whole solid is only **three members across** at its widest (↓TANK to ↑LENS).
-It is a very small, very connected world. The twelve-level sequence is a reading
-order laid over a shape that permits many orders and enforces none.
+**↓TANK and ↑CAST are directly connected by a real edge.** The shortest path from intake to departure is **one member**. The twelve-level ascent is eleven steps; the solid permits one.
+The whole solid is only **three members across** at its widest (↓TANK to ↑LENS). It is a very small, very connected world. The twelve-level sequence is a reading order laid over a shape that opens onto many orders, all equally available.
 ---
 ## V · WATER AND LIGHT — the display law
 
