@@ -1,5 +1,15 @@
 # THE GATE
 
+## Gift circuit — capabilities to fold into WORKBENCH.html — 2026-08-24
+
+Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
+
+**System fact, not part of the ranking:** same as the two runs below, the skill's own `scripts/ingest.mjs`/`scan.mjs`/`gate.mjs` do not exist on disk — only `SKILL.md` is present. This run performed the judge step directly, scoped by Kevin's own ask ("use the unrouted gifts tool to find capabilities that can be folded into the html") to `tools/workbench_bridge/WORKBENCH.html` as the current build, checked each candidate against that file's actual contents before carding it.
+
+1. gift_2026-08-24_06_load_bearing_source_test.md - the Tarjan bridge/articulation-point algorithm, already proven twice (THE_TRUSS.html, THE_TERRAIN_LIVE.html), never pointed at a bridge's own Sources citation graph (M cap - M effort - H conf)
+2. gift_2026-08-24_05_the_compare_panel.md - THE_TERRAIN_LIVE.html's shift-click-two-things-to-compare panel, live and wired, never ported to a second instrument (M - L - H)
+3. gift_2026-08-24_07_zero_dependency_nearness.md - terrain_layout.py's hand-rolled, zero-dependency TF-IDF nearness engine — the working alternative to gift _04's blocked chromadb engine — never separated from its 2D-layout half (M - M - M)
+
 ## Gift circuit — "I see a board, not a library with visible mapped relationships" — 2026-08-24
 
 Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
