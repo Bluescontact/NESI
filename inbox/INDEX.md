@@ -1,5 +1,21 @@
 # THE GATE
 
+## Gift circuit — "I see a board, not a library with visible mapped relationships" — 2026-08-24
+
+Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
+
+1. gift_2026-08-24_03_pattern_library_wikilink_graph.md - 385 real `[[wikilink]]` citations already written across the 178-file pattern library, never extracted or drawn, zero new dependencies to route (H cap - M effort - H conf)
+2. gift_2026-08-24_04_codex_index_semantic_engine.md - a real, populated chromadb+sentence-transformers similarity engine over the same library, blocked by a Python-environment mismatch — second gift-circuit pass to find this exact tool unrouted (M - M/L depending on fork - M conf)
+
+## Unrouted gifts — workbench / decision-surface / lineage trajectory — 2026-08-24
+
+Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.
+
+**System fact, not part of the ranking:** same as the 2026-08-23 sweep below, the skill's own `scripts/ingest.mjs`/`scan.mjs`/`gate.mjs` do not exist on disk — only `SKILL.md` is present. This run performed the judge step directly, scoped by the current conversation to files touching decision-surfaces, the workbench, and lineage/topology UI, checked against `inbox/` and a live grep of the repo to confirm each candidate is actually unlinked before carding it.
+
+1. gift_2026-08-24_01_the_terrain_decision_map.md - a finished four-ground decision map over real marks, built the same day Kevin first asked for exactly this, never linked from any page (H cap - M effort - H conf)
+2. gift_2026-08-24_02_bench_json_ratified_registry.md - a ratified twelve-organ registry with Kevin's own sourced limit-text, read by no runtime code (M - L - H)
+
 ## Unrouted gifts — whole-corpus sweep — 2026-08-23
 
 Ranked by capacity x ease of routing. Cards order nothing; each waits for Kevin's mark.

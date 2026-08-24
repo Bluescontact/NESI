@@ -66,11 +66,13 @@ detect it either** — 58 of 83 gate-closes carried "resolves no fork").
 or build order; a second manifest on the same tetra collides regardless of
 session or day — a fresh tetra opens a fresh allowance. — Tab 0, 2026-08-13;
 rescoped from session/day/corpus to structural (tetra) boundary, Kevin, 2026-08-18.
-**[MODIFIED — supersedes the session/day/corpus fork below as moot; enforcement
-mechanism not yet built]**
+**[MODIFIED — supersedes the original session/day/corpus scoping (see
+provenance) as moot; enforcement mechanism not yet built]**
 
 **12 · THE FIELD, NOT THE DOORWAY.** Every live decision open and markable at
 depth zero, at corpus scale. "I navigate a map, not a doorway." — 2026-08-12.
+**[carried into 28 — the honest limit is the specific moment this law and 26
+collide]**
 
 **13 · HELD IS LAWFUL.** Unprocessed, unassigned, dry, fallow are correct states.
 Never nag, never build a re-engagement hook. — NESI law 7 (see provenance for its
@@ -124,6 +126,7 @@ that drives an interaction on the user's behalf — testing, verifying,
 demonstrating — owes the concrete path back to a known state, not a
 description of results. A report without navigation leaves the hand that has
 to live in that state working its way out blind. — Kevin, 2026-08-21.
+**[carried into 28 — see 28 for the collapse point this law and 12 share]**
 
 **27 · A DEAD END IS NAVIGATION DATA.** A dead end, a litigation, a failure is
 read as where the map now knows not to go — not reported back as a flat
@@ -131,6 +134,18 @@ negative. A repeated one names the place that needs an upstream deposit; the
 composite solution is built from that naming, not from restating the block.
 — Kevin, 2026-08-22 (`CLAUDE.md` FRAMING, extended into this file on his own
 mark).
+
+**28 · THE HONEST LIMIT WIDENS THE FIELD, IT NEVER NARROWS IT.** At the edge of
+what a session can actually resolve, the correct move is to surface the live
+fork — not collapse it into one action already chosen and hand it over framed
+as "the next step." A collapsed fork is the same failure as advancing state
+with no path back: the hand left to work its way out blind, upstream, without
+a map. Synthesis of law 12 (the field, not the doorway) and law 26 (advancing
+state hands back navigation) — the two were never joined at their actual
+trigger condition until now: the honest limit is *when* the field must open,
+not narrow. — Kevin, 2026-08-24, in his own words: "the only way out was to
+work my way upstream blindfolded, and then attempt to rearticulate my way
+around the debris of the frame as held."
 
 ---
 
