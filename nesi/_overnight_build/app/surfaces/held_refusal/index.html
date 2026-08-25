@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Before you enter</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#ddd8cc;
+  --bdr:#ccc5b0;
+}
+body{background:var(--bg);color:var(--g);font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.7;padding:40px 20px;display:flex;justify-content:center}
+.page{max-width:620px;width:100%}
+.eye{font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:var(--gf);text-transform:uppercase;margin-bottom:10px}
+h1{font-size:26px;font-weight:normal;color:var(--gb);letter-spacing:0.5px;margin-bottom:6px}
+.sub{font-size:13px;color:var(--gd);font-style:italic;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--bdr)}
+.screen{display:none}
+.screen.on{display:block}
+/* the map — first screen */
+.edge{padding:16px 0;border-bottom:1px solid var(--gfaint);display:flex;gap:16px}
+.edge-n{font-size:22px;color:var(--gd);width:26px;flex-shrink:0;line-height:1.2}
+.edge-h{font-size:17px;color:var(--gb);margin-bottom:5px}
+.edge-t{font-size:14.5px;color:var(--g)}
+.ver{font-family:'Courier New',monospace;font-size:9px;letter-spacing:1px;color:var(--gf);text-transform:uppercase;margin:20px 0 26px}
+.door{text-align:center}
+.enter{font-family:'Courier New',monospace;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gb);background:var(--sf);border:1px solid var(--gd);padding:14px 40px;cursor:pointer}
+.enter:hover{background:var(--sf2)}
+.door-note{font-size:12px;color:var(--gf);font-style:italic;margin-top:12px}
+/* the tree — behind the door */
+.branches{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.branch{font-family:'Courier New',monospace;font-size:14px;letter-spacing:1px;color:var(--gb);
+  background:var(--sf);border:1px solid var(--bdr);padding:14px 18px;cursor:pointer;text-align:left}
+.branch:hover{background:var(--sf2)}
+.branch .b-hint{font-family:Georgia,serif;font-size:12px;color:var(--gf);font-style:italic;letter-spacing:0;margin-top:3px}
+.leaf{display:none;background:#fff;border:1px solid var(--bdr);border-left:3px solid var(--gd);padding:20px 22px;margin-bottom:14px;font-size:14.5px}
+.leaf.on{display:block}
+.leaf-ttl{font-size:16px;color:var(--gb);margin-bottom:10px}
+.leaf-done{font-family:'Courier New',monospace;font-size:10px;letter-spacing:1px;color:var(--gf);
+  text-transform:uppercase;margin-top:16px;padding-top:12px;border-top:1px solid var(--gfaint)}
+.leave{font-family:'Courier New',monospace;font-size:11px;letter-spacing:1px;color:var(--gd);
+  background:none;border:none;cursor:pointer;text-transform:uppercase;padding:8px 0;margin-top:8px}
+.leave:hover{color:var(--gb)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="eye">Standing infrastructure · addressed to no one</div>
+
+  <!-- FIRST SCREEN: the map (four edges) -->
+  <div class="screen on" id="map">
+    <h1>Before you enter</h1>
+    <div class="sub">Four edges. Not an explanation of what's inside — a description of how this ground behaves.</div>
+
+    <div class="edge"><div class="edge-n">1</div><div><div class="edge-h">These refusals do not move.</div><div class="edge-t">Nothing you do — asking again, waiting, being useful, being close — turns a no here into a yes. That firmness isn't coldness. It's the only thing that keeps whatever you're offered from becoming something you paid for.</div></div></div>
+
+    <div class="edge"><div class="edge-n">2</div><div><div class="edge-h">Entering creates no obligation.</div><div class="edge-t">Opening a door costs one click and incurs nothing. You are not now expected to continue, to answer, to thank, or to come back.</div></div></div>
+
+    <div class="edge"><div class="edge-n">3</div><div><div class="edge-h">Stopping changes nothing.</div><div class="edge-t">You can leave at any depth. Nothing closes behind you, nothing shifts in how you stand here, nothing is owed for having looked.</div></div></div>
+
+    <div class="edge"><div class="edge-n">4</div><div><div class="edge-h">Each click permits only what opens next.</div><div class="edge-t">A click authorizes one more thing to be shown — not a branch, not a commitment. It says nothing about you. The door reports only that it was opened.</div></div></div>
+
+    <div class="ver">the map · v0.1 · last changed 2026-07-25 · versioned in the open</div>
+
+    <div class="door">
+      <button class="enter" id="enter-btn">enter</button>
+      <div class="door-note">one click. it opens one thing. nothing more is asked of you.</div>
+    </div>
+  </div>
+
+  <!-- BEHIND THE DOOR: the tree (three branches, each a leaf that ends in completion) -->
+  <div class="screen" id="tree">
+    <h1>What's here</h1>
+    <div class="sub">Three things, offered. Open any one. Each ends when it is complete — not when something is wanted from you.</div>
+
+    <div class="branches">
+      <button class="branch" id="br-reading">a reading<div class="b-hint">a short passage, given whole</div></button>
+      <button class="branch" id="br-tool">a tool<div class="b-hint">a small thing you can use, as-is</div></button>
+      <button class="branch" id="br-made">a thing made<div class="b-hint">an object, described so you can hold it in mind</div></button>
+    </div>
+
+    <div class="leaf" id="leaf-reading" data-leaf="a reading">
+      <div class="leaf-ttl">A reading</div>
+      <div>The house you rest in tonight was built by someone who is not here to be repaid. They laid the floor level so that whoever came after could stop bracing. That is the whole of the inheritance: not the walls, but the fact that you may set your weight down without first earning the right to.</div>
+      <div class="leaf-done">— that is the reading, complete. It ends here.</div>
+    </div>
+
+    <div class="leaf" id="leaf-tool" data-leaf="a tool">
+      <div class="leaf-ttl">A tool — the one-currency check</div>
+      <div>When you feel a no starting to bend, name the currency bending it: is it persistence, standing, guilt, closeness, or usefulness? A no worth keeping holds against all five, separately. Test it once against each. The ones it survives are yours to keep; the ones it doesn't were never refusals, only prices.</div>
+      <div class="leaf-done">— that is the tool, complete. Use it or don't. It ends here.</div>
+    </div>
+
+    <div class="leaf" id="leaf-made" data-leaf="a thing made">
+      <div class="leaf-ttl">A thing made</div>
+      <div>A low bench, cut from a single fallen beam, sanded only where a hand would fall. It sits by a door so that anyone arriving tired has somewhere to be before deciding anything. It was made to be sat on by people the maker will never meet, and it needs nothing back to have been worth making.</div>
+      <div class="leaf-done">— that is the object, complete. It ends here.</div>
+    </div>
+
+    <button class="leave" id="leave-btn">← back to the edges</button>
+  </div>
+
+</div>
+<script>
+// Non-diagnostic. Pure client-side display toggling. No storage, no network, no analytics.
+// A click reveals the next node and records nothing about the visitor.
+(function(){
+  var map=document.getElementById('map'), tree=document.getElementById('tree');
+  function show(el){el.classList.add('on');}
+  function hide(el){el.classList.remove('on');}
+  document.getElementById('enter-btn').addEventListener('click',function(){hide(map);show(tree);});
+  document.getElementById('leave-btn').addEventListener('click',function(){hide(tree);show(map);
+    ['reading','tool','made'].forEach(function(k){document.getElementById('leaf-'+k).classList.remove('on');});});
+  function wire(branch,leaf){
+    document.getElementById(branch).addEventListener('click',function(){
+      document.getElementById(leaf).classList.toggle('on');});
+  }
+  wire('br-reading','leaf-reading');
+  wire('br-tool','leaf-tool');
+  wire('br-made','leaf-made');
+})();
+</script>
+</body>
+</html>

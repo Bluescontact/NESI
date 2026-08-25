@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NESI</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0c0a;color:#e8e2d0;font-family:Georgia,'Times New Roman',serif;
+    padding:40px 24px 80px;min-height:100vh}
+  .title{text-align:center;font-family:'Courier New',monospace;font-size:42px;
+    letter-spacing:14px;color:#d4b96a;margin-bottom:6px}
+  .tag{text-align:center;font-style:italic;color:#a89870;margin-bottom:48px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;
+    max-width:1200px;margin:0 auto}
+  .card{background:#17140f;border:1px solid #3a3020;padding:22px;display:flex;flex-direction:column}
+  .card.derived{border-color:#5f7a3a}
+  .eyebrow{font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;color:#7a6840;
+    text-transform:uppercase;margin-bottom:6px}
+  .card h2{font-size:20px;color:#e8e2d0;margin-bottom:12px}
+  .card p{font-size:14px;line-height:1.55;color:#c9c2ac;margin-bottom:16px;flex:1}
+  .links a{display:block;font-family:'Courier New',monospace;font-size:13px;color:#d4b96a;
+    text-decoration:none;padding:8px 10px;border:1px solid #3a3020;margin-bottom:6px}
+  .links a:hover{background:#3a3020}
+  .world{max-width:1200px;margin:48px auto 0;background:#111830;border:1px solid #2a4a6a;padding:22px}
+  .world h2{color:#8ec6ff;margin-bottom:8px;font-size:20px}
+  .world p{color:#b8d0e8;font-size:14px;margin-bottom:14px;line-height:1.5}
+  .world a{display:inline-block;font-family:'Courier New',monospace;font-size:14px;color:#0d0c0a;
+    background:#8ec6ff;text-decoration:none;padding:10px 18px;font-weight:bold}
+  .world a:hover{background:#b8d0e8}
+</style>
+</head>
+<body>
+  <div class="title">N E S I</div>
+  <div class="tag">one law with four faces</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="eyebrow">Face 1 &middot; The Gift</div>
+      <h2>THE GIFT</h2>
+      <p>The player-facing game itself &mdash; The Warm One. Five moves played with pieces of a person's own life.</p>
+      <div class="links">
+        <a href="surfaces/warm_one_card.html">Open warm_one_card.html</a>
+        <a href="surfaces/warm_one_walkthrough.html">Open warm_one_walkthrough.html</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">Face 2 &middot; The Engine</div>
+      <h2>THE ENGINE</h2>
+      <p>The load-bearing machinery &mdash; the recognition law, the ledger/gate, the confirmed entry point.</p>
+      <div class="links">
+        <a href="surfaces/board.html">Open board.html</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">Face 3 &middot; The Infrastructure</div>
+      <h2>THE INFRASTRUCTURE</h2>
+      <p>How a recognized gift moves between people without becoming a debt &mdash; the Held Refusal / the Field.</p>
+      <div class="links">
+        <a href="surfaces/held_refusal/index.html">Open held_refusal/index.html</a>
+      </div>
+    </div>
+
+    <div class="card derived">
+      <div class="eyebrow">Derived Fourth Face</div>
+      <h2>THE SELF (Heartwood)</h2>
+      <p>What a person's own recognitions add up to across every round, over time &mdash; rendered as growth rings.</p>
+      <div class="links">
+        <a href="surfaces/heartwood.html">Open heartwood.html</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="world">
+    <h2>THE LIVE BUILD &mdash; game2d</h2>
+    <p>The actual 2D-game-with-3D-objects geometry: 12 seats, 24 members, the tetra/pyramid solid, day one, the ascent, level library, options, the workbench. This is the real mechanism the four faces above sit on top of, not a description of it.</p>
+    <a href="surfaces/game2d/index.html">Open the game2d build &rarr;</a>
+  </div>
+</body>
+</html>

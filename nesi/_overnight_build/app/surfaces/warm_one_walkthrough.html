@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Warm One — play a round</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--sf:#eeebe3;--sf2:#e6e2d8;--card:#fffef9;
+  --g:#3a3020;--gb:#1a1408;--gd:#7a6840;--gf:#a89870;--gfaint:#e2ddce;
+  --bdr:#ccc5b0;--ember:#c0501f;--ember-glow:#e8863f;--ember-bg:#f7ece2;--leaf:#5f7a3a;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g);font-family:Georgia,'Times New Roman',serif;
+  display:flex;flex-direction:column;align-items:center;padding:30px 18px 44px;min-height:100%}
+.top{width:100%;max-width:620px;text-align:center;margin-bottom:22px}
+.eye{font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:var(--gf);margin-bottom:6px}
+.name{font-size:26px;color:var(--gb);letter-spacing:1px}
+.tag{font-size:13px;color:var(--gd);font-style:italic;margin-top:4px}
+
+.progress{display:flex;gap:5px;width:100%;max-width:620px;margin-bottom:20px}
+.progress .dot{flex:1;height:3px;background:var(--gfaint)}
+.progress .dot.done{background:var(--gd)}
+.progress .dot.now{background:var(--ember)}
+
+.screen{width:100%;max-width:620px;background:var(--card);border:1px solid var(--bdr);
+  padding:30px 32px 26px;min-height:340px;display:flex;flex-direction:column}
+.screen.hidden{display:none}
+.step-n{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2.5px;color:var(--gf);
+  text-transform:uppercase;margin-bottom:10px}
+.h{font-size:22px;color:var(--gb);margin-bottom:8px;line-height:1.3}
+.say{font-size:14px;color:var(--gd);line-height:1.6;margin-bottom:18px}
+.fallow{font-size:12.5px;color:var(--gd);font-style:italic;margin-top:-8px;margin-bottom:18px;
+  padding-left:12px;border-left:2px solid var(--gfaint)}
+
+.row{display:flex;gap:8px;margin-bottom:14px}
+input[type=text],textarea{flex:1;font-family:Georgia,serif;font-size:15px;color:var(--gb);
+  background:var(--bg);border:1px solid var(--bdr);padding:10px 12px;width:100%}
+textarea{min-height:64px;resize:vertical;line-height:1.55}
+input:focus,textarea:focus{outline:none;border-color:var(--gd)}
+button{font-family:'Courier New',monospace;font-size:11px;letter-spacing:1px;color:var(--gb);
+  background:var(--sf);border:1px solid var(--gd);padding:10px 16px;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--sf2)}
+button.quiet{border-color:var(--bdr);color:var(--gd);background:none}
+button.warm{border-color:var(--ember);color:var(--ember)}
+button:disabled{opacity:.4;cursor:default}
+
+.pile{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.piece{font-size:14px;background:var(--bg);border:1px solid var(--bdr);padding:8px 12px;cursor:pointer;position:relative}
+.piece:hover{border-color:var(--gd)}
+.piece.warm{border-color:var(--ember);background:var(--ember-bg);color:var(--gb);box-shadow:0 0 0 1px var(--ember)}
+.piece .x{color:var(--gf);margin-left:8px;font-family:monospace}
+.hint2{font-size:11.5px;color:var(--gf);font-style:italic}
+
+.q{margin-bottom:16px}
+.q .qh{font-size:14.5px;color:var(--ink,var(--gb));font-weight:bold;line-height:1.4;margin-bottom:3px}
+.q .qb{font-size:12px;color:var(--gd);line-height:1.5;margin-bottom:7px}
+.q.weight .qh{color:var(--gb)}
+.q.weight .sit{display:block;font-size:11px;color:var(--gf);font-style:italic;margin-top:3px}
+
+.close-text{font-size:15px;color:var(--gb);line-height:1.7;margin-bottom:8px}
+.done-msg{font-size:14px;color:var(--leaf);font-style:italic;margin-top:6px;line-height:1.6}
+.foot-note{font-size:11.5px;color:var(--gd);font-style:italic;margin-top:auto;padding-top:16px;
+  border-top:1px solid var(--gfaint);line-height:1.5}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:14px}
+.links{width:100%;max-width:620px;margin-top:18px;font-family:'Courier New',monospace;
+  font-size:10.5px;color:var(--gf);letter-spacing:0.5px;text-align:center}
+.links a{color:var(--gd)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="eye">DSS · RECOGNITION INFRASTRUCTURE</div>
+  <div class="name">The Warm One</div>
+  <div class="tag">a game you play with pieces of your own life</div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<!-- SCREEN 1 — empty your pockets -->
+<div class="screen" id="s1">
+  <div class="step-n">1 · empty your pockets</div>
+  <div class="h">Put down a handful of things.</div>
+  <div class="say">Things you did, made, fixed, gave, or got through lately. Don't sort them. Don't rank them. Just lay them where you can see them.</div>
+  <div class="row">
+    <input type="text" id="pieceInput" placeholder="something from your life lately…" autocomplete="off">
+    <button id="addBtn">put it down</button>
+  </div>
+  <div class="pile" id="pile"></div>
+  <div class="hint2" id="s1hint"></div>
+  <div class="acts"><button class="warm" id="toS2" disabled>feel for the warm one →</button></div>
+</div>
+
+<!-- SCREEN 2 — feel for the warm one -->
+<div class="screen hidden" id="s2">
+  <div class="step-n">2 · feel for the warm one</div>
+  <div class="h">Which one has a little heat on it?</div>
+  <div class="say">Run your attention across them and wait. One will have a little heat on it — the one you keep coming back to, the one that means more than it should. You don't have to explain why. This part is only yours.</div>
+  <div class="pile" id="pile2"></div>
+  <div class="fallow">And if none of them is warm today — if nothing has heat — that's a real round too. Nothing is wrong. Let them be a pile, and let go.</div>
+  <div class="acts">
+    <button class="quiet" id="fallowBtn">nothing's warm today — let it go</button>
+    <button class="warm" id="toS3" disabled>pull the thread →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3 — pull the thread -->
+<div class="screen hidden" id="s3">
+  <div class="step-n">3 · pull the thread</div>
+  <div class="h">Take the warm one — "<span id="warmEcho"></span>"</div>
+  <div class="say">Answer in your own plain words. There are no wrong answers, because no one is marking them.</div>
+
+  <div class="q">
+    <div class="qh">What actually happened here?</div>
+    <div class="qb">Just the plain story of it.</div>
+    <textarea id="qa1" placeholder="the plain story…"></textarea>
+  </div>
+  <div class="q">
+    <div class="qh">What did it take from you?</div>
+    <div class="qb">What did it cost — time, nerve, effort, something given up?</div>
+    <textarea id="qa2" placeholder="what it cost…"></textarea>
+  </div>
+  <div class="q weight">
+    <div class="qh">What did you do that someone else couldn't have — or couldn't have, until you showed them how?</div>
+    <span class="sit">This is the one to sit with. Only if you want to.</span>
+    <textarea id="qa3" placeholder="only if you want to…"></textarea>
+  </div>
+  <div class="acts"><button class="warm" id="toS4" disabled>one small true thing →</button></div>
+</div>
+
+<!-- SCREEN 4 — hand it over or keep it -->
+<div class="screen hidden" id="s4">
+  <div class="step-n">4 · hand it over — or keep it</div>
+  <div class="h">That true thing is a small gift now.</div>
+  <div class="say">Give it to someone, or keep it. Once you give it, it's given — nobody owes you anything back.</div>
+  <div class="close-text" id="threadPreview"></div>
+  <div class="acts">
+    <button class="warm" id="keepBtn">keep it</button>
+    <button id="handBtn">hand it over</button>
+  </div>
+</div>
+
+<!-- SCREEN 5 — let go -->
+<div class="screen hidden" id="s5">
+  <div class="step-n">5 · let go</div>
+  <div class="h">Put the round down.</div>
+  <div class="done-msg" id="doneMsg"></div>
+  <div class="say" style="margin-top:14px">The pile goes back to being just a pile. Come back when you come back.</div>
+  <div class="foot-note">There's no score, no winning, no one keeping count. The game never tells you what you're worth. It only holds still while you do the seeing.</div>
+  <div class="acts"><button class="quiet" id="restartBtn">play again</button></div>
+</div>
+
+<div class="links">grown on the same ledger as <a href="board.html">board.html</a> and <a href="heartwood.html">the heartwood</a> — playing here shows up there too</div>
+
+<script>
+// SAME localStorage key as board.html — playing here IS growing the grove there.
+const KEY = "nesi.embers.v1";
+function loadEmbers(){ try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ return []; } }
+function saveEmbers(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+
+const SCREENS = ["s1","s2","s3","s4","s5"];
+const $ = id => document.getElementById(id);
+function showScreen(id){
+  SCREENS.forEach(s => $(s).classList.toggle("hidden", s !== id));
+  renderProgress(id);
+}
+function renderProgress(activeId){
+  const el = $("progress"); el.innerHTML = "";
+  const idx = SCREENS.indexOf(activeId);
+  SCREENS.forEach((s,i) => {
+    const d = document.createElement("div");
+    d.className = "dot" + (i < idx ? " done" : i === idx ? " now" : "");
+    el.appendChild(d);
+  });
+}
+
+let pile = [];
+let nextId = 1;
+
+function renderPileInto(elId, clickable){
+  const el = $(elId); el.innerHTML = "";
+  pile.forEach(p => {
+    const d = document.createElement("span");
+    d.className = "piece" + (p.warm ? " warm" : "");
+    d.innerHTML = p.text.replace(/</g,"&lt;") + (elId === "pile" ? '<span class="x" title="remove">×</span>' : "");
+    if (clickable){
+      d.onclick = (ev) => {
+        if (elId === "pile" && ev.target.classList.contains("x")){
+          pile = pile.filter(x => x.id !== p.id);
+          syncPiles(); return;
+        }
+        pile.forEach(x => x.warm = (x.id === p.id));
+        syncPiles();
+      };
+    }
+    el.appendChild(d);
+  });
+}
+function syncPiles(){
+  renderPileInto("pile", true);
+  renderPileInto("pile2", true);
+  $("toS2").disabled = pile.length === 0;
+  const warm = pile.find(p => p.warm);
+  $("toS3").disabled = !warm;
+  $("s1hint").textContent = pile.length ? "click × to drop a piece" : "";
+}
+
+$("addBtn").onclick = addPiece;
+$("pieceInput").addEventListener("keydown", e => { if (e.key === "Enter") addPiece(); });
+function addPiece(){
+  const v = $("pieceInput").value.trim();
+  if (!v) return;
+  pile.push({ id: nextId++, text: v, warm: false });
+  $("pieceInput").value = "";
+  $("pieceInput").focus();
+  syncPiles();
+}
+
+$("toS2").onclick = () => showScreen("s2");
+$("toS3").onclick = () => {
+  const warm = pile.find(p => p.warm);
+  $("warmEcho").textContent = warm ? warm.text : "";
+  showScreen("s3");
+};
+$("fallowBtn").onclick = () => {
+  $("doneMsg").textContent = "— nothing was warm today. that's a real round. let it be a pile, and let go.";
+  showScreen("s5");
+};
+
+["qa1","qa2","qa3"].forEach(id => {
+  $(id).addEventListener("input", () => {
+    $("toS4").disabled = !($("qa1").value.trim() || $("qa2").value.trim() || $("qa3").value.trim());
+  });
+});
+$("toS4").onclick = () => {
+  const parts = [$("qa1").value.trim(), $("qa2").value.trim(), $("qa3").value.trim()].filter(Boolean);
+  $("threadPreview").textContent = parts.join(" · ") || "one small true thing.";
+  showScreen("s4");
+};
+
+function completeRound(given){
+  const warm = pile.find(p => p.warm);
+  const text = [$("qa1").value.trim(), $("qa2").value.trim(), $("qa3").value.trim()].filter(Boolean).join(" · ");
+  const list = loadEmbers();
+  const now = new Date();
+  list.unshift({ text: text || "one small true thing", from: warm ? warm.text : "", given: !!given, when: now.toISOString().slice(0,10) });
+  saveEmbers(list);
+  const msg = given
+    ? "given. it's theirs now — nobody owes you anything back. and the grove still holds it."
+    : "kept. it's yours, in your own hand — and it's in the grove now.";
+  $("doneMsg").textContent = "— " + msg;
+  showScreen("s5");
+}
+$("keepBtn").onclick = () => completeRound(false);
+$("handBtn").onclick = () => completeRound(true);
+
+$("restartBtn").onclick = () => {
+  pile = []; nextId = 1;
+  $("pieceInput").value = "";
+  ["qa1","qa2","qa3"].forEach(id => $(id).value = "");
+  $("toS4").disabled = true;
+  syncPiles();
+  showScreen("s1");
+  $("pieceInput").focus();
+};
+
+syncPiles();
+showScreen("s1");
+$("pieceInput").focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NESI · what stands open</title>
+<!--
+  THE DECISION SURFACE. Every fork this build is standing on, flat, unranked, and
+  markable where it lies. No depth, no wizard, no next.
+
+  BUILT TO THE CHASSIS LAWS, and they are not decoration:
+  · A MARK COPIES. Nothing is sent, nothing is submitted, no path leaves this
+    page. navigator.clipboard, falling back to execCommand, falling back to a
+    box you can select by hand.
+  · READING IS NEVER GATED BEHIND THE ACT. Every fork's whole object — what it
+    is, where it is live in the code, and what each branch costs — renders above
+    its own control, before any mark is asked for.
+  · PRE-AUTHORED EXITS. Every fork carries its branches AND "hold — not tonight",
+    written at authoring time. Nothing here requires typing in order to leave.
+  · DEPTH ZERO. All of them are on one surface, open, at once. This is the field,
+    not a doorway — his line, 2026-08-12: "you've guided and gated me to a single
+    decision… I navigate a map, not a doorway."
+  · YOUR MARKS SURVIVE. localStorage, key nesi.marks. Every seat that read THE
+    CRYSTAL named its no-storage as the fault that made marking pointless.
+  · NOTHING IS DEFAULTED. No fork opens with an option chosen, none is
+    recommended, and the order is the order they arose — never a ranking.
+
+  Nothing on this page directs a body, a day, or a schedule.
+-->
+<style>
+  :root{ --bg:#f7f5f0; --sf:#fffdf8; --sf2:#f1ede4; --g:#6f6a5e; --gb:#8d8578;
+         --gd:#2a2822; --gf:#17171a; --bdr:#d8d2c5; --mk:#4f7a63; --op:#a8564a; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--gf);
+    font:15px/1.6 "Iowan Old Style","Palatino Linotype",Georgia,serif;
+    padding:34px 22px 90px;}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:22px;font-weight:normal;letter-spacing:.01em;margin-bottom:4px}
+  .sub{color:var(--g);font-size:13px;margin-bottom:20px}
+  .floor{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--g);
+    border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);
+    padding:9px 0;margin-bottom:26px}
+  h2{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--g);
+    font-weight:normal;margin:30px 0 10px}
+  .f{background:var(--sf);border:1px solid var(--bdr);padding:16px 18px;margin-bottom:12px}
+  .f.marked{border-left:3px solid var(--mk)}
+  .f.open{border-left:3px solid var(--op)}
+  .f .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .f h3{font-size:16px;font-weight:normal;margin-bottom:8px;letter-spacing:.01em}
+  .f p{font-size:13.5px;line-height:1.68;color:var(--gd);margin-bottom:8px}
+  .f .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    background:var(--sf2);padding:6px 9px;margin-bottom:9px;display:block;
+    overflow-x:auto;white-space:pre-wrap}
+  .f .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
+    padding-left:11px;margin-bottom:10px}
+  /* a marker, not a fork: it carries no control, so it borrows the fork's
+     reading styles and none of its buttons */
+  .mk{background:var(--sf);border:1px solid var(--bdr);border-left:3px solid var(--gb);
+    padding:16px 18px;margin-bottom:22px}
+  .mk .n{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);
+    margin-bottom:5px}
+  .mk h3{font-size:16px;font-weight:normal;margin-bottom:8px}
+  .mk b{font-weight:normal;font-size:14px;color:var(--gf)}
+  .mk .cite{font-size:11.5px;color:var(--g);font-family:ui-monospace,Consolas,monospace;
+    display:block;margin:4px 0 6px}
+  .mk .cost{font-size:12.5px;color:var(--g);border-left:2px solid var(--bdr);
+    padding-left:11px;line-height:1.6}
+  .opts{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+  .opt{text-align:left;border:1px solid var(--bdr);background:transparent;
+    font:inherit;font-size:13.5px;color:var(--gf);padding:9px 13px;cursor:pointer;
+    transition:.12s}
+  .opt:hover{border-color:var(--gb);background:var(--sf2)}
+  .opt.on{border-color:var(--mk);color:var(--mk);background:#f2f7f3}
+  .opt.hold{color:var(--g)}
+  .bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--bdr);
+    padding:12px 0 4px;margin-top:30px;display:flex;gap:10px;align-items:center;
+    flex-wrap:wrap}
+  .bar button{border:1px solid var(--gb);background:transparent;font:inherit;
+    font-size:13px;color:var(--gf);padding:8px 14px;cursor:pointer}
+  .bar button:hover{border-color:var(--gf)}
+  .bar span{font-size:12px;color:var(--g)}
+  #reveal{width:100%;margin-top:10px;min-height:120px;font:12.5px/1.5 ui-monospace,Consolas,monospace;
+    border:1px solid var(--bdr);background:var(--sf);padding:11px;display:none;
+    white-space:pre-wrap;color:var(--gd)}
+  .note{font-size:12px;color:var(--g);margin-top:16px;line-height:1.6}
+</style>
+
+<div class="wrap">
+  <h1>What stands open</h1>
+  <div class="sub">Every fork this build is standing on. Flat, unranked, markable where it lies.</div>
+  <div class="floor" id="floor">—</div>
+  <div id="list"></div>
+
+  <div class="bar">
+    <button id="copyall">copy every mark</button>
+    <button id="clear">unmark everything</button>
+    <span id="status">a mark copies to your clipboard · nothing is sent</span>
+  </div>
+  <textarea id="reveal" readonly></textarea>
+
+  <p class="note">Nothing here is recommended and nothing opens chosen. “Hold — not
+  tonight” is a complete answer and is recorded as one. Your marks stay in this
+  browser; unmarking is a click on the same option.</p>
+</div>
+
+<script>
+"use strict";
+
+/* Every fork below is live somewhere in the build. Reading first, control after.
+   Nothing is ranked; the order is the order they arose. */
+const FORKS = [
+
+/* ═══ THE OFFER, 2026-08-14 ═════════════════════════════════════════════════
+   Rewritten on Kevin's order: "the offer — what stands open as an interactive
+   html decision face. I want to close loops on this game."
+
+   THE SIXTEEN FORKS HE MARKED ARE GONE FROM THIS PAGE. They are closed, and a
+   closed fork left on a decision surface is exactly what turned the gate ledger
+   into a 114-item log that could not function as a list of things waiting on a
+   hand. His marks and what was built from them are in BUILD_RECORD.md, whole.
+
+   What is here is what is actually open TONIGHT, and each one says what closing
+   it costs — because "close loops" is the ask, and a fork whose cost is unknown
+   cannot be closed. The order is the order they arose. Nothing is ranked. */
+
+{ g:"OPEN BECAUSE THE WORK OPENED THEM", n:"How the eight loose mechanisms gather into levels",
+  q:"A level is a tetra with four faces — built, walked, 53 assertions. 24 levels × 4 faces is 96 faces; there are twelve mechanisms. Four are inside LEVEL ONE, eight stand loose on the circuit. Three groupings work, and they differ in what a LEVEL means: a circuit is a place in the solid, a phase is something the water is doing, a gesture is something your hand is doing. My read — BY GESTURE teaches best, because a level then teaches one way of touching the world four times over and twenty-four become learnable. BY CIRCUIT is the only one the geometry hands over free.",
+  cite:"ascent.html · MAPRUNS — one level and eight ungathered\nPROGRESSION.md §5 · the four circuits are already verified",
+  cost:"By circuit: no design work, the solid supplies it — but a level mixes gestures and teaches nothing in particular. By phase: reads best as a story, needs the phases named. By gesture: four levels of four is sixteen faces, and eight mechanisms need somewhere else to go. All three cost the same thirty lines a stage to build.",
+  o:["by circuit — three falling, three rising, as the solid gives it",
+     "by phase — intake, separation, deposit, return",
+     "by gesture — one level per way the hand touches the world",
+     "none of these — a different cut"] },
+
+{ g:"OPEN BECAUSE THE WORK OPENED THEM", n:"The list of what the 24 levels each accomplish",
+  q:"You said we already have an idea of what the 24 levels each accomplish. I searched and could not find it: what is written down is twelve named mechanisms, four verified circuits, and the reveal. If that list exists, it is the input that turns most of the questions on this page into arithmetic.",
+  cite:"searched: PROGRESSION.md · THE_ASCENT.md · THE_SHAPE_OF_THE_WHOLE.md · THE_GAME.md · BUILD_RECORD.md",
+  cost:"If it exists and I have not read it, everything proposed since is under-informed — so finding out is the cheapest first move on this page. If it does not exist, one can be drafted from the twelve mechanisms and the four circuits for you to cut, which is faster than writing one from nothing.",
+  o:["it exists — here is where",
+     "I will say it",
+     "draft one from the twelve and the circuits, and I will cut it"] },
+
+{ g:"OPEN BECAUSE THE WORK OPENED THEM", n:"Does LEVEL ONE get a name",
+  q:"It is numbered on screen — LEVEL ONE, four faces of one tetra. A number is a lawful permanent answer, not a placeholder. If it takes a name, THE INTAKE is the one the corpus already earns: 'intake is the opening screen', and an intake screen's job is not to judge water but to keep out what would damage the works. That is these four faces exactly.",
+  cite:"ascent.html · drawRoom() — the one line of text in the room\nTHE_SHAPE_OF_THE_WHOLE.md §III — the intake screen",
+  cost:"One line, either way.",
+  o:["THE INTAKE",
+     "a different name — I will say it",
+     "it stays numbered; the faces carry the names"] },
+
+{ g:"OPEN BECAUSE THE WORK OPENED THEM", n:"Where the writing faces belong",
+  q:"BLIND · SEQUENTIAL · THE SCATTER · THE TETRA — your four writing surfaces, built twice before, now living in level_one.html away from the circuit. LEVEL ONE on the circuit is TANK · RAIN · DAM · CHANNEL. Two different fours are both called level one, in different files.",
+  cite:"level_one.html — the writing tetra\nascent.html LEVEL1 — the water tetra\nTHE_WRITING_FACES_SALVAGE.md",
+  cost:"If the writing faces are a level, the count is unaffected. If they are the ENTRY — the way in, before the first level — then the daily surface already is that, and level_one.html is a second copy of it.",
+  o:["the writing faces are their own level on the circuit",
+     "they are the ENTRY, before the first level — the daily surface already is this",
+     "they are the four faces of LEVEL ONE, and the water four belong elsewhere"] },
+
+{ g:"DECISIONS I MADE TONIGHT, YOURS TO OVERTURN", n:"The water's two depths",
+  q:"The palette gap was real: the same water was #4a6c7a in the ascent and #6f93a4 in the daily surface. I did not repaint the surface you write on every morning without asking — I kept both as named depths of one body: water (deep, pooled, held) and shallow (at the surface, where writing sits). The duplication is gone; whether it is one colour is not settled.",
+  cite:"ascent.html PAL · daily.html :root — 11 materials, identical in both, held by kit_check K9",
+  cost:"One token, changed once, in both files at once. That is now guaranteed rather than hoped.",
+  o:["two depths is right — keep it",
+     "one flat water — the deep",
+     "one flat water — the shallow"] },
+
+{ g:"DECISIONS I MADE TONIGHT, YOURS TO OVERTURN", n:"The tank stops asking when water has already arrived",
+  q:"You write in the daily surface and drop sentences to the lake; they leave that store and arrive at the tank. The tank used to open its writing panel regardless, asking you to write the same day twice. Now, if water has arrived, the panel does not open — what arrived stands in the room and your hand reaches for it.",
+  cite:"ascent.html tank.enter() — if there is water here, do not ask for more",
+  cost:"It means you cannot write INTO the tank on a morning you have already poured. Escape still leaves. Wanting both doors in that room is a small build, not a rethink.",
+  o:["right — the tank takes what came; writing happens in the daily surface",
+     "both — the panel should still be reachable in the room"] },
+
+{ g:"DECISIONS I MADE TONIGHT, YOURS TO OVERTURN", n:"Four gestures, and whether there is ever a fifth",
+  q:"REACH · HOLD · DRAW · WAIT. Every stage now declares which one it is, and the kit check fails if any stage declares a fifth. That is a real constraint on the levels still to come: a mechanic needing a new gesture cannot be built without changing this law first.",
+  cite:"ascent.html GESTURES · tools/kit_check.js K1, K4 — 17 stages, all declared",
+  cost:"Keeping it at four is what makes an affordance check possible at all — the dam's fault was found by a hand because nothing could ask a stage what its gesture was. A fifth costs that.",
+  o:["four is the law — a fifth needs a new mark from me",
+     "four for now, and I expect a fifth"] },
+
+{ g:"HELD BEFORE, RE-OFFERED BECAUSE THE GROUND MOVED", n:"Does index.html's routing stand",
+  q:"You held this one. It is re-offered because the ground under it moved tonight: the daily surface now has a door out, an internal open loop into the ascent, and three station outputs — so what the front door points at matters more than it did.",
+  cite:"index.html → ascent.html today; daily.html is the surface you actually write in",
+  cost:"One line. It was flagged as a build session ruling its own base fork, which is why it was never quietly changed.",
+  o:["daily.html is the door — the game opens where the writing happens",
+     "ascent.html is the door — the game opens on the map",
+     "a chooser: the front door asks once and remembers"] },
+
+{ g:"HELD BEFORE, RE-OFFERED BECAUSE THE GROUND MOVED", n:"What departs when the fruit departs",
+  q:"Also held. THE CAST is the only open loop pointing outward, and your own shape document calls it half-built and dishonest — the file leaves and the world loses nothing. The daily surface's door out has the same shape today: it writes a copy, and nothing departs.",
+  cite:"THE_SHAPE_OF_THE_WHOLE.md:129 — the file leaves, the world loses nothing\ndaily.html — the sill writes a copy",
+  cost:"A gift that costs the giver nothing is the thing this build refuses everywhere else. Closing it means deciding what the world actually gives up.",
+  o:["the world loses what it gives — I will say what departs",
+     "a copy is correct here; the cost belongs elsewhere"] },
+
+{ g:"THE ONE YOU NEVER MARKED", n:"BLIND's door",
+  q:"The only fork of the seventeen you left unmarked. Fuller ruled BLIND is the fourth face of the writing tetra and that it is already built — the backdrop not painting, one CSS property, because the watermark's two-layer construction put the mechanism there as a side-effect. He stopped, because what gesture turns the ink off is the entry to a named face.",
+  cite:"daily.html — the backdrop carries the words, the field is already transparent",
+  cost:"One CSS property and one gesture. It has stood open longer than anything else here.",
+  o:["the sky is the door — reach up and the ink goes out",
+     "a key holds it off while held",
+     "BLIND is not entered by a gesture; it is how the page opens, and the ink arrives later",
+     "not this — BLIND stays in level_one"] }
+];
+
+/* ── the marks. Yours, kept here, never sent. ─────────────────────────────── */
+const KEY="nesi.marks";
+let M={};
+try{ M=JSON.parse(localStorage.getItem(KEY)||"{}") || {}; }catch(e){ M={}; }
+const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(M)); }catch(e){} };
+
+const list=document.getElementById("list");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+/* ═══ THE TWO YOU RESERVED ══════════════════════════════════════════════════
+   You ruled both of these with the naming reserved — "and I will say what kind",
+   "and I will say which is which" — so the direction is settled and the word is
+   not. They stay on the page rather than becoming a wait, WITH CANDIDATES, so
+   saying it is a click rather than a composition. BLIND's door moved down to the
+   forks, where it belongs: it was never reserved, it was just never marked.
+
+   The candidates are drawn from what the code can already do, and none of them
+   is recommended. A different answer is always the last option. */
+const JUNCTIONS = [
+ { n:"What kind of trace a set-down leaves",
+   his:"a trace, and I will say what kind",
+   held:"A set-down stages the stone and keeps it whole — text, day, seams, where your hand left it — so any of these can be built on it today.",
+   o:["a mark on the table where it was set down, and nothing else",
+      "the stone stays visible but goes quiet — present, not reachable",
+      "it leaves the table and the ground remembers the day it went",
+      "a different kind — I will say it"] },
+ { n:"Which of hand and site routes a writing to a colour",
+   his:"both, and I will say which is which",
+   held:"THE DISPLAY LAW admits three sources and you ruled two of them in. Nothing anywhere reads the words to decide how the words appear, so any split here is lawful.",
+   o:["the SITE gives the hue, the HAND gives the weight",
+      "the HAND gives the hue, the SITE gives the weight",
+      "the SITE gives everything; the hand shows in motion, not colour",
+      "a different split — I will say it"] }
+];
+
+function renderJunctions(){
+  const box=document.createElement("div");
+  box.className="mk";
+  box.innerHTML='<div class="n">you reserved the naming on these two · candidates, none recommended</div>'+
+    '<h3>The two you said you would name</h3>';
+  JUNCTIONS.forEach((j,k)=>{
+    const d=document.createElement("div"); d.style.cssText="margin-top:14px";
+    d.innerHTML='<b>'+esc(j.n)+'</b><br><span class="cite">your mark: '+esc(j.his)+'</span>'+
+      '<div class="cost">'+esc(j.held)+'</div>';
+    const box2=document.createElement("div"); box2.className="opts";
+    j.o.forEach(o=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=o;
+      const key="J"+k;
+      if(M[key]===o) b.classList.add("on");
+      b.addEventListener("click",()=>{ M[key] = (M[key]===o ? undefined : o);
+        if(M[key]===undefined) delete M[key];
+        save(); render();
+        if(M[key]) copy(j.n+"\n  → "+o); });
+      box2.appendChild(b);
+    });
+    d.appendChild(box2);
+    box.appendChild(d);
+  });
+  list.appendChild(box);
+}
+
+function render(){
+  list.textContent="";
+  renderJunctions();
+  let group="";
+  FORKS.forEach((f,i)=>{
+    if(f.g!==group){ group=f.g;
+      const h=document.createElement("h2"); h.textContent=group; list.appendChild(h); }
+    const marked=M[i]!==undefined;
+    const el=document.createElement("div");
+    el.className="f "+(marked?"marked":"open");
+    el.innerHTML =
+      '<div class="n">'+(marked?"marked · click again to unmark":"open · nothing defaulted")+'</div>'+
+      '<h3>'+esc(f.n)+'</h3>'+
+      '<p>'+esc(f.q)+'</p>'+
+      '<span class="cite">'+esc(f.cite)+'</span>'+
+      '<div class="cost">'+esc(f.cost)+'</div>';
+    const opts=document.createElement("div"); opts.className="opts";
+    f.o.concat(["hold — not tonight"]).forEach(o=>{
+      const b=document.createElement("button");
+      b.className="opt"+(M[i]===o?" on":"")+(o.indexOf("hold —")===0?" hold":"");
+      b.textContent=o;
+      b.addEventListener("click", ()=>mark(i,o));
+      opts.appendChild(b);
+    });
+    el.appendChild(opts);
+    list.appendChild(el);
+  });
+  const n=Object.keys(M).length;
+  document.getElementById("floor").textContent =
+    FORKS.length+" open · "+n+" marked · "+(FORKS.length-n)+" still standing";
+}
+
+function mark(i,o){
+  if(M[i]===o){ delete M[i]; status("unmarked"); }
+  else { M[i]=o; copy("NESI · MARK\n"+FORKS[i].n+"\n→ "+o+"\n"); status("marked · copied"); }
+  save(); render();
+}
+
+function status(t){ const s=document.getElementById("status");
+  s.textContent=t+" · nothing is sent"; clearTimeout(status._t);
+  status._t=setTimeout(()=>{ s.textContent="a mark copies to your clipboard · nothing is sent"; },2600); }
+
+/* clipboard → execCommand → a box you can select by hand. Never a send. */
+function copy(text){
+  if(navigator.clipboard && navigator.clipboard.writeText)
+    return navigator.clipboard.writeText(text).catch(()=>fallback(text));
+  fallback(text);
+}
+function fallback(text){
+  const t=document.createElement("textarea");
+  t.value=text; t.style.position="fixed"; t.style.opacity="0";
+  document.body.appendChild(t); t.select();
+  let ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+  t.remove();
+  if(!ok){ const r=document.getElementById("reveal");
+    r.style.display="block"; r.value=text; r.select(); }
+}
+
+document.getElementById("copyall").addEventListener("click", ()=>{
+  const ks=Object.keys(M);
+  if(!ks.length){ status("no marks yet"); return; }
+  /* the two reserved namings are marked under J0/J1 and must come out with the
+     rest — a copy that silently dropped them would be the surface losing a mark */
+  const nameOf = k => k[0]==="J" ? JUNCTIONS[+k.slice(1)].n : FORKS[k].n;
+  const lines=ks.map(k=>nameOf(k)+"\n  → "+M[k]);
+  copy("NESI · MARKS · "+new Date().toISOString().slice(0,10)+"\n\n"+lines.join("\n\n")+"\n");
+  status(ks.length+" marks copied");
+});
+document.getElementById("clear").addEventListener("click", ()=>{
+  M={}; save(); render(); status("all unmarked");
+});
+
+render();
+</script>

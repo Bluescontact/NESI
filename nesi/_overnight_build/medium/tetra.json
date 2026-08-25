@@ -1,0 +1,38 @@
+{
+  "known_faces": [
+    {
+      "name": "THE GIFT",
+      "description": "The player-facing game itself — The Warm One. Five moves played with pieces of a person's own life: empty your pockets, feel for the warm one, pull the thread, hand it over or keep it, let go. This is the face a stranger actually touches.",
+      "sourced_from": [
+        "nesi/NESI.md §FACE 1 (lines 36-55)",
+        "nesi/warm_one_card.html",
+        "nesi/warm_one_walkthrough.html"
+      ]
+    },
+    {
+      "name": "THE ENGINE",
+      "description": "The load-bearing machinery that makes recognition run without ever becoming a transaction — the recognition law, the geometric foundation (tetra-body, held-centers family), the boundary contract, the ledger/gate, and board.html as the confirmed entry point. Mostly invisible to a player; verified, not shipped as spectacle.",
+      "sourced_from": [
+        "nesi/NESI.md §FACE 2 (lines 58-77)",
+        "patterns/the_recognition_law.md",
+        "nesi/spec/boundary.md",
+        "nesi/board.html"
+      ]
+    },
+    {
+      "name": "THE INFRASTRUCTURE",
+      "description": "How a recognized gift moves between people without becoming a debt — the Held Refusal / the Field: the four-edge refusal map, the single-binary door, the doctrine's instruments (gift / mutual practice / exchange, never blended), and the rule that receiving never converts into a prompt to give.",
+      "sourced_from": [
+        "nesi/NESI.md §FACE 3 (lines 81-100)",
+        "held_refusal/index.html",
+        "held_refusal/DOCTRINE.md"
+      ]
+    }
+  ],
+  "derived_face": {
+    "name": "THE SELF (Heartwood)",
+    "description": "What a person's own recognitions add up to across every round, over time — the accreted self, rendered as growth rings. Built and wired already (heartwood.py, called live from board.html), but never named as its own face until it was derived rather than built.",
+    "derivation_rule": "The recognition law names four surfacing mechanics under one law: worth, value, skill, capacity (patterns/the_recognition_law.md). Face 1 (Gift) carries worth+skill in the single round; Face 3 (Infrastructure) explicitly carries value ('circulation-witness pointed at the self'). That leaves capacity unassigned to any of the three known faces — it was 'never given a face.' The fourth face is derived by locating the one mechanic the three known faces jointly leave unclaimed and giving it the organ the corpus already had running (heartwood.py) but had folded silently into 'the forest' instead of naming on its own. NESI.md's own language: 'named 2026-07-25, inferred from what the other three faces already held and left unclaimed — not a new build, a face the corpus already had the organ for.' Worth itself stays the un-nameable held center the geometry pivots on ('the held-centers family'), not a face — matching the tetra grammar in .claude/agents/kevin-lens.md: '4·6·4·1 — never invent the vertices, the centre is un-nameable, six edges are tensions, four faces are workable surfaces.'"
+  },
+  "notes": "This tetra is not something I had to synthesize from scattered fragments — the material genuinely holds a single, already-canon-shaped locator file (nesi/NESI.md, assembled 2026-07-25 on Kevin's own mark) that states the structure almost verbatim: \"NESI is not three projects. It is one law with four faces\" — GIFT, ENGINE, INFRASTRUCTURE (the three built/known faces), plus SELF/Heartwood as the fourth, which the file itself frames as derived rather than built: \"named... inferred from what the other three faces already held and left unclaimed... a face the corpus already had the organ for.\" I treated this in-file derivation as the operation to name back, rather than inventing my own — it satisfies the task's own instruction to derive, since the derivation follows a checkable rule (the recognition law's four mechanics minus the three the known faces already claim) rather than being asserted.\n\nTwo honest caveats. First, NESI.md's own \"held center\" language actually names Worth as the pivot (\"Worth is the held center the geometry pivots on, not a face of its own\") — distinct from NESI as the center of the whole tetra, though the kevin-lens.md tetra grammar (center un-nameable, four workable faces) generalizes cleanly to both readings and I read them as the same move at two scales, per the corpus's own same_quartet_assembly_standing.md pattern (assembly-time / standing-time recursion). Second, this file is a locator/assembly pass, explicitly marked \"nothing here crosses a membrane; it only gathers what already exists\" — it is not itself a fresh ruling, so treat this whole answer as a reading of an existing canon-shaped file, not a new claim on the corpus.\n\nI set aside several other tetra-shaped fragments in the material (THE_TWIN_TETRA_AND_THE_TOOL_SETS' four instances, same_quartet's Differentiation/Connection/Boundaries/Architecture, catalysis_without_claim's 4-vertex/6-edge Minimum System, the_door_as_stack_layer's three-layer stack) because none of them names NESI itself as a held center with three known faces plus one derived fourth as directly and completely as NESI.md does — they are adjacent geometries, not this one."
+}

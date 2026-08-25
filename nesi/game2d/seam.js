@@ -135,7 +135,7 @@ function isReturned(state){ return !!(state && state.fraction && state.light); }
      shown as a number, only read through standing(s)=0.16+0.84*rooted, a
      silhouette scale.
 
-     BUILD_RECORD.md ~1100-1370 proves the identical shape a session earlier
+     BUILD_RECORD.md.backup_pre-compaction_2026-08-24.md ~1100-1370 proves the identical shape a session earlier
      (asymptotic rooted, day-gated, silhouette not readout) — the same law
      paid for twice, carried in verbatim rather than re-derived a third time.
 

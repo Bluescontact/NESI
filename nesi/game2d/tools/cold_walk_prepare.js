@@ -9,7 +9,7 @@
  *
  * WHY A COPY AND NOT A FLAG. The documented ?scratch=1 door is silently stripped from
  * file: URLs by the browser pane — that failure already wrote the live store once
- * (BUILD_RECORD, "A BREACH, NAMED"). A flag that fails toward live is not a door. This
+ * (BUILD_RECORD.md.backup_pre-compaction_2026-08-24.md, "A BREACH, NAMED"). A flag that fails toward live is not a door. This
  * writes a byte-identical copy of nesi.html with exactly ONE substitution, the storage
  * key, so the walked page reads and writes a key that has never held anything. The live
  * store is unreachable from the copy by construction, not by discipline.

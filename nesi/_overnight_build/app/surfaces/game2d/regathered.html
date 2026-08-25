@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE REGATHERED GROUND</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7f5f0;color:#3a3020;
+       font-family:'Courier New',Courier,monospace;font-size:12px;padding:16px}
+  .wrap{max-width:940px;margin:0 auto}
+  h1{font-size:13px;letter-spacing:5px;color:#1a1408}
+  .sub{font-size:9px;color:#a89870;letter-spacing:1px;margin:3px 0 12px}
+
+  .stage{position:relative;border:1px solid #ccc5b0;background:#efece2}
+  canvas{display:block;width:100%;height:auto}
+
+  .bar{position:absolute;left:50%;transform:translateX(-50%);display:none;
+       font-size:10.5px;padding:6px 14px;border:1px solid;max-width:88%;
+       font-family:inherit;cursor:pointer;background:#e8f2e4;color:#2a6a1a;border-color:#2a6a1a}
+  .bar.on{display:block}
+  #enterbar{bottom:10px}
+  #saybar{top:10px;background:#f5f0e4;color:#7a5a10;border-color:#8a7a40;cursor:default}
+
+  .keys{font-size:9px;color:#a89870;line-height:1.9;margin-top:9px}
+  .keys b{color:#7a6840;font-weight:normal}
+
+  .room{display:none;border:1px solid #ccc5b0;background:#fffdf7;padding:15px;margin-top:12px}
+  .room.on{display:block}
+  .room h2{font-size:11px;letter-spacing:3px;color:#1a1408;text-transform:uppercase}
+  .room .why{font-size:9px;color:#a89870;margin:4px 0 12px;line-height:1.7}
+  .room .out{font-size:10px;color:#7a6840;margin-top:12px;cursor:pointer;
+             border:1px solid #ccc5b0;background:#eeebe3;padding:5px 12px;font-family:inherit}
+
+  textarea{width:100%;height:88px;font:inherit;font-size:12px;color:#3a3020;
+    background:#f7f5f0;border:1px solid #ddd6c4;padding:9px;line-height:1.6;resize:vertical}
+  button{font-family:inherit}
+  .go{font-size:10px;letter-spacing:1px;color:#2a6a1a;background:#e8f2e4;
+      border:1px solid #2a6a1a;padding:6px 14px;cursor:pointer;margin-top:7px}
+  .plain{font-size:10px;color:#7a6840;background:transparent;border:1px solid #ccc5b0;
+         padding:6px 12px;cursor:pointer;margin-top:7px}
+
+  /* the round — five moves. pips, never a digit. */
+  .pips{display:flex;gap:6px;margin-bottom:11px}
+  .pip{width:11px;height:11px;border:1px solid #7a6840;background:transparent}
+  .pip.done{background:#7a6840}
+  .move{border:1px solid #ddd6c4;background:#f7f5f0;padding:10px 12px;margin-bottom:8px}
+  .move h3{font-size:11px;color:#1a1408;margin-bottom:3px}
+  .move p{font-size:10.5px;color:#5a4c30;line-height:1.6}
+  .move .acts{display:flex;gap:6px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>THE REGATHERED GROUND</h1>
+  <div class="sub">the walk · the tarp · the wash · the round — brought back inside, 2026-08-16</div>
+
+  <div class="stage">
+    <canvas id="ow" width="900" height="600"></canvas>
+    <div class="bar" id="enterbar"></div>
+    <div class="bar" id="saybar"></div>
+  </div>
+
+  <div class="keys">
+    <div><b>arrows / WASD</b>, or click the ground — walk. <b>⏎</b> at a place — go in.</div>
+    <div><b>D</b> — a drop, in your words, where you stand. It becomes ground.</div>
+    <div><b>F</b> — ask for the wash. It shows what the ground already holds, then it is gone.</div>
+  </div>
+
+  <!-- ───────────────────────── THE DROP ───────────────────────── -->
+  <div class="room" id="r-drop">
+    <h2>a drop, where you stand</h2>
+    <div class="why">Verbatim. Nothing reads it, tags it, or forms an opinion about it.
+      It lands at your feet and becomes ground.</div>
+    <textarea id="droptext" placeholder="in your words"></textarea>
+    <div><button class="go" id="dropgo">drop it here</button>
+         <button class="plain" id="dropno">never mind</button></div>
+  </div>
+
+  <!-- ───────────────────────── THE TARP ───────────────────────── -->
+  <div class="room" id="r-tarp">
+    <h2>the sorting tarp</h2>
+    <div class="why">The whole pile on one cloth, all at once. A slab's <b>footprint</b>
+      is how big the thing is; its <b>shade</b> is how long it has lain there. There is
+      not one character of text in this instrument, and the world is not told what any
+      of it says. You read the pile the way you read a pile.<br>
+      The press folds the cloth and gathers what is on it. <b>It stages a sweep and
+      commits nothing</b> — nothing is deleted, moved, marked or composted.</div>
+    <svg id="tarp" viewBox="0 0 820 300" style="width:100%;border:1px solid #ddd6c4;background:#efece2"></svg>
+    <div><button class="go" id="press">press</button>
+         <button class="plain" id="tarpout">leave it</button></div>
+  </div>
+
+  <!-- ───────────────────────── THE ROUND ───────────────────────── -->
+  <div class="room" id="r-round">
+    <h2>the round</h2>
+    <div class="why">Five moves, dealt from the live field. Play any, skip any —
+      <b>a skip resolves a move the same as a play</b>. The fifth ends the round.
+      Nothing carries over, nothing is owed, and closing the door is a complete ending.</div>
+    <div class="pips" id="pips"></div>
+    <div id="moves"></div>
+    <div><button class="plain" id="roundout">close the door</button></div>
+  </div>
+</div>
+
+<script src="world_water.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var cv = document.getElementById('ow'), cx = cv.getContext('2d');
+  var W = 900, H = 600;
+  var KEY = 'nesi.world.1';
+
+  // ---------------------------------------------------------------- the store
+  var S = (function(){
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY));
+      if (o && typeof o === 'object'){
+        o.av = o.av || {x:450,y:470}; o.drops = o.drops || [];
+        o.folded = !!o.folded; o.round = o.round || null;
+        return o;
+      }
+    } catch(e){}
+    return { av:{x:450,y:470}, drops:[], folded:false, round:null };
+  })();
+  function save(){
+    var pad = JSON.stringify(S);                 // pad → read back → commit
+    try {
+      localStorage.setItem(KEY+'.pad', pad);
+      if (localStorage.getItem(KEY+'.pad') === pad){
+        localStorage.setItem(KEY, pad);
+        localStorage.removeItem(KEY+'.pad');
+      }
+    } catch(e){}
+  }
+
+  var PLACES = {
+    tarp:  { x:230, y:190, name:'THE TARP'  },
+    round: { x:670, y:190, name:'THE ROUND' },
+    door:  { x:450, y:480, name:'THE DOOR'  }
+  };
+
+  // ============================================================== THE WASH
+  // Ported from weather.gd. Marching squares over a field that is ALREADY
+  // there — here, the relief your own drops made in the ground. It cannot
+  // invent a line: where nothing was dropped the field is flat, no band is
+  // crossed, and nothing appears. Asked for, never volunteered, never labelled,
+  // and when it fades nothing brings it up again.
+  var wash = { t:-1, segs:[] };
+  var WASH_SECONDS = 8;
+  var BANDS = [0.18, 0.34, 0.52, 0.72];
+
+  function relief(x, y){
+    var v = 0;
+    for (var i=0;i<S.drops.length;i++){
+      var d = S.drops[i];
+      var dx = x-d.x, dy = y-d.y;
+      v += Math.exp(-(dx*dx+dy*dy)/6400);        // each drop is a bump it made
+    }
+    return v;
+  }
+
+  function buildWash(){
+    var segs = [], STEP = 18;
+    for (var x=0; x<W; x+=STEP){
+      for (var y=0; y<H; y+=STEP){
+        var v00=relief(x,y), v10=relief(x+STEP,y), v01=relief(x,y+STEP), v11=relief(x+STEP,y+STEP);
+        for (var b=0;b<BANDS.length;b++){
+          var L = BANDS[b], pts = [];
+          edge(pts, x,y,v00, x+STEP,y,v10, L);
+          edge(pts, x+STEP,y,v10, x+STEP,y+STEP,v11, L);
+          edge(pts, x+STEP,y+STEP,v11, x,y+STEP,v01, L);
+          edge(pts, x,y+STEP,v01, x,y,v00, L);
+          if (pts.length >= 2) segs.push([pts[0],pts[1]]);
+        }
+      }
+    }
+    wash.segs = segs;
+    wash.t = 0;
+    // NOTHING is said about what was uncovered. No count, no name, no notice.
+  }
+  function edge(pts, ax,ay,av, bx,by,bv, L){
+    if ((av < L) === (bv < L)) return;
+    var t = (L-av)/(bv-av);
+    pts.push([ax+(bx-ax)*t, ay+(by-ay)*t]);
+  }
+
+  // ============================================================== THE DRAWING
+  var near = null, target = null, last = 0;
+
+  function draw(dt){
+    cx.fillStyle = '#efece2'; cx.fillRect(0,0,W,H);
+
+    // roads, faint — the ground between places is walkable, not a corridor
+    cx.strokeStyle = 'rgba(122,104,64,0.18)'; cx.lineWidth = 1; cx.setLineDash([2,6]);
+    ['tarp','round'].forEach(function(k){
+      cx.beginPath(); cx.moveTo(PLACES.door.x, PLACES.door.y);
+      cx.lineTo(PLACES[k].x, PLACES[k].y); cx.stroke();
+    });
+    cx.setLineDash([]);
+
+    // the drops, as ground. shape only out here — the words are not on the map.
+    for (var i=0;i<S.drops.length;i++){
+      var d = S.drops[i];
+      var rr = seeded(i+7);
+      cx.fillStyle = 'rgba(168,152,112,0.42)';
+      for (var j=0;j<26;j++){
+        var a = rr()*6.283, dist = 5 + rr()*30;
+        cx.fillRect(d.x+Math.cos(a)*dist, d.y+Math.sin(a)*dist*0.6, 2, 2);
+      }
+    }
+
+    // the wash, if it was asked for
+    if (wash.t >= 0){
+      wash.t += dt;
+      var life = 1 - wash.t/WASH_SECONDS;
+      if (life <= 0){ wash.t = -1; wash.segs = []; }
+      else {
+        cx.strokeStyle = 'rgba(90,110,120,'+(0.55*life).toFixed(3)+')';
+        cx.lineWidth = 1;
+        cx.beginPath();
+        for (var s=0;s<wash.segs.length;s++){
+          cx.moveTo(wash.segs[s][0][0], wash.segs[s][0][1]);
+          cx.lineTo(wash.segs[s][1][0], wash.segs[s][1][1]);
+        }
+        cx.stroke();
+      }
+    }
+
+    // the places. form carries them: the tarp is a rectangle lying down,
+    // the round a hexagon, the door an upright slot. colour is redundant.
+    for (var k in PLACES){
+      var p = PLACES[k], on = (k === near);
+      cx.strokeStyle = '#7a6840'; cx.lineWidth = on ? 2.4 : 1.2;
+      cx.fillStyle = '#e6e2d8';
+      if (k === 'tarp'){
+        cx.beginPath(); cx.rect(p.x-46, p.y-26, 92, 52); cx.fill(); cx.stroke();
+      } else if (k === 'round'){
+        cx.beginPath();
+        for (var v=0;v<6;v++){
+          var a = v/6*6.283 - 1.5708;
+          cx[v?'lineTo':'moveTo'](p.x+Math.cos(a)*32, p.y+Math.sin(a)*32);
+        }
+        cx.closePath(); cx.fill(); cx.stroke();
+      } else {
+        cx.beginPath(); cx.rect(p.x-20, p.y-34, 40, 68); cx.fill(); cx.stroke();
+      }
+      cx.fillStyle = '#1a1408'; cx.font = 'bold 11px Courier New'; cx.textAlign = 'center';
+      cx.fillText(p.name, p.x, p.y + 48);
+      cx.textAlign = 'start';
+    }
+
+    // you. the marker moves only by your hand; the system never places it.
+    cx.beginPath(); cx.arc(S.av.x, S.av.y, 7, 0, 7);
+    cx.fillStyle = '#4a5a8a'; cx.fill();
+    cx.strokeStyle = '#e8ecf5'; cx.lineWidth = 2; cx.stroke();
+  }
+
+  function seeded(n){ var s=n*9301%233280; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
+
+  // ============================================================== THE WALK
+  function nearest(){
+    var best=null, bd=1e9;
+    for (var k in PLACES){
+      var p=PLACES[k], d=Math.hypot(S.av.x-p.x, S.av.y-p.y);
+      if (d<bd){ bd=d; best=k; }
+    }
+    return bd < 72 ? best : null;     // generously tuned. the prompt IS the affordance.
+  }
+
+  var enterbar = document.getElementById('enterbar'), saybar = document.getElementById('saybar');
+
+  function tick(now){
+    var dt = last ? Math.min(0.05, (now-last)/1000) : 0; last = now;
+
+    if (target){
+      var dx=target.x-S.av.x, dy=target.y-S.av.y, d=Math.hypot(dx,dy);
+      if (d<4) target=null; else { S.av.x += dx/d*4.2; S.av.y += dy/d*4.2; }
+    }
+    refreshNear();
+    draw(dt);
+    requestAnimationFrame(tick);
+  }
+
+  function toWorld(ev){
+    var r = cv.getBoundingClientRect();
+    return { x:(ev.clientX-r.left)*W/r.width, y:(ev.clientY-r.top)*H/r.height };
+  }
+
+  // Resolve proximity here rather than trusting `near` from the draw loop.
+  // rAF does not run while the tab is hidden (law 8: the world stops when you
+  // leave), so a click arriving before the first frame would otherwise find
+  // `near` null and walk you past a place you were standing on.
+  function refreshNear(){
+    var n = nearest();
+    if (n !== near){
+      near = n;
+      if (n){ enterbar.classList.add('on'); enterbar.textContent = '⏎ ' + PLACES[n].name; }
+      else enterbar.classList.remove('on');
+    }
+    return near;
+  }
+
+  cv.addEventListener('click', function(ev){
+    if (anyRoomOpen()) return;
+    var p = toWorld(ev);
+    refreshNear();
+    if (near && Math.hypot(p.x-PLACES[near].x, p.y-PLACES[near].y) < 46){ enter(near); return; }
+    target = p;
+  });
+  enterbar.addEventListener('click', function(){ if (refreshNear()) enter(near); });
+
+  window.addEventListener('keydown', function(e){
+    var tag = document.activeElement && document.activeElement.tagName;
+    if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+    if (anyRoomOpen()) return;
+    var step = 15, k = e.key;
+    if (k==='ArrowUp'||k==='w'||k==='W')        S.av.y -= step;
+    else if (k==='ArrowDown'||k==='s'||k==='S') S.av.y += step;
+    else if (k==='ArrowLeft'||k==='a'||k==='A') S.av.x -= step;
+    else if (k==='ArrowRight')                  S.av.x += step;
+    else if (k==='d'||k==='D'){ openRoom('r-drop'); document.getElementById('droptext').focus(); e.preventDefault(); return; }
+    else if (k==='f'||k==='F'){ if (S.drops.length) buildWash(); e.preventDefault(); return; }
+    else if (k==='Enter'){ if (refreshNear()) enter(near); return; }
+    else return;
+    target = null;
+    S.av.x = Math.max(18, Math.min(W-18, S.av.x));
+    S.av.y = Math.max(18, Math.min(H-18, S.av.y));
+    save(); refreshNear(); e.preventDefault();
+  });
+
+  // ============================================================== THE ROOMS
+  function anyRoomOpen(){ return !!document.querySelector('.room.on'); }
+  function openRoom(id){
+    document.querySelectorAll('.room').forEach(function(r){ r.classList.remove('on'); });
+    document.getElementById(id).classList.add('on');
+  }
+  function closeRooms(){ document.querySelectorAll('.room').forEach(function(r){ r.classList.remove('on'); }); }
+
+  function enter(k){
+    if (k === 'door'){ location.href = 'daily.html'; return; }
+    if (k === 'tarp'){ drawTarp(); openRoom('r-tarp'); return; }
+    if (k === 'round'){ deal(); openRoom('r-round'); return; }
+  }
+
+  // --- the drop: verbatim, at your feet -------------------------------------
+  document.getElementById('dropgo').addEventListener('click', function(){
+    var t = document.getElementById('droptext').value;
+    if (!t.trim()){ closeRooms(); return; }        // an empty drop is no drop, silently
+    S.drops.push({ x:Math.round(S.av.x), y:Math.round(S.av.y), text:t, ts:new Date().toISOString() });
+    document.getElementById('droptext').value = '';
+    save(); closeRooms();                          // no toast. the ground changed; that is the feedback.
+  });
+  document.getElementById('dropno').addEventListener('click', function(){
+    document.getElementById('droptext').value = ''; closeRooms();
+  });
+
+  // --- the tarp: the pile, shape only ---------------------------------------
+  // It is handed WATER.pile and never WATER.stones. That is the instrument.
+  function drawTarp(){
+    var svg = document.getElementById('tarp');
+    var pile = (window.WATER && window.WATER.pile) || [];
+    var out = '<rect x="14" y="14" width="792" height="272" fill="'
+            + (S.folded ? '#e2ddcd' : '#cfc9b6') + '" stroke="#a89870"/>';
+    // four pegs — the cloth is held down, which is why it can be unheld
+    [[14,14],[806,14],[14,286],[806,286]].forEach(function(p){
+      out += '<rect x="'+(p[0]-4)+'" y="'+(p[1]-4)+'" width="8" height="8" fill="#6f6658"/>';
+    });
+
+    if (!pile.length){
+      out += '<text x="410" y="155" font-size="11" fill="#a89870" text-anchor="middle"'
+           + ' font-family="Courier New,monospace">the tarp lies empty</text>';
+    } else {
+      var n = pile.length;
+      var cols = Math.ceil(Math.sqrt(n * 792/272));
+      var rows = Math.ceil(n/cols);
+      var cw = 764/cols, rh = 244/rows;
+      for (var i=0;i<n;i++){
+        var it = pile[i];
+        var col = S.folded ? 0 : i % cols, row = S.folded ? 0 : Math.floor(i/cols);
+        // footprint answers size; shade answers how long it has lain there
+        var w = cw * (0.34 + 0.60*it.extent), h = rh * (0.34 + 0.60*it.extent);
+        var g = Math.round(206 - 74*it.settled);
+        var cxp = S.folded ? 410 + (i-n/2)*3 : 28 + col*cw + cw/2;
+        var cyp = S.folded ? 150 + (i-n/2)*1.4 : 28 + row*rh + rh/2;
+        out += '<rect x="'+(cxp-w/2).toFixed(1)+'" y="'+(cyp-h/2).toFixed(1)+'" width="'+w.toFixed(1)
+             + '" height="'+h.toFixed(1)+'" fill="rgb('+g+','+(g-6)+','+(g-18)+')" stroke="#8a8070"'
+             + ' stroke-width="0.7"/>';
+      }
+    }
+    svg.innerHTML = out;
+  }
+  document.getElementById('press').addEventListener('click', function(){
+    S.folded = !S.folded; save(); drawTarp();      // the act is visible. that is all it says.
+  });
+  document.getElementById('tarpout').addEventListener('click', closeRooms);
+
+  // --- the round: five moves, skip resolves as play -------------------------
+  // Dealt from the live field — real state, never invented busywork.
+  function liveMoves(){
+    var m = [];
+    if (!S.drops.length) m.push({t:'the ground is bare', p:'Nothing has been dropped here yet. Walk out and press D, or leave it bare — bare is a finished state.'});
+    if (!S.folded)       m.push({t:'the cloth is open',  p:'The tarp lies unfolded with the pile on it. Press it, or let it lie.'});
+    if (S.drops.length)  m.push({t:'the ground holds relief', p:'Something you dropped raised the ground. Press F out there and the wash will show its shape, once.'});
+    var st = (window.WATER && window.WATER.stones) || [];
+    if (st.length)       m.push({t:'a stone in the tank', p:st[Math.min(st.length-1, m.length)].text});
+    m.push({t:'the door stands open', p:'The daily surface is one walk away. Going back is a move; so is not going.'});
+    m.push({t:'nothing in particular', p:'No move is owed. This one resolves by being looked at.'});
+    return m.slice(0,5);
+  }
+  function deal(){
+    if (!S.round || S.round.done) S.round = { moves:liveMoves(), resolved:[] };
+    save(); renderRound();
+  }
+  function renderRound(){
+    var R = S.round, pips = document.getElementById('pips'), box = document.getElementById('moves');
+    pips.innerHTML = '';
+    for (var i=0;i<R.moves.length;i++){
+      var d = document.createElement('div');
+      d.className = 'pip' + (R.resolved.indexOf(i) >= 0 ? ' done' : '');
+      pips.appendChild(d);                          // pips, never a digit
+    }
+    if (R.resolved.length >= R.moves.length){
+      box.innerHTML = '<div class="move"><h3>the round is over</h3>'
+        + '<p>Dealt and resolved — played or skipped, both counted. Nothing carries over; '
+        + 'nothing is owed. The ground kept whatever landed.</p></div>';
+      R.done = true; save(); return;
+    }
+    box.innerHTML = '';
+    R.moves.forEach(function(mv, i){
+      if (R.resolved.indexOf(i) >= 0) return;
+      var d = document.createElement('div');
+      d.className = 'move';
+      d.innerHTML = '<h3>◆ '+esc(mv.t)+'</h3><p>'+esc(mv.p)+'</p>'
+        + '<div class="acts"><button class="go" data-i="'+i+'">played</button>'
+        + '<button class="plain" data-i="'+i+'">skip — resolves it clean</button></div>';
+      box.appendChild(d);
+    });
+    box.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        var i = +b.getAttribute('data-i');
+        if (R.resolved.indexOf(i) < 0) R.resolved.push(i);   // play and skip: identical
+        save(); renderRound();
+      });
+    });
+  }
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+
+  document.getElementById('roundout').addEventListener('click', closeRooms);
+
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

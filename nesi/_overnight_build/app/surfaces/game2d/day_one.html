@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NESI · TANK</title>
+
+<!-- ■ SUPERSEDED 2026-08-18, Kevin's mark: "build the new weave from both, and
+     supersede them with the version that brings the strongest elements of
+     each." tank.html is the successor — it generalizes this file's seam
+     geometry (all four members, F5 completion, F7's four fractions) across
+     daily.html's more mature writing engine. This file is kept whole, not
+     deleted; nesi.dayone is adopted (read-only) by tank.html on first load so
+     nothing written here is stranded. -->
+
+<!-- DAY ONE AT TANK. Kevin's rulings, 2026-08-16:
+     "the roots are levels — 36" · "build day one at TANK" · "Each level is a
+     seam, hold two faces. its the path and process that creats sideways
+     deposits into the adjoining faces. the squares become dispay windows...
+     the triangles are the tools."
+
+     NOTHING HERE IS DESIGNED. Every seam, its kind, its tool and its window are
+     read from solid.js at load:
+
+       GROUND—TANK          fall    tool tetra A   window y+
+       FILTER—TANK          fall    tool tetra A   window x+
+       CAST—TANK            turn    tool tetra B   window y+
+       OVERWINTERING—TANK   return  tool tetra B   window x+
+       ROOT TANK → LENS     radial  member: null — no faces, no sideways deposit
+
+     TANK touches exactly two tools and two windows, and its four members pair
+     them in all four combinations, once each. That is the solid, not a layout.
+
+     THE ROOT HAS NO FACES and is drawn as having none. A radial is not an edge;
+     `facesAlong` has nothing to return for it. It runs to LENS, which is TANK's
+     antipode, through a centre that holds nothing. It is shown here as a level
+     because Kevin ruled the roots are levels; what it deposits, if anything, is
+     not invented here.
+
+     LAW 2 — no number reaches the player. There is no counter, no percentage,
+     no progress bar and no "words to go". You write; a seam lights when it
+     lights. The absence of the gauge is the design, not an omission.
+
+     THE ONE ASSUMPTION, NAMED: what falls out of a face is open (ALIGNMENT.md
+     B3). Sentences fall here, because sentences are what this build already
+     banks — daily.html fires per-sentence on punctuation. That is the least
+     invented object available and it is still an assumption.
+
+     ── KEVIN'S MARKS, 2026-08-16, off options.html. THREE LAND HERE. ─────────
+     F7 · "the four fractions — dissolved · suspended · bedload · contaminant"
+       ALIGNMENT B3 is closed. The sort now names a fraction; it was a bare
+       toggle that recorded only THAT the hand acted. The hand still picks —
+       law 5 is untouched, nothing is computed, no classifier runs.
+     F3 · "adopt provenance only — origin × disposition"
+       Not the whole object model. No Fruit, no Seed, no Traversal, no
+       WritingObject. One instrument: every banked sentence carries an ORIGIN,
+       fixed at the moment it banks, and a DISPOSITION the hand moves. Sorting
+       a sentence NEVER rewrites where it came from. That is the whole of it,
+       and it is the piece that lets a root be shown to have survived without
+       anything being counted.
+     F4 · "hold it as candidate" — so INFERRED is NOT a live origin. Three
+       origins exist in the model and only `quoted` occurs on day one, because
+       every sentence here was literally present in what you wrote. `inherited`
+       waits for a root to re-enter; `introduced` waits for a surface that lets
+       the hand add at the membrane. Neither is faked to look populated.
+     F1 · "three equal physics — each addresses all twenty-four"
+       ONE CODE CONSEQUENCE, HERE. This file labelled `fall`/`turn` as water and
+       `rise`/`return` as light — the 12/12 reading. That reading is overturned:
+       root, water and light each address all twenty-four, and fall/turn/rise/
+       return are water's own circuit, not a division between two physics. The
+       seams now print their kind and their direction, which are facts of the
+       solid, and claim no physics. Light is not a member kind.
+       The 12/12 split is asserted in NO code — only in THE_GROWTH.md:79 and
+       ALIGNMENT.md:25, both of which now carry a mark. Nothing was computed
+       from it, so nothing recomputes.
+
+     ── F5, MARKED 2026-08-16 ─────────────────────────────────────────────────
+     "the named pair — a seam completes when its two faces are inhabited."
+
+     COMPLETION IS A PROPERTY OF THE FACES, NOT OF THE ACT. This is not a
+     restatement of "taken". TANK's four members pair its two tools against its
+     two windows in all four combinations, once each, so every face is touched
+     by exactly two seams. Take two seams that share neither tool nor window and
+     all four faces are inhabited — which completes the other two seams WITHOUT
+     THEM BEING WALKED. That falls out of the solid being quasiregular; it was
+     not designed, and it is the whole content of the mark.
+
+     So this surface now carries three states, not two: open (reachable),
+     taken (you walked it), and complete (both its faces are inhabited, however
+     they came to be). A seam can be complete and never walked.
+
+     THE ROOT CANNOT COMPLETE THIS WAY AND IS DRAWN AS UNABLE TO. `member: null`
+     means no faces, so there is nothing to inhabit. It is not "incomplete" —
+     the test does not apply to it, and saying so is not the same as failing it.
+
+     LAW 2 HOLDS: inhabited is a yes or a no per face. Nothing counts deposits,
+     nothing is drawn as a fraction, and no total appears anywhere. -->
+
+<!-- ■ TWO OF KEVIN'S MARKS COLLIDE, AND NOTHING HERE RESOLVES IT.
+     F10 · "to a circuit PAIR — the six diameters, as measured today"
+     F2  · "different axes — levels are inhabited seams" (with roots as levels,
+            his earlier ruling, which makes 24 + 12 = 36)
+     Measured: RADII 12, DIAMETERS 6, MEMBERS 24. Roots as radials gives 36
+     levels; roots as diameters gives 30. The option text I wrote said "the six
+     diameters", which points at 30 — but "a root BELONGS TO a circuit pair" is
+     equally satisfied by twelve radials, two to each of the six pairs, which
+     keeps 36. Belonging is not identity, and my wording did not separate them.
+     THIS FILE DEPENDS ON NEITHER. Day one has one seat, one radial and no
+     count of levels anywhere, so it is built and left standing either way. -->
+
+<!-- LAW 10, AND THE ONE PLACE I INVENTED: colour is never the only carrier of a
+     distinction, so each fraction behaves differently in the water and the
+     colour is redundant to the behaviour. Three behaviours are the governing
+     brief's own words — dissolved is "invisible, feeds life", suspended is
+     "clouds, becomes ground", bedload is "rocks, goes to the deep" (and law 9
+     keeps the deep unrendered, so it leaves the floor and nothing is drawn
+     there). CONTAMINANT HAS NO BEHAVIOUR IN THE BRIEF. Its film — spreading at
+     the surface and staying — is mine, and it is the only invented thing on
+     this page. Say so rather than let it read as read.
+
+     HIS STORE IS NOT TOUCHED. This writes to `nesi.dayone` only. `nesi.water`
+     and `nesi.ascent` are never opened for writing anywhere in this file. -->
+
+<style>
+  :root{
+    --sky:#dfe6e3; --deep:#cdd5d2; --ink:#232019; --dim:#7d766a;
+    --edge:rgba(90,84,74,.5); --paper:#faf8f2; --water:#4a5c66; --light:#8a5a2b;
+    --lit:#2f5d50;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sky:#171d1b; --deep:#111614; --ink:#e6e0d4; --dim:#9a9284;
+      --edge:rgba(200,190,170,.3); --paper:#1d1b15; --water:#8fb0bd; --light:#c99a63;
+      --lit:#7fb8a4;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:linear-gradient(to bottom,var(--sky),var(--deep));color:var(--ink);
+    font:400 17px/1.7 ui-serif,Georgia,"Iowan Old Style",serif;overflow:hidden}
+  #seat{position:fixed;left:0;right:0;top:0;padding:14px 20px 0;
+    font:400 10.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);z-index:4;pointer-events:none}
+  #fall{position:fixed;inset:0;pointer-events:none;z-index:1}
+  /* THE FIELD ENDS WHERE THE FLOOR BEGINS.
+     This was `calc(100vh - 250px)` — a guessed floor. The real floor is the
+     seams bar plus whatever the banked line has grown to, and at 790px tall
+     that guess put 241px of the writing field, 41% of it, UNDERNEATH them:
+     his sentences printed on top of the banked rows and the caret vanished
+     behind the furniture. --floorH is measured from the two elements
+     themselves after every render and every resize; nothing here is guessed. */
+  #pad{position:fixed;left:50%;transform:translateX(-50%);top:52px;width:min(640px,92vw);
+    height:calc(100vh - 52px - var(--floorH,198px) - 14px);min-height:0;z-index:3}
+  #page{width:100%;height:100%;background:transparent;border:0;outline:0;resize:none;
+    color:var(--ink);font:inherit;caret-color:var(--light)}
+  #page::placeholder{color:var(--dim);opacity:.6}
+  #seams{position:fixed;left:0;right:0;bottom:0;z-index:4;padding:14px 20px 18px;
+    border-top:1px solid var(--edge);
+    background:linear-gradient(to top,var(--deep) 55%,transparent)}
+  #seams h6{margin:0 0 9px;font:400 10px/1 ui-sans-serif,system-ui,sans-serif;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .row{display:flex;flex-wrap:wrap;gap:8px}
+  .seam{flex:1 1 168px;min-width:150px;border:1px solid var(--edge);border-radius:3px;
+    padding:8px 11px 9px;background:transparent;text-align:left;cursor:default;
+    opacity:.4;transition:opacity .3s ease,border-color .3s ease}
+  .seam .to{font:400 12.5px/1.3 ui-serif,Georgia,serif;letter-spacing:.03em;display:block}
+  .seam .kd{font:400 9.5px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);display:block;margin-top:3px}
+  .seam .fc{font:400 10.5px/1.5 ui-serif,Georgia,serif;color:var(--dim);display:block;margin-top:5px}
+  .seam.open{opacity:1;cursor:pointer;border-color:var(--lit)}
+  .seam.open:hover,.seam.open:focus-visible{background:var(--paper);outline:none}
+  .seam.taken{opacity:1;border-color:var(--edge);background:var(--paper)}
+  /* F5 · COMPLETE IS NOT TAKEN. A seam whose two faces are inhabited reads as
+     settled whether or not it was walked — the double rule is the pair, and it
+     is a border, not a badge and not a count. Legible without colour: the
+     card also says which faces in words. */
+  .seam.complete{opacity:1;border-style:double;border-width:3px;border-color:var(--lit)}
+  .seam .fs{font:400 9.5px/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--lit);display:block;margin-top:4px}
+  .seam .fs.none{color:var(--dim)}
+  /* DIRECTION, NOT PHYSICS — Kevin's F1 mark. A seat falls or it rises; that is
+     a fact of the solid. Which physics a seam carries is no longer a division
+     between two halves, so nothing here is coloured "water" or "light". */
+  .seam.falling .kd{color:var(--water)} .seam.rising .kd{color:var(--light)}
+  .seam.root{flex-basis:100%}
+  #note{margin-top:9px;font-size:11px;color:var(--dim);min-height:1.4em}
+  /* the banked line. two gestures, both the hand's: sort, then form. */
+  /* The banked line yields to the field, never the other way round: its ceiling
+     is whatever is left once the field keeps 120, capped at 30vh. Resolved in
+     CSS rather than from innerHeight in a resize handler — that handler read a
+     stale height in both directions and left a 3px strip at 800 tall and a 4px
+     writing field at 420. The browser knows 100vh at the moment it lays out. */
+  #banked{position:fixed;left:0;right:0;bottom:var(--seamsH,150px);z-index:4;
+    max-height:min(30vh,calc(100vh - 52px - var(--seamsH,150px) - 134px));
+    overflow-y:auto;padding:0 20px}
+  #banked .inner{max-width:min(760px,94vw);margin:0 auto}
+  .sent{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:baseline;padding:8px 0;
+    border-bottom:1px solid var(--edge)}
+  .sent .t{flex:1 1 240px;font-size:13.5px;line-height:1.5;color:var(--dim)}
+  .sent .acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .sent.done .t{color:var(--ink)}
+  .sent button{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.11em;
+    text-transform:uppercase;background:transparent;border:1px solid var(--edge);
+    border-radius:2px;padding:5px 8px;color:var(--dim);cursor:pointer;white-space:nowrap}
+  .sent button:hover{color:var(--ink);border-color:var(--dim)}
+  .sent button[disabled]{opacity:.32;cursor:default}
+  .sent button.on{color:var(--lit);border-color:var(--lit)}
+  /* undecided carries no colour of its own and lights nothing when taken. a
+     sentence held at the boundary must look like a sentence never touched —
+     law 6, the absence is the feedback, and "no movement is always valid".
+     the control shows it was pressed; that is all. */
+  .sent button.held{border-style:dashed}
+  .sent button.held.on{color:var(--dim);border-color:var(--dim);border-style:solid}
+  .sent .mark{font-size:10px;color:var(--lit);letter-spacing:.1em;white-space:nowrap}
+  /* PROVENANCE — Kevin's F3 mark. The origin is printed on every line and no
+     control touches it. It is not a button because it is not a decision: it is
+     a fact recorded when the sentence banked. Disposition moves; origin does
+     not, and the page shows that by giving one of them no affordance at all. */
+  .sent .org{font:400 9px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);opacity:.75;white-space:nowrap;
+    border-bottom:1px dotted var(--edge);cursor:help}
+  /* the four fractions. each carries its own behaviour in the water; the colour
+     is redundant to it — law 10. */
+  .sent .fr{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;
+    text-transform:uppercase;background:transparent;border:1px solid var(--edge);
+    border-radius:2px;padding:5px 7px;color:var(--dim);cursor:pointer;white-space:nowrap}
+  .sent .fr:hover{color:var(--ink);border-color:var(--dim)}
+  .sent .fr.on{border-width:1px;font-weight:600}
+  .sent .fr.dissolved.on{color:#4f7a63;border-color:#4f7a63}
+  .sent .fr.suspended.on{color:#5f7f92;border-color:#5f7f92}
+  .sent .fr.bedload.on{color:#6b5a44;border-color:#6b5a44}
+  .sent .fr.contaminant.on{color:#a8564a;border-color:#a8564a}
+  a{color:inherit}
+</style>
+</head>
+<body>
+
+<div id="seat">TANK — the mouth · you are here</div>
+
+<canvas id="fall"></canvas>
+
+<div id="pad">
+  <textarea id="page" spellcheck="true" autofocus
+    placeholder="write. sentences fall as you close them."></textarea>
+</div>
+
+<div id="banked"><div class="inner" id="binner"></div></div>
+
+<div id="seams">
+  <h6>seams out of this seat</h6>
+  <div class="row" id="row"></div>
+  <div id="note"></div>
+</div>
+
+<script src="solid.js"></script>
+<script>
+(function(){
+  var S = window.SOLID;
+  var page = document.getElementById("page"), row = document.getElementById("row"),
+      note = document.getElementById("note"), cv = document.getElementById("fall"),
+      g = cv.getContext("2d");
+
+  if(!S || !S.ADJ){
+    note.textContent = "solid.js did not load, so the seams cannot be read. The writing field still holds.";
+    return;
+  }
+
+  /* ---- the store. HIS WATER IS NEVER OPENED HERE. ---- */
+  var KEY = "nesi.dayone", D = { text:"", banked:[], taken:[], deposits:{} };
+  try{ var raw = localStorage.getItem(KEY); if(raw) D = JSON.parse(raw); }catch(e){}
+  D.banked = D.banked || []; D.taken = D.taken || []; D.deposits = D.deposits || {};
+  function save(){
+    /* write to a pad first and read it back — nothing is lost if it did not land */
+    try{
+      var j = JSON.stringify(D);
+      localStorage.setItem(KEY + ".pad", j);
+      if(localStorage.getItem(KEY + ".pad") !== j) return;
+      localStorage.setItem(KEY, j); localStorage.removeItem(KEY + ".pad");
+    }catch(e){}
+  }
+
+  /* ---- the five seams, READ, not written ---- */
+  var SEAMS = S.ADJ.TANK.map(function(o){
+    var m = S.memberBetween("TANK", o), f = S.facesAlong("TANK", o);
+    return { id:m.key, to:o, kind:m.kind, root:false,
+             tool:"tetra " + f.triangle.tetra, toolSeats:f.triangle.seats.join(" · "),
+             window:f.square.axis, winSeats:f.square.seats.join(" · ") };
+  });
+  var R = S.RADII.filter(function(x){ return x.seat === "TANK"; })[0];
+  /* KEVIN'S RULING, 2026-08-16: "twelve radials, two to each pair — 36 stands."
+     It closed the collision between F10 and the count. A root is a RADIAL, not
+     a diameter; the pair it BELONGS TO is the pair of circuits its seat sits
+     on, and the other root of that pair is its antipode's. Read from
+     circuitsOf, never assigned — TANK sits on two circuits and so does LENS,
+     and they are the same two. Asserted in tools/solid_check.js. */
+  var PAIR = S.circuitsOf("TANK").slice().sort();
+  SEAMS.push({ id:"ROOT TANK", to:R.opposite, kind:"root", root:true,
+               tool:null, window:null,
+               pair:PAIR, partner:R.opposite });
+
+  /* WHICH WAY A SEAM GOES, which is a fact of the solid, and not which physics
+     it carries, which after Kevin's F1 mark is all three at once. `falls` is
+     read straight off SEATS. */
+  var dirOf = function(s){ return S.falls(s.to) ? "falling" : "rising"; };
+
+  /* THE FOUR FRACTIONS — Kevin's F7 mark. The hand picks one; nothing computes
+     it, nothing infers it, and the machine never decides what the sort found
+     (law 5). `was` is the governing brief's own words where it has them, and
+     names itself as mine where it does not. */
+  var FRACTIONS = [
+    { k:"dissolved",   was:"invisible, feeds life",     does:"goes out of sight without falling" },
+    { k:"suspended",   was:"clouds, becomes ground",    does:"hangs, and does not reach the floor" },
+    { k:"bedload",     was:"rocks, goes to the deep",   does:"sinks past the floor; the deep never renders" },
+    { k:"contaminant", was:"named in the brief, given no behaviour there",
+                       does:"films at the surface and stays — this behaviour is mine, not read" }
+  ];
+
+  /* PROVENANCE — Kevin's F3 mark, and only this. Origin is fixed when a
+     sentence banks and no gesture on this page can move it. On day one every
+     sentence is `quoted`: it was literally present in what you wrote. The other
+     two origins exist in the model and do not occur here yet, and neither is
+     faked to look populated — `inherited` waits for a root to re-enter, and
+     `introduced` waits for a surface that lets the hand add at the membrane.
+     INFERRED is not in this list: Kevin held it as candidate (F4). */
+  var ORIGINS = {
+    quoted:     "literally present in what you wrote",
+    inherited:  "carried in from a completed root",
+    introduced: "supplied by your hand at the membrane"
+  };
+
+  /* THE GATE IS A RETURN, NOT A THRESHOLD.
+     Removed 2026-08-16 on Kevin's definition: "the roots are a representation
+     of writing that has survived water, and light" · "surviving water is the
+     sort, surviving light is the shareable form."
+     Both are ACTS, not quantities. A word count cannot gate a root because a
+     count does not know whether anything survived. What stood here —
+     Math.floor(words()/1000) — was a placeholder and it was wrong on his own
+     terms, not merely thin.
+     A sentence survives water when THE HAND sorts it (law 5: no automatic
+     sorting, no computed pass, no classifier deciding what a fraction is) and
+     survives light when the hand closes it as shareable. One sentence through
+     both is one root.
+     WHAT THE SORT SORTS INTO IS STILL OPEN (ALIGNMENT.md B3). No fraction is
+     named here and none is invented. The gesture is recorded; its destination
+     is not guessed.
+
+     ── THE THIRD OUTPUT, 2026-08-16. LAW 1, THEN KEVIN'S RULING ───────────────
+     This station had two outputs and the law allows no station to have two:
+     "Three outputs at every station — send to a spire, drop to the lake, or set
+     it down and send it nowhere. Any file in this repo that says 'two outputs'
+     is stale and superseded by R1." The 1–24 spine puts SORT at level 5 and
+     names its capability "two filters · YES / NO". Binary is the one shape the
+     sort is not allowed to have, so the sort is where it got fixed.
+
+     IT WAS FIRST BUILT AS "SET DOWN", STRAIGHT OFF LAW 1, AND THAT WAS WRONG
+     HERE. Kevin's ruling the same day: "the sorts 3rd output, is undecided, and
+     left in the membrane. no movement is always valid. held at boundary is
+     fine." Two corrections in one line, and both matter:
+
+       1 · IT IS UNDECIDED, SO IT FORECLOSES NOTHING. The first build removed
+           the sort and the form the moment it was taken. That is what setting a
+           thing down does; it is not what being undecided does. Undecided keeps
+           both acts standing, because the decision has not been made and may be
+           made at any time. Deciding later is not a reversal, it is the first
+           decision.
+       2 · IT HAS A DESTINATION, AND THE DESTINATION IS THE MEMBRANE. Law 1's
+           third output sends a thing NOWHERE. This one goes somewhere — to the
+           boundary — and waits there. So this station's third output is not the
+           law's "set it down"; it is its own thing, and the law's is still
+           unbuilt here.
+
+     LAW 6 STILL GOVERNS ITS MANNER: no animation, no confirmation, nothing said
+     back. "No movement is always valid" is the same sentence as law 7's "held
+     is lawful", so a sentence in the membrane is drawn exactly like a sentence
+     never touched — dim, unmarked, silent. Nothing counts it. The absence is
+     the feedback.
+
+     WHERE THE MEMBRANE IS ON DAY ONE — OPEN, AND NOT GUESSED. The governing
+     brief lists the membrane as one of the control room's four stations, so it
+     is an object and not only a location. But THE_GROWTH puts its geometric
+     site at the shared triangle that arrives at FIVE nodes, and day one has one
+     seat. The boundary is named here and its site is not drawn.
+
+     STILL MISSING, SAID RATHER THAN FILLED: no way for the hand to say a
+     sentence did NOT survive the water — law 1's "drop to the lake". Untouched,
+     undecided and dropped are three different things and this surface says two
+     of them. The third needs the lake, which day one does not have. */
+  D.survived = D.survived || {};   /* index -> {fraction, formed, undecided, origin} */
+  function stateOf(i){
+    var s = D.survived[i];
+    if(!s) return {fraction:null, formed:false, undecided:false, origin:"quoted"};
+    /* an early store wrote this state under the name it was first built with */
+    if(s.undecided === undefined && s.down !== undefined) s.undecided = s.down;
+    /* THE SORT IS NOW A NAMED FRACTION (F7). A store written before that mark
+       recorded only THAT the hand acted, never into what — and which fraction
+       it was cannot be recovered, so it is not guessed. The sentence stands,
+       its text untouched, and its sort is simply offered again. */
+    if(s.fraction === undefined) s.fraction = null;
+    if(!s.fraction && s.sorted){ s.sorted = false; s.formed = false; }
+    /* ORIGIN IS FIXED AT BANK TIME AND NO GESTURE MOVES IT (F3). */
+    if(!s.origin) s.origin = "quoted";
+    return s;
+  }
+  var isSorted = function(s){ return !!s.fraction; };
+  function returned(){
+    return D.banked.reduce(function(n, _, i){
+      var s = stateOf(i);
+      /* undecided is not a lesser yes. nothing has survived anything yet, so it
+         returns nothing and opens nothing. it is waiting, not passing. */
+      return n + (!s.undecided && isSorted(s) && s.formed ? 1 : 0);
+    }, 0);
+  }
+  function earned(){ return returned(); }
+
+  /* F5 · A FACE IS INHABITED OR IT IS NOT. `D.deposits` already counted, so the
+     count is read as a boolean here and the number is never carried any
+     further — law 2. A seam completes when BOTH of its faces are inhabited,
+     by any seam, not only by itself. */
+  function inhabited(face){ return !!face && (D.deposits[face] || 0) > 0; }
+  function complete(s){ return !s.root && inhabited(s.tool) && inhabited(s.window); }
+
+  function render(){
+    row.innerHTML = "";
+    var open = earned() - D.taken.length;
+    SEAMS.forEach(function(s){
+      var el = document.createElement(D.taken.indexOf(s.id) >= 0 ? "a" : "button");
+      var lit = D.taken.indexOf(s.id) >= 0;
+      el.className = "seam " + (s.root ? "root " : "") +
+                     (s.kind === "root" ? "" : dirOf(s) + " ") +
+                     (complete(s) ? "complete " : "") +
+                     (lit ? "taken" : (open > 0 ? "open" : ""));
+      if(lit){ el.href = s.root ? "index.html" : "ascent.html#" + s.to.toLowerCase(); }
+      el.innerHTML =
+        '<span class="to">' + (s.root ? "through the centre to " + s.to : "to " + s.to) + '</span>' +
+        '<span class="kd">' + s.kind + (s.root ? " · radial" : " · " + dirOf(s)) + '</span>' +
+        '<span class="fc">' + (s.root
+            ? "no faces. a radial is not an edge, so nothing deposits sideways."
+              /* LAW 2, AND I BROKE IT HERE FIRST. This line printed the circuit
+                 INDICES — "circuits 2 and 3" — and solid.js's own header says
+                 it plainly: "NO NUMBER IN HERE REACHES THE PLAYER. This is the
+                 world's skeleton, not its face." An array position is the
+                 rawest skeleton number there is, and I drew it on the face
+                 without noticing, sixty seconds after building the thing.
+                 The pair is named by WHAT IT IS instead. Nothing is lost: the
+                 two circuits TANK sits on are the only two that meet here, and
+                 the seats they meet at are the two roots of the pair. That is
+                 the whole fact, and it needs no index to say. */
+              + "<br>it belongs to the one crossing of circuits that meets at this seat"
+              + " — the same crossing " + s.partner + "'s own root belongs to, and no other root does."
+            : "tool " + s.tool + " &nbsp;·&nbsp; window " + s.window) + '</span>' +
+        /* F5 · said in words as well as in the border, so the state does not
+           depend on seeing a line weight. The root gets the sentence that is
+           true of it: the test does not apply, which is not the same as failing. */
+        '<span class="fs' + (complete(s) ? "" : " none") + '">' + (s.root
+            ? "no faces to inhabit — this never completes this way"
+            : complete(s) ? "both faces inhabited"
+            : inhabited(s.tool) ? "tool inhabited · window empty"
+            : inhabited(s.window) ? "window inhabited · tool empty"
+            : "neither face inhabited") + '</span>';
+      if(!lit && open > 0){
+        el.addEventListener("click", function(){
+          D.taken.push(s.id);
+          if(!s.root){
+            D.deposits[s.tool] = (D.deposits[s.tool] || 0) + 1;
+            D.deposits[s.window] = (D.deposits[s.window] || 0) + 1;
+          }
+          save(); render();
+          note.textContent = s.root
+            ? "the root is open. it runs to " + s.to + " and leaves nothing on the way."
+            : "the seam is open. what you write on it lands in " + s.tool + " and shows in window " + s.window + ".";
+        });
+      }
+      row.appendChild(el);
+    });
+    /* no count, no bar, no words-to-go — law 2. the seams light or they do not. */
+    if(earned() - D.taken.length <= 0 && D.taken.length === 0) note.textContent = "";
+    renderBanked();
+    floor();
+  }
+
+  /* THE FLOOR IS MEASURED, NEVER GUESSED.
+     The seams bar and the banked line are both content-sized — five seam cards
+     wrap at one width and not another, and the banked line grows with every
+     sentence until it hits its own ceiling. Neither height is knowable in
+     advance, so both are read off the elements after they render, and the
+     writing field is given exactly what is left. banked's height does not
+     depend on pad's, so nothing here can feed back into what it measures.
+
+     TWO READS, NOT ONE. --seamsH is an input to banked's own ceiling, so the
+     first read can hand back a floor that its own write then invalidates — the
+     seam cards wrapping to a second row lowers banked's ceiling in the same
+     pass. Reading again until the number stops moving costs nothing when it
+     was right the first time, which is the ordinary case. */
+  var settleAt = -1;
+  function floor(){
+    var seams = document.getElementById("seams"), banked = document.getElementById("banked");
+    var root = document.documentElement.style;
+    for(var pass = 0; pass < 3; pass++){
+      var sh = seams.offsetHeight, h = sh + banked.offsetHeight;
+      root.setProperty("--seamsH", sh + "px");
+      if(h === settleAt) return;
+      settleAt = h;
+      root.setProperty("--floorH", h + "px");
+    }
+  }
+
+  /* WHO CALLS IT. render(), on load and on every act; the resize event, for the
+     canvas and the field together; and a ResizeObserver, which is the only one
+     of the three that catches a seam card wrapping to a second row without an
+     act to trigger it. Neither observed element's size depends on the writing
+     field, so setting --floorH from here cannot feed back.
+
+     NOT VERIFIED HERE: the resize path. This page was walked in a hidden
+     preview pane, where the document reports visibilityState "hidden" — the
+     window fires no resize event at all, requestAnimationFrame never runs, and
+     ResizeObserver delivers nothing. Everything below the load-and-render path
+     is reasoned, not seen. The drop animation is in the same position. */
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(floor);
+    ro.observe(document.getElementById("seams"));
+    ro.observe(document.getElementById("banked"));
+  }
+
+  /* the two gestures. NEITHER IS COMPUTED — the machine records that the hand
+     acted and never decides what the sort found. */
+  function renderBanked(){
+    var b = document.getElementById("binner"); b.innerHTML = "";
+    D.banked.forEach(function(txt, i){
+      var s = stateOf(i), done = isSorted(s) && s.formed;
+      var el = document.createElement("div");
+      el.className = "sent" + (done ? " done" : "");
+      el.innerHTML = '<span class="t">' + txt.replace(/[<>&]/g, "") + '</span>';
+
+      /* THE ORIGIN. Printed, never a control — F3. Sorting this sentence into a
+         fraction below will not change this word, and there is no affordance
+         here by which it could. Origin and disposition are separate facts. */
+      var og = document.createElement("span");
+      og.className = "org"; og.textContent = s.origin;
+      og.title = ORIGINS[s.origin] + " — this does not change when you sort it";
+      el.appendChild(og);
+
+      var acts = document.createElement("div"); acts.className = "acts";
+
+      /* THE SORT, WHICH NOW NAMES A FRACTION — F7. The hand picks. Nothing is
+         computed, nothing inferred, and picking again moves it; picking the
+         same one twice takes it back to unsorted. */
+      FRACTIONS.forEach(function(fr){
+        var fb = document.createElement("button");
+        fb.className = "fr " + fr.k + (s.fraction === fr.k ? " on" : "");
+        fb.textContent = fr.k;
+        fb.title = fr.was + " — " + fr.does;
+        fb.addEventListener("click", function(){
+          var st = stateOf(i);
+          st.fraction = (st.fraction === fr.k) ? null : fr.k;
+          if(!st.fraction) st.formed = false;   /* unsorted cannot be formed */
+          else st.undecided = false;            /* a decision leaves the boundary */
+          D.survived[i] = st; save(); render();
+          if(st.fraction) pour(fr.k);           /* the water does what it does */
+        });
+        acts.appendChild(fb);
+      });
+
+      var b2 = document.createElement("button");
+      b2.textContent = "form"; b2.className = s.formed ? "on" : "";
+      b2.disabled = !isSorted(s);
+      b2.title = "surviving light is the shareable form";
+      b2.addEventListener("click", function(){
+        var st = stateOf(i); st.formed = !st.formed;
+        if(st.formed) st.undecided = false;
+        D.survived[i] = st; save(); render();
+      });
+      /* the third output. it is offered last and it says nothing back. */
+      var b3 = document.createElement("button");
+      b3.textContent = "undecided"; b3.className = "held" + (s.undecided ? " on" : "");
+      b3.title = "left in the membrane — held at the boundary";
+      b3.addEventListener("click", function(){
+        var st = stateOf(i); st.undecided = !st.undecided;
+        /* entering the membrane is not a decision, so it carries none with it */
+        if(st.undecided){ st.fraction = null; st.formed = false; }
+        D.survived[i] = st; save(); render();
+        /* LAW 6: no toast, no chime, no counter, nothing written to the note.
+           And no pour — the membrane is where nothing has happened yet. */
+      });
+      acts.appendChild(b2); acts.appendChild(b3);
+      el.appendChild(acts);
+      if(done){
+        var m = document.createElement("span");
+        m.className = "mark"; m.textContent = "returned";
+        el.appendChild(m);
+      }
+      b.appendChild(el);
+    });
+  }
+
+  /* ---- sentences fall as they close ---- */
+  var drops = [];
+
+  /* WHAT THE WATER DOES WHEN A FRACTION IS NAMED — law 10. Each of the four
+     behaves differently, and the colour is redundant to the behaviour: turn the
+     colours off and dissolved still vanishes without falling, suspended still
+     hangs, bedload still leaves through the floor and contaminant still spreads
+     and stays. The distinction survives without hue.
+     This is feedback on an ACT THE HAND TOOK, not a reward and not a score —
+     nothing is counted, nothing is said back, and it fades. */
+  var FRC = { dissolved:"#4f7a63", suspended:"#5f7f92",
+              bedload:"#6b5a44", contaminant:"#a8564a" };
+  function pour(k){
+    var r = page.getBoundingClientRect();
+    drops.push({ f:k, x: r.left + r.width * (0.25 + Math.random() * 0.5),
+                 y: r.top + 30 + Math.random() * 40,
+                 v: (k === "bedload" ? 0.9 : k === "suspended" ? 0.14 : 0.3),
+                 a: 1, w: 34 + Math.random() * 46, hang: 0 });
+  }
+  function bank(){
+    var t = page.value, parts = t.split(/(?<=[.!?])\s+/);
+    if(parts.length < 2) return;
+    var done = parts.slice(0, -1).join(" ").trim();
+    if(!done) return;
+    var already = D.banked.join(" ").trim();
+    if(done.length <= already.length) return;
+    var fresh = done.slice(already.length).trim();
+    if(!fresh) return;
+    D.banked.push(fresh); save();
+    var r = page.getBoundingClientRect();
+    drops.push({ x: r.left + r.width * (0.2 + Math.random() * 0.6),
+                 y: r.top + Math.min(r.height - 20, 40 + Math.random() * 120),
+                 v: 0.25 + Math.random() * 0.35, a: 1, w: Math.min(150, 26 + fresh.length * 0.7) });
+    render();
+  }
+  page.value = D.text || "";
+  page.addEventListener("input", function(){ D.text = page.value; save(); bank(); });
+
+  function size(){ var d = devicePixelRatio || 1;
+    cv.width = Math.round(innerWidth * d); cv.height = Math.round(innerHeight * d);
+    cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+    g.setTransform(d, 0, 0, d, 0, 0); }
+  function tick(){
+    g.clearRect(0, 0, innerWidth, innerHeight);
+    /* a drop lands on the floor it can be seen landing on — the top of the
+       banked line, not behind it. same measurement the field is sized from. */
+    var b = document.getElementById("banked");
+    var bt = b.getBoundingClientRect().top;
+    var floor = (b.offsetHeight ? bt : innerHeight - (document.getElementById("seams").offsetHeight || 120));
+    var css = getComputedStyle(document.documentElement).getPropertyValue("--water").trim();
+    drops = drops.filter(function(p){
+      /* a sentence banking: unchanged, and carries no fraction — the hand has
+         not sorted it yet, so the water does not yet know what it is. */
+      if(!p.f){
+        p.y += p.v * 2.2; p.v += 0.012;
+        if(p.y > floor){ p.a -= 0.05; }
+        if(p.a <= 0) return false;
+        g.globalAlpha = p.a * 0.5; g.strokeStyle = css; g.lineWidth = 1.4;
+        g.beginPath(); g.moveTo(p.x - p.w / 2, p.y); g.lineTo(p.x + p.w / 2, p.y); g.stroke();
+        return true;
+      }
+      /* the four, each by its own behaviour */
+      if(p.f === "dissolved"){            /* invisible, feeds life: no fall */
+        p.a -= 0.026; p.w *= 0.975;
+      } else if(p.f === "suspended"){      /* clouds: hangs, never reaches floor */
+        var hangAt = p.hang || (p.hang = floor - 90 - Math.random() * 60);
+        if(p.y < hangAt){ p.y += p.v * 2.2; p.v += 0.004; }
+        else { p.v = 0; p.a -= 0.0035; }
+      } else if(p.f === "bedload"){        /* rocks: sinks past the floor */
+        p.y += p.v * 2.6; p.v += 0.09;
+        /* LAW 9 — THE DEEP NEVER RENDERS. It leaves through the floor and
+           nothing whatever is drawn below it. */
+        if(p.y > floor) return false;
+      } else {                            /* contaminant: films and stays */
+        if(p.y < floor){ p.y += p.v * 2.2; p.v += 0.01; }
+        else { p.y = floor; p.w = Math.min(p.w * 1.035, 340); p.a -= 0.0022; }
+      }
+      if(p.a <= 0) return false;
+      g.globalAlpha = p.a * 0.55; g.strokeStyle = FRC[p.f] || css;
+      g.lineWidth = p.f === "bedload" ? 2.4 : p.f === "contaminant" ? 1.1 : 1.4;
+      g.beginPath(); g.moveTo(p.x - p.w / 2, p.y); g.lineTo(p.x + p.w / 2, p.y); g.stroke();
+      return true;
+    });
+    g.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+  /* floor() synchronously as well as through the observer: the observer is the
+     right instrument but it needs the page to be compositing, and this one
+     re-reads the elements rather than innerHeight, so it is correct even on a
+     resize event that still carries the old window height. */
+  addEventListener("resize", function(){ size(); floor(); });
+  size(); render(); tick();
+})();
+</script>
+</body>
+</html>

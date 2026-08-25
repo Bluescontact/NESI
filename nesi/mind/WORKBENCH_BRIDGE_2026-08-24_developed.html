@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>WORKBENCH BRIDGE · Recognition Infrastructure · developed 2026-08-24</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:270px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker,.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:20px;line-height:1.15;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)} .tabbtn:nth-child(8){margin-top:9px;border-top:1px solid var(--line);border-radius:0;padding-top:16px}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:1180px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:36px;letter-spacing:-.035em;line-height:1.12;margin:7px 0 14px} h3{margin:.25rem 0 .35rem;font-size:18px;line-height:1.3} p{max-width:78ch} .lede{font-size:19px;color:var(--muted);max-width:70ch;margin-bottom:28px} .rule{height:1px;background:var(--line);margin:30px 0}
+.seal{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:25px 0 32px} .seal>div{padding:14px 13px;border-right:1px solid var(--line)} .seal>div:last-child{border:0} .seal span,.threecol span,.instrument span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.mapbox{border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow);padding:16px;overflow:auto} svg{width:100%;min-width:1180px;height:auto} .wire{fill:none;stroke:var(--line);stroke-width:1.5} .mapnode rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2;transition:.15s} .mapnode text{fill:var(--ink);font-size:12px;font-weight:800;letter-spacing:.04em} .mapnode text.sub{fill:var(--muted);font-size:10px;font-weight:500;letter-spacing:0} .mapnode{cursor:pointer} .mapnode:hover rect{stroke:var(--gold);fill:var(--gold-soft)} .bridge-core rect{fill:var(--ink)} .bridge-core text{fill:var(--surface);font-size:13px;font-weight:800} .bridge-core text.sub{fill:color-mix(in srgb,var(--surface) 70%,transparent);font-size:10px;font-weight:500}
+.organnode.built rect{stroke:var(--green)} .organnode.spec rect{stroke:var(--gold)} .organnode.dream rect{stroke:var(--blue);stroke-dasharray:3 3} .organnode.open rect{stroke:var(--line);stroke-dasharray:2 4}
+.organnode text.state{fill:var(--muted);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.organ-wire.built{stroke:var(--green);stroke-width:1.8} .organ-wire.spec{stroke:var(--gold);stroke-width:1.8} .organ-wire.dream{stroke:var(--blue);stroke-width:1.8;stroke-dasharray:5 4}
+.maplegend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)} .maplegend span{display:inline-flex;align-items:center;gap:6px} .maplegend i{width:10px;height:10px;border-radius:3px;display:inline-block;border:1.5px solid}
+.route-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:20px 22px;margin-bottom:16px} .route-card .rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px} .route-card h3{font-size:17px;margin:0} .route-card .arrow{color:var(--muted);font-size:13px;margin:0 0 10px} .route-card p{font-size:14px;color:var(--muted);margin:0 0 10px} .route-card blockquote{margin:10px 0 0;padding:10px 14px;border-left:2px solid var(--gold);background:var(--gold-soft);font-size:13px}
+.state-built{background:var(--green-soft);color:var(--green)} .state-spec{background:var(--gold-soft);color:var(--gold)} .state-dream{background:var(--blue-soft);color:var(--blue)} .state-open{background:var(--line);color:var(--muted)}
+.keyline{margin:22px 0 0;padding:18px 21px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:17px;max-width:82ch}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} .instrument,.source-card,.threecol article,.mismatch,.tracebox{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px} .instrument h3{font-size:17px} .instrument p{color:var(--muted);font-size:14px} .instrument .bridge-effect{color:var(--ink);border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
+.instrument.law{border-color:var(--gold);background:var(--gold-soft)} .instrument.law span{color:var(--gold)}
+.tag,.state{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 7px;border-radius:999px;background:var(--blue-soft);color:var(--blue)} .state{background:var(--gold-soft);color:var(--gold)} .tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)}
+.source-card{margin-bottom:13px} .source-head{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap} .source-card p{color:var(--muted);font-size:14px} .source-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end} blockquote{margin:15px 0 0;padding:10px 14px;border-left:2px solid var(--gold);background:var(--gold-soft);font-size:14px} .micro{font-size:11px;color:var(--muted);margin-top:12px}
+.prompt{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:20px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.65;overflow:auto} .prompt-label{display:flex;justify-content:space-between;align-items:center;margin:24px 0 8px} .prompt-label b{font-size:12px} .prov{font-size:10px;color:var(--muted)}
+.prose{max-width:850px} .prose h3{margin-top:30px} .prose p{font-size:16px} .prose strong{color:var(--ink)} .gift-text{white-space:pre-wrap}
+.process{counter-reset:step;display:grid;gap:12px;max-width:860px} .process article{counter-increment:step;display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:15px} .process article:before{content:counter(step,decimal-leading-zero);width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:11px;font-weight:800} .process h3{margin:1px 0 4px;font-size:15px} .process p{margin:0;color:var(--muted);font-size:13px}
+.mismatch{border-left:4px solid var(--red);background:var(--red-soft);margin:22px 0} .mismatch h3{color:var(--red)} table{width:100%;border-collapse:collapse;font-size:12px} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em} td code{font-size:10px;word-break:break-all}
+.pair{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:var(--surface);font-size:12px;color:var(--muted)} .diagnostic{font-size:24px;line-height:1.35;letter-spacing:-.02em;max-width:790px;margin:28px 0;padding-left:18px;border-left:3px solid var(--gold)} .threecol{display:grid;grid-template-columns:repeat(3,1fr);gap:12px} .threecol article p{font-size:14px;color:var(--muted)} .relation-foot{margin-top:18px;color:var(--muted);font-size:12px}
+.source-raw details{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:8px 0;overflow:hidden} .source-raw summary{cursor:pointer;padding:12px 14px;font-weight:700;font-size:13px} .source-raw pre{white-space:pre-wrap;word-break:break-word;padding:0 14px 15px;color:var(--muted);font-size:11px;max-height:420px;overflow:auto}
+.trace{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0} .trace div{border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:10px;font-size:11px} .trace b{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.devnote{border:1px solid var(--gold);border-radius:12px;background:var(--gold-soft);padding:14px 16px;font-size:12.5px;color:var(--ink);margin:16px 0}
+.devnote b{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+@media(max-width:900px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .tabbtn:nth-child(8){margin-top:0;border-top:0;border-left:1px solid var(--line);border-radius:0;padding-top:8px;padding-left:16px} .seal{grid-template-columns:repeat(2,1fr)} .seal>div{border-bottom:1px solid var(--line)} .grid2,.threecol{grid-template-columns:1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+
+.wire.dim{opacity:.12} .wire.active{stroke-width:3.4;filter:drop-shadow(0 0 2px rgba(0,0,0,.15))}
+.mapnode.dim rect{opacity:.28} .mapnode.dim text{opacity:.35}
+.mapnode.peer rect{stroke-width:2.4}
+.route-card.flash{outline:2px solid var(--gold);outline-offset:2px;transition:outline .15s}
+.mapdetail{margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:13px;color:var(--muted);min-height:44px}
+.mapdetail b{color:var(--ink)}
+.mapdetail .go{display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">DSS · Recognition Infrastructure</div><h1>WORKBENCH<br>BRIDGE</h1><p>session authority grammar · developed 2026-08-24</p></div>
+  <div class="seal-mini"><b>NO NETWORK</b><br>all CSS + JS inline · no external fonts · no storage writes<br><br><b>DEVELOPMENT PASS</b> full-development procedure run on the 2026-08-24 bridge · see Process tab</div>
+  <nav class="tabs" role="tablist"><button class="tabbtn" data-tab="home" role="tab" aria-controls="panel-home">Bridge</button><button class="tabbtn" data-tab="prompts" role="tab" aria-controls="panel-prompts">Prompts</button><button class="tabbtn" data-tab="gift-01" role="tab" aria-controls="panel-gift-01">Gift 01</button><button class="tabbtn" data-tab="gift-02" role="tab" aria-controls="panel-gift-02">Gift 02</button><button class="tabbtn" data-tab="process" role="tab" aria-controls="panel-process">Process</button><button class="tabbtn" data-tab="lens" role="tab" aria-controls="panel-lens">Lens</button><button class="tabbtn" data-tab="sources" role="tab" aria-controls="panel-sources">Sources</button><button class="tabbtn" data-tab="rel-relationship" role="tab" aria-controls="panel-rel-relationship">Relationship</button><button class="tabbtn" data-tab="rel-self-knowledge" role="tab" aria-controls="panel-rel-self-knowledge">Self-Knowledge</button><button class="tabbtn" data-tab="rel-gift" role="tab" aria-controls="panel-rel-gift">Gift</button><button class="tabbtn" data-tab="rel-consent" role="tab" aria-controls="panel-rel-consent">Consent</button><button class="tabbtn" data-tab="rel-circulation" role="tab" aria-controls="panel-rel-circulation">Circulation</button><button class="tabbtn" data-tab="rel-deployment" role="tab" aria-controls="panel-rel-deployment">Deployment</button><button class="tabbtn" data-tab="routes" role="tab" aria-controls="panel-routes">Routes</button></nav>
+</aside>
+<main>
+  <div class="topbar"><div class="crumb">session / <span id="crumb">bridge</span></div><div class="status"><span class="dot"></span> self-contained · in-memory interaction only</div></div>
+
+<section class="panel active" id="panel-home" data-panel="home">
+  <div class="eyebrow">This session · developed pass over the second-generation bridge</div><h2>What one working session looked like from the inside.</h2>
+  <p class="lede">Kevin's own sentences are here unedited, typos included. So is the material that already stood before this session touched it, kept separate from what got produced during it. So is the reasoning that connects the two, and the places where that reasoning ran into a gap it couldn't close — a missing file, a count that didn't match, a claim this pass found it could not actually support. Nothing here writes to disk, ranks anyone, or asks to be believed instead of checked.</p>
+  <div class="seal">
+    <div><span>SESSION</span><b>2026-08-24</b></div><div><span>SOURCE AUTHORITY</span><b>verbatim + named corpus</b></div><div><span>RENDERING AUTHORITY</span><b>select · arrange · juxtapose</b></div><div><span>NOT AUTHORIZED</span><b>canonize · rank · declare state</b></div><div><span>VIEWER EFFECT</span><b>none beyond DOM state</b></div><div><span>DEPENDENCIES</span><b>zero external</b></div>
+  </div>
+  <div class="mapbox"><svg viewBox="0 0 1400 610" aria-label="Six source lenses feeding a session bridge, six standing relationships, and proposed routes into NESI's organs">
+    <path class="wire lens-wire" d="M188,90 C320,90 335,302 414,302"/><path class="wire lens-wire" d="M188,175 C320,175 335,302 414,302"/><path class="wire lens-wire" d="M188,260 C320,260 335,302 414,302"/><path class="wire lens-wire" d="M188,345 C320,345 335,302 414,302"/><path class="wire lens-wire" d="M188,430 C320,430 335,302 414,302"/><path class="wire lens-wire" d="M188,515 C320,515 335,302 414,302"/><path class="wire relation-wire" d="M586,302 C665,302 680,90 812,90"/><path class="wire relation-wire" d="M586,302 C665,302 680,175 812,175"/><path class="wire relation-wire" d="M586,302 C665,302 680,260 812,260"/><path class="wire relation-wire" d="M586,302 C665,302 680,345 812,345"/><path class="wire relation-wire" d="M586,302 C665,302 680,430 812,430"/><path class="wire relation-wire" d="M586,302 C665,302 680,515 812,515"/>
+    <g class="bridge-core"><rect x="414" y="242" width="172" height="120" rx="22"/><text x="500" y="290" text-anchor="middle">WORKBENCH BRIDGE</text><text class="sub" x="500" y="315" text-anchor="middle">carry the field</text><text class="sub" x="500" y="333" text-anchor="middle">do not collapse it</text></g>
+    <g class="mapnode lensnode" data-jump="lens"><rect x="12" y="59" width="176" height="62" rx="12"/><text x="100" y="86" text-anchor="middle">TOPOLOGY</text><text class="sub" x="100" y="106" text-anchor="middle">view ≠ source</text></g><g class="mapnode lensnode" data-jump="lens"><rect x="12" y="144" width="176" height="62" rx="12"/><text x="100" y="171" text-anchor="middle">RECOGNITION</text><text class="sub" x="100" y="191" text-anchor="middle">trace before ladder</text></g><g class="mapnode lensnode" data-jump="lens"><rect x="12" y="229" width="176" height="62" rx="12"/><text x="100" y="256" text-anchor="middle">EXTRACTION</text><text class="sub" x="100" y="276" text-anchor="middle">provenance before carry</text></g><g class="mapnode lensnode" data-jump="lens"><rect x="12" y="314" width="176" height="62" rx="12"/><text x="100" y="341" text-anchor="middle">MEMBRANE</text><text class="sub" x="100" y="361" text-anchor="middle">form can decline</text></g><g class="mapnode lensnode" data-jump="lens"><rect x="12" y="399" width="176" height="62" rx="12"/><text x="100" y="426" text-anchor="middle">CUSTODY</text><text class="sub" x="100" y="446" text-anchor="middle">storage ≠ holding</text></g><g class="mapnode lensnode" data-jump="lens"><rect x="12" y="484" width="176" height="62" rx="12"/><text x="100" y="511" text-anchor="middle">TRIMTAB</text><text class="sub" x="100" y="531" text-anchor="middle">circulation ≠ target</text></g><g class="mapnode relnode" id="node-rel-relationship" data-jump="rel-relationship" data-wires="w-relationship-membrane" data-peer="node-organ-membrane"><rect x="812" y="59" width="176" height="62" rx="12"/><text x="900" y="95" text-anchor="middle">RELATIONSHIP</text></g><g class="mapnode relnode" id="node-rel-self-knowledge" data-jump="rel-self-knowledge" data-wires="w-selfknowledge-recognition" data-peer="node-organ-recognition"><rect x="812" y="144" width="176" height="62" rx="12"/><text x="900" y="180" text-anchor="middle">SELF-KNOWLEDGE</text></g><g class="mapnode relnode" id="node-rel-gift" data-jump="rel-gift" data-wires="w-gift-forest" data-peer="node-organ-forest"><rect x="812" y="229" width="176" height="62" rx="12"/><text x="900" y="265" text-anchor="middle">GIFT</text></g><g class="mapnode relnode" id="node-rel-consent" data-jump="rel-consent" data-wires="w-consent-membrane w-consent-pulse" data-peer="node-organ-membrane node-organ-pulse"><rect x="812" y="314" width="176" height="62" rx="12"/><text x="900" y="350" text-anchor="middle">CONSENT</text></g><g class="mapnode relnode" id="node-rel-circulation" data-jump="rel-circulation" data-wires="w-circulation-witness" data-peer="node-organ-circulation-witness"><rect x="812" y="399" width="176" height="62" rx="12"/><text x="900" y="435" text-anchor="middle">CIRCULATION</text></g><g class="mapnode relnode" id="node-rel-deployment" data-jump="rel-deployment" data-wires="w-deployment-face" data-peer="node-organ-face"><rect x="812" y="484" width="176" height="62" rx="12"/><text x="900" y="520" text-anchor="middle">DEPLOYMENT</text></g>
+    <path class="wire organ-wire built" id="w-relationship-membrane" d="M988,90 C1050,90 1090,302 1150,302"/>
+    <path class="wire organ-wire spec" id="w-selfknowledge-recognition" d="M988,175 C1050,175 1090,458 1150,458"/>
+    <path class="wire organ-wire built" id="w-gift-forest" d="M988,260 C1050,260 1090,224 1150,224"/>
+    <path class="wire organ-wire built" id="w-consent-membrane" d="M988,345 C1050,345 1090,302 1150,302"/>
+    <path class="wire organ-wire built" id="w-consent-pulse" d="M988,345 C1050,345 1090,68 1150,68"/>
+    <path class="wire organ-wire dream" id="w-circulation-witness" d="M988,430 C1050,430 1090,536 1150,536"/>
+    <path class="wire organ-wire built" id="w-deployment-face" d="M988,515 C1050,515 1090,380 1150,380"/>
+    <g class="mapnode organnode built" id="node-organ-pulse" data-wires="w-consent-pulse" data-peer="node-rel-consent" data-cards="route-consent" data-jump="routes"><rect x="1150" y="40" width="190" height="56" rx="12"/><text x="1245" y="63" text-anchor="middle">PULSE</text><text class="sub" x="1245" y="79" text-anchor="middle">engine · want-check gate</text><text class="state" x="1245" y="90" text-anchor="middle">BUILT</text></g>
+    <g class="mapnode organnode open" id="node-organ-soil" data-jump="routes"><rect x="1150" y="118" width="190" height="56" rx="12"/><text x="1245" y="141" text-anchor="middle">SOIL</text><text class="sub" x="1245" y="157" text-anchor="middle">intake — no route yet</text><text class="state" x="1245" y="168" text-anchor="middle">OPEN</text></g>
+    <g class="mapnode organnode built" id="node-organ-forest" data-wires="w-gift-forest" data-peer="node-rel-gift" data-cards="route-gift-forest" data-jump="routes"><rect x="1150" y="196" width="190" height="56" rx="12"/><text x="1245" y="219" text-anchor="middle">FOREST</text><text class="sub" x="1245" y="235" text-anchor="middle">heartwood · tree seed</text><text class="state" x="1245" y="246" text-anchor="middle">BUILT</text></g>
+    <g class="mapnode organnode built" id="node-organ-membrane" data-wires="w-relationship-membrane w-consent-membrane" data-peer="node-rel-relationship node-rel-consent" data-cards="route-relationship-membrane route-consent" data-jump="routes"><rect x="1150" y="274" width="190" height="56" rx="12"/><text x="1245" y="297" text-anchor="middle">MEMBRANE</text><text class="sub" x="1245" y="313" text-anchor="middle">skin · held-refusal law</text><text class="state" x="1245" y="324" text-anchor="middle">BUILT</text></g>
+    <g class="mapnode organnode built" id="node-organ-face" data-wires="w-deployment-face" data-peer="node-rel-deployment" data-cards="route-deployment-face" data-jump="routes"><rect x="1150" y="352" width="190" height="56" rx="12"/><text x="1245" y="375" text-anchor="middle">FACE</text><text class="sub" x="1245" y="391" text-anchor="middle">board · surface_bridge</text><text class="state" x="1245" y="402" text-anchor="middle">BUILT</text></g>
+    <g class="mapnode organnode spec" id="node-organ-recognition" data-wires="w-selfknowledge-recognition" data-peer="node-rel-self-knowledge" data-cards="route-selfknowledge-recognition" data-jump="routes"><rect x="1150" y="430" width="190" height="56" rx="12"/><text x="1245" y="453" text-anchor="middle">RECOGNITION</text><text class="sub" x="1245" y="469" text-anchor="middle">worth organ — spec'd</text><text class="state" x="1245" y="480" text-anchor="middle">SPEC'D, NOT BUILT</text></g>
+    <g class="mapnode organnode dream" id="node-organ-circulation-witness" data-wires="w-circulation-witness" data-peer="node-rel-circulation" data-cards="route-circulation" data-jump="routes"><rect x="1150" y="508" width="190" height="56" rx="12"/><text x="1245" y="531" text-anchor="middle">CIRCULATION-WITNESS</text><text class="sub" x="1245" y="547" text-anchor="middle">dreamed, unmarked</text><text class="state" x="1245" y="558" text-anchor="middle">DREAMED</text></g>
+  </svg></div>
+  <div class="maplegend">
+    <span><i style="border-color:var(--green);background:var(--green-soft)"></i>Built organ</span>
+    <span><i style="border-color:var(--gold);background:var(--gold-soft)"></i>Spec'd, not built</span>
+    <span><i style="border-color:var(--blue);background:var(--blue-soft)"></i>Dreamed, unmarked</span>
+    <span><i style="border-color:var(--line);background:var(--surface)"></i>Open — no route reaches it</span>
+  </div>
+  <div class="mapdetail" id="mapdetail">Hover a relationship or an organ to see its route highlighted. Click an organ to open its card below.</div>
+  <div class="keyline"><strong>What this file can actually promise, after development:</strong> it makes the conditions under which each thing here may be read, related, refused, carried forward, or left unresolved <em>available and legible</em> to whatever reads it next. It cannot make those conditions be honored — a later session that copies a tagged rendering forward as if it were source produces exactly the failure this format is built to expose, not one it can block. See <b>Lens → Law of Inheritance</b> for what that means for anything that reads this file later.</div>
+</section>
+
+<section class="panel" id="panel-prompts" data-panel="prompts">
+  <div class="eyebrow">Verbatim · current session</div><h2>Prompts</h2><p class="lede">Unedited user text. Typos, repetition, and naming remain evidence rather than being polished away.</p>
+  <div class="prompt-label"><b>MESSAGE 1</b><span class="prov">VERBATIM · USER</span></div><div class="prompt">DSS · RECOGNITION INFRASTRUCTURE · SESSION GRAMMAR
+WORKBENCH BRIDGE
+one self-contained file holding a single session's authority grammar — prompts, gift, process, lens, sources, and the six standing relationships each in their own tab, so nothing about the session has to be reconstructed from scattered files later.
+Built 2026-08-24 on Kevin's own naming: “I've found that i can save time trying to navigate multiple files by having each session create a single self contained, multi tabed, interactive, and visual authority grammar.” Nothing here writes to disk, ranks Kevin, or scores anything. It reads and arranges what already happened this session and what already stood in the corpus before it — the carriage discipline (.claude/agents/nesi.md): selection, arrangement, and verbatim quotes, never interpretation standing in for his own read.
+this session
+the six standing relationships
+Prompts
+Kevin's own words, this session, unedited — typos and all. Nothing here is cleaned up or paraphrased.
+open a session html, as deposit development doc and gift, and run a full development pass.
+message 1
+I've found that i can save time trying to navigate multiple files  by having each session create a single self contained, multi tabed, interactive, and visual authority grammar.
+Having a tab dedicated to the users words and prompts, unedited.
+each derived gift gets its own tab.
+The process. the lens. the sources. 6 relationshions each get their own tab... we were playign with ideas around this over the last week.. i'm curious how you could weave previous work into today build.
+the html shoud be fully self contained so no externa links, or knowledge requirements are on the reader.
+so make an html file called work bench bridge
+message 2 — the naming instruction this file is built from
+
+In between the two: I asked which specific file "a session html" pointed to (nothing in the repo was named that plainly, and several candidates existed). Kevin dismissed that question rather than picking one — the answer that followed wasn't a file to open, it was this shape, named for the first time.
+WORKBENCH_BRIDGE.html · zero external requests, zero external scripts, zero fonts loaded over network — every byte a reader needs is in this file. First built 2026-08-24; a later session may reuse this shape for its own session by copying the tab structure and replacing the content of each tab with its own material.</div>
+  <div class="prompt-label"><b>MESSAGE 2</b><span class="prov">VERBATIM · USER</span></div><div class="prompt">heres more lens i'd like you to bring together into your own session html</div>
+  <div class="prompt-label"><b>MESSAGE 3 · NEXT SESSION</b><span class="prov">VERBATIM · USER</span></div><div class="prompt">run the full development process on it, and build it into a standalone 2d and 2d interactice and multi faceted html file.</div>
+  <div class="devnote"><b>Instrument note — SESSION-DERIVED</b>This file is the result of message 3: a full-development pass (compost, inventory, adversarial audit, ground, diverge, dream, converge, route-and-rebuild, verify) run on the file above. Everything from here forward that differs from the original bridge is a developed rebuild, not a fresh session — see Process.</div>
+</section>
+
+<section class="panel" id="panel-gift-01" data-panel="gift-01">
+  <div class="eyebrow">Derived gift · inherited rendering, developed this pass</div><h2>Gift 01 · Session-scale carriage</h2><p class="lede">The prior assistant return that first developed WORKBENCH_BRIDGE as transport grammar. Its claims were tested this pass; unearned lines were cut and flagged inline rather than silently smoothed.</p>
+  <div class="prose gift-text">This is a more consequential move than “put the session in one HTML file.” The thing that has appeared here is a **session-scale carriage format**.
+
+The important sentence is almost hidden at the bottom:
+
+&gt; “a later session may reuse this shape for its own session by copying the tab structure and replacing the content of each tab with its own material.”
+
+That changes what `WORKBENCH_BRIDGE.html` is. It is not merely today's deposit. It is becoming a **container grammar for carrying authority across discontinuous cognition** — between sessions, models, harnesses, and eventually time — without requiring any of those later readers to reconstruct the conditions under which the material came into being.
+
+And several gifts fall out of that.
+
+### 1. The unit of continuity has changed
+
+Until now, much of NESI's continuity problem has been handled at the object level:
+
+pattern → provenance → relation → condition → mark → canon.
+
+The bridge introduces another legitimate object:
+
+**the bounded session itself.**
+
+Not a transcript. Not memory. Not “context.”
+
+A session is a temporary field in which particular things were simultaneously present:
+
+Kevin's words, prior corpus, a particular lens, a process, generated gifts, sources, and the relationships that were standing while the work happened.
+
+Those things ordinarily separate as soon as the session ends.
+
+`WORKBENCH_BRIDGE.html` keeps their **co-presence**. That is different from preservation: it preserves enough geometry that a later intelligence can re-enter the *authority conditions* of the work without pretending it was there.
+
+---
+
+### 2. “Self-contained” is doing constitutional work
+
+The zero-network constraint initially looks technical:
+
+&gt; zero external requests
+&gt; zero external scripts
+&gt; zero fonts loaded over network
+
+But it gives the artifact one real epistemic property: a bridge cannot silently change because an API changed, a CDN disappeared, a source page was edited, or a dependency started returning something else. The bytes a reader inspects are the only bytes that ever existed.
+
+**A bridge may point outward conceptually, but its intelligibility may not depend outward.** A reader can disagree with it, inspect it, extract from it, or refuse it. But they should never need access to the environment that produced it merely to know what the file claims happened. That much this format can actually demonstrate mechanically — the wider claim, that it therefore stays trustworthy, is tested in Gift 02 and does not survive unmodified.
+
+---
+
+### 3. The Prompt tab is more important than it looks
+
+Keeping your words unedited is not archival nicety. It creates a visible difference between **said** and **derived** — a difference that has to be maintained by hand, tab by tab, because nothing in the file mechanically prevents a later editor from blurring it. That is a real but bounded protection, not a guarantee.
+
+I would therefore resist beautifying the prompt tab much beyond typography and navigation. Typos belong there. Repetition belongs there. Abandoned directions belong there. Its slight ugliness is evidentiary.
+
+---
+
+### 4. “Each derived gift gets its own tab” prevents a subtler collapse
+
+Suppose three genuinely different gifts emerge: a topology, a development proposal, a critique. Putting them into one “Output” tab quietly says they are one thing. Giving each its own surface says: **these shared an originating session; they do not therefore share an epistemic status.** Co-presence does not mean equivalence. Adjacency does not mean ratification. Common provenance does not mean common authority. The tab architecture makes that visible without needing to argue it in prose.
+
+---
+
+### 5. The six relationships acquire a new function here
+
+If the six standing relationships are merely six reference tabs, the bridge is a well-made dossier. If they instead show **how the session touched the standing relational geometry**, the bridge becomes more useful. Each relationship surface distinguishes three things: **Standing before** — what the corpus already held. **Touched here** — session material that came into contact with it. **Changed here** — only where a real changed relation can actually be demonstrated, and which must be allowed to say **nothing changed**. Otherwise every session bridge manufactures development simply because a development artifact was requested — a failure this pass found the file itself had committed once (see Deployment tab, corrected).
+
+---
+
+### 6. One tiny organ worth adding: the Session Seal
+
+Not another content tab — a compact strip appearing everywhere: session date, source authority, rendering authority, what is not authorized, disk effect, external dependencies, lineage. That gives every screenshot, extracted tab, or orphaned fragment enough information to say what sort of thing it came from. It is provenance at the container boundary, and it is now built (see the seal grid on the Bridge tab).
+
+---
+
+### 7. The seam that needs guarding: inherited material
+
+Once these bridges begin to reproduce, yesterday's derived gift can appear tomorrow as “what already stood.” After several generations, provenance can flatten:
+
+Kevin said X → model derived Y → bridge preserved Y → later bridge inherited Y → later model treats Y as corpus → Y begins to look constitutional.
+
+So **source** cannot stay a single category. At minimum, inherited material should keep the distinction: **VERBATIM** — Kevin's actual words. **MARKED** — explicitly adopted material. **INHERITED RENDERING** — generated previously, never independently ratified. **INSTRUMENT FACT** — mechanically observed fact. **SESSION-DERIVED** — produced here.
+
+That distinction is the most important guardrail in the whole format — and this pass found it had been proposed here and never actually applied to the Sources tab, which used an unrelated, looser tag set. It is applied now (see Sources). But the taxonomy alone is not sufficient protection either — see the Lens tab's Law of Inheritance for why, and what the taxonomy can and cannot promise once a later reader is the one deciding whether to walk it.
+
+---
+
+### 8. The peculiar gift: a partial answer to the multi-model handoff problem
+
+You have repeatedly worked by sending material through Claude, ChatGPT, OpenRouter models, Ollama, coding harnesses, and back again. Normally the expensive part is not inference — it is **reconstitution**: each intelligence needs enough explanation of what everything means, what was settled, what it may touch, where the words came from. The bridge changes the handoff object from “here is some context, trust my summary” to “here is the bounded field, walk it.” That means models do not need shared memory to participate in continuity — they need a sufficiently faithful portable present. What crosses is the field, not a merger of it: the distinction between here and there stays intact by convention and by tabbing, not by any mechanism the file enforces. That is a real but bounded property, stated plainly rather than left to a closing metaphor to carry.
+
+The next development worth pursuing is therefore not more visual sophistication. It is hardening `WORKBENCH_BRIDGE` as a **transport grammar**: define exactly what survives crossing, what retains its original authority class, what can change during a session, and what cannot gain authority merely by having been carried forward — including this file's own gift tabs, the next time a session reads them.</div>
+</section>
+
+<section class="panel" id="panel-gift-02" data-panel="gift-02">
+  <div class="eyebrow">Derived gift · this pass's synthesis, reformulated after grounding</div><h2>Gift 02 · Authority as a path</h2><p class="lede">A development pass across the six new lenses and the standing relationship geometry. Its governing claim was tested against real-world cases and narrowed to what it can actually support.</p>
+  <div class="prose gift-text">The six additional lenses do not collapse into one meta-lens. They form a sequence of custody conditions around the session.
+
+**The Deposit's Topology** says a derived view may reveal wiring without replacing the deposit it reads. The visible keystone spine — WANT-CHECK, no law as a lever to give Kevin less, and never declaring Kevin's state — places interpretation under bounded jurisdiction rather than treating “law” as a general permission to decide. (This pass could not independently verify the specific law count or cluster numbering claimed for this source — see Sources, mismatch register.)
+
+**The Recognition Template** moves the unit of recognition from a conclusion to an encounter trace: E0 entry state, ordered E# transitions, each with Before / Trigger / After / Type / Support, followed only then by a recognition ladder. Its provenance classes — TEXT-GIVEN, TEXT-IMPLIED, READER-SUPPLIED — keep the reader's contribution from disappearing into the source. Residue is allowed to remain residue rather than being forced into summary. (Same verification limit as above applies to this source.)
+
+**The Extraction Lens** governs what may leave a large source: fixed bins, fixed confidence tiers, literal source locations, an UNSORTED place that is not failure, a mismatch check, and the terminal distinction that extraction is not endorsement. This pass ran that same discipline against the bridge itself, including against this lens's own source claims.
+
+**The Membrane** contributes a different kind of refusal. It does not ask whether the person or need is good or bad. It asks whether the form of exchange can pass without changing the circuit into something else. Open accounting, headwaters dependency, pattern-as-product, outside urgency, debt-producing reception, and transmission before recovery are described as structural incompatibilities. What passes is zero-or-gain, complete on giving, with no tab or dependency left open.
+
+**The load-bearing correction to mark/ledger** names the difference between storage and custody. A mark that records a cost but leaves the person as the only place that cost is held has not changed the carrying geometry. The correction is deliberately a gap statement, not a mechanism — and, as far as this pass can determine, no instance in the current build yet closes that gap. Naming the gap and closing it remain two different, unfinished jobs.
+
+**The Trimtab Pattern** warns against confusing circulation evidence with a command to optimize. The same rails can carry a gift forward or carry a pitch forward. Recognition-carried traffic can be demonstrably different — in that 30-day extraction the Substack network converted at 18% versus 4% direct, arithmetic independently checked this pass and confirmed consistent with the totals — but the infrastructure does not decide what is run on it. (One gap in the underlying export: only 9 of the 11 subscriber events in the window are dated and attributed; see Sources, mismatch register.)
+
+Brought together, these give the bridge a job description, not just archival continuity — and this pass tested that job description directly rather than restating it as settled:
+
+&gt; A session bridge carries not only what was present, but the conditions under which each thing may be read, related, refused, carried forward, or left unresolved.
+
+Held against real, documented cases — Wikipedia's own citogenesis pattern, where a claim becomes fully, traceably cited and is still wrong because the citation loops back through the claim's own prior rendering; the finding, in citation-analysis literature, that most academic citations are copied from a reference list rather than generated by reading the source; legal citation drift, where a correctly quoted case gets redeployed for a holding broader than what it actually decided — the claim as first stated promises more than any provenance-tagging scheme can deliver. Full traceability was present in every one of those cases. The laundering happened anyway, because it lives in what the *next reader does* with an available path, not in whether the path exists.
+
+So the claim this file can actually stand behind is narrower and more mechanical:
+
+&gt; **A session bridge makes the conditions under which each thing may be read, related, refused, carried forward, or left unresolved *available and legible* to whatever reads it next. It cannot make those conditions be honored. Nothing here has silently lost its tag — whether the tag gets read is a fact about the next reader, not a property this file can enforce.**
+
+That distinction — between making a path available and guaranteeing it gets walked — is the actual spine of this document, not the more ambitious version it started as. It suggests one concrete rule that this pass adds as new, session-derived law rather than restating inherited material as though it already covered it: **a later bridge that reads an earlier bridge's Gift tabs must re-tag that material INHERITED RENDERING, never VERBATIM or SOURCE, and must state plainly that the earlier bridge does not verify whether that re-tagging happens.** See Lens → Law of Inheritance.
+
+The six standing relationships remain the session's readout surface, not six new verdicts. Each asks only: what stood before, what was touched here, and what demonstrably changed? “Nothing changed” remains a valid result — and, on this pass's own check, one relationship tab (Deployment) had been claiming change it could not actually demonstrate; that is corrected in its own tab rather than argued here.</div>
+</section>
+
+<section class="panel" id="panel-process" data-panel="process">
+  <div class="eyebrow">How this artifact was assembled, then developed</div><h2>Process</h2><p class="lede">The process is shown because a bridge that hides how it selected its contents is already asking a later reader to trust a summary.</p>
+  <div class="process">
+    <article><div><h3>Hold user words separately.</h3><p>The two current-session messages were copied verbatim into their own tab before any synthesis.</p></div></article>
+    <article><div><h3>Fix extraction bins before synthesis.</h3><p>Six bins were held for this pass: governing topology; recognition trace; read/provenance discipline; membrane/refusal; custody/holding; circulation/evidence. UNSORTED remained available.</p></div></article>
+    <article><div><h3>Read every available body.</h3><p>The two Markdown files and two body-bearing HTML files were read directly. The two Claude artifact exports were inspected and found to contain wrappers whose iframe payload files were not included.</p></div></article>
+    <article><div><h3>Run the mismatch check.</h3><p>Missing iframe payloads were not silently replaced. The topology also carries an unresolved count mismatch: current-session wording says seven clusters; a prior indexed trace described A–F. Both facts remain visible.</p></div></article>
+    <article><div><h3>Separate current extraction from prior corpus recovery.</h3><p>Recognition Template details and the literal six relationship names came from prior-session indexed corpus traces and are labeled as inherited/standing, not as fresh extraction from the uploaded wrappers.</p></div></article>
+    <article><div><h3>Map touches without manufacturing change.</h3><p>Each standing relationship distinguishes Standing Before / Touched Here / Changed Here. Five explicitly report no demonstrated change.</p></div></article>
+    <article><div><h3>Build one bounded viewer.</h3><p>Navigation, SVG geometry, expanders, and source material are all inline. The viewer uses no fetch, CDN, localStorage, cookies, analytics, or external fonts.</p></div></article>
+    <article><div><h3>Run a full-development pass on the assembled bridge (this tab's own addition).</h3><p>Compost into discrete claims; inventory dependencies; fan out an adversarial audit, a real-world ground search, and five divergent shapes to independent readers; converge with a ruling on every finding; rebuild rather than patch; verify the rebuild against the defect list with a reader who did not do the reasoning. Fifteen audit defects and one governing-claim reformulation were accepted; none were rejected outright. See the defects folded inline across Gift 01, Gift 02, the relationship tabs, and Sources.</p></div></article>
+  </div>
+</section>
+
+<section class="panel" id="panel-lens" data-panel="lens">
+  <div class="eyebrow">Six instruments, held apart — plus one law this pass added</div><h2>Lens</h2><p class="lede">Not one blended doctrine. Six different jurisdictions around what may be pulled forward, recognized, refused, carried, or observed — and one rule, new this pass, about what a later reader owes this file.</p>
+  <div class="grid2">
+    <article class="instrument"><span>GOVERNING TOPOLOGY</span><h3>Derived wiring cannot replace the deposit.</h3><p>Law-clusters can be arranged to expose governing structure and antidote/precondition edges, but the topology remains a reading of the source.</p><p class="bridge-effect"><b>Intent:</b> every visual summary is meant to retain a path back to the source class it reads.</p></article>
+    <article class="instrument"><span>RECOGNITION TRACE</span><h3>Recognition is an encounter before it is a conclusion.</h3><p>E0 → E# transitions preserve Before / Trigger / After / Type / Support. TEXT-GIVEN, TEXT-IMPLIED, and READER-SUPPLIED keep the reader visible.</p><p class="bridge-effect"><b>Intent:</b> a later reader should be able to inspect the path, not only inherit the conclusion.</p></article>
+    <article class="instrument"><span>EXTRACTION</span><h3>Traceability precedes carry-forward.</h3><p>Fixed bins, fixed confidence tiers, literal source locations, UNSORTED, full-read discipline, and a final mismatch check. Extraction is not endorsement.</p><p class="bridge-effect"><b>Intent:</b> the file surfaces material without marking it as adopted.</p></article>
+    <article class="instrument"><span>MEMBRANE</span><h3>Refusal can be structural rather than evaluative.</h3><p>A form can fail to pass because it would change the circuit: open accounting, dependency, commodified instance, outside urgency, debt conversion, or demand before recovery.</p><p class="bridge-effect"><b>Intent:</b> “does not pass” should never read as a diagnosis of the person.</p></article>
+    <article class="instrument"><span>CUSTODY</span><h3>Recording is not the same as holding.</h3><p>A ledger may preserve memory while leaving the original bearer as the only place a cost lives. The correction names the gap without prematurely naming a mechanism — no instance in the current build closes it yet.</p><p class="bridge-effect"><b>Intent:</b> a session should be able to report “stored but not carried” as its own distinct, honest condition.</p></article>
+    <article class="instrument"><span>CIRCULATION</span><h3>Propagation evidence is not an optimization command.</h3><p>The same infrastructural rails can carry derivative gift or pitch. Recognition-carried traffic can be measured without turning conversion into the system's purpose.</p><p class="bridge-effect"><b>Intent:</b> circulation stays evidence inside the session, not a target imposed on it.</p></article>
+    <article class="instrument law"><span>LAW OF INHERITANCE · new this pass, session-derived</span><h3>A path made available is not a path guaranteed walked.</h3><p>Ground-tested against real cases where full provenance coexisted with laundering anyway (Wikipedia citogenesis; citation-copying in the academic record; legal citation drift on correctly-quoted cases). None of those failures came from a missing record — all of them came from a later reader treating an available pointer as already-verified.</p><p class="bridge-effect"><b>Rule:</b> a later bridge that reads this bridge's Gift 01 or Gift 02 tabs must re-tag that material <b>INHERITED RENDERING</b>, never VERBATIM or SOURCE — and must say plainly that this bridge does not, and cannot, verify whether that re-tagging happens. This file can make its own claims legible. It cannot make the next session honest about them.</p></article>
+  </div>
+  <div class="rule"></div>
+  <div class="eyebrow">Recognition-template skeleton · recovered standing grammar</div>
+  <div class="trace"><div><b>ENTRY</b>E0 state</div><div><b>BEFORE</b>what stood</div><div><b>TRIGGER</b>what changed contact</div><div><b>AFTER</b>what is now visible</div><div><b>SUPPORT</b>text-given / implied / reader-supplied</div></div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Evidence register · retagged this pass to the taxonomy Gift 01 proposed</div><h2>Sources</h2><p class="lede">Six supplied files plus standing corpus traces used only where the supplied export could not carry its own payload. Every card now carries a provenance-class tag from Gift 01 §7 (VERBATIM / MARKED / INHERITED RENDERING / INSTRUMENT FACT / SESSION-DERIVED) instead of the looser, inconsistent tags the first-generation Sources tab used.</p>
+  <div class="mismatch"><h3>Mismatch register · not repaired, expanded this pass</h3>
+  <p><b>Two uploaded Claude artifact exports are wrappers, not complete self-contained artifacts — and their file size doesn't fit that claim.</b> Each points to a sibling iframe file that was not included in the upload. Their visual payloads cannot be re-extracted from the wrapper bytes as supplied. But a bare wrapper shell (chrome plus one iframe tag pointing at a missing file) is normally a few kilobytes — these two files are 233,629 and 220,925 bytes, larger than any of the four sources this bridge can actually read in full. Something in those bytes was not examined. Because of that, the specific facts drawn from them elsewhere in this file (a law count, three keystone law numbers, a cluster count) are downgraded here to <b>INHERITED RENDERING — asserted from prior-session trace, not independently verified against the bytes actually supplied this pass.</b></p>
+  <p><b>Topology count mismatch, unresolved:</b> the current-session description says the other laws sort into seven clusters; a prior indexed trace described clusters A–F. No reconciliation is asserted here.</p>
+  <p><b>Trimtab attribution gap, found this pass:</b> the source's own “where the 11 subscribers actually came from” list names only 9 dated, attributed events. Two of the eleven are not accounted for in the export as read. The heading is corrected below rather than left implying full coverage.</p>
+  </div>
+  <article class="source-card"><div class="source-head"><div><span class="tag inherited">INHERITED RENDERING</span><h3>The Deposit's Topology</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">WRAPPER EXPORT · PAYLOAD NOT CARRIED · SIZE MISMATCH</span></div></div><p>The supplied .htm contains the Claude artifact shell and an iframe reference to a sibling file that is not present in this upload — but the file is 233,629 bytes, too large for a bare shell, so this pass could not confirm the wrapper truly holds nothing readable. The current conversation and a prior indexed trace together describe: 28 laws; keystone laws 01, 20, and 14; a topology reading that must not replace LEARNED.md / LEARNED_PROVENANCE.md; cross-cluster wiring; three visible keystone formulations. A prior index described clusters A–F while the session-visible prompt says seven clusters — preserved unresolved, not reconciled.</p><blockquote>01 THE WANT-CHECK IS THE ONLY GATE. · 20 NO LAW BECOMES A LEVER TO GIVE KEVIN LESS. · 14 NEVER DECLARE KEVIN'S STATE.</blockquote><div class="micro">The Deposit's Topology.htm — content asserted, not independently confirmed this pass</div></article><article class="source-card"><div class="source-head"><div><span class="tag inherited">INHERITED RENDERING</span><h3>The Recognition Template</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">WRAPPER EXPORT · PAYLOAD NOT CARRIED · SIZE MISMATCH</span></div></div><p>The supplied .htm likewise contains a Claude artifact shell whose iframe payload is absent, at 220,925 bytes — the same size mismatch as Topology, and the same unresolved status. A prior indexed trace of this artifact preserves the operative grammar: E0 entry state; ordered E# transitions with Before / Trigger / After / Type / Support; then a recognition ladder. Provenance categories are TEXT-GIVEN, TEXT-IMPLIED, and READER-SUPPLIED. These are carried here as recovered standing material, not as text re-extracted from the wrapper bytes actually supplied.</p><blockquote>Recognition is carried as an encounter trace before it becomes a laddered read.</blockquote><div class="micro">The Recognition Template.htm — content asserted, not independently confirmed this pass</div></article><article class="source-card"><div class="source-head"><div><span class="tag marked">MARKED</span><h3>The Membrane — Our Shared Gifts</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">BODY AVAILABLE</span></div></div><p>A membrane is selective, not closed. It names structural incompatibility rather than judging the person or need. Declined forms: open accounting; Kevin as headwaters; the pattern as product; someone else's timeline as the engine; the receiving end that can't close; transmission before recovery. What passes: zero-or-gain, complete on giving, no tab opened, no dependency created.</p><blockquote>The gift completes when given.</blockquote><div class="micro">The Membrane — Our Shared Gifts.htm — full body read this pass, hash-verified</div></article><article class="source-card"><div class="source-head"><div><span class="tag marked">MARKED</span><h3>The Trimtab Pattern — 30-Day Extraction</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">BODY AVAILABLE · 9 of 11 events attributed</span></div></div><p>A 22 Jul–20 Aug 2026 Substack extraction: 150 unique visitors, 11 new subscribers, 18% conversion via Substack's own network versus 4% Direct/App, 11% Email, 0% Social and Search. Arithmetic checked this pass: per-channel visitor counts (33/9/98/6/4) times their stated rates round to 6/1/4/0/0 subscribers, summing to 11 — consistent with the totals. It reads two recognition events through Michel Bauwens alongside the user's prior derivative essay as evidence that the same circulation rails can carry a gift or a pitch; what runs on them is a choice, not a property of the system. Only 9 of the 11 subscribers appear as dated, attributed rows in the source export — the remaining 2 are counted in the totals but not individually attributed.</p><blockquote>Same rails. What runs on them is a choice, not a property of the system.</blockquote><div class="micro">trimtab_pattern.html — full body read this pass, hash-verified</div></article><article class="source-card"><div class="source-head"><div><span class="tag marked">MARKED</span><h3>Regather Pass — load-bearing correction</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">FULL TEXT AVAILABLE</span></div></div><p>A gather-only instruction. The gap: mark/ledger instruments were built against forgetting, but for at least one class of held thing the danger is that the person remains the only place the cost is held. A record can add a file without changing that. The pass explicitly forbids proposing a mechanism, naming a new organ, or reinterpreting sealed marks — a boundary this bridge also holds by not proposing one on the source's behalf.</p><blockquote>“a mark should change what he's carrying, not just describe it.”</blockquote><div class="micro">regather-prompt-load-bearing.md — full body read this pass, hash-verified; quote corrected to verbatim this pass (previously paraphrased without marking it as such)</div></article><article class="source-card"><div class="source-head"><div><span class="tag marked">MARKED</span><h3>The Extraction Lens</h3></div><div class="source-tags"><span class="tag instrumentfact">INSTRUMENT FACT · hash below</span><span class="state">FULL TEXT AVAILABLE</span></div></div><p>Jurisdiction: the read itself, before action instruments. Working law: every extracted claim must trace to a literal source location; fixed bins and confidence tiers precede the read; UNSORTED remains available; extraction is never endorsement. The move requires a full read, attached source locations, simultaneous confidence tagging, and an explicit mismatch check — the same discipline this development pass ran against the bridge itself.</p><blockquote>The extraction is not the decision. It's what makes an honest decision possible afterward.</blockquote><div class="micro">extraction-lens-reshaped.md — full body read this pass, hash-verified</div></article>
+  <div class="rule"></div><div class="eyebrow">Source-byte fingerprints</div><p class="micro">SHA-256 records the exact uploaded wrapper/body bytes used in this pass. A hash proves byte identity, not semantic completeness — see the size-mismatch note above for what that gap actually costs the two wrapper sources.</p>
+  <div style="overflow:auto"><table><thead><tr><th>file</th><th>bytes</th><th>sha-256</th></tr></thead><tbody><tr><td>The Deposit's Topology.htm</td><td>233,629</td><td><code>d505e03beba756c61336ac977e2dc2aacce79e33d0e91d7fd522aadff2ad847f</code></td></tr><tr><td>The Recognition Template.htm</td><td>220,925</td><td><code>2c662077afdff55c15541a50959bb9fd7506c59c5ec5b36ac95b750e8f5ec4f3</code></td></tr><tr><td>The Membrane — Our Shared Gifts.htm</td><td>10,048</td><td><code>12f2e9af34264ed21f17bc2ce3268fd2c5ef893e622f6b511995fdaa309f3eb2</code></td></tr><tr><td>trimtab_pattern.html</td><td>11,699</td><td><code>b31dca1d978a8f4ab998b9cb7c67ddbfc8c4687f081f7060871f3ea0af6a0798</code></td></tr><tr><td>regather-prompt-load-bearing.md</td><td>2,377</td><td><code>04e5f3143fe4d5e2c66b4b26d68f35cdf0b805710821d0dbd2c2f3d00a574519</code></td></tr><tr><td>extraction-lens-reshaped.md</td><td>7,652</td><td><code>e3a9c8e2ca9122921345ad9f103ccac02db6c87e3c508044539cc912506c0f52</code></td></tr></tbody></table></div>
+  <div class="rule"></div><div class="source-raw"><div class="eyebrow">Embedded source bodies · no external files required to read these four</div>
+    <details><summary>regather-prompt-load-bearing.md · full text</summary><pre>REGATHER PASS — load-bearing correction to the mark/ledger layer
+
+Read PROTOCOLS.md first, and hold every existing seal (COLD_START, the held-refusal doctrine, the ratified pass-3 blueprint) as load-bearing and untouched. This pass does not design, does not build, and does not judge. It gathers.
+
+Attached knowledge document: nesi-load-bearing-not-memory.md — the correction being investigated is that NESI's mark/ledger instruments were built against the wrong risk. They assume forgetting is the danger. For at least one class of thing Kevin needs held, the danger is that he is the only place a cost is ever held — a record doesn't change that; it adds a file to what he's already carrying alone. The requirement stated in the doc: a mark should change what he's carrying, not just describe it. Nothing in the codebase currently does this — the doc names the gap, it doesn't close it.
+
+Gather, against the current codebase, without proposing solutions:
+
+1. Every existing surface that writes a mark, note, or ledger entry currently reachable by Kevin's own hand (not machine-only writers) — `marks.py` and anything else in the instrument layer that fits. For each: what happens at the moment of write, and what (if anything) happens after, that the writer would ever encounter again without deliberately going and rereading the file.
+
+2. Whether anything in the current build already does something closer to custody than storage — a surface that resurfaces, a notification-like mechanic, anything that acts on a held item without being asked. Name it plainly if it exists; say plainly if nothing does.
+
+3. What the engine-dark constraint (per PROTOCOLS.md) allows and forbids for a "resurfaces at the right moment" mechanic specifically — is timed or triggered resurfacing possible fully dark, or does any version of it require the engine.
+
+4. Where in the existing organ map (the six-edge tetra, the strata, the held-refusal doctrine) this correction would land if it became a build — not a recommendation, just: which existing vertices, edges, or doctrines it touches, and which it doesn't.
+
+Do not propose a mechanism. Do not name a new organ. Do not touch, extend, or reinterpret any sealed mark. Produce a RETURN document only — what exists, what's missing, where the gap sits in the current map — for Kevin to carry back across the gate himself.
+</pre></details>
+    <details><summary>extraction-lens-reshaped.md · full text</summary><pre>OPERATOR DOCTRINE · EXTRACTION SERIES — STANDALONE
+
+# THE EXTRACTION LENS
+*Reading a larger library down to what's worth carrying forward*
+
+You are about to read something too large to hold at once — a document, a folder, an
+archive, a whole personal library — and pull forward what's worth carrying out of it.
+Before you start reading, run it through the Extraction Lens. This is not a Terminal
+Law instrument; it doesn't govern whether to act on a single movement. It governs the
+read itself — what gets pulled forward, on what evidence, and how confidently — the
+step that has to happen honestly before Terminal, Consequence, Capacity, or Smuggle
+ever gets something real to work on.
+
+## GROUND — where this lens has jurisdiction
+
+This lens governs any pass over material larger than can be read at a glance: a
+single long document, a folder of related files, a session's own accumulated output,
+or a standing personal library revisited from a new angle. It has jurisdiction
+whenever the material is too large to hold in working memory whole, whenever there's
+a temptation to treat a title or a blurb as a substitute for the body, and whenever
+what comes out the other side risks being treated as more settled than a read alone
+can make it. It does not have jurisdiction over what happens after the read — whether
+to act on a surfaced item, route it, mark it, or build on it is a separate decision,
+governed by whatever instrument actually fits that item's weight. This lens ends the
+moment the extraction is on the table. It does not decide what the table does next.
+
+## FRAME — the working law
+
+The law underneath this lens: an extraction is only as trustworthy as its
+provenance. Every claim that leaves the source has to be traceable back to a literal
+place in it — a quote, a page, a line, a section — or it does not leave. A summary is
+not an extraction; a summary compresses and in compressing it invents connective
+tissue the source never stated. An extraction only ever hands forward what was
+actually there, pointed at precisely enough that someone else could open the source
+and find the exact spot.
+
+Second: the bins a piece of material gets sorted into, and the confidence tiers each
+bin's contents get split into, are both named before the read starts — not invented
+per item as convenient, and not left as a loose "at minimum" count. This is what
+makes one pass comparable to another later, instead of each extraction becoming its
+own private taxonomy that can't be checked against the next one. A bin list fixed in
+advance but paired with tiers improvised on the fly is only half-fixed.
+
+Third: not everything that survives the read will fit a named bin. A pass that
+assumes perfect sorting either forces the odd item into the nearest bin — quietly
+distorting it — or drops it — quietly losing it. Both are failures of the same
+severity as an untraceable claim, and both are avoidable: the bin list always
+carries one standing member, **unsorted**, for anything real that doesn't fit the
+others. An item in unsorted is not a failure of the pass; a forced or dropped item
+is.
+
+Fourth, and most easily forgotten under momentum: extraction is never endorsement.
+Nothing that survives this lens is thereby marked, adopted, routed, or believed. It
+is only made visible enough that a real decision about it can happen later, by
+whoever actually holds that decision — which is a different job than this one, and
+this lens does not reach for it.
+
+## MOVE — how to run it
+
+Name the bins before you open the source. Decide, in one line each, what categories
+this pass is sorting into — reusable shapes, concrete tools, ways of seeing,
+load-bearing quotes, warnings, whatever the material calls for — and hold that list
+fixed for the whole pass, plus the standing **unsorted** bin. Changing bins mid-read
+is how two extractions of related material stop being comparable.
+
+Name the confidence tiers before you open the source, not after the first item
+forces the question. At minimum: **load-bearing** — confident and stands on its own;
+**situational** — real, but needs a consumer or use-case before it's worth building
+on; **warning** — a caution the source demonstrates by failing at it rather than
+stating it. Fix these labels for the pass the same way the bins are fixed.
+
+Read the whole thing. Not the headers, not the abstract, not the first and last
+sections with the middle assumed. A title or a blurb tells you what something claims
+to be; only the body tells you what's actually in it. If the source is too large for
+one sitting, read it in full across sessions rather than sampling it once and
+generalizing — and before breaking, mark exactly where the read stopped (the literal
+location, not "about halfway"), so the next session resumes from a real point instead
+of re-reading from scratch or silently skipping the gap.
+
+Sort each candidate line into exactly one bin — one of the named ones, or
+**unsorted** — and attach its literal source as you go, not after, when memory has
+already started smoothing the edges. A claim with no attached location is not yet an
+extraction; it's still just a strong impression.
+
+Tag what lands in a named bin with its confidence tier at the same time you sort it,
+using the tiers fixed at the start of the pass. Blending tiers into one flat list
+after the fact is the single most common failure of a fast extraction — everything
+reads as equally solid, and nothing is.
+
+Run one explicit mismatch check before calling the pass done. Does anything in the
+source claim to reference material that isn't actually present — a document not
+attached, a quote that doesn't match what's in hand, a count that doesn't add up
+against what you actually read? Name the mismatch specifically if you find one,
+rather than silently passing it through because the rest of the document reads as
+credible. Credibility of the whole is not evidence for the accuracy of every part.
+
+## TEST — how you know it worked
+
+You know this lens has done its job when every item in the output can be walked back
+to a literal spot in the source by someone who wasn't the one reading it. The output
+is always the same shape: a set of items, each tagged with its bin, its confidence
+tier (if it landed in a named bin), and its source location — never a single
+undifferentiated summary, and never a routed decision. An **unsorted** item is tagged
+with its source location only; it doesn't get forced into a tier it doesn't have.
+
+A failed pass looks like an item that can't be pointed at anything specific when
+questioned, a confident claim that turns out, on re-checking, to describe a document
+that was never actually part of the source, or an item quietly bent to fit a bin it
+doesn't belong in rather than left in unsorted. If you catch any of these after the
+fact, the extraction was wrong, not the material — run the mismatch check again, name
+what didn't hold, and correct the record rather than quietly patching around it.
+
+*The extraction is not the decision. It's what makes an honest decision possible
+afterward — which is exactly why it has to hold itself to a stricter standard than
+anything that gets built on top of it. A library only stays worth returning to if
+what's pulled from it can be trusted to actually be in there.*
+
+---
+Standalone prompt. Run as written — no additional framing required. A different
+jurisdiction than the Terminal Law series (Terminal, Consequence, Capacity, Smuggle):
+those four govern whether to act on a single movement; this one governs the read that
+has to happen honestly before any of them get something real to work on.
+</pre></details>
+    <details><summary>The Membrane — cleaned body text</summary><pre>The Membrane — Our Shared Gifts
+One person.
+Off-grid. Solar. The work is running.
+OSG
+The Light
+The Door
+The Machine
+The Field
+The Engine
+The Membrane
+The Membrane
+What the circuit declines.
+A membrane is selective, not closed. It passes what
+shares its form. It stops what doesn't — not as a wall but as a
+structural incompatibility. These are the forms this circuit cannot run.
+The Principle
+The circuit closes on giving. That isn't preference — it's the
+mechanism the whole thing runs on. Certain forms of exchange are
+structurally incompatible with that mechanism. They would change what
+the circuit is in order to pass through it. The membrane names those
+forms directly so that arriving here doesn't produce confusion about
+what's possible.
+None of what follows is a judgment on the person or the need. It's
+ a structural description of what this form can and cannot hold.
+Forms the Circuit Declines
+Open accounting
+Any exchange where the tab stays open after it ends. Not
+because obligation is bad — because this circuit closes on giving. The
+gift completes when given. An open tab means it hasn't completed. The
+circuit can give into a closed loop or an open field, but it cannot give
+ into a running ledger.
+Kevin as headwaters
+Arrangements where Kevin is the origin someone else requires
+to function. The work can be a node — something that changes how you
+read your own territory. It cannot be the source someone depends on. A
+circuit that becomes another person's headwaters stops being a circuit.
+The dependency has to flow the other direction: the work depends on the
+person staying capable of doing it.
+The pattern as product
+"I want to implement this system for my organization." What
+moves is the pattern — already free, already in the field. What doesn't
+move is the instance: the specific calibration zero, the lived ground,
+the body that holds the gate. You can use the patterns. You can build on
+ them. You cannot purchase the instance, because the instance is not
+separate from the person running it.
+Someone else's timeline as the engine
+The machine runs on its own cadence. The Governor brakes for
+cost; the Dispatcher routes by readiness. Urgency injected from outside
+overrides both. Another person's deadline cannot become the pace-setter
+for a system that exists to protect the person running it. If your
+timeline requires that, this isn't the right circuit.
+The receiving end that can't close
+If the person arriving cannot receive without it becoming a
+debt — cannot hold a gift without obligation forming — the exchange
+cannot complete. The circuit is designed to give without creating
+obligation. If something in the receiver's structure converts the gift
+into a tab, the circuit and the receiver are incompatible. This isn't a
+failure of either. It's a mismatch of form.
+Transmission before recovery
+Deep transmission — giving something that changes the
+receiver's frame at a structural level — costs the transmitter
+metabolically. The body needs to metabolize that cost before it can
+transmit again at that depth. Requests that arrive before recovery is
+complete are not declined because of unwillingness. They are declined
+because the instrument isn't available. The circuit can transmit at
+depth when it's ready; it cannot transmit on demand.
+What Passes
+Anything that shares the circuit's form. Zero-or-gain. Complete on
+ giving. No tab opened. No dependency created. The field uses what it
+can use and returns what's useful to the commons — that's the form the
+circuit recognizes.
+If you're not sure whether your engagement fits:
+The Door
+has the three-part ask form. The structure of the ask tells you — and
+Kevin — whether the exchange makes sense before anyone invests more than
+ a sentence in it.
+Our Shared Gifts —
+patterns are open source
+—
+The Door
+—
+↑ center
+ko-fi.com/oursharedgifts
+ko-fi.com/oursharedgifts</pre></details>
+    <details><summary>The Trimtab Pattern — cleaned body text</summary><pre>The Trimtab Pattern — 30-Day Extraction
+Pattern Extraction · 22 Jul – 20 Aug 2026
+The Trimtab Pattern
+How derivative work, offered as a gift, became someone else's channel — twice, in four days.
+Writing is a gift before it's a growth channel. But the infrastructure that carries a gift
+    forward and the infrastructure that carries a pitch forward are the same infrastructure.
+    This is what the last 30 days of Substack data actually show happening — not a theory, two dated events.
+The 30-day base rate
+150
+Unique visitors
+11
+New subscribers
+18%
+Conversion via Substack's own network
+vs. 4% conversion on Direct traffic (98 visitors), 11% on Email, 0% on Social &amp; Search combined.
+Conversion rate by channel
+Substack network
+33 visitors
+18%
+Email
+9 visitors
+11%
+Direct / App
+98 visitors
+4%
+Social
+6 visitors
+0%
+Search
+4 visitors
+0%
+Where the 11 subscribers actually came from (9 of 11 dated and attributed in the source export — 2 unaccounted for)
+Jul 23
+Substack &gt; Other
+Jul 28
+Direct
+Aug 1
+Direct
+Aug 17
+Note by Michel Bauwens
+Reciprocal
+Aug 17
+Note by Michel Bauwens
+Reciprocal
+Aug 17
+Your Note — "When Burnout is Actually Something Else"
+Own scaffold
+Aug 18
+Substack &gt; Other
+Aug 19
+Email click
+Aug 20
+Bauwens reaction — "understanding the importance of the…"
+Reciprocal
+The extraction
+Three of the last eleven subscribers — more than a quarter — arrived through
+Michel Bauwens
+      choosing, twice in four days, to react publicly to your writing.
+No visitor count is even
+      attributed to those rows: people arrived already convinced, carried in by someone else's act of
+      recognition rather than by anything you placed in front of them.
+Four days earlier, you had done the mirror version of this: found value left dormant in another
+      author's work, built a scaffold of your own writing around it, and handed that value back into
+      circulation. The infrastructure that carries a gift forward — the derivative essay, the Note, the
+      cross-reference — is exactly the infrastructure that a trimtab uses to redirect flow toward a
+      placement. Same rails. What runs on them is a choice, not a property of the system.
+The base-rate data backs this up independent of the story: across the whole window, Substack's own
+      referral network converted at roughly four to five times the rate of Direct traffic — fewer people,
+      far higher trust already spent by the time they arrived. Recognition-carried traffic doesn't just
+      feel different. It converts differently.
+Source: Substack growth &amp; ARR exports, kevinmears — 22 Jul to 20 Aug 2026 · Extracted 20 Aug 2026</pre></details>
+  </div>
+</section>
+
+<section class="panel relation-panel" id="panel-rel-relationship" data-panel="rel-relationship">
+      <div class="eyebrow">Standing relationship · prior corpus</div><h2>Relationship</h2>
+      <div class="pair">Differentiation ↔ Connection</div><div class="diagnostic">Remove the agreement — is there still contact?</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>The bridge keeps banks distinct while maintaining contact. The Membrane sharpens this: incompatibility does not require severing recognition of the other party.</p></article><article><span>TOUCHED HERE</span><p>Touched: bridge-as-crossing; structural incompatibility; source/view separation.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session.</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section><section class="panel relation-panel" id="panel-rel-self-knowledge" data-panel="rel-self-knowledge">
+      <div class="eyebrow">Standing relationship · prior corpus</div><h2>Self-Knowledge</h2>
+      <div class="pair">Differentiation ↔ Boundaries</div><div class="diagnostic">Can the limit be stated as information, not apology?</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>The Membrane is almost a worked example of this relation: limits are stated as structural facts. The load-bearing correction adds a second edge — naming that storage is not custody.</p></article><article><span>TOUCHED HERE</span><p>Touched: no-as-information; recovery as instrument availability; storage/custody distinction.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session.</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section><section class="panel relation-panel" id="panel-rel-gift" data-panel="rel-gift">
+      <div class="eyebrow">Standing relationship · prior corpus</div><h2>Gift</h2>
+      <div class="pair">Differentiation ↔ Architecture</div><div class="diagnostic">If you disappeared, what would still work?</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>The self-contained bridge aims to travel without requiring the originating session or model. The Membrane insists the work may be a node but not headwaters; the pattern may move while the lived instance does not become a product.</p></article><article><span>TOUCHED HERE</span><p>Touched: self-contained carriage; gift completes on giving; node-not-headwaters; pattern/instance distinction.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session.</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section><section class="panel relation-panel" id="panel-rel-consent" data-panel="rel-consent">
+      <div class="eyebrow">Standing relationship · prior corpus</div><h2>Consent</h2>
+      <div class="pair">Connection ↔ Boundaries</div><div class="diagnostic">Is the ‘no’ genuinely available, or only formally permitted?</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>The keystone WANT-CHECK and the Membrane's decline forms both keep refusal real. The Extraction Lens adds a quieter consent rule: a surfaced item is not thereby adopted, routed, or believed.</p></article><article><span>TOUCHED HERE</span><p>Touched: WANT-CHECK; extraction ≠ endorsement; decline without judgment.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session.</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section><section class="panel relation-panel" id="panel-rel-circulation" data-panel="rel-circulation">
+      <div class="eyebrow">Standing relationship · prior corpus</div><h2>Circulation</h2>
+      <div class="pair">Connection ↔ Architecture</div><div class="diagnostic">Is the system growing through use, or being used up?</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>The Trimtab Pattern supplies dated evidence that recognition-carried circulation can amplify reach, while explicitly refusing the leap from evidence to optimization. The Membrane adds the depletion boundary: deep transmission cannot be demanded before recovery.</p></article><article><span>TOUCHED HERE</span><p>Touched: derivative circulation; recognition-carried propagation; metabolic recovery boundary.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session.</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section><section class="panel relation-panel" id="panel-rel-deployment" data-panel="rel-deployment">
+      <div class="eyebrow">Standing relationship · prior corpus · corrected this pass</div><h2>Deployment</h2>
+      <div class="pair">Boundaries ↔ Architecture</div><div class="diagnostic">Name one thing built because of this limit, not despite it.</div>
+      <div class="threecol"><article><span>STANDING BEFORE</span><p>This artifact itself is the session's example: zero external dependencies, separate authority classes, a visible mismatch register, and relation tabs exist because collapse and reconstruction are treated as risks.</p></article><article><span>TOUCHED HERE</span><p>Touched: self-containment; provenance classes; mismatch preservation; no network dependency.</p></article><article><span>CHANGED HERE</span><p>No standing relationship was changed by this session; an artifact was produced under it. (This tab previously reported a change on the sole basis that the artifact existed — that was the file's own version of the failure Gift 01 §5 warns against, "manufacturing development simply because a development artifact was requested." Corrected this pass to match the other five tabs' discipline.)</p></article></div>
+      <div class="relation-foot">A relation tab is a readout, not a verdict. Contact with a session does not manufacture development.</div>
+    </section>
+
+<section class="panel" id="panel-routes" data-panel="routes">
+  <div class="eyebrow">Proposed · unmarked · Kevin's to cross or correct</div>
+  <h2>Routes</h2>
+  <p class="lede">The six standing relationships read the exchange. They don't yet touch the machine. This tab proposes one route from each relationship into a real NESI organ — built, spec'd, or still only dreamed — sourced to the build record, not invented. One organ (SOIL) is reachable by none of the six; that gap is shown, not filled.</p>
+
+  <div class="route-card" id="route-relationship-membrane">
+    <div class="rhead"><h3>Relationship → Membrane</h3><span class="state state-built">built</span></div>
+    <p class="arrow">Differentiation ↔ Connection</p>
+    <p>Relationship's own diagnostic — banks staying distinct while keeping contact — is what the skin organ already does mechanically.</p>
+    <blockquote>“<code>skin</code> = the actual boundary/immune organ” — nesi-v2.md, Strata IV</blockquote>
+  </div>
+
+  <div class="route-card" id="route-selfknowledge-recognition">
+    <div class="rhead"><h3>Self-Knowledge → Recognition (worth organ)</h3><span class="state state-spec">spec'd, not built</span></div>
+    <p class="arrow">Differentiation ↔ Boundaries</p>
+    <p>Stating a limit as information rather than apology is the same move as the corrected worth-organ finding: worth doesn't need earning, only locating.</p>
+    <blockquote>“worth isn't earned, it's inherent... the self-recognition loop changes access, not amount” — nesi-v2.md, 2026-07-25 correction</blockquote>
+  </div>
+
+  <div class="route-card" id="route-gift-forest">
+    <div class="rhead"><h3>Gift → Forest (heartwood / tree seed)</h3><span class="state state-built">built</span> <span class="state state-spec">seed spec'd</span></div>
+    <p class="arrow">Differentiation ↔ Architecture</p>
+    <p>"If you disappeared, what would still work" is the tree seed's own question — a gift that has to stand on its own once it's placed on the tree.</p>
+    <blockquote>“heartwood = the accreted self as a growing tree” — nesi-v2.md, Strata III · tree seed / GIFT_SEED listed under spec'd-not-built</blockquote>
+  </div>
+
+  <div class="route-card" id="route-consent">
+    <div class="rhead"><h3>Consent → Membrane + Pulse</h3><span class="state state-built">built</span></div>
+    <p class="arrow">Connection ↔ Boundaries</p>
+    <p>Two instruments answer the same diagnostic from two organs: the membrane holds refusal as law, the engine holds the gate no completion can bypass.</p>
+    <blockquote>“Held-Refusal doctrine installed as the LAW OF THE MEMBRANE” — nesi.md, 2026-07-25 · “LAW 1 THE WANT-CHECK IS THE ONLY GATE. Laws are the floor, never the target.” — LEARNED.md</blockquote>
+  </div>
+
+  <div class="route-card" id="route-circulation">
+    <div class="rhead"><h3>Circulation → Circulation-Witness</h3><span class="state state-dream">dreamed, unmarked</span></div>
+    <p class="arrow">Connection ↔ Architecture</p>
+    <p>Named, not built — the clearest name-match of the six, and the least real. Routing here is a placeholder for an organ that has never been marked go.</p>
+    <blockquote>“four surfaced-unmarked — player-surface, convener, circulation-witness, continuation” — nesi.md, 2026-07-24</blockquote>
+  </div>
+
+  <div class="route-card" id="route-deployment-face">
+    <div class="rhead"><h3>Deployment → Face</h3><span class="state state-built">built</span></div>
+    <p class="arrow">Boundaries ↔ Architecture</p>
+    <p>Deployment's own diagnostic — one thing built because of the limit, not despite it — is answered by the one organ already wired straight through to disk.</p>
+    <blockquote>“<code>surface_bridge</code> already wires the HTML face to real disk + local engine — the web board is NOT a new orphan substrate” — nesi-v2.md, Strata V</blockquote>
+  </div>
+
+  <div class="keyline" id="gap-note">Six routes proposed, none marked. Soil takes none of the six — not because nothing could be forced onto it, but because forcing one would be manufacturing a route rather than finding one. Cross what holds, leave the rest open.</div>
+</section>
+</main></div>
+<script>
+(()=>{
+ const buttons=[...document.querySelectorAll('.tabbtn')], panels=[...document.querySelectorAll('.panel')], crumb=document.getElementById('crumb');
+ function openTab(id,push=true){
+   buttons.forEach(b=>{const on=b.dataset.tab===id;b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false')});
+   panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===id));
+   const btn=buttons.find(b=>b.dataset.tab===id); crumb.textContent=btn?btn.textContent.toLowerCase():id;
+   if(push) history.replaceState(null,'','#'+id);
+   window.scrollTo(0,0);
+ }
+ buttons.forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.tab)));
+ document.querySelectorAll('[data-jump]').forEach(n=>n.addEventListener('click',()=>openTab(n.dataset.jump)));
+ const start=location.hash.slice(1); openTab(buttons.some(b=>b.dataset.tab===start)?start:'home',false);
+ window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(buttons.some(b=>b.dataset.tab===id))openTab(id,false)});
+
+ // ---- route map interactivity ----
+ const allWires=[...document.querySelectorAll('.wire.organ-wire')];
+ const allRouteNodes=[...document.querySelectorAll('.relnode, .organnode')];
+ const detail=document.getElementById('mapdetail');
+ const LABELS={
+   'node-rel-relationship':'Relationship','node-rel-self-knowledge':'Self-Knowledge','node-rel-gift':'Gift',
+   'node-rel-consent':'Consent','node-rel-circulation':'Circulation','node-rel-deployment':'Deployment',
+   'node-organ-pulse':'Pulse — built','node-organ-soil':'Soil — no route yet','node-organ-forest':'Forest — built',
+   'node-organ-membrane':'Membrane — built','node-organ-face':'Face — built',
+   'node-organ-recognition':'Recognition — spec’d, not built','node-organ-circulation-witness':'Circulation-Witness — dreamed, unmarked'
+ };
+ function clearMap(){
+   allWires.forEach(w=>w.classList.remove('dim','active'));
+   allRouteNodes.forEach(n=>n.classList.remove('dim','peer'));
+   detail.innerHTML='Hover a relationship or an organ to see its route highlighted. Click an organ to open its card below.';
+ }
+ function highlight(node){
+   const wires=(node.dataset.wires||'').split(' ').filter(Boolean);
+   const peers=(node.dataset.peer||'').split(' ').filter(Boolean);
+   allWires.forEach(w=>{ if(wires.includes(w.id)) w.classList.add('active'); else w.classList.add('dim'); });
+   allRouteNodes.forEach(n=>{
+     if(n===node) return;
+     if(peers.includes(n.id)) n.classList.add('peer');
+     else n.classList.add('dim');
+   });
+   const self=LABELS[node.id]||node.id;
+   const peerLabels=peers.map(p=>LABELS[p]||p).join(' + ');
+   detail.innerHTML = wires.length
+     ? `<b>${self}</b> → ${peerLabels||'—'}`
+     : `<b>${self}</b> — no route reaches it from any of the six relationships. Left open on purpose.`;
+ }
+ allRouteNodes.forEach(n=>{
+   n.addEventListener('mouseenter',()=>highlight(n));
+   n.addEventListener('mouseleave',clearMap);
+ });
+ document.querySelectorAll('.organnode').forEach(n=>{
+   n.addEventListener('click',()=>{
+     openTab('routes');
+     const cardIds=(n.dataset.cards||'').split(' ').filter(Boolean);
+     const targets = cardIds.length ? cardIds.map(id=>document.getElementById(id)).filter(Boolean)
+                                     : (n.id==='node-organ-soil' ? [document.getElementById('gap-note')] : []);
+     targets.forEach(el=>{
+       el.classList.add('flash');
+       setTimeout(()=>el.classList.remove('flash'), 1400);
+     });
+     if(targets[0]) setTimeout(()=>targets[0].scrollIntoView({behavior:'smooth',block:'center'}), 60);
+   });
+ });
+})();
+</script>
+</body></html>

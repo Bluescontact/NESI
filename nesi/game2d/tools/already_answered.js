@@ -9,7 +9,7 @@
  * In one session I put three navigational questions to him that his own library
  * had already closed:
  *   · the four vertices  — named in his May 2026 canon, the-four-ones.md
- *   · law 8 vs the deep  — ruled in BUILD_RECORD.md and verified by night_check,
+ *   · law 8 vs the deep  — ruled in BUILD_RECORD.md.backup_pre-compaction_2026-08-24.md and verified by night_check,
  *                          and I raised it as open THREE TIMES
  *   · the somatic ground — marked yes at c62 and held un-named since
  * EVERY QUESTION THE CORPUS ALREADY ANSWERS IS A DECISION HE HAS TO MAKE TWICE.

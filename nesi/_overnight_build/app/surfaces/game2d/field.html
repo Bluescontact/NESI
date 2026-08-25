@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE FIELD</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#f7f5f0;color:#3a3020;
+    font-family:'Courier New',Courier,monospace;font-size:12px;
+    overflow:hidden;
+  }
+  #stage{position:fixed;inset:0}
+  svg{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+
+  .rim{fill:none;stroke:#ccc5b0;stroke-width:1}
+  .ring{fill:none;stroke:#ddd6c4;stroke-width:1;stroke-dasharray:2 5}
+  .spoke{stroke:#ddd6c4;stroke-width:1;stroke-dasharray:2 5}
+  .zone{font-size:11px;letter-spacing:3px;fill:#c0b79c;text-anchor:middle;
+        text-transform:uppercase;pointer-events:none;user-select:none}
+  .arm{font-size:13px;letter-spacing:4px;fill:#a89870;text-anchor:middle;
+       text-transform:uppercase;pointer-events:none;user-select:none;font-weight:bold}
+
+  .it{cursor:grab}
+  .it:active{cursor:grabbing}
+  .it .hit{fill:transparent}
+  .it .bd{stroke:#7a6840;stroke-width:1}
+  .it[data-kind="gate"]   .bd{fill:#e3ddc9}
+  .it[data-kind="decision"].bd{fill:#eeebe3}
+  .it[data-kind="mark"]   .bd{fill:#4a5a8a;stroke:#2a3a6a}
+  .it.on .bd{stroke:#1a1408;stroke-width:2}
+  .it.moved .bd{stroke:#4a5a8a;stroke-width:1.5}
+
+  /* the utterance — spoken in place, where the hand put the thing,
+     never in a global bar. it exists only where a hand has been. */
+  .say{font-size:11px;fill:#4a5a8a;letter-spacing:.4px;pointer-events:none;
+       user-select:none;font-family:'Courier New',Courier,monospace}
+  .say.seam{fill:#8a5a10}
+  .say.void{fill:#c0b79c}
+
+  /* the relation — regathered from THE_FIELD.html, 2026-08-16.
+     an edge is {to, rel} and the relation word is yours. no vocabulary offered. */
+  .rel{stroke:#8a5a10;stroke-width:1;fill:none}
+  .relword{font-size:10px;fill:#8a5a10;pointer-events:none;user-select:none;
+           font-family:'Courier New',Courier,monospace}
+  .it.picked .bd{stroke:#8a5a10;stroke-width:2.5}
+
+  #ask{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+       background:#fffdf7;border:1px solid #8a5a10;padding:15px 17px;display:none;
+       width:390px;box-shadow:0 3px 0 rgba(0,0,0,.05)}
+  #ask.on{display:block}
+  #ask .q{font-size:11px;color:#1a1408;line-height:1.6;margin-bottom:4px}
+  #ask .w{font-size:9px;color:#a89870;line-height:1.6;margin-bottom:9px}
+  #ask input{width:100%;font:inherit;font-size:12px;color:#3a3020;background:#f7f5f0;
+             border:1px solid #ddd6c4;padding:8px}
+  #ask .row{display:flex;gap:6px;margin-top:9px}
+  #ask button{font:inherit;font-size:10px;padding:5px 12px;cursor:pointer;
+              background:#eeebe3;border:1px solid #ccc5b0;color:#7a6840}
+
+  #btn{position:fixed;right:18px;bottom:16px;font:inherit;font-size:11px;
+       letter-spacing:2px;text-transform:uppercase;color:#7a6840;
+       background:#eeebe3;border:1px solid #ccc5b0;padding:7px 15px;cursor:pointer}
+  #btn:hover{background:#e3ddc9;color:#1a1408}
+
+  #sheet{
+    position:fixed;right:18px;bottom:52px;width:430px;max-height:64vh;
+    background:#fffdf7;border:1px solid #ccc5b0;padding:13px 15px;display:none;
+    overflow:auto;line-height:1.7;
+  }
+  #sheet.on{display:block}
+  #sheet h2{font-size:9px;letter-spacing:2px;color:#a89870;text-transform:uppercase;
+            font-weight:normal;margin-bottom:8px}
+  #sheet textarea{width:100%;height:230px;font:inherit;font-size:10.5px;
+    color:#3a3020;background:#f7f5f0;border:1px solid #ddd6c4;padding:9px;
+    line-height:1.65;resize:vertical}
+  #sheet .n{font-size:9px;color:#a89870;margin-top:8px;line-height:1.6}
+
+  /* the reading panel — appears only when a hand reaches for something */
+  #read{
+    position:fixed;left:16px;bottom:16px;max-width:440px;
+    background:#fffdf7;border:1px solid #ccc5b0;padding:12px 14px;
+    line-height:1.65;display:none;pointer-events:none;
+    box-shadow:0 2px 0 rgba(0,0,0,.04);
+  }
+  #read.on{display:block}
+  #read .k{font-size:8px;letter-spacing:2px;color:#a89870;text-transform:uppercase}
+  #read .t{font-size:12px;font-weight:bold;color:#1a1408;margin:3px 0 6px}
+  #read .b{font-size:10.5px;color:#5a4c30;white-space:pre-wrap;
+           max-height:190px;overflow:hidden}
+
+  #hd{position:fixed;top:14px;left:18px;pointer-events:none;user-select:none}
+  #hd h1{font-size:13px;letter-spacing:5px;color:#1a1408;font-weight:bold}
+  #hd .s{font-size:9px;color:#a89870;letter-spacing:1px;margin-top:3px}
+
+  #key{position:fixed;top:14px;right:18px;text-align:right;
+       font-size:9px;color:#a89870;line-height:1.9;user-select:none}
+  #key b{color:#7a6840;font-weight:normal}
+</style>
+</head>
+<body>
+
+<div id="hd">
+  <h1>THE FIELD</h1>
+  <div class="s">move a thing. that is the whole grammar.</div>
+</div>
+
+<div id="key">
+  <div><b>drag</b> — toward you, or away</div>
+  <div><b>drag past the rim</b> — gone</div>
+  <div><b>double-click the ground</b> — your own mark, unnamed</div>
+  <div><b>leave it</b> — a complete state</div>
+  <div><b>shift-click two things</b> — name what holds between them</div>
+</div>
+
+<div id="ask">
+  <div class="q" id="askq"></div>
+  <div class="w">The relation is the naming. No words are offered here on purpose —
+    a menu would be the machine naming the thing this exists to let you name.
+    Leave it blank and nothing is drawn.</div>
+  <input type="text" id="askrel" autocomplete="off" spellcheck="false">
+  <div class="row"><button id="askok">hold it</button><button id="askno">never mind</button></div>
+</div>
+
+<div id="stage"><svg id="svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg></div>
+
+<div id="read"><div class="k" id="rk"></div><div class="t" id="rt"></div><div class="b" id="rb"></div></div>
+
+<button id="btn">the reading</button>
+<div id="sheet">
+  <h2>what your hand has said — derived from position, never stored</h2>
+  <textarea id="sheettext" readonly></textarea>
+  <div class="n">This stages. It writes to no ledger and answers no fork.
+    The lines are a readout of <b>where</b> each thing stands — never of what it
+    is about. Take them or leave them.</div>
+</div>
+
+<script src="field_items.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var svg   = document.getElementById('svg');
+  var CX = 500, CY = 500;
+  var R_NOW = 130, R_MINE = 290, R_RIM = 460;
+
+  var KEY = 'nesi.field.1';
+
+  // ---- state: positions the hand has set, marks it dropped, things sent out
+  var S = load();
+  function load(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var o = JSON.parse(raw);
+        if (o && typeof o === 'object') {
+          o.pos   = o.pos   || {};
+          o.gone  = o.gone  || {};
+          o.marks = o.marks || [];
+          o.rels  = o.rels  || [];        // [{a, b, rel}] — the relation is yours
+          return o;
+        }
+      }
+    } catch(e){}
+    return { pos:{}, gone:{}, marks:[], rels:[] };
+  }
+  function save(){
+    // pad → read back → commit: a bad write never destroys a good one
+    var pad = JSON.stringify(S);
+    try {
+      localStorage.setItem(KEY + '.pad', pad);
+      if (localStorage.getItem(KEY + '.pad') === pad) {
+        localStorage.setItem(KEY, pad);
+        localStorage.removeItem(KEY + '.pad');
+      }
+    } catch(e){}
+  }
+
+  // ---------------------------------------------------------------- the ground
+  function el(n, a){
+    var e = document.createElementNS(SVGNS, n);
+    for (var k in a) e.setAttribute(k, a[k]);
+    return e;
+  }
+
+  var ground = el('g', {});
+  svg.appendChild(ground);
+
+  ground.appendChild(el('circle', {cx:CX, cy:CY, r:R_RIM,  'class':'rim'}));
+  ground.appendChild(el('circle', {cx:CX, cy:CY, r:R_MINE, 'class':'ring'}));
+  ground.appendChild(el('circle', {cx:CX, cy:CY, r:R_NOW,  'class':'ring'}));
+
+  // three arms — his mark, 2026-08-16: "theres 3 arms to this..."
+  var ARMS = [
+    { name:'writing', mid:-90 },
+    { name:'commons', mid: 30 },
+    { name:'gift',    mid:150 }
+  ];
+  var rad = function(d){ return d * Math.PI / 180; };
+
+  // the boundaries between arms, drawn as spokes
+  [-30, 90, 210].forEach(function(a){
+    ground.appendChild(el('line', {
+      x1:CX + Math.cos(rad(a))*R_NOW,  y1:CY + Math.sin(rad(a))*R_NOW,
+      x2:CX + Math.cos(rad(a))*R_RIM,  y2:CY + Math.sin(rad(a))*R_RIM,
+      'class':'spoke'
+    }));
+  });
+
+  ARMS.forEach(function(A){
+    var r = (R_MINE + R_RIM) / 2;
+    var t = el('text', {
+      x: CX + Math.cos(rad(A.mid)) * r,
+      y: CY + Math.sin(rad(A.mid)) * r + 4,
+      'class':'arm'
+    });
+    t.textContent = A.name;
+    ground.appendChild(t);
+  });
+
+  [['now', CY + 5],
+   ['mine, not yet', CY - (R_NOW + R_MINE)/2],
+   ['the soil', CY - (R_MINE + R_RIM)/2 + 26]
+  ].forEach(function(z){
+    var t = el('text', {x:CX, y:z[1], 'class':'zone'});
+    t.textContent = z[0];
+    ground.appendChild(t);
+  });
+
+  // ------------------------------------------------- POSITION IS THE UTTERANCE
+  //
+  // Kevin's law, 2026-08-01: "the ability for the user to meaningfully change and
+  // steer WITHOUT ARTICULATION is deeply important to how this program works."
+  // Three parts, all three held here:
+  //   1. the reading appears AT the thing, wherever it stands — never one bar.
+  //   2. it never routes to a single pole. On a seam BOTH fire and neither wins.
+  //   3. position generates the line. He moves; the field speaks.
+  //
+  // And the position-board's law: the reading is DERIVED from the placement on
+  // every render, never stored. Nothing in `S` holds a meaning — only an x and a y.
+  //
+  // THE BOUNDARY, announced: this speaks about WHERE a thing stands. It never
+  // speaks about what the thing is about, never reads its words, never classifies
+  // it. A line that named content would be the machine doing the naming.
+
+  var SPOKES = [-30, 90, 210];      // the seams between the three arms
+  var SEAM_W = 26;                  // a seam is a band of constant width, not an angle
+  var R_VOID = 42;                  // the exact centre. nothing is said there.
+
+  function read(x, y){
+    var dx = x - CX, dy = y - CY;
+    var d  = Math.sqrt(dx*dx + dy*dy);
+
+    if (d <= R_VOID) return { ring:null, arms:[], seam:false, isVoid:true };
+
+    var ring = d < R_NOW  ? 'now'
+             : d < R_MINE ? 'mine, not yet'
+             :              'the soil';
+
+    // which arms are firing. distance to each seam-ray, not an angle — so the
+    // band has the same width under the hand everywhere on the field.
+    var near = [];
+    SPOKES.forEach(function(a, i){
+      var ux = Math.cos(rad(a)), uy = Math.sin(rad(a));
+      if (dx*ux + dy*uy <= 0) return;                 // behind the ray, not on it
+      if (Math.abs(dx*uy - dy*ux) < SEAM_W) near.push(i);
+    });
+
+    // the arm a point sits in, by angle from its centre
+    function armAt(px, py){
+      var best = 0, bd = 1e9;
+      ARMS.forEach(function(A, i){
+        var da = Math.abs(((Math.atan2(py, px)*180/Math.PI - A.mid + 540) % 360) - 180);
+        if (da < bd){ bd = da; best = i; }
+      });
+      return best;
+    }
+
+    if (near.length){
+      // ON A SEAM. Both poles fire. Nothing here collapses them to one.
+      var s  = SPOKES[near[0]];
+      var a1 = armAt(Math.cos(rad(s - 40)), Math.sin(rad(s - 40)));
+      var a2 = armAt(Math.cos(rad(s + 40)), Math.sin(rad(s + 40)));
+      if (a1 === a2) return { ring:ring, arms:[a1], seam:false, isVoid:false };
+      return { ring:ring, arms:[a1, a2].sort(), seam:true, isVoid:false };
+    }
+    return { ring:ring, arms:[armAt(dx, dy)], seam:false, isVoid:false };
+  }
+
+  var NAME = function(i){ return ARMS[i].name; };
+
+  // the line spoken in place — terse, because the field is not a document
+  function utter(r){
+    if (r.isVoid) return '·';
+    if (r.seam)   return r.ring + ' · ' + NAME(r.arms[0]) + ' and ' + NAME(r.arms[1]) + ', both';
+    return r.ring + ' · toward ' + NAME(r.arms[0]);
+  }
+
+  // the same placement, said whole. assembled only when he asks for it.
+  function utterFull(it, r){
+    if (r.isVoid)
+      return 'stands at the centre. Nothing is said about this one.';
+    if (r.seam)
+      return 'stands in ' + r.ring + ', on the seam between ' + NAME(r.arms[0]) +
+             ' and ' + NAME(r.arms[1]) + ' — both firing, neither chosen.';
+    return 'stands in ' + r.ring + ', toward ' + NAME(r.arms[0]) + '.';
+  }
+
+  // ---------------------------------------------------------------- the things
+  var relLayer = el('g', {});    // relations sit under the things they join
+  svg.appendChild(relLayer);
+  var layer = el('g', {});
+  svg.appendChild(layer);
+
+  var items = (window.FIELD_ITEMS || []).slice();
+
+  // his own dropped marks re-enter as things
+  S.marks.forEach(function(m){
+    items.push({ id:m.id, kind:'mark', ts:m.ts || '', title:'(your mark)', body:'' });
+  });
+
+  // default seat: laid out in the soil band, oldest first, all the way round
+  function seat(i, n){
+    var a   = (i / Math.max(n,1)) * Math.PI * 2 - Math.PI/2;
+    var jit = ((i * 2654435761) % 1000) / 1000;          // stable, no randomness
+    var r   = R_MINE + 22 + jit * (R_RIM - R_MINE - 40);
+    return { x: CX + Math.cos(a)*r, y: CY + Math.sin(a)*r };
+  }
+
+  var nodes = {};
+  items.forEach(function(it, i){
+    if (S.gone[it.id]) return;
+
+    var p = S.pos[it.id] || (it.kind === 'mark'
+              ? { x: it.x, y: it.y }
+              : seat(i, items.length));
+    if (!p || typeof p.x !== 'number') p = seat(i, items.length);
+
+    var g = el('g', {'class':'it' + (S.pos[it.id] ? ' moved' : ''), 'data-kind':it.kind,
+                     transform:'translate(' + p.x + ',' + p.y + ')'});
+
+    // shape carries the kind; colour is redundant (law 10)
+    var bd;
+    if (it.kind === 'gate')       bd = el('rect',   {x:-5, y:-5, width:10, height:10, 'class':'bd'});
+    else if (it.kind === 'mark')  bd = el('circle', {r:7, 'class':'bd'});
+    else                          bd = el('circle', {r:5, 'class':'bd'});
+
+    g.appendChild(el('circle', {r:15, 'class':'hit'}));   // a reachable target
+    g.appendChild(bd);
+    layer.appendChild(g);
+
+    nodes[it.id] = { g:g, it:it, x:p.x, y:p.y };
+  });
+
+  // the field speaks ONLY where a hand has been. an untouched thing is silent,
+  // and silence is a complete state — the machine has nothing to say about a
+  // placement it made itself.
+  function speak(n){
+    var old = n.g.querySelector('.say');
+    if (old) n.g.removeChild(old);
+    if (!S.pos[n.it.id]) return;                    // never moved — stays silent
+
+    var r = read(n.x, n.y);
+    var t = el('text', {
+      x: (n.x > CX ? -12 : 12), y: 4,
+      'class': 'say' + (r.seam ? ' seam' : '') + (r.isVoid ? ' void' : ''),
+      'text-anchor': (n.x > CX ? 'end' : 'start')
+    });
+    t.textContent = utter(r);
+    n.g.appendChild(t);
+  }
+
+  Object.keys(nodes).forEach(function(k){ speak(nodes[k]); });
+
+  // ------------------------------------------------------------- THE RELATION
+  // Regathered from THE_FIELD.html, 2026-08-16. Kevin's naming, 2026-08-06:
+  // "The relationships are the naming that underlies the process in the world
+  // of unnamed words." So an edge is {to, rel} and `rel` is free text he writes.
+  // There is deliberately NO VOCABULARY OFFERED — a menu of relation words
+  // would be the machine pre-naming the thing this exists to let him name.
+  // Blank is a complete state: leave the box empty and nothing is drawn.
+
+  function drawRels(){
+    while (relLayer.firstChild) relLayer.removeChild(relLayer.firstChild);
+    S.rels.forEach(function(r){
+      var A = nodes[r.a], B = nodes[r.b];
+      if (!A || !B) return;                       // one end left the field
+      relLayer.appendChild(el('line', {
+        x1:A.x, y1:A.y, x2:B.x, y2:B.y, 'class':'rel'
+      }));
+      var t = el('text', {
+        x:(A.x+B.x)/2, y:(A.y+B.y)/2 - 4, 'class':'relword', 'text-anchor':'middle'
+      });
+      t.textContent = r.rel;
+      relLayer.appendChild(t);
+    });
+  }
+
+  var picked = null;
+  var ask = document.getElementById('ask'),
+      askq = document.getElementById('askq'),
+      askrel = document.getElementById('askrel');
+  var pending = null;
+
+  function pick(id){
+    if (picked === id){                            // un-pick: a hand may change its mind
+      nodes[id].g.classList.remove('picked'); picked = null; return;
+    }
+    if (!picked){
+      picked = id; nodes[id].g.classList.add('picked'); return;
+    }
+    pending = { a:picked, b:id };
+    nodes[picked].g.classList.remove('picked');
+    picked = null;
+    askq.textContent = 'What holds between "' + short(nodes[pending.a].it.title) +
+                       '" and "' + short(nodes[pending.b].it.title) + '"?';
+    askrel.value = '';
+    ask.classList.add('on');
+    askrel.focus();
+  }
+  function short(s){ return String(s).length > 34 ? String(s).slice(0,34) + '…' : String(s); }
+
+  function closeAsk(){ ask.classList.remove('on'); pending = null; }
+
+  document.getElementById('askok').addEventListener('click', function(){
+    var w = askrel.value.trim();
+    if (w && pending){ S.rels.push({ a:pending.a, b:pending.b, rel:w }); save(); drawRels(); }
+    closeAsk();                                    // blank writes nothing, silently
+    if (sheet.classList.contains('on')) compose();
+  });
+  document.getElementById('askno').addEventListener('click', closeAsk);
+  askrel.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') document.getElementById('askok').click();
+    if (e.key === 'Escape') closeAsk();
+  });
+
+  drawRels();
+
+  // ---------------------------------------------------------------- the reading
+  // NOTE: this panel is `panel`, not `read` — `read()` is the position
+  // derivation above, and a `var read` here silently shadowed it.
+  var panel = document.getElementById('read'),
+      rk = document.getElementById('rk'),
+      rt = document.getElementById('rt'),
+      rb = document.getElementById('rb');
+
+  function show(n){
+    if (!n || n.it.kind === 'mark'){ panel.classList.remove('on'); return; }
+    rk.textContent = n.it.kind === 'gate' ? 'a gate, standing' : 'a fork, unanswered';
+    rt.textContent = n.it.title;
+    rb.textContent = n.it.body || '';
+    panel.classList.add('on');
+  }
+  function hide(){ panel.classList.remove('on'); }
+
+  // ---------------------------------------------------------------- the hand
+  function toField(ev){
+    var r = svg.getBoundingClientRect();
+    var vb = 1000;
+    var s = Math.min(r.width, r.height) / vb;
+    var ox = r.left + (r.width  - vb*s)/2;
+    var oy = r.top  + (r.height - vb*s)/2;
+    return { x:(ev.clientX - ox)/s, y:(ev.clientY - oy)/s };
+  }
+
+  var drag = null, moved = false;
+
+  svg.addEventListener('pointerdown', function(ev){
+    var g = ev.target.closest ? ev.target.closest('.it') : null;
+    if (!g) return;
+    var id = Object.keys(nodes).filter(function(k){ return nodes[k].g === g; })[0];
+    if (!id) return;
+    if (ev.shiftKey){ pick(id); ev.preventDefault(); return; }   // naming, not moving
+    drag = nodes[id]; moved = false;
+    drag.g.classList.add('on');
+    show(drag);
+    svg.setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+
+  svg.addEventListener('pointermove', function(ev){
+    if (drag){
+      var p = toField(ev);
+      drag.x = p.x; drag.y = p.y; moved = true;
+      drag.g.setAttribute('transform', 'translate(' + p.x + ',' + p.y + ')');
+      drawRels();                       // a relation follows the thing it joins
+      return;
+    }
+    var g = ev.target.closest ? ev.target.closest('.it') : null;
+    if (!g){ hide(); return; }
+    var id = Object.keys(nodes).filter(function(k){ return nodes[k].g === g; })[0];
+    if (id) show(nodes[id]);
+  });
+
+  svg.addEventListener('pointerup', function(ev){
+    if (!drag) return;
+    var n = drag; drag = null;
+    n.g.classList.remove('on');
+
+    if (!moved) return;                       // a touch is not a placement
+
+    var d = Math.sqrt(Math.pow(n.x-CX,2) + Math.pow(n.y-CY,2));
+    if (d > R_RIM){
+      // past the rim. no confirmation, no animation, no toast. (law 6)
+      S.gone[n.it.id] = 1;
+      delete S.pos[n.it.id];
+      S.marks = S.marks.filter(function(m){ return m.id !== n.it.id; });
+      S.rels  = S.rels.filter(function(r){ return r.a !== n.it.id && r.b !== n.it.id; });
+      n.g.parentNode.removeChild(n.g);
+      delete nodes[n.it.id];
+      hide(); drawRels();
+    } else {
+      S.pos[n.it.id] = { x:Math.round(n.x), y:Math.round(n.y) };
+      n.g.classList.add('moved');
+      if (n.it.kind === 'mark'){
+        S.marks.forEach(function(m){
+          if (m.id === n.it.id){ m.x = Math.round(n.x); m.y = Math.round(n.y); }
+        });
+      }
+      speak(n);                                   // the placement says its line
+    }
+    save();
+    if (sheet.classList.contains('on')) compose();
+  });
+
+  // double-click bare ground: a mark of your own. no name asked for, ever.
+  svg.addEventListener('dblclick', function(ev){
+    if (ev.target.closest && ev.target.closest('.it')) return;
+    var p = toField(ev);
+    var d = Math.sqrt(Math.pow(p.x-CX,2) + Math.pow(p.y-CY,2));
+    if (d > R_RIM) return;
+
+    var id = 'm:' + (S.marks.length + 1) + ':' + Object.keys(S.pos).length;
+    var m  = { id:id, x:Math.round(p.x), y:Math.round(p.y), ts:new Date().toISOString() };
+    S.marks.push(m);
+    S.pos[id] = { x:m.x, y:m.y };
+
+    var g = el('g', {'class':'it moved', 'data-kind':'mark',
+                     transform:'translate(' + m.x + ',' + m.y + ')'});
+    g.appendChild(el('circle', {r:15, 'class':'hit'}));
+    g.appendChild(el('circle', {r:7,  'class':'bd'}));
+    layer.appendChild(g);
+    nodes[id] = { g:g, it:{id:id, kind:'mark', title:'(your mark)', body:''}, x:m.x, y:m.y };
+    speak(nodes[id]);            // a mark carries no words at all. only position.
+    save();
+    if (sheet.classList.contains('on')) compose();
+  });
+
+  // ------------------------------------------------------------- the reading
+  // Everything the hand has placed, said whole, in one block he can take.
+  // It STAGES. It writes to no ledger — the surface that wrote would be a
+  // surface that acts (THE_FIELD.html's own law).
+  var sheet = document.getElementById('sheet'),
+      sheettext = document.getElementById('sheettext'),
+      btn = document.getElementById('btn');
+
+  function compose(){
+    var placed = Object.keys(nodes)
+      .filter(function(k){ return S.pos[k]; })
+      .map(function(k){ return nodes[k]; });
+
+    if (!placed.length){
+      sheettext.value = 'Nothing has been placed. That is a complete state — ' +
+        'the field has nothing to say until a hand moves something.';
+      return;
+    }
+
+    // ledger order, never ranked, never sorted by anything the machine decided
+    var out = placed.map(function(n){
+      var r = read(n.x, n.y);
+      var head = n.it.kind === 'mark'
+        ? 'a mark of your own — carrying no words, and not asked for any'
+        : n.it.title;
+      return '— ' + head + '\n  ' + utterFull(n.it, r);
+    });
+
+    var seams = placed.filter(function(n){ return read(n.x, n.y).seam; }).length;
+    var tail = seams
+      ? '\n\nSome of these stand on a seam. Both poles are firing there and ' +
+        'nothing above picked one — that is the placement, not an unfinished answer.'
+      : '';
+
+    // the relations, in your own words. nothing here was suggested to you.
+    var rels = S.rels.filter(function(r){ return nodes[r.a] && nodes[r.b]; });
+    var relBlock = rels.length
+      ? '\n\n— what you named as holding between things —\n\n' +
+        rels.map(function(r){
+          return '  ' + short(nodes[r.a].it.title) + '\n    ' + r.rel +
+                 '\n  ' + short(nodes[r.b].it.title);
+        }).join('\n\n')
+      : '';
+
+    sheettext.value = out.join('\n\n') + tail + relBlock;
+  }
+
+  btn.addEventListener('click', function(){
+    var on = sheet.classList.toggle('on');
+    if (on){ compose(); sheettext.focus(); sheettext.select(); }
+  });
+
+})();
+</script>
+</body>
+</html>

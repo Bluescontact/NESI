@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>THE TILE FIELD</title>
+<!-- ═══ THE TILE FIELD ═══════════════════════════════════════════════════════
+     Built 2026-08-16 on Kevin's order: "build the surface" — the geometric
+     skeleton drawn with its tiles on it, so seats can be marked by hand rather
+     than read down a page.
+
+     WHAT IT IS. The twelve seats of the solid, each carrying the open source
+     capacity the commons already holds for it. Swept and sited in
+     DEPOSITS_FROM_THE_COMMONS.md; this is that deposit given a body.
+
+     THE SOLID IS DERIVED, NOT DRAWN. solid.js writes two tables — twelve seats
+     and four circuits — and everything else follows. This file adds no
+     thirteenth fact: it takes MEMBERS from solid.js and finds a 3D embedding by
+     relaxation, then checks its own work. If the drawn figure is not the solid,
+     the header says so on screen rather than looking right.
+
+     GESTURES DECLARED — draw and reach, per THE_KIT.
+       draw   · the hand turns the figure and it follows
+       reach  · a seat answers the hand before it is clicked
+
+     THREE OUTPUTS AT EVERY TILE, per law 1 and Kevin's 2026-08-15 ruling.
+       take      · this one comes into the seat
+       drop      · to the lake; it is not for here
+       set down  · nothing. No destination, no animation, no confirmation.
+                   THE ABSENCE IS THE FEEDBACK (law 6). The button is there so
+                   the third output can be taken; taking it does nothing you
+                   can see, and that is correct.
+
+     NOTHING HERE IS A RECOMMENDATION AND NOTHING IS RANKED. A tile with no mark
+     is a tile in the soil. Blank is a complete state.
+
+     NO NETWORK. No asset, no font, no image, no call. Same as every other
+     surface in this build. -->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#f2efe8;color:#17171a;overflow:hidden;
+  font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:15px;line-height:1.6}
+#wrap{display:flex;height:100%}
+#left{flex:1;position:relative;min-width:0;min-height:0}
+/* Both halves are needed and each fixes a different failure, both caught by the
+   first two walks. ABSOLUTE: the parent's height comes from flex stretch, so a
+   percentage against a static parent resolves to auto and the figure never
+   appears. PERCENTAGES: a canvas is a REPLACED element, so inset:0 with auto
+   size keeps its intrinsic 300x150 and the figure draws into a corner. */
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+canvas.dragging{cursor:grabbing}
+#head{position:absolute;left:22px;top:18px;max-width:38ch;pointer-events:none}
+#head h1{font-size:15px;letter-spacing:.34em;text-transform:uppercase;font-weight:400;color:#6f675a}
+#head p{font-size:12.5px;color:#8d9298;margin-top:6px;font-style:italic}
+#check{position:absolute;left:22px;bottom:16px;font-size:11.5px;color:#8d9298;pointer-events:none}
+#check b{font-weight:400;color:#4f6a3d}
+#check.bad b{color:#8a4a3d}
+#right{width:436px;border-left:1px solid rgba(90,84,74,.25);overflow-y:auto;
+  background:#f2efe8;padding:26px 26px 60px}
+#right h2{font-size:14px;letter-spacing:.28em;text-transform:uppercase;font-weight:400;color:#17171a}
+#dir{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#8d9298;margin-top:5px}
+#lede{font-size:13px;color:#6f675a;margin-top:14px;font-style:italic;
+  border-left:2px solid rgba(90,84,74,.25);padding-left:12px}
+.tile{border:1px solid rgba(90,84,74,.25);background:#fff;padding:13px 14px;margin-top:14px}
+.tile.taken{border-color:#4f6a3d;background:#f7faf4}
+.tile.dropped{opacity:.42}
+.tile .nm{font-size:14px}
+.tile .nm b{font-weight:400}
+.tile .src{font-size:11px;color:#8d9298;font-family:ui-monospace,Consolas,monospace;
+  word-break:break-all;margin-top:2px}
+.tile .cr{font-size:13px;color:#3d3a34;margin-top:8px}
+.tile .conf{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8d9298;margin-top:8px}
+.tile .col{font-size:12.5px;color:#8a4a3d;margin-top:8px;border-left:2px solid #8a4a3d;padding-left:9px}
+.acts{margin-top:11px;display:flex;gap:7px;align-items:center}
+button{font:inherit;font-size:12px;padding:4px 11px;background:transparent;cursor:pointer;
+  border:1px solid rgba(90,84,74,.4);color:#3d3a34}
+button:hover{border-color:#17171a}
+button.on{border-color:#4f6a3d;color:#4f6a3d}
+.mk{font-size:11.5px;color:#4f6a3d;margin-left:2px}
+#empty{margin-top:18px;font-size:13.5px;color:#6f675a}
+#empty .law{border-left:2px solid #6f675a;padding-left:12px;font-style:italic}
+#foot{margin-top:30px;padding-top:16px;border-top:1px solid rgba(90,84,74,.25);
+  font-size:11.5px;color:#8d9298}
+#foot button{margin-top:9px;font-size:11.5px}
+#out{width:100%;height:150px;margin-top:9px;font-size:11px;
+  font-family:ui-monospace,Consolas,monospace;border:1px solid rgba(90,84,74,.25);
+  padding:8px;display:none;background:#fff;resize:vertical}
+</style>
+<body>
+<div id="wrap">
+  <div id="left">
+    <canvas id="c"></canvas>
+    <div id="head">
+      <h1>The tile field</h1>
+      <p>Turn it with your hand. A seat answers before you click it.
+         Nothing here is ranked, and nothing is installed.</p>
+    </div>
+    <div id="check"></div>
+  </div>
+  <div id="right">
+    <h2 id="nm">—</h2>
+    <div id="dir"></div>
+    <div id="lede"></div>
+    <div id="tiles"></div>
+    <div id="foot">
+      Marks are held in this browser only. Nothing is written to the ledgers,
+      and nothing reaches outward.
+      <br><button id="ex">show my marks</button>
+      <textarea id="out" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<script src="solid.js"></script>
+<script>
+"use strict";
+const PAL={ink:"#17171a",paper:"#f2efe8",water:"#4a6c7a",shallow:"#6f93a4",
+  deep:"#40606f",ground:"#a89f8e",stone:"#6f675a",sky:"#cdd5d2",horizon:"#b6ae9f",
+  shoot:"#4f6a3d",taken:"#8d9298",edge:"rgba(40,40,44,.45)",quiet:"rgba(90,84,74,.25)"};
+
+/* ═══ THE TILES ════════════════════════════════════════════════════════════════
+   One entry per seat. `lede` is what the seat is; `tiles` is what the commons
+   already holds for it; `empty` is said instead of tiles where a seat is empty
+   ON PURPOSE — a seat with no tributary is not always a gap, and two of these
+   are empty because their own law empties them.
+   conf: seen = evidence read 2026-08-16 · named = the project describes itself
+         field = a known area, no single project picked                        */
+const FIELD = {
+TANK:{lede:"The writing arrives. The one way in.",tiles:[
+ {n:"Intl.Segmenter",s:"in the JS runtime — nothing to install",
+  c:"Sentence boundaries from the language itself. Fixes <i>e.g.</i> and <i>Yes… it is.</i> — still splits <i>Dr.</i>",
+  k:"seen · run in this build's node v22.22.3"},
+ {n:"Automerge 3.0",s:"automerge.org",c:"Document CRDT, Rust core, ~10× memory cut — large documents practical in a browser.",k:"named",
+  col:"Owns the store. save() is pad → read back → commit on plain JSON, and store_guard fingerprints his writing. A CRDT takes that."},
+ {n:"Yjs",s:"github.com/yjs/yjs",c:"The production text-CRDT; the largest ecosystem of editor bindings.",k:"named",
+  col:"Same: it owns the data. Earns its weight when a second writer exists."},
+ {n:"Loro",s:"loro.dev",c:"Rich-text and <i>movable-tree</i> CRDTs — the tree case Yjs and Automerge leave open.",k:"named"},
+ {n:"Volon · mu-txt",s:"local-first plain-text editors",c:"Markdown on your own disk; mu-txt on the json-joy Peritext CRDT.",k:"named"}]},
+
+DAM:{lede:"Hold, or release. The head is the decision.",tiles:[
+ {n:"gl-water2d",s:"github.com/Erkaman/gl-water2d",c:"2D liquid by smoothed-particle hydrodynamics, in WebGL.",k:"named"},
+ {n:"Stable fluids (Jos Stam)",s:"sopyb/fluidsimulation · kishimisu/WebGPU-Fluid-Simulation",
+  c:"The canonical real-time solver, in two eras — plain canvas, and compute shaders.",k:"named"},
+ {n:"Shallow-water equations",s:"the model the erosion sims run on",
+  c:"A free surface and a head. The honest model for a dam, because a dam is about height.",k:"field"}]},
+
+FILTER:{lede:"The hand separates the fractions.",
+ empty:"The commons offers almost nothing here, and that is the correct result.",
+ law:"Every mature filter in the field is a classifier. Law 5: the operator's hand runs the filter — no computed pass, nothing deciding what a fraction is. What is portable here is direct-manipulation grammar, not sorting logic.",
+ after:"The seat with the least available capacity is the seat whose law forbids the capacity."},
+
+STATIONS:{lede:"Three outputs. Send it on, drop it, or set it down.",tiles:[
+ {n:"Valueflows",s:"valueflo.ws",
+  c:"A vocabulary of <b>resources · events · agents</b>. Describes where a thing went without ever reading what it is.",
+  k:"named",good:"The rare commons artifact that is a vocabulary and not a service. Adopting it reaches outward zero times."},
+ {n:"hREA",s:"hrea.io",c:"The Valueflows reference implementation, with GraphQL libraries.",k:"named",
+  col:"A Holochain runtime. This build is a static page; that is a port, not a join."}]},
+
+GROUND:{lede:"What the water sets down. The land is the save file.",tiles:[
+ {n:"Webgl-Erosion",s:"github.com/LanLou123/Webgl-Erosion",
+  c:"Velocity-field advection and sediment transport, interactive, in the browser.",k:"named"},
+ {n:"Interactive Erosion Simulator",s:"huw-man.github.io/Interactive-Erosion-Simulator-on-GPU",
+  c:"Real-time hydraulic erosion on the GPU.",k:"named"},
+ {n:"hydraulic-erosion",s:"github.com/tessapower/hydraulic-erosion",
+  c:"Built specifically to <i>compare erosion algorithms</i> side by side. Three.js, WebGL, TypeScript.",k:"named"}]},
+
+DEEP:{lede:"What you let go. It never renders.",tiles:[
+ {n:"Hypercore",s:"hypercore-protocol.org",c:"A secure distributed <b>append-only log</b>.",k:"named",
+  good:"A log written and never read back is law 9 exactly. The data structure and the law are the same object."},
+ {n:"git",s:"already on this machine, already versioning this repo",
+  c:"Content-addressed object store. The deep, if the deep kept receipts.",k:"seen"},
+ {n:"bakup",s:"2026 research — git-inspired, offline-first",
+  c:"SHA-256 content-addressed dedupe across repositories.",k:"named"}]},
+
+LENS:{lede:"Focusing. What the twelve seed.",tiles:[
+ {n:"Red Blob Games — 2D Visibility",s:"redblobgames.com/articles/visibility",
+  c:"The additive algorithm: cast rays only at angles where walls begin and end.",k:"named"},
+ {n:"THREE.js-RayTracing-Renderer",s:"github.com/erichlof/THREE.js-RayTracing-Renderer",
+  c:"Real refraction and <b>shadow caustics</b>, at 60fps, in a browser.",k:"named"}]},
+
+HELIOSTAT:{lede:"A mirror you aim with your own hand.",tiles:[
+ {n:"Sight & Light",s:"ncase.me/sight-and-light",
+  c:"The canonical 2D visibility explainer with working code — rays to each segment end, plus two offset to catch the corner.",k:"named",
+  good:"Aiming past an obstacle into a dark pool is a visibility-polygon problem, and it is among the most solved problems in 2D game code."},
+ {n:"Ray Casting 2D",s:"thecodingtrain.com/challenges/145-ray-casting-2d",
+  c:"A light source casting shadows on canvas, built from line segments.",k:"named"}]},
+
+SEATING:{lede:"The hand seats a mirror. The cut goes where the hand puts it.",
+ empty:"Thin, and lawfully so — the same shape as the filter.",
+ law:"The act is a hand-act. What the commons has for this seat is interaction grammar, not seating logic.",
+ after:"Already built here: the cut is a seam the hand places, with no midpoint drawn and no default if the hand does nothing."},
+
+OVERWINTERING:{lede:"The creature works while you are away.",
+ empty:"No tile, and none is needed.",
+ law:"The commons has no works-while-away library, because it is not a capacity. It is a design decision plus a deterministic function of elapsed time.",
+ after:"What is portable is a seeded deterministic PRNG — so the same absence always produces the same shoreline. Law 8's one designed exception is the one seat the field cannot supply."},
+
+GARDEN:{lede:"Where light and water meet, things grow.",tiles:[
+ {n:"morphogenesis-resources",s:"github.com/jasonwebb/morphogenesis-resources",
+  c:"The curated index for creating form with code — articles, repositories, books.",k:"named",
+  good:"The library arm for this seat already exists, maintained by someone else."},
+ {n:"reaction-diffusion-playground",s:"jasonwebb.github.io/reaction-diffusion-playground",
+  c:"Gray-Scott on data textures, a custom shader per pixel, interactive.",k:"named"},
+ {n:"Algorithmic Botany — Runions",s:"algorithmicbotany.org",
+  c:"Leaf venation and tree structure by space colonization. Growth that follows what is available.",k:"named"},
+ {n:"awesome-creative-coding",s:"github.com/terkelg/awesome-creative-coding",c:"The wider index.",k:"named"}]},
+
+CAST:{lede:"The fruit leaves. The one way out.",tiles:[
+ {n:"Murmurations",s:"murmurations.network",
+  c:"Publish once about yourself; others aggregate into feeds, maps and directories.",k:"named",
+  col:"Sits on both sides of law 11. As a FORMAT it costs nothing and reaches outward zero times. As an INDEX it is a breach. Same project — it depends which half you take."},
+ {n:"Valueflows",s:"valueflo.ws",c:"Describes what departed, in a vocabulary others already read.",k:"named"},
+ {n:"ActivityPub · AT Protocol",s:"w3.org/TR/activitypub · atproto.com",c:"Federation proper.",k:"named",
+  col:"Outward by construction. Law 11 and law 3 both."}]}
+};
+
+/* ═══ THE FIGURE — derived from solid.js, then checked ══════════════════════════
+   No coordinate is written down. Twelve points are relaxed against the 24
+   members solid.js derives: members pull, everything else pushes. A cuboctahedron
+   is the shape that graph settles into. The run is seeded and fixed-step, so it
+   is the same figure every load.
+
+   IT CHECKS ITS OWN WORK. If every member came out the same length and every
+   non-member came out longer, the figure IS the solid and the footer says so. If
+   not, the footer says THAT, because a figure that merely looks right is the
+   thing world_check.js exists to refuse.                                       */
+const N = SOLID.NAMES, IDX = Object.fromEntries(N.map((n,i)=>[n,i]));
+const P = (()=>{
+  let s=20260816, rnd=()=>(s=(s*1103515245+12345)&0x7fffffff)/0x7fffffff-0.5;
+  const p = N.map(()=>[rnd(),rnd(),rnd()]);
+  const adj = N.map(n=>SOLID.ADJ[n].map(m=>IDX[m]));
+  for(let it=0; it<3000; it++){
+    const f = p.map(()=>[0,0,0]);
+    for(let i=0;i<12;i++) for(let j=0;j<12;j++){
+      if(i===j) continue;
+      const d=[p[j][0]-p[i][0],p[j][1]-p[i][1],p[j][2]-p[i][2]];
+      const L=Math.hypot(...d)||1e-6, u=d.map(v=>v/L);
+      const linked = adj[i].includes(j);
+      /* members pull toward 1; everything else pushes apart */
+      const g = linked ? (L-1)*0.5 : -0.35/(L*L);
+      for(let k=0;k<3;k++) f[i][k]+=u[k]*g;
+    }
+    for(let i=0;i<12;i++) for(let k=0;k<3;k++) p[i][k]+=f[i][k]*0.08;
+    const c=[0,1,2].map(k=>p.reduce((a,q)=>a+q[k],0)/12);
+    for(let i=0;i<12;i++) for(let k=0;k<3;k++) p[i][k]-=c[k];
+  }
+  /* ORIENT IT. The relaxation finds a cuboctahedron but has no idea which way is
+     up, so the first walk drew ↑CAST below the waterline and ↓DEEP above it — a
+     figure contradicting its own labels. The axis is not chosen: it is the line
+     from the rising seats' centre to the falling seats' centre, which is a fact
+     about the labelling, not a preference. Falling becomes +y, screen-down. */
+  const mid = f => { const g=[0,0,0], s=N.filter(n=>SOLID.falls(n)===f);
+    s.forEach(n=>{ const q=p[IDX[n]]; for(let k=0;k<3;k++) g[k]+=q[k]/s.length; }); return g; };
+  const a=mid(false), b=mid(true);
+  let e1=[b[0]-a[0],b[1]-a[1],b[2]-a[2]];
+  const L=Math.hypot(...e1)||1; e1=e1.map(v=>v/L);
+  const seed = Math.abs(e1[0])<0.9 ? [1,0,0] : [0,1,0];
+  const cross=(u,v)=>[u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+  let e0=cross(e1,seed); const L0=Math.hypot(...e0)||1; e0=e0.map(v=>v/L0);
+  const e2=cross(e0,e1);
+  const dot=(u,v)=>u[0]*v[0]+u[1]*v[1]+u[2]*v[2];
+  return p.map(q=>[dot(q,e0), dot(q,e1), dot(q,e2)]);
+})();
+
+const CHECK = (()=>{
+  const dist=(a,b)=>Math.hypot(P[a][0]-P[b][0],P[a][1]-P[b][1],P[a][2]-P[b][2]);
+  const mem=[], non=[];
+  for(let i=0;i<12;i++) for(let j=i+1;j<12;j++)
+    (SOLID.isMember(N[i],N[j])?mem:non).push(dist(i,j));
+  const lo=Math.min(...mem), hi=Math.max(...mem), spread=(hi-lo)/hi;
+  const ok = mem.length===24 && spread<0.02 && Math.min(...non) > hi*1.05;
+  /* Does the orientation actually separate the two directions, or only lean?
+     Reported either way — a figure that half-separates must not read as one
+     that does. */
+  const fy=N.filter(n=>SOLID.falls(n)).map(n=>P[IDX[n]][1]);
+  const ry=N.filter(n=>!SOLID.falls(n)).map(n=>P[IDX[n]][1]);
+  const split = Math.min(...fy) > Math.max(...ry);
+  return {ok, split, n:mem.length, spread, sep:Math.min(...non)/hi};
+})();
+
+/* ═══ marks ══════════════════════════════════════════════════════════════════ */
+const KEY="nesi.tiles.1";
+let MARK={}; try{ MARK=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){}
+const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(MARK)); }catch(e){} };
+const nTaken = seat => ((FIELD[seat]||{}).tiles||[])
+  .filter((t,i)=>MARK[seat+"/"+i]==="take").length;
+
+/* ═══ draw ═══════════════════════════════════════════════════════════════════ */
+const cv=document.getElementById("c"), cx=cv.getContext("2d");
+/* rx starts at ZERO and that is load-bearing, not a taste. The y-rotation
+   preserves y; the x-rotation mixes y into z. Any opening tilt would scramble
+   the falling/rising order the embedding was just oriented to hold, and the
+   third walk showed exactly that — a correct figure reading wrong. The hand may
+   tilt it; the surface may not open tilted. */
+let W=0,H=0,DPR=1, rx=0, ry=0.62, cur=null, hov=null, drag=null;
+
+function fit(){ DPR=Math.min(2,devicePixelRatio||1);
+  W=cv.clientWidth; H=cv.clientHeight; cv.width=W*DPR; cv.height=H*DPR;
+  cx.setTransform(DPR,0,0,DPR,0,0); }
+/* resizing the backing store CLEARS it, so a fit that does not redraw leaves a
+   blank canvas that looks like a dead script. Caught by the first walk. */
+new ResizeObserver(()=>{ fit(); frame(); }).observe(cv); fit();
+
+function project(){
+  const ca=Math.cos(ry), sa=Math.sin(ry), cb=Math.cos(rx), sb=Math.sin(rx);
+  const R=Math.min(W,H)*0.30, ox=W/2, oy=H/2;
+  return P.map(([x,y,z])=>{
+    let X=x*ca - z*sa, Z=x*sa + z*ca;
+    let Y=y*cb - Z*sb;  Z=y*sb + Z*cb;
+    const persp = 1/(1 - Z*0.13);
+    return {x:ox+X*R*persp, y:oy+Y*R*persp, z:Z, r:persp};
+  });
+}
+
+function frame(){
+  cx.clearRect(0,0,W,H);
+  const pts=project();
+
+  /* the waterline — falling below it, rising above. Drawn from the figure's own
+     seats, never from a stored y. */
+  const fy=N.filter(SOLID.falls).map(n=>pts[IDX[n]].y);
+  const ry_=N.filter(n=>!SOLID.falls(n)).map(n=>pts[IDX[n]].y);
+  const line=(Math.min(...fy)+Math.max(...ry_))/2;
+  const g=cx.createLinearGradient(0,line,0,H); g.addColorStop(0,"rgba(74,108,122,.05)");
+  g.addColorStop(1,"rgba(74,108,122,.13)"); cx.fillStyle=g; cx.fillRect(0,line,W,H-line);
+  cx.strokeStyle="rgba(74,108,122,.28)"; cx.lineWidth=1;
+  cx.beginPath(); cx.moveTo(0,line); cx.lineTo(W,line); cx.stroke();
+  cx.font="10px ui-monospace,Consolas,monospace"; cx.fillStyle=PAL.taken;
+  cx.textAlign="left"; cx.fillText("RISING · light", 16, line-9);
+  cx.fillText("FALLING · water", 16, line+18);
+
+  /* the 24 members, back to front */
+  const ms=SOLID.MEMBERS.map(m=>({m,a:pts[IDX[m.a]],b:pts[IDX[m.b]]}))
+    .sort((u,v)=>(u.a.z+u.b.z)-(v.a.z+v.b.z));
+  ms.forEach(({m,a,b})=>{
+    const near=(a.z+b.z)/2>0, lit=hov&&(m.a===hov||m.b===hov);
+    cx.strokeStyle = lit ? PAL.shoot : (near?"rgba(40,40,44,.34)":"rgba(40,40,44,.12)");
+    cx.lineWidth = lit?2:(near?1.3:0.8);
+    cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke();
+  });
+
+  /* the twelve seats */
+  N.map((n,i)=>({n,p:pts[i]})).sort((u,v)=>u.p.z-v.p.z).forEach(({n,p})=>{
+    const f=SOLID.falls(n), taken=nTaken(n), tiles=(FIELD[n].tiles||[]).length;
+    const on=n===cur, over=n===hov;
+    const R=(over||on?9:7)*p.r;
+    cx.beginPath(); cx.arc(p.x,p.y,R,0,7);
+    cx.fillStyle = tiles===0 ? PAL.paper : (f?PAL.water:PAL.horizon);
+    cx.globalAlpha = p.z>0?1:.55; cx.fill(); cx.globalAlpha=1;
+    cx.lineWidth = on?2.4:1.2;
+    cx.strokeStyle = on?PAL.ink:(taken?PAL.shoot:PAL.edge); cx.stroke();
+    /* taken tiles show as a ring of ticks — form, not a figure */
+    for(let k=0;k<taken;k++){
+      const a=-Math.PI/2 + k*0.42;
+      cx.beginPath(); cx.moveTo(p.x+Math.cos(a)*(R+3),p.y+Math.sin(a)*(R+3));
+      cx.lineTo(p.x+Math.cos(a)*(R+7),p.y+Math.sin(a)*(R+7));
+      cx.strokeStyle=PAL.shoot; cx.lineWidth=1.6; cx.stroke();
+    }
+    cx.font=(over||on?"12.5px ":"11.5px ")+'"Iowan Old Style",Georgia,serif';
+    cx.fillStyle = (over||on)?PAL.ink:PAL.stone; cx.textAlign="center";
+    cx.globalAlpha = p.z>0?1:.6;
+    cx.fillText((f?"↓":"↑")+n, p.x, p.y-R-7); cx.globalAlpha=1;
+  });
+
+  const c=document.getElementById("check");
+  c.className = CHECK.ok?"":"bad";
+  c.innerHTML = (CHECK.ok
+    ? `the figure <b>is</b> the solid — ${CHECK.n} members, all one length within `
+      +`${(CHECK.spread*100).toFixed(2)}%, nearest non-member ${CHECK.sep.toFixed(2)}× further`
+    : `<b>the figure is NOT the solid</b> — ${CHECK.n} members, spread `
+      +`${(CHECK.spread*100).toFixed(1)}%. Do not read the drawing as the shape.`)
+    + (CHECK.split
+       ? ` · falling sits wholly below rising`
+       : ` · <b>the waterline does not separate them</b> — the labels are true, the drawing only leans`);
+}
+
+function hit(e){
+  const r=cv.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  const pts=project(); let best=null, bd=17;
+  N.forEach((n,i)=>{ const d=Math.hypot(pts[i].x-mx,pts[i].y-my); if(d<bd){bd=d;best=n;} });
+  return best;
+}
+cv.addEventListener("pointerdown",e=>{ drag={x:e.clientX,y:e.clientY,rx,ry,moved:0};
+  cv.classList.add("dragging"); cv.setPointerCapture(e.pointerId); });
+cv.addEventListener("pointermove",e=>{
+  if(drag){ const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    drag.moved=Math.max(drag.moved,Math.hypot(dx,dy));
+    ry=drag.ry+dx*0.008; rx=drag.rx+dy*0.008; frame(); return; }
+  const h=hit(e); if(h!==hov){ hov=h; frame(); }               /* reach */
+});
+cv.addEventListener("pointerup",e=>{
+  cv.classList.remove("dragging");
+  const moved=drag?drag.moved:99; drag=null;
+  if(moved<4){ const h=hit(e); if(h){ cur=h; panel(); frame(); } }
+});
+cv.addEventListener("pointerleave",()=>{ hov=null; frame(); });
+
+/* ═══ the panel ══════════════════════════════════════════════════════════════ */
+function panel(){
+  const F=FIELD[cur], f=SOLID.falls(cur);
+  document.getElementById("nm").textContent=(f?"↓ ":"↑ ")+cur;
+  document.getElementById("dir").textContent =
+    (f?"falling · water":"rising · light")+" · on circuits "+SOLID.circuitsOf(cur).map(i=>i+1).join(" and ")
+    +" · opposite "+SOLID.antipodeOf(cur);
+  document.getElementById("lede").textContent=F.lede;
+  const box=document.getElementById("tiles"); box.innerHTML="";
+
+  if(!F.tiles){
+    box.innerHTML=`<div id="empty"><p>${F.empty}</p>
+      <p class="law" style="margin-top:12px">${F.law}</p>
+      <p style="margin-top:12px">${F.after}</p></div>`;
+    return;
+  }
+  F.tiles.forEach((t,i)=>{
+    const id=cur+"/"+i, m=MARK[id]||"";
+    const d=document.createElement("div");
+    d.className="tile"+(m==="take"?" taken":"")+(m==="drop"?" dropped":"");
+    d.innerHTML=`<div class="nm"><b>${t.n}</b></div><div class="src">${t.s}</div>
+      <div class="cr">${t.c}</div>
+      ${t.good?`<div class="col" style="color:#4f6a3d;border-color:#4f6a3d">${t.good}</div>`:""}
+      ${t.col?`<div class="col">${t.col}</div>`:""}
+      <div class="conf">${t.k}</div>`;
+    const a=document.createElement("div"); a.className="acts";
+    [["take","take"],["drop","drop to the lake"],["set","set it down"]].forEach(([v,label])=>{
+      const b=document.createElement("button"); b.textContent=label;
+      if(m===v&&v!=="set") b.className="on";
+      b.onclick=()=>{
+        /* set-it-down: recorded as taken-out-of-play, and NOTHING is shown.
+           No toast, no chime, no counter. The absence is the feedback. */
+        MARK[id] = (MARK[id]===v) ? "" : v; save();
+        if(v!=="set"){ panel(); frame(); }
+      };
+      a.appendChild(b);
+    });
+    if(m==="take"){ const s=document.createElement("span"); s.className="mk";
+      s.textContent="in the seat"; a.appendChild(s); }
+    d.appendChild(a); box.appendChild(d);
+  });
+}
+
+document.getElementById("ex").onclick=()=>{
+  const o=document.getElementById("out");
+  if(o.style.display==="block"){ o.style.display="none"; return; }
+  const lines=[];
+  N.forEach(n=>((FIELD[n].tiles)||[]).forEach((t,i)=>{
+    const m=MARK[n+"/"+i]; if(m==="take"||m==="drop")
+      lines.push((SOLID.falls(n)?"↓":"↑")+n+"  "+m.toUpperCase().padEnd(5)+"  "+t.n);
+  }));
+  o.value = lines.length ? lines.join("\n")
+    : "Nothing marked. Blank is a complete state.";
+  o.style.display="block";
+};
+
+cur="TANK"; panel(); frame();
+</script>

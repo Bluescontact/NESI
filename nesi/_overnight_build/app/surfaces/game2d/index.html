@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NESI</title>
+
+<!-- ■ 2026-08-16 — THE DOOR IS THE SOLID.
+     Kevin: "rebuild the door on the solid, not my invented bands." The three
+     terrain bands that stood here for one hour were a rendering of his three
+     arms (mark, 09:10) and they were NOT the geometry: they had no vertex
+     count, no members, no antipodes, and would have accepted as many places as
+     were drawn into them. That is the exact property the solid exists to deny.
+     "The geometry keeps the game honest."
+
+     Nothing here is drawn by hand. The figure is read from solid.js — the same
+     module ascent.html and world_check.js read, whose own assertion is that
+     "the figure drawn IS the solid." Twelve seats at the cuboctahedron's real
+     coordinates, twenty-four members with their kinds, four circuits.
+
+     WHAT THE GEOMETRY DETERMINES, AND IS NOT INVENTED HERE:
+       · every seat has degree four, so no dead end is constructible
+       · every seat sits on exactly two of the four circuits
+       · DOOR_OUT is the member TANK—CAST — solid.js names it, and daily.html's
+         sill already walks it to ascent.html#cast. So the day is at TANK.
+       · a hash that names anything but a seat is refused and the map stands
+         (ascent.html:2772), so every seat is safe to wire.
+
+     WHAT IS NOT SITED, AND IS SHOWN AS NOT SITED: eight surfaces hold no seat.
+     They are not folded into the figure to make it look full. The solid has
+     twelve vertices and no thirteenth, which is the whole of its honesty.
+
+     ── SUPERSEDED, KEPT WHOLE ────────────────────────────────────────────
+     2026-08-16 16:42, Kevin: "THE DOOR IS THE NEXT BUILD. One world:
+     index.html opens into a world holding daily, ascent, field, regathered,
+     tiles - not a redirect to one page. Chosen against 3-of-59 reachable."
+     2026-08-14: "The door is the daily surface, because that is the game: a
+     page you open and write into." The daily surface is not demoted — it is at
+     TANK, which is the mouth the writing enters by.
+     nesi.html has no door: COUNSEL_ORDER_2026-08-15.md:123 — "stays behind its
+     integrity gate." That gate is Kevin's and stays shut until he opens it. -->
+
+<style>
+  :root{
+    --sky:#cdd5d2; --sky2:#dfe6e3; --ink:#3b372f; --dim:#7d766a;
+    --edge:rgba(90,84,74,.55); --fall:rgba(74,92,102,.75); --rise:rgba(140,116,74,.8);
+    --turn:#8a5a2b; --form:#faf8f2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sky:#1b2220; --sky2:#131917; --ink:#e6e0d4; --dim:#9a9284;
+      --edge:rgba(200,190,170,.34); --fall:rgba(150,180,190,.6); --rise:rgba(210,175,120,.62);
+      --turn:#c99a63; --form:#2a251d;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:linear-gradient(to bottom,var(--sky2),var(--sky));color:var(--ink);
+    overflow:hidden;font:400 14px/1.5 ui-serif,Georgia,"Iowan Old Style",serif;
+    -webkit-font-smoothing:antialiased}
+  #c{position:fixed;inset:0;display:block;touch-action:none;cursor:grab}
+  #c:active{cursor:grabbing}
+  #seats{position:fixed;inset:0;pointer-events:none}
+  a.seat{
+    position:absolute;transform:translate(-50%,-50%);pointer-events:auto;
+    text-decoration:none;color:var(--ink);font-size:11.5px;letter-spacing:.1em;
+    padding:5px 8px;border-radius:2px;white-space:nowrap;outline:none;
+    background:transparent;
+  }
+  a.seat b{font-weight:400;display:block}
+  /* the sub-line is lifted OUT of the box. Held in flow it added height the
+     name was then centred against, so every label floated above its own
+     vertex — invisible to getBoundingClientRect, obvious the moment the page
+     was looked at. The measurement was not wrong; it was not the walk. */
+  a.seat i{position:absolute;left:50%;top:100%;transform:translateX(-50%);
+    font-size:9.5px;font-style:normal;color:var(--dim);opacity:0;white-space:nowrap;
+    letter-spacing:.04em;transition:opacity .13s;pointer-events:none}
+  a.seat:hover i,a.seat:focus-visible i{opacity:1}
+  a.seat:hover b,a.seat:focus-visible b{color:var(--turn)}
+  a.seat:focus-visible{box-shadow:0 0 0 2px var(--edge)}
+  #bench{
+    position:fixed;left:0;right:0;bottom:0;padding:11px 16px 13px;
+    border-top:1px solid var(--edge);background:linear-gradient(to top,var(--sky),transparent);
+  }
+  #bench .hd{font:400 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+  #bench a{display:inline-block;margin:0 16px 3px 0;color:var(--dim);
+    text-decoration:none;font-size:12.5px;border-bottom:1px solid transparent}
+  #bench a:hover,#bench a:focus-visible{color:var(--ink);border-bottom-color:var(--edge);outline:none}
+  #hint{position:fixed;left:16px;top:14px;font-size:10.5px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dim);font-family:ui-sans-serif,system-ui,sans-serif}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="seats"><nav id="nav" aria-label="the twelve seats"></nav></div>
+<div id="hint">turn it</div>
+
+<div id="bench">
+  <div class="hd">holding no seat</div>
+  <!-- THE ASCENT, added 2026-08-17 on Kevin's "close all three gaps". It carries
+       the thirteen constraints and the only unbind — the whole surface on which a
+       boundary can be lifted by his hand — and until this line its inbound routes
+       were two conditional hrefs, one of them inside a surface no person has
+       walked. A constitution reachable by condition is reachable by accident.
+       Listed first because of what it holds. -->
+  <a href="ascent.html">the ascent · the boundaries</a><a href="descent.html">the descent · the twelve</a><a href="traversal.html">the traversal</a><a href="level_one.html">the writing tetra</a><a href="field.html">the field</a><a href="regathered.html">the regathered ground</a><a href="world.html">the world</a><a href="tiles.html">the tile field</a><a href="crystal.html">the instrument</a><a href="decisions.html">the forks</a><a href="options.html">the option spaces</a><a href="day_one.html">day one at TANK</a><a href="node.html">the node</a>
+</div>
+
+<script src="solid.js"></script>
+<script>
+/* The figure is READ, never drawn by hand. If solid.js changes, this changes.
+   Nothing is stored: no last-seat, no visited-badge, no return-nag. A door that
+   remembers you is keeping a ledger. */
+(function(){
+  var S = window.SOLID;
+  var cv = document.getElementById("c"), g = cv.getContext("2d"), nav = document.getElementById("nav");
+
+  /* THE DOOR NEVER GOES BLANK. The figure is read from solid.js rather than
+     copied here, because a second copy of the geometry would drift from the
+     first and the drift would be invisible — the same fault that has two
+     crystals and two nodes on this machine with no authority declared.
+     The cost of reading rather than copying is this dependency, so it is
+     handled out loud: if the solid cannot be read, the door says exactly that
+     and the bench below still opens. A blank page would be the worst refusal
+     in the build — one that explains nothing and leaves nowhere to go. */
+  if(!S || !S.NAMES || !S.EMBED){
+    document.getElementById("hint").textContent = "the solid could not be read";
+    nav.innerHTML = '<div style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);' +
+      'max-width:30rem;text-align:center;pointer-events:auto;line-height:1.6">' +
+      '<p style="margin:0 0 .6rem"><b style="font-weight:400">solid.js did not load, so the twelve seats are not drawn.</b></p>' +
+      '<p style="margin:0;font-size:12.5px;color:var(--dim)">The figure is read from that file and never copied, ' +
+      'so there is no second copy to fall back to — that is deliberate. ' +
+      'Everything holding no seat is still open below.</p></div>';
+    return;
+  }
+
+  /* the day is at TANK because solid.js says DOOR_OUT is TANK—CAST and
+     tank.html's sill already walks that member (daily.html did, until
+     tank.html superseded it on 2026-08-18 — this wire was left pointing at
+     the retired file; fixed 2026-08-19 after a cold stranger-walk found the
+     door delivering a file that documents its own retirement in its own
+     header). Every other seat enters the ascent at itself; a hash naming a
+     non-seat is refused there and the map stands, so this cannot land
+     nowhere. */
+  var HREF = {}, SUB = {};
+  S.NAMES.forEach(function(n){ HREF[n] = "ascent.html#" + n.toLowerCase(); });
+  HREF.TANK = "tank.html"; SUB.TANK = "write into it";
+  SUB.CAST = "where the sill lands";
+
+  var yaw = 0.62, pitch = -0.34, drag = null, W = 0, H = 0, R = 1, cx = 0, cy = 0;
+
+  var anchors = S.NAMES.map(function(n){
+    var a = document.createElement("a");
+    a.className = "seat"; a.href = HREF[n];
+    a.innerHTML = "<b>" + n + "</b><i>" + (SUB[n] || (S.SEATS[n].fall ? "falls" : "rises")) + "</i>";
+    nav.appendChild(a); return { name: n, el: a, p: S.EMBED[n] };
+  });
+
+  function project(v){
+    var cy_ = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var x = v[0] * cy_ + v[2] * sy;
+    var z = -v[0] * sy + v[2] * cy_;
+    var y = v[1] * cp - z * sp;
+    var zz = v[1] * sp + z * cp;
+    return [cx + x * R, cy - y * R, zz];
+  }
+
+  function size(){
+    var d = window.devicePixelRatio || 1;
+    W = window.innerWidth; H = window.innerHeight;
+    /* clientWidth/clientHeight are READ-ONLY — assigning to them fails in
+       silence, so the canvas kept the CSS size its width attribute gave it and
+       the whole figure was drawn at devicePixelRatio scale (1.25x here) while
+       the seat labels sat correctly in viewport pixels. Every measurement
+       passed: nothing stacked, nothing offscreen, the anchors were right. Only
+       looking at it showed the figure sliding off its own labels. The CSS size
+       is set explicitly now, in pixels, next to the backing-store size. */
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d);
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    g.setTransform(d, 0, 0, d, 0, 0);
+    /* The bench is a real floor and the labels are real width. R was set from
+       the raw viewport and the figure ran off the right edge and under the
+       bench. The solid is sized to the room it actually has, not the room the
+       window has. A vertex is at radius sqrt(2), and a label reaches about
+       90px past it. */
+    var bench = (document.getElementById("bench") || {}).offsetHeight || 74;
+    cx = W / 2; cy = (H - bench) / 2;
+    R = Math.max(60, Math.min((W / 2 - 96), ((H - bench) / 2 - 44)) / Math.SQRT2);
+  }
+
+  function draw(){
+    g.clearRect(0, 0, W, H);
+    var P = {}; S.NAMES.forEach(function(n){ P[n] = project(S.EMBED[n]); });
+
+    /* members, back to front, each carrying its own kind — the geometry's
+       distinction, not a decoration added here */
+    var ms = S.MEMBERS.slice().sort(function(a, b){
+      return (P[a.a][2] + P[a.b][2]) - (P[b.a][2] + P[b.b][2]);
+    });
+    var css = getComputedStyle(document.documentElement);
+    ms.forEach(function(m){
+      var A = P[m.a], B = P[m.b], back = (A[2] + B[2]) / 2 < 0;
+      var col = m.kind === "fall" ? "--fall" : m.kind === "rise" ? "--rise" : "--turn";
+      g.strokeStyle = css.getPropertyValue(col).trim() || "#888";
+      g.globalAlpha = back ? 0.22 : (m.kind === "turn" || m.kind === "return" ? 0.95 : 0.6);
+      g.lineWidth = (m.kind === "turn" || m.kind === "return") ? 2 : 1.1;
+      g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke();
+    });
+    g.globalAlpha = 1;
+
+    anchors.forEach(function(a){
+      var p = P[a.name], back = p[2] < 0;
+      a.el.style.left = p[0] + "px"; a.el.style.top = p[1] + "px";
+      a.el.style.opacity = back ? 0.34 : 1;
+      a.el.style.zIndex = back ? 1 : 3;
+      g.beginPath();
+      g.arc(p[0], p[1], back ? 2.4 : 3.6, 0, 7);
+      g.fillStyle = css.getPropertyValue("--form").trim();
+      g.strokeStyle = css.getPropertyValue("--edge").trim();
+      g.globalAlpha = back ? 0.4 : 1; g.fill(); g.stroke(); g.globalAlpha = 1;
+    });
+  }
+
+  cv.addEventListener("pointerdown", function(e){ drag = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointerup",   function(){ drag = null; });
+  cv.addEventListener("pointercancel", function(){ drag = null; });
+  cv.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    yaw += (e.clientX - drag.x) * 0.008;
+    pitch = Math.max(-1.35, Math.min(1.35, pitch + (e.clientY - drag.y) * 0.006));
+    drag = { x: e.clientX, y: e.clientY }; draw();
+  });
+  window.addEventListener("resize", function(){ size(); draw(); });
+
+  size(); draw();
+})();
+</script>
+</body>
+</html>

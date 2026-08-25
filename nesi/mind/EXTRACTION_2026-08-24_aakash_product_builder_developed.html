@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Product Builder Thread</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto}
+.brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.18;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font:inherit;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)} .tabgroup{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)} .tabgroup:first-child{margin-top:0;padding-top:0;border-top:0}
+.grouplabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:4px 10px;font-weight:800}
+main{min-width:0} .topbar{height:50px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:1080px;margin:0 auto;padding:40px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:32px;letter-spacing:-.03em;line-height:1.14;margin:6px 0 12px} h3{margin:.2rem 0 .3rem;font-size:17px} p{max-width:78ch}
+.lede{font-size:18px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.seal{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:22px 0 30px} .seal>div{padding:13px 12px;border-right:1px solid var(--line)} .seal>div:last-child{border:0} .seal span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.giftcard{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:24px 26px;margin-bottom:20px}
+.chiprow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:9px;letter-spacing:.09em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
+.chip.gold{background:var(--gold-soft);color:var(--gold)} .chip.green{background:var(--green-soft);color:var(--green)} .chip.red{background:var(--red-soft);color:var(--red)}
+blockquote{margin:12px 0;padding:11px 15px;border-left:2px solid var(--gold);background:var(--gold-soft);font-size:14.5px}
+.stepgrid{display:grid;gap:10px;margin-top:16px}
+.step{border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:12px 14px}
+.step b{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.step p{margin:0;font-size:14px}
+.routeline{margin-top:14px;padding:12px 15px;border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 9px 9px 0;font-size:14px}
+.routeline.open{border-left-color:var(--muted);background:var(--line)}
+.process{counter-reset:step;display:grid;gap:11px;max-width:820px} .process article{counter-increment:step;display:grid;grid-template-columns:38px 1fr;gap:13px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px} .process article:before{content:counter(step,decimal-leading-zero);width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14.5px} .process p{margin:0;color:var(--muted);font-size:13px}
+.prompt{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:19px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.65;overflow:auto;margin-bottom:20px}
+.prompt-label{display:flex;justify-content:space-between;align-items:center;margin:22px 0 8px} .prompt-label b{font-size:12px} .prov{font-size:10px;color:var(--muted)}
+.source-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:17px;margin-bottom:12px} .source-card h3{font-size:15px;margin:0 0 6px} .source-card p{color:var(--muted);font-size:13.5px;margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px} th,td{text-align:left;padding:8px 7px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em}
+.keyline{margin:20px 0 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:80ch}
+.devnote{border:1px solid var(--gold);border-radius:12px;background:var(--gold-soft);padding:13px 15px;font-size:12.5px;color:var(--ink);margin:14px 0} .devnote b{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+@media(max-width:900px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;flex-wrap:nowrap} .tabgroup{margin:0;padding:0;border:0;display:flex} .grouplabel{display:none} .seal{grid-template-columns:repeat(2,1fr)} .panel{padding:28px 18px 60px} .topbar{padding:0 18px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">External Extraction · developed</div><h1>PRODUCT<br>BUILDER<br>THREAD</h1><p>Aakash Gupta thread → NESI · 2026-08-24</p></div>
+  <div class="seal-mini"><b>NO NETWORK</b><br>all CSS + JS inline · no external fonts · no storage writes<br><br><b>DEVELOPMENT PASS</b> full-development procedure run on Kevin's mark over 7 gifts named from the filed extraction deck · see Process tab</div>
+  <nav class="tabs" role="tablist">
+    <div class="tabgroup"><div class="grouplabel">Session</div>
+      <button class="tabbtn active" data-tab="home" role="tab">Home</button>
+      <button class="tabbtn" data-tab="prompts" role="tab">Prompts</button>
+      <button class="tabbtn" data-tab="process" role="tab">Process</button>
+    </div>
+    <div class="tabgroup"><div class="grouplabel">Gifts · cards</div>
+      <button class="tabbtn" data-tab="gift-1" role="tab">1 · Model before tool</button>
+      <button class="tabbtn" data-tab="gift-2" role="tab">2 · Data first</button>
+      <button class="tabbtn" data-tab="gift-3" role="tab">3 · One third</button>
+      <button class="tabbtn" data-tab="gift-4" role="tab">4 · Six competencies</button>
+    </div>
+    <div class="tabgroup"><div class="grouplabel">Gifts · pattern reads</div>
+      <button class="tabbtn" data-tab="gift-5" role="tab">5 · P1 · Compression</button>
+      <button class="tabbtn" data-tab="gift-6" role="tab">6 · P2 · Inventory→Audit</button>
+      <button class="tabbtn" data-tab="gift-7" role="tab">7 · P3 · Escalation</button>
+    </div>
+    <div class="tabgroup"><div class="grouplabel">Record</div>
+      <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+      <button class="tabbtn" data-tab="routes" role="tab">Routes</button>
+    </div>
+  </nav>
+</aside>
+<main>
+  <div class="topbar"><div class="crumb">nesi / mind / extraction · <span id="crumb">home</span></div><div class="status"><span class="dot"></span> self-contained · no writes</div></div>
+
+<section class="panel active" id="panel-home" data-panel="home">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Developed pass · filed extraction deck, marked whole</div>
+  <h2>Seven gifts, named and routed — the deck's own cards carried one step further.</h2>
+  <p class="lede">The External Extraction on the Aakash Gupta "Product Builder" thread filed four audited cards and five second-pass pattern reads, then stopped at the gate: "Cards order nothing. They wait at the gate. The mark is Kevin's." This file is what happened after the mark — Kevin named all four cards and three of the five pattern reads (P1, P2, P3) as gifts to develop, and asked for the build in HTML. Each gift below ran through the same discipline as the corpus's other full-development passes: diverge the routing options, converge on one, ground it against what's actually in this repo (not assumed), and name where it lands.</p>
+  <div class="seal">
+    <div><span>SOURCE</span><b>X/Twitter thread, pasted whole by Kevin</b></div>
+    <div><span>UPSTREAM DECK</span><b>filed extraction, 4 cards + 5 patterns</b></div>
+    <div><span>MARKED THIS PASS</span><b>Cards 1–4, Patterns P1–P3</b></div>
+    <div><span>HELD OPEN</span><b>P4, P5 — not marked, not developed</b></div>
+  </div>
+  <div class="keyline">Nothing in this file adds a new law. What it does is check each marked gift against the repo as it actually stands — Terminal Law and the Escalation Rule are grounded by direct grep against <code>nesi/mind/PROTOCOLS.md</code> and <code>nesi/mind/ESCALATION_CONDITIONS.md</code> before being cited, not recalled from the deck's own claim about them.</div>
+</section>
+
+<section class="panel" id="panel-prompts" data-panel="prompts">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Verbatim · this session</div>
+  <h2>Prompts</h2>
+  <p class="lede">Kevin's own words, unedited.</p>
+  <div class="prompt-label"><b>MESSAGE 1</b><span class="prov">VERBATIM · USER</span></div>
+  <div class="prompt">i'd like you to help me recognize gifts to develop and build from this into a html development.</div>
+  <div class="prompt-label"><b>MESSAGE 2 · after a clarifying question was dismissed</b><span class="prov">VERBATIM · USER</span></div>
+  <div class="prompt">all the above.</div>
+  <div class="devnote"><b>What "all the above" resolved to</b>Three questions were asked and dismissed as a set, then answered in one line against all three: (1) which cards to mark — all four; (2) which pattern reads to mark — P1, P2, P3 (the fourth option offered was "none," so this reads as the three named patterns, not P4/P5, which were never offered as selectable in that question); (3) output shape — both a repo file and a standalone artifact, since both options were offered and neither was excluded.</div>
+</section>
+
+<section class="panel" id="panel-process" data-panel="process">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">How this file was built</div>
+  <h2>Process</h2>
+  <p class="lede">The full-development shape — compost, inventory, audit, diverge, converge, dream, ground, route — applied to material that had already been through one inventory/audit pass (the filed deck). This pass starts from the mark, not from scratch.</p>
+  <div class="process">
+    <article><h3>Compost check</h3><p>Re-read the filed deck's own audit verdict before touching it — confirmed the deck already separated what passed (the ordering claims, the taxonomy) from what was cut (the credibility-laundering framing, the closing thesis). Nothing re-opened that verdict; this pass builds on it rather than re-auditing the raw thread.</p></article>
+    <article><h3>Inventory the mark</h3><p>Seven items named: Cards 1–4 (audited nutrients) and P1–P3 (second-pass pattern reads). P4 and P5 were named in the deck as "open questions, not findings" — not offered in the marking question, so held outside this file rather than silently absorbed.</p></article>
+    <article><h3>Diverge, per gift</h3><p>For each of the seven, more than one routing was possible — cite as corroboration, propose a new instrument, or hold as a comparison point with no action. Each gift's tab shows the options that were actually weighed, not just the one chosen.</p></article>
+    <article><h3>Ground before converging</h3><p>Before naming a route, grepped the live repo for the thing being cited — Terminal Law, the Escalation Rule, SOIL's Inventory→Audit split — rather than trusting the deck's own description of them. Two things it claimed exist do exist, checked directly against <code>nesi/mind/PROTOCOLS.md</code> and <code>nesi/mind/ESCALATION_CONDITIONS.md</code>.</p></article>
+    <article><h3>Converge and route</h3><p>Each gift lands on exactly one of: cite as a second source (no new artifact needed), flag for a future instrument (named, not built), or hold as a comparison point with no route yet. None converge to "adopt as new law" — the deck's own material is corroboration-strength, not law-strength, on a single unreachable-source thread.</p></article>
+    <article><h3>Build</h3><p>Rendered as this file, following the tab-per-gift, prompts-verbatim, self-contained shape first named 2026-08-24 in <code>WORKBENCH_BRIDGE_2026-08-24_developed.html</code> — reused rather than reinvented, per that file's own line: "a later session may reuse this shape for its own session."</p></article>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-1" data-panel="gift-1">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Card 1 · Capacity M · Effort L · Confidence H</div>
+  <h2>Model before tool</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip gold">corroboration</span><span class="chip">not a new law</span><span class="chip green">grounded</span></div>
+    <p>The thread's own sequencing claim, stated twice in adjacent steps without hedging:</p>
+    <blockquote>Step 1: "Before any tool, the mental model." Step 3, describing the tools layer directly beneath it: "It's just one component."</blockquote>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Write a new NESI law naming the model/instrument split. (b) Cite as a second, independent source for a split NESI already treats as law. (c) Hold as an interesting parallel with no action.</p></div>
+      <div class="step"><b>Ground</b><p>Grepped <code>nesi/mind/PROTOCOLS.md:615</code>: "Terminal Law, already adopted: no interface may require more capacity than the movement it governs." The split this card names — don't let the tool stand in for the authority that should govern its use — is the same move in an unrelated domain. Confirmed live in the repo, not just claimed by the deck.</p></div>
+      <div class="step"><b>Converge</b><p>(b). A new law would be redundant — Terminal Law already holds this ground. What this card actually adds is a second, external, independently-arrived-at data point that the split isn't a NESI-only intuition.</p></div>
+    </div>
+    <div class="routeline">Route: cited as a corroborating instance under Terminal Law. No new file. If <code>PROTOCOLS.md</code>'s Terminal Law section is ever revised, this thread is available as a second-source footnote — not before.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-2" data-panel="gift-2">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Card 2 · Capacity M · Effort L · Confidence H</div>
+  <h2>Data first, agents second</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip">flag only</span><span class="chip red">no worked example</span></div>
+    <p>Step 4's hook, attached to "Set up your operating system":</p>
+    <blockquote>"Data first, agents second."</blockquote>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Treat as a second data point under Terminal Law, same as Gift 1. (b) Flag as its own open question about substrate-before-actor ordering, since it has no elaboration in the extractable text. (c) Discard as too thin to carry.</p></div>
+      <div class="step"><b>Ground</b><p>The deck itself already named this limit: "no worked example behind it in the extractable material, only the hook line itself." Nothing in this pass changes that — there's no repo artifact to check it against because it's a bare claim with no operational content.</p></div>
+      <div class="step"><b>Converge</b><p>(b). Folding it into Gift 1 would overstate what it actually says — Gift 1 has two adjacent, mutually-reinforcing sentences; this card has one, unelaborated. Keeping it separate keeps the confidence rating honest.</p></div>
+    </div>
+    <div class="routeline open">Route: none yet. Held as a named, sourced flag — worth re-checking if a second source ever corroborates the same ordering claim about data-substrate preceding agent-actor.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-3" data-panel="gift-3">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Card 3 · Capacity M · Effort L · Confidence M</div>
+  <h2>Shipping is one third of the job</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip">open question</span><span class="chip gold">measurement candidate</span></div>
+    <p>Step 8's hook, attached to "Master the work around product":</p>
+    <blockquote>"Shipping is one third of the job."</blockquote>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Try to compute NESI's own wired-output ratio directly in this pass. (b) Name it as a measurement a future instrument could run, without running it here. (c) Discard as an uncorroborated ratio-claim from a single thread.</p></div>
+      <div class="step"><b>Ground</b><p>Computing NESI's own ratio of wired output vs. surrounding organs (compost, audit, ground, dream, converge, verify) is a real measurement, but not one this pass can do responsibly from inside a single-thread extraction file — it requires a full pass over the corpus's own build history, which is a different task with its own instrument.</p></div>
+      <div class="step"><b>Converge</b><p>(b). Naming the question precisely is the right size of gift here; answering it belongs to a dedicated pass, not a footnote inside an external-extraction file.</p></div>
+    </div>
+    <div class="routeline open">Route: named as a candidate question for a future self-measurement pass — "what fraction of NESI's own extraction/development cycle is the wired output vs. the surrounding organs" — not run here, not assigned to an instrument yet.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-4" data-panel="gift-4">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Card 4 · Capacity L · Effort L · Confidence H</div>
+  <h2>The six-competency interview taxonomy</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip">comparison point</span><span class="chip">low capacity to NESI</span></div>
+    <p>Step 9 names six interview rounds verbatim:</p>
+    <blockquote>Product Sense, Success Metrics, Vibe Coding, Technical, System Design, Behavioral.</blockquote>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Use it as a template to draft a NESI operator-competency taxonomy now. (b) Hold it purely as a comparison shape — a fixed small set of evaluable competencies — without drafting anything from it. (c) Discard as domain-mismatched (hiring interviews, not operator competency).</p></div>
+      <div class="step"><b>Ground</b><p>NESI has no existing operator-competency taxonomy to compare this against or slot it into — searched the repo, nothing matches. So there's no live artifact this could extend or corroborate yet.</p></div>
+      <div class="step"><b>Converge</b><p>(b). Drafting a taxonomy from a single external, domain-mismatched source would be composing law from a thin base — exactly the move the deck's own audit already refused ("cut for the same reason" as the credibility-laundering framing). Held as shape, not adopted as content.</p></div>
+    </div>
+    <div class="routeline open">Route: none. Filed as a comparison point for if/when NESI ever needs its own operator-competency taxonomy, built from NESI's own material — not this thread's.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-5" data-panel="gift-5">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Pattern read P1 · weaker footing than the cards</div>
+  <h2>Compression survives the source going dark</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip green">design constraint, confirmed</span><span class="chip gold">applies to card-writing itself</span></div>
+    <p>All 25 of the thread's outward links were unreachable (see Sources → Bench notes), yet everything extractable in the deck's Cards section came from the one-sentence hooks, none from the destinations. The thread survived its own citations going dark.</p>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Treat as a passing observation about this one thread. (b) Treat as a design constraint on how NESI's own cards should be written. (c) No action — too meta to route.</p></div>
+      <div class="step"><b>Ground</b><p>This is directly checkable against NESI's own practice: does a card in this corpus already stand as one sentence without its source? The four cards in this same file (Gifts 1–4) are built exactly that way — capacity/effort/confidence plus one verbatim quote, source named but not required to still exist for the card to mean something.</p></div>
+      <div class="step"><b>Converge</b><p>(b). This isn't a new practice to adopt — it's confirmation that the practice already in use (card = quote + rating, survivable without its source) is doing the right job. Worth stating as an explicit constraint rather than an implicit habit.</p></div>
+    </div>
+    <div class="routeline">Route: named as a writing constraint for future external-extraction cards — "if a card can't stand as one sentence without its source, it isn't compressed enough yet." Available to fold into the external-extraction skill's own instructions if Kevin marks it there; not edited into that file by this pass.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-6" data-panel="gift-6">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Pattern read P2 · weaker footing than the cards</div>
+  <h2>Inventory-then-audit, independently arrived at</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip green">grounded match</span><span class="chip">corroboration</span></div>
+    <p>Step 6's hook, attached to "AI prototyping and evals":</p>
+    <blockquote>"Get to a screen, then grade it."</blockquote>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Cite as confirmation of SOIL's existing Inventory → Audit split. (b) Propose a new named law from it. (c) Discard as too generic a two-step pattern to mean anything.</p></div>
+      <div class="step"><b>Ground</b><p>SOIL's own procedure — this file's own Process tab follows it — is explicitly two-phase: list what's there without judging (Inventory), then judge what survives (Audit). The thread's "produce cheaply, then grade against a rubric" is the same discipline in AI prototyping. Same shape, unrelated domain, independently arrived at — not borrowed.</p></div>
+      <div class="step"><b>Converge</b><p>(a). SOIL already names and runs this; the gift is a second data point that the discipline is sound, not a reason to change SOIL.</p></div>
+    </div>
+    <div class="routeline">Route: cited as external corroboration of SOIL's Inventory → Audit split. No file changes — the split is already load-bearing practice, confirmed rather than modified.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-gift-7" data-panel="gift-7">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Pattern read P3 · weaker footing than the cards</div>
+  <h2>A second instance of graduated, capacity-ordered escalation</h2>
+  <div class="giftcard">
+    <div class="chiprow"><span class="chip green">grounded match</span><span class="chip">second data point, not proof</span></div>
+    <p>The nine thread steps run cheap-and-general to expensive-and-specific: fundamentals and prompt skill first, tools and a personal OS next, then sustained practice, then a six-round interview gauntlet last.</p>
+    <div class="stepgrid">
+      <div class="step"><b>Diverge — options weighed</b><p>(a) Cite as a second, unrelated-domain instance of the Escalation Rule already adopted under Terminal Law. (b) Treat as unrelated coincidence, not worth routing. (c) Use it to argue the Escalation Rule should generalize further than it currently does.</p></div>
+      <div class="step"><b>Ground</b><p>Grepped <code>nesi/mind/ESCALATION_CONDITIONS.md</code> and <code>PROTOCOLS.md</code> — both exist and both encode "don't reach for the expensive, high-stakes instrument until the cheap one has been tried and found insufficient." The thread's own ordering (cheap-general first, expensive-evaluated-by-others last) is the identical shape in a completely different domain.</p></div>
+      <div class="step"><b>Converge</b><p>(a). One more external example strengthens confidence that this ordering is a real, recurring design pattern rather than a NESI eccentricity — not grounds to expand what the Escalation Rule currently covers.</p></div>
+    </div>
+    <div class="routeline">Route: cited as a second, independent example under the existing Escalation Rule. No file changes — corroboration only.</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Upstream</div>
+  <h2>Sources</h2>
+  <p class="lede">What this file develops, and what it deliberately does not touch.</p>
+  <div class="source-card"><h3>The filed extraction deck</h3><p>External Extraction · Aakash Gupta "Product Builder" thread → NESI. Pasted whole by Kevin. Four audited cards, five second-pass pattern reads, and a bench-notes section documenting that all 25 linked guides returned <code>ROBOTS_DISALLOWED</code> or paywall marketing copy — zero crawlable secondary sources. This file develops only the seven items Kevin marked from that deck (Cards 1–4, P1–P3); the deck's own audit verdict (what passed, what was cut) is treated as settled and not re-opened.</p></div>
+  <div class="source-card"><h3>P4 and P5 — named in the deck, not offered in the mark, not developed here</h3><p>P4 ("your next users have no eyes" — legibility to agents) and P5 (the authority-quote-as-register-setter, flagged as an adversarial-contact watch item) remain exactly where the deck left them: open questions, not findings. This pass does not develop them because Kevin's mark was asked and answered against a question that offered P1–P3 as the selectable pattern reads, with "none" as the only alternative — P4/P5 were never on the table to select.</p></div>
+  <div class="source-card"><h3><code>nesi/mind/PROTOCOLS.md:615</code></h3><p>Terminal Law, quoted verbatim in Gift 1: "no interface may require more capacity than the movement it governs." Confirmed present by direct grep, not assumed from the deck's own description.</p></div>
+  <div class="source-card"><h3><code>nesi/mind/ESCALATION_CONDITIONS.md</code></h3><p>The Escalation Rule cited in Gift 7. Confirmed present by direct grep before citing.</p></div>
+  <div class="source-card"><h3><code>WORKBENCH_BRIDGE_2026-08-24_developed.html</code></h3><p>The shape this file reuses — self-contained, tab-per-gift, verbatim-prompts, no external requests — per that file's own line: "a later session may reuse this shape for its own session by copying the tab structure and replacing the content of each tab with its own material."</p></div>
+</section>
+
+<section class="panel" id="panel-routes" data-panel="routes">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:750">Where each gift landed</div>
+  <h2>Routes</h2>
+  <p class="lede">Two gifts changed nothing and only add a citation; three are held open with no file to point to yet; two are corroboration for standing law. None became a new law from a single, unreachable-source thread.</p>
+  <table>
+    <tr><th>Gift</th><th>Converged to</th><th>Route</th></tr>
+    <tr><td>1 · Model before tool</td><td>Cite as corroboration</td><td>Footnote-available under Terminal Law, <code>PROTOCOLS.md:615</code></td></tr>
+    <tr><td>2 · Data first, agents second</td><td>Flag only</td><td>No route — no worked example to anchor it</td></tr>
+    <tr><td>3 · Shipping is one third</td><td>Named question</td><td>No route — candidate for a future self-measurement pass</td></tr>
+    <tr><td>4 · Six competencies</td><td>Comparison shape</td><td>No route — held for if NESI drafts its own operator taxonomy</td></tr>
+    <tr><td>5 · P1 compression</td><td>Writing constraint</td><td>Available to fold into external-extraction skill instructions, on a future mark</td></tr>
+    <tr><td>6 · P2 inventory→audit</td><td>Cite as corroboration</td><td>Confirms SOIL's existing split — no file changes</td></tr>
+    <tr><td>7 · P3 escalation</td><td>Cite as corroboration</td><td>Confirms the Escalation Rule — no file changes</td></tr>
+  </table>
+  <div class="keyline">Nothing here is marked into the corpus's law files. This file is itself the record of the development pass; if Kevin wants any single route above actually written into <code>LEARNED.md</code>, <code>PROTOCOLS.md</code>, or the external-extraction skill, that is a further, separate mark — this file names the routes, it does not cross them.</div>
+</section>
+
+</main>
+</div>
+<script>
+(function(){
+  var buttons=document.querySelectorAll('.tabbtn');
+  var panels=document.querySelectorAll('.panel');
+  var crumb=document.getElementById('crumb');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var tab=btn.getAttribute('data-tab');
+      buttons.forEach(function(b){b.classList.toggle('active',b===btn)});
+      panels.forEach(function(p){p.classList.toggle('active',p.id==='panel-'+tab)});
+      crumb.textContent=btn.textContent.trim();
+      window.scrollTo(0,0);
+    });
+  });
+})();
+</script>
+</body>
+</html>

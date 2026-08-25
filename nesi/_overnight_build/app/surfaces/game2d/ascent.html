@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>NESI · the ascent</title>
+<!--
+  ■ REBUILT FROM SCRATCH, 2026-08-21, Kevin's mark: "cut the ascent
+  entirely.. It's too many patches in to fix.. we need to build the levels
+  entirely from scratch based on the vision of the game as it currently
+  stands." The prior file (five build passes, the retired ROOMS/five-
+  gesture grouping still underneath, a menu dependent on an unreachable
+  CDN) is composted whole at _compost/ascent_2026-08-21_pre-rebuild.html —
+  quarry it, nothing here binds what it may still hold.
+
+  THE VISION THIS BUILDS TO, AS IT STANDS THIS SESSION: 24 levels are the
+  24 edges of the solid (solid.js, pinned); each level is write, sort, aim,
+  root, week — built and tested in seam.js, untouched here. What's NEW in
+  this file is only the thin orchestration seam.js itself never touches:
+  the map, the seat, the walk, the gift shelf. No ROOMS, no five gestures,
+  no ds-kit — a hand reaches every one of the twelve seats directly, and
+  every one of the twenty-four edges the same way.
+
+  SAME STORAGE, ON PURPOSE. KEY/SCHEMA below are byte-identical to the
+  retired file's own — nothing written by a hand before today is lost;
+  the data was never in the file, only the code that read it.
+
+  ZERO DEPENDENCIES, STILL LAW. No package.json, no remote script, no
+  fetch, no CDN — solid.js and seam.js, and nothing else.
+-->
+<link rel="stylesheet" href="data:text/css,">
+<style>
+  :root{
+    --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+    --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --green:#4f6a3d;
+    --dim:rgba(238,236,226,.55);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--ink); color:var(--paper);
+    font:14px/1.5 ui-monospace, Consolas, "SF Mono", monospace; }
+  #app{ max-width:920px; margin:0 auto; padding:28px 20px 80px; }
+  a{ color:inherit; }
+  h1{ font-size:15px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--dim); font-weight:400; margin:0 0 22px; }
+  .workbench-open{ color:var(--gold); font-size:13px; letter-spacing:.04em;
+    margin:-14px 0 22px; }
+  /* ═══ THE FLASH — 2026-08-21, Kevin's own pick: "b" (the one-time moment,
+     not the gradual face-fill). PROGRESSION.md §2.i: "the cuboctahedron,
+     whole, for two seconds. First and only time the solid is seen as a
+     solid." No number, no player content — a shape, once, then gone. ═══ */
+  #flash{ position:fixed; inset:0; background:var(--ink); display:flex;
+    align-items:center; justify-content:center; z-index:20;
+    opacity:0; pointer-events:none; transition:opacity 1s ease; }
+  #flash.show{ opacity:1; }
+  #flash svg{ width:min(620px,88vw); height:auto; }
+  #flash .face{ fill:var(--gold); fill-opacity:.34; stroke:var(--gold);
+    stroke-width:1; stroke-opacity:.85; }
+  .seats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  @media (max-width:560px){ .seats{ grid-template-columns:repeat(2,1fr); } }
+  .seat-btn{ display:block; padding:16px 10px; text-align:center; text-decoration:none;
+    border:1px solid var(--line); border-radius:3px; letter-spacing:.05em;
+    background:rgba(238,236,226,.03); }
+  .seat-btn:hover{ background:rgba(238,236,226,.08); border-color:rgba(238,236,226,.4); }
+  .figure{ width:100%; height:auto; margin-bottom:26px; }
+  .figure line{ stroke:rgba(238,236,226,.16); stroke-width:1.4; }
+  .figure line.walked{ stroke:var(--green); }
+  .figure line.membrane{ stroke:var(--gold); }
+  .figure circle.seat{ fill:var(--ink); stroke:rgba(238,236,226,.4); stroke-width:1.4; cursor:pointer; }
+  .figure circle.seat:hover{ stroke:var(--gold); }
+  .figure circle.seat.junction{ stroke:var(--gold); stroke-width:2; }
+  .figure text{ fill:var(--dim); font:11px ui-monospace,Consolas,monospace; letter-spacing:.03em;
+    pointer-events:none; }
+  .figure text.on{ fill:var(--paper); }
+  .back{ display:inline-block; margin-bottom:18px; color:var(--dim); text-decoration:none; }
+  .back:hover{ color:var(--paper); }
+  .seam-card{ border:1px solid var(--line); border-radius:3px; padding:12px 14px;
+    margin-bottom:12px; position:relative; }
+  .seam-card.taken{ opacity:.42; }
+  .seam-card .to{ font-weight:600; letter-spacing:.03em; }
+  .seam-card .kd{ color:var(--dim); margin-left:8px; text-transform:uppercase;
+    font-size:11px; letter-spacing:.08em; }
+  .seam-card .fc{ display:block; color:var(--dim); font-size:12px; margin:2px 0 10px; }
+  .frac{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px; }
+  .fr{ font:inherit; font-size:12px; padding:5px 9px; border-radius:3px;
+    border:1px solid var(--line); background:rgba(238,236,226,.04); color:var(--paper);
+    cursor:pointer; text-transform:lowercase; }
+  .fr.on{ background:rgba(224,196,84,.22); border-color:var(--gold); }
+  .fr.write{ cursor:default; color:var(--dim); background:none; border-color:var(--line-soft); }
+  .fr.writebtn{ border-color:var(--gold); color:var(--gold); }
+  .fr.win{ }
+  .wire{ margin:6px 0; padding-top:6px; border-top:1px dashed var(--line-soft);
+    display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .wirelabel{ font-size:11px; color:var(--dim); margin-right:2px; }
+  .fs{ display:block; font-size:12px; color:var(--dim); margin-top:4px; }
+  .fs.none{ color:rgba(238,236,226,.32); }
+  .sill{ height:34px; border:1px solid var(--line); border-radius:3px; margin-top:8px;
+    position:relative; overflow:hidden; cursor:pointer; user-select:none;
+    background:rgba(238,236,226,.03); }
+  .sill i{ position:absolute; left:0; top:0; bottom:0; width:0; background:rgba(224,196,84,.28);
+    pointer-events:none; }
+  .sill span{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center;
+    height:100%; font-size:11px; letter-spacing:.05em; color:var(--dim); }
+  .panel{ display:none; position:fixed; inset:0; background:rgba(10,12,14,.94);
+    z-index:20; padding:8vh 6vw; }
+  .panel textarea{ width:100%; height:40vh; background:transparent; color:var(--paper);
+    border:none; outline:none; font:16px/1.6 Georgia,serif; resize:none; }
+  .panel .room{ height:2px; background:rgba(238,236,226,.14); margin-top:14px; }
+  .panel .room i{ display:block; height:100%; background:var(--gold); width:100%; }
+  .panel .hint{ color:var(--dim); font-size:11px; margin-top:10px; }
+  .shelf{ margin-top:32px; padding-top:18px; border-top:1px solid var(--line); }
+  .shelf h2{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);
+    font-weight:400; margin:0 0 10px; }
+  .gift{ display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px;
+    border-radius:50%; border:1.5px solid var(--gold); background:rgba(224,196,84,.12);
+    margin:0 8px 8px 0; cursor:pointer; }
+  .gift.taken{ opacity:.4; }
+  .gift.routed{ box-shadow:0 0 0 5px rgba(224,196,84,.18); }
+  .empty{ color:var(--dim); font-style:italic; }
+  /* ═══ THE FOLD ITSELF — 2026-08-22. Each window's own isolated hinge,
+     shown at its own small place, never merged into the twelve-seat
+     figure above (that figure's seat positions stay exactly what
+     solid.js's own rest-state embedding says; this is a separate,
+     honestly-scoped diagram of one square's own real mechanism alone). */
+  .membranes{ margin-top:32px; padding-top:18px; border-top:1px solid var(--line); }
+  .membranes h2{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);
+    font-weight:400; margin:0 0 10px; }
+  .membrane-box{ display:inline-block; width:120px; margin:0 12px 14px 0; text-align:center; }
+  .membrane-cap{ display:block; font-size:11px; color:var(--dim); letter-spacing:.05em;
+    text-transform:lowercase; margin-bottom:4px; }
+  .membrane-fold{ width:100%; height:auto; }
+  .membrane-fold line.side{ stroke:rgba(238,236,226,.30); stroke-width:1.2; }
+  .membrane-fold line.diag{ stroke:var(--gold); stroke-width:1.4; stroke-opacity:.75; }
+  .membrane-fold circle.nd{ fill:var(--ink); stroke:var(--gold); stroke-width:1.2; }
+  .membrane-fold text.nd-lbl{ fill:var(--dim); font:8px ui-monospace,Consolas,monospace;
+    text-anchor:middle; }
+</style>
+
+<div class="panel" id="wp">
+  <textarea id="wt" spellcheck="false"></textarea>
+  <div class="room"><i id="wr"></i></div>
+  <div class="hint">ctrl/cmd + enter to keep it · escape to lay it aside, nothing kept</div>
+</div>
+
+<div id="app"></div>
+<div id="flash" aria-hidden="true"></div>
+
+<script src="solid.js"></script>
+<script src="seam.js"></script>
+<script src="visit-writer.js"></script>
+<script>
+"use strict";
+const G = (typeof window!=="undefined") && window.SOLID;
+const SEAM = (typeof window!=="undefined") && window.NESI_SEAM;
+
+/* ═══ STORAGE — byte-identical KEY/SCHEMA to the retired file, on purpose:
+   this is the one seam that must not drift. ═══ */
+const SCHEMA="ascent.2", KEY="nesi.ascent";
+let S = { kept:[], keptTag:[], seamState:{}, shop:[], arrived:[] };
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(Object.assign({schema:SCHEMA},S))); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); if(!r) return;
+    const d=JSON.parse(r); if(!d||d.schema!==SCHEMA) return;
+    Object.keys(S).forEach(function(k){ if(k in d) S[k]=d[k]; });
+  }catch(e){} }
+load();
+
+/* ═══ THE SHARED LEDGER — same nesi.water store tank.html's own sill
+   already writes. Read the whole blob, touch only deposits/seamsTaken,
+   write the whole blob back — never add a field tank.html doesn't know. ═══ */
+const WKEY="nesi.water";
+function loadLedger(){
+  try{ const r=localStorage.getItem(WKEY);
+    if(r){ const d=JSON.parse(r);
+      if(d && typeof d==="object")
+        return { raw:d, deposits:(d.deposits&&typeof d.deposits==="object")?d.deposits:{},
+                 seamsTaken:Array.isArray(d.seamsTaken)?d.seamsTaken:[] };
+    }
+  }catch(e){}
+  return { raw:{schema:"water.3"}, deposits:{}, seamsTaken:[] };
+}
+function saveLedger(L){
+  try{ const raw=L.raw||{schema:"water.3"};
+    raw.deposits=L.deposits; raw.seamsTaken=L.seamsTaken;
+    const j=JSON.stringify(raw);
+    localStorage.setItem(WKEY+".pad", j);
+    if(localStorage.getItem(WKEY+".pad")!==j) return false;
+    localStorage.setItem(WKEY, j); localStorage.removeItem(WKEY+".pad");
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ═══ THE WRITE PANEL — unchanged from the retired file's own mechanic:
+   the cap refuses the keystroke, never edits what's already there. ═══ */
+let typing=false, writeCap=100, onCommit=null, accepted="";
+const wp=document.getElementById("wp"), wt=document.getElementById("wt"), wr=document.getElementById("wr");
+const words = s => s.trim().split(/\s+/).filter(Boolean);
+wt.addEventListener("beforeinput", function(e){
+  if(e.inputType && e.inputType.indexOf("delete")===0) return;
+  let d=e.data||""; if(!d && e.dataTransfer) d=e.dataTransfer.getData("text")||"";
+  const nx=wt.value.slice(0,wt.selectionStart)+d+wt.value.slice(wt.selectionEnd);
+  if(words(nx).length>writeCap) e.preventDefault();
+});
+wt.addEventListener("input", function(){
+  if(words(wt.value).length>writeCap){ wt.value=accepted; const e=wt.value.length; wt.setSelectionRange(e,e); }
+  else accepted=wt.value;
+  wr.style.width=(100*Math.max(0,1-words(wt.value).length/writeCap))+"%";
+});
+function openWrite(cap,cb){ writeCap=cap; onCommit=cb; typing=true; wp.style.display="block";
+  wt.value=""; accepted=""; wr.style.width="100%"; wt.focus(); }
+function commitWrite(){ const w=words(wt.value); if(w.length<1) return;
+  typing=false; wp.style.display="none"; wt.blur(); if(onCommit) onCommit(w.join(" "), w.length); }
+function closeWrite(){ typing=false; wp.style.display="none"; wt.blur(); onCommit=null; }
+addEventListener("keydown", function(e){
+  if(typing){
+    if(e.key==="Enter" && (e.ctrlKey||e.metaKey)){ e.preventDefault(); commitWrite(); }
+    else if(e.key==="Escape"){ e.preventDefault(); closeWrite(); }
+  }
+});
+/* THE EDGE'S OWN WRITE, OPENED — owns S.kept/S.keptTag, tags to this
+   seam's own id. Same wrapper shape the retired file introduced 2026-08-21. */
+function openSeamWrite(seamId, after){
+  openWrite(SEAM.WRITE_CAP, function(text){
+    S.keptTag=SEAM.migrateKeptTags(S.kept,S.keptTag);
+    SEAM.tagWritten(S.keptTag, seamId);
+    S.kept=(S.kept||[]).concat([text]);
+    save();
+    if(after) after();
+  });
+}
+
+/* ═══ THE GIFT SHOP — THE_GIFT.md's own mechanic, unchanged: a gift is
+   what's new since the last one, verbatim, kept whole, never spent by
+   taking it. routedVia (2026-08-21) carries which wire, if any, a
+   completed circuit's gift travelled. ═══ */
+function emit(routedVia, power){
+  S.shop=S.shop||[];
+  const given=new Set(S.shop.flatMap(function(g){ return g.text; }));
+  const w=(S.kept||[]).filter(function(t){ return !given.has(t); });
+  if(!w.length) return;
+  const gift={ n:S.shop.length+1, d:today(), text:w };
+  if(routedVia && routedVia.length) gift.routedVia=routedVia.slice();
+  /* THE DAM'S LAW, AT THE ONE MOMENT IT APPLIES — 2026-08-22. power is
+     flow x head (seam.js: powerOf), computed only at the circuit-completion
+     call site below; a gift emitted with no completing circuit (there is
+     none — emit() is only ever called from walkPendingSeam after a circuit
+     finishes) never reaches this branch at all. 0 is a true power, not an
+     absence: a circuit completing behind unlit windows still gives, it
+     just carries no fall. */
+  if(typeof power==="number" && power>0) gift.power=power;
+  S.shop.push(gift); save();
+}
+function takeGift(gi){
+  const gift=(S.shop||[])[gi]; if(!gift) return;
+  const body="NESI · a gift · "+gift.d+"\n\n"+gift.text.join("\n\n")+"\n";
+  try{
+    const b=new Blob([body],{type:"text/plain;charset=utf-8"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(b);
+    a.download="nesi-gift-"+gift.d+"-"+gift.n+".txt"; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);
+  }catch(e){}
+  gift.taken=true; save(); render();
+}
+const today = function(){ return new Date().toISOString().slice(0,10); };
+
+/* ═══ NAVIGATION — a hand reaches any of the twelve seats directly. No
+   room, no gesture grouping, no menu dependency: the seats are read live
+   off solid.js, never listed twice. ═══ */
+let view="map", cur=null;
+function faceOf(hash){
+  if(!G) return null;
+  const up=(hash||"").toUpperCase();
+  return G.NAMES.indexOf(up)>=0 ? up : null;
+}
+function hashOf(){ return (typeof location!=="undefined" && location) ? location.hash : ""; }
+function enterSeat(seat){ cur=seat; view="seat";
+  if(typeof location!=="undefined" && location) location.hash=seat.toLowerCase();
+  /* automatic, silent, every arrival — Kevin's mark, 2026-08-22. Local disk
+     only (visit-writer.js, File System Access API), never network; wrapped
+     so a write failure can never break seat navigation. */
+  try{ if(typeof window!=="undefined" && window.VisitWriter) window.VisitWriter.recordVisit(seat); }catch(e){}
+  render(); }
+function toMap(){ cur=null; view="map"; render(); }
+if(typeof addEventListener==="function") addEventListener("hashchange", function(){
+  const f=faceOf(hashOf().slice(1));
+  if(f){ cur=f; view="seat"; } else { cur=null; view="map"; }
+  render();
+});
+
+let pendingSeam=null;
+function walkPendingSeam(){
+  if(!pendingSeam || !SEAM) return;
+  const L=loadLedger();
+  const circuitsBefore = SEAM.completedCircuits ? SEAM.completedCircuits(L.seamsTaken) : [];
+  SEAM.walk(L, pendingSeam);
+  saveLedger(L);
+  if(SEAM.completedCircuits){
+    const circuitsAfter = SEAM.completedCircuits(L.seamsTaken);
+    const newlyDone = circuitsAfter.filter(function(ci){ return circuitsBefore.indexOf(ci)<0; });
+    if(newlyDone.length){
+      const routedVia = newlyDone.reduce(function(acc, ci){
+        return SEAM.circuitWiring ? acc.concat(SEAM.circuitWiring(ci, S.seamState)) : acc;
+      }, []);
+      /* dam.gd's law, ported (seam.js: flowOf/headOf/powerOf): flow is 1 for
+         a circuit that just completed (there is no other kind, here), head
+         is how charged its own windows already stood from OTHER levels at
+         this instant. Two circuits can close on the same walk (a seam can
+         sit on more than one); the strongest fall is the one that renders. */
+      const power = (SEAM.powerOf && SEAM.headOf) ? Math.max.apply(null,
+        newlyDone.map(function(ci){ return SEAM.powerOf(SEAM.flowOf(true), SEAM.headOf(ci, S.seamState)); })
+      ) : 0;
+      emit(routedVia, power);
+    }
+  }
+  const to=pendingSeam.to;
+  pendingSeam=null;
+  enterSeat(to);
+}
+
+/* ═══ RENDER — the whole page is one function of view/cur/S. No canvas: a
+   DOM this thin does not need one, and a DOM survives a headless read the
+   way a canvas never will. ═══ */
+const app=document.getElementById("app");
+function render(){
+  app.innerHTML="";
+  if(view==="map") renderMap(); else renderSeat(cur);
+  renderShelf();
+  renderMembranes();
+}
+/* THE FIGURE — read live off solid.js's own EMBED, never a second solve
+   kept in this file: world_check.js's own law ("a typed coordinate table
+   is a second place the world can drift") applies exactly as hard to a
+   SECOND independent placement as to a typed one. Same isometric-ish
+   projection the retired file's own drawWireframe used — two axes plus a
+   lift, position only, never what a line says. */
+function project(seat, cx, cy, r){
+  if(!G || !G.EMBED[seat]) return [cx,cy];
+  const p=G.EMBED[seat];
+  return [ cx + (p[0]-p[1])*r*0.72, cy + (p[0]+p[1])*r*0.42 - p[2]*r*0.62 ];
+}
+const SVGNS="http://www.w3.org/2000/svg";
+function svgEl(tag, attrs){
+  const el=document.createElementNS(SVGNS, tag);
+  Object.keys(attrs||{}).forEach(function(k){ el.setAttribute(k, attrs[k]); });
+  return el;
+}
+
+/* ═══ THE FOLD ITSELF — 2026-08-22, continuing "build it in." RIGIDITY
+   (solid.js) independently verified exactly one real 1-DOF mechanism per
+   square: its four sides (real members, fixed length) never change while
+   its two diagonals trade, one closing as the other opens. A quadrilateral
+   with four EQUAL, FIXED sides and trading diagonals is the classical
+   rhombus flex — for any side length L, (half of diagonal 1)^2 + (half of
+   diagonal 2)^2 = L^2 holds at every point along it, including the rest
+   state itself (a square is the one rhombus whose two diagonals happen to
+   be equal). L is read live off G.CENTRE.edgeLength, never a typed sqrt(2)
+   — the same "never a second stored fact" law solid.js's own header states.
+
+   SCOPE, STATED PLAINLY, TWICE SO IT ISN'T MISSED: this is ONE square's own
+   isolated fold — its four seats, held at their own centre, in their own
+   plane. It is NOT a claim about how the other eight seats reposition in
+   the fully coupled 3D solid while this one square flexes; that coupled
+   motion needs the framework's actual null-space vectors, which RIGIDITY
+   only ever stored as a count (bars/rank/mechanisms), never the vectors
+   themselves. Rendered at its own small place below the figure, never
+   substituted into the twelve-seat figure's fixed rest-state layout, so
+   it never implies the whole solid moved along with it.
+
+   DIRECTION IS A CHOICE, NOT A FURTHER-VERIFIED FACT: the rhombus identity
+   is symmetric — either diagonal may close as the other opens. Rising
+   charge is wired here to close ring[0]-ring[2] (TRADES' own first-listed
+   diagonal) and open ring[1]-ring[3]. Nothing in RIGIDITY says that
+   direction over its mirror; this is this file's own pick, named as one. */
+function foldLocal(stand, L){
+  const t=Math.max(0,Math.min(1,stand));
+  const phi=(Math.PI/4)*(1-t);              /* pi/4 at rest (stand=0): p=q */
+  const p=2*L*Math.sin(phi), q=2*L*Math.cos(phi);
+  return { p:[p/2,0], q:[-p/2,0], r:[0,q/2], s:[0,-q/2] };  /* ring[0..3] positions */
+}
+function renderMembranes(){
+  const wrap=document.createElement("div"); wrap.className="membranes";
+  const h=document.createElement("h2"); h.textContent="the membranes";
+  wrap.appendChild(h);
+  if(!G || !G.SQUARES || !G.TRADES || !G.CENTRE || !SEAM){ app.appendChild(wrap); return; }
+  const charge=SEAM.windowCharge(S.seamState);
+  const L=G.CENTRE.edgeLength;
+  const active=G.SQUARES.map(function(sq){
+    return { sq:sq, stand:SEAM.windowStanding(charge, sq.axis) };
+  }).filter(function(x){ return x.stand>0; });
+  if(!active.length){
+    const p=document.createElement("p"); p.className="empty";
+    p.textContent="no window has been given enough to tension yet.";
+    wrap.appendChild(p);
+    app.appendChild(wrap);
+    return;
+  }
+  active.forEach(function(x){
+    const t=G.TRADES.find(function(y){ return y.axis===x.sq.axis; });
+    if(!t) return;
+    const fl=foldLocal(x.stand, L);
+    const pos={}; pos[t.ring[0]]=fl.p; pos[t.ring[1]]=fl.r; pos[t.ring[2]]=fl.q; pos[t.ring[3]]=fl.s;
+    const half=L*1.3;
+    const svg=svgEl("svg",{ class:"membrane-fold", viewBox:(-half)+" "+(-half)+" "+(2*half)+" "+(2*half),
+      role:"img", "aria-label":"window "+x.sq.axis+"'s own fold, this square in isolation" });
+    for(let i=0;i<4;i++){
+      const a=pos[t.ring[i]], b=pos[t.ring[(i+1)%4]];
+      svg.appendChild(svgEl("line",{ x1:a[0],y1:a[1],x2:b[0],y2:b[1], class:"side" }));
+    }
+    t.diagonals.forEach(function(d){
+      const a=pos[d[0]], b=pos[d[1]];
+      svg.appendChild(svgEl("line",{ x1:a[0],y1:a[1],x2:b[0],y2:b[1], class:"diag" }));
+    });
+    t.ring.forEach(function(name){
+      const p=pos[name];
+      svg.appendChild(svgEl("circle",{ cx:p[0],cy:p[1],r:(L*0.09).toFixed(3), class:"nd" }));
+      const lbl=svgEl("text",{ x:p[0], y:(p[1]-L*0.16).toFixed(3), class:"nd-lbl" }); lbl.textContent=name;
+      svg.appendChild(lbl);
+    });
+    const box=document.createElement("div"); box.className="membrane-box";
+    const cap=document.createElement("span"); cap.className="membrane-cap"; cap.textContent="window "+x.sq.axis;
+    box.appendChild(cap); box.appendChild(svg);
+    wrap.appendChild(box);
+  });
+  app.appendChild(wrap);
+}
+/* ═══ THE FLASH ITSELF — 2026-08-21. Fourteen faces (8 triangles + 6
+   squares, solid.js's own TRIANGLES/SQUARES — never a second geometry),
+   filled once, for two seconds, then gone. Points ordered by angle around
+   their own centroid before drawing: TRIANGLES/SQUARES.seats is a filtered
+   list, not a walked cycle, so a square's four points need real ordering or
+   they'd draw as a bowtie rather than a face. A triangle's three points are
+   safe in any order (three points are always convex), so the same ordering
+   step costs nothing extra to apply uniformly.
+
+   PLAYED ONCE PER PAGE LOAD, never a stored flag — the same law
+   PROGRESSION.md's own reveal already holds ("derived, never flagged... a
+   stored flag would make the end a thing that has happened rather than a
+   thing that is true"). Reloading the map after completion shows the shape
+   again, honestly, because the condition is still true; it does not replay
+   on every incidental re-render within one visit (writing an entry, opening
+   the gift shelf) because flashArmed below only ever moves one direction. */
+let flashArmed=true;
+function maybeFlashWorkbench(){
+  if(!flashArmed) return;
+  flashArmed=false;
+  const cx=320,cy=250,r=200;
+  const orderByAngle=function(pts){
+    const mx=pts.reduce(function(s,p){return s+p[0];},0)/pts.length;
+    const my=pts.reduce(function(s,p){return s+p[1];},0)/pts.length;
+    return pts.slice().sort(function(a,b){
+      return Math.atan2(a[1]-my,a[0]-mx) - Math.atan2(b[1]-my,b[0]-mx);
+    });
+  };
+  const svg=svgEl("svg",{ viewBox:"0 0 640 500", role:"img",
+    "aria-label":"the cuboctahedron, whole, for two seconds" });
+  const faces=G.TRIANGLES.concat(G.SQUARES);
+  faces.forEach(function(f){
+    const pts=orderByAngle(f.seats.map(function(s){ return project(s,cx,cy,r); }));
+    const d="M"+pts.map(function(p){ return p[0].toFixed(1)+","+p[1].toFixed(1); }).join("L")+"Z";
+    svg.appendChild(svgEl("path",{ d:d, class:"face" }));
+  });
+  const el=document.getElementById("flash");
+  if(!el) return;
+  el.innerHTML=""; el.appendChild(svg);
+  requestAnimationFrame(function(){ el.classList.add("show"); });
+  setTimeout(function(){ el.classList.remove("show"); }, 2000);
+}
+
+function renderMap(){
+  const h=document.createElement("h1"); h.textContent="the ascent — twelve seats, twenty-four edges";
+  app.appendChild(h);
+  if(!G){ app.appendChild(h); return; }
+  /* ═══ THE WORKBENCH TRIGGER, SHOWN — 2026-08-21. "At level 12 complete, we
+     site the full workbench" (Kevin, cited in THE_WORKBENCH.md). Derived
+     fresh every render off SEAM.waterComplete(), never a stored flag — the
+     same law PROGRESSION.md's own "derived, never flagged" holds for the
+     twenty-fourth edge. One honest sentence, no number, no bar: the full
+     face-fill/fold reveal THE_WORKBENCH.md §1 proposes is still open, his to
+     confirm — this only says the true thing that's computable today, and
+     says nothing else. */
+  if(SEAM && SEAM.waterComplete && SEAM.waterComplete(loadLedger().seamsTaken)){
+    const wb=document.createElement("p"); wb.className="workbench-open";
+    wb.textContent="the workbench stands open.";
+    app.appendChild(wb);
+    maybeFlashWorkbench();
+  }
+  const W=760,H=540,cx=320,cy=H/2-10,r=200;
+  const svg=svgEl("svg",{ class:"figure", viewBox:"0 0 "+W+" "+H, role:"img",
+    "aria-label":"the cuboctahedron — twelve seats, twenty-four edges, brighter where root has grown" });
+  const L=loadLedger();
+  /* ═══ THE MEMBRANE, TENSIONED BY WHAT'S GIVEN — 2026-08-22, Kevin's own
+     re-articulation, built in: "the water derived from a user's writing
+     becomes the lens itself as a self-tensioned membrane." Two real,
+     already-verified facts, wired to each other for the first time:
+     SOLID.TRADES (PyRigi-confirmed — the six squares are the only places
+     this solid can move; each one's two diagonals trade, one closing as
+     the other opens) and SEAM.windowCharge/windowStanding (already summing
+     how much rooted water every seam has aimed at a shared window). This
+     draws each window's own two diagonals at a weight that IS that
+     window's real, derived charge — nothing about a fold's exact path is
+     claimed, only the true fact that a window carries more visible tension
+     the more purified water has actually been aimed at it. Zero at zero
+     charge: an unrouted window's membrane is not drawn at all, not drawn
+     faint — silence, not a floor value, because nothing has tensioned it. */
+  if(G.SQUARES && G.TRADES && SEAM){
+    const charge = SEAM.windowCharge(S.seamState);
+    G.SQUARES.forEach(function(sq){
+      const t = G.TRADES.find(function(x){ return x.axis===sq.axis; });
+      if(!t) return;
+      const stand = SEAM.windowStanding(charge, sq.axis);
+      if(stand<=0) return;
+      t.diagonals.forEach(function(d){
+        const a=project(d[0],cx,cy,r), b=project(d[1],cx,cy,r);
+        const line=svgEl("line",{ x1:a[0],y1:a[1],x2:b[0],y2:b[1], class:"membrane" });
+        line.setAttribute("stroke-opacity",(0.08+stand*0.62).toFixed(2));
+        line.setAttribute("stroke-width",(0.6+stand*2.4).toFixed(2));
+        svg.appendChild(line);
+      });
+    });
+  }
+  G.MEMBERS.forEach(function(m){
+    const a=project(m.a,cx,cy,r), b=project(m.b,cx,cy,r);
+    const walked=L.seamsTaken.indexOf(m.key)>=0;
+    const st=(S.seamState||{})[m.key];
+    const rootScale=(SEAM && st && SEAM.isReturned(st)) ? SEAM.rootStanding(st) : 0;
+    const line=svgEl("line",{ x1:a[0],y1:a[1],x2:b[0],y2:b[1] });
+    if(walked){ line.setAttribute("class","walked");
+      line.setAttribute("stroke-opacity",(0.35+rootScale*0.65).toFixed(2)); }
+    svg.appendChild(line);
+  });
+  G.NAMES.forEach(function(seat){
+    const p=project(seat,cx,cy,r);
+    const junction = SEAM && SEAM.isJunction ? SEAM.isJunction(seat, S.seamState) : false;
+    const c=svgEl("circle",{ class:"seat"+(junction?" junction":""), cx:p[0], cy:p[1], r:junction?9:6 });
+    c.addEventListener("click", function(){ enterSeat(seat); });
+    svg.appendChild(c);
+    const t=svgEl("text",{ x:p[0]+11, y:p[1]+4 }); t.textContent=seat;
+    svg.appendChild(t);
+  });
+  app.appendChild(svg);
+  const grid=document.createElement("div"); grid.className="seats";
+  G.NAMES.forEach(function(seat){
+    const a=document.createElement("a"); a.className="seat-btn"; a.href="#"+seat.toLowerCase();
+    a.textContent=seat;
+    a.addEventListener("click", function(e){ e.preventDefault(); enterSeat(seat); });
+    grid.appendChild(a);
+  });
+  app.appendChild(grid);
+}
+function renderSeat(seat){
+  const back=document.createElement("a"); back.className="back"; back.href="#";
+  back.textContent="← the map";
+  back.addEventListener("click", function(e){ e.preventDefault(); toMap(); });
+  app.appendChild(back);
+  const h=document.createElement("h1"); h.textContent=seat;
+  app.appendChild(h);
+  if(!SEAM || !G){ app.appendChild(back); return; }
+  const L=loadLedger();
+  /* WIDENED 2026-08-22, Kevin's mark ("fix #1, the shared spot"): every one
+     of the seat's four real neighbors, any kind — not just the fall/turn
+     half. This is the one choke point that kept a circuit from ever fully
+     completing; nothing below this line (fractionControl, the sill, walk())
+     ever checked kind, so widening the source list is the whole of the fix. */
+  const seams=SEAM.seamsFor(seat);
+  seams.forEach(function(s){
+    const lit=L.seamsTaken.indexOf(s.id)>=0;
+    S.seamState=S.seamState||{};
+    S.seamState[s.id]=S.seamState[s.id]||{ fraction:null, formed:false, light:null };
+    const st=S.seamState[s.id];
+    SEAM.migrateLight(st);
+    const card=document.createElement("div"); card.className="seam-card"+(lit?" taken":"");
+    if(SEAM.isReturned(st)){
+      const g=SEAM.rootStanding(st);
+      card.style.borderWidth=(1+g*2.4).toFixed(2)+"px";
+      card.style.boxShadow="inset 0 0 "+(3+g*16).toFixed(0)+"px rgba(79,106,61,"+(0.10+g*0.34).toFixed(2)+")";
+    }
+    if(SEAM.isReturned(st) && !SEAM.weekComplete(st)) card.style.borderStyle="dashed";
+    const dv=SEAM.diversityStanding?SEAM.diversityStanding(st):0;
+    if(dv>0){
+      const a=(0.06+dv*0.20).toFixed(3);
+      card.style.backgroundImage="linear-gradient(115deg, rgba(79,106,61,"+a+") 0%, rgba(74,108,122,"+a+") 50%, rgba(224,196,84,"+a+") 100%)";
+    }
+    const head=document.createElement("span"); head.className="to"; head.textContent="to "+s.to;
+    const kd=document.createElement("span"); kd.className="kd"; kd.textContent=s.kind;
+    card.appendChild(head); card.appendChild(kd);
+    const fc=document.createElement("span"); fc.className="fc";
+    fc.textContent="tool "+s.tool+" · window "+s.window;
+    card.appendChild(fc);
+    S.keptTag=SEAM.migrateKeptTags(S.kept,S.keptTag);
+    const written=SEAM.hasWritten(s.id, S.keptTag);
+    if(!lit) card.appendChild(SEAM.fractionControl(st, seat, function(){ save(); render(); },
+      SEAM.windowCharge(S.seamState), S.seamState, s.id, S.keptTag, openSeamWrite));
+    const fs=document.createElement("span"); fs.className="fs"+(SEAM.seamComplete(L.deposits,s)?"":" none");
+    fs.textContent = lit ? "walked"
+      : !SEAM.isReturned(st) ? "pick a fraction and aim it at a window"
+      : !written ? "write this level's own entry"
+      : SEAM.weekComplete(st) ? "the week is in — hold below to walk"
+      : "sorted, aimed, and written — this level's week isn't in yet";
+    card.appendChild(fs);
+    if(!lit && SEAM.isReturned(st) && written && SEAM.weekComplete(st)){
+      const sill=document.createElement("div"); sill.className="sill";
+      const bar=document.createElement("i"); const label=document.createElement("span");
+      label.textContent="hold to walk"; sill.appendChild(bar); sill.appendChild(label);
+      pendingSeam = (pendingSeam && pendingSeam.id===s.id) ? pendingSeam : null;
+      SEAM.sillMechanic(sill, function(){ walkPendingSeam(); });
+      sill.addEventListener("pointerdown", function(){ pendingSeam=s; });
+      card.appendChild(sill);
+    }
+    app.appendChild(card);
+  });
+  if(!seams.length){
+    /* Defensive only, post-2026-08-22: every seat carries exactly four real
+       members (vertex degree 4, solid.js's own 3.4.3.4 configuration), so
+       seamsFor(seat) cannot actually return empty for a name solid.js knows.
+       This fires only if G/ADJ ever failed to resolve — never "a pure seat,"
+       which was the old, now-false explanation for the old, narrower list. */
+    const p=document.createElement("p"); p.className="empty";
+    p.textContent="no member resolves for "+seat+" — check solid.js loaded.";
+    app.appendChild(p);
+  }
+}
+function renderShelf(){
+  const wrap=document.createElement("div"); wrap.className="shelf";
+  const h=document.createElement("h2"); h.textContent="the gift shop";
+  wrap.appendChild(h);
+  const gifts=S.shop||[];
+  if(!gifts.length){
+    const p=document.createElement("p"); p.className="empty";
+    p.textContent="nothing has fallen out yet — a gift falls at the end of a full circuit.";
+    wrap.appendChild(p);
+  } else {
+    gifts.forEach(function(g,i){
+      const d=document.createElement("div");
+      d.className="gift"+(g.taken?" taken":"")+((g.routedVia&&g.routedVia.length)?" routed":"");
+      d.title=(g.taken?"taken, ":"")+"given "+g.d+(g.routedVia&&g.routedVia.length?" · travelled a wire":"");
+      /* THE FALL, SHOWN — no number: dam.gd's own law, "power comes from the
+         fall, not the restriction" (seam.js: powerOf). A gift that fell out
+         from behind windows OTHER levels had already charged glows; one that
+         fell from cold windows does not. Same styling law windowStanding
+         already uses on the aim buttons — a warm wash that deepens with the
+         value, never a printed figure. */
+      if(g.power){
+        d.classList.add("fallen");
+        d.style.boxShadow="0 0 "+(3+g.power*13).toFixed(0)+"px rgba(255,214,120,"+(0.12+g.power*0.5).toFixed(2)+")";
+        d.title += " · fell with real head behind it";
+      }
+      d.addEventListener("click", function(){ takeGift(i); });
+      wrap.appendChild(d);
+    });
+  }
+  app.appendChild(wrap);
+}
+
+/* ═══ ARRIVAL ═══ */
+(function(){
+  const f=faceOf(hashOf().slice(1));
+  if(f){ cur=f; view="seat"; }
+  render();
+})();
+</script>
