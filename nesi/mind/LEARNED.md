@@ -179,6 +179,17 @@ larger pattern, not a brute-force scan of it. — Kevin, 2026-08-24: "I want the
 trip tab method applied to the returns offered... because it stays focused on
 a positive options space while maintaining relationship to limits."
 
+**29 · A CARD MUST SURVIVE ITS SOURCE GOING DARK.** A finding compressed into
+one verbatim quote plus a Capacity/Effort/Confidence rating outlives its own
+citations; a card that still needs its source link to resolve isn't
+compressed enough yet. — Kevin, 2026-08-25, marked from the Aakash Gupta
+"Product Builder" thread extraction (Gift 5, pattern read P1): all 25 linked
+guides returned unreachable (`ROBOTS_DISALLOWED` or paywalled), yet every
+card built from the thread's one-sentence hooks survived intact — the quote
+carried the claim, not the citation. Routed same day into
+`.claude/skills/external-extraction/SKILL.md`; full development at
+`nesi/mind/EXTRACTION_2026-08-24_aakash_product_builder_developed.html`.
+
 ---
 
 *Falsifier for this file: if a session reads it at boot and the corpus still
