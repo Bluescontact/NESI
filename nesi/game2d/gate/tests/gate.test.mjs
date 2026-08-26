@@ -6,7 +6,6 @@ import assert from 'node:assert/strict';
 
 import { PASS, REFUSE, VACUOUS, HOLD, ADMIT, mark, project, BUILDER, assertGateJurisdiction } from '../lib.mjs';
 import { assertBlankable } from '../instruments/03-blanks.mjs';
-import { classify } from '../instruments/04-horizon.mjs';
 
 // Jurisdiction is structural, not a UI convention.
 test('builder event has no player projection', () => {
@@ -30,12 +29,6 @@ test('player namespaces cannot be blank-asserted', () => {
     assert.throws(() => assertBlankable(key), /player surface/);
   }
   assert.equal(assertBlankable('marks-installed'), 'marks-installed');
-});
-
-test('unknown horizon direction cannot silently become tightening', () => {
-  assert.equal(classify('loosen'), 'loosen');
-  assert.equal(classify('tighten'), 'tighten');
-  assert.throws(() => classify('loosenn'), /unknown direction/);
 });
 
 test('verdict grammar distinguishes pass, refusal, vacuity and held candidate', () => {
@@ -86,7 +79,7 @@ test('admit and refuse carry equal mechanical weight', () => {
 // Run with no arguments each CLI must reach its own usage refusal, exit 2.
 test('every instrument CLI is reachable as main', () => {
   const here = dirname(fileURLToPath(import.meta.url));
-  for (const name of ['02-selfuse', '03-blanks', '04-horizon', '05-subtract', '07-magnitude', '09-dispute']) {
+  for (const name of ['02-selfuse', '03-blanks', '05-subtract', '07-magnitude', '09-dispute']) {
     let status = 0;
     try {
       execFileSync(process.execPath, [join(here, '..', 'instruments', name + '.mjs')], { stdio: 'pipe' });

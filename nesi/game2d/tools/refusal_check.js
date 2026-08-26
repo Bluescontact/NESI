@@ -74,9 +74,17 @@ const path = require("path");
    index.html's actual TANK destination as of this fix, but was reading
    nothing here for a day — the same hand-maintained-list gap this file's
    own header already names above. */
-const LIVE = ["ascent.html", "daily.html", "day_one.html", "decisions.html",
-              "descent.html", "index.html", "level_one.html",
-              "tank.html", "traversal.html"];
+/* day_one.html, descent.html, traversal.html DROPPED 2026-08-26, Kevin's
+   ruling (asked directly, per this file's own header: "closing it means
+   deciding what counts as a player surface, and that is Kevin's ruling,
+   not a build session's"). index.html was reclaimed the same day as
+   the_page.html's own entry — no twelve-seat door, no route from the
+   front door to these three anymore. His words, put to him as "the front
+   door defines live now": "No, drop all three." Not orphaned files —
+   still linked from tank.html and daily.html, both still watched — just
+   no longer the walked build this list exists to cover. */
+const LIVE = ["ascent.html", "daily.html", "decisions.html",
+              "index.html", "level_one.html", "tank.html"];
 const targets = process.argv[2]
   ? [path.resolve(process.cwd(), process.argv[2])]
   : LIVE.map(f => path.join(__dirname, "..", f)).filter(f => fs.existsSync(f));

@@ -61,6 +61,28 @@ design trains a hand to read past red — which is worse than no line at all. Th
 move makes `scope_check` mean something again: every instrument still in
 `tools/` reads the live build, and a new failure there is a real one.
 
+## The fourth wave, 2026-08-26: `04-horizon` — a different kind of retirement
+
+Every wave above retired an instrument because what it tested no longer
+existed — a superseded surface, dead by rebuild, not by choice. `04-horizon`
+is not that. It was live, correctly built, and doing exactly its named job:
+an akrasia horizon (Beeminder's own device) holding every "loosening" of the
+gate's own rules for seven days, specifically so a rule change made in the
+moment someone wants to bypass it can't take effect in that same moment —
+its own header, verbatim: *"a law written after the event it governs did not
+constrain; it ratified."*
+
+It was blocking a real commit (the_page/index.html reclaim) on an unrelated
+governance gap with a return date of 2026-08-27. Asked directly rather than
+quietly patched around, the choice was named as what it actually was —
+removing the check is itself the exact class of loosening the check exists
+to slow down — and Kevin's mark, in his own words: *"override it, I know
+what it is."* An informed, direct override of a real, working instrument, on
+purpose, not a discovery that it tested nothing. Its own `run()`, `classify()`,
+and CLI (`propose`/`revoke`/`apply`) are kept whole at
+`tools/retired/04-horizon.mjs` — read it if a future session wants the same
+mechanism back; nothing about it was wrong, only unwanted, once, by name.
+
 ## What of theirs is still held, and by what
 
 | their claim | now held by |

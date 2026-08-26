@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · tetra dream D — the typed matrix</title>
+<style>
+/* ═══ DREAM D — 2026-08-26. Not mine — this is the strongest single finding
+   from asking outside models to read the tetrahedron dreams cold: a
+   tetrahedron forces every one of its six edges to look structurally
+   identical (undirected, single-valued, symmetric), and this system's
+   relationships are none of those things. Chain is directional (sentence A
+   led to sentence B, not the reverse). Declared carries a direction too
+   (who connected to whom) plus a label the tetra view had nowhere to put
+   except a text tooltip. Hinge isn't even a PAIR property — it's a fact
+   about one node — and the tetrahedron had no honest place to show it at
+   all. A typed 4×4 matrix has a place for every one of those: the diagonal
+   for node-level facts (hinge), the off-diagonal cells for pair facts, and
+   asymmetric cells for asymmetric relationships instead of forcing them
+   into one shared line. This is the fourth shape, built the same way the
+   first three were — reads the same localStorage, writes nothing. */
+:root{ --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --gold:#e0c454; --dim:rgba(238,236,226,.55); --chain:#8aa8d6; --near:rgba(238,236,226,.4);
+  --hinge:#c1622e; --declared:#b98ee0; }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--paper);height:100%;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{display:flex;height:100vh}
+.pool{width:320px;border-right:1px solid var(--line);overflow-y:auto;padding:16px}
+h1{font:400 15px Georgia,serif;margin:0 0 4px}
+.sub{font-size:11.5px;color:var(--dim);margin-bottom:14px;line-height:1.5}
+.item{padding:8px 10px;border:1px solid var(--line);border-radius:4px;margin-bottom:6px;
+  font-size:12.5px;line-height:1.4;cursor:pointer}
+.item:hover{border-color:var(--gold)}
+.item.picked{border-color:var(--gold);background:rgba(224,196,84,.08)}
+.item .n{display:inline-block;width:16px;height:16px;border-radius:50%;background:var(--line);
+  color:var(--ink);font-size:10px;text-align:center;line-height:16px;margin-right:6px;font-weight:700}
+.item.picked .n{background:var(--gold)}
+.stage{flex:1;padding:22px;overflow:auto}
+table.matrix{border-collapse:collapse;margin-top:18px}
+table.matrix th, table.matrix td{border:1px solid var(--line);width:120px;height:70px;
+  padding:6px;vertical-align:top;font-size:11px}
+table.matrix th{background:rgba(238,236,226,.04);font-weight:400;color:var(--dim);
+  font-size:10.5px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.matrix td.diag{background:rgba(224,196,84,.05)}
+.cell-glyph{display:block;margin-bottom:2px}
+.cell-glyph.chain{color:var(--chain)}
+.cell-glyph.near{color:var(--near)}
+.cell-glyph.declared{color:var(--declared)}
+.cell-glyph.hinge{color:var(--hinge);font-weight:700}
+.cell-empty{color:rgba(238,236,226,.15)}
+.legend{margin-top:18px;font-size:11px;color:var(--dim);display:flex;gap:16px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}
+.rowlabel{max-width:120px;font-size:10.5px;color:var(--dim);padding-right:8px}
+.note{font-size:11px;color:var(--dim);max-width:60ch;margin-top:16px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pool">
+    <h1>pick four</h1>
+    <div class="sub">Same four sentences as the other dreams. This time they render as a matrix, not a tetrahedron — rows are sources, columns are targets. Directional relationships only appear on one side; the diagonal carries facts about the sentence itself, not a pair.</div>
+    <div id="items"></div>
+  </div>
+  <div class="stage" id="stage"></div>
+</div>
+<script>
+const KEY = "nesi.thepage";
+function dayStamp(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+const WINDOW_DAYS = 21;
+function withinWindow(day, today){ if (!day) return true; return (new Date(today)-new Date(day))/86400000 <= WINDOW_DAYS; }
+
+let nodes = [], declaredEdges = [], chainEdges = [];
+(function restore(){
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const parsed = JSON.parse(raw);
+    const seq = Array.isArray(parsed) ? parsed : (parsed.nodes || []);
+    nodes = seq.map((s,i)=>({ id:i, text:s.text, day:s.day }));
+    for (let i=1;i<nodes.length;i++) chainEdges.push({aId:nodes[i-1].id, bId:nodes[i].id});
+    declaredEdges = (Array.isArray(parsed)?[]:(parsed.declaredEdges||[])).map(e=>({aId:e.aId,bId:e.bId,label:e.label}));
+  } catch(e) {}
+})();
+function nearPairsFor(list, chainedKeys) {
+  const out=[];
+  for (let i=0;i<list.length;i++) for (let j=i+1;j<list.length;j++){
+    const a=list[i], b=list[j];
+    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chainedKeys && chainedKeys.has(key)) continue;
+    if (Math.abs(i-j) <= 2) out.push({aId:a.id, bId:b.id});
+  }
+  return out;
+}
+const chainedKeys = new Set(chainEdges.map(e=>e.aId+"-"+e.bId));
+const nearEdges = nearPairsFor(nodes, chainedKeys);
+
+function hingeSet(){
+  const today = nodes.length ? dayStamp() : null;
+  const windowIds = new Set(nodes.filter(n=>withinWindow(n.day, today)).map(n=>n.id));
+  declaredEdges.forEach(e=>{ windowIds.add(e.aId); windowIds.add(e.bId); });
+  const activeNodes = nodes.filter(n=>windowIds.has(n.id));
+  const activeEdges = chainEdges.concat(nearEdges).filter(e=>windowIds.has(e.aId)&&windowIds.has(e.bId)).concat(declaredEdges);
+  const adj = new Map(); activeNodes.forEach(n=>adj.set(n.id,new Set()));
+  activeEdges.forEach(e=>{ if(!adj.has(e.aId)||!adj.has(e.bId)) return; adj.get(e.aId).add(e.bId); adj.get(e.bId).add(e.aId); });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  activeNodes.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0,neigh:[...adj.get(root.id)]}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1];
+      if (top.iter<top.neigh.length){
+        const v=top.neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.skip){ top.skip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++;
+          stack.push({id:v,iter:0,isRoot:false,children:0,neigh:[...adj.get(v)]}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+const hinges = hingeSet();
+
+let picked = [];
+const itemsEl = document.getElementById("items");
+function renderPool(){
+  itemsEl.innerHTML = "";
+  if (!nodes.length) { itemsEl.innerHTML = '<div class="sub">No sentences yet — write in index.html first.</div>'; return; }
+  nodes.forEach(n=>{
+    const idx = picked.indexOf(n.id);
+    const d = document.createElement("div");
+    d.className = "item" + (idx>=0 ? " picked" : "");
+    d.innerHTML = '<span class="n">' + (idx>=0 ? (idx+1) : "") + '</span>' + n.text.slice(0,80);
+    d.addEventListener("click", ()=>{
+      if (idx>=0) picked.splice(idx,1);
+      else if (picked.length<4) picked.push(n.id);
+      renderPool(); renderMatrix();
+    });
+    itemsEl.appendChild(d);
+  });
+}
+
+function cellsFor(aId, bId){
+  // directional: chain only marks a->b if a was written immediately before b
+  const out = [];
+  if (chainEdges.some(e=>e.aId===aId && e.bId===bId)) out.push({kind:"chain", text:"chain →"});
+  const decl = declaredEdges.find(e=>e.aId===aId && e.bId===bId);
+  if (decl) out.push({kind:"declared", text:"declared →" + (decl.label?" "+decl.label:"")});
+  if (nearEdges.some(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId))) out.push({kind:"near", text:"near (~)"});
+  return out;
+}
+
+function renderMatrix(){
+  const stage = document.getElementById("stage");
+  stage.innerHTML = "";
+  const h1 = document.createElement("h1"); h1.textContent = "the typed matrix";
+  stage.appendChild(h1);
+  if (picked.length < 4) {
+    const p = document.createElement("div"); p.className="sub";
+    p.textContent = picked.length + " of 4 picked — the matrix appears once you have all four.";
+    stage.appendChild(p);
+    return;
+  }
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const four = picked.map(id=>nodesById[id]);
+  const table = document.createElement("table"); table.className = "matrix";
+  const head = document.createElement("tr");
+  head.appendChild(document.createElement("th"));
+  four.forEach((n,i)=>{ const th=document.createElement("th"); th.textContent=(i+1)+". "+n.text.slice(0,20); head.appendChild(th); });
+  table.appendChild(head);
+  four.forEach((rowN,i)=>{
+    const tr = document.createElement("tr");
+    const rowTh = document.createElement("th");
+    rowTh.className = "rowlabel"; rowTh.textContent = (i+1)+". "+rowN.text.slice(0,20);
+    tr.appendChild(rowTh);
+    four.forEach((colN,j)=>{
+      const td = document.createElement("td");
+      if (i===j) {
+        td.className = "diag";
+        td.innerHTML = hinges.has(rowN.id)
+          ? '<span class="cell-glyph hinge">hinge</span><span class="sub" style="font-size:9.5px">this sentence is load-bearing</span>'
+          : '<span class="cell-empty">—</span>';
+      } else {
+        const cells = cellsFor(rowN.id, colN.id);
+        td.innerHTML = cells.length
+          ? cells.map(c=>'<span class="cell-glyph '+c.kind+'">'+c.text+'</span>').join("")
+          : '<span class="cell-empty">none</span>';
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  stage.appendChild(table);
+  const legend = document.createElement("div"); legend.className = "legend";
+  legend.innerHTML = '<span><i style="color:var(--chain)">■</i>chain — directional, row wrote before column</span>' +
+    '<span><i style="color:var(--near)">■</i>near — symmetric, shown both sides</span>' +
+    '<span><i style="color:var(--declared)">■</i>declared — directional, row connected to column</span>' +
+    '<span><i style="color:var(--hinge)">■</i>hinge — a fact about the row/column itself, diagonal only</span>';
+  stage.appendChild(legend);
+  const note = document.createElement("div"); note.className = "note";
+  note.textContent = "Notice what a tetrahedron's six identical-looking edges couldn't show: chain and declared only ever appear on one side of the diagonal, because they have a direction. Near appears on both sides, because it doesn't. Hinge never appears in an off-diagonal cell at all — it was never a pair-relationship to begin with.";
+  stage.appendChild(note);
+}
+renderPool(); renderMatrix();
+</script>
+</body>
+</html>

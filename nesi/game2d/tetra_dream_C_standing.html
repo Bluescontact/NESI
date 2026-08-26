@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · tetra dream C — the standing tetra</title>
+<style>
+/* ═══ DREAM C — 2026-08-26. Dream A is a lens you open and pick four
+   things in. Dream B adds a whole grouping layer. This one tries the
+   opposite of both: nothing to pick, nothing to build — a companion
+   window, meant to sit open beside index.html, that always shows the
+   tetrahedron around wherever the writing currently is. Four points,
+   chosen the same way every time: the sentence just written, its chain
+   predecessor, its chain successor if one exists yet, and whichever
+   other sentence sits nearest it in time. No manual work, no new data —
+   it listens for the 'storage' event index.html already fires on every
+   persist() and redraws within the same tab-refresh, live. If you have
+   fewer than four sentences total, it says so honestly instead of
+   inventing a fourth point. */
+:root{ --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --gold:#e0c454; --dim:rgba(238,236,226,.55); --chain:#8aa8d6; --near:rgba(238,236,226,.4); }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--paper);height:100%;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;overflow:hidden}
+.wrap{display:flex;flex-direction:column;height:100vh}
+.head{padding:14px 18px 6px}
+h1{font:400 14px Georgia,serif;margin:0 0 4px}
+.sub{font-size:10.5px;color:var(--dim);line-height:1.5}
+.stage{flex:1;display:flex;align-items:center;justify-content:center}
+svg{width:min(520px,92%);height:min(520px,80vh)}
+.edgeline{stroke-width:1.4}
+.edgeline.chain{stroke:var(--chain)}
+.edgeline.near{stroke:var(--near);stroke-dasharray:3 3}
+.vlabel{fill:var(--paper);font:11px Georgia,serif}
+.vsub{fill:var(--dim);font:9px ui-monospace,Consolas,monospace}
+.elabel{fill:var(--dim);font:9px ui-monospace,Consolas,monospace}
+.now circle{fill:var(--gold) !important}
+.empty{color:var(--dim);font-size:12.5px;text-align:center;max-width:32ch;line-height:1.6;margin:auto}
+footer{padding:8px 18px;border-top:1px solid var(--line);font-size:10px;color:var(--dim);
+  display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><h1>the standing tetra</h1>
+    <div class="sub">Keep this open beside index.html. The four points are chosen the same way every time — no picking, nothing built: the sentence you just finished, its neighbor before, its neighbor after (if one exists yet), and whichever other sentence landed nearest it in time.
+      <br><b style="color:var(--dim)">Fixed 2026-08-26:</b> "now" used to mean only the last sentence <i>written</i> — stale the moment you're rereading instead of composing. Hover a sentence in index.html for 1.5s and this window follows your attention there instead, as long as writing has actually paused; a new sentence always takes back "now" immediately.</div>
+  </div>
+  <div class="stage" id="stage"></div>
+  <footer><span id="foot">waiting for the first sentence…</span><span>updates live · tetra_dream_C_standing.html</span></footer>
+</div>
+<script>
+const KEY = "nesi.thepage";
+const SVGNS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(SVGNS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    const seq = Array.isArray(parsed) ? parsed : (parsed.nodes || []);
+    return seq.map((s,i)=>({ id:i, text:s.text, gapMs:s.gapMs||0 }));
+  } catch(e) { return []; }
+}
+
+function nearestByTime(nodes, idx){
+  // nearest in "arrival order" distance as a stand-in for time-proximity,
+  // same structural fact the writing page's own near-pairs uses
+  let best=-1, bestDist=Infinity;
+  nodes.forEach((n,i)=>{
+    if (i===idx) return;
+    if (Math.abs(i-idx) === 1) return; // already chain neighbors
+    const d = Math.abs(i-idx);
+    if (d<bestDist){ bestDist=d; best=i; }
+  });
+  return best>=0 ? nodes[best] : null;
+}
+
+/* DWELL-ATTENTION, 2026-08-26 — ground finding, an outside model's own
+   suggestion: "attention = dwell position," not just "attention = last
+   write." index.html now writes nesi.thepage.attention on a 1.5s hover.
+   Rule kept simple and honest: a NEW sentence since the last render always
+   wins (you're composing, that's "now" by definition) — only once writing
+   has paused does a recent dwell take over, and only for
+   ATTENTION_STALE_MS before it's treated as gone cold and "now" falls back
+   to the last-written sentence. No new input from the writer; the sensor
+   was already there in the mouse. */
+const ATTENTION_KEY = "nesi.thepage.attention";
+const ATTENTION_STALE_MS = 60000;
+let lastSeenCount = -1;
+function attentionIdx(nodes){
+  try {
+    const raw = localStorage.getItem(ATTENTION_KEY); if (!raw) return null;
+    const a = JSON.parse(raw);
+    if (!a || typeof a.id !== "number") return null;
+    if (Date.now() - a.ts > ATTENTION_STALE_MS) return null;
+    const idx = nodes.findIndex(n=>n.id===a.id);
+    return idx>=0 ? idx : null;
+  } catch(e) { return null; }
+}
+
+function render(){
+  const nodes = load();
+  const stage = document.getElementById("stage");
+  const foot = document.getElementById("foot");
+  stage.innerHTML = "";
+  if (nodes.length < 4) {
+    const d = document.createElement("div");
+    d.className = "empty";
+    d.textContent = nodes.length + " sentence" + (nodes.length===1?"":"s") + " so far — the standing tetra needs four before it can show a shape.";
+    stage.appendChild(d);
+    foot.textContent = nodes.length + " sentence(s) total";
+    return;
+  }
+  let nowIdx = nodes.length - 1;
+  let attentionDriven = false;
+  if (nodes.length === lastSeenCount) {
+    const aIdx = attentionIdx(nodes);
+    /* GROUND CASE FOUND while wiring this in: attention pointing at the
+       first sentence has no predecessor to look backward from — the rest
+       of this function assumes room behind "now." Rather than special-case
+       every downstream line, attention only takes over when there's at
+       least one real neighbor on each side to work with. */
+    if (aIdx !== null && aIdx >= 1) { nowIdx = aIdx; attentionDriven = true; }
+  }
+  lastSeenCount = nodes.length;
+  const prevIdx = nowIdx - 1;
+  // FIXED, 2026-08-26: this was hardcoded null on the claim "now is always
+  // the newest" — true before attention could drive "now" to an older
+  // sentence, false since. A real successor exists whenever attention
+  // points anywhere but the last sentence; show it instead of hiding it.
+  const nextIdx = nowIdx < nodes.length-1 ? nowIdx+1 : null;
+  const nearest = nearestByTime(nodes, nowIdx);
+  const beforePrev = nowIdx - 2;
+  const four = [
+    { role:"now", n: nodes[nowIdx] },
+    { role:"chain", n: nodes[prevIdx] },
+  ];
+  if (nextIdx !== null) {
+    four.push({ role:"chain", n: nodes[nextIdx] });
+  } else {
+    four.push({ role:"near", n: nearest && nearest.id !== nodes[prevIdx].id ? nearest : (beforePrev>=0 ? nodes[beforePrev] : nodes[prevIdx]) });
+  }
+  // fourth point: the chain-predecessor of the predecessor, if distinct — gives a real fourth vertex without inventing meaning
+  const fourthIdx = beforePrev>=0 ? beforePrev : null;
+  if (fourthIdx !== null && !four.some(f=>f.n.id===nodes[fourthIdx].id)) {
+    four.push({ role:"chain", n: nodes[fourthIdx] });
+  } else {
+    // fall back: next-nearest distinct sentence
+    const used = new Set(four.map(f=>f.n.id));
+    const fallback = nodes.slice().reverse().find(n=>!used.has(n.id) && n.id!==nodes[nowIdx].id);
+    if (fallback) four.push({ role:"near", n: fallback });
+  }
+  if (four.length < 4) { foot.textContent = "not enough distinct neighbors yet"; return; }
+
+  const svg = svgEl("svg", {viewBox:"0 0 520 520"});
+  svg.style.width = "min(520px,92%)"; svg.style.height="min(520px,80vh)";
+  const P = [ [260,60], [70,380], [450,380], [260,240] ];
+  for (let i=0;i<4;i++) for (let j=i+1;j<4;j++){
+    const a=four[i], b=four[j];
+    const isChain = Math.abs(nodes.indexOf(a.n) - nodes.indexOf(b.n)) === 1;
+    const line = svgEl("line", {x1:P[i][0],y1:P[i][1],x2:P[j][0],y2:P[j][1]});
+    line.setAttribute("class","edgeline " + (isChain ? "chain" : "near"));
+    svg.appendChild(line);
+  }
+  four.forEach((f,i)=>{
+    const g = svgEl("g", {class: f.role==="now" ? "now" : ""});
+    const c = svgEl("circle", {cx:P[i][0],cy:P[i][1],r: f.role==="now"?9:6, fill:"var(--dim)"});
+    g.appendChild(c);
+    const t = svgEl("text", {x:P[i][0],y: i===0?P[i][1]-16:P[i][1]+22, class:"vlabel","text-anchor":"middle"});
+    t.textContent = (f.role==="now"?"now — ":"") + f.n.text.slice(0,26) + (f.n.text.length>26?"…":"");
+    g.appendChild(t);
+    svg.appendChild(g);
+  });
+  stage.appendChild(svg);
+  foot.textContent = nodes.length + " sentence(s) total · " +
+    (attentionDriven ? "following where you're reading" : "following where you're writing") +
+    " · last updated " + new Date().toLocaleTimeString();
+}
+
+render();
+window.addEventListener("storage", e => { if (e.key === KEY) render(); });
+// same-tab writes to localStorage don't fire 'storage' (browser spec — only
+// OTHER tabs hear it), so a light poll covers the case this window and
+// index.html are the same tab's history, not two tabs side by side.
+setInterval(render, 2000);
+</script>
+</body>
+</html>

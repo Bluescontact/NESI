@@ -20,11 +20,17 @@ import { declaresCost, append } from './lib.mjs';
 import { namedDeposits } from './deposits.mjs';
 import { deriveRoutes } from './derive_routes.mjs';
 
+// 04-horizon RETIRED 2026-08-26, Kevin's own mark, given the tension named
+// outright first, not smoothed over: removing an akrasia-horizon check is
+// itself the exact class of loosening the instrument existed to hold for a
+// week — "override it, I know what it is." An informed, direct override,
+// not a silent deletion — the instrument is kept whole at
+// tools/retired/04-horizon.mjs, per this project's own retirement
+// convention, and named in tools/retired/RETIRED.md.
 const MODULES = [
   './instruments/01-motion.mjs',
   './instruments/02-selfuse.mjs',
   './instruments/03-blanks.mjs',
-  './instruments/04-horizon.mjs',
   './instruments/05-subtract.mjs',
   './instruments/06-landed.mjs',
   './instruments/07-magnitude.mjs',

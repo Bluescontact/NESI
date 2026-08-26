@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · tetra dream A — the four-pick</title>
+<style>
+/* ═══ DREAM A — 2026-08-26. Kevin: "map the 6 relationships at any point in
+   the system, built a tetra an object." The most literal reading: you pick
+   any four sentences from what you've already written, and the six pairwise
+   relationships between them — the tetrahedron's six edges — render
+   explicitly, using the same relationship vocabulary index.html already
+   computes (chain, near, hinge, declared). This is a LENS, not a new data
+   model: read-only against the same localStorage the writing page already
+   fills. Nothing here writes. If two picks share no relationship at all,
+   the edge is drawn empty and dashed — an honest gap, not filled in. */
+:root{ --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --gold:#e0c454; --dim:rgba(238,236,226,.55); --chain:#8aa8d6;
+  --near:rgba(238,236,226,.35); --hinge:#c1622e; --declared:#b98ee0; --none:rgba(238,236,226,.12); }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--paper);height:100%;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{display:flex;height:100vh}
+.pool{width:340px;border-right:1px solid var(--line);overflow-y:auto;padding:16px}
+.pool h1{font:400 15px Georgia,serif;margin:0 0 4px}
+.pool .sub{font-size:11.5px;color:var(--dim);margin-bottom:14px;line-height:1.5}
+.pool .item{padding:8px 10px;border:1px solid var(--line);border-radius:4px;margin-bottom:6px;
+  font-size:12.5px;line-height:1.4;cursor:pointer;}
+.pool .item:hover{border-color:var(--gold)}
+.pool .item.picked{border-color:var(--gold);background:rgba(224,196,84,.08)}
+.pool .item .n{display:inline-block;width:16px;height:16px;border-radius:50%;background:var(--line);
+  color:var(--ink);font-size:10px;text-align:center;line-height:16px;margin-right:6px;font-weight:700}
+.pool .item.picked .n{background:var(--gold)}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.hint{position:absolute;top:16px;left:16px;font-size:11px;color:var(--dim);max-width:40ch;line-height:1.5}
+svg{width:min(640px,90%);height:min(640px,70vh)}
+.edgeline{stroke-width:1.4}
+.edgeline.chain{stroke:var(--chain)}
+.edgeline.near{stroke:var(--near);stroke-dasharray:3 3}
+.edgeline.hinge{stroke:var(--hinge);stroke-width:2.4}
+.edgeline.declared{stroke:var(--declared);stroke-width:2}
+.edgeline.none{stroke:var(--none);stroke-dasharray:2 5}
+.vlabel{fill:var(--paper);font:11px Georgia,serif}
+.elabel{fill:var(--dim);font:9.5px ui-monospace,Consolas,monospace;letter-spacing:.04em}
+.legend{position:absolute;bottom:16px;left:16px;font-size:10.5px;color:var(--dim);display:flex;gap:14px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:14px;height:2px;display:inline-block}
+.empty{color:var(--dim);font-size:13px;text-align:center;max-width:36ch;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pool">
+    <h1>pick four</h1>
+    <div class="sub">Any four of your own sentences. The six lines between them are read, never decided — chain (you wrote them one after another), near (they landed close in time), hinge (one is load-bearing between the others), declared (you named it yourself). No relationship at all is drawn as an honest gap.</div>
+    <div id="items"></div>
+  </div>
+  <div class="stage">
+    <div class="hint" id="hint"></div>
+    <svg id="lat" viewBox="0 0 640 640"></svg>
+    <div class="legend">
+      <span><i style="background:var(--chain)"></i>chain</span>
+      <span><i style="background:var(--near)"></i>near</span>
+      <span><i style="background:var(--hinge)"></i>hinge</span>
+      <span><i style="background:var(--declared)"></i>declared</span>
+      <span><i style="background:var(--none)"></i>none</span>
+    </div>
+  </div>
+</div>
+<script>
+const KEY = "nesi.thepage";
+function dayStamp(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+let nodes = [], declaredEdges = [], chainEdges = [];
+(function restore(){
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const parsed = JSON.parse(raw);
+    const seq = Array.isArray(parsed) ? parsed : (parsed.nodes || []);
+    nodes = seq.map((s,i)=>({ id:i, text:s.text, day:s.day }));
+    for (let i=1;i<nodes.length;i++) chainEdges.push({aId:nodes[i-1].id, bId:nodes[i].id});
+    declaredEdges = (Array.isArray(parsed)?[]:(parsed.declaredEdges||[])).map(e=>({aId:e.aId,bId:e.bId,label:e.label}));
+  } catch(e) {}
+})();
+
+function nearPairsFor(list, chainedKeys) {
+  const out=[];
+  for (let i=0;i<list.length;i++) for (let j=i+1;j<list.length;j++){
+    const a=list[i], b=list[j];
+    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chainedKeys && chainedKeys.has(key)) continue;
+    if (Math.abs(i-j) <= 2) out.push({aId:a.id, bId:b.id});
+  }
+  return out;
+}
+const chainedKeys = new Set(chainEdges.map(e=>e.aId+"-"+e.bId));
+const nearEdges = nearPairsFor(nodes, chainedKeys);
+
+let picked = [];
+const itemsEl = document.getElementById("items");
+function renderPool(){
+  itemsEl.innerHTML = "";
+  if (!nodes.length) {
+    itemsEl.innerHTML = '<div class="sub">No sentences yet — write in index.html first, then come back here.</div>';
+    return;
+  }
+  nodes.forEach(n=>{
+    const d = document.createElement("div");
+    d.className = "item" + (picked.includes(n.id) ? " picked" : "");
+    const idx = picked.indexOf(n.id);
+    d.innerHTML = '<span class="n">' + (idx>=0 ? (idx+1) : "") + '</span>' + n.text.slice(0,90);
+    d.addEventListener("click", ()=>{
+      if (idx>=0) picked.splice(idx,1);
+      else if (picked.length<4) picked.push(n.id);
+      renderPool(); renderStage();
+    });
+    itemsEl.appendChild(d);
+  });
+}
+
+/* AUDIT FIX, 2026-08-26: the first draft checked chain, then declared, then
+   near, returning on the first match — so a pair that was BOTH chain-adjacent
+   AND explicitly declared related lost the declared label silently. Chain and
+   near are mutually exclusive by construction (nearPairsFor already excludes
+   chained pairs), but declared is orthogonal to both and must never be
+   swallowed. */
+function relationOf(aId,bId){
+  const isChain = chainEdges.some(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId));
+  const decl = declaredEdges.find(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId));
+  if (isChain && decl) return {kind:"declared", label:(decl.label?decl.label+" ":"")+"(also chain)"};
+  if (isChain) return {kind:"chain"};
+  if (decl) return {kind:"declared", label:decl.label};
+  if (nearEdges.some(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId))) return {kind:"near"};
+  return {kind:"none"};
+}
+// A hinge, for this four-point view: is this vertex the only path between the
+// other three in the FULL graph (chain+near+declared), not just within the pick.
+/* HINGE DECAY, 2026-08-26 — same fix as index.html, ported. Ground finding
+   from two out-of-family models: whole-document cut-vertex detection
+   saturates because daily writing is mostly a chain, and almost every
+   interior node of a chain genuinely IS a cut-vertex. Chain and near are
+   windowed to WINDOW_DAYS; declared edges count regardless of age (the
+   one deliberate, cross-time signal the writer added on purpose), and
+   pull in whichever node they touch even if it's outside the window. */
+const WINDOW_DAYS = 21;
+function withinWindow(day, today){
+  if (!day) return true;
+  return (new Date(today) - new Date(day)) / 86400000 <= WINDOW_DAYS;
+}
+function hingeSet(){
+  const today = nodes.length ? dayStamp() : null;
+  const windowIds = new Set(nodes.filter(n=>withinWindow(n.day, today)).map(n=>n.id));
+  declaredEdges.forEach(e=>{ windowIds.add(e.aId); windowIds.add(e.bId); });
+  const activeNodes = nodes.filter(n=>windowIds.has(n.id));
+  const activeEdges = chainEdges.concat(nearEdges).filter(e=>windowIds.has(e.aId)&&windowIds.has(e.bId))
+    .concat(declaredEdges);
+  const adj = new Map(); activeNodes.forEach(n=>adj.set(n.id,new Set()));
+  activeEdges.forEach(e=>{
+    if(!adj.has(e.aId)||!adj.has(e.bId)) return;
+    adj.get(e.aId).add(e.bId); adj.get(e.bId).add(e.aId);
+  });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  activeNodes.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0,neigh:[...adj.get(root.id)]}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1];
+      if (top.iter<top.neigh.length){
+        const v=top.neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.skip){ top.skip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++;
+          stack.push({id:v,iter:0,isRoot:false,children:0,neigh:[...adj.get(v)]}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+const hinges = hingeSet();
+
+const SVGNS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(SVGNS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+
+/* AUDIT FIX, 2026-08-26: the first draft placed the fourth point at the
+   centroid of the other three — inside their triangle, not a fourth
+   vertex, so the "six edges" often overlapped into a confusing knot
+   instead of six readable lines. Real regular-tetrahedron coordinates
+   ([1,1,1] etc — the four alternating corners of a cube, equidistant by
+   construction), projected the same simple way the retired solid-door
+   projected its twelve seats, so no vertex ever sits inside the other
+   three's hull. */
+function tetraPoints(){
+  const V = [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]];
+  const yaw=0.6, pitch=-0.35, R=170, cx=320, cy=320;
+  const cy_=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+  return V.map(v=>{
+    const x=v[0]*cy_+v[2]*sy, z=-v[0]*sy+v[2]*cy_;
+    const y=v[1]*cp-z*sp;
+    return [cx+x*R, cy-y*R];
+  });
+}
+
+function renderStage(){
+  const svg = document.getElementById("lat");
+  svg.innerHTML = "";
+  const hint = document.getElementById("hint");
+  if (picked.length < 4) {
+    hint.textContent = picked.length + " of 4 picked — the shape appears once you have all four.";
+    return;
+  }
+  hint.textContent = "the six edges of what you picked — none of them decided here, only read.";
+  const P = tetraPoints();
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const pts = picked.map((id,i)=>({id, p:P[i], n:nodesById[id]}));
+  // 6 edges among 4 points
+  for (let i=0;i<4;i++) for (let j=i+1;j<4;j++){
+    const rel = relationOf(pts[i].id, pts[j].id);
+    const line = svgEl("line", {x1:pts[i].p[0],y1:pts[i].p[1],x2:pts[j].p[0],y2:pts[j].p[1]});
+    line.setAttribute("class","edgeline "+rel.kind);
+    svg.appendChild(line);
+    const mx=(pts[i].p[0]+pts[j].p[0])/2, my=(pts[i].p[1]+pts[j].p[1])/2;
+    const lbl = svgEl("text", {x:mx,y:my,class:"elabel","text-anchor":"middle"});
+    lbl.textContent = rel.kind + (rel.label ? ": "+rel.label : "");
+    svg.appendChild(lbl);
+  }
+  pts.forEach((pt,i)=>{
+    const c = svgEl("circle", {cx:pt.p[0],cy:pt.p[1],r:hinges.has(pt.id)?9:6,
+      fill: hinges.has(pt.id) ? "var(--hinge)" : "var(--gold)"});
+    svg.appendChild(c);
+    const t = svgEl("text", {x:pt.p[0], y: i===0 ? pt.p[1]-16 : pt.p[1]+22, class:"vlabel","text-anchor":"middle"});
+    t.textContent = (i+1) + ". " + pt.n.text.slice(0,28) + (pt.n.text.length>28?"…":"");
+    svg.appendChild(t);
+  });
+}
+renderPool(); renderStage();
+</script>
+</body>
+</html>

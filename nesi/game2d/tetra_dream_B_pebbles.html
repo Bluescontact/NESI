@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · tetra dream B — pebbles and stones</title>
+<style>
+/* ═══ DREAM B — 2026-08-26. Kevin's own words: "each sentence as a pebble,
+   each word as a node. Sentences can be merged and grouped together to
+   assemble a paragraph, a stone." Unlike Dream A (a read-only lens), this
+   adds a real layer the data model doesn't have yet: grouping. It's kept
+   OUT of the_page's own storage on purpose — a new key,
+   "nesi.thepage.stones" — an experiment doesn't get to risk the real
+   writing. Same discipline the writing page already holds: nothing here
+   reads what a word or sentence SAYS to decide anything. Splitting into
+   words is literal (whitespace), grouping into a stone is the hand's own
+   act (click to gather, never inferred from content), and the four-stone
+   tetra below reads only structural facts about the group: how many
+   pebbles it holds, how many words total, whether it touches a hinge
+   sentence, whether the writer declared it related to another stone. */
+:root{ --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --gold:#e0c454; --dim:rgba(238,236,226,.55); --stone:rgba(224,196,84,.14); }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--paper);height:100%;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{display:flex;height:100vh}
+.left{width:42%;border-right:1px solid var(--line);overflow-y:auto;padding:18px}
+.right{flex:1;display:flex;flex-direction:column;padding:18px;overflow-y:auto}
+h1{font:400 15px Georgia,serif;margin:0 0 4px}
+.sub{font-size:11.5px;color:var(--dim);margin-bottom:14px;line-height:1.5}
+.pebble{display:inline-block;border:1px solid var(--line);border-radius:14px;padding:6px 12px;
+  margin:0 6px 8px 0;font-size:12.5px;cursor:pointer;position:relative}
+.pebble:hover{border-color:var(--gold)}
+.pebble.armed{border-color:var(--gold);background:rgba(224,196,84,.1)}
+.pebble .words{display:none;position:absolute;top:100%;left:0;margin-top:6px;background:#1e2327;
+  border:1px solid var(--line);border-radius:6px;padding:8px;white-space:nowrap;z-index:5}
+.pebble.expanded .words{display:block}
+.word{display:inline-block;border:1px solid var(--line);border-radius:3px;padding:2px 6px;margin:2px;
+  font-size:11px;color:var(--dim)}
+.gather{margin:14px 0;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;font-size:12px}
+.gather button{background:var(--gold);color:var(--ink);border:0;border-radius:4px;padding:5px 12px;
+  font-size:11.5px;cursor:pointer;margin-right:8px}
+.gather button:disabled{opacity:.35;cursor:default}
+.stonebox{border:1px solid var(--gold);background:var(--stone);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.stonebox h3{margin:0 0 4px;font:400 13px Georgia,serif}
+.stonebox .meta{font-size:10.5px;color:var(--dim)}
+svg{width:100%;height:480px}
+.edgeline{stroke:var(--line);stroke-width:1.4}
+.edgeline.declared{stroke:#b98ee0;stroke-width:2}
+.elabel{fill:var(--dim);font:9.5px ui-monospace,Consolas,monospace}
+.vlabel{fill:var(--paper);font:12px Georgia,serif}
+.vsub{fill:var(--dim);font:9.5px ui-monospace,Consolas,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="left">
+    <h1>pebbles</h1>
+    <div class="sub">Each pebble is one sentence. Click a pebble to see its words — literal, split on whitespace, nothing read into them. Click "gather" to arm pebbles, then name the stone they become.</div>
+    <div id="pebbles"></div>
+    <div class="gather">
+      <span id="armedCount">0 armed</span> —
+      <button id="gatherBtn" disabled>gather into a stone</button>
+    </div>
+  </div>
+  <div class="right">
+    <h1>stones</h1>
+    <div class="sub">A stone is sentences the hand grouped, nothing inferred. Pick any four stones and the six relationships between them appear below — pebble-count, word-count, hinge-touch, and anything you declare, never what they say.</div>
+    <div id="stones"></div>
+    <svg id="lat" viewBox="0 0 640 480"></svg>
+  </div>
+</div>
+<script>
+const KEY = "nesi.thepage";
+function dayStamp(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+const STONE_KEY = "nesi.thepage.stones";
+let nodes = [], chainEdges = [], declaredEdges = [];
+(function restore(){
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const parsed = JSON.parse(raw);
+    const seq = Array.isArray(parsed) ? parsed : (parsed.nodes || []);
+    nodes = seq.map((s,i)=>({ id:i, text:s.text, day:s.day }));
+    for (let i=1;i<nodes.length;i++) chainEdges.push({aId:nodes[i-1].id, bId:nodes[i].id});
+    declaredEdges = (Array.isArray(parsed)?[]:(parsed.declaredEdges||[])).map(e=>({aId:e.aId,bId:e.bId}));
+  } catch(e) {}
+})();
+function nearPairsFor(list, chainedKeys) {
+  const out=[];
+  for (let i=0;i<list.length;i++) for (let j=i+1;j<list.length;j++){
+    const a=list[i], b=list[j];
+    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chainedKeys && chainedKeys.has(key)) continue;
+    if (Math.abs(i-j) <= 2) out.push({aId:a.id, bId:b.id});
+  }
+  return out;
+}
+const chainedKeys = new Set(chainEdges.map(e=>e.aId+"-"+e.bId));
+const nearEdges = nearPairsFor(nodes, chainedKeys);
+let stones = [];
+(function restoreStones(){ try { const raw = localStorage.getItem(STONE_KEY); if (raw) stones = JSON.parse(raw); } catch(e){} })();
+function persistStones(){ try { localStorage.setItem(STONE_KEY, JSON.stringify(stones)); } catch(e){} }
+
+let armed = new Set();
+const pebblesEl = document.getElementById("pebbles");
+function renderPebbles(){
+  pebblesEl.innerHTML = "";
+  if (!nodes.length) { pebblesEl.innerHTML = '<div class="sub">No sentences yet — write in index.html first.</div>'; return; }
+  nodes.forEach(n=>{
+    const inStone = stones.some(s=>s.memberIds.includes(n.id));
+    const el = document.createElement("span");
+    el.className = "pebble" + (armed.has(n.id) ? " armed" : "");
+    el.style.opacity = inStone ? .4 : 1;
+    el.innerHTML = n.text.slice(0,36) + (n.text.length>36?"…":"") +
+      '<span class="words">' + n.text.split(/\s+/).filter(Boolean).map(w=>'<span class="word">'+w+'</span>').join("") + '</span>';
+    el.addEventListener("click", (e)=>{
+      if (e.detail===2 || e.target.classList.contains("words")) return;
+      el.classList.toggle("expanded");
+    });
+    el.addEventListener("dblclick", ()=>{
+      if (inStone) return;
+      if (armed.has(n.id)) armed.delete(n.id); else armed.add(n.id);
+      renderPebbles();
+      document.getElementById("armedCount").textContent = armed.size + " armed";
+      document.getElementById("gatherBtn").disabled = armed.size < 2;
+    });
+    el.title = "double-click to arm for gathering";
+    pebblesEl.appendChild(el);
+  });
+}
+document.getElementById("gatherBtn").addEventListener("click", ()=>{
+  const name = prompt("Name this stone:", "");
+  if (name === null) return;
+  stones.push({ id: (stones.length? Math.max(...stones.map(s=>s.id))+1 : 0), name: name || "untitled stone", memberIds: [...armed], declared: [] });
+  armed.clear(); persistStones();
+  document.getElementById("armedCount").textContent = "0 armed";
+  document.getElementById("gatherBtn").disabled = true;
+  renderPebbles(); renderStones(); renderTetra();
+});
+
+/* AUDIT FIX, 2026-08-26: the first draft called every chain-interior
+   sentence a "hinge" — which is nearly all of them (everything but the
+   first and last), so "touches a hinge" said almost nothing. Real
+   articulation-point detection, over chain + near + declared together —
+   ported from index.html's own algorithm, not approximated.
+
+   HINGE DECAY, same day, second pass: the real algorithm still saturates —
+   two out-of-family models, asked separately, converged on the same
+   finding: a mostly-chain graph makes almost every interior node a true
+   cut-vertex, so "correct" isn't the same as "meaningful" at scale. Chain
+   and near are now windowed to WINDOW_DAYS; declared edges count
+   regardless of age and pull in whichever node they touch. */
+const WINDOW_DAYS = 21;
+function withinWindow(day, today){ if (!day) return true; return (new Date(today)-new Date(day))/86400000 <= WINDOW_DAYS; }
+const hingesSet = (function(){
+  const today = nodes.length ? dayStamp() : null;
+  const windowIds = new Set(nodes.filter(n=>withinWindow(n.day, today)).map(n=>n.id));
+  declaredEdges.forEach(e=>{ windowIds.add(e.aId); windowIds.add(e.bId); });
+  const activeNodes = nodes.filter(n=>windowIds.has(n.id));
+  const activeEdges = chainEdges.concat(nearEdges).filter(e=>windowIds.has(e.aId)&&windowIds.has(e.bId)).concat(declaredEdges);
+  const adj=new Map(); activeNodes.forEach(n=>adj.set(n.id,[]));
+  activeEdges.forEach(e=>{
+    if(!adj.has(e.aId)||!adj.has(e.bId)) return;
+    adj.get(e.aId).push(e.bId); adj.get(e.bId).push(e.aId);
+  });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  activeNodes.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1], neigh=adj.get(top.id);
+      if (top.iter<neigh.length){
+        const v=neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.usedParentSkip){ top.usedParentSkip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++; stack.push({id:v,iter:0,isRoot:false,children:0}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+})();
+
+let pickedStones = [];
+const stonesEl = document.getElementById("stones");
+function renderStones(){
+  stonesEl.innerHTML = "";
+  if (!stones.length) { stonesEl.innerHTML = '<div class="sub">No stones yet — gather some pebbles on the left.</div>'; return; }
+  stones.forEach(s=>{
+    const words = s.memberIds.reduce((sum,id)=>{ const n=nodes.find(x=>x.id===id); return sum + (n?n.text.split(/\s+/).filter(Boolean).length:0); },0);
+    const touchesHinge = s.memberIds.some(id=>hingesSet.has(id));
+    const box = document.createElement("div");
+    box.className = "stonebox";
+    box.style.borderColor = pickedStones.includes(s.id) ? "var(--gold)" : "var(--line)";
+    box.innerHTML = '<h3>' + s.name + '</h3><div class="meta">' + s.memberIds.length + ' pebble(s) · ' + words + ' word(s)' + (touchesHinge ? ' · touches a hinge' : '') + '</div>';
+    box.addEventListener("click", ()=>{
+      const i = pickedStones.indexOf(s.id);
+      if (i>=0) pickedStones.splice(i,1);
+      else if (pickedStones.length<4) pickedStones.push(s.id);
+      renderStones(); renderTetra();
+    });
+    stonesEl.appendChild(box);
+  });
+}
+
+const SVGNS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(SVGNS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+function renderTetra(){
+  const svg = document.getElementById("lat");
+  svg.innerHTML = "";
+  if (pickedStones.length < 4) {
+    const t = svgEl("text", {x:320,y:240,class:"elabel","text-anchor":"middle"});
+    t.textContent = pickedStones.length + " of 4 stones picked";
+    svg.appendChild(t);
+    return;
+  }
+  const P = [ [320,60], [110,420], [530,420], [320,280] ];
+  const chosen = pickedStones.map(id=>stones.find(s=>s.id===id));
+  for (let i=0;i<4;i++) for (let j=i+1;j<4;j++){
+    const a=chosen[i], b=chosen[j];
+    const shared = a.memberIds.filter(id=>b.memberIds.includes(id)).length;
+    const line = svgEl("line", {x1:P[i][0],y1:P[i][1],x2:P[j][0],y2:P[j][1]});
+    line.setAttribute("class","edgeline");
+    svg.appendChild(line);
+    const mx=(P[i][0]+P[j][0])/2, my=(P[i][1]+P[j][1])/2;
+    const lbl = svgEl("text", {x:mx,y:my,class:"elabel","text-anchor":"middle"});
+    lbl.textContent = shared>0 ? (shared+" shared") : "no overlap";
+    svg.appendChild(lbl);
+  }
+  chosen.forEach((s,i)=>{
+    const c = svgEl("circle", {cx:P[i][0],cy:P[i][1],r:8,fill:"var(--gold)"});
+    svg.appendChild(c);
+    const t = svgEl("text", {x:P[i][0],y:i===0?P[i][1]-16:P[i][1]+24,class:"vlabel","text-anchor":"middle"});
+    t.textContent = s.name;
+    svg.appendChild(t);
+    const sub = svgEl("text", {x:P[i][0],y:(i===0?P[i][1]-16:P[i][1]+24)+13,class:"vsub","text-anchor":"middle"});
+    sub.textContent = s.memberIds.length + " pebbles";
+    svg.appendChild(sub);
+  });
+}
+renderPebbles(); renderStones(); renderTetra();
+</script>
+</body>
+</html>
