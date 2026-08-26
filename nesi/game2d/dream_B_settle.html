@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · dream B — settle, no drop</title>
+<style>
+/* ═══ DREAM B — 2026-08-26, Kevin's mark: "the gravity on this screen
+   doesn't add to the user's experience." This is lattice.html's own field,
+   physics and all, with exactly one thing removed: the fall. A new
+   sentence used to spawn above the field and drop in; here it spawns
+   already inside the field, near where it structurally belongs (beside
+   its own predecessor, or centered if it's the first), and the same
+   spring/repulsion that already existed nudges it the rest of the way to
+   rest. No entrance performance — arrival becomes a settle, not a fall.
+   Everything else (charge, near-lines, hinges, day-kinship, release) is
+   carried over unmodified, so this is a fair, isolated test of the one
+   change Kevin actually asked about. */
+:root {
+  --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --dim:rgba(238,236,226,.55);
+  --otherday:rgba(138,168,214,.55); --hinge:#c1622e;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; overflow:hidden; }
+body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; }
+.wrap { display:flex; flex-direction:column; height:100vh; }
+.head { padding:18px 24px 10px; flex-shrink:0; }
+.eyebrow { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
+h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 8px; }
+.sub { font-size:12.5px; color:var(--dim); max-width:60ch; line-height:1.5; }
+.padwrap { padding:0 24px; flex-shrink:0; }
+#pad { width:100%; height:78px; resize:none; background:rgba(238,236,226,.04);
+  border:1px solid var(--line); border-radius:4px; color:var(--paper);
+  font:15px/1.5 Georgia,serif; padding:10px 12px; outline:none; }
+#pad:focus { border-color:var(--gold); }
+.padhint { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); margin:6px 0 14px; }
+.field { position:relative; flex:1; overflow:hidden; border-top:1px solid var(--line-soft); }
+.field .empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--dim); font:italic 14px Georgia,serif; text-align:center; padding:0 40px; pointer-events:none; }
+svg#lat { width:100%; height:100%; display:block; }
+.edge { stroke:rgba(224,196,84,.28); stroke-width:1; }
+.edge.lit { stroke:var(--gold); stroke-width:1.6; }
+.edge.near { stroke:rgba(238,236,226,.16); stroke-width:1; stroke-dasharray:2 3; }
+.edge.near.lit { stroke:rgba(238,236,226,.55); stroke-width:1.3; }
+.node rect { fill:rgba(238,236,226,.05); stroke:var(--line); rx:6; }
+.node.lit rect { stroke:var(--gold); fill:rgba(224,196,84,.09); }
+.node.otherday rect { stroke:var(--otherday); }
+.node.hinge rect { stroke:var(--hinge); stroke-width:2; }
+.node.hinge.lit rect { stroke:var(--gold); }
+.node text { fill:var(--paper); font:12px/1.4 Georgia,serif; }
+.node { cursor:default; }
+footer { flex-shrink:0; padding:8px 24px; border-top:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; font-family:ui-monospace,Consolas,monospace;
+  font-size:10.5px; color:var(--dim); letter-spacing:.05em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">NESI · dream B, 2026-08-26 — appear in place, no drop</div>
+    <h1>the lattice, settled</h1>
+    <div class="sub">Same field, same physics. A new sentence no longer falls from above — it appears beside the one before it and settles into place. Arrival is a nudge, not a performance.</div>
+  </div>
+  <div class="padwrap">
+    <textarea id="pad" placeholder="write here — a sentence lands the moment it ends" spellcheck="false"></textarea>
+    <div class="padhint" id="hint">0 sentences · nothing read but idle time and length</div>
+  </div>
+  <div class="field">
+    <div class="empty" id="emptyNote">empty — finish a sentence above and it appears here, already settling</div>
+    <svg id="lat"></svg>
+  </div>
+  <footer><span>NESI — dream B, unlinked, comparison prototype</span><span>dream_B_settle.html</span></footer>
+</div>
+
+<script>
+"use strict";
+const isEnd = c => ".!?…".indexOf(c) >= 0;
+function dayStamp() {
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+const KEY = "nesi.dreamB";
+let mark = 0, nodes = [], edges = [], lastBornAt = null, segmentStart = null;
+
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(
+    nodes.filter(n=>!n.releasing).map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day}))
+  )); } catch(e) {}
+}
+function restore() {
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const seq = JSON.parse(raw); if (!Array.isArray(seq)) return;
+    seq.forEach(s => addNode(s.text, s.words, s.gapMs, true, s.day));
+  } catch(e) {}
+}
+function wordCount(t) { const w=t.trim(); return w?w.split(/\s+/).length:0; }
+function gapToRest(ms) { const s=Math.max(0,ms/1000); return Math.max(30,Math.min(260,30+Math.log(1+s)*40)); }
+
+const CAPACITY = 36, RELEASE_FADE_MS = 900;
+let nextId = 0, lastNode = null;
+function releaseIfOverCapacity() {
+  const held = nodes.filter(n=>!n.releasing);
+  if (held.length > CAPACITY) {
+    const oldest = held[0];
+    oldest.releasing = true; oldest.releaseStart = performance.now();
+    const theta = Math.random()*Math.PI*2, speed = 18+Math.random()*14;
+    oldest.vx = Math.cos(theta)*speed; oldest.vy = Math.sin(theta)*speed;
+  }
+}
+
+/* ═══ THE ONLY REAL CHANGE — spawn AT a sensible resting neighborhood, not
+   off-screen above. Fresh nodes (not restored) appear next to lastNode
+   (their own predecessor in arrival order) with a small random offset, or
+   at field-center if they're the first sentence of the whole field. A
+   restored node keeps the old mid-field placement (it has no "predecessor
+   moment" to appear beside — it's not arriving, it's being recalled). */
+function addNode(text, words, gapMs, fromRestore, day) {
+  const field = document.querySelector(".field").getBoundingClientRect();
+  let x, y;
+  if (fromRestore) {
+    x = field.width * (0.2 + Math.random()*0.6);
+    y = field.height * 0.5;
+  } else if (lastNode) {
+    x = lastNode.x + (Math.random()-0.5)*40;
+    y = lastNode.y + (Math.random()-0.5)*40;
+  } else {
+    x = field.width/2 + (Math.random()-0.5)*30;
+    y = field.height/2 + (Math.random()-0.5)*30;
+  }
+  const n = {
+    id: nextId++, text, words: (typeof words==="number"?words:wordCount(text)),
+    gapMs: gapMs||0, day: day||dayStamp(),
+    x, y, vx:0, vy:0, r:0, releasing:false, releaseStart:0
+  };
+  nodes.push(n);
+  if (lastNode) edges.push({ aId:lastNode.id, bId:n.id, restLen:gapToRest(n.gapMs) });
+  lastNode = n;
+  releaseIfOverCapacity();
+  return n;
+}
+
+function ingest(text) {
+  const words = wordCount(text); if (!words) return;
+  const finishedAt = performance.now();
+  const idleFrom = segmentStart===null ? finishedAt : segmentStart;
+  const gapMs = lastBornAt===null ? 0 : Math.max(0, idleFrom-lastBornAt);
+  lastBornAt = finishedAt; segmentStart = null;
+  addNode(text, words, gapMs, false);
+  persist();
+  document.getElementById("emptyNote").style.display = "none";
+  document.getElementById("hint").textContent =
+    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+}
+
+const pad = document.getElementById("pad");
+function bandCut() {
+  const v = pad.value;
+  if (mark > v.length) mark = 0;
+  if (v.length<=mark) segmentStart = null;
+  else if (segmentStart===null) segmentStart = performance.now();
+  let i = mark, start = mark;
+  while (i < v.length) {
+    if (isEnd(v[i])) {
+      if (v[i]==="." && /\d/.test(v[i-1]||"") && /\d/.test(v[i+1]||"")) { i++; continue; }
+      let j=i; while (j+1<v.length && isEnd(v[j+1])) j++;
+      const seg = v.slice(start,j+1).trim();
+      if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+      start=j+1; mark=j+1; i=j+1;
+    } else i++;
+  }
+}
+pad.addEventListener("input", bandCut);
+pad.addEventListener("keydown", e => {
+  if (e.key!=="Enter") return;
+  setTimeout(()=>{
+    const seg = pad.value.slice(mark).trim();
+    if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+    mark = pad.value.length;
+  },0);
+});
+
+const svg = document.getElementById("lat");
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(NS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+
+/* NO GRAVITY. Spring + repulsion + damping only — the field's own settle,
+   never a fall. Wall-clamp remains: it keeps things on screen, it was
+   never the entrance mechanic, only the containment. */
+const SPRING_K = 22, REPEL = 5200, DAMPING = 0.90;
+function fieldSize(){ const r=document.querySelector(".field").getBoundingClientRect(); return {w:r.width,h:r.height}; }
+function sizeNode(n){ const w=Math.max(60,Math.min(220,40+n.words*10)); n.w=w; n.h=24; n.r=Math.max(w,n.h)/2; }
+nodes.forEach(sizeNode);
+
+function nodeCharge(n){
+  if (n.releasing) return 0;
+  const touching = edges.filter(e=>e.aId===n.id||e.bId===n.id);
+  if (!touching.length) return 0;
+  const avgRest = touching.reduce((s,e)=>s+e.restLen,0)/touching.length;
+  return 1 - Math.min(1,Math.max(0,(avgRest-30)/(260-30)));
+}
+function finalizeReleases(now){
+  let changed=false;
+  for (let i=nodes.length-1;i>=0;i--){
+    const n=nodes[i];
+    if (n.releasing && now-n.releaseStart>RELEASE_FADE_MS){ nodes.splice(i,1); edges=edges.filter(e=>e.aId!==n.id&&e.bId!==n.id); changed=true; }
+  }
+  if (changed) persist();
+}
+function articulationPoints(nodeList, edgeList){
+  const adj=new Map(); nodeList.forEach(n=>adj.set(n.id,[]));
+  edgeList.forEach(e=>{ if(!adj.has(e.aId)||!adj.has(e.bId))return; adj.get(e.aId).push(e.bId); adj.get(e.bId).push(e.aId); });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  nodeList.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1], neigh=adj.get(top.id);
+      if (top.iter<neigh.length){
+        const v=neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.usedParentSkip){ top.usedParentSkip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++; stack.push({id:v,iter:0,isRoot:false,children:0}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+
+let lastT=null;
+function step(t){
+  if (lastT===null) lastT=t;
+  const dt=Math.min(0.032,(t-lastT)/1000); lastT=t;
+  const now=performance.now();
+  const {w:FW,h:FH}=fieldSize();
+  const byId=new Map(nodes.map(n=>[n.id,n]));
+
+  nodes.forEach(n=>{
+    if(!n.w) sizeNode(n);
+    if (n.releasing){ n.vx*=0.99; n.vy*=0.99; }
+    /* no gravity term at all for held nodes — nothing pulls them anywhere
+       on its own; only the spring below moves a settled node. */
+  });
+
+  edges.forEach(e=>{
+    const a=byId.get(e.aId), b=byId.get(e.bId);
+    if(!a||!b||a.releasing||b.releasing) return;
+    const dx=b.x-a.x, dy=b.y-a.y, dist=Math.hypot(dx,dy)||0.001;
+    const f=(dist-e.restLen)*SPRING_K*dt;
+    const fx=f*dx/dist, fy=f*dy/dist;
+    a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+  });
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
+    const a=nodes[i], b=nodes[j];
+    if (a.releasing||b.releasing) continue;
+    const dx=b.x-a.x, dy=b.y-a.y;
+    let dist2=dx*dx+dy*dy; if(dist2<1)dist2=1;
+    const dist=Math.sqrt(dist2), minDist=(a.r+b.r)*1.15;
+    if (dist<minDist*3){ const f=REPEL*dt/dist2; const fx=f*dx/dist, fy=f*dy/dist; a.vx-=fx; a.vy-=fy; b.vx+=fx; b.vy+=fy; }
+  }
+  nodes.forEach(n=>{ n.vx*=DAMPING; n.vy*=DAMPING; n.x+=n.vx*dt; n.y+=n.vy*dt; });
+  nodes.forEach(n=>{
+    if (n.releasing) return;
+    const halfW=n.w/2, halfH=n.h/2;
+    if (n.x<halfW){n.x=halfW;n.vx*=-0.35;} if (n.x>FW-halfW){n.x=FW-halfW;n.vx*=-0.35;}
+    if (n.y<halfH){n.y=halfH;n.vy*=-0.35;} if (n.y>FH-halfH){n.y=FH-halfH;n.vy*=-0.4;}
+  });
+  finalizeReleases(now);
+  render(now);
+  requestAnimationFrame(step);
+}
+
+let hoverId=-1;
+function render(now){
+  now = now||performance.now();
+  const byId=new Map(nodes.map(n=>[n.id,n]));
+  svg.innerHTML="";
+  const defs=svgEl("defs",{});
+  const glowFilter=svgEl("filter",{id:"glow",x:"-100%",y:"-100%",width:"300%",height:"300%"});
+  glowFilter.appendChild(svgEl("feGaussianBlur",{stdDeviation:5}));
+  defs.appendChild(glowFilter); svg.appendChild(defs);
+  const chained=new Set();
+  edges.forEach(e=>{
+    const a=byId.get(e.aId), b=byId.get(e.bId); if(!a||!b) return;
+    chained.add(e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId);
+    const lit=hoverId===a.id||hoverId===b.id;
+    svg.appendChild(svgEl("line",{class:"edge"+(lit?" lit":""),x1:a.x,y1:a.y,x2:b.x,y2:b.y}));
+  });
+  const NEAR_MULT=2.1, held=nodes.filter(n=>!n.releasing), nearPairs=[];
+  for (let i=0;i<held.length;i++) for (let j=i+1;j<held.length;j++){
+    const a=held[i], b=held[j];
+    const key=a.id<b.id?a.id+"-"+b.id:b.id+"-"+a.id;
+    if (chained.has(key)) continue;
+    const dist=Math.hypot(b.x-a.x,b.y-a.y);
+    if (dist<(a.r+b.r)*NEAR_MULT) nearPairs.push({aId:a.id,bId:b.id});
+  }
+  nearPairs.forEach(p=>{
+    const a=byId.get(p.aId), b=byId.get(p.bId), lit=hoverId===a.id||hoverId===b.id;
+    svg.appendChild(svgEl("line",{class:"edge near"+(lit?" lit":""),x1:a.x,y1:a.y,x2:b.x,y2:b.y}));
+  });
+  const hinges=articulationPoints(held, edges.concat(nearPairs));
+  const today=dayStamp();
+  nodes.forEach(n=>{
+    const opacity=n.releasing?Math.max(0,1-(now-n.releaseStart)/RELEASE_FADE_MS):1;
+    const charge=nodeCharge(n);
+    if (charge>0.02){
+      const glowR=Math.max(n.w,n.h)/2+6+charge*16;
+      svg.appendChild(svgEl("circle",{cx:n.x,cy:n.y,r:glowR,filter:"url(#glow)",
+        fill:"rgba(224,196,84,"+(0.10+charge*0.34).toFixed(3)+")", opacity:opacity.toFixed(3)}));
+    }
+    const isOtherDay=n.day!==today, isHinge=hinges.has(n.id);
+    const cls="node"+(hoverId===n.id?" lit":"")+(isOtherDay?" otherday":"")+(isHinge?" hinge":"");
+    const g=svgEl("g",{class:cls,transform:"translate("+(n.x-n.w/2)+","+(n.y-n.h/2)+")",opacity:opacity.toFixed(3)});
+    g.appendChild(svgEl("rect",{width:n.w,height:n.h}));
+    const txt=svgEl("text",{x:8,y:n.h/2+4,"text-anchor":"start"});
+    const label=n.text.length>Math.floor(n.w/6.4)?n.text.slice(0,Math.floor(n.w/6.4)-1)+"…":n.text;
+    txt.textContent=label; g.appendChild(txt);
+    g.addEventListener("pointerenter",()=>{hoverId=n.id;render();});
+    g.addEventListener("pointerleave",()=>{hoverId=-1;render();});
+    const title=svgEl("title",{});
+    title.textContent=n.text+(isOtherDay?" — "+n.day:" — today")+(isHinge?" — no other path currently connects around it":"");
+    g.appendChild(title); svg.appendChild(g);
+  });
+}
+
+restore();
+if (nodes.length) document.getElementById("emptyNote").style.display="none";
+if (nodes.length) document.getElementById("hint").textContent =
+  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+requestAnimationFrame(step);
+</script>
+</body>
+</html>

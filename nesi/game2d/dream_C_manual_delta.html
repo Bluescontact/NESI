@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · dream C — manual placement, the delta</title>
+<style>
+/* ═══ DREAM C — 2026-08-26. The writer's own hand is allowed to disagree
+   with the algorithm. Every sentence still gets a SUGGESTED position, the
+   same law as the field build (idle time -> distance from the sentence
+   before it) — but nothing enforces it. It's shown as a small ghost dot.
+   You drag the real card wherever you actually want it. The gap between
+   the ghost and the card — the DELTA — is the one thing this shape
+   measures that no other shape tonight does: not where timing put your
+   writing, but where you moved it FROM there, on purpose. That's a
+   disagreement, held visible, never resolved for you. Positions here are
+   NOT re-simulated on reload — a drag is a real, direct act, and law 16
+   ("records only get more") means it has to be saved verbatim, the same
+   way S.kept is saved verbatim in the live game rather than derived. */
+:root {
+  --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --dim:rgba(238,236,226,.55);
+  --hinge:#c1622e; --delta:#8b6fd9;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; overflow:hidden; }
+body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; }
+.wrap { display:flex; flex-direction:column; height:100vh; }
+.head { padding:18px 24px 10px; flex-shrink:0; }
+.eyebrow { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
+h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 8px; }
+.sub { font-size:12.5px; color:var(--dim); max-width:64ch; line-height:1.5; }
+.padwrap { padding:0 24px; flex-shrink:0; }
+#pad { width:100%; height:64px; resize:none; background:rgba(238,236,226,.04);
+  border:1px solid var(--line); border-radius:4px; color:var(--paper);
+  font:15px/1.5 Georgia,serif; padding:10px 12px; outline:none; }
+#pad:focus { border-color:var(--gold); }
+.padhint { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); margin:6px 0 10px; }
+.field { position:relative; flex:1; overflow:hidden; border-top:1px solid var(--line-soft); }
+.field .empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--dim); font:italic 14px Georgia,serif; text-align:center; padding:0 40px; pointer-events:none; }
+svg#lat { width:100%; height:100%; display:block; }
+.ghost { fill:none; stroke:var(--dim); stroke-width:1; stroke-dasharray:2 2; opacity:.5; }
+.deltaline { stroke:var(--delta); stroke-width:1; stroke-dasharray:3 3; opacity:.6; }
+.card rect { fill:rgba(238,236,226,.06); stroke:var(--line); rx:6; cursor:grab; }
+.card.dragging rect { cursor:grabbing; }
+.card.hinge rect { stroke:var(--hinge); stroke-width:2; }
+.card.agrees rect { stroke:var(--dim); stroke-dasharray:1 3; }
+.card text { fill:var(--paper); font:12px/1.4 Georgia,serif; pointer-events:none; }
+footer { flex-shrink:0; padding:8px 24px; border-top:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; font-family:ui-monospace,Consolas,monospace;
+  font-size:10.5px; color:var(--dim); letter-spacing:.05em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">NESI · dream C, 2026-08-26 — manual placement, the delta</div>
+    <h1>the table</h1>
+    <div class="sub">Write below. Each sentence gets a faint suggested spot (the same idle-time law as the field) and a real card you drag wherever you actually want it. The dashed line between them is the one thing this shape shows that nothing else does: where you and your own timing disagreed.</div>
+  </div>
+  <div class="padwrap">
+    <textarea id="pad" placeholder="write here — a sentence lands the moment it ends" spellcheck="false"></textarea>
+    <div class="padhint" id="hint">0 sentences · positions you set are kept exactly, never re-simulated</div>
+  </div>
+  <div class="field">
+    <div class="empty" id="emptyNote">empty — finish a sentence above; drag it once it lands</div>
+    <svg id="lat"></svg>
+  </div>
+  <footer><span>NESI — dream C, unlinked, comparison prototype</span><span>dream_C_manual_delta.html</span></footer>
+</div>
+
+<script>
+"use strict";
+const isEnd = c => ".!?…".indexOf(c) >= 0;
+function dayStamp() {
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+const KEY = "nesi.dreamC";
+let mark=0, nodes=[], lastBornAt=null, segmentStart=null, nextId=0, lastSuggested=null;
+
+/* ═══ PERSISTENCE — unlike the field build, x/y here ARE the record, not a
+   derivation. A drag is a direct act; law 16 says records only get more,
+   never quietly reset. Suggested position is small enough to recompute
+   fresh (it's a pure function of gapMs and arrival order), so only that
+   input is stored, not its output. ═══ */
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(
+    nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,moved:n.moved}))
+  )); } catch(e) {}
+}
+function restore() {
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const seq = JSON.parse(raw); if (!Array.isArray(seq)) return;
+    seq.forEach(s => addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.moved));
+  } catch(e) {}
+}
+function wordCount(t){ const w=t.trim(); return w?w.split(/\s+/).length:0; }
+function gapToRest(ms){ const s=Math.max(0,ms/1000); return Math.max(50,Math.min(260,50+Math.log(1+s)*44)); }
+
+/* a stable, non-jittery angle per node — seeded by id, not random each
+   render, so the ghost point never wanders on its own. */
+function angleFor(id) { return (id * 2.399963) % (Math.PI*2); } // golden-angle spacing, spreads deterministically
+
+function suggestedFor(n) {
+  if (!lastSuggestedFor(n)) { const f = fieldSize(); return { x:f.w/2, y:f.h/2 }; }
+  const prev = lastSuggestedFor(n);
+  const rest = gapToRest(n.gapMs), ang = angleFor(n.id);
+  return { x: prev.x + Math.cos(ang)*rest, y: prev.y + Math.sin(ang)*rest };
+}
+const suggestedCache = new Map();
+function lastSuggestedFor(n) {
+  const idx = nodes.indexOf(n);
+  if (idx <= 0) return null;
+  return suggestedCache.get(nodes[idx-1].id) || null;
+}
+function computeSuggested() {
+  suggestedCache.clear();
+  nodes.forEach(n => { suggestedCache.set(n.id, suggestedFor(n)); });
+}
+
+function fieldSize(){ const r=document.querySelector(".field").getBoundingClientRect(); return {w:r.width,h:r.height}; }
+function sizeNode(n){ const w=Math.max(60,Math.min(220,40+n.words*10)); n.w=w; n.h=24; }
+
+function addNode(text, words, gapMs, day, x, y, moved) {
+  const n = { id:nextId++, text, words:(typeof words==="number"?words:wordCount(text)),
+    gapMs:gapMs||0, day: day||dayStamp(), w:0, h:0, moved: !!moved };
+  sizeNode(n);
+  nodes.push(n);
+  computeSuggested();
+  const sug = suggestedCache.get(n.id);
+  n.x = (typeof x==="number") ? x : sug.x;
+  n.y = (typeof y==="number") ? y : sug.y;
+  return n;
+}
+function ingest(text) {
+  const words = wordCount(text); if (!words) return;
+  const finishedAt = performance.now();
+  const idleFrom = segmentStart===null ? finishedAt : segmentStart;
+  const gapMs = lastBornAt===null ? 0 : Math.max(0, idleFrom-lastBornAt);
+  lastBornAt = finishedAt; segmentStart = null;
+  addNode(text, words, gapMs);
+  persist();
+  document.getElementById("emptyNote").style.display = "none";
+  render();
+  document.getElementById("hint").textContent =
+    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · positions you set are kept exactly, never re-simulated";
+}
+
+const pad = document.getElementById("pad");
+function bandCut() {
+  const v = pad.value;
+  if (mark > v.length) mark = 0;
+  if (v.length<=mark) segmentStart = null;
+  else if (segmentStart===null) segmentStart = performance.now();
+  let i=mark, start=mark;
+  while (i < v.length) {
+    if (isEnd(v[i])) {
+      if (v[i]==="." && /\d/.test(v[i-1]||"") && /\d/.test(v[i+1]||"")) { i++; continue; }
+      let j=i; while (j+1<v.length && isEnd(v[j+1])) j++;
+      const seg = v.slice(start,j+1).trim();
+      if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+      start=j+1; mark=j+1; i=j+1;
+    } else i++;
+  }
+}
+pad.addEventListener("input", bandCut);
+pad.addEventListener("keydown", e => {
+  if (e.key!=="Enter") return;
+  setTimeout(()=>{
+    const seg = pad.value.slice(mark).trim();
+    if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+    mark = pad.value.length;
+  },0);
+});
+
+function articulationPoints(nodeList, edgeList){
+  const adj=new Map(); nodeList.forEach(n=>adj.set(n.id,[]));
+  edgeList.forEach(e=>{ if(!adj.has(e.aId)||!adj.has(e.bId))return; adj.get(e.aId).push(e.bId); adj.get(e.bId).push(e.aId); });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  nodeList.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1], neigh=adj.get(top.id);
+      if (top.iter<neigh.length){
+        const v=neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.usedParentSkip){ top.usedParentSkip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++; stack.push({id:v,iter:0,isRoot:false,children:0}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+
+const svg = document.getElementById("lat");
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(NS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+
+let dragId = -1, dragDX = 0, dragDY = 0;
+function screenPoint(e) {
+  const r = svg.getBoundingClientRect();
+  return { x: (e.clientX - r.left), y: (e.clientY - r.top) };
+}
+
+function render() {
+  const chainEdges = [];
+  for (let i=1;i<nodes.length;i++) chainEdges.push({ aId: nodes[i-1].id, bId: nodes[i].id });
+  const hinges = articulationPoints(nodes, chainEdges);
+  const today = dayStamp();
+
+  svg.innerHTML = "";
+  // ghost points + delta lines first, under the cards
+  nodes.forEach(n => {
+    const sug = suggestedCache.get(n.id);
+    if (!sug) return;
+    svg.appendChild(svgEl("circle", { cx:sug.x, cy:sug.y, r:4, class:"ghost" }));
+    const dx=n.x-sug.x, dy=n.y-sug.y, delta=Math.hypot(dx,dy);
+    if (delta > 8) svg.appendChild(svgEl("line", { x1:sug.x,y1:sug.y,x2:n.x,y2:n.y, class:"deltaline" }));
+  });
+  // chain lines between actual positions
+  chainEdges.forEach(e => {
+    const a = nodes.find(n=>n.id===e.aId), b = nodes.find(n=>n.id===e.bId);
+    svg.appendChild(svgEl("line", { x1:a.x,y1:a.y,x2:b.x,y2:b.y, stroke:"rgba(224,196,84,.28)", "stroke-width":1 }));
+  });
+  // cards
+  nodes.forEach(n => {
+    const sug = suggestedCache.get(n.id);
+    const delta = sug ? Math.hypot(n.x-sug.x, n.y-sug.y) : 0;
+    const g = svgEl("g", { class:"card"+(hinges.has(n.id)?" hinge":"")+(delta<8?" agrees":""),
+      transform:"translate("+(n.x-n.w/2)+","+(n.y-n.h/2)+")" });
+    const rect = svgEl("rect", { width:n.w, height:n.h });
+    g.appendChild(rect);
+    const txt = svgEl("text", { x:8, y:n.h/2+4, "text-anchor":"start" });
+    const label = n.text.length > Math.floor(n.w/6.4) ? n.text.slice(0, Math.floor(n.w/6.4)-1)+"…" : n.text;
+    txt.textContent = label;
+    g.appendChild(txt);
+    const title = svgEl("title", {});
+    title.textContent = n.text + (delta>=8 ? " — moved "+Math.round(delta)+"px from where idle time alone would have put it" : " — sits where idle time alone would have put it")
+      + (hinges.has(n.id) ? " — no other path currently connects around it" : "")
+      + (n.day!==today ? " — "+n.day : " — today");
+    g.appendChild(title);
+    rect.addEventListener("pointerdown", e => {
+      dragId = n.id;
+      const p = screenPoint(e);
+      dragDX = n.x - p.x; dragDY = n.y - p.y;
+      g.classList.add("dragging");
+      e.target.setPointerCapture(e.pointerId);
+    });
+    svg.appendChild(g);
+  });
+}
+svg.addEventListener("pointermove", e => {
+  if (dragId < 0) return;
+  const n = nodes.find(x=>x.id===dragId); if (!n) return;
+  const p = screenPoint(e);
+  n.x = p.x + dragDX; n.y = p.y + dragDY;
+  n.moved = true;
+  render();
+});
+function endDrag() { if (dragId>=0) { persist(); dragId = -1; render(); } }
+svg.addEventListener("pointerup", endDrag);
+svg.addEventListener("pointercancel", endDrag);
+
+restore();
+computeSuggested();
+if (nodes.length) document.getElementById("emptyNote").style.display = "none";
+if (nodes.length) document.getElementById("hint").textContent =
+  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · positions you set are kept exactly, never re-simulated";
+render();
+</script>
+</body>
+</html>

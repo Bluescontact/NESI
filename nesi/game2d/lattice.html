@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · the lattice</title>
+<style>
+/* ═══ FRESH START — 2026-08-25, Kevin's mark: "menus and tabs and functions
+   that route nowhere... I have no reason to write anything anywhere." What
+   follows does not extend ascent.html/tank.html/seam.js — nothing there is
+   touched, nothing there is at risk. It starts from one sentence instead:
+   "if I open nesi, I want to understand what the surface is right away."
+
+   THE MECHANISM, STATED PLAINLY, CORRECTED 2026-08-26 (full-development
+   pass): type. A finished sentence drops into the lattice below. Two
+   structural facts about it, and only two, set where it lands — never what
+   it says. (1) HOW LONG YOUR HANDS WERE IDLE before you started it: the
+   gap is measured from when the last sentence finished to the first
+   keystroke of this one, never including this sentence's own typing time.
+   The original build measured finish-to-finish, which silently let a long
+   sentence's own typing duration inflate its "gap" — a real defect an
+   adversarial audit caught (2026-08-26), and a ground pass independently
+   confirmed against real writing-pause research (Wengelin; Chenoweth &amp;
+   Hayes 2003): idle time before a sentence is the literature's own
+   operationalization of a pause; production time is exactly what that
+   research excludes and this file, until now, didn't. (2) HOW LONG THE
+   SENTENCE IS, in words — shown honestly as size, not hidden. Earlier
+   copy in this file claimed "nothing... reads what a sentence says," which
+   was false: word count is a fact about a sentence, and it was already
+   shaping the layout. Corrected to say what the file actually does: reads
+   two structural facts, never the words themselves. */
+:root {
+  --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --dim:rgba(238,236,226,.55);
+  --otherday:rgba(138,168,214,.55); --hinge:#c1622e;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; overflow:hidden; }
+body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; }
+
+.wrap { display:flex; flex-direction:column; height:100vh; }
+
+.head { padding:18px 24px 10px; flex-shrink:0; }
+.eyebrow { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
+h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 8px; }
+.sub { font-size:12.5px; color:var(--dim); max-width:60ch; line-height:1.5; }
+
+.padwrap { padding:0 24px; flex-shrink:0; }
+#pad {
+  width:100%; height:78px; resize:none; background:rgba(238,236,226,.04);
+  border:1px solid var(--line); border-radius:4px; color:var(--paper);
+  font:15px/1.5 Georgia,serif; padding:10px 12px; outline:none;
+}
+#pad:focus { border-color:var(--gold); }
+.padhint { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim);
+  margin:6px 0 14px; }
+
+.field { position:relative; flex:1; overflow:hidden; border-top:1px solid var(--line-soft); }
+.field .empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--dim); font:italic 14px Georgia,serif; text-align:center; padding:0 40px; pointer-events:none; }
+svg#lat { width:100%; height:100%; display:block; }
+.edge { stroke:rgba(224,196,84,.28); stroke-width:1; }
+.edge.lit { stroke:var(--gold); stroke-width:1.6; }
+.edge.near { stroke:rgba(238,236,226,.16); stroke-width:1; stroke-dasharray:2 3; }
+.edge.near.lit { stroke:rgba(238,236,226,.55); stroke-width:1.3; }
+.node rect { fill:rgba(238,236,226,.05); stroke:var(--line); rx:6; }
+.node.lit rect { stroke:var(--gold); fill:rgba(224,196,84,.09); }
+.node.otherday rect { stroke:var(--otherday); }
+.node.hinge rect { stroke:var(--hinge); stroke-width:2; }
+.node.hinge.lit rect { stroke:var(--gold); }
+.node text { fill:var(--paper); font:12px/1.4 Georgia,serif; }
+.node .meta { fill:var(--dim); font:9px ui-monospace,Consolas,monospace; }
+.node { cursor:default; }
+
+footer { flex-shrink:0; padding:8px 24px; border-top:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; font-family:ui-monospace,Consolas,monospace;
+  font-size:10.5px; color:var(--dim); letter-spacing:.05em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">NESI · a fresh start, 2026-08-25</div>
+    <h1>the lattice</h1>
+    <div class="sub">Write below. Each finished sentence drops in. Where it lands is set by how idle your hands were before it started; how big it is is set by how many words it took — nothing here reads what a sentence says.</div>
+  </div>
+  <div class="padwrap">
+    <textarea id="pad" placeholder="write here — a sentence lands the moment it ends" spellcheck="false"></textarea>
+    <div class="padhint" id="hint">0 sentences · nothing read but idle time and length</div>
+  </div>
+  <div class="field">
+    <div class="empty" id="emptyNote">the lattice is empty — finish a sentence above and it lands here</div>
+    <svg id="lat"></svg>
+  </div>
+  <footer>
+    <span>NESI — the lattice, unlinked, standing on its own</span>
+    <span>lattice.html</span>
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ═══ THE BAND CUT — carried verbatim from tank.html/daily.html. A .!?… cluster
+   closes a sentence; a period between two digits is a number, not an ending;
+   bare punctuation with nothing alphanumeric is not a sentence. Nothing here
+   looks at meaning. ═══ */
+const isEnd = c => ".!?…".indexOf(c) >= 0;
+
+/* real calendar day, tank.html's own stamp verbatim — a structural fact
+   (which day a clock says it is), never a session count or a mark tally. */
+function dayStamp() {
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+const KEY = "nesi.lattice";
+let mark = 0;           // how much of the pad's own text has already been cut
+let nodes = [];         // {id, text, words, x, y, vx, vy, r, gapMs, day}
+let edges = [];         // {a, b, restLen}
+let lastBornAt = null;  // performance.now() the previous sentence FINISHED
+/* ═══ IDLE, NOT FINISH-TO-FINISH — fixed 2026-08-26, an adversarial audit
+   and a ground pass both caught the same thing independently: the gap this
+   file measured used to run from one sentence's finish to the NEXT one's
+   finish, which silently folds that next sentence's own typing time into
+   what was supposed to be a measure of how long the hands sat idle. A
+   40-word sentence typed without a heartbeat of hesitation used to read as
+   a long "gap" purely because it took a while to type — the opposite of
+   idle. segmentStart is stamped on the FIRST keystroke since the last cut,
+   the moment new, not-yet-finished text starts accumulating; the gap fed
+   to gapToRest is segmentStart minus the previous sentence's finish —
+   idle time alone, matching how the writing-pause research this file now
+   cites actually defines a pause. Reset to null the instant a sentence is
+   ingested, so it can be freshly stamped on the very next keystroke. */
+let segmentStart = null;
+
+/* ═══ PERSISTENCE — a stone once cut is never lost on reload. Stores only
+   the sequence (text, words, gapMs, day) — positions are always re-simulated
+   fresh from that, never saved as pixels, so resizing the window never
+   leaves a stale layout behind. day is persisted too: a sentence written
+   yesterday and still lingering in the field must stay yesterday's after a
+   reload, never silently reassigned to today. ═══ */
+function persist() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(
+      nodes.filter(n => !n.releasing).map(n => ({ text:n.text, words:n.words, gapMs:n.gapMs, day:n.day }))
+    ));
+  } catch(e) {}
+}
+function restore() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return;
+    const seq = JSON.parse(raw);
+    if (!Array.isArray(seq)) return;
+    seq.forEach(s => addNode(s.text, s.words, s.gapMs, true, s.day));
+  } catch(e) {}
+}
+
+function wordCount(t) { const w = t.trim(); return w ? w.split(/\s+/).length : 0; }
+
+/* idle time (ms) -> spring rest length (px). Short gap, tight cluster; a
+   real pause, real drift; capped both ends so no spring collapses to zero
+   or asks for more slack than a chain of them could plausibly need — this
+   bounds the SPRING alone, not a node's position; what actually keeps a
+   node inside the visible field is the separate wall-clamp in step()
+   below, a different piece of code with a different job. Log-scaled
+   because writing pauses span seconds to minutes and a linear map would
+   make anything past a few seconds look identical. */
+function gapToRest(ms) {
+  const s = Math.max(0, ms/1000);
+  return Math.max(30, Math.min(260, 30 + Math.log(1+s)*40));
+}
+
+/* ═══ THE RELEASE — 2026-08-25, water's own law, carried over: held without
+   a target, but never accumulated forever — "release always drains the
+   oldest pour first." CAPACITY is chosen by eye, not measured — no
+   legibility test backs the number 36, and an earlier comment here claimed
+   otherwise ("a real, honest guess... not a chosen difficulty") without
+   any measurement to earn that distinction; an adversarial audit caught
+   the overclaim. It is simply the one number in this file most worth
+   adjusting by hand if it reads wrong. A released stone is never deleted
+   mid-frame (that would jump the field) — it is marked releasing, drifts
+   free of its own spring and every other sentence's repulsion, and fades;
+   finalizeReleases() below removes it only once that fade is visibly
+   complete. THE DIRECTION, CORRECTED 2026-08-26: this used to apply a
+   fixed, every-frame upward push and call it "undirected, released, not
+   aimed anywhere" — an audit caught the contradiction outright: a constant
+   push upward is a chosen direction, the same shape as gravity pointed the
+   other way, not an absence of one. What's below now is a single random-
+   angle impulse at the instant of release, then no further force shapes
+   where it drifts — genuinely no destination chosen for it, the way
+   water.html's own vessel had no field for one either. */
+const CAPACITY = 36;
+const RELEASE_FADE_MS = 900;
+let nextId = 0;
+let lastNode = null; // the free end of the chain — the most recent still-held sentence
+
+function releaseIfOverCapacity() {
+  const held = nodes.filter(n => !n.releasing);
+  if (held.length > CAPACITY) {
+    const oldest = held[0]; // push-only creation order — first held entry is oldest
+    oldest.releasing = true;
+    oldest.releaseStart = performance.now();
+    const theta = Math.random() * Math.PI * 2;   // a real impulse, no chosen direction
+    const speed = 18 + Math.random()*14;
+    oldest.vx = Math.cos(theta) * speed;
+    oldest.vy = Math.sin(theta) * speed;
+  }
+}
+
+function addNode(text, words, gapMs, fromRestore, day) {
+  const field = document.querySelector(".field").getBoundingClientRect();
+  const n = {
+    id: nextId++, text, words: (typeof words==="number"?words:wordCount(text)),
+    gapMs: gapMs||0, day: day || dayStamp(),
+    x: field.width * (0.2 + Math.random()*0.6),
+    y: fromRestore ? field.height*0.5 : -30,
+    vx: (Math.random()-0.5)*6, vy: 0,
+    r: 0, // computed after text measured, see layout()
+    releasing: false, releaseStart: 0
+  };
+  nodes.push(n);
+  if (lastNode) edges.push({ aId: lastNode.id, bId: n.id, restLen: gapToRest(n.gapMs) });
+  lastNode = n;
+  releaseIfOverCapacity();
+  return n;
+}
+
+function ingest(text) {
+  const words = wordCount(text);
+  if (!words) return;
+  const finishedAt = performance.now();
+  const idleFrom = segmentStart===null ? finishedAt : segmentStart;
+  const gapMs = lastBornAt===null ? 0 : Math.max(0, idleFrom - lastBornAt);
+  lastBornAt = finishedAt;
+  segmentStart = null;
+  addNode(text, words, gapMs, false);
+  persist();
+  document.getElementById("emptyNote").style.display = "none";
+  document.getElementById("hint").textContent =
+    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+}
+
+/* ═══ THE CUT ITSELF — scans only the NEW part of the pad since the last
+   cut (mark), exactly tank.html's own bandCut discipline: nothing is ever
+   re-read once it has already been cut. THE SECOND RULE, NAMED HONESTLY
+   (2026-08-26): an adversarial audit caught that Enter already force-cut
+   whatever sat past `mark`, unpunctuated, with no comment admitting a
+   second boundary existed — this file claimed one rule and ran two. Both
+   are content-blind (neither ever checks what the text says beyond
+   whether any letter/digit is present at all), so neither is a defect on
+   its own; the missing part was saying so. Punctuation is the sentence
+   boundary. Enter is a manual "take what's here now" override, for a
+   fragment that will never get its own terminal mark. ═══ */
+const pad = document.getElementById("pad");
+function bandCut() {
+  const v = pad.value;
+  if (mark > v.length) mark = 0; // pad was cleared/shortened by hand
+  /* no pending (uncut) text right now -> nothing is in progress, so any
+     stale first-keystroke stamp from an abandoned segment must not survive
+     to inflate the next real segment's idle time. This has to be its own
+     check, not folded into the mark-reset above: when mark was already 0
+     and the pad shrinks back to empty, mark>v.length is false (0 is not
+     greater than 0) even though the pending segment was just abandoned. */
+  if (v.length<=mark) segmentStart = null;
+  else if (segmentStart===null) segmentStart = performance.now();
+  let i = mark, start = mark;
+  while (i < v.length) {
+    if (isEnd(v[i])) {
+      if (v[i]==="." && /\d/.test(v[i-1]||"") && /\d/.test(v[i+1]||"")) { i++; continue; }
+      let j = i; while (j+1 < v.length && isEnd(v[j+1])) j++;
+      const seg = v.slice(start, j+1).trim();
+      if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+      start = j+1; mark = j+1; i = j+1;
+    } else i++;
+  }
+}
+pad.addEventListener("input", bandCut);
+pad.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  setTimeout(() => {
+    const seg = pad.value.slice(mark).trim();
+    if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) ingest(seg);
+    mark = pad.value.length;
+  }, 0);
+});
+
+/* ═══ THE FIELD — SVG, physics-driven. Gravity drops a new node in from
+   above; a spring pulls each sentence toward the one immediately before it,
+   at the rest length its own time-gap set; mutual repulsion keeps sentences
+   from stacking; the floor and walls are the field's own edges. All of it
+   reads timing and word-count only — the two structural facts this file
+   already computed to cut the sentence in the first place. ═══ */
+const svg = document.getElementById("lat");
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(NS, tag);
+  Object.keys(attrs||{}).forEach(k => el.setAttribute(k, attrs[k]));
+  return el;
+}
+
+/* GRAVITY/SPRING_K/REPEL/DAMPING and the 1.15/×3 multipliers just below in
+   the repulsion loop: all tuned by eye, none derived or swept — an audit
+   noted this file argues hard for some of its numbers (gapToRest's log
+   scale) and not at all for these; naming that gap rather than fabricating
+   a justification these don't have. */
+const GRAVITY = 420, SPRING_K = 22, REPEL = 5200, DAMPING = 0.90;
+function fieldSize() { const r = document.querySelector(".field").getBoundingClientRect(); return { w:r.width, h:r.height }; }
+
+/* size a node from its own word count alone — the same structural measure
+   tank.html's own water column already uses to move without reading. */
+function sizeNode(n) {
+  const w = Math.max(60, Math.min(220, 40 + n.words*10));
+  const h = 24;
+  n.w = w; n.h = h; n.r = Math.max(w,h)/2;
+}
+nodes.forEach(sizeNode);
+
+/* ═══ CHARGE, SHOWN — 2026-08-25, light's own concentrator law, carried
+   over: what accumulates is a stock, shown as a glow, never a number.
+   DERIVED, NOT STORED — the same law seam.js's windowCharge already states
+   for the ascent, applied here to a sentence's own local tightness: the
+   shorter its neighboring rest-lengths (the closer in TIME its neighbors
+   landed), the warmer it reads. Recomputed fresh every render off edges
+   already on the field; nothing new is measured to produce it. ═══ */
+function nodeCharge(n) {
+  if (n.releasing) return 0;
+  const touching = edges.filter(e => e.aId===n.id || e.bId===n.id);
+  if (!touching.length) return 0;
+  const avgRest = touching.reduce((s,e)=>s+e.restLen,0) / touching.length;
+  return 1 - Math.min(1, Math.max(0, (avgRest-30)/(260-30)));
+}
+
+/* finalizeReleases — the only place a stone actually leaves the field, and
+   only once its fade (RELEASE_FADE_MS) has visibly finished. */
+function finalizeReleases(now) {
+  let changed = false;
+  for (let i=nodes.length-1; i>=0; i--) {
+    const n = nodes[i];
+    if (n.releasing && now-n.releaseStart > RELEASE_FADE_MS) {
+      nodes.splice(i,1);
+      edges = edges.filter(e => e.aId!==n.id && e.bId!==n.id);
+      changed = true;
+    }
+  }
+  if (changed) persist();
+}
+
+/* ═══ ARTICULATION POINTS — standard DFS (Tarjan), unmodified: a node is a
+   cut vertex if removing it disconnects the graph it sits in. Same law
+   RESEARCH_load_bearing_relationships_2026-08-24.md already states for its
+   own graph: "it only asks whether removing a declared connection would
+   fragment the graph it sits in... it counts edges, never reads the
+   writer." Iterative, not recursive — a 36-node field is nowhere near deep
+   enough to need it, but a long-running field someday might be, and an
+   explicit stack costs nothing to write correctly the first time. */
+function articulationPoints(nodeList, edgeList) {
+  const adj = new Map();
+  nodeList.forEach(n => adj.set(n.id, []));
+  edgeList.forEach(e => {
+    if (!adj.has(e.aId) || !adj.has(e.bId)) return;
+    adj.get(e.aId).push(e.bId);
+    adj.get(e.bId).push(e.aId);
+  });
+  const disc = new Map(), low = new Map(), parent = new Map(), cut = new Set();
+  let timer = 0;
+  nodeList.forEach(root => {
+    if (disc.has(root.id)) return;
+    const stack = [{ id: root.id, iter: 0, isRoot: true, children: 0 }];
+    disc.set(root.id, timer); low.set(root.id, timer); timer++;
+    while (stack.length) {
+      const top = stack[stack.length-1];
+      const neigh = adj.get(top.id);
+      if (top.iter < neigh.length) {
+        const v = neigh[top.iter++];
+        if (v === parent.get(top.id) && !top.usedParentSkip) { top.usedParentSkip = true; continue; }
+        if (!disc.has(v)) {
+          parent.set(v, top.id);
+          disc.set(v, timer); low.set(v, timer); timer++;
+          top.children++;
+          stack.push({ id:v, iter:0, isRoot:false, children:0 });
+        } else {
+          low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+        }
+      } else {
+        stack.pop();
+        if (stack.length) {
+          const p = stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id) >= disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children > 1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+
+let lastT = null;
+function step(t) {
+  if (lastT===null) lastT = t;
+  const dt = Math.min(0.032, (t-lastT)/1000);
+  lastT = t;
+  const now = performance.now();
+  const { w:FW, h:FH } = fieldSize();
+  const byId = new Map(nodes.map(n => [n.id, n]));
+
+  nodes.forEach(n => {
+    if (!n.w) sizeNode(n);
+    if (n.releasing) { n.vx *= 0.99; n.vy *= 0.99; }   /* coasts on the impulse it left with — no new force steers it anywhere */
+    else n.vy += GRAVITY*dt*0.12;
+  });
+
+  edges.forEach(e => {
+    const a=byId.get(e.aId), b=byId.get(e.bId);
+    if (!a || !b || a.releasing || b.releasing) return;  /* a released stone carries no spring */
+    const dx=b.x-a.x, dy=b.y-a.y, dist=Math.hypot(dx,dy)||0.001;
+    const f=(dist-e.restLen)*SPRING_K*dt;
+    const fx=f*dx/dist, fy=f*dy/dist;
+    a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+  });
+
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
+    const a=nodes[i], b=nodes[j];
+    if (a.releasing || b.releasing) continue;
+    const dx=b.x-a.x, dy=b.y-a.y;
+    let dist2 = dx*dx+dy*dy; if (dist2<1) dist2=1;
+    const dist=Math.sqrt(dist2);
+    const minDist=(a.r+b.r)*1.15;
+    if (dist < minDist*3) {
+      const f = REPEL*dt/dist2;
+      const fx=f*dx/dist, fy=f*dy/dist;
+      a.vx-=fx; a.vy-=fy; b.vx+=fx; b.vy+=fy;
+    }
+  }
+
+  nodes.forEach(n => {
+    n.vx*=DAMPING; n.vy*=DAMPING;
+    n.x+=n.vx*dt; n.y+=n.vy*dt;
+  });
+  nodes.forEach(n => {
+    if (n.releasing) return;   /* free to drift past the field's own edges while it fades */
+    const halfW=n.w/2, halfH=n.h/2;
+    if (n.x < halfW) { n.x=halfW; n.vx*=-0.35; }
+    if (n.x > FW-halfW) { n.x=FW-halfW; n.vx*=-0.35; }
+    if (n.y < halfH) { n.y=halfH; n.vy*=-0.35; }
+    if (n.y > FH-halfH) { n.y=FH-halfH; n.vy*=-0.4; }
+  });
+
+  finalizeReleases(now);
+  render(now);
+  requestAnimationFrame(step);
+}
+
+let hoverId = -1;
+function render(now) {
+  now = now || performance.now();
+  const byId = new Map(nodes.map(n => [n.id, n]));
+  svg.innerHTML = "";
+  const defs = svgEl("defs", {});
+  const glowFilter = svgEl("filter", { id:"glow", x:"-100%", y:"-100%", width:"300%", height:"300%" });
+  glowFilter.appendChild(svgEl("feGaussianBlur", { stdDeviation:5 }));
+  defs.appendChild(glowFilter);
+  svg.appendChild(defs);
+  const chained = new Set();
+  edges.forEach(e => {
+    const a=byId.get(e.aId), b=byId.get(e.bId);
+    if (!a || !b) return;
+    chained.add(e.aId<e.bId ? e.aId+"-"+e.bId : e.bId+"-"+e.aId);
+    const lit = hoverId===a.id || hoverId===b.id;
+    svg.appendChild(svgEl("line", { class:"edge"+(lit?" lit":""), x1:a.x,y1:a.y,x2:b.x,y2:b.y }));
+  });
+  /* ═══ THE LATTICE, LIVE — 2026-08-25, THE_REGATHERING.md's own technique
+     (2026-08-16), never routed until tonight: "measure where the content
+     actually sits, then draw the connecting lines live, so the figure
+     derives from placement rather than hand-set coordinates." The gold
+     chain above is arrival order — who came right after whom in time. This
+     is a second, independent relationship: which sentences simply ended up
+     NEAR each other once time finished placing them, whether or not they
+     were ever adjacent in the writing. Recomputed every frame from x/y
+     alone, nothing stored, nothing read but where things already are —
+     the same derivation chain the whole file already runs (time -> rest
+     length -> position), one step further (position -> live proximity).
+     NEAR_MULT below is tuned by eye, same honesty as CAPACITY above — no
+     sweep or measurement sets 2.1 specifically; it's a placeholder for a
+     real threshold-sweep pass, not a settled constant. */
+  const NEAR_MULT = 2.1;
+  const held = nodes.filter(n => !n.releasing);
+  const nearPairs = [];
+  for (let i=0;i<held.length;i++) for (let j=i+1;j<held.length;j++) {
+    const a=held[i], b=held[j];
+    const key = a.id<b.id ? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chained.has(key)) continue;   /* already drawn as the gold chain above */
+    const dist = Math.hypot(b.x-a.x, b.y-a.y);
+    if (dist < (a.r+b.r)*NEAR_MULT) nearPairs.push({ aId:a.id, bId:b.id });
+  }
+  nearPairs.forEach(p => {
+    const a=byId.get(p.aId), b=byId.get(p.bId);
+    const lit = hoverId===a.id || hoverId===b.id;
+    svg.appendChild(svgEl("line", { class:"edge near"+(lit?" lit":""), x1:a.x,y1:a.y,x2:b.x,y2:b.y }));
+  });
+
+  /* ═══ LOAD-BEARING SENTENCES — 2026-08-26, the same algorithm
+     RESEARCH_load_bearing_relationships_2026-08-24.md already ran on a
+     different graph, run here on the lattice's own: every edge on the
+     field right now, chain and near-lines both. A cut vertex is a sentence
+     whose removal would split the field into pieces that no longer reach
+     each other — a real property of the graph as it stands this instant,
+     recomputed fresh every render, never stored.
+
+     WHAT DOESN'T TRANSFER, NAMED HONESTLY (an adversarial audit caught
+     this): that research doc's whole defense of "structural fact, not a
+     score" rests on the structural fact sitting BESIDE a relation Kevin
+     himself named — the graph edges there are hand-declared. Nothing here
+     is hand-declared; every edge is auto-generated from timing and
+     position. There is no named relation for this marker to sit beside —
+     it stands alone, attached straight to a specific sentence, which is
+     closer to the shape of a score than that research doc's own case was.
+     Kept for now because it IS a real, honestly-derived graph fact and the
+     visible language below was softened to describe the graph, not praise
+     the sentence — but whether a content-blind marker with nothing beside
+     it belongs on a specific piece of writing at all is a real, open
+     question this file resolves by softening language, not by settling
+     the argument. That's Kevin's call, not a default this file gets to
+     assume. */
+  const hinges = articulationPoints(held, edges.concat(nearPairs));
+
+  const today = dayStamp();
+  nodes.forEach(n => {
+    const opacity = n.releasing ? Math.max(0, 1-(now-n.releaseStart)/RELEASE_FADE_MS) : 1;
+    const charge = nodeCharge(n);
+    if (charge > 0.02) {
+      const glowR = Math.max(n.w,n.h)/2 + 6 + charge*16;
+      svg.appendChild(svgEl("circle", {
+        cx:n.x, cy:n.y, r:glowR, filter:"url(#glow)",
+        fill:"rgba(224,196,84,"+(0.10+charge*0.34).toFixed(3)+")", opacity:opacity.toFixed(3)
+      }));
+    }
+    const isOtherDay = n.day !== today;
+    const isHinge = hinges.has(n.id);
+    const cls = "node"
+      + (hoverId===n.id ? " lit" : "")
+      + (isOtherDay ? " otherday" : "")
+      + (isHinge ? " hinge" : "");
+    const g = svgEl("g", { class:cls,
+      transform:"translate("+(n.x-n.w/2)+","+(n.y-n.h/2)+")", opacity:opacity.toFixed(3) });
+    g.appendChild(svgEl("rect", { width:n.w, height:n.h }));
+    const txt = svgEl("text", { x:8, y:n.h/2+4, "text-anchor":"start" });
+    const label = n.text.length > Math.floor(n.w/6.4) ? n.text.slice(0, Math.floor(n.w/6.4)-1)+"…" : n.text;
+    txt.textContent = label;
+    g.appendChild(txt);
+    g.addEventListener("pointerenter", () => { hoverId=n.id; render(); });
+    g.addEventListener("pointerleave", () => { hoverId=-1; render(); });
+    const title = svgEl("title", {});
+    title.textContent = n.text
+      + (isOtherDay ? " — " + n.day : " — today")
+      + (isHinge ? " — no other path currently connects around it, in the graph as it stands right now" : "");
+    g.appendChild(title);
+    svg.appendChild(g);
+  });
+}
+
+restore();
+if (nodes.length) document.getElementById("emptyNote").style.display = "none";
+if (nodes.length) document.getElementById("hint").textContent =
+  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+requestAnimationFrame(step);
+</script>
+</body>
+</html>

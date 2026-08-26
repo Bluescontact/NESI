@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · the page</title>
+<style>
+/* ═══ THE SYNTHESIS — 2026-08-26. Three shapes were dreamed, built, and
+   run through a comparative audit and ground pass: B (a settled physics
+   field, gravity removed), A (a real document with a secondary margin
+   graph), C (manual placement with a "delta" against a suggested
+   position). This is what survived.
+
+   FROM A, KEPT WHOLE: the writing itself is a real, un-truncated,
+   readable document, day-grouped, nothing ever deleted — verified the
+   most honest of the three on its own primary claim, so it's the body
+   this file is built around, not a variant of it.
+
+   FROM B, KEPT AND FIXED: the margin graph settles by spring and
+   repulsion, and — the one thing audit found B alone got right — hinge
+   detection is computed over chain edges AND live-proximity edges
+   together, never chain edges alone. A's own margin graph shipped
+   without that merge, which made its "hinge" marker trivially true for
+   almost every sentence (any interior node of a bare path is a cut
+   vertex by definition) — fixed here by reusing B's merge, in both the
+   graph panel and the document's own hinge border.
+
+   FROM A, FIXED: the margin graph used to filter to today only —
+   ground found this makes cross-day relationships (a hinge tying today
+   to three weeks ago) silently unrepresentable in the one surface named
+   "the shape, at a glance." Fixed: the graph now lays out the whole
+   corpus. Named honestly, not solved: at real scale (months of daily
+   writing) the O(n^2) relaxation pass will eventually need a window or
+   a coarser view; deferred, not hidden.
+
+   NEITHER B'S BUG PORTED, BOTH SIDESTEPPED BY ONE ARCHITECTURAL CHOICE:
+   audit found B's live per-frame physics could spawn a node inside a
+   crowded neighbor's repulsion zone (violent repel) and ground found the
+   field's own continuous jitter can mask a new arrival (motion-silences-
+   awareness research). This graph is not a live simulation — it's a
+   fixed-iteration relaxation computed once per render, like A's always
+   was. No per-frame motion exists for either problem to occur in.
+
+   FROM C, KEPT ONLY STRIPPED: a graph dot can be dragged, for the same
+   reason a person rearranges anything — decluttering, not disagreement.
+   Ground and audit both found "the delta" (dragged position vs. what
+   timing suggested) could not be told apart from ordinary tidying, so
+   nothing here claims a drag means anything. It is recorded — userMoved,
+   a bare boolean, persisted so the drag sticks against the next
+   relaxation — and never interpreted, never shown as a signal, never
+   called a disagreement. */
+:root {
+  --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --dim:rgba(238,236,226,.55);
+  --hinge:#c1622e;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; }
+body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; }
+.wrap { display:grid; grid-template-columns: minmax(340px, 0.8fr) minmax(480px, 1.2fr); height:100vh; }
+@media (max-width: 980px) { .wrap { grid-template-columns: 1fr; height:auto; min-height:100vh; } .margin { border-left:none; border-top:1px solid var(--line-soft); } }
+
+.doc { overflow-y:auto; padding: 28px 36px 60px; }
+.eyebrow { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
+h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 6px; }
+.sub { font-size:12.5px; color:var(--dim); max-width:60ch; line-height:1.5; margin-bottom:22px; }
+
+#pad { width:100%; height:64px; resize:none; background:rgba(238,236,226,.04);
+  border:1px solid var(--line); border-radius:4px; color:var(--paper);
+  font:15px/1.5 Georgia,serif; padding:10px 12px; outline:none; margin-bottom:6px; }
+#pad:focus { border-color:var(--gold); }
+.padhint { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); margin:0 0 26px; }
+
+.day { margin-bottom:10px; }
+.day-head { display:flex; align-items:center; gap:10px; cursor:pointer; padding:6px 0;
+  border-bottom:1px solid var(--line-soft); user-select:none; }
+.day-head .dot { width:7px; height:7px; border-radius:50%; background:var(--dim); flex-shrink:0; }
+.day-head.today .dot { background:var(--gold); }
+.day-head .lbl { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--dim); }
+.day-head.today .lbl { color:var(--gold); }
+.day-head .count { margin-left:auto; font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); }
+.day-body { padding: 10px 4px 4px 17px; }
+.day.collapsed .day-body { display:none; }
+.day.collapsed .day-head .lbl::after { content:" — collapsed, click to reopen"; font-style:italic; opacity:.7; }
+
+p.sentence { position:relative; font:16px/1.7 Georgia,serif; margin:0 0 12px; padding-left:14px;
+  border-left:2px solid transparent; transition: border-color .3s, background .8s; }
+p.sentence.hinge { border-left-color:var(--hinge); }
+p.sentence.justarrived { background: rgba(224,196,84,.10); }
+p.sentence .charge-underline { display:inline; box-shadow: inset 0 -3px 0 0 rgba(224,196,84,0); transition: box-shadow .3s; }
+
+.margin { border-left:1px solid var(--line-soft); padding:20px 16px; overflow-y:auto; }
+.margin h2 { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
+  font-weight:400; margin:0 0 12px; }
+.grounds { display:flex; gap:6px; margin-bottom:14px; }
+.groundbtn { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; letter-spacing:.04em;
+  background:rgba(238,236,226,.04); color:var(--dim); border:1px solid var(--line); border-radius:3px;
+  padding:5px 10px; cursor:pointer; }
+.groundbtn.active { border-color:var(--gold); color:var(--gold); }
+svg#graph { width:100%; height:min(72vh, 640px); display:block; background:rgba(238,236,226,.02);
+  border:1px solid var(--line-soft); border-radius:4px; margin-bottom:8px; }
+svg#graph .card { cursor:grab; }
+svg#graph .card.dragging { cursor:grabbing; }
+svg#graph .card rect { fill:rgba(238,236,226,.06); stroke:var(--line); rx:6; transition:fill .8s; }
+svg#graph .card.justarrived rect { fill:rgba(224,196,84,.14); }
+svg#graph .card text { fill:var(--paper); font:13px/1.4 Georgia,serif; }
+.graph-note { font-family:ui-monospace,Consolas,monospace; font-size:10px; color:var(--dim); line-height:1.6; margin-bottom:20px; }
+.related { font-size:12px; line-height:1.6; margin-bottom:22px; }
+.related .item { padding:6px 0; border-bottom:1px solid var(--line-soft); cursor:pointer; color:var(--dim); }
+.related .item:hover { color:var(--paper); }
+.related .empty { color:var(--dim); font-style:italic; }
+
+.connect-empty { font-size:12px; color:var(--dim); font-style:italic; line-height:1.5; }
+.connect-armed { font-size:12px; color:var(--paper); line-height:1.6; }
+.connect-armed b { color:#8b6fd9; }
+.connect-btn, .cancel-btn { font-family:ui-monospace,Consolas,monospace; font-size:10.5px;
+  background:rgba(139,111,217,.10); color:#8b6fd9; border:1px solid #8b6fd9; border-radius:3px;
+  padding:6px 10px; cursor:pointer; margin-top:8px; }
+.cancel-btn { background:rgba(238,236,226,.04); color:var(--dim); border-color:var(--line); }
+.staged-tray { margin-top:14px; }
+.staged-item { border:1px dashed #8b6fd9; border-radius:4px; padding:8px 10px; margin-bottom:8px; }
+.staged-item .pair { font-size:11px; color:var(--dim); line-height:1.5; margin-bottom:6px; }
+.staged-item input { width:100%; background:var(--ink); color:var(--paper); border:1px solid var(--line);
+  border-radius:3px; padding:6px 8px; font:12.5px Georgia,serif; margin-bottom:6px; }
+.staged-item .row { display:flex; gap:6px; }
+.staged-item button { font-family:ui-monospace,Consolas,monospace; font-size:10px;
+  background:rgba(139,111,217,.12); color:#8b6fd9; border:1px solid #8b6fd9; border-radius:3px;
+  padding:4px 8px; cursor:pointer; }
+.staged-item button.discard { background:rgba(238,236,226,.04); color:var(--dim); border-color:var(--line); }
+.declared-list .item { border-bottom:none; padding:5px 0; color:var(--dim); font-size:11.5px; }
+.declared-list .item b { color:#8b6fd9; font-weight:400; font-style:italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="doc" id="doc">
+    <div class="eyebrow">NESI · the page, 2026-08-26 — the synthesis</div>
+    <h1>the page</h1>
+    <div class="sub">Write below. Each finished sentence joins today's page as real, readable text — never truncated, never a box. The shape of it lives in the margin, not in the writing itself.</div>
+    <textarea id="pad" placeholder="write here — a sentence joins the page the moment it ends" spellcheck="false"></textarea>
+    <div class="padhint" id="hint">0 sentences · nothing read but idle time and length</div>
+    <div id="days"></div>
+  </div>
+  <div class="margin">
+    <h2>the shape, at a glance</h2>
+    <div class="grounds" id="grounds">
+      <button class="groundbtn active" data-ground="relationship">relationship</button>
+      <button class="groundbtn" data-ground="time">time</button>
+    </div>
+    <svg id="graph" role="img" aria-label="a settled graph of every sentence written, by timing — the whole corpus, not just today"></svg>
+    <div class="graph-note" id="graphNote">each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, orange means no other path currently connects around it. drag a card to arrange it — that's recorded, never read as meaning anything. click a card to jump to it.</div>
+    <h2>near this one</h2>
+    <div class="related" id="related"><div class="empty">click a sentence in the page to see what landed near it in time</div></div>
+    <h2>declare a connection</h2>
+    <div id="connectPanel"><div class="connect-empty">select a sentence, then declare what it connects to — in your own words, never guessed</div></div>
+    <div class="staged-tray" id="stagedTray"></div>
+    <div class="declared-list" id="declaredList"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const isEnd = c => ".!?…".indexOf(c) >= 0;
+function dayStamp() {
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+const KEY = "nesi.thepage";
+let mark=0, nodes=[], edges=[], lastBornAt=null, segmentStart=null, nextId=0, lastNode=null;
+let selectedId = -1, newestId = -1;
+
+/* ═══ DECLARED EDGES — composted from THE_TERRAIN.html, 2026-08-26: there,
+   an edge existed only if Kevin's own hand wrote it into a mark's `blocks`
+   field, `{to, rel}`, rel free text — never inferred from anything. Every
+   other relationship in this file (chain, near, hinge) is machine-derived;
+   this is the one place the writer's own judgment enters the structure,
+   not just their words or their spatial preference. THE MAP NEVER WRITES,
+   ADAPTED: TERRAIN staged an edit until it was copied out by hand into an
+   external ledger; there's no external ledger here, so the honest
+   adaptation is a second, deliberate confirm — an edge sits `staged` (a
+   violet dashed line, live in the tray, NOT persisted) until confirmed,
+   at which point it's real and saved. Reload before confirming and it's
+   gone, same as it never existed — nothing was ever auto-applied. ═══ */
+let declaredEdges = [], nextEdgeId = 0;
+let connectArmed = false, connectFrom = -1;
+let ground = "relationship"; // TERRAIN's own reframe: a ground is a VIEW over one dataset, never a second model
+
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify({
+    nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved})),
+    declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label}))
+  })); } catch(e) {}
+}
+function restore() {
+  try {
+    const raw = localStorage.getItem(KEY); if (!raw) return;
+    const parsed = JSON.parse(raw);
+    /* MIGRATE — the pre-composting schema saved a bare array of nodes,
+       no declaredEdges wrapper. Law 20 (no law becomes a lever to give
+       Kevin less): a session's own earlier writing must still restore. */
+    const nodeSeq = Array.isArray(parsed) ? parsed : (Array.isArray(parsed && parsed.nodes) ? parsed.nodes : null);
+    if (!nodeSeq) return;
+    nodeSeq.forEach(s => addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.userMoved));
+    const edgeSeq = Array.isArray(parsed) ? [] : (parsed.declaredEdges || []);
+    edgeSeq.forEach(e => {
+      declaredEdges.push({ id:e.id, aId:e.aId, bId:e.bId, label:e.label, staged:false });
+      nextEdgeId = Math.max(nextEdgeId, e.id+1);
+    });
+  } catch(e) {}
+}
+function wordCount(t){ const w=t.trim(); return w?w.split(/\s+/).length:0; }
+function gapToRest(ms){ const s=Math.max(0,ms/1000); return Math.max(70,Math.min(280,70+Math.log(1+s)*60)); }
+
+/* size a card from its own word count alone — the same structural measure
+   the writing surface has used all night; text is shown in full up to
+   what the card can hold, truncated with an ellipsis and a full-text
+   title only past that, never hidden behind a bare dot. */
+function sizeNode(n) {
+  const w = Math.max(90, Math.min(260, 60+n.words*11));
+  const h = 30;
+  n.w = w; n.h = h; n.r = Math.max(w,h)/2;
+}
+
+function addNode(text, words, gapMs, day, x, y, userMoved) {
+  const n = { id:nextId++, text, words:(typeof words==="number"?words:wordCount(text)),
+    gapMs:gapMs||0, day: day||dayStamp(),
+    x: typeof x==="number"?x:0, y: typeof y==="number"?y:0,
+    r:6, userMoved: !!userMoved };
+  sizeNode(n);
+  nodes.push(n);
+  if (lastNode) edges.push({ aId:lastNode.id, bId:n.id, restLen:gapToRest(n.gapMs) });
+  lastNode = n;
+  return n;
+}
+function ingest(text) {
+  const words = wordCount(text); if (!words) return;
+  const finishedAt = performance.now();
+  const idleFrom = segmentStart===null ? finishedAt : segmentStart;
+  const gapMs = lastBornAt===null ? 0 : Math.max(0, idleFrom-lastBornAt);
+  lastBornAt = finishedAt; segmentStart = null;
+  const n = addNode(text, words, gapMs);
+  newestId = n.id;
+  persist();
+  renderDoc();
+  document.getElementById("hint").textContent =
+    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+  setTimeout(() => { newestId = -1; renderDoc(); }, 1500);
+}
+
+const pad = document.getElementById("pad");
+/* This pad empties itself after every sentence — nothing "kept" lingers
+   for a second reason to exist. Consuming exactly one sentence, slicing
+   only that text out (never the whole pad), and recursing on whatever
+   remains handles both a single keystroke and a multi-sentence paste
+   correctly — the bug this file's own earlier draft shipped (clearing
+   the whole pad mid-scan corrupted the next sentence's cut point) is
+   fixed by never taking that shortcut. */
+function bandCut() {
+  const v = pad.value;
+  if (mark > v.length) mark = 0;
+  if (v.length<=mark) segmentStart = null;
+  else if (segmentStart===null) segmentStart = performance.now();
+  let i=mark, start=mark;
+  while (i < v.length) {
+    if (isEnd(v[i])) {
+      if (v[i]==="." && /\d/.test(v[i-1]||"") && /\d/.test(v[i+1]||"")) { i++; continue; }
+      let j=i; while (j+1<v.length && isEnd(v[j+1])) j++;
+      const seg = v.slice(start,j+1).trim();
+      if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) {
+        ingest(seg);
+        pad.value = v.slice(j+1);
+        mark = 0; segmentStart = null;
+        bandCut();
+        return;
+      }
+      start=j+1; mark=j+1; i=j+1;
+    } else i++;
+  }
+}
+pad.addEventListener("input", bandCut);
+pad.addEventListener("keydown", e => {
+  if (e.key!=="Enter") return;
+  setTimeout(()=>{
+    const seg = pad.value.trim();
+    if (seg.length>1 && /[A-Za-z0-9]/.test(seg)) { ingest(seg); pad.value=""; mark=0; segmentStart=null; }
+  },0);
+});
+
+function nodeCharge(n){
+  const touching = edges.filter(e=>e.aId===n.id||e.bId===n.id);
+  if (!touching.length) return 0;
+  const avgRest = touching.reduce((s,e)=>s+e.restLen,0)/touching.length;
+  return 1 - Math.min(1,Math.max(0,(avgRest-24)/(90-24)));
+}
+function articulationPoints(nodeList, edgeList){
+  const adj=new Map(); nodeList.forEach(n=>adj.set(n.id,[]));
+  edgeList.forEach(e=>{ if(!adj.has(e.aId)||!adj.has(e.bId))return; adj.get(e.aId).push(e.bId); adj.get(e.bId).push(e.aId); });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  nodeList.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1], neigh=adj.get(top.id);
+      if (top.iter<neigh.length){
+        const v=neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.usedParentSkip){ top.usedParentSkip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++; stack.push({id:v,iter:0,isRoot:false,children:0}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+function nearPairsFor(list, chainedKeys) {
+  const out=[];
+  for (let i=0;i<list.length;i++) for (let j=i+1;j<list.length;j++){
+    const a=list[i], b=list[j];
+    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chainedKeys && chainedKeys.has(key)) continue;
+    const dist=Math.hypot(b.x-a.x,b.y-a.y);
+    if (dist < (a.r+b.r)*2.0) out.push({aId:a.id,bId:b.id});
+  }
+  return out;
+}
+
+/* ═══ ONE SHARED LAYOUT — computed once per render cycle, over the WHOLE
+   corpus (fixed from A's own draft, which silently filtered to today
+   only — ground found that made cross-day relationships unrepresentable
+   in the one surface named "the shape, at a glance"). Fixed-iteration
+   relaxation, not a live per-frame simulation — no continuous motion for
+   either of B's found problems (crowded-spawn repel, motion masking new
+   arrivals) to occur in. userMoved nodes are excluded from force
+   application so a decluttering drag actually sticks. ═══ */
+/* Coordinate space sized for real text cards (90-260px wide, per
+   sizeNode), not the small dot-space this used to be — a user can only
+   "see and arrange their own sentences" if there's actual room for the
+   sentences, not just points standing in for them. */
+const GW = 640, GH = 640;
+function layout() {
+  nodes.forEach(n => {
+    if (!n.w) sizeNode(n);
+    if (n.x===0 && n.y===0 && !n.userMoved) { n.x = GW/2 + (Math.random()-0.5)*60; n.y = GH/2 + (Math.random()-0.5)*60; }
+  });
+  for (let iter=0; iter<70; iter++) {
+    edges.forEach(e => {
+      const a=nodes.find(x=>x.id===e.aId), b=nodes.find(x=>x.id===e.bId);
+      if (!a||!b) return;
+      const dx=b.x-a.x, dy=b.y-a.y, dist=Math.hypot(dx,dy)||0.001;
+      const f=(dist-e.restLen)*0.05;
+      const fx=f*dx/dist, fy=f*dy/dist;
+      if (!a.userMoved) { a.x+=fx; a.y+=fy; }
+      if (!b.userMoved) { b.x-=fx; b.y-=fy; }
+    });
+    /* repulsion sized to actual card footprints (a.r+b.r), not a flat
+       point-collision radius — real text cards need real clearance or
+       they'd sit stacked and unreadable, exactly what "not dots" means. */
+    for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
+      const a=nodes[i], b=nodes[j];
+      const dx=b.x-a.x, dy=b.y-a.y; let d2=dx*dx+dy*dy; if(d2<1)d2=1;
+      const d=Math.sqrt(d2);
+      const minD = (a.r+b.r)*1.2;
+      if (d<minD) {
+        const f=(minD-d)*2.2; const fx=f*dx/d, fy=f*dy/d;
+        if (!a.userMoved) { a.x-=fx; a.y-=fy; }
+        if (!b.userMoved) { b.x+=fx; b.y+=fy; }
+      }
+    }
+    nodes.forEach(n => { if (!n.userMoved) { n.x=Math.max(n.w/2+4,Math.min(GW-n.w/2-4,n.x)); n.y=Math.max(n.h/2+4,Math.min(GH-n.h/2-4,n.y)); } });
+  }
+  const chainedKeys = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
+  const nearPairs = nearPairsFor(nodes, chainedKeys);
+  const hinges = articulationPoints(nodes, edges.concat(nearPairs));
+  return { chainedKeys, nearPairs, hinges };
+}
+
+/* ═══ THE DOCUMENT ═══ */
+function renderDoc() {
+  const daysEl = document.getElementById("days");
+  const today = dayStamp();
+  const L = layout();
+  _lastLayout = L;
+  const byDay = new Map();
+  nodes.forEach(n => { if (!byDay.has(n.day)) byDay.set(n.day, []); byDay.get(n.day).push(n); });
+  const days = Array.from(byDay.keys()).sort().reverse();
+
+  daysEl.innerHTML = "";
+  days.forEach(day => {
+    const isToday = day === today;
+    const wrap = document.createElement("div");
+    wrap.className = "day" + (isToday ? "" : " collapsed");
+    const head = document.createElement("div");
+    head.className = "day-head" + (isToday ? " today" : "");
+    head.innerHTML = `<span class="dot"></span><span class="lbl">${day}</span><span class="count">${byDay.get(day).length}</span>`;
+    head.addEventListener("click", () => { wrap.classList.toggle("collapsed"); });
+    wrap.appendChild(head);
+    const body = document.createElement("div");
+    body.className = "day-body";
+    byDay.get(day).forEach(n => {
+      const p = document.createElement("p");
+      p.className = "sentence" + (L.hinges.has(n.id) ? " hinge" : "") + (n.id===newestId ? " justarrived" : "");
+      p.dataset.id = n.id;
+      const span = document.createElement("span");
+      span.className = "charge-underline";
+      const charge = nodeCharge(n);
+      span.style.boxShadow = charge > 0.02 ? `inset 0 -3px 0 0 rgba(224,196,84,${(0.15+charge*0.55).toFixed(2)})` : "";
+      span.textContent = n.text;
+      p.appendChild(span);
+      p.title = (L.hinges.has(n.id) ? "no other path currently connects around it — " : "") + "idle before this one: " + Math.round(n.gapMs/1000) + "s";
+      p.addEventListener("click", () => { selectSentence(n.id, L); });
+      body.appendChild(p);
+    });
+    wrap.appendChild(body);
+    daysEl.appendChild(wrap);
+  });
+  renderGraph(L);
+  renderRelated(L);
+  renderConnectPanel();
+  renderStagedTray();
+  renderDeclaredList();
+}
+
+/* ═══ SELECTION + THE CONNECT FLOW ═══
+   selectSentence is the one entry point both the document and the graph
+   call on a click — it does two different things depending on state:
+   ordinary selection (drives the "near this one" panel, unchanged), or,
+   if connectArmed, completing a declaration by naming the SECOND
+   sentence. Nothing here reads either sentence's text to decide anything
+   — the label is only ever what the writer types next. */
+function selectSentence(id, L) {
+  if (connectArmed && id !== connectFrom) {
+    const e = { id: nextEdgeId++, aId: connectFrom, bId: id, label: "", staged: true };
+    declaredEdges.push(e);
+    connectArmed = false; connectFrom = -1;
+    renderDoc();
+    setTimeout(() => { const inp = document.querySelector('.staged-item[data-id="'+e.id+'"] input'); if (inp) inp.focus(); }, 0);
+    return;
+  }
+  selectedId = id;
+  renderRelated(L || layoutCache());
+  renderGraph(L || layoutCache());
+  renderConnectPanel();
+}
+let _lastLayout = null;
+function layoutCache() { return _lastLayout || layout(); }
+
+function renderConnectPanel() {
+  const el = document.getElementById("connectPanel");
+  if (connectArmed) {
+    const from = nodes.find(n=>n.id===connectFrom);
+    el.innerHTML = `<div class="connect-armed">connecting from: <b>"${(from?from.text:"").slice(0,50)}${from&&from.text.length>50?"…":""}"</b><br>click another sentence — in the page or the graph — to connect it.</div>`;
+    const cancel = document.createElement("button");
+    cancel.className = "cancel-btn"; cancel.textContent = "cancel";
+    cancel.addEventListener("click", () => { connectArmed=false; connectFrom=-1; renderConnectPanel(); });
+    el.appendChild(cancel);
+    return;
+  }
+  if (selectedId < 0) { el.innerHTML = '<div class="connect-empty">select a sentence, then declare what it connects to — in your own words, never guessed</div>'; return; }
+  const n = nodes.find(x=>x.id===selectedId);
+  el.innerHTML = "";
+  const note = document.createElement("div");
+  note.className = "connect-empty";
+  note.textContent = 'selected: "' + n.text.slice(0,50) + (n.text.length>50?"…":"") + '"';
+  el.appendChild(note);
+  const btn = document.createElement("button");
+  btn.className = "connect-btn"; btn.textContent = "declare a connection →";
+  btn.addEventListener("click", () => { connectArmed = true; connectFrom = selectedId; renderConnectPanel(); });
+  el.appendChild(btn);
+}
+
+function renderStagedTray() {
+  const tray = document.getElementById("stagedTray");
+  const staged = declaredEdges.filter(e => e.staged);
+  tray.innerHTML = "";
+  staged.forEach(e => {
+    const a = nodes.find(n=>n.id===e.aId), b = nodes.find(n=>n.id===e.bId);
+    if (!a || !b) return;
+    const box = document.createElement("div");
+    box.className = "staged-item"; box.dataset.id = e.id;
+    const pair = document.createElement("div"); pair.className = "pair";
+    pair.textContent = '"'+a.text.slice(0,34)+(a.text.length>34?"…":"")+'"  ↔  "'+b.text.slice(0,34)+(b.text.length>34?"…":"")+'"';
+    box.appendChild(pair);
+    const inp = document.createElement("input");
+    inp.placeholder = "what connects them, in your own words"; inp.value = e.label;
+    inp.addEventListener("input", () => { e.label = inp.value; });
+    box.appendChild(inp);
+    const row = document.createElement("div"); row.className = "row";
+    const confirm = document.createElement("button"); confirm.textContent = "confirm";
+    confirm.addEventListener("click", () => {
+      if (!e.label.trim()) { inp.focus(); return; }
+      e.staged = false; persist(); renderStagedTray(); renderDeclaredList(); renderDoc();
+    });
+    const discard = document.createElement("button"); discard.className = "discard"; discard.textContent = "discard";
+    discard.addEventListener("click", () => {
+      declaredEdges = declaredEdges.filter(x => x.id !== e.id);
+      renderStagedTray(); renderDoc();
+    });
+    row.appendChild(confirm); row.appendChild(discard);
+    box.appendChild(row);
+    tray.appendChild(box);
+  });
+}
+function renderDeclaredList() {
+  const el = document.getElementById("declaredList");
+  const confirmed = declaredEdges.filter(e => !e.staged);
+  if (!confirmed.length) { el.innerHTML = ""; return; }
+  el.innerHTML = '<h2>declared</h2>';
+  confirmed.forEach(e => {
+    const a = nodes.find(n=>n.id===e.aId), b = nodes.find(n=>n.id===e.bId);
+    if (!a || !b) return;
+    const d = document.createElement("div");
+    d.className = "item";
+    d.innerHTML = '"'+a.text.slice(0,26)+'…" <b>'+e.label+'</b> "'+b.text.slice(0,26)+'…"';
+    el.appendChild(d);
+  });
+}
+
+function renderRelated(L) {
+  const el = document.getElementById("related");
+  if (selectedId < 0) { el.innerHTML = '<div class="empty">click a sentence in the page to see what landed near it in time</div>'; return; }
+  const near = L.nearPairs.filter(p => p.aId===selectedId || p.bId===selectedId)
+    .map(p => nodes.find(n => n.id === (p.aId===selectedId?p.bId:p.aId)));
+  if (!near.length) { el.innerHTML = '<div class="empty">nothing else landed near this one, by timing</div>'; return; }
+  el.innerHTML = "";
+  near.forEach(n => {
+    const d = document.createElement("div");
+    d.className = "item"; d.textContent = n.text.slice(0,60) + (n.text.length>60?"…":"");
+    d.addEventListener("click", () => {
+      const p = document.querySelector('p.sentence[data-id="'+n.id+'"]');
+      if (p) { p.closest(".day").classList.remove("collapsed"); p.scrollIntoView({behavior:"smooth", block:"center"}); }
+    });
+    el.appendChild(d);
+  });
+}
+
+/* ═══ THE MARGIN GRAPH — draws the shared layout; a drag here only ever
+   declutters. It never claims meaning. ═══ */
+const graphSvg = document.getElementById("graph");
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){ const el=document.createElementNS(NS,tag); Object.keys(attrs||{}).forEach(k=>el.setAttribute(k,attrs[k])); return el; }
+let dragId = -1, dragDX = 0, dragDY = 0;
+/* Screen pixels -> real viewBox coordinates. The rendered CSS size and the
+   GW/GH coordinate space no longer match 1:1 now that cards need real
+   room — a raw clientX-minus-left offset would drag at the wrong scale
+   the moment those two sizes diverge, so this goes through the SVG's own
+   screen-to-user transform instead. */
+function graphPoint(e) {
+  const ctm = graphSvg.getScreenCTM();
+  if (!ctm) { const r = graphSvg.getBoundingClientRect(); return { x:e.clientX-r.left, y:e.clientY-r.top }; }
+  const pt = graphSvg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const p = pt.matrixTransform(ctm.inverse());
+  return { x:p.x, y:p.y };
+}
+
+/* ═══ THE TIME GROUND — 2026-08-26, composted from THE_TERRAIN.html's
+   own reframe: "time" and "relationship" are two VIEWS over one dataset,
+   not two data models. Nothing new is measured — x is arrival order
+   alone (position in the corpus, not even the actual elapsed gap, kept
+   simple and honest rather than dressed up), y is a lane per day, both
+   facts this file already holds. The underlying near/hinge computation
+   never changes with the ground — only where a dot is DRAWN does. ═══ */
+function timePositions() {
+  const days = Array.from(new Set(nodes.map(n=>n.day))).sort();
+  const dayIndex = new Map(days.map((d,i)=>[d,i]));
+  const laneH = (GH-20) / Math.max(1,days.length);
+  const pos = new Map();
+  nodes.forEach((n,i) => {
+    const x = nodes.length>1 ? 16 + (i/(nodes.length-1))*(GW-32) : GW/2;
+    const y = 10 + dayIndex.get(n.day)*laneH + laneH/2;
+    pos.set(n.id, {x,y});
+  });
+  return pos;
+}
+function displayPos(n, timePos) {
+  return ground==="time" ? timePos.get(n.id) : { x:n.x, y:n.y };
+}
+
+function renderGraph(L) {
+  if (!nodes.length) { graphSvg.innerHTML = ""; return; }
+  const timePos = ground==="time" ? timePositions() : null;
+  const P = n => displayPos(n, timePos);
+  graphSvg.setAttribute("viewBox", "0 0 "+GW+" "+GH);
+  graphSvg.innerHTML = "";
+  edges.forEach(e => {
+    const a=nodes.find(x=>x.id===e.aId), b=nodes.find(x=>x.id===e.bId); if(!a||!b) return;
+    const pa=P(a), pb=P(b);
+    graphSvg.appendChild(svgEl("line",{x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,stroke:"rgba(224,196,84,.4)","stroke-width":1}));
+  });
+  L.nearPairs.forEach(p => {
+    const a=nodes.find(x=>x.id===p.aId), b=nodes.find(x=>x.id===p.bId); if(!a||!b) return;
+    const pa=P(a), pb=P(b);
+    graphSvg.appendChild(svgEl("line",{x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,stroke:"rgba(238,236,226,.15)","stroke-width":1,"stroke-dasharray":"2 3"}));
+  });
+  /* declared edges — violet, dashed while staged, solid once confirmed.
+     Drawn deliberately distinct from every machine-derived line above. */
+  declaredEdges.forEach(e => {
+    const a=nodes.find(x=>x.id===e.aId), b=nodes.find(x=>x.id===e.bId); if(!a||!b) return;
+    const pa=P(a), pb=P(b);
+    graphSvg.appendChild(svgEl("line",{x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,
+      stroke:"#8b6fd9", "stroke-width": e.staged?1.2:1.8, "stroke-dasharray": e.staged?"3 3":"none",
+      opacity: e.staged?0.6:0.85}));
+  });
+  /* real cards, not dots — a rect sized by sizeNode() plus its actual
+     text, truncated only past what the card can hold, full text always
+     available on hover. Stroke color, not fill, carries state (hinge,
+     selected, connect-source) so the text stays readable regardless. */
+  nodes.forEach(n => {
+    const p = P(n);
+    const strokeColor = n.id===connectFrom ? "#8b6fd9"
+      : L.hinges.has(n.id) ? "var(--hinge, #c1622e)"
+      : (n.id===selectedId ? "var(--gold, #e0c454)" : "var(--line, rgba(238,236,226,.22))");
+    const strokeW = (n.id===connectFrom || n.id===selectedId || L.hinges.has(n.id)) ? 2 : 1;
+    const g = svgEl("g", { class:"card"+(n.id===newestId?" justarrived":""),
+      transform:"translate("+(p.x-n.w/2)+","+(p.y-n.h/2)+")" });
+    const rect = svgEl("rect", { width:n.w, height:n.h, stroke:strokeColor, "stroke-width":strokeW });
+    g.appendChild(rect);
+    const label = n.text.length > Math.floor(n.w/6.6) ? n.text.slice(0, Math.floor(n.w/6.6)-1)+"…" : n.text;
+    const txt = svgEl("text", { x:8, y:n.h/2+4, "text-anchor":"start" });
+    txt.textContent = label;
+    g.appendChild(txt);
+    if (ground==="relationship") {
+      g.addEventListener("pointerdown", e => {
+        dragId = n.id;
+        const gp = graphPoint(e);
+        dragDX = n.x - gp.x; dragDY = n.y - gp.y;
+        g.classList.add("dragging");
+        e.target.setPointerCapture ? e.target.setPointerCapture(e.pointerId) : null;
+      });
+    }
+    g.addEventListener("click", () => {
+      if (n.userMoved !== true || dragId===-1) selectSentence(n.id, L);
+    });
+    const title = svgEl("title",{}); title.textContent = n.text;
+    g.appendChild(title);
+    graphSvg.appendChild(g);
+  });
+}
+graphSvg.addEventListener("pointermove", e => {
+  if (dragId < 0 || ground!=="relationship") return;
+  const n = nodes.find(x=>x.id===dragId); if (!n) return;
+  const p = graphPoint(e);
+  n.x = Math.max(n.w/2+2,Math.min(GW-n.w/2-2, p.x+dragDX));
+  n.y = Math.max(n.h/2+2,Math.min(GH-n.h/2-2, p.y+dragDY));
+  n.userMoved = true;
+  const L2 = { chainedKeys:new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId)),
+    nearPairs: nearPairsFor(nodes), hinges: articulationPoints(nodes, edges.concat(nearPairsFor(nodes))) };
+  renderGraph(L2);
+});
+function endDrag() { if (dragId>=0) { dragId=-1; persist(); } }
+graphSvg.addEventListener("pointerup", endDrag);
+graphSvg.addEventListener("pointercancel", endDrag);
+
+document.getElementById("grounds").addEventListener("click", e => {
+  const btn = e.target.closest(".groundbtn"); if (!btn) return;
+  ground = btn.dataset.ground;
+  document.querySelectorAll(".groundbtn").forEach(b => b.classList.toggle("active", b===btn));
+  document.getElementById("graphNote").textContent = ground==="time"
+    ? "same sentences, laid out left to right by arrival order, one lane per day. dragging is off in this view — declutter in the relationship view instead."
+    : "each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, violet lines are ones you declared yourself, orange means no other path currently connects around it. drag a card to arrange it — that's recorded, never read as meaning anything. click a card to jump to it.";
+  renderGraph(layoutCache());
+});
+
+restore();
+renderDoc();
+document.getElementById("hint").textContent =
+  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+</script>
+</body>
+</html>

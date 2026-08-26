@@ -104,6 +104,12 @@
   .panel .room{ height:2px; background:rgba(238,236,226,.14); margin-top:14px; }
   .panel .room i{ display:block; height:100%; background:var(--gold); width:100%; }
   .panel .hint{ color:var(--dim); font-size:11px; margin-top:10px; }
+  .panel .pool{ margin-bottom:16px; }
+  .panel .pool .hint{ margin:0 0 8px; }
+  .panel .pool button{ display:block; width:100%; text-align:left; font:13px/1.5 Georgia,serif;
+    color:var(--paper); background:rgba(238,236,226,.04); border:1px solid var(--line);
+    border-radius:3px; padding:8px 10px; margin-bottom:6px; cursor:pointer; }
+  .panel .pool button:hover{ border-color:var(--gold); }
   .shelf{ margin-top:32px; padding-top:18px; border-top:1px solid var(--line); }
   .shelf h2{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);
     font-weight:400; margin:0 0 10px; }
@@ -133,6 +139,7 @@
 </style>
 
 <div class="panel" id="wp">
+  <div class="pool" id="wpool" style="display:none;"></div>
   <textarea id="wt" spellcheck="false"></textarea>
   <div class="room"><i id="wr"></i></div>
   <div class="hint">ctrl/cmd + enter to keep it · escape to lay it aside, nothing kept</div>
@@ -215,12 +222,53 @@ addEventListener("keydown", function(e){
 /* THE EDGE'S OWN WRITE, OPENED — owns S.kept/S.keptTag, tags to this
    seam's own id. Same wrapper shape the retired file introduced 2026-08-21. */
 function openSeamWrite(seamId, after){
+  renderArrivedPool(seamId, after);
   openWrite(SEAM.WRITE_CAP, function(text){
     S.keptTag=SEAM.migrateKeptTags(S.kept,S.keptTag);
     SEAM.tagWritten(S.keptTag, seamId);
     S.kept=(S.kept||[]).concat([text]);
     save();
     if(after) after();
+  });
+}
+
+/* THE ARRIVED POOL, OFFERED — 2026-08-25, Kevin's mark: closing the gap
+   between tank.html's own daily writing and this level's write step, which
+   until now were two disconnected acts — a stone sent to the lake in tank
+   (a sentence marked "yes") never reached S.kept without being retyped here
+   from scratch. This offers each arrived line that already fits the level's
+   own cap as a direct pick, consuming it into S.kept exactly as a fresh
+   typed entry would. NOTHING NEW READS CONTENT: the only test is word count
+   (words(), the same structural measure this file already applies to the
+   write box itself), and which line to use — if any — stays the hand's own
+   click, the same law fraction/light already follow. Purely additive: the
+   blank write box stays exactly as it was, and remains the default with an
+   empty or fully-used pool. */
+function renderArrivedPool(seamId, after){
+  const pool=document.getElementById("wpool");
+  if(!pool) return;
+  pool.innerHTML="";
+  const eligible=(S.arrived||[]).map(function(t,i){ return {t:t,i:i}; })
+    .filter(function(x){ const n=words(x.t).length; return n>=1 && n<=SEAM.WRITE_CAP; });
+  if(!eligible.length){ pool.style.display="none"; return; }
+  pool.style.display="block";
+  const label=document.createElement("div"); label.className="hint";
+  label.textContent="already arrived from the daily water, and short enough for this level — use one as-is, or write fresh below";
+  pool.appendChild(label);
+  eligible.forEach(function(x){
+    const b=document.createElement("button");
+    b.type="button"; b.textContent=x.t;
+    b.addEventListener("click", function(){
+      S.arrived.splice(x.i,1);
+      S.keptTag=SEAM.migrateKeptTags(S.kept,S.keptTag);
+      SEAM.tagWritten(S.keptTag, seamId);
+      S.kept=(S.kept||[]).concat([x.t]);
+      save();
+      closeWrite();
+      pool.innerHTML=""; pool.style.display="none";
+      if(after) after();
+    });
+    pool.appendChild(b);
   });
 }
 
