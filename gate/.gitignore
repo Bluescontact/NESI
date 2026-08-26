@@ -1,0 +1,2 @@
+# single-user secret — never commit (fail-closed auth depends on it staying local)
+data/.gate_token

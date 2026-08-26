@@ -66,6 +66,20 @@ rhythm/.last_brief
 !/DECISIONS_OFFERED.jsonl
 !/.gitignore
 
+# The gate's own tool code, un-ignored 2026-08-26 (Kevin's mark: "carve out
+# gate.py + tools only"). `gate.py apply` — the delta-ingestion command this
+# session built — had no version history, same gap RETIRED.jsonl closed on
+# 2026-08-17. Narrow on purpose: the backend script, its sibling script, its
+# own nested .gitignore (protects data/.gate_token), and the README that
+# documents them. gate_data.json, THE_GATE.html, state_view.html, and every
+# other generated/felt-read file stay local and untracked, unchanged.
+!/gate/
+/gate/*
+!/gate/gate.py
+!/gate/update_state_view.py
+!/gate/README.md
+!/gate/.gitignore
+
 # Within nesi/: exclude the already-independently-gitted 3D tree, binary
 # exports, archival compost, and quarantine — none of these are "open
 # development" in the staged sense.
