@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Session Bridge HTML · format spec · portable to any model</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:20px;line-height:1.15;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:900px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:32px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:74ch} .lede{font-size:18px;color:var(--muted);max-width:68ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+.process{counter-reset:step;display:grid;gap:10px;max-width:820px} .process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px} .process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">Portable format spec</div><h1>SESSION<br>BRIDGE<br>HTML</h1><p>how to build this document shape · for any model reading this file</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>this file itself follows the format it describes<br><br><b>PURPOSE</b><br>hand to another AI so it can produce the same shape from its own material</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="structure" role="tab">Structure</button>
+    <button class="tabbtn" data-tab="tabs" role="tab">Standard tabs</button>
+    <button class="tabbtn" data-tab="visual" role="tab">Visual system</button>
+    <button class="tabbtn" data-tab="provenance" role="tab">Provenance tags</button>
+    <button class="tabbtn" data-tab="rules" role="tab">Governing rules</button>
+    <button class="tabbtn" data-tab="howto" role="tab">Build one</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">format-spec / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · portable</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this is</div>
+  <h2>A single-file HTML shape for carrying one working session's authority whole.</h2>
+  <p class="lede">Instead of writing a session's output as scattered files or a linear chat log, this format packs the whole session — the human's own words, what was inherited, what was derived, how it was checked, and how it connects to the surrounding project — into one self-contained, multi-tab, visually-navigable HTML file. Any model can read this document, learn the shape, and produce a new file in the same shape from its own session's material.</p>
+  <div class="seal">
+    <div><span>ORIGIN</span><b>named 2026-08-24, Kevin Mears</b></div>
+    <div><span>DEPENDENCIES</span><b>zero — no CDN, no network fonts, no external JS</b></div>
+    <div><span>REUSE MODEL</span><b>copy the tab structure, replace the content</b></div>
+    <div><span>WHY IT EXISTS</span><b>avoid reconstructing session context from scattered files</b></div>
+    <div><span>WHAT IT IS NOT</span><b>not a CMS, not a ranking tool, not a canon-declaring format</b></div>
+    <div><span>THEME</span><b>auto light/dark via prefers-color-scheme</b></div>
+  </div>
+  <div class="keyline">The core idea: <strong>one file = one session, fully legible on its own</strong>, with every claim inside it tagged for where it actually came from — verbatim user text, prior/inherited material, or new material derived this session — so a later reader never has to guess what's settled and what's proposed.</div>
+</section>
+
+<section class="panel" id="panel-structure" data-panel="structure">
+  <div class="eyebrow">Layout</div>
+  <h2>Sidebar + tabbed panels, all in one file.</h2>
+  <div class="card">
+    <h3>Left sidebar (fixed, ~260-270px, sticky)</h3>
+    <p>A brand block (small kicker label, title, one-line subtitle), a compact metadata box ("seal-mini") stating the no-network guarantee and any special notes, and a vertical list of tab buttons — one per section of the session.</p>
+  </div>
+  <div class="card">
+    <h3>Main area</h3>
+    <p>A slim sticky topbar (breadcrumb + status dot), then one <code>&lt;section class="panel"&gt;</code> per tab. Only one panel has class <code>active</code> at a time; a small JS click-handler toggles it and updates the matching tab button's <code>active</code> class.</p>
+  </div>
+  <div class="card">
+    <h3>Everything inline</h3>
+    <p>All CSS lives in one <code>&lt;style&gt;</code> block using CSS custom properties for color. All JS (tab switching, any diagram interaction) is one inline <code>&lt;script&gt;</code> at the end of <code>&lt;body&gt;</code>. No external stylesheets, fonts, or scripts — the file must open and work completely offline.</p>
+  </div>
+  <div class="code">&lt;div class="shell"&gt;
+  &lt;aside&gt;...brand + tab nav...&lt;/aside&gt;
+  &lt;main&gt;
+    &lt;div class="topbar"&gt;...&lt;/div&gt;
+    &lt;section class="panel active" data-panel="overview"&gt;...&lt;/section&gt;
+    &lt;section class="panel" data-panel="prompts"&gt;...&lt;/section&gt;
+    ...one section per tab...
+  &lt;/main&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  document.querySelectorAll('.tabbtn').forEach(btn =&gt;
+    btn.addEventListener('click', () =&gt; {
+      document.querySelectorAll('.tabbtn,.panel').forEach(el =&gt; el.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+    }));
+&lt;/script&gt;</div>
+</section>
+
+<section class="panel" id="panel-tabs" data-panel="tabs">
+  <div class="eyebrow">Recurring content</div>
+  <h2>The tab set that has repeated across every build so far.</h2>
+  <div class="process">
+    <article><h3>Overview / Bridge</h3><p>What the file is, a short metadata table, and (optional) an inline SVG diagram of how the pieces of this session relate to each other and to the wider project.</p></article>
+    <article><h3>Prompts</h3><p>The human's own messages, verbatim — typos and repetition kept, never paraphrased. Each block tagged <span class="tag verbatim">verbatim · user</span>.</p></article>
+    <article><h3>Gift 01, Gift 02, ...</h3><p>Each substantive piece of output this session produced, one per tab, with its own provenance tags on individual claims inside it.</p></article>
+    <article><h3>Process</h3><p>The actual steps taken to get from input to output — numbered, honest about dead ends, not a cleaned-up narrative.</p></article>
+    <article><h3>Lens / Sources</h3><p>What interpretive frame or prior material was drawn on, with collapsible (<code>&lt;details&gt;</code>) blocks holding the raw source text so a reader can check the quote against the source.</p></article>
+    <article><h3>Relationships / Routes</h3><p>How this session's output is proposed to connect to the rest of the project — each proposed connection tagged with a state: built, spec'd-not-built, dreamed, or open/no-route-yet.</p></article>
+  </div>
+  <p>This set is a starting menu, not a fixed schema — add or drop tabs to fit what the session actually contains. The only fixed rule is: <strong>Prompts stays verbatim, and every other tab stays traceable back to Prompts or to a named external source.</strong></p>
+</section>
+
+<section class="panel" id="panel-visual" data-panel="visual">
+  <div class="eyebrow">Styling</div>
+  <h2>A consistent, theme-aware, warm-neutral visual system.</h2>
+  <div class="card">
+    <h3>Color via CSS variables</h3>
+    <p>Define a full palette on <code>:root</code> (background, surface, ink, muted text, hairline, and 3-4 accent hues each with a "soft" background variant), then override the same variable names inside <code>@media(prefers-color-scheme:dark)</code>. Nothing hardcodes a color outside these tokens, so the whole document flips themes automatically.</p>
+  </div>
+  <div class="code">:root{
+  --bg:#f4f1ea; --surface:#fffdf8; --ink:#181815; --muted:#6a685f; --line:#d8d2c4;
+  --gold:#b28225; --gold-soft:#f1e5c9;
+  --blue:#436a77;  --blue-soft:#dfeaed;
+  --red:#924d43;   --red-soft:#f0dfdc;
+  --green:#496b55; --green-soft:#dfebe2;
+}
+@media(prefers-color-scheme:dark){ :root{ /* same names, dark values */ } }</div>
+  <div class="card">
+    <h3>Reused component classes</h3>
+    <p><code>.seal</code> — a bordered metadata grid. <code>.card</code> / <code>.route-card</code> — a bordered content block. <code>.keyline</code> — a gold-accented pull-quote/callout. <code>.code</code> / <code>.prompt</code> — monospace verbatim blocks. <code>.tag</code> — small pill labels for provenance. <code>.process</code> — numbered step cards. Optional inline SVG (<code>.mapbox</code>/<code>.mapnode</code>/<code>.wire</code>) for a relationship diagram with hover/click highlighting.</p>
+  </div>
+  <div class="card">
+    <h3>Print support</h3>
+    <p>A <code>@media print</code> block that hides the sidebar/topbar and forces every panel visible with a page break before each — so the same file can be printed or exported to PDF as a linear document.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-provenance" data-panel="provenance">
+  <div class="eyebrow">The one rule that matters most</div>
+  <h2>Tag every claim by where it actually came from.</h2>
+  <p class="lede">This is what keeps the format honest — without it, a multi-tab document with a diagram just looks authoritative. The tags force a reader (human or model) to see at a glance what is settled fact, what is quoted, and what is this session's own proposal.</p>
+  <table>
+    <tr><th>Tag</th><th>Meaning</th></tr>
+    <tr><td><span class="tag verbatim">verbatim</span></td><td>Exact quoted text from a named source — no paraphrase, no cleanup.</td></tr>
+    <tr><td><span class="tag marked">marked</span></td><td>A decision or state that a specific person actually approved/selected, not inferred.</td></tr>
+    <tr><td><span class="tag inherited">inherited</span></td><td>Material that existed before this session touched it — carried forward, not created here.</td></tr>
+    <tr><td><span class="tag instrumentfact">instrument fact</span></td><td>A fact produced by running a script/check/tool — reproducible, not asserted.</td></tr>
+    <tr><td><span class="tag sessionderived">session-derived</span></td><td>New reasoning or synthesis produced during this session — the part most likely to need checking later.</td></tr>
+    <tr><td><span class="tag state">state: built / spec'd / dreamed / open</span></td><td>For any proposed connection to the wider project — how real is this connection right now?</td></tr>
+  </table>
+</section>
+
+<section class="panel" id="panel-rules" data-panel="rules">
+  <div class="eyebrow">Constraints that make the format trustworthy</div>
+  <h2>What the file is not allowed to claim about itself.</h2>
+  <div class="card"><h3>No network, ever</h3><p>Every byte a reader needs must already be in the file: inline CSS, inline JS, no CDN script tags, no Google Fonts, no external images by URL. This is what makes it truly portable between models, machines, and time.</p></div>
+  <div class="card"><h3>It selects and arranges — it does not decide</h3><p>The document may quote, juxtapose, diagram, and tag. It should explicitly disclaim any authority to canonize a claim, rank a person's choices, or declare a project state settled. State that limit somewhere visible (an overview-tab line works well).</p></div>
+  <div class="card"><h3>No silent smoothing</h3><p>Typos and rough phrasing in verbatim quotes stay as typed. Dead ends and mismatches found during the session get their own visible callout (a red/warning-colored block) rather than being edited away.</p></div>
+  <div class="card"><h3>Reusable, not one-off</h3><p>End the file with an explicit note that a later session may copy this tab structure and swap in its own content — that's what makes the shape a format instead of a one-time document.</p></div>
+</section>
+
+<section class="panel" id="panel-howto" data-panel="howto">
+  <div class="eyebrow">For the model reading this</div>
+  <h2>To build one of these from your own session, do this.</h2>
+  <div class="process">
+    <article><h3>1 · Pick the tabs</h3><p>Start from the standard set (Overview, Prompts, Gift(s), Process, Lens/Sources, Relationships/Routes). Drop or rename any that don't fit; add tabs for content types unique to your session.</p></article>
+    <article><h3>2 · Copy the shell</h3><p>Reuse the sidebar + topbar + tabbed-panels skeleton and the tab-switch script shown in the Structure tab — the mechanics don't need reinventing.</p></article>
+    <article><h3>3 · Set your own palette</h3><p>Keep the token structure (bg/surface/ink/muted/line + a few accents, each with a soft variant, light + dark) but the actual hex values are yours to choose.</p></article>
+    <article><h3>4 · Fill Prompts first, verbatim</h3><p>Paste the human's actual messages unedited. This tab is the anchor everything else in the file should trace back to.</p></article>
+    <article><h3>5 · Tag as you write</h3><p>As each other tab is filled in, mark every non-trivial claim with a provenance tag from the Provenance tab. If you can't tell which tag applies, that's a sign the claim needs to be checked before it's asserted.</p></article>
+    <article><h3>6 · State the limit</h3><p>Somewhere visible, say plainly what this file is not authorized to do (canonize, rank, declare final state) — don't let the polished look imply more authority than the content actually has.</p></article>
+    <article><h3>7 · Verify it's actually self-contained</h3><p>Open the finished file with no network connection. If anything fails to load or render, something external leaked in — fix it before calling the file done.</p></article>
+  </div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

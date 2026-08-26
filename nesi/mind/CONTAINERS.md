@@ -21,7 +21,7 @@ Every container in the system is exactly one of four kinds. The kinds are distin
 | **MATERIAL** | holds state · things move **in and out** | the six states below | `_INTAKE/` · `patterns/` · `membrane/release_packets/` |
 | **EVENT** | append-only · nothing ever moves or is edited | history | `MARKS_LOG.jsonl` · `OPEN_GATES.jsonl` · `membrane/transition_records/` · `membrane/converger_passes/` · `membrane/VIOLATION_REGISTER.md` |
 | **SURFACE** | derived · regenerable · disposable | **nothing of its own** | `_widgets/` · `CROSSING_LOG.html` · `state_view.html` · `THE_TERRAIN.html` |
-| **ORGAN** | behavior · acts on the other three | code and stance | `tools/` · `nesi/bench/` · `nesi/mind/` · `nesi/world3d/` |
+| **ORGAN** | behavior · acts on the other three | code and stance | `tools/` · `nesi/bench/` · `nesi/mind/` · `nesi/game2d/` |
 
 **The movement law, stated once:**
 
