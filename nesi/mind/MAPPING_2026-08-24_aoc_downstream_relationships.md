@@ -85,6 +85,14 @@ Fuller-shaped move: make the missing axis visible by building it, not by describ
    either lens. This is the one place in the material that could take a downstream
    user's contribution into "canon" without a visible mechanism showing the fold
    happened — the floor check both lenses ran independently.
+   **Partially closed, same day:** `tools/field_returns.py` + `FIELD_RETURNS.jsonl`
+   now exist — an append-only ledger of territory returns, marked only by Kevin
+   (`STRENGTHENS`/`NARROWS`/`COMPOSTS`), never writing `patterns/` directly (a fold
+   still crosses the membrane through the membrane-controller, same as any other
+   library change). `the-field.html` and `the-engine.html` cite it and name the
+   count honestly — **0 recorded** — rather than smoothing the gap. The mechanism
+   is real now; the fork itself stays open, because a mechanism with nothing in it
+   yet is not the same as a loop that has closed even once.
 2. **Did the 2026-08-22 positive-framing resynthesis pass on osg-v6 ever cross from
    lint into smoothing a real unclosed gap** (rather than collapsing genuinely
    redundant negative clauses)? Unverified which happened, page by page.

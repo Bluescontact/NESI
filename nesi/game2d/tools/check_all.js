@@ -99,6 +99,11 @@ const NODE = [
      (THE_BUILD_SHAPE.md, THE_KIT.md, THE_HAND_FROM_THE_COMMONS.md) was
      standing law with nothing checking it. Now something does. */
   ["zero_dependencies_check", "no package.json, no node_modules, no remote script/fetch/import — a fact, not a claim"],
+  /* REGISTERED 2026-08-25 on Kevin's mark, "build all three," closing a gap a
+     reconciliation pass named: "only Kevin's click marks land in a marks
+     ledger" was checked once by hand and true, with nothing keeping it true
+     as tools accumulate. Now something does. */
+  ["marks_guard_check", "only a hand's click writes to a marks ledger — a fact, not a claim"],
 ];
 
 /* assertion_audit.py and its own upstream, seats.js — RETIRED 2026-08-21,
