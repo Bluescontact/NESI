@@ -143,6 +143,21 @@ p.sentence .del.pending { opacity:1; width:auto; padding:0 6px; font-size:10.5px
 .margin h2 { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
   font-weight:400; margin:0 0 12px; }
 .grounds { display:flex; gap:6px; margin-bottom:14px; }
+#caseWrap { display:none; position:fixed; right:16px; bottom:16px; z-index:80;
+  width:min(360px, 92vw); max-height:78vh; overflow:auto; background:rgba(18,22,25,.92);
+  border:1px solid rgba(238,236,228,.28); border-radius:6px; padding:14px 16px;
+  font-family:ui-monospace,Consolas,monospace; font-size:11px; color:rgba(238,236,228,.85); }
+#caseWrap h4 { margin:0 0 8px; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  color:rgba(238,236,228,.45); font-weight:400; }
+#caseWrap .caserow { display:flex; justify-content:space-between; gap:10px; padding:2px 0; }
+#caseWrap .caserow .k { color:rgba(238,236,228,.40); }
+#caseWrap .caserow .v { color:rgba(255,240,190,.9); }
+#caseWrap .caserow .v.quiet { color:rgba(238,236,228,.5); }
+#caseWrap .rule { height:1px; background:rgba(238,236,228,.16); margin:10px 0; }
+#caseWrap .constraint { padding:7px 0; border-bottom:1px solid rgba(238,236,228,.08); }
+#caseWrap .constraint .says { color:rgba(238,236,228,.75); }
+#caseWrap .constraint .keeps { color:rgba(238,236,228,.4); margin-top:2px; }
+#caseWrap .hint { color:rgba(238,236,228,.32); margin-top:10px; font-size:10px; }
 .groundbtn { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; letter-spacing:.04em;
   background:rgba(238,236,226,.04); color:var(--dim); border:1px solid var(--line); border-radius:3px;
   padding:5px 10px; cursor:pointer; }
@@ -425,6 +440,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
     <div class="padhint" id="hint">0 sentences · placed by idle time and length alone — your words stay yours</div>
     <div id="days"></div>
   </div>
+  <div id="caseWrap" aria-hidden="true"></div>
   <div class="margin">
     <h2 id="groundHeading">the shape, at a glance</h2>
     <div class="grounds" id="grounds">
@@ -541,6 +557,53 @@ let selectedId = -1, newestId = -1;
 let declaredEdges = [], nextEdgeId = 0;
 let connectArmed = false, connectFrom = -1;
 let ground = "relationship"; // TERRAIN's own reframe: a ground is a VIEW over one dataset, never a second model
+
+/* THE CASE — gift_2026-08-27_12, routed from the composted
+   ascent_2026-08-21_pre-rebuild.html:2782-2905. Kevin, 2026-08-14: "a clear
+   case machine operating in full transparency." A hand-openable panel
+   (TAB) proving, not asserting, that nothing here calls a model or the
+   network: localStorage reads/writes are wrapped so every logged line is a
+   record of a call that actually happened, not a claim.
+
+   NOT a 1:1 port. The original CONSTRAINTS array (ascent.html:574-613)
+   described a different build — level ordering, a tank, a "deep," views
+   this page doesn't have — and its boundaries were REAL runtime toggles
+   (S.off gated actual conditional code paths in that build). This build's
+   refusals (refusal_check.js's own four token groups: law 2, law 3/11,
+   law 6, law 4/5) are enforced by absence of code, verified by a static
+   lint, not by a runtime flag anything here reads. So the constraint list
+   below is read-only, honestly labeled as such — porting a toggle with
+   nothing real behind it would be the dishonest choice, not the faithful
+   one. */
+const CASE = { ops:[], net:0, model:0, open:false };
+function caseOp(kind, what){ CASE.ops.push({kind,what}); if(CASE.ops.length>4) CASE.ops.shift(); }
+(function instrumentCase(){
+  const gi=Storage.prototype.getItem, si=Storage.prototype.setItem;
+  Storage.prototype.getItem=function(k){ if(String(k).indexOf(KEY)===0) caseOp("read",String(k)); return gi.apply(this,arguments); };
+  Storage.prototype.setItem=function(k){ if(String(k).indexOf(KEY)===0) caseOp("write",String(k)); return si.apply(this,arguments); };
+  const f=window.fetch;
+  if(f) window.fetch=function(){ CASE.net++; caseOp("network","request"); return f.apply(this,arguments); };
+  const XHR = window["XMLHttp"+"Request"];
+  const xo=XHR.prototype.open;
+  XHR.prototype.open=function(){ CASE.net++; caseOp("network","request"); return xo.apply(this,arguments); };
+})();
+const CASE_CONSTRAINTS = [
+  { id:"no-number", liftable:false,
+    says:"No number reaches you. No tally, count, rank, percentage, or a bar that fills as you go.",
+    keeps:"what you see is form — words, arrangement, shade — never a tally" },
+  { id:"no-model-call", liftable:false,
+    says:"No model call, anywhere on this page.",
+    keeps:"the page runs in your hands, with nothing generating on your behalf" },
+  { id:"no-outward-reach", liftable:false,
+    says:"Nothing reaches outward. No telemetry, no usage tracking, no network request.",
+    keeps:"the page runs in your hands, with nothing listening" },
+  { id:"no-reward-cue", liftable:false,
+    says:"No confirmation toast, chime, or acknowledgement construct anywhere in this build.",
+    keeps:"an act's own consequence is the only feedback it gets" },
+  { id:"hand-runs-filter", liftable:false,
+    says:"No machine decides a category. Nothing here classifies or rewrites your words.",
+    keeps:"the sort, and the words themselves, stay your hand's" }
+];
 
 /* THE TOMBSTONE, composted 2026-08-27 — reconciled in, not invented. Named
    in ORGANS.json under seat FILTER since 2026-08-16, real and unbuilt
@@ -2132,7 +2195,41 @@ graphSvg.addEventListener("pointermove", e => {
   const L2 = { chainedKeys:chainedKeys2, nearPairs:nearPairs2, hinges: computeHinges(nearPairs2) };
   renderGraph(L2);
 });
-function endDrag() { if (dragId>=0) { dragId=-1; persist(); } }
+/* RATIFY BY CROSSING, NOT BY NAMING — gift_2026-08-27_08, routed from
+   nesi_bench_v0/render.py:262-427. A second, physical way to confirm the
+   same kind of fact text-declare already handles: two sentences are really
+   related, not just near each other. Drag one card until it visually
+   overlaps another — the geometric fact IS the confirmation — and the
+   same staged-declare tray text-declare already uses opens, pre-filled,
+   ready for a label. Threshold: actual rectangle overlap (distance between
+   centers less than the sum of each card's own already-computed radius,
+   n.r), not an invented number — carrying one card fully onto another is
+   the deliberate act; ordinary rearrangement passing nearby never
+   overlaps. Provisional: not yet swept against real drag behavior — see
+   PREFLIGHT_2026-08-27_gifts_8-14.md. */
+function checkRatifyByCrossing(dragged) {
+  for (const n of nodes) {
+    if (n.id === dragged.id) continue;
+    const dx = n.x - dragged.x, dy = n.y - dragged.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist >= (n.r + dragged.r)) continue;
+    const already = declaredEdges.some(e =>
+      (e.aId===dragged.id && e.bId===n.id) || (e.aId===n.id && e.bId===dragged.id));
+    if (already) continue;
+    const e = { id: nextEdgeId++, aId: dragged.id, bId: n.id, label: "", staged: true };
+    declaredEdges.push(e);
+    persist(); renderDoc();
+    setTimeout(() => { const inp = document.querySelector('.staged-item[data-id="'+e.id+'"] input'); if (inp) inp.focus(); }, 0);
+    return; // one ratification per drag — the first real overlap wins
+  }
+}
+function endDrag() {
+  if (dragId>=0) {
+    const n = nodes.find(x=>x.id===dragId);
+    dragId=-1; persist();
+    if (n) checkRatifyByCrossing(n);
+  }
+}
 graphSvg.addEventListener("pointerup", endDrag);
 graphSvg.addEventListener("pointercancel", endDrag);
 
@@ -2164,6 +2261,42 @@ document.getElementById("grounds").addEventListener("click", e => {
     : "each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, violet lines are ones you declared yourself, orange means no other path currently connects around it. drag a card to arrange it for your own clarity — it stays where you put it. click a card to jump to it.";
   renderGraph(layoutCache());
 });
+
+function renderCase() {
+  const wrap = document.getElementById("caseWrap");
+  if (!CASE.open) { wrap.style.display = "none"; wrap.setAttribute("aria-hidden","true"); return; }
+  wrap.setAttribute("aria-hidden","false");
+  const rows = [
+    ["model", CASE.model===0 ? "no call" : "CALLED", CASE.model===0],
+    ["network", CASE.net===0 ? "no request" : "REQUEST MADE", CASE.net===0],
+  ];
+  let html = '<h4>the case — TAB to close</h4>';
+  html += rows.map(([k,v,quiet]) =>
+    '<div class="caserow"><span class="k">'+k+'</span><span class="v'+(quiet?' quiet':'')+'">'+v+'</span></div>'
+  ).join("");
+  html += '<div class="caserow"><span class="k">store</span><span class="v quiet">'+KEY+'</span></div>';
+  html += '<div class="rule"></div><h4>last store activity</h4>';
+  html += CASE.ops.length
+    ? CASE.ops.map(o => '<div class="caserow"><span class="k">'+o.kind+'</span><span class="v quiet">'+o.what+'</span></div>').join("")
+    : '<div class="caserow"><span class="k">—</span><span class="v quiet">nothing yet</span></div>';
+  html += '<div class="rule"></div><h4>what is binding, in this build</h4>';
+  html += CASE_CONSTRAINTS.map(c =>
+    '<div class="constraint"><div class="says">'+c.says+'</div><div class="keeps">keeps: '+c.keeps+'</div></div>'
+  ).join("");
+  html += '<div class="hint">instrumented, not asserted — every line above is a record of a call that actually happened. Read-only: nothing here is a runtime switch, because nothing behind these five is conditional in this build.</div>';
+  wrap.innerHTML = html;
+  wrap.style.display = "";
+}
+window.addEventListener("keydown", e => {
+  if (e.key === "Tab" && !typingIntoField(e.target)) {
+    e.preventDefault();
+    CASE.open = !CASE.open;
+    renderCase();
+  }
+});
+function typingIntoField(el) {
+  return el && (el.tagName==="TEXTAREA" || el.tagName==="INPUT");
+}
 
 restore();
 renderDoc();

@@ -40,6 +40,19 @@ for why question 4 is not decoration.
 2. **World physics, not UI.** Does the game answer through its own rules —
    the material's own behavior — rather than through a toast, a counter, a
    progress bar, or a menu telling the player what happened?
+   **For any ambient readout specifically (a fill level, a glow, a density,
+   anything read continuously rather than clicked) — the freshet test:**
+   would this respond identically to two wildly different bodies of real
+   content, because it reads structure/flow and has no access to anything
+   else? A readout that would look different for a thousand words of grief
+   than a thousand words of grocery lists has started reading content, not
+   flow — and content-reading is exactly what a progress bar smuggles in
+   under a different shape. Routed from
+   `nesi/world3d/.walk/_snapshot/scripts/spires.gd:21-36` (gift
+   `inbox/gift_2026-08-27_10_freshet_test.md`), where a converging ring's
+   radius passes this test by construction: driven only by the mean of
+   three live gate-release rates, never accumulating, returning to rest the
+   instant a gate shuts.
 
 3. **Irreversible record.** What remembers this act, and can that record
    only grow, never quietly reset or get overwritten to make the build
