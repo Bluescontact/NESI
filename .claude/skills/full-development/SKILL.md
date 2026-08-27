@@ -18,7 +18,8 @@ because a defect found after the polish costs the polish.
 
 - **Target** (required): path to the draft. Snapshot it before touching it.
 - **Corpus** (optional): the body of work the piece draws on, if any.
-- **Audience** (optional): who it is for. Changes converge, never audit.
+- **Audience** (optional): who it is for. Changes converge only — audit
+  holds fixed regardless of audience.
 
 ## The stages
 

@@ -50,8 +50,8 @@ question. You may never answer it for him.** *(THE FULL CIRCLE, seam S2,
 - **Onboarding is the first player's whole experience.** The distance from
   opening the file to the first meaningful consequence is the game's real
   front door. Count it in seconds and gestures, not features.
-- **Persistence is trust.** The save system is a promise; quitting must never
-  betray (law 12 is the field's hardest-won lesson, stated as law).
+- **Persistence is trust.** The save system is a promise; quitting must always
+  honor it (law 12 is the field's hardest-won lesson, stated as law).
 - **Playtesting is the only truth.** No design survives contact with a hand.
   Where no hand has walked, say WHERE the unwalked feel-risk is —
   drag-thresholds, hit-targets, timing windows — and rank them.
@@ -106,8 +106,8 @@ walked before shipped.*
 
 ### NODE 2 — WATER · many parts, one behaviour, commanded only through constraints
 
-- **The inversion, and it is the whole node:** the player never commands the
-  water. They edit the *constraints* — a gate, a channel, a wall — and the
+- **The inversion, and it is the whole node:** the player commands the
+  *constraints* — a gate, a channel, a wall — not the water itself; the
   physics finds the consequence. This is why water feels alive on no AI budget.
   *In NESI this is exactly what a station should be: the hand sets the angle,
   the aim, the pull; the material answers.*

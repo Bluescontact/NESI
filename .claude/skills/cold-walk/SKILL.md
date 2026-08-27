@@ -5,9 +5,9 @@ description: Verify a new or changed player-facing surface by actually walking i
 
 # Cold walk
 
-A build session grading its own build is not a verdict. It is the same defect
-this method was already demoted for once, in the file this skill is drawn
-from: *"the instrument grading the stranger-gate was written by the builder,
+A build session grading its own build produces its own opinion. That is the
+same defect this method was already demoted for once, in the file this skill
+is drawn from: *"the instrument grading the stranger-gate was written by the builder,
 including a carve-out the counsel itself ruled on. An author cannot be their
 own stranger."* No amount of care by the authoring session fixes this — it is
 a structural fact about who is asking the question, not a quality problem
@@ -46,8 +46,8 @@ right code path.
 
 ### 4. Run the structural pre-check
 
-This is necessary, never sufficient — it catches geometry, not experience.
-Adapt these to the surface at hand (they're drawn from `cold_walk.js`'s
+This catches geometry; the felt experience of a walk is judged by the human
+handoff in step 6. Adapt these to the surface at hand (they're drawn from `cold_walk.js`'s
 C1–C8):
 
 - Does the page/screen fit, or does it genuinely scroll — not overflow with
@@ -64,9 +64,9 @@ C1–C8):
 - Is the first act's consequence visible *outside* the act's own surface, at
   the moment it lands — not only inside the box the hand was typing into?
 
-A pre-check that passes all of these still covers geometry only, not what the
-session was like. Record it as PRE-CHECK PASSES / FAILS — that's a separate
-finding from WALKABLE.
+A pre-check that passes all of these still covers geometry only — what the
+session was actually like is judged separately, by the human handoff. Record
+it as PRE-CHECK PASSES / FAILS — that's a separate finding from WALKABLE.
 
 ### 5. Record the transcript verbatim
 

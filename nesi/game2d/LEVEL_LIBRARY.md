@@ -54,8 +54,9 @@ OPENS        what becomes reachable once this level is closed
 
 ## THE PACING PROBLEM, NAMED BEFORE THE FIRST FOUR
 
-**The current built mechanic does not fill 5–10 minutes on its own, and this
-library can't pretend otherwise.** A single level, mechanically, is: write
+**The current built mechanic totals under three minutes on its own, one
+sitting, one write — a real gap against the 5–10 minute target, named here so
+it gets closed on purpose rather than assumed away.** A single level, mechanically, is: write
 one entry (RAIN, 60–90s per `THE_GAME.md`'s own core-loop timing), pick a
 fraction (a few seconds), aim a window (a few seconds), hold the sill (a
 fixed physical reach, well under a minute). That's under three minutes even

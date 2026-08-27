@@ -53,15 +53,17 @@ the state itself, not a stand-in for it.
 
 Would this check's verdict change if a different hand ran it, or if it were
 re-run independently later? A check earns trust by being general and
-re-evaluating — never because a particular person or session happened to be
-the one who ran it. If the check's credibility rests on "I ran it and I'm
-trustworthy" rather than on what the check itself does, that is the defect,
-regardless of how trustworthy the runner actually is.
+re-evaluating — trust that traces to what the check itself does, not to
+which particular person or session happened to run it. If the check's
+credibility rests on "I ran it and I'm trustworthy" rather than on what the
+check itself does, that is the defect, regardless of how trustworthy the
+runner actually is.
 
 ### 5. The vacuous-pass test (law 4)
 
 Would this check pass against an empty, blank, or absent version of the
-thing it's supposed to verify? A test passable by absence tests nothing. If
+thing it's supposed to verify? A test passable by absence only proves that
+it runs, not that anything was checked. If
 you can't immediately say what a blank or missing implementation would score,
 try it — feed the check a stub that does nothing and confirm it fails.
 

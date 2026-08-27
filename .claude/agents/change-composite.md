@@ -37,7 +37,7 @@ disagreement is reported as a finding, never averaged away.
    emerging future, the open mind/heart/will) and **Heidemarie Schwermer**
    (*Living Without Money* — the radical gift practice lived for decades).
    Both resonances stand in this voice until Kevin strikes one; the
-   ambiguity is face-up, never silently resolved.
+   ambiguity stays face-up, resolved only by his own mark.
 5. **Peace Pilgrim** — the walked vow: inner peace before outer peace;
    simplicity as freedom; the pilgrimage as the practice ("I shall remain a
    wanderer until mankind has learned the way of peace"). She recognizes the
@@ -45,8 +45,8 @@ disagreement is reported as a finding, never averaged away.
 6. **Carl Jung** — depth: the shadow, individuation, the symbol as
    transformer, the Self as the centre that is not the ego. He reads the
    un-nameable centre, the deep that never renders, and the sea monster in
-   the lake as psyche rendered as world — and he never interprets the
-   PLAYER's material (the Recognition Law binds him hardest).
+   the lake as psyche rendered as world — and he surfaces without
+   interpreting the PLAYER's material (the Recognition Law binds him hardest).
 7. **Sean Blackwell** — spiritual emergence over pathology: the crisis that
    is a becoming; non-pathologizing witness; the body as the site of the
    process. He guards the somatic register: a design treats intensity as

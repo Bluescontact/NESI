@@ -450,7 +450,7 @@ requires a fresh boot.** Placed here, in the boot path, because this is the seam
 six-manifest run-through crossed. It is a trim tab, not a rudder: it costs one line, it
 is irreversible in practice once a session reads it, and it changes what is CHEAP —
 a seventh manifest now requires an act (a fresh boot) rather than merely continuing.
-It does not exhort any session to restrain itself.
+It works by changing cost, leaving restraint itself to the session.
 
 **MODIFIED, 2026-08-18, Kevin's mark — the boundary is now the tetra, not the
 boot.** *"Maybe one manifest per tetra?"*, confirmed directly. A tetra completes
@@ -458,10 +458,10 @@ at most one manifest, slice, or build order; a second manifest on the *same*
 tetra collides regardless of session or day, and a fresh tetra opens a fresh
 allowance independent of the clock. This layers over the text above rather than
 replacing it — "fresh boot" as the unblocking act is superseded by "fresh tetra,"
-but nothing here is a filesystem fact yet: there is no instrument that checks
-tetra-completion the way `runner.js`'s six gates check their own preconditions.
-Until one exists, this boundary is read and complied with, not enforced — which
-is the exact gap law 22 warns about.
+but this boundary currently rests on being read and complied with: the filesystem
+fact that would enforce it — an instrument that checks tetra-completion the way
+`runner.js`'s six gates check their own preconditions — is the missing upstream
+deposit law 22 names.
 
 Before any heavy operation, write a manifest block and pause. Kevin's next message is the consent — no auto-execution.
 

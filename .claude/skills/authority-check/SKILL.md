@@ -44,10 +44,9 @@ quietly win.
 
 ### 4. If the session did make a call, tag it honestly
 
-Not every session-made note is a violation — plenty of judgment calls
-legitimately belong to the session (which approach to try first, how to
-phrase something, what order to do steps in). The failure is presenting a
-session's own call *as if it were ratified*. Any log entry, mark, or status
+Plenty of judgment calls legitimately belong to the session (which approach
+to try first, how to phrase something, what order to do steps in). The
+failure is presenting a session's own call *as if it were ratified*. Any log entry, mark, or status
 line that records something the session decided (not Kevin) should say so
 explicitly — this corpus's own convention is `"source": "session"` in
 `MARKS_LOG.jsonl`, kept distinct from an actual mark of Kevin's, so a future

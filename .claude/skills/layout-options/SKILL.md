@@ -97,13 +97,13 @@ spire whose floors are a gate-graph, standing over a hub."* The finding is
 usually which shape dominates and which is layered under it, not one label.
 
 **A tiled row of boxes is a chain rendering.** It's honest for a single
-aisle or a fixed sequence. It misrepresents a hub (nothing in a row shows one
-place accumulating what happened at the others) and it flattens a spire
-(front-to-rear says nothing about what's stacked above what — the bus
-draft's own open question about headroom for a shower stall was a spire
-question a plan-view row can't answer). Match the rendering language in step
-4 to what these five questions actually found, not to whichever tool is
-already open.
+aisle or a fixed sequence. A hub needs a spoke diagram to show one place
+accumulating what happened at the others — a row has no place for that
+accumulation to register. A spire needs a vertical stack to carry what's
+stacked above what — the bus draft's own open question about headroom for a
+shower stall was a spire question only a stacked rendering can answer. Match
+the rendering language in step 4 to what these five questions actually
+found, not to whichever tool is already open.
 
 ### 4. Render two or three genuinely different options
 

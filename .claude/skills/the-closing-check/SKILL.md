@@ -11,8 +11,8 @@ that file is the source, this skill is a portable copy for triggering by name
 from a session or agent that isn't the game-craft lens itself. If the two
 ever disagree, the agent file is the one to trust and this file is stale.
 
-A mechanic that has been reasoned about and never checked against this is a
-spec wearing the clothes of a build. This corpus paid for that distinction
+A mechanic earns build status by being checked against this; reasoned about
+alone, it stays a spec wearing the clothes of a build. This corpus paid for that distinction
 more than once: an unreachable beacon sited behind a planet, a knife-edge
 target inside its own miss-radius, a mirror range nobody re-checked after the
 geometry moved, an opening frame that read as intended in the plan and
@@ -59,8 +59,8 @@ for why question 4 is not decoration.
 
 **A weak or missing answer is the finding.** Answer once, from the design as
 it stands — going back to strengthen the mechanic so the answer reads better
-reorders cause and effect and produces an honest-looking checklist over a
-decision that was never actually tested by it. Report the actual answer,
+reorders cause and effect, producing an honest-looking checklist over a
+decision this check only appears to have tested. Report the actual answer,
 including "no" and "none," and stop there. A weak answer on question 4 or 5
 stays Kevin's fork, named and held open — the session that wants to keep
 building doesn't get to default it.
