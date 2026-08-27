@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 Relationships</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.18;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:960px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block}
+h2{font-size:28px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:16px} p{max-width:78ch} .lede{font-size:17px;color:var(--muted);max-width:70ch;margin-bottom:26px}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:16px 18px;margin-bottom:12px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:20px 0;padding:15px 18px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:15px;max-width:80ch}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0} th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.pill{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:999px;text-transform:uppercase}
+.pill.closed{background:var(--green-soft);color:var(--green)} .pill.open{background:var(--gold-soft);color:var(--gold)} .pill.kevin{background:var(--blue-soft);color:var(--blue)} .pill.build{background:var(--red-soft);color:var(--red)}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto} .tabs{display:flex;overflow:auto} .panel{padding:30px 20px 60px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · swarm pass</div><h1>RELATIONSHIPS<br>&amp; ROUTING</h1><p>the 24-edge cross-map, built after all 24 were verified</p></div>
+  <div class="seal-mini"><b>BUILT</b> 2026-08-27, on Kevin's ask: "route gifts to the gaps held open, map the relationships between the 24"<br><br><b>METHOD</b> six parallel discovery agents, one per existing build batch, each reading its 4 files plus verifying real links to the other 20</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="resolved" role="tab">Newly Resolved</button>
+    <button class="tabbtn" data-tab="map" role="tab">Relationship Map</button>
+    <button class="tabbtn" data-tab="routing" role="tab">Gap Routing Table</button>
+    <button class="tabbtn" data-tab="open" role="tab">What Stays Open</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / relationships / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this document is</div>
+  <h2>The 24 edges, read against each other.</h2>
+  <p class="lede">Each of the 24 VE24 files was built and verified in isolation, one edge at a time. This pass reads them as a set: which findings corroborate, which depend on each other, which converge on the same underlying fact from different angles, and which gaps — held open in one file — turn out to already be closed by a sibling. Nothing here overrides any of the 24 files' own findings; where this document adds something, the source file gets the credit and the citation.</p>
+  <div class="keyline">Two things were genuinely unresolved <em>anywhere</em> in the 24 files until this pass ran them against each other: whether two independently-discovered "twelve laws" citation trails (edge 1, edge 3) were the same historical system, and whether <code>tools/boot_hook.py</code> collides in name only with root <code>CLAUDE.md</code>'s "THE BOOT PATH" section. Both are now resolved — see Newly Resolved.</div>
+</section>
+
+<section class="panel" id="panel-resolved" data-panel="resolved">
+  <div class="eyebrow">Questions no single edge could answer alone</div>
+  <h2>Two findings this swarm pass itself produced.</h2>
+
+  <div class="card">
+    <h3>1 · The two "twelve laws" trails are the same system</h3>
+    <p>Edge 1 (Laws↔Lenses) traced <code>nesi.md</code>'s stale "Law 4" citation three hops back to the suspended vendor <code>~/.claude/CLAUDE.md</code>'s former twelve-laws section. Edge 3 (Laws↔game2d build) independently traced 8 of 10 law-citations in the live build's own code to a system <code>refusal_check.js:8</code> names as "PROTOCOLS.md's twelve laws." Neither edge checked whether these were the same system. They are: <code>nesi/mind/PROTOCOLS.md:3</code> states directly — "the NESI governing brief (the world, the twelve laws, the verification bar, the slice rule) now lives beneath the pointer" in the vendor <code>CLAUDE.md</code>, per a 2026-08-07 mark. Read against the vendor backup's actual "Laws that break the build if forgotten" section (lines 117–147, all twelve laws present), every one of <code>refusal_check.js</code>'s named laws (2, 3, 4/5, 6, 11) matches word-for-word. <b>One corpus-wide numbering system, referenced by two different pointer-names (the vendor file directly, or "PROTOCOLS.md's twelve laws" once removed) because the content physically moved in 2026-08-07 while PROTOCOLS.md kept conceptual ownership of it.</b></p>
+  </div>
+
+  <div class="card">
+    <h3>2 · <code>tools/boot_hook.py</code> is not a naming collision with CLAUDE.md's "THE BOOT PATH"</h3>
+    <p>Edge 22 (Tools↔Library) flagged this as an unread, unresolved possible collision. Read directly: <code>tools/boot_hook.py</code>'s own header states its purpose exactly — "CLAUDE.md routes LEARNED.md by asking a session to read it, which leaves the reading to judgement. This hook reads the file and puts the laws in context before the session's first thought, every time." <b>Not a collision — this is the filesystem-fact mechanism implementing what CLAUDE.md's "THE BOOT PATH" section states in prose.</b> One system, two layers (instruction and enforcement), same name for a reason.</p>
+  </div>
+
+  <div class="card">
+    <h3>3 · Cold-walk is structurally disqualified for closing edge 17's gap — not merely unrun</h3>
+    <p>Edge 17 names a gap: no lens has cold-walked the post-2026-08-26 entry chain. Discovery confirmed <code>.claude/skills/cold-walk/SKILL.md</code>'s own rule: "an author cannot be their own stranger... a second read run through this same tool ecosystem — another agent call, another session, under whatever name — is not independent verification." This session built the entire VE24 project and is deeply embedded in this corpus's own editing — it cannot issue a WALKABLE verdict here, only an UNWITNESSED one at best. <b>The honest route is: hand this specific gap to a genuinely independent party, not run cold-walk from inside this session.</b></p>
+  </div>
+</section>
+
+<section class="panel" id="panel-map" data-panel="map">
+  <div class="eyebrow">The real graph</div>
+  <h2>Verified edge-to-edge relationships (not guessed from titles).</h2>
+  <p class="lede">Every row below was confirmed by an agent actually reading both files, not inferred from the one-line summaries. "Depends-on" means one edge explicitly cites and reuses another's finding rather than re-deriving it. "Corroborates" means two edges independently arrived at the same fact from different angles. "Contradicts" means a real, uncorrected tension exists between two edges' published text.</p>
+
+  <table>
+    <tr><th>Relationship</th><th>Edges</th><th>What connects them</th></tr>
+    <tr><td>Depends-on</td><td>9 → 21</td><td>edge 9's instrument-count discrepancy is fully resolved by edge 21's reconciliation; edge 9's text doesn't cite it yet</td></tr>
+    <tr><td>Depends-on</td><td>13 → 21</td><td>same instrument-count discrepancy, same open citation gap</td></tr>
+    <tr><td>Depends-on</td><td>13 → 15</td><td>edge 13's "nesi_bench_v0 gate/ledger disposition unconfirmed" is fully resolved by edge 15's direct read (dormant, unrelated pywebview prototype)</td></tr>
+    <tr><td>Depends-on</td><td>14 → 18</td><td>edge 14's unglossed "six parallel judges" phrase — edge 18 is the edge that actually investigated this identity question</td></tr>
+    <tr><td>Depends-on</td><td>18 ← 1, 7, 19</td><td>edge 18 explicitly inherits edge 1's lens-boot-behavior baseline, edge 7's K-census, and corroborates via edge 19's library_lens.js ROOTS-array finding</td></tr>
+    <tr><td>Depends-on</td><td>19 ↔ 23</td><td>the two edges check overlapping gift-card citations (6, 7 shared; 5, 8 unique to 23) — together they've now verified cards 5, 6, 7, 8 of 14, narrowing the real gap to 2, 4, 9(partial), 10, 11, 12(partial), 13, 14</td></tr>
+    <tr><td>Depends-on</td><td>15, 22 → 7</td><td>both edges explicitly cite edge 7's K-census (45 dirs, ~140 files) as canonical rather than re-deriving it</td></tr>
+    <tr><td>Depends-on</td><td>24 → 23</td><td>edge 24's Sources tab notes edge 23 didn't exist yet at write time; edge 23 now exists and is fully consistent with edge 24's snapshot — a stale citation, not a contradiction</td></tr>
+    <tr><td>Corroborates</td><td>1 &amp; 3</td><td>both independently found a "law N" citation that traces to an older system than LEARNED.md's 30 — see Newly Resolved #1, now confirmed as the same system</td></tr>
+    <tr><td>Corroborates</td><td>2, 6, 21</td><td>three independent instances of the same defect class — a documented count (25 laws / twelve skills / twelve instruments) going stale as the corpus grows, with nothing mechanically re-checking it</td></tr>
+    <tr><td>Corroborates</td><td>9, 10, 11</td><td>three independent instrument families (tools/checks, gift-pipeline, game2d build) each confirm the suspension's governance material has zero footprint in any code-shaped part of the corpus</td></tr>
+    <tr><td>Corroborates</td><td>10, 14, 19</td><td>all three cite the identical <code>library_lens.js:61</code> <code>CODE_EXTS</code> line as the same structural blind spot, from three different domain angles</td></tr>
+    <tr><td>Corroborates</td><td>14, 16</td><td>independently confirm the game2d gate is structurally isolated from both the gift-pipeline and the session-bridge checker — not a one-off gap, a pattern</td></tr>
+    <tr><td>Corroborates</td><td>19, 23, 24</td><td>three separate angles (skill-file census, gift-card discipline read, session-bridge process read) all converge on: <code>unrouted-gifts</code>' expected tooling (<code>ingest.mjs</code>/<code>scan.mjs</code>/<code>gate.mjs</code>) doesn't exist locally; the real pipeline runs by hand</td></tr>
+    <tr><td>Corroborates</td><td>21, 22</td><td>both edges caught and self-corrected a wrong headline count on their own first pass (16-entry NODE array reconciliation; 39→56 tools/ count) — same batch, same defect class, independently found</td></tr>
+    <tr><td>Would-resolve-if-combined</td><td>12 + 15</td><td>edge 12's documented "RETIRED.md + backup-file" convention gives a concrete, mechanical test for edge 15's own open question (does nesi_bench_v0 qualify for domain J?) — applying it says no, the declarative artifact is missing, even though dormancy/DRY-finding match</td></tr>
+    <tr><td>Would-resolve-if-combined</td><td>12 + 16</td><td>edge 16's retired <code>04-horizon.mjs</code> instrument is a fifth live instance of the "kept whole, never deleted" convention edge 12 documents across four domains — not cited in edge 12's own text</td></tr>
+    <tr><td>Shares-domain, does NOT relate (false-cognate risk)</td><td>1/3 vs 6</td><td>edge 6's "twelve skills" (a manifest-frontmatter retrofit population) and edges 1/3's "twelve laws" are unrelated despite the shared number — confirmed by direct grep, worth flagging so a future reader doesn't conflate them</td></tr>
+    <tr><td>Unresolved cross-edge question</td><td>4, 7, 15</td><td>the same "dormant but never formally declared retired" shape recurs three times — world2d (edge 4), root ledger files (edge 7), nesi_bench_v0 (edge 15) — each independently, none resolved, all genuinely Kevin's call</td></tr>
+  </table>
+</section>
+
+<section class="panel" id="panel-routing" data-panel="routing">
+  <div class="eyebrow">Gaps checked against existing corpus capacity</div>
+  <h2>What actually routes, and what doesn't.</h2>
+  <p class="lede">Per Kevin's ask: for every gap held open across the 24 edges, does an existing skill, instrument, or another edge's already-published finding close it? Most honestly don't — routing existing capacity is a narrower thing than "someone should build X."</p>
+
+  <table>
+    <tr><th>Gap</th><th>Held in</th><th>Route</th><th>Status</th></tr>
+    <tr><td>Instrument-count discrepancy (12 vs 15/16/18)</td><td>edges 9, 13</td><td>edge 21 already resolved it</td><td><span class="pill closed">ROUTED — citation fix only</span></td></tr>
+    <tr><td>nesi_bench_v0 gate/ledger disposition</td><td>edge 13</td><td>edge 15 already resolved it</td><td><span class="pill closed">ROUTED — citation fix only</span></td></tr>
+    <tr><td>"Six parallel judges" identity, unglossed</td><td>edge 14</td><td>edge 18 already investigated it (result: unconfirmed, but the investigation is the route)</td><td><span class="pill closed">ROUTED — citation fix only</span></td></tr>
+    <tr><td>Stale "edge 23 doesn't exist yet" note</td><td>edge 24</td><td>edge 23 now exists, fully consistent</td><td><span class="pill closed">ROUTED — citation fix only</span></td></tr>
+    <tr><td>Two "twelve laws" trails, uncross-checked</td><td>edges 1, 3</td><td>resolved by this swarm pass directly (see Newly Resolved #1)</td><td><span class="pill closed">ROUTED — new finding, ready to cite</span></td></tr>
+    <tr><td>boot_hook.py naming-collision question</td><td>edge 22</td><td>resolved by this swarm pass directly (see Newly Resolved #2)</td><td><span class="pill closed">ROUTED — new finding, ready to cite</span></td></tr>
+    <tr><td>8 unverified gift-card citations</td><td>edges 19, 23</td><td>same read-and-compare method already proven 16+ times this session; narrowed by 19+23 combined to cards 2,4,9(partial),10,11,12(partial),13,14</td><td><span class="pill open">PARTIALLY ROUTED — narrowed, not closed; needs a further read pass</span></td></tr>
+    <tr><td>Cold-walk of post-08-26 entry chain</td><td>edge 17</td><td>cold-walk exists but this session is structurally disqualified from running it (see Newly Resolved #3)</td><td><span class="pill open">NO ROUTE FROM THIS SESSION — needs a genuinely independent party</span></td></tr>
+    <tr><td>World2d retirement status</td><td>edges 4, 12, 19, 23</td><td>none — no document exists anywhere; exhaustively searched</td><td><span class="pill kevin">NO ROUTE — Kevin's call or a record this repo doesn't hold</span></td></tr>
+    <tr><td>nesi_bench_v0 K→J reclassification</td><td>edges 7, 15, 22</td><td>edge 12's RETIRED.md convention gives a test, but applying it to reclassify a domain is outside any edge's own authority</td><td><span class="pill kevin">NO ROUTE — Kevin's call</span></td></tr>
+    <tr><td>Root ledger files (MARKS_LOG.jsonl etc.) C vs K classification</td><td>edge 7</td><td>none — a genuine gap in the 12-domain map's own boundaries</td><td><span class="pill kevin">NO ROUTE — Kevin's call</span></td></tr>
+    <tr><td>Counsel's Mandate status for the post-08-26 build</td><td>edge 5</td><td>none — cold-walk could inform it but not decide it, and is itself gapped per edge 17's finding above</td><td><span class="pill kevin">NO ROUTE — Kevin's call</span></td></tr>
+    <tr><td>Gate↔gift-pipeline / gate↔session-bridge wiring forks</td><td>edges 14, 16</td><td>none — both edges explicitly decline to propose the wiring; it's a build decision</td><td><span class="pill kevin">NO ROUTE — Kevin's call</span></td></tr>
+    <tr><td>No instrument walks K's 45 unclaimed directories</td><td>edges 7, 22</td><td>none — would require adapting library_lens.js or building new; not existing capacity</td><td><span class="pill build">NO ROUTE — requires new construction</span></td></tr>
+    <tr><td>22 of 30 laws uncovered by law_skill_drift.py</td><td>edge 2</td><td>none — extending the tool's pattern table is new construction, not routing</td><td><span class="pill build">NO ROUTE — requires new construction</span></td></tr>
+    <tr><td>Three mixed report/refuse instruments' classification</td><td>edge 21</td><td>instrument-audit skill exists and could be pointed at this, but hasn't been run</td><td><span class="pill open">ROUTABLE, NOT YET RUN</span></td></tr>
+    <tr><td>session_bridge_check.js's missing exit-code contract</td><td>edge 16</td><td>instrument-audit skill could formally certify the finding edge 16 already made by hand; doesn't fix it</td><td><span class="pill open">AUDIT ROUTABLE, FIX IS NOT</span></td></tr>
+  </table>
+</section>
+
+<section class="panel" id="panel-open" data-panel="open">
+  <div class="eyebrow">Named, not smoothed over</div>
+  <h2>What stays open after this pass, and why that's correct.</h2>
+  <div class="card"><h3>Decisions only Kevin can make</h3><p>World2d's retirement status, the nesi_bench_v0 K→J reclassification, root ledger files' C-vs-K classification, the Counsel's Mandate's status for the current build, and both gate-wiring forks (gift-pipeline, session-bridge) — none of these have a route through existing corpus capacity because they are, correctly, decisions rather than facts waiting to be found.</p></div>
+  <div class="card"><h3>Facts no record in this repo can supply</h3><p>The "six parallel judges" identity remains genuinely unconfirmed — edge 18 ran the strongest available investigation and the honest answer is "unconfirmed, structurally unlikely." No skill retroactively identifies a past unlogged agent invocation.</p></div>
+  <div class="card"><h3>Work that's real but not yet done</h3><p>8 gift-card citations (narrowed to a real remaining set by edges 19+23 combined), a full re-verification of edge 7's K-census line-for-line, and 35 of root <code>tools/</code>'s 56 files still named-only rather than read — all closable by more of the same method already proven this session, none of it new capacity, just unspent reading.</p></div>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this document is not authorized to do</div>
+  <h2>It maps and routes. It does not decide.</h2>
+  <div class="card"><h3>No domain reclassification performed</h3><p>Every "Kevin's call" row above stays exactly that — this document names the fork and the test that could inform it, never makes the call itself.</p></div>
+  <div class="card"><h3>No new instruments built</h3><p>Every "requires new construction" row is named as such, not built, not proposed as a task, per the same restraint the 24 edges themselves held throughout.</p></div>
+  <div class="card"><h3>Reusable, not final</h3><p>New VE24 edges or corrections to existing ones should update this map rather than let it go stale — it is itself subject to the same staleness pattern (edges 2, 6, 21) this pass found three times already.</p></div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

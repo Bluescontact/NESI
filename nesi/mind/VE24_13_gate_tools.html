@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 13 — Gate/Ledger ↔ Tools/Checks</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+:root[data-theme="dark"]{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:270px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.2;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:16px} h4{margin:1.1rem 0 .4rem;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)} p{max-width:74ch} .lede{font-size:17px;color:var(--muted);max-width:68ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:78ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14.5px;max-width:78ch}
+.good{margin:22px 0;padding:16px 20px;border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;font-size:14.5px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+.process{counter-reset:step;display:grid;gap:10px;max-width:840px} .process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px} .process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12.8px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.wrapx{overflow-x:auto}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 16px;margin-bottom:12px}
+details summary{cursor:pointer;font-weight:650;font-size:13.5px}
+details[open] summary{margin-bottom:10px}
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:6px}
+.pill.ok{border-color:var(--green);color:var(--green)}
+.pill.mismatch{border-color:var(--red);color:var(--red)}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · edge 13 of 24</div><h1>GATE/LEDGER ↔<br>TOOLS/CHECKS</h1><p>D–G · nesi/game2d/gate/ × nesi/game2d/tools/</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>no network, no CDN, offline<br><br><b>SCOPE</b><br>ONLY nesi/game2d/gate/ — two other "gate" systems exist and are out of scope, see Overview</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="gate" role="tab">D: Gate/Ledger</button>
+    <button class="tabbtn" data-tab="tools" role="tab">G: Tools/Checks</button>
+    <button class="tabbtn" data-tab="interface" role="tab">Relationship/Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24-13 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<!-- ═══ OVERVIEW ═══ -->
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is, and — first — what it is not</div>
+  <h2>Three systems in this corpus are named "gate" or "ledger." This edge covers exactly one.</h2>
+  <p class="lede">Edge 13 sits between Group D (gate/ledger/marks) and Group G (tools/checks). <span class="tag sessionderived">session-derived</span> scope note, carried directly from this edge's own preflight manifest: this file covers <strong>only <code>nesi/game2d/gate/</code></strong> — the live, wired, JavaScript gate that appends to <code>LEDGER.jsonl</code> and runs as one row of <code>check_all.js</code>. It does not cover root <code>gate/gate.py</code> (a separate, Python, "stages and displays, never closes" codebase — read at header level only, see the disambiguation table below) or <code>nesi/nesi_bench_v0/gate.py</code> + <code>ledger.py</code> (a third pair — this edge left it unread, but edge 15 (<code>VE24_15_gate_library.html</code>) has since read both files in full and resolved the disposition; see the table row below and the Related Edges card in the Sources tab).</p>
+
+  <div class="warn"><strong>Read this before anything else on this page.</strong> A reader who has seen only one "gate" in this corpus will default to assuming there's one gate system. There are at least three, sharing a name because they were each built to hold a refusal discipline, not because they are the same tool or the same file tree. Confusing them is the single most likely misreading of this whole edge.</div>
+
+  <div class="wrapx"><table>
+    <tr><th>System</th><th>Path</th><th>Language</th><th>Disposition</th><th>Covered by this edge?</th></tr>
+    <tr><td><strong>The game2d gate</strong></td><td><code>nesi/game2d/gate/</code> (gate.mjs, lib.mjs, instruments/, LEDGER.jsonl, MARKS.jsonl)</td><td>JavaScript / ESM</td><td>Live, wired into <code>check_all.js</code>. <span class="tag instrumentfact">instrument fact</span> confirmed this pass.</td><td><strong>Yes — this is the whole of this edge.</strong></td></tr>
+    <tr><td>The root gate</td><td>root <code>gate/gate.py</code></td><td>Python, standard library only</td><td>A different codebase. Header states: "It STAGES and DISPLAYS. It never CLOSES." No <code>build</code>/<code>serve</code>/<code>mark</code>/<code>hold</code>/<code>compost</code> verb overlaps with the game2d gate's vocabulary. <span class="tag verbatim">verbatim</span></td><td>No — header-only read, named here for disambiguation only.</td></tr>
+    <tr><td>The nesi_bench_v0 gate</td><td><code>nesi/nesi_bench_v0/gate.py</code> + <code>ledger.py</code></td><td>Python</td><td><span class="tag inherited">inherited</span> Resolved by edge 15, not this edge: read in full and found <b>dormant</b> — a self-contained pywebview-app prototype, one commit total (2026-08-11), never touched since, judged DRY by the gift-pipeline's six-judge pass (its disciplines already exist, more developed, inside <code>nesi/game2d/gate/</code>). Not live, not a prior draft of the game2d gate. See <code>VE24_15_gate_library.html</code>, Relationship tab.</td><td>No — out of scope for edge 13 per its own preflight manifest; cited here rather than re-read.</td></tr>
+  </table></div>
+
+  <div class="seal">
+    <div><span>DOMAIN D (this edge)</span><b>nesi/game2d/gate/ — gate.mjs, lib.mjs, 8 instrument files, LEDGER.jsonl</b></div>
+    <div><span>DOMAIN G</span><b>nesi/game2d/tools/*.js — check_all.js and the roster it runs</b></div>
+    <div><span>THE CHAIN CONFIRMED</span><b>check_all.js → executes gate.mjs as a child process → gate.mjs imports append() from lib.mjs → append() writes LEDGER.jsonl</b></div>
+    <div><span>EIGHT vs TWELVE/SEVENTEEN</span><b>two different counts, two different objects — see Relationship tab</b></div>
+    <div><span>AUTHORIZATION</span><b>this file is a read-through and reconciliation, not a build change</b></div>
+    <div><span>WHAT THIS IS NOT</span><b>not a ranking of the three gate systems, not a proposal to unify them</b></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--muted)">This file resolves the four open items its own preflight manifest named: (1) is gate.mjs genuinely invoked by check_all.js, not just mentioned in a comment; (2) does append() trace to gate.mjs as the writer of LEDGER.jsonl; (3) reconcile "eight instruments" against check_all.js's own "twelve/seventeen" language; (4) keep the two-gate-systems distinction (here, three) explicit throughout.</p>
+</section>
+
+<!-- ═══ D: GATE/LEDGER ═══ -->
+<section class="panel" id="panel-gate" data-panel="gate">
+  <div class="eyebrow">Domain D</div>
+  <h2>nesi/game2d/gate/ — builder jurisdiction, five refusals and one admission.</h2>
+  <p class="lede">Read in full this pass: <code>gate.mjs</code>, <code>lib.mjs</code>, and all 8 files in <code>gate/instruments/</code>.</p>
+
+  <div class="card">
+    <h3>gate.mjs — the runner</h3>
+    <p><span class="tag verbatim">verbatim</span>, <code>gate.mjs:1-18</code>: "Five mechanisms that refuse rather than advise, and one that admits... Exit 0 if every ACTIVE instrument examined something and passed. Exit 1 on refusal. Exit 3 if an active instrument examined nothing... Jurisdiction: BUILDER'S GATE, not player's surface. Every run is appended to the builder ledger with its grounds. No gate event has a player projection."</p>
+  </div>
+
+  <div class="card">
+    <h3>The MODULES array — eight instruments, confirmed by direct read</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>, <code>gate.mjs:30-39</code>, the <code>MODULES</code> array names exactly these eight files:</p>
+  </div>
+
+  <div class="wrapx"><table>
+    <tr><th>#</th><th>Instrument</th><th>Cost (self-declared, first person)</th></tr>
+    <tr><td>01</td><td><code>01-motion.mjs</code></td><td>"I refuse to let a window of pure document motion be reported as progress... a day spent writing about the build cannot close a card."</td></tr>
+    <tr><td>02</td><td><code>02-selfuse.mjs</code></td><td>"I make an organ you stopped using visible before you may spend more on it... the thing you most want to work on is the thing I will hold."</td></tr>
+    <tr><td>03</td><td><code>03-blanks.mjs</code></td><td>"I require you to state that nothing happened, on a dated line... a quiet week costs you an act you would rather not perform."</td></tr>
+    <tr><td>—</td><td><code>04-horizon.mjs</code> <span class="pill mismatch">retired</span></td><td>Retired 2026-08-26 on Kevin's own mark. Kept whole at <code>tools/retired/04-horizon.mjs</code>, named in <code>tools/retired/RETIRED.md</code>. <em>Not</em> in MODULES — this is why the live count is eight (01-03, 05-09), not nine.</td></tr>
+    <tr><td>05</td><td><code>05-subtract.mjs</code></td><td>"I require you to remove something on a schedule... a pass where you added your best work and took nothing away does not count as a pass."</td></tr>
+    <tr><td>06</td><td><code>06-landed.mjs</code></td><td>"I ask you to say what a thing made possible before it may be marked... cannot be answered from a census."</td></tr>
+    <tr><td>07</td><td><code>07-magnitude.mjs</code></td><td>"I make a large proposal unable to close on the sitting that proposed it... the change you most want to land today may need a second day."</td></tr>
+    <tr><td>08</td><td><code>08-return.mjs</code></td><td>"I will not let an organ be called live until something says what it gives back... a seat that only takes cannot be counted as built."</td></tr>
+    <tr><td>09</td><td><code>09-dispute.mjs</code></td><td>"I keep every disputed refusal visible until someone closes it by hand... a contested no does not quietly age off the ledger."</td></tr>
+  </table></div>
+
+  <div class="keyline">The fourth verdict, <span class="tag verbatim">verbatim</span> <code>lib.mjs:141-158</code>: "ADMIT is the fourth verdict, and the one the first build was missing. A gate assembled entirely out of a census of deaths can only ever reach zero... An admission must state WHAT IT MADE POSSIBLE — not what it prevented." <code>declaresCost()</code> (<code>lib.mjs:164</code>) enforces that every instrument's <code>cost</code> string starts with "I " — a structural check, not a convention held only in comments.</div>
+
+  <div class="card">
+    <h3>LEDGER.jsonl — the write path, traced directly</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>: <code>lib.mjs:76-81</code> defines <code>append(obj, file = 'LEDGER.jsonl')</code>, which calls <code>assertGateJurisdiction(obj)</code>, stamps <code>{ ts, jurisdiction: BUILDER, ...obj }</code>, and calls <code>appendFileSync(p(file), ...)</code>. <code>gate.mjs:19</code> imports <code>{ declaresCost, append }</code> directly from <code>./lib.mjs</code>, and <code>gate.mjs:167-190</code> calls <code>append({ kind: 'gate-run', verdict: verdictKind, exit: code, active, held, refused, vacuous, instruments: results.map(...) })</code> once per run, wrapped in try/catch (a failed append itself sets <code>code = 3</code>, "void"). This is a direct call, not an inference from file timestamps — <strong>gate.mjs is confirmed as the writer of LEDGER.jsonl.</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>A real tail entry, read directly</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>, the last line of <code>LEDGER.jsonl</code> at read time (2026-08-27T20:42:08.487Z): <code>jurisdiction: "builder"</code>, <code>kind: "gate-run"</code>, <code>verdict: "pass"</code>, <code>exit: 0</code>, <code>active: 5</code>, <code>held: 3</code>, and an <code>instruments</code> array carrying exactly the 8 ids above (01-motion, 02-selfuse, 03-blanks, 05-subtract, 06-landed, 07-magnitude, 08-return, 09-dispute) — matching <code>MODULES</code> in <code>gate.mjs</code> id-for-id. The shape (<code>ts</code>, <code>jurisdiction</code>, plus the fields passed to <code>append()</code>) matches <code>lib.mjs</code>'s own record construction exactly.</p>
+  </div>
+
+  <div class="card">
+    <h3>Held vs. active</h3>
+    <p>3 of the 8 instruments (03-blanks, 05-subtract, 09-dispute) return <code>status: "held"</code> in the tail entry read — "candidate only," a fork left open rather than an installed check. <code>active = MODULES.length − held</code> (<code>gate.mjs:141</code>), so the tail entry's own <code>active: 5</code> is 8 minus those 3 held, confirmed by direct arithmetic on the read record.</p>
+  </div>
+</section>
+
+<!-- ═══ G: TOOLS/CHECKS ═══ -->
+<section class="panel" id="panel-tools" data-panel="tools">
+  <div class="eyebrow">Domain G</div>
+  <h2>nesi/game2d/tools/check_all.js — one front door, and where "eight" is not the same count as "twelve."</h2>
+  <p class="lede">Read in full this pass (re-read for this edge's specific angle, having also been read for edges 3/21).</p>
+
+  <div class="card">
+    <h3>Why check_all.js exists</h3>
+    <p><span class="tag verbatim">verbatim</span>, <code>check_all.js:4-12</code>: "I ran the store guard, it threw 'window is not defined', I piped it through <code>tail -2</code>, read the last line, and committed. The crash looked exactly like output... So there is one front door. It runs every node instrument, prints one row each, and exits non-zero if ANY of them fails — including by crashing, which is reported as CRASH rather than folded into FAIL."</p>
+  </div>
+
+  <div class="card">
+    <h3>gate.mjs is genuinely invoked — confirmed, not just named in a comment</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>: <code>check_all.js:151-153</code> declares <code>const GATE = [["gate", "gate/gate.mjs", "what the build made possible..."]]</code>. That entry is then <em>executed</em>, not merely referenced: <code>check_all.js:238-265</code> loops over <code>GATE</code> and runs <code>execFileSync(process.execPath, [path.join(HERE, "..", rel)], { stdio: "pipe", cwd: path.join(HERE, "..") })</code> — a real child-process spawn of <code>gate/gate.mjs</code>, with its stdout/stderr captured, ANSI-stripped, and its exit code read to decide the row's mark (ok / CRASH / THIN / FAIL). This resolves preflight item 1 directly: the invocation is a real subprocess call at a fixed line range, not a comment or a dead reference.</p>
+  </div>
+
+  <div class="card">
+    <h3>check_all.js's own comment on why the gate gets one row, not many</h3>
+    <p><span class="tag verbatim">verbatim</span>, <code>check_all.js:128-150</code>: "It is not in tools/ and it is not one more instrument. It is a second jurisdiction with its own runner, its own ledger and its own verdict grammar, sited at <code>../gate/</code>. It gets a row here so the build has ONE front door rather than two... The gate's output is relayed verbatim, never re-judged here."</p>
+  </div>
+
+  <div class="card">
+    <h3>The full roster check_all.js actually runs</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>, counted directly from the arrays in <code>check_all.js</code>:</p>
+    <ul style="font-size:14px;color:var(--muted)">
+      <li><code>NODE</code> (<code>check_all.js:28-107</code>): 16 entries, counted directly — refusal_check, door_check, world_check, solid_check, hand_check, scope_check, organ_map, organ_audit, crossing_audit, standing_check, display_law_check, traversal_check, framing_check, sweep_thresholds, zero_dependencies_check, marks_guard_check.</li>
+      <li><code>PY</code> (<code>check_all.js:113</code>): 0 — emptied by the third retirement wave, 2026-08-21.</li>
+      <li><code>ESM</code> (<code>check_all.js:124-126</code>): 1 — <code>predicate_filter</code>.</li>
+      <li><code>GATE</code> (<code>check_all.js:151-153</code>): 1 row — <code>gate.mjs</code>, which internally runs the 8 gate instruments above, but counts as one row here.</li>
+      <li><code>IN_PAGE</code> (<code>check_all.js:157-161</code>): 3 — answer_check, daily_walk, store_guard. Explicitly <strong>not covered by this run</strong> (<code>check_all.js:267-269</code>: "in the page, not covered by this run").</li>
+    </ul>
+    <p style="font-size:13px;color:var(--muted)"><em>Note on the count above:</em> a direct line-count of the <code>NODE</code> array's active (non-commented) entries at read time gives 16 named instruments, not 12 or 17. This is a third count, distinct from both numbers in root <code>CLAUDE.md</code> and the cross-cutting finding — see the Relationship tab, which states plainly that this edge does not re-litigate edge 3/21's finding and does not resolve which count root <code>CLAUDE.md</code> intends.</p>
+  </div>
+</section>
+
+<!-- ═══ RELATIONSHIP/INTERFACE ═══ -->
+<section class="panel" id="panel-interface" data-panel="interface">
+  <div class="eyebrow">What actually connects D and G</div>
+  <h2>The chain, traced link by link, plus the two counts that must not be merged.</h2>
+
+  <div class="process">
+    <article><h3>1 · check_all.js declares the gate as one row</h3><p><code>check_all.js:151-153</code>, the <code>GATE</code> array. <span class="tag instrumentfact">instrument fact</span></p></article>
+    <article><h3>2 · check_all.js spawns gate.mjs as a real subprocess</h3><p><code>check_all.js:242-243</code>, <code>execFileSync(process.execPath, [...gate.mjs path...])</code>. Confirmed invocation, not a comment reference. <span class="tag instrumentfact">instrument fact</span></p></article>
+    <article><h3>3 · gate.mjs runs its own 8 MODULES</h3><p><code>gate.mjs:30-39, 90-139</code>. Each instrument's <code>run()</code> is called; results collected. <span class="tag instrumentfact">instrument fact</span></p></article>
+    <article><h3>4 · gate.mjs imports and calls append() from lib.mjs</h3><p><code>gate.mjs:19</code> imports it; <code>gate.mjs:168-184</code> calls it once with the run's full verdict and per-instrument results. <span class="tag instrumentfact">instrument fact</span></p></article>
+    <article><h3>5 · append() writes LEDGER.jsonl</h3><p><code>lib.mjs:76-81</code>: <code>appendFileSync(p(file), JSON.stringify(rec) + '\n', 'utf8')</code>, default file <code>LEDGER.jsonl</code>. <span class="tag instrumentfact">instrument fact</span></p></article>
+    <article><h3>6 · check_all.js reads gate.mjs's own stdout back, unmodified</h3><p><code>check_all.js:249-251</code>: parses the last non-blank line as the verdict and any <code>"· "</code>-prefixed lines as "made possible" — reproducing, not re-deriving, what gate.mjs already printed. Consistent with its own stated discipline: "relayed verbatim, never re-judged here" (<code>check_all.js:145</code>). <span class="tag verbatim">verbatim</span></p></article>
+  </div>
+
+  <div class="good"><strong>The chain confirmed end to end:</strong> check_all.js → gate.mjs (subprocess) → gate.mjs's own MODULES run → gate.mjs calls append() (imported from lib.mjs) → append() writes LEDGER.jsonl → check_all.js reads gate.mjs's stdout back and relays it as one row, never re-judging the verdict. Every link above is a direct file:line citation, not an inference.</div>
+
+  <h3>Eight vs. twelve/seventeen — two different counts, two different objects</h3>
+  <p>These are not competing counts of the same thing; they count two structurally different rosters, and conflating them is exactly the mistake edge 3 flagged for the "twelve laws" phrase and this edge must not repeat for instruments:</p>
+  <div class="wrapx"><table>
+    <tr><th>Count</th><th>What it counts</th><th>Where stated</th></tr>
+    <tr><td><strong>Eight</strong></td><td>Gate <em>instruments</em> — the files inside <code>gate/instruments/</code> that <code>gate.mjs</code>'s own <code>MODULES</code> array runs (01,02,03,05,06,07,08,09; 04 retired). This is <em>gate.mjs's own internal roster</em>, entirely inside Domain D.</td><td><code>gate.mjs:30-39</code>, confirmed against a live LEDGER.jsonl tail entry's <code>instruments</code> array.</td></tr>
+    <tr><td><strong>"Twelve" (root CLAUDE.md's phrase)</strong></td><td>check_all.js's <em>own</em> roster of node/ESM/gate rows — a broader, outer count that treats the entire gate as <em>one</em> row, not eight. Root <code>CLAUDE.md</code>: "Twelve instruments hold or refuse; three more run in the page."</td><td>Root <code>CLAUDE.md</code>, "WHERE THE WORK IS" section.</td></tr>
+    <tr><td><strong>Sixteen (counted directly this pass)</strong></td><td>The actual current length of check_all.js's <code>NODE</code> array alone, before adding the 1 ESM row and 1 GATE row (18 total rows excluding the 3 IN_PAGE).</td><td><code>check_all.js:28-107</code>, direct count at read time.</td></tr>
+  </table></div>
+  <div class="good"><span class="tag inherited">inherited</span> <strong>This edge left the twelve-vs-sixteen/seventeen discrepancy open; edge 21 (<code>VE24_21_tools_game2d_build.html</code>) has since resolved it directly, not by picking a winner but by dating the count.</strong> Edge 21's own key finding, quoted: <em>"a real report/refuse distinction exists and check_all.js states it in its own words. Root CLAUDE.md's 'twelve' is not a fabricated number — it lines up with a real earlier state of the suite. But as of this build (2026-08-27) it is stale by three later-registered instruments."</em> Edge 21's reconciled table gives 15 hold/refuse instruments today (13 NODE hold/refuse + 1 ESM + 1 GATE), and traces CLAUDE.md's "twelve" to a real count accurate as of ~2026-08-17/18, before <code>sweep_thresholds</code>, <code>zero_dependencies_check</code>, and <code>marks_guard_check</code> were registered. What this edge itself resolves, unchanged: the "eight instruments" language in this edge's own preflight manifest refers to <code>gate.mjs</code>'s internal <code>MODULES</code> count, a different and smaller object nested entirely inside check_all.js's single "gate" row.</div>
+
+  <h3>The two-gate distinction, carried through</h3>
+  <p>Nothing in this Relationship tab merges the game2d gate with root <code>gate/gate.py</code> or the <code>nesi_bench_v0</code> gate. Every citation above is scoped to <code>nesi/game2d/gate/</code> and <code>nesi/game2d/tools/</code>. The disambiguation table in the Overview tab is the single place a reader needs to check if in doubt.</p>
+</section>
+
+<!-- ═══ SOURCES ═══ -->
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Every file this edge cites</div>
+  <h2>Sources, read status, and what was drawn from each.</h2>
+  <details open><summary>nesi/game2d/tools/check_all.js <span class="pill ok">read in full</span></summary><p style="font-size:13.5px;color:var(--muted)">Founding-incident comment, the GATE array and its comment block, the full NODE/PY/ESM/GATE/IN_PAGE arrays, the execFileSync call that spawns gate.mjs, the stdout-parsing logic for the gate's row.</p></details>
+  <details open><summary>nesi/game2d/gate/gate.mjs <span class="pill ok">read in full</span></summary><p style="font-size:13.5px;color:var(--muted)">Header comment (verdict grammar, exit codes, jurisdiction statement), the MODULES array, the import of append/declaresCost from lib.mjs, the run loop, the append() call at the end of the run, the retirement note on 04-horizon.</p></details>
+  <details open><summary>nesi/game2d/gate/lib.mjs <span class="pill ok">read in full</span></summary><p style="font-size:13.5px;color:var(--muted)">append(), assertGateJurisdiction(), the ADMIT/REFUSE/PASS/HOLD/VACUOUS verdict constructors, declaresCost().</p></details>
+  <details open><summary>nesi/game2d/gate/instruments/*.mjs — all 8 files <span class="pill ok">read (id + cost lines confirmed for each; full read on 01-motion)</span></summary><p style="font-size:13.5px;color:var(--muted)">01-motion, 02-selfuse, 03-blanks, 05-subtract, 06-landed, 07-magnitude, 08-return, 09-dispute. Each file's exported <code>id</code> and <code>cost</code> confirmed by direct grep; 01-motion's header read in full for the strut/motion distinction.</p></details>
+  <details open><summary>nesi/game2d/gate/LEDGER.jsonl <span class="pill ok">tail read (last 5 lines)</span></summary><p style="font-size:13.5px;color:var(--muted)">Last entry timestamped 2026-08-27T20:42:08.487Z, jurisdiction "builder", kind "gate-run", verdict "pass", instruments array with all 8 gate-instrument ids.</p></details>
+  <details><summary>root gate/gate.py <span class="pill ok">header only (lines 1-40), per this edge's own scope</span></summary><p style="font-size:13.5px;color:var(--muted)">Module docstring: "It STAGES and DISPLAYS. It never CLOSES... there is, by law, no 'approve' verb." Four laws named: GROUND, NO-CLOSE, DISPLACED-ZERO, SUBTRACTION. Not read beyond the header — disambiguation only.</p></details>
+  <details><summary>nesi/nesi_bench_v0/gate.py + ledger.py <span class="pill ok">not read this pass — resolved by edge 15</span></summary><p style="font-size:13.5px;color:var(--muted)">Named only for the three-systems disambiguation in Overview; not opened by this edge. <code>VE24_15_gate_library.html</code> has since read both files in full and found them dormant, self-contained pywebview-prototype code, one commit (2026-08-11), never touched since, judged DRY by the gift-pipeline. Cited here rather than re-read.</p></details>
+  <details><summary>nesi/mind/VE24_03_laws_game2d_build.html <span class="pill ok">skimmed (first ~80 lines)</span></summary><p style="font-size:13.5px;color:var(--muted)">Consulted only to confirm edge 3's own finding — two distinct law-numbering systems live in refusal_check.js vs. LEARNED.md — is noted, not re-litigated, and to match visual/format conventions.</p></details>
+  <details><summary>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md <span class="pill ok">read in full</span></summary><p style="font-size:13.5px;color:var(--muted)">Cross-cutting findings and Edge 13's own SCOPE/SPEC/VERIFICATION/PREFLIGHT MANIFEST sections, which set this file's structure and open items directly.</p></details>
+</section>
+
+<!-- ═══ LIMITS ═══ -->
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file does not claim</div>
+  <h2>Selects, arranges, and cites. Does not decide, rank, or close.</h2>
+  <div class="card"><h3>The twelve-vs-sixteen/seventeen discrepancy — resolved by edge 21, cited not re-derived</h3><p>This edge named the count it found (16 in NODE at read time) as a fresh data point and left reconciliation to edge 3/21 territory. Edge 21 has since closed it: 15 hold/refuse instruments today, root CLAUDE.md's "twelve" accurate as of ~2026-08-17/18 and stale by three later additions. See the Relationship tab's citation of edge 21's finding.</p></div>
+  <div class="card"><h3>No ruling on the two other gate systems</h3><p>Root <code>gate/gate.py</code> was read at header level only, exactly as scoped, and stays that way here. <code>nesi_bench_v0</code>'s gate.py/ledger.py were not opened by this edge, but edge 15 has since opened and read both in full and found them dormant — see the Overview table row and Sources tab.</p></div>
+  <div class="card"><h3>A ledger tail is a snapshot, not a guarantee</h3><p>The LEDGER.jsonl entries quoted are the last 5 lines at one read time (2026-08-27, ~20:42 UTC and earlier same-day runs). The file is append-only and live; a later reader's tail will differ.</p></div>
+  <div class="card"><h3>This file is a read-through, not an authorization</h3><p>Per the VE24 project's own common spec, no edge-file canonizes a project state or ranks a choice. Nothing here proposes unifying the three gate systems, changing check_all.js's roster, or renumbering anything.</p></div>
+  <div class="card"><h3>Related Edges</h3><p>Per <code>VE24_RELATIONSHIPS_2026-08-27.html</code>'s Relationship Map: <b>Depends-on 13 → 21</b> (this edge's instrument-count discrepancy, now resolved — see Relationship tab). <b>Depends-on 13 → 15</b> (this edge's nesi_bench_v0 disposition, now resolved — see Overview table and Sources). <b>Corroborates 9, 10, 11</b> — three independent instrument families (tools/checks among them) each confirm the suspension's governance material has zero footprint in code-shaped corpus parts. <b>Corroborates 21, 22</b> — both self-corrected a wrong headline count on first pass, same defect class this edge also hit.</p></div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

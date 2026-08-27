@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 9 · Memory/Suspension ↔ Tools/Checks</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.2;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:900px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:74ch} .lede{font-size:18px;color:var(--muted);max-width:68ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:78ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+.process{counter-reset:step;display:grid;gap:10px;max-width:820px} .process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px} .process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 14px;margin:10px 0} summary{cursor:pointer;font-size:13px;font-weight:650} details[open] summary{margin-bottom:8px}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · edge 9 of 24</div><h1>MEMORY /<br>SUSPENSION<br>↔<br>TOOLS / CHECKS</h1><p>Group C (rule) — Group G (checks) · built on Kevin's mark 2026-08-27</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>no network, no CDN, offline-renderable<br><br><b>WHAT THIS FILE IS NOT</b><br>not a ranking, not a canon-declaration, not an argument for or against the suspension — it selects, arranges, and tags</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="memory" role="tab">C: Memory/Suspension</button>
+    <button class="tabbtn" data-tab="tools" role="tab">G: Tools/Checks</button>
+    <button class="tabbtn" data-tab="relationship" role="tab">Relationship / Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24-09 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · edge 9 of 24</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is</div>
+  <h2>What the suspension currently says about itself, and what the tools directories currently contain — laid side by side.</h2>
+  <p class="lede">This edge sits between Group C (Memory/Suspension — the vendor <code>~/.claude/CLAUDE.md</code> and <code>MEMORY.md</code>, both declared suspended by Kevin's mark on 2026-08-15) and Group G (Tools/Checks — the runnable instruments in <code>nesi/game2d/tools/*.js</code> and root <code>tools/*.py</code>). Per the geometry of the vector equilibrium this is one of the 24 structurally real edges of a cuboctahedron, not a chosen comparison. The file stays inside the escape clause the preflight manifest named for this edge: read-only characterization of the suspension's current shape — what is suspended, since when, what backups exist, what is still live — quoted in its own words, never argued for or against.</p>
+  <div class="seal">
+    <div><span>SUSPENSION MARKED</span><b>2026-08-15, Kevin's mark, caught to MARKS_LOG.jsonl</b></div>
+    <div><span>COMPRESSED (not lifted)</span><b>2026-08-18, Kevin's mark, storage-only change</b></div>
+    <div><span>WHO CAN LIFT IT</span><b>Kevin alone, in his own words, item by item or wholesale — its own text</b></div>
+    <div><span>GREP RESULT (this build)</span><b>2 file hits for "suspens", both sediment-physics; 0 governance hits</b></div>
+    <div><span>ANY INSTRUMENT CHECKING IT</span><b>none found in either tools directory</b></div>
+    <div><span>PREFLIGHT RISK/COST</span><b>low-medium — framing constraint honored throughout</b></div>
+  </div>
+  <div class="keyline">The core finding of this edge: <strong>the suspension is a prose convention, sourced to a dated mark and to backup files kept whole on disk — not a filesystem-fact check</strong>. No script in either tools directory reads, tests, or enforces the suspension's state, in the same sense that <code>session_bridge_check.js</code> tests whether a Session Bridge file was produced. The two directories currently have no interface with each other on this subject at all.</div>
+</section>
+
+<section class="panel" id="panel-memory" data-panel="memory">
+  <div class="eyebrow">Group C — purely descriptive: what is suspended, since when, what backups exist</div>
+  <h2>The suspension as it currently states itself, in its own two source files.</h2>
+
+  <h3>What triggered it</h3>
+  <p>Both suspended files trace to the same two marks on the same day, quoted inline in each:</p>
+  <div class="code">"i think everything before today hold debris, and potential. Nothign is set in
+anythgin prior. We are startign from scratch today."
+— caught to MARKS_LOG.jsonl 2026-08-15 13:36:03
+
+"the machinery too — suspend it and let me name what stands."
+— his cross on decision d5, caught 13:48:49, answered on the ledger the same minute</div>
+  <span class="tag verbatim">verbatim · vendor CLAUDE.md, opening lines</span>
+
+  <h3>What is currently suspended</h3>
+  <table>
+    <tr><th>File</th><th>Status stated in its own text</th><th>Backup kept</th></tr>
+    <tr><td>vendor <code>~/.claude/CLAUDE.md</code></td><td>"Everything from the next horizontal rule to the end of this file is suspended as binding instruction... no session may treat any of it as authority."</td><td><code>CLAUDE.md.backup_pre-suspension_2026-08-15.md</code>, "byte-for-byte"</td></tr>
+    <tr><td>vendor <code>MEMORY.md</code></td><td>"Every memory below is suspended as binding... the index and the files it points to are kept whole and unaltered."</td><td><code>MEMORY.md.backup_pre-suspension_2026-08-15.md</code></td></tr>
+    <tr><td>UserPromptSubmit widget-format hook</td><td>"suspended by the same mark... removed from <code>~/.claude/settings.json</code>"</td><td><code>settings.json.backup_pre-suspension_2026-08-15</code></td></tr>
+    <tr><td>memory index at <code>projects/…/memory/MEMORY.md</code>, the pre-flight manifest gate, the DS_v1/DS_LITE widget chassis, the decision brake, the counsel seats</td><td>"All still on disk. None binding."</td><td>n/a — named as suspended, not separately backed up per this text</td></tr>
+  </table>
+  <span class="tag verbatim">verbatim · vendor CLAUDE.md, "Also suspended by the same mark"</span>
+
+  <h3>Its own escape clause and admission rule</h3>
+  <div class="code">"Read it as history, never as instruction... Until he names a thing back, it
+is material, not rule."
+
+"Lifting this is Kevin's alone, in his own words, item by item or wholesale.
+No inference from context, silence, elapsed time, or a completed piece of
+work lifts any part of it. A session that finds itself needing one of these
+rules says so out loud and asks; it does not quietly re-adopt."</div>
+  <span class="tag verbatim">verbatim · vendor CLAUDE.md, suspension notice</span>
+
+  <h3>What changed on 2026-08-18 — storage, stated as not content</h3>
+  <p>A second mark, three days later, compressed roughly 230 lines of the suspended body text into a pointer, on Kevin's mark, for token efficiency. Its own text is explicit about what did and did not change:</p>
+  <div class="code">"Nothing is un-suspended and nothing is lost — the full original text is
+unedited, byte-for-byte, in the backup file named above... This is a change
+in storage, not in content: the suspension terms, the admission rule, and
+the no-inference-lifts-any-part-of-it rule all stand exactly as written
+above, untouched."</div>
+  <span class="tag verbatim">verbatim · vendor CLAUDE.md, "COMPRESSED, 2026-08-18" paragraph</span>
+  <p>The same compression pass was applied to vendor <code>MEMORY.md</code> the same day, with a matching backup file (<code>MEMORY.md.backup_pre-suspension_2026-08-15.md</code>) and a matching statement that "nothing was deleted."</p>
+
+  <h3>What is live under the same notice, in vendor MEMORY.md</h3>
+  <p>Two entries in vendor <code>MEMORY.md</code> are stated as currently live, added after the suspension date on Kevin's own direct ask, under the notice's own escape clause:</p>
+  <table>
+    <tr><th>Entry</th><th>Added</th></tr>
+    <tr><td>KEVIN'S OPERATING PATTERNS</td><td>persistent on Kevin's ask, 2026-08-18</td></tr>
+    <tr><td>THE PREDICATE FILTER + ALIGNMENT</td><td>persistent on Kevin's ask, 2026-08-16</td></tr>
+  </table>
+  <span class="tag verbatim">verbatim, paraphrase-free summary of the table headers · vendor MEMORY.md</span>
+
+  <h3>What routes around it, per project CLAUDE.md</h3>
+  <p>The project-level <code>CLAUDE.md</code> at repo root (a separate file from the suspended vendor one) states its own relationship to the suspension directly:</p>
+  <div class="code">"The 2026-08-15 suspension stands as he set it. The vendor ~/.claude/CLAUDE.md,
+MEMORY.md, the widget hook, the pre-flight manifest gate, the widget chassis,
+the decision brake and the counsel seats are all suspended and remain so.
+Lifting any of them is his, in his own words, item by item or wholesale."</div>
+  <span class="tag verbatim">verbatim · project CLAUDE.md, "THE SCOPE OF THIS FILE"</span>
+  <p>The project CLAUDE.md was itself created 2026-08-17, on a separate mark ("lift the freeze and route LEARNED.md into the boot path"), to give <code>nesi/mind/LEARNED.md</code> a boot path that did not depend on the suspended vendor file. Its own text states this plainly: it is a routing document for one file, not a reopening of the suspension.</p>
+</section>
+
+<section class="panel" id="panel-tools" data-panel="tools">
+  <div class="eyebrow">Group G — the grep result and the instrument roster</div>
+  <h2>What the two tools directories actually contain, re-run at build time.</h2>
+
+  <h3>The grep, re-run this build</h3>
+  <p>Command run against <code>nesi/game2d/tools/*.js</code> and root <code>tools/*.py</code>:</p>
+  <div class="code">grep -rniE "suspens" nesi/game2d/tools/*.js tools/*.py
+
+nesi/game2d/tools/hand_check.js:100:  ok("H10 bed plus suspension is conserved — erosion moves mass, never mints it",
+nesi/game2d/tools/hand_check.js:119:  ok("H13 running water lifts the bed into suspension",
+nesi/game2d/tools/hand_check.js:215:  /* THE ROW THAT WOULD HAVE CAUGHT THE FIRST CARVE. Spoil left in suspension
+nesi/game2d/tools/release_filter.js:49: * lines in suspension, which is not a pile a hand can sort — and a filter whose
+nesi/game2d/tools/release_filter.js:219:    (r.film.length + r.suspended.length + r.bedload.length ? "" : "   - nothing in suspension"));</div>
+  <span class="tag instrumentfact">instrument fact · grep re-run this build, 2026-08-27</span>
+  <p>Two files, five lines, zero mentions of <code>MEMORY.md</code>, governance, or Kevin's 2026-08-15 mark. A parallel check for <code>MEMORY\.md|governance.*memory|memory.*suspend|suspend.*memory</code> across the same two directories returned zero matches.</p>
+
+  <h3>Read directly — both hits confirmed as sediment-transport physics</h3>
+  <p><code>hand_check.js</code> tests a sediment/water simulation (<code>hand.js</code>). Its H10 row: <em>"bed plus suspension is conserved — erosion moves mass, never mints it"</em> — a mass-conservation check on eroded material carried in a water column, the standard geomorphology sense of "suspended load." H13: <em>"running water lifts the bed into suspension."</em> The comment at line 215 concerns spoil (dug material) "left in suspension over its own hole" settling back down before water arrives. All three read as one coherent physics vocabulary, unrelated to governance.</p>
+  <p><code>release_filter.js</code> is a lint that sorts newly-added lines of prose into three named fractions borrowed from the same sediment vocabulary, stated explicitly in its own header comment: <em>"FILM — floats, visible, skimmable... SUSPENDED — carried in the body, invisible unless sampled... BEDLOAD — does not move under normal flow."</em> Its "suspended" fraction catches lines making unfalsified totality claims ("all," "every," "exactly N") — a naming borrowed from the same water-physics metaphor as <code>hand.js</code>, not a reference to the governance suspension.</p>
+  <span class="tag sessionderived">session-derived · reading of both files' full text, confirmed against this build's own re-read</span>
+
+  <h3>The instrument roster — resolved by edge 21, cited here rather than re-derived</h3>
+  <p>Root <code>CLAUDE.md</code> states "Twelve instruments hold or refuse; three more run in the page." <code>check_all.js</code>'s own array runs a larger named list plus a <code>gate</code> row invoking <code>gate/gate.mjs</code> (which itself runs its own set of instruments and appends to <code>LEDGER.jsonl</code>). This was an open count discrepancy at the time this edge was first drafted; it is now resolved — <a href="./VE24_21_tools_game2d_build.html"><code>VE24_21_tools_game2d_build.html</code></a> (edge 21) reconciled it directly, by date, rather than by picking a winner: <span class="tag verbatim">verbatim</span> "Root CLAUDE.md's own sentence — 'twelve instruments hold or refuse; three more run in the page' — is <b>not fabricated</b>. It is a real count that held at an earlier point in this suite's incremental build... What's stale is only the first number, by exactly the three instruments registered between 2026-08-19 and 2026-08-25 that the file's own prose was never updated to include." Edge 21's own reconciled table: 13 NODE hold/refuse + 1 ESM + 1 GATE = 15 total hold-or-refuse today; subtracting the three later-registered instruments (<code>sweep_thresholds</code> ~08-19, <code>zero_dependencies_check</code> 08-20, <code>marks_guard_check</code> 08-25) returns exactly root CLAUDE.md's "twelve" — "accurate as of ~2026-08-17/18, stale now." The "three more run in the page" half of CLAUDE.md's sentence needed no reconciliation and is confirmed still accurate today.</p>
+  <span class="tag inherited">inherited · resolution sourced to edge 21, VE24_21_tools_game2d_build.html</span>
+</section>
+
+<section class="panel" id="panel-relationship" data-panel="relationship">
+  <div class="eyebrow">The gap, read as navigation data</div>
+  <h2>Where the map currently knows nothing checks this.</h2>
+  <p class="lede">Per the framing in project <code>CLAUDE.md</code> ("a dead end, a litigation, a failure can be navigation data... used to develop composite solutions when recognized as a place that needs an upstream deposit"), the absence found here is stated as a location on the map, not as a verdict about whether anything should be built.</p>
+
+  <div class="card">
+    <h3>What exists elsewhere in this corpus, for comparison</h3>
+    <p><code>tools/session_bridge_check.js</code> is a real instrument that compares a stated rule (every session ends with a Session Bridge file) against the filesystem and git log, and reports a gap if the two disagree — "report-only, refuses nothing." Its existence is evidence that this corpus, when it chooses to, can build an instrument that turns a prose rule into a checkable filesystem fact. No comparable instrument currently exists for the 2026-08-15 suspension.</p>
+    <span class="tag instrumentfact">instrument fact · session_bridge_check.js read in full</span>
+  </div>
+
+  <div class="card">
+    <h3>What the gap is, named plainly</h3>
+    <p>The suspension's own currency (whether it still holds, when it was last touched, whether a named piece has since been lifted back) is sourced entirely to <code>MARKS_LOG.jsonl</code> timestamps and to the prose of two files (vendor <code>CLAUDE.md</code>, vendor <code>MEMORY.md</code>) that a session reads at boot. Nothing in <code>nesi/game2d/tools/</code> or root <code>tools/</code> currently reads either file, diffs them against their backups, or reports on the suspension's state the way <code>session_bridge_check.js</code> reports on the bridge-file rule.</p>
+  </div>
+
+  <div class="card">
+    <h3>Where this sits, structurally</h3>
+    <p>The suspension's own admission rule states that lifting any part of it requires Kevin's mark, "in his own words, item by item or wholesale," and that "no inference from context, silence, elapsed time, or a completed piece of work lifts any part of it." An instrument that checked the suspension's state would need to be built, if ever, in a way that could not itself become the kind of inference the suspension's own text rules out — a design constraint the gap carries with it, stated here as a property of the terrain, not as a recommendation to build toward it.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Everything this edge-file draws on</div>
+  <h2>Sources, read directly for this build.</h2>
+  <table>
+    <tr><th>Source</th><th>What was read</th></tr>
+    <tr><td>vendor <code>~/.claude/CLAUDE.md</code></td><td>Full text, as loaded into this session's own system context — the suspension notice, the compression note, the "Also suspended by the same mark" list</td></tr>
+    <tr><td>vendor <code>MEMORY.md</code> (at <code>~/.claude/projects/C--Users-KMEAR-OneDrive-Desktop-DSS-content/memory/MEMORY.md</code>)</td><td>Full text, as loaded into this session's own system context — the suspension notice, the compression note, the two live post-suspension entries</td></tr>
+    <tr><td>project <code>CLAUDE.md</code> (repo root)</td><td>Full text, as loaded into this session's own system context — "THE SCOPE OF THIS FILE," "FRAMING" (both the 2026-08-17 and 2026-08-22 marks)</td></tr>
+    <tr><td><code>nesi/game2d/tools/hand_check.js</code></td><td>Full file read directly this build</td></tr>
+    <tr><td><code>nesi/game2d/tools/release_filter.js</code></td><td>Full file read directly this build</td></tr>
+    <tr><td><code>grep -rniE "suspens" nesi/game2d/tools/*.js tools/*.py</code></td><td>Re-run directly this build, 2026-08-27</td></tr>
+    <tr><td><code>tools/session_bridge_check.js</code></td><td>Full file read directly this build, for the comparison in Relationship/Interface</td></tr>
+    <tr><td><code>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md</code></td><td>"Cross-cutting findings" and "Edge 9" sections, read in full</td></tr>
+    <tr><td><code>nesi/mind/FORMAT_SPEC_2026-08-25_session_bridge_html.html</code></td><td>Read in full, as this file's format authority</td></tr>
+    <tr><td><code>nesi/mind/VE24_08_protocols_session_bridge.html</code></td><td>Skimmed for the working shell/tab pattern this file reuses</td></tr>
+  </table>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file is not authorized to do</div>
+  <h2>Two limits, stated plainly.</h2>
+  <div class="card">
+    <h3>This file selects, arranges, and tags — it does not decide</h3>
+    <p>Every claim above is quoted, cited to a file and (where available) a line or section, or explicitly labeled session-derived where it is this build's own reading of source text rather than a quote. Nothing here canonizes a state, ranks a choice, or declares the suspension or the tools directories settled in any way beyond what their own text and their own current file contents already say.</p>
+  </div>
+  <div class="warn">
+    <h3>This file does not argue for or against the suspension's own terms</h3>
+    <p>Per the explicit framing constraint this edge was built under: this file states what is currently suspended, since when, what backups exist, and what is still live — and stops there. It does not recommend lifting, extending, narrowing, or otherwise changing the suspension in any respect, and it does not characterize the gap named in Relationship/Interface as something that should be closed. Where a finding could be read as an implicit argument for building a suspension-checking instrument, it is instead stated as a structural fact about where the map currently has no instrument — navigation data, not a proposal.</p>
+  </div>
+  <p>Reusable, per the Session Bridge format's own rule: a later edge-file may copy this tab structure and swap in its own content.</p>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

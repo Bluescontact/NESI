@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 21 · Tools/Checks ↔ game2d live build</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.2;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:76ch} .lede{font-size:18px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:80ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14.5px;max-width:80ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+.process{counter-reset:step;display:grid;gap:10px;max-width:840px} .process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px} .process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 14px;margin:10px 0} summary{cursor:pointer;font-size:13px;font-weight:650;color:var(--ink)} details p, details .code{margin-top:8px}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · Edge 21 of 24</div><h1>TOOLS/CHECKS<br>↔ GAME2D<br>LIVE BUILD</h1><p>Group G (tools/checks) &amp; Group I (game2d live build) — the instrument-count reconciliation</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>zero network, offline-renderable<br><br><b>DOES NOT</b><br>canonize, rank, or declare a project state settled</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="g" role="tab">G: Tools/Checks</button>
+    <button class="tabbtn" data-tab="i" role="tab">I: game2d live build</button>
+    <button class="tabbtn" data-tab="rel" role="tab">Relationship/Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / edge-21 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · portable</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">The job this edge was left holding</div>
+  <h2>"Twelve instruments hold or refuse" reconciled against check_all.js's actual 18.</h2>
+  <p class="lede">Edge 13 counted check_all.js's NODE array at 16 entries and left the discrepancy against root CLAUDE.md's "twelve instruments hold or refuse; three more run in the page" for this edge to close. It is closed below — not by picking a winner, but by finding the real report/refuse distinction check_all.js's own comments already draw, then dating it.</p>
+  <div class="seal">
+    <div><span>NODE array</span><b>16 entries <span class="tag instrumentfact">instrument fact</span></b></div>
+    <div><span>+ ESM row</span><b>1 (predicate_filter) <span class="tag instrumentfact">instrument fact</span></b></div>
+    <div><span>+ GATE row</span><b>1 (gate/gate.mjs) <span class="tag instrumentfact">instrument fact</span></b></div>
+    <div><span>PY array</span><b>0 — all three waves retired <span class="tag instrumentfact">instrument fact</span></b></div>
+    <div><span>total run by check_all.js</span><b>18 <span class="tag instrumentfact">instrument fact</span></b></div>
+    <div><span>IN_PAGE, not run</span><b>3 <span class="tag instrumentfact">instrument fact</span></b></div>
+  </div>
+  <div class="keyline">
+    <b>The reconciliation.</b> check_all.js's own comments name a real distinction: three NODE entries — <code>organ_map</code>, <code>organ_audit</code>, <code>crossing_audit</code> — are explicitly <b>report-only</b> ("They REPORT rather than refuse... a reader must be able to tell a gate from a survey," registered 2026-08-17). Every other entry either refuses outright or refuses under a stated condition. That leaves <b>18 − 3 = 15</b> instruments that can currently hold-or-refuse, not 12.
+    <br><br>
+    But three of those 15 were registered <em>after</em> the report-only trio and root CLAUDE.md's own "WHERE THE WORK IS" section: <code>sweep_thresholds</code>, <code>zero_dependencies_check</code> (2026-08-20, dated in its own header), <code>marks_guard_check</code> (2026-08-25, dated in its own header). <b>Corrected on verify:</b> <code>sweep_thresholds</code>'s 2026-08-19 date is <i>not</i> in its own file — grepped in full, its only self-dated line reads "TRIMMED, 2026-08-21"; the 2026-08-19 figure exists only in <code>check_all.js</code>'s own comment about the instrument, one file removed from a true self-citation. The date is still real and still the best available registration marker, just sourced one step further than first stated. <b>15 − 3 = 12.</b> Twelve is exactly what check_all.js held at hold-or-refuse status as of roughly 2026-08-17/18, before those three later registrations. <span class="tag sessionderived">session-derived</span> — this arithmetic is this edge's own reasoning from dated comments, not a quote from any file.
+  </div>
+  <p><b>Plain statement:</b> a real report/refuse distinction exists and check_all.js states it in its own words. Root CLAUDE.md's "twelve" is not a fabricated number — it lines up with a real earlier state of the suite. But as of this build (2026-08-27) it is <b>stale by three later-registered instruments</b>. The file has not been updated since those three were added.</p>
+  <p>The other half of CLAUDE.md's sentence — "three more run in the page" — needs no reconciliation at all: check_all.js's own <code>IN_PAGE</code> array holds exactly three entries (<code>answer_check</code>, <code>daily_walk</code>, <code>store_guard</code>), confirmed both by reading the source and by the live run below. That half of the sentence is currently accurate.</p>
+</section>
+
+<section class="panel" id="panel-g" data-panel="g">
+  <div class="eyebrow">Group G</div>
+  <h2>tools/checks — the front door, and what stands behind it.</h2>
+  <div class="card">
+    <h3>check_all.js — "one front door"</h3>
+    <p><span class="tag verbatim">verbatim</span> its own founding incident, from the file's own header comment: "I ran the store guard, it threw 'window is not defined', I piped it through <code>tail -2</code>, read the last line, and committed. The crash looked exactly like output... So there is one front door. It runs every node instrument, prints one row each, and exits non-zero if ANY of them fails — including by crashing, which is reported as CRASH rather than folded into FAIL."</p>
+    <p><span class="tag instrumentfact">instrument fact</span> it is also presence-asserting: "it refuses if it finds FEWER live instruments than it knows about. A run that checks nothing must not print green." (Confirmed structurally — a <code>missing[]</code> array is built from <code>fs.existsSync</code> checks across every named instrument, and the run refuses with exit 1 if anything named is absent from disk.)</p>
+  </div>
+  <div class="card">
+    <h3>The NODE array — 16 entries, read in full</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>, counted directly from <code>nesi/game2d/tools/check_all.js</code>:</p>
+    <table>
+      <tr><th>#</th><th>name</th><th>report-only?</th></tr>
+      <tr><td>1</td><td>refusal_check</td><td>—</td></tr>
+      <tr><td>2</td><td>door_check</td><td>—</td></tr>
+      <tr><td>3</td><td>world_check</td><td>—</td></tr>
+      <tr><td>4</td><td>solid_check</td><td>—</td></tr>
+      <tr><td>5</td><td>hand_check</td><td>—</td></tr>
+      <tr><td>6</td><td>scope_check</td><td>—</td></tr>
+      <tr><td>7</td><td>organ_map</td><td><b>yes</b> — "exits 0 today and says what it found"</td></tr>
+      <tr><td>8</td><td>organ_audit</td><td><b>yes</b> — same registration, same comment</td></tr>
+      <tr><td>9</td><td>crossing_audit</td><td><b>yes</b> — same registration, same comment</td></tr>
+      <tr><td>10</td><td>standing_check</td><td>reports lost support, refuses on misfiling</td></tr>
+      <tr><td>11</td><td>display_law_check</td><td>refuses (discovers its own statements)</td></tr>
+      <tr><td>12</td><td>traversal_check</td><td>refuses on two named defeat-conditions</td></tr>
+      <tr><td>13</td><td>framing_check</td><td>refuses on structure, reports the inversions</td></tr>
+      <tr><td>14</td><td>sweep_thresholds</td><td>reports on feel, refuses on contradicted numbers — <i>registered ~2026-08-19 per check_all.js's own comment; not self-dated in sweep_thresholds.js itself, which only carries "TRIMMED, 2026-08-21"</i></td></tr>
+      <tr><td>15</td><td>zero_dependencies_check</td><td>refuses — <i>registered 2026-08-20</i></td></tr>
+      <tr><td>16</td><td>marks_guard_check</td><td>refuses — <i>registered 2026-08-25</i></td></tr>
+    </table>
+    <p>Plus <span class="tag instrumentfact">instrument fact</span> one ESM row (<code>predicate_filter</code>, its own <code>.mjs</code> row "so it gets its own row rather than being folded into NODE and silently skipped by the .js path") and one GATE row (<code>gate</code> → <code>gate/gate.mjs</code>, "a second jurisdiction with its own runner, its own ledger and its own verdict grammar... it gets a row here so the build has ONE front door rather than two"). <code>PY</code> is empty — its own comment records why: <code>assertion_audit.py</code> and its upstream <code>seats.js</code> were retired 2026-08-21, "third wave," because they tested the old GESTURES-era SET table the ascent.html rebuild dropped.</p>
+  </div>
+  <div class="card">
+    <h3>The GATE's own third exit code</h3>
+    <p><span class="tag verbatim">verbatim</span>: "The gate exits 0 when every active instrument examined something and held, 1 when one refused, and 3 when one EXAMINED NOTHING... it is reported as THIN... an instrument that checked nothing and one that checked everything and found a breach need different hands." check_all.js relays the gate's own "made possible" lines and verdict line verbatim rather than re-judging them — a direct, load-bearing citation of LEARNED law 4 ("a blank screen passes every refusal test") inside the tool's own comment.</p>
+  </div>
+  <div class="card">
+    <h3>The IN_PAGE trio — named, not run</h3>
+    <p><span class="tag instrumentfact">instrument fact</span>: <code>answer_check</code>, <code>daily_walk</code>, <code>store_guard</code>. Reading the source directly: check_all.js's missing-file check tests for their existence on disk (<code>NODE.concat(IN_PAGE)</code>), but the execution loop that actually runs each instrument via <code>execFileSync</code> only iterates <code>NODE</code>, <code>PY</code>, <code>ESM</code>, and <code>GATE</code> — never <code>IN_PAGE</code>. The trio is printed at the end under its own header, "in the page, not covered by this run," and nothing in check_all.js invokes them. <b>This confirms edge preflight's claim directly: the in-page-only trio has no check_all.js-driven counterpart.</b></p>
+  </div>
+</section>
+
+<section class="panel" id="panel-i" data-panel="i">
+  <div class="eyebrow">Group I</div>
+  <h2>game2d live build — index.html, solid.js, options.html.</h2>
+  <div class="card">
+    <h3>Sizes, read in full this pass</h3>
+    <table>
+      <tr><th>file</th><th>lines</th></tr>
+      <tr><td>index.html</td><td>2101 <span class="tag instrumentfact">instrument fact</span></td></tr>
+      <tr><td>solid.js</td><td>570 <span class="tag instrumentfact">instrument fact</span></td></tr>
+      <tr><td>options.html</td><td>666 <span class="tag instrumentfact">instrument fact</span></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>index.html — "WIRED IN AS THE ENTRY POINT, 2026-08-26"</h3>
+    <p><span class="tag verbatim">verbatim</span>, its own header: "This file's source is nesi/game2d/the_page.html, copied here verbatim — the same file, not a fork of it, so the two never drift... Previous door (twelve seats read from solid.js) is kept whole, unedited, at index.html.backup_pre-lattice-entry_2026-08-26.html." Confirms edge 17's finding directly, read here again at the header.</p>
+    <p>Law citations confirmed by direct grep this session, all present in the file body: law 8 (line 381, no offline progression), law 20 (line 579, "no law becomes a lever to give [Kevin] less"), law 27 (line 1043, "read as what the map now needs, not smoothed over"), law 6 (line 1049, "no confirmation, no reward cue"), "law 3/11" (line 1459, network-primitive refusal), law 8 again (line 1668, nothing advances per-frame). <span class="tag instrumentfact">instrument fact</span> — six citations, matching edge 3's own count exactly.</p>
+  </div>
+  <div class="card">
+    <h3>solid.js's "Law 2" — already resolved by edge 3, cited here rather than re-litigated</h3>
+    <p><span class="tag verbatim">verbatim</span>, solid.js:34-35: "NO NUMBER IN HERE REACHES THE PLAYER. This is the world's skeleton, not its face. Law 2 governs anything drawn from it."</p>
+    <p><span class="tag verbatim">verbatim</span>, LEARNED.md's current law 2: "VERIFICATION NEEDS A STRANGER. No WALKABLE without a stranger read; machine-proved surfaces are UNWITNESSED."</p>
+    <p><span class="tag inherited">inherited</span> <b>Corrected on verify:</b> this file first re-presented solid.js:34's citation as an unresolved mismatch against current LEARNED.md — but edge 3 (<code>VE24_03_laws_game2d_build.html</code>) already resolved this directly, and this file's first pass misstated edge 3's own finding. Edge 3 confirmed the citation is <b>not</b> an error: it matches, exactly, a separate, older numbering — <code>refusal_check.js:151</code>'s own words, "law 2 — no number reaches the player" — which is the same live discrepancy this edge's G-tab already documents (two numbering systems, one current in LEARNED.md, one older and still cited directly by the build's own code). This card exists only to cite that resolution, not to reopen it.</p>
+  </div>
+  <div class="card">
+    <h3>options.html — read in full this pass (previously unread by edge 3)</h3>
+    <p>666 lines. It is the decision surface named by root CLAUDE.md ("WHERE THE WORK IS": "The decision surface is <code>nesi/game2d/options.html</code>; marks live there and in <code>MARKS_LOG.jsonl</code>, and only Kevin's click marks."). Its relationship to <code>check_all.js</code> is indirect: no instrument row targets <code>options.html</code> by name; its live-state guarantee ("only a hand's click writes to a marks ledger") is exactly what <code>marks_guard_check</code> (NODE #16, registered 2026-08-25) exists to check as a filesystem fact rather than a read hand-verifies each time. <span class="tag sessionderived">session-derived</span> — this is the file connecting Group G's newest instrument to Group I's decision surface, and it is the most concrete G↔I link this edge found beyond the general "tools/ exists to check index.html/solid.js/options.html" framing.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-rel" data-panel="rel">
+  <div class="eyebrow">The actual interface</div>
+  <h2>Live run, executed this pass — not read from source, run for real.</h2>
+  <p class="lede">Edge preflight's own verification step 2 said: "Actually run <code>node tools/check_all.js</code> (this pass only read source, never executed it) before asserting current build health." That is done here.</p>
+  <div class="code">$ node tools/check_all.js   (run from nesi/game2d/, this session, 2026-08-27)
+
+  ok    refusal_check   no model call, nothing outward, no score or reward cue
+  ok    door_check      every level reachable from the map
+  ok    world_check     the figure drawn IS the solid
+  ok    solid_check     the solid's own arithmetic
+  ok    hand_check      the bed's own arithmetic — conserved, deterministic, and it holds
+  ok    scope_check     every instrument reads the live build
+  ok    organ_map       27 organs sited by gesture, and the sockets still open
+  ok    organ_audit     what each organ would cost the build if it were taken in
+  ok    crossing_audit  what may leave the world, and what stays
+  ok    standing_check  what kind of standing a claim has, and what keeps it standing
+  ok    display_law_check  one law, stated in three places, and the copies agree
+  ok    traversal_check the fourth source stays the fourth
+  ok    framing_check   negative form sits in a lint or at an edge, never in the prose
+  ok    sweep_thresholds two feel constants, swept across their real input space, none ruled on
+  ok    zero_dependencies_check  no package.json, no node_modules, no remote script/fetch/import
+  ok    marks_guard_check  only a hand's click writes to a marks ledger — a fact, not a claim
+  ok    predicate_filter  EXISTS, MENTIONED and REACHABLE kept apart — a mention is not a route
+  ok    gate            what the build made possible, and what it refuses to call progress
+                         made possible: day_one.first_walk — day_one.html walked for the first
+                         time by a hand that ...
+
+  in the page, not covered by this run:
+           answer_check    every act answers a hand before it is taken
+           daily_walk      nineteen properties of the surface he writes in
+           store_guard     his writing is the same before and after any work
+
+[check_all] all 18 hold · 3 more wait for a page
+exit code: 0</div>
+  <p><span class="tag instrumentfact">instrument fact</span> <b>current state: green.</b> All 18 instruments check_all.js runs — 16 NODE + 1 ESM + 1 GATE — report <code>ok</code>. The gate itself exits 0 (not 1/FAIL, not 3/THIN) and relays one "made possible" line verbatim. Zero CRASH, zero FAIL, zero THIN, zero GONE (missing) this run. The three IN_PAGE instruments print under their own uncovered-by-this-run header, exactly as check_all.js's own design intends.</p>
+  <div class="rule"></div>
+  <h3>The reconciled count, stated as a table</h3>
+  <table>
+    <tr><th>Category</th><th>Count</th><th>State</th></tr>
+    <tr><td>NODE, hold/refuse (non-report-only)</td><td>13</td><td>ok, this run <span class="tag instrumentfact">instrument fact</span></td></tr>
+    <tr><td>NODE, report-only (organ_map/organ_audit/crossing_audit)</td><td>3</td><td>ok, this run — reports, never fails the suite by design</td></tr>
+    <tr><td>ESM (predicate_filter)</td><td>1</td><td>ok, this run — presence-asserting</td></tr>
+    <tr><td>GATE (gate.mjs, own verdict grammar)</td><td>1</td><td>ok (exit 0), this run — relayed verbatim</td></tr>
+    <tr><td><b>Total hold/refuse today</b></td><td><b>15</b></td><td>13 NODE + ESM + GATE</td></tr>
+    <tr><td>minus the 3 registered after CLAUDE.md's "twelve" line (sweep_thresholds ~08-19, zero_dependencies_check 08-20, marks_guard_check 08-25)</td><td>−3</td><td>zero_dependencies_check and marks_guard_check are dated in their own header comments; sweep_thresholds' date is sourced from check_all.js's comment about it, not from sweep_thresholds.js itself — corrected on verify</td></tr>
+    <tr><td><b>= root CLAUDE.md's "twelve"</b></td><td><b>12</b></td><td>accurate as of ~2026-08-17/18, stale now <span class="tag sessionderived">session-derived</span></td></tr>
+    <tr><td>IN_PAGE (answer_check, daily_walk, store_guard)</td><td>3</td><td>named, never executed by check_all.js — confirmed by source read</td></tr>
+  </table>
+  <div class="keyline">Root CLAUDE.md's own sentence — "twelve instruments hold or refuse; three more run in the page" — is <b>not fabricated</b>. It is a real count that held at an earlier point in this suite's incremental build (documented entirely by the file's own dated registration comments), and the "three more run in the page" half is <b>still exactly true today</b>. What's stale is only the first number, by exactly the three instruments registered between 2026-08-19 and 2026-08-25 that the file's own prose was never updated to include.</div>
+  <div class="card">
+    <h3>Related Edges — read against the map at <code>VE24_RELATIONSHIPS_2026-08-27.html</code></h3>
+    <p><span class="tag inherited">inherited</span> Two edges depend directly on this reconciliation. Edge 9 and edge 13 (Group C/D/E ↔ tools/checks, both read separately) each left the same instrument-count discrepancy — root CLAUDE.md's "twelve" against check_all.js's larger real NODE array — open as an unresolved question in their own text. This edge's own reconciliation above (18 total, 15 hold/refuse, 12 as of ~2026-08-17/18) closes that open question for both. Neither edge 9 nor edge 13's own text cites this file yet; the swarm relationship pass names this as a real dependency, not a guess from titles.</p>
+    <p><span class="tag sessionderived">session-derived</span> <b>A cross-cutting pattern, not a one-off.</b> This edge and edge 22 (Tools/Checks ↔ Library) independently caught and self-corrected a wrong headline count on their own first pass, in the same batch: this file's first pass sourced <code>sweep_thresholds</code>' registration date to a citation one file removed from a true self-citation before correcting it; edge 22's first pass undercounted root <code>tools/</code> at 39 entries and silently dropped one real file before an independent re-count found 56. Two independent instances of the same defect class in one batch is worth naming plainly: this corpus's counting discipline is genuine — both errors were caught and corrected on verify rather than shipped — but it has repeatedly needed a second pass to catch drift that the first pass missed.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">What this file draws on</div>
+  <h2>Sources.</h2>
+  <details><summary>nesi/game2d/tools/check_all.js — read in full this pass</summary><p>All array contents (NODE/PY/ESM/GATE/IN_PAGE), every dated registration comment, the founding-incident header, the gate's third-exit-code section, and the execution/reporting loops (confirming IN_PAGE is checked for presence but never executed).</p></details>
+  <details><summary>nesi/game2d/index.html — read in full this pass (2101 lines)</summary><p>Header comment ("WIRED IN AS THE ENTRY POINT, 2026-08-26"), grep-confirmed law citations at lines 381, 579, 1043, 1049, 1459, 1668.</p></details>
+  <details><summary>nesi/game2d/solid.js — read in full this pass (570 lines)</summary><p>Header/provenance block, the SEATS table opening, and the law-2 citation at lines 34-35.</p></details>
+  <details><summary>nesi/game2d/options.html — read in full this pass (666 lines)</summary><p>Confirmed as the decision surface named by root CLAUDE.md; no direct check_all.js instrument targets it by name.</p></details>
+  <details><summary>nesi/mind/LEARNED.md — lines 1-60 read this pass</summary><p>Law 2 and law 5 text, quoted verbatim, to check solid.js:34's own citation.</p></details>
+  <details><summary>Root CLAUDE.md ("WHERE THE WORK IS")</summary><p><span class="tag verbatim">verbatim</span>: "node tools/check_all.js — Run from nesi/game2d/. Twelve instruments hold or refuse; three more run in the page." The claim under reconciliation in this whole edge-file.</p></details>
+  <details><summary>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md</summary><p>"Cross-cutting findings" and "Edge 21" sections, both read in full — the open questions this file answers.</p></details>
+  <details><summary>nesi/mind/VE24_03_laws_game2d_build.html and VE24_13_gate_tools.html</summary><p>Edge 3's ten law-citation count and its law-2/law-5 flag; edge 13's confirmed 16-entry NODE count and its two-gate disambiguation — both treated as confirmed prior findings, not re-derived from scratch, and both independently reconfirmed by this pass's own direct reads.</p></details>
+  <details><summary>FORMAT_SPEC_2026-08-25_session_bridge_html.html</summary><p>Shell mechanics, palette tokens, tab-switch script, and the provenance-tag definitions reused verbatim in this file's CSS/markup.</p></details>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file is not authorized to do</div>
+  <h2>Limits.</h2>
+  <div class="warn">This file selects, quotes, counts, and juxtaposes. It does not canonize a claim, does not rank Kevin's choices, and does not declare the game2d build's overall project state settled — a green <code>check_all.js</code> run is, in this corpus's own words (root CLAUDE.md), "the floor," with "the verdict [coming] from the eye and from a stranger."</div>
+  <div class="card"><h3>What was not re-verified</h3><p>The "13 non-report-only NODE instruments" line item is this session's own count from reading each entry's comment for report-vs-refuse language — it was not independently confirmed by, say, forcing each instrument to fail and checking whether it turns the suite red. <code>standing_check</code>, <code>framing_check</code>, and <code>sweep_thresholds</code> are each explicitly mixed (report some things, refuse others); counting them as "hold/refuse" rather than splitting them further is a judgment call, named here rather than hidden.</p></div>
+  <div class="card"><h3>What was confirmed directly this pass</h3><p>The NODE/ESM/GATE/PY array contents, the IN_PAGE non-execution, the live <code>check_all.js</code> run and its exit code, all six index.html law-citation line numbers, the law-2/law-5 text comparison, and all three file line counts — all instrument facts, reproducible by re-reading the same files or re-running the same command.</p></div>
+  <div class="card"><h3>Reusable</h3><p>A later session may copy this file's tab structure and palette tokens and swap in its own edge's content, per the format spec this file follows.</p></div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

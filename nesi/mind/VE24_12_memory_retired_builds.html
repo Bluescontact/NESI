@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 Edge 12 · Memory/Suspension ↔ Retired Builds</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:20px;line-height:1.15;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:900px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:32px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:74ch} .lede{font-size:18px;color:var(--muted);max-width:68ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:78ch}
+.frame{margin:22px 0;padding:18px 22px;border:2px solid var(--gold);background:var(--gold-soft);border-radius:12px;font-size:16px;max-width:80ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:15px;max-width:78ch}
+.ok{margin:22px 0;padding:16px 20px;border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;font-size:15px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+details{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:10px 14px;margin-bottom:10px} summary{cursor:pointer;font-size:13px;font-weight:650} summary:hover{color:var(--gold)} details[open] summary{margin-bottom:8px}
+.status-badge{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:3px 9px;border-radius:999px}
+.status-badge.confirmed{background:var(--green-soft);color:var(--green)} .status-badge.unconfirmed{background:var(--red-soft);color:var(--red)} .status-badge.partial{background:var(--gold-soft);color:var(--gold)}
+.quotecol{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.quotecol{grid-template-columns:1fr 1fr 1fr}}
+.quotecard{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:16px}
+.quotecard h4{margin:0 0 8px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.quotecard .code{font-size:11.5px;padding:12px}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · Edge 12</div><h1>MEMORY /<br>SUSPENSION ↔<br>RETIRED BUILDS</h1><p>C–J · the 2026-08-15 suspension ↔ world3d and the corpus's other closed trees</p></div>
+  <div class="seal-mini"><b>PARALLEL, NOT LIFT</b><br>this file draws a comparison between two independent decisions — it does not reactivate, quote-as-instruction, or argue either one's terms<br><br><b>SELF-CONTAINED</b><br>no network, no CDN — built to FORMAT_SPEC_2026-08-25_session_bridge_html.html</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="memory" role="tab">C: Memory/Suspension</button>
+    <button class="tabbtn" data-tab="retired" role="tab">J: Retired builds</button>
+    <button class="tabbtn" data-tab="relationship" role="tab">Relationship / Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / edge-12 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is, and — first — what it is not</div>
+  <h2>Edge 12 of 24: a shared convention, observed across two decisions that were made separately.</h2>
+  <p class="lede">Group C (Memory/Suspension — Kevin's 2026-08-15 governance suspension of the vendor <code>CLAUDE.md</code>, <code>MEMORY.md</code>, and the machinery listed with them) and Group J (Retired builds — <code>world3d</code> and the corpus's other closed trees) sit on opposite sides of the vector-equilibrium diagram: one is a rule about what may act, the other is a record of what stopped being built. What connects them is not a shared subject — it is a shared <em>form of words</em> for how each decision treats what it sets aside.</p>
+
+  <div class="frame">
+    <strong>FRAMING, STATED PLAINLY BEFORE ANYTHING ELSE ON THIS PAGE:</strong> this file draws a <strong>parallel</strong> between two decisions Kevin made independently — the 2026-08-15 suspension and the 2026-08-14 retirement of <code>world3d</code>. It is <strong>not</strong> a lift, a reactivation, or a re-adoption of any suspended material. It does not argue that the suspension should change, loosen, or end. It does not claim Kevin ever said these two decisions were the same thing — no source found states that equivalence; it is this file's own observation of parallel wording, labeled as such throughout. Reading the suspension's own stated shape and quoting its own language, without arguing for or against it, is the reading this edge was preflighted to confirm sits inside the suspension's own escape clause ("read as history... available to quarry... never as authority" — <code>MEMORY.md</code> and root <code>CLAUDE.md</code>, both quoted verbatim on the next tab). Nothing on this page asks a reader to treat the suspension as lifted, partially lifted, or narrowed.
+  </div>
+
+  <div class="seal">
+    <div><span>SCOPE</span><b>C ↔ J only — reads both as they stand, changes neither</b></div>
+    <div><span>BUILT FROM</span><b>DRAFT_VE24 preflight, edge 12 section, Kevin's framing confirmation on the same mark that authorized building this file</b></div>
+    <div><span>STRONGEST FINDING</span><b>the same convention-sentence appears in at least three, and by a wider read five, independent places</b></div>
+    <div><span>WHAT DIDN'T CHANGE</span><b>the suspension's terms, scope, and lifting condition — unedited, unargued</b></div>
+    <div><span>WHO THIS PARALLEL IS DRAWN BY</span><b>this file, this pass — not asserted as Kevin's own stated equivalence</b></div>
+    <div><span>AUTHORITY</span><b>none — this file selects and juxtaposes, it does not rule</b></div>
+  </div>
+
+  <div class="keyline">The question this edge actually answers: when Kevin sets something aside — a rule he suspends, a tree he retires — does the corpus have one convention for how "set aside" is handled, or two unrelated ones that happen to look similar? The finding on the Relationship tab is: <strong>one convention, worded almost identically, adopted independently in both places</strong> — and the corpus's own retired-build record (<code>ascent_2026-08-21_pre-rebuild.html</code>'s header) already names the retirement/composting half of that convention in its own words, before this file existed (see the Sources tab for the exact quote and an honest note on how far it reaches — it names "every SUPERSEDED" mark, not the 2026-08-15 suspension specifically, which uses a different word for a different kind of reversal).</div>
+</section>
+
+<section class="panel" id="panel-memory" data-panel="memory">
+  <div class="eyebrow">Group C</div>
+  <h2>The 2026-08-15 suspension, read as it currently stands.</h2>
+
+  <div class="card">
+    <h3>What is suspended</h3>
+    <p>Root <code>CLAUDE.md</code>'s own current list, verbatim: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"The vendor `~/.claude/CLAUDE.md`, `MEMORY.md`, the widget hook, the pre-flight
+manifest gate, the widget chassis, the decision brake and the counsel seats are
+all suspended and remain so. Lifting any of them is his, in his own words, item
+by item or wholesale."</div>
+  </div>
+
+  <div class="card">
+    <h3>Vendor MEMORY.md's own stated shape</h3>
+    <p>Read in full this pass, at <code>C:\Users\KMEAR\.claude\projects\C--Users-KMEAR-OneDrive-Desktop-DSS-content\memory\MEMORY.md</code>: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"Every memory below is suspended as binding. The index and the files it points
+to are kept whole and unaltered; the pre-suspension index is at
+`MEMORY.md.backup_pre-suspension_2026-08-15.md`. Nothing was deleted."
+
+"How to read them from here: as a record of what was true when written, never
+as standing instruction, never as authority for how to work with Kevin. A
+memory may be picked back up only when he names it back, in his own words."</div>
+    <p>Two entries stay live inline in that same file — added after 2026-08-15, on Kevin's own direct ask, under the notice's own escape clause. Everything else is a pointer to the untouched backup, not restated content.</p>
+  </div>
+
+  <div class="card">
+    <h3>The lifting condition, stated the same way in every copy found</h3>
+    <p>Vendor <code>CLAUDE.md</code>'s suspension notice (quoted in the project <code>CLAUDE.md</code>'s own material this session had in context): "Lifting this is Kevin's alone, in his own words, item by item or wholesale. No inference from context, silence, elapsed time, or a completed piece of work lifts any part of it." <span class="tag inherited">inherited</span> — this is prior material, quoted, not restated as a new rule by this file.</p>
+  </div>
+
+  <div class="card">
+    <h3>The gate PROTOCOLS.md itself names for its own freeze — the sentence that turns out to matter for this edge</h3>
+    <p><code>nesi/mind/PROTOCOLS.md</code>, lines 20–22, read in full this pass: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"Nothing below is deleted. The freeze stands underneath exactly as written,
+which is this corpus's convention: supersession is a mark on top, never a
+silent erasure. Read it as history from here, never as instruction."</div>
+    <p>This sentence is about the 2026-08-07 FULL FREEZE (lifted 2026-08-17), not directly about the 2026-08-15 suspension — but it names the same shape ("a mark on top, never a silent erasure") as a corpus-wide convention, not a one-time rule for the freeze alone. <span class="tag sessionderived">session-derived</span> observation: this is the phrase that gives the parallel on the Relationship tab its name.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-retired" data-panel="retired">
+  <div class="eyebrow">Group J</div>
+  <h2>world3d as the primary example — with the wider retired/library set from edge 4, reused where it bears directly.</h2>
+
+  <div class="card">
+    <h3>world3d <span class="status-badge confirmed">CONFIRMED RETIRED, 2026-08-14</span></h3>
+    <p><code>nesi/world3d/RETIRED.md</code>, read in full this pass: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"This tree is closed. Nothing here is built against, extended, cited as
+current, or used as a starting point. It is kept whole as a record — nothing
+was deleted — in the same convention the corpus uses everywhere else:
+supersession is a new mark layered on top, never a silent erasure."</div>
+    <p>Root <code>CLAUDE.md</code>'s own current line on the same tree, read in full this pass: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"`nesi/world3d/` is retired (2026-08-14), and `nesi/world3d/CLAUDE.md` with
+it. It is kept whole as a record and is available to quarry when Kevin names
+a piece of it back."</div>
+    <p><code>nesi/world3d/CLAUDE.md</code> (read in full this pass) still exists on disk as a complete working document for the closed tree — run commands, file layout, a vocabulary table, and its own pre-<code>LEARNED.md</code> "six refusals" — untouched, not deleted, not edited to remove its own now-superseded instructions.</p>
+  </div>
+
+  <div class="card">
+    <h3>The backup-naming convention — checked as a filesystem fact, not asserted from prose</h3>
+    <p>A repo-wide glob for <code>*.backup_*</code> (excluding the six duplicate <code>.claude/worktrees/</code> copies) found the pattern in active use across both domains and beyond them: <span class="tag instrumentfact">instrument fact</span></p>
+    <table>
+      <tr><th>File</th><th>Domain</th><th>Naming form</th></tr>
+      <tr><td><code>CLAUDE.md.backup_pre-suspension_2026-08-15.md</code></td><td>C — suspension</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.md</code></td></tr>
+      <tr><td><code>MEMORY.md.backup_pre-suspension_2026-08-15.md</code></td><td>C — suspension</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.md</code></td></tr>
+      <tr><td><code>nesi/world3d/CLAUDE.md.backup_2026-08-07.md</code></td><td>J — world3d</td><td><code>&lt;file&gt;.backup_&lt;date&gt;.md</code> — no reason token</td></tr>
+      <tr><td><code>nesi/mind/CLAUDE.md.backup_2026-07-16.md</code></td><td>B — protocols/boot-path</td><td><code>&lt;file&gt;.backup_&lt;date&gt;.md</code> — no reason token</td></tr>
+      <tr><td><code>nesi/mind/PROTOCOLS.md.backup_pre_ds_lite_2026-08-07.md</code></td><td>B — protocols/boot-path</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.md</code></td></tr>
+      <tr><td><code>nesi/game2d/gate/LEDGER.jsonl.backup_pre-compaction_2026-08-24.jsonl</code></td><td>D — gate/ledger (live build)</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.&lt;ext&gt;</code></td></tr>
+      <tr><td><code>nesi/game2d/BUILD_RECORD.md.backup_pre-compaction_2026-08-24.md</code></td><td>I — game2d live build</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.md</code></td></tr>
+      <tr><td><code>nesi/game2d/index.html.backup_pre-lattice-entry_2026-08-26.html</code></td><td>I — game2d live build</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.html</code></td></tr>
+      <tr><td><code>nesi/game2d/the_weave.html.backup_pre-composting_2026-08-26.html</code></td><td>I — game2d live build</td><td><code>&lt;file&gt;.backup_&lt;reason&gt;_&lt;date&gt;.html</code></td></tr>
+    </table>
+    <p><span class="tag sessionderived">session-derived</span> reading of the table above: the two-pair claim in the preflight (C and world3d) holds exactly as stated, and the convention is confirmed considerably broader than those two — it runs across four of the twelve VE24 domains found this pass (B, C, D/I, J), with the reason-token as an optional, not required, part of the form.</p>
+  </div>
+
+  <div class="card">
+    <h3>A fifth instance, found inside Group J itself, that names the convention by cross-reference</h3>
+    <p><code>nesi/game2d/_compost/ascent_2026-08-21_pre-rebuild.html</code>'s own header comment, read this pass (header only, per this edge's preflight — the file is 201,979 bytes): <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"■ RETIRED, 2026-08-21, Kevin's mark: "cut the ascent entirely.. It's too many
+patches in to fix.. we need to build the levels entirely from scratch based
+on the vision of the game as it currently stands."
+
+Composted here, not deleted — the corpus's own convention (world3d/'s
+retirement, THE_SIX_MANIFESTS.md's composting, every "■ SUPERSEDED" this
+session has made): kept whole, available to quarry, binding nothing."</div>
+    <p>This is the strongest evidence in this edge that the parallel drawn on the Relationship tab is not this file's invention: a Group-J artifact, written before this edge existed, already names world3d's retirement and "every SUPERSEDED" mark as instances of one shared corpus convention — in its own words, unprompted by this pass. (Corrected on verify: the transcription above initially dropped the source's "■" glyphs and swapped its em dash and quote style — fixed to match the source character-for-character, since this block is tagged verbatim.)</p>
+  </div>
+
+  <div class="card">
+    <h3>A further corroborating instance, from Group D — not cited when this edge was first built</h3>
+    <p>Per the VE24 swarm relationship map (<code>nesi/mind/VE24_RELATIONSHIPS_2026-08-27.html</code>, Relationship Map tab, row "Would-resolve-if-combined · 12 + 16"), <a href="./VE24_16_gate_session_bridge.html"><code>VE24_16_gate_session_bridge.html</code></a> (edge 16, Group D — gate/session-bridge) documents a fifth live instance of the same "kept whole, never deleted" convention this tab traces across B, C, D/I, and J. Read directly from edge 16's own text: <span class="tag verbatim">verbatim</span></p>
+    <div class="code">"Eight instrument modules (01-motion through 09-dispute, minus the retired
+04-horizon, kept whole at tools/retired/04-horizon.mjs per this project's own
+retirement convention), each returning a status of pass, refuse, held,
+vacuous, or admit."</div>
+    <p><code>gate/gate.mjs</code>'s own retired instrument — <code>04-horizon</code>, superseded within the gate's own eight-module roster — was kept whole on disk at <code>tools/retired/04-horizon.mjs</code> rather than deleted, named by edge 16 as an instance of "this project's own retirement convention." This strengthens, without changing, the finding already stated above: the same convention now has a corroborating instance inside Group D's own live gate mechanism, alongside the world3d, ascent.html, and backup-file instances already documented on this tab. It does not add a new domain to the backup-naming table above (that table tracks a distinct filesystem pattern — <code>*.backup_*</code> naming — and <code>04-horizon.mjs</code> was retired by relocation into <code>tools/retired/</code>, not by that naming form), so it is named here as a fifth corroborating instance of the convention itself, not as a tenth row in that table.</p>
+    <span class="tag inherited">inherited · VE24_RELATIONSHIPS_2026-08-27.html, Relationship Map tab; quote sourced to VE24_16_gate_session_bridge.html</span>
+  </div>
+
+  <div class="card">
+    <h3>The wider J set, reused from edge 4 where relevant (not re-verified this pass)</h3>
+    <p>Edge 4 (<code>VE24_04_laws_retired_builds.html</code>, already built and verified) found: <span class="tag inherited">inherited</span> — carried forward from that file, not re-checked here.</p>
+    <table>
+      <tr><th>Build</th><th>Status (per edge 4)</th></tr>
+      <tr><td>world3d</td><td>Confirmed retired, RETIRED.md, 2026-08-14 — direct declaration</td></tr>
+      <tr><td>world2d</td><td>No retirement document found anywhere in the repo — treated as library/retired by every live instrument, but genuinely unconfirmed as a formal status</td></tr>
+      <tr><td>bench/geometric_bench</td><td>Staged, cycle 2 of 3 complete — not retired, mid-build</td></tr>
+      <tr><td>game2d/_compost</td><td>One file, <code>ascent_2026-08-21_pre-rebuild.html</code> — a pre-rebuild snapshot, confirmed above to carry its own convention-naming header</td></tr>
+      <tr><td>_overnight_build</td><td>Confirmed byte-identical to the live tree (INDEX.md's own instrument-checked finding) — nothing left to route</td></tr>
+    </table>
+    <p>World2d's unconfirmed status matters for this edge specifically: it means the "kept whole, available to quarry" convention is confirmed for world3d and _compost, but cannot honestly be claimed for world2d, since no document states world2d was ever formally set aside in the first place.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-relationship" data-panel="relationship">
+  <div class="eyebrow">What actually connects Group C to Group J</div>
+  <h2>Three quotes, side by side — an observed pattern, not an asserted equivalence.</h2>
+
+  <div class="warn"><strong>Read this before the quotes below:</strong> the three columns are placed next to each other because their wording is close, not because any source states they describe the same decision. The suspension (C) is a rule about what may currently act as instruction. The retirement (J) is a record of what stopped being built on. Kevin made these on different dates (2026-08-14 and 2026-08-15), for different reasons, and no document found treats them as one decision. What is shared is the <em>form</em> each uses for "set aside, not erased" — and the fifth instance on the previous tab (the <code>ascent.html</code> header) shows the corpus itself already reads that form as one convention, independent of this file.</div>
+
+  <div class="quotecol">
+    <div class="quotecard">
+      <h4>C — Memory/Suspension<br><span style="font-weight:400;text-transform:none;letter-spacing:0">vendor MEMORY.md, 2026-08-15</span></h4>
+      <div class="code">"Every memory below
+is suspended as
+binding. The index
+and the files it
+points to are kept
+whole and unaltered
+... Nothing was
+deleted."</div>
+    </div>
+    <div class="quotecard">
+      <h4>J — Retired builds<br><span style="font-weight:400;text-transform:none;letter-spacing:0">root CLAUDE.md on world3d, current</span></h4>
+      <div class="code">"`nesi/world3d/` is
+retired (2026-08-14)
+... It is kept whole
+as a record and is
+available to quarry
+when Kevin names a
+piece of it back."</div>
+    </div>
+    <div class="quotecard">
+      <h4>B — Protocols<br><span style="font-weight:400;text-transform:none;letter-spacing:0">PROTOCOLS.md:20-22, on the 2026-08-07 freeze</span></h4>
+      <div class="code">"Nothing below is
+deleted. The freeze
+stands underneath
+exactly as written,
+which is this
+corpus's convention:
+supersession is a
+mark on top, never
+a silent erasure."</div>
+    </div>
+  </div>
+
+  <p style="margin-top:18px">All three tagged <span class="tag verbatim">verbatim</span> — re-transcribed character-for-character this pass directly from the three live files (paths and line numbers on the Sources tab). The middle column is Group J's own domain; the third is Group B's, included here because it is the only place in the corpus that names the shared form as a convention explicitly, by that word.</p>
+
+  <h3>Shared shape, named plainly</h3>
+  <table>
+    <tr><th>Element</th><th>Present in C (suspension)</th><th>Present in J (world3d)</th></tr>
+    <tr><td>"Nothing was deleted" / "kept whole"</td><td>Yes — verbatim, MEMORY.md</td><td>Yes — verbatim, RETIRED.md and root CLAUDE.md</td></tr>
+    <tr><td>A named backup or record file, untouched</td><td>Yes — <code>MEMORY.md.backup_pre-suspension_2026-08-15.md</code></td><td>Yes — <code>world3d/CLAUDE.md.backup_2026-08-07.md</code>, and <code>world3d/</code> itself left whole</td></tr>
+    <tr><td>Explicit "read as history, not as instruction/current"</td><td>Yes — MEMORY.md: "never as standing instruction, never as authority"</td><td>Yes — RETIRED.md: "not built against, extended, cited as current"</td></tr>
+    <tr><td>Reversal condition named</td><td>Yes — "his alone, in his own words, item by item or wholesale"</td><td>Partial — "available to quarry when Kevin names a piece of it back"; no document frames world3d's retirement as reversible the way the suspension explicitly is</td></tr>
+    <tr><td>Names the convention as corpus-wide, not local</td><td>Not in MEMORY.md itself</td><td>Yes — RETIRED.md: "in the same convention the corpus uses everywhere else"; also the ascent.html header, independently</td></tr>
+  </table>
+
+  <p>Four of five rows align closely; the fourth (reversal) does not — the suspension is explicitly framed by Kevin as something only he can lift, in his own words; no source found frames world3d's retirement the same way, though "available to quarry when Kevin names a piece of it back" gestures at something similar for individual pieces, not the tree as a whole. <span class="tag sessionderived">session-derived</span> — this is where the parallel is weakest, and it is named here rather than smoothed over.</p>
+
+  <div class="ok"><strong>What this edge is confident about:</strong> the corpus has one recognizable convention-shape for "set aside, kept whole, not currently authoritative" that both the suspension and the retired-build domain use, worded closely enough that a source inside Group J (the ascent.html header) already names it as one convention on its own — before and independent of this file drawing the comparison.</div>
+  <div class="warn"><strong>What this edge does not claim:</strong> that the suspension and world3d's retirement are the same decision, that either should be treated in light of the other, or that finding this pattern changes what either one currently requires. The suspension's lifting condition — Kevin's own words, item by item or wholesale — is unaffected by anything on this page.</div>
+
+  <div class="card">
+    <h3>A test this edge's own documentation makes available to edge 15 — not a call this edge makes</h3>
+    <p>Per the VE24 swarm relationship map (<code>nesi/mind/VE24_RELATIONSHIPS_2026-08-27.html</code>, Gap Routing Table tab, row "nesi_bench_v0 K→J reclassification"), this edge's own documented convention — a formal <code>RETIRED.md</code>-or-equivalent declaration plus a kept-whole backup file, confirmed above for world3d and, in weaker form, for <code>ascent.html</code> — gives a concrete, mechanical test that <a href="./VE24_15_gate_library.html"><code>VE24_15</code></a>'s own open question (whether <code>nesi_bench_v0</code> qualifies for reclassification from domain K into domain J) could be checked against: does a declarative artifact of that kind exist for <code>nesi_bench_v0</code>? This file does not run that check or make that reclassification call — per the relationship map's own routing note, "applying it to reclassify a domain is outside any edge's own authority." Naming the test here is a would-resolve-if-combined relationship between two already-published findings, not a ruling. The reclassification itself stays edge 15's and Kevin's territory.</p>
+    <span class="tag inherited">inherited · VE24_RELATIONSHIPS_2026-08-27.html, Gap Routing Table tab</span>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Every file read for this edge</div>
+  <h2>Collapsible, with real quotes and paths.</h2>
+
+  <details>
+    <summary>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md — Cross-cutting findings + Edge 12 section</summary>
+    <p>Read in full. Edge 12's own SCOPE section named the three quotes and the backup-naming pattern as this edge's anchors; its PREFLIGHT MANIFEST named the framing confirmation ("draws a parallel, not a lift") as a condition of building this file.</p>
+  </details>
+
+  <details>
+    <summary>nesi/mind/FORMAT_SPEC_2026-08-25_session_bridge_html.html</summary>
+    <p>Read in full. This file's shell, tab-switch script, CSS tokens, and provenance-tag vocabulary are reused directly from it, per the VE24 common spec.</p>
+  </details>
+
+  <details>
+    <summary>C:\Users\KMEAR\.claude\projects\C--Users-KMEAR-OneDrive-Desktop-DSS-content\memory\MEMORY.md (vendor MEMORY.md)</summary>
+    <p>Read in full this pass. Source of the C-column quote, re-transcribed character-for-character directly from the live file, not from a prior paraphrase.</p>
+  </details>
+
+  <details>
+    <summary>C:\Users\KMEAR\OneDrive\Desktop\DSS content\CLAUDE.md (root/project CLAUDE.md)</summary>
+    <p>Read in full this pass. Source of the "SCOPE OF THIS FILE" suspension list and the world3d quote used in the J column.</p>
+  </details>
+
+  <details>
+    <summary>nesi/mind/PROTOCOLS.md — lines 1-40 (per this edge's preflight manifest)</summary>
+    <p>Read. Source of the "supersession is a mark on top, never a silent erasure" quote, lines 20-22, re-checked character-for-character against the live file.</p>
+  </details>
+
+  <details>
+    <summary>nesi/world3d/CLAUDE.md and nesi/world3d/CLAUDE.md.backup_2026-08-07.md</summary>
+    <p>CLAUDE.md read in full this pass; the backup file confirmed to exist on disk (glob) but not opened in full — its existence is what the backup-naming-pattern claim rests on for this pair, consistent with the pattern check for the other pairs.</p>
+  </details>
+
+  <details>
+    <summary>nesi/world3d/RETIRED.md</summary>
+    <p>Read in full this pass. Source of the "kept whole as a record... in the same convention the corpus uses everywhere else" quote.</p>
+  </details>
+
+  <details>
+    <summary>nesi/game2d/_compost/ascent_2026-08-21_pre-rebuild.html — header only</summary>
+    <p>Read per this edge's preflight instruction: existence and header only, the file itself is 201,979 bytes. Header quote confirmed via direct read of the first ~12 lines. Source of the fifth convention-instance on the Retired-builds tab.</p>
+  </details>
+
+  <details>
+    <summary>nesi/_overnight_build/REPORT.md</summary>
+    <p>Existence confirmed and opening section read (VERIFY-phase byte-identity check against patterns/). Not directly quoted in this edge — read to satisfy the preflight's must-read list; no C-J relationship material found in it.</p>
+  </details>
+
+  <details>
+    <summary>Repo-wide glob for *.backup_* (excluding .claude/worktrees/ duplicates)</summary>
+    <p>Instrument pass, this session. Found nine distinct backup files across four VE24 domains (B, C, D/I, J), tabulated on the Retired-builds tab (corrected on verify — first counted as ten; an independent re-count found nine actual rows). Two of the nine — the vendor <code>CLAUDE.md</code> and <code>MEMORY.md</code> backups — live outside this repository, under <code>C:\Users\KMEAR\.claude\</code>, so "found by a repo-wide glob" only accurately describes seven of the nine; the other two were located by direct knowledge of the vendor path, not by the glob itself. This is the evidence base for "the pattern holds beyond the one pair checked."</p>
+  </details>
+
+  <details>
+    <summary>nesi/mind/VE24_04_laws_retired_builds.html — already built, verified clean</summary>
+    <p>Read in full, per this edge's brief, as the source for the wider J-domain status table (world2d, geometric_bench, _overnight_build) reused on the Retired-builds tab. Marked <span class="tag inherited">inherited</span> throughout — not independently re-verified this pass.</p>
+  </details>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file is not, stated again, in full</div>
+  <h2>Limits.</h2>
+  <div class="card">
+    <p><strong>This file draws a parallel. It does not lift, reactivate, or narrow the 2026-08-15 suspension in any way.</strong> Every quote from suspended material on this page is read as history, under the suspension's own stated escape clause ("available to quarry... never as authority" / "read as history, never as instruction"), not treated as live instruction anywhere in this file's own reasoning or structure.</p>
+    <p><strong>It does not argue that the suspension should change, loosen, extend, or end</strong> — no such argument appears anywhere above, and none is implied by the parallel drawn.</p>
+    <p><strong>It does not claim Kevin ever stated these two decisions were equivalent.</strong> No source found — not MEMORY.md, not root CLAUDE.md, not RETIRED.md, not PROTOCOLS.md — says the suspension and world3d's retirement are the same kind of act. The parallel is this file's own observation of shared wording, labeled <span class="tag sessionderived">session-derived</span> everywhere it appears, with one exception: the <code>ascent.html</code> header, which independently names a shared convention in its own words, is quoted as evidence the observation is not invented from nothing — but even that quote does not name the suspension specifically, only "every SUPERSEDED... mark."</p>
+    <p>The reversal-condition row on the Relationship tab is the one place this file found the parallel weakens rather than holds — named there, not smoothed into the rest of the table.</p>
+    <p>World2d's status stays exactly as unconfirmed as edge 4 found it; this file adds no new evidence either way and does not fold world2d into the "kept whole, quarry-able" claim that world3d earns directly.</p>
+  </div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

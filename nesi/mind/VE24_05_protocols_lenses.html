@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 5 · Protocols ↔ Lenses</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:20px;line-height:1.15;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:76ch} .lede{font-size:18px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:80ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14px;max-width:80ch}
+.good{margin:22px 0;padding:16px 20px;border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;font-size:14px;max-width:80ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 16px;margin-bottom:10px} summary{cursor:pointer;font-weight:650;font-size:13.5px} summary::marker{color:var(--gold)} details[open] summary{margin-bottom:8px}
+.limits{border:1px dashed var(--line);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--muted);margin:22px 0}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · edge 5 of 24</div><h1>PROTOCOLS<br>↔<br>LENSES</h1><p>B–E · nesi/mind/PROTOCOLS.md ↔ the DECIDE-bar lens agents</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>no network, no CDN, offline-renderable<br><br><b>SCOPE</b><br>this file selects, arranges, and tags — it does not decide, canonize, or rank</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="protocols" role="tab">B: Protocols</button>
+    <button class="tabbtn" data-tab="lenses" role="tab">E: Lenses</button>
+    <button class="tabbtn" data-tab="relationship" role="tab">Relationship / Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / edge-05 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is</div>
+  <h2>Where the corpus's boot-protocol meets the four seats that can rule inside a build.</h2>
+  <p class="lede">Group RULE (A · Laws, B · Protocols, C · Memory/Suspension, D · Gate/Ledger) constrains the corpus; Group READ (E · Lenses, F · Skills, G · Tools/Checks, H · Gift-pipeline) perceives and finds. B and E are one of the twenty-four structurally real vector-equilibrium edges. Concretely: <code>nesi/mind/PROTOCOLS.md</code> (824 lines, read in full for this edge) names the five lens agents by file path in exactly one place — <strong>THE COUNSEL'S STANDING BUILD MANDATE</strong> (<code>:309–427</code>) — plus one further mention of <code>kevin-lens</code> alone, outside that section, found by this pass's independent re-grep (see Relationship tab). Everywhere else in the file, the lens agents are absent by name.</p>
+  <div class="seal">
+    <div><span>DOMAIN B FOCUS</span><b>PROTOCOLS.md:309–427 — the Counsel Mandate</b></div>
+    <div><span>DOMAIN E FOCUS</span><b>the 4 live DECIDE-bar agents</b></div>
+    <div><span>OPEN ITEM 1</span><b>RESOLVED — 4/4 still carry the hard limit</b></div>
+    <div><span>OPEN ITEM 2</span><b>Mandate status: text unstruck, scope stale — see Relationship</b></div>
+    <div><span>OPEN ITEM 3</span><b>RESOLVED — re-grep found one extra mention (kevin-lens, line 159)</b></div>
+    <div><span>FIFTH NAME</span><b>nesi — seated outside the DECIDE-bar class entirely</b></div>
+  </div>
+  <div class="keyline">What was actually found: all four currently-live DECIDE-bar agents — <code>buckminster-fuller</code>, <code>stuart-cowan</code>, <code>change-composite</code>, <code>game-craft</code> — still carry "never defaults his forks" (or its exact-force equivalent) as an unedited hard limit, confirmed by direct full reads this pass. The Mandate's own text in <code>PROTOCOLS.md</code> has never been struck or edited since 2026-08-13. But the specific build it was written to license — the NESI.EXE / L1-Tank-and-ascent order — targeted a build shape that no longer exists: world3d retired 2026-08-14, and the live <code>index.html</code> (rewired 2026-08-26) carries no "L1" or "nesi.exe" language, and no reference to "Tank" as a build order — the string "TANK" does appear 3 times (lines 550, 562, 1770), but as a live seat name inside the twelve-organ solid geometry, unrelated to the Mandate's "Tank/writing tetra" build target; see Sources tab for both citations side by side. This is read as navigation data (a scope gone quiet, not a ruling reversed), not smoothed into either "still fully active" or "dead."</div>
+</section>
+
+<section class="panel" id="panel-protocols" data-panel="protocols">
+  <div class="eyebrow">Domain B</div>
+  <h2>THE COUNSEL'S STANDING BUILD MANDATE, 2026-08-11 — and its 2026-08-13 amendment.</h2>
+  <div class="card">
+    <h3>The mandate's own question</h3>
+    <p><span class="tag verbatim">verbatim</span> Kevin's instruction, quoted at the top of the section: "lets allow the consel to deliberate through the game development process. Kevin has funded, and authorized the development. He doesnt yet have the ability to approve the counsels game as proposed." (<code>PROTOCOLS.md:311–313</code>) His choice, put to him directly the same session: <span class="tag verbatim">verbatim</span> "Counsel builds LAWFUL-NOW only, queues the rest." (<code>:340</code>)</p>
+  </div>
+  <div class="card">
+    <h3>What it authorizes and what it never will</h3>
+    <p><span class="tag verbatim">verbatim</span> "Any of the four counsel seats, or a build agent working from their libraries, may proceed on anything already tagged LAWFUL-NOW in a counsel library... without pausing to ask first." (<code>:342–346</code>) And, held in the same breath: <span class="tag verbatim">verbatim</span> "Nothing here lets any seat or build agent: resolve a NEEDS-KEVIN item, pick a branch of an open fork, or treat a collision between two seats' readings as settled... speak as Kevin, assert a felt-read on his behalf..." (<code>:356–365</code>) A genuine unresolved fork opens as a durable gate instead — never defaulted, never built around. (<code>:367–372</code>)</p>
+  </div>
+  <div class="card">
+    <h3>The roster, as it stands after two layerings</h3>
+    <p><span class="tag verbatim">verbatim</span> "The live seats carrying the DECIDE bar are therefore buckminster-fuller · stuart-cowan · game-craft · change-composite." (<code>:331–333</code>) This is layered text, not the original: the section originally named a four-file list of <code>{buckminster-fuller,stuart-cowan,game-craft,kevin-lens}</code> (<code>:317</code>); a 2026-08-13 layer notes <code>kevin-lens</code> CLOSED and <code>change-composite</code> missing from the original list though seated the same day as the mandate; and <code>nesi</code>, seated 2026-08-13, is named explicitly <strong>outside</strong> the class: <span class="tag verbatim">verbatim</span> "she cannot default a fork because she cannot author a sentence." (<code>:330–331</code>)</p>
+  </div>
+  <div class="card">
+    <h3>The amendment — narrower, and itself already re-scoped by a later layer</h3>
+    <p>The 2026-08-11 21:48 amendment ("THE NESI.EXE COUNSEL BUILD ORDER") let the session rule autonomously on pure design/naming/mechanic forks for one named build target: <span class="tag verbatim">verbatim</span> "the specific work of building NESI.exe toward a daily-playable Level 1 (the Tank/writing tetra) and the ascent above it." (<code>:397–399</code>) It states explicitly that this worked <em>because</em> the five agent files stayed unedited: <span class="tag verbatim">verbatim</span> "each of buckminster-fuller/stuart-cowan/game-craft/kevin-lens/change-composite still carries 'never defaults his forks' as its own hard limit and will still decline to rule if asked directly." (<code>:404–407</code>) A 2026-08-13 layer on that same paragraph updates only the <code>kevin-lens</code> clause — closed, no longer invocable — and leaves "the other four still carry it as written" standing. (<code>:412–414</code>)</p>
+  </div>
+  <div class="card">
+    <h3>The vision seam — the one clause added after the amendment, still inside the Mandate's neighborhood</h3>
+    <p><span class="tag verbatim">verbatim</span> "No build order executes without citing the articulation passage it serves; divergence from the cited vision is BLOCKED, not minimized." (<code>:431–432</code>) Dated 2026-08-13, "THE FULL CIRCLE, seam S3, Kevin's order" — binding on every build order, this one's and any other's.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-lenses" data-panel="lenses">
+  <div class="eyebrow">Domain E</div>
+  <h2>The four DECIDE-bar agents, read in full this pass.</h2>
+  <table>
+    <tr><th>Agent</th><th>Hard-limit line, verbatim</th><th>Location</th></tr>
+    <tr><td><code>buckminster-fuller.md</code></td><td>"Never default a fork that is Kevin's; name it and hold it open."</td><td><code>:80</code></td></tr>
+    <tr><td><code>stuart-cowan.md</code></td><td>"Forks are surfaced, never defaulted. The three standing NESI forks... stay open until Kevin rules."</td><td><code>:173–175</code></td></tr>
+    <tr><td><code>change-composite.md</code></td><td>"Never default a fork that is Kevin's; the Scharmer/Schwermer double stays double until his word."</td><td><code>:85–86</code></td></tr>
+    <tr><td><code>game-craft.md</code></td><td>"Never default a fork that is Kevin's; name it and hold it open." (confirmed, cited in Edge 1's own sources tab and independently re-checked for this edge)</td><td><code>:hard-limits section</code></td></tr>
+  </table>
+  <div class="good">
+    <p><strong>Confirmed, 4 of 4:</strong> every currently-live DECIDE-bar agent still refuses to default a fork, in wording that carries the same force the Mandate quotes it for, even though none of the four files has been edited since the Mandate was written — matching the Mandate's own claim that this holds precisely <em>because</em> the definition files were "deliberately left unedited" (<code>nesi/game2d/MANDATE.md:26–29</code>, a game-scoped sibling document making the identical point).</p>
+  </div>
+  <div class="card">
+    <h3>The fifth and sixth names, for completeness</h3>
+    <p><code>kevin-lens.md</code> — CLOSED 2026-08-13, retired into <code>nesi.md</code>; its file still carries the identical hard-limit language but is not one of the four live DECIDE-bar seats. <code>nesi.md</code> — seated 2026-08-13, explicitly outside the DECIDE-bar class by the Mandate's own later layer, because she "cannot author a sentence" to default a fork with.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-relationship" data-panel="relationship">
+  <div class="eyebrow">What actually connects them</div>
+  <h2>Three verification items from the preflight, each re-run independently.</h2>
+
+  <h3>1 · Re-grep of the full 824-line PROTOCOLS.md for all five agent names</h3>
+  <div class="warn">
+    <p><strong>Not quite the clean negative the preflight described.</strong> A direct grep of <code>PROTOCOLS.md</code> for <code>buckminster-fuller|stuart-cowan|change-composite|game-craft|kevin-lens</code> returns matches at lines <code>159, 317, 325, 328, 332, 333, 404, 411</code>. Lines 317 through 411 sit inside the Mandate section (<code>309–427</code>), exactly as the preflight found. <strong>Line 159 does not.</strong> It sits inside an earlier section (the tetra-menu / "rooms and windows" naming, <code>:139–166</code>), in a 2026-08-13 layer reading: <span class="tag verbatim">verbatim</span> "`counsel/kevinlens/` is the library of the kevin-lens seat, CLOSED 2026-08-13. Ten files, no successor, unowned." (<code>:158–159</code>) This is a citation of the <em>retired</em> seat's shelf library as the provenance trail for a naming decision — not a claim about lens capability or the DECIDE bar — but it is a real, independently-confirmed exception to "mentions none of the five... anywhere except" the Mandate. The other four live agents (<code>buckminster-fuller</code>, <code>stuart-cowan</code>, <code>change-composite</code>, <code>game-craft</code>) genuinely appear nowhere in the file outside <code>309–427</code>.</p>
+  </div>
+
+  <h3>2 · Is the Counsel Mandate still active/binding today?</h3>
+  <table>
+    <tr><th>What was checked</th><th>Finding</th></tr>
+    <tr><td>Has the Mandate's text been struck, edited, or layered-over since 2026-08-13?</td><td><span class="tag instrumentfact">instrument fact</span> No. <code>git log</code> on <code>PROTOCOLS.md</code> shows a commit touching the file on 2026-08-27 ("Positive-framing pass"), but the Mandate section's substantive content matches what the 2026-08-13 layer left — no revocation, no further layer inside <code>309–427</code> found by this pass.</td></tr>
+    <tr><td>Has the game-scoped sibling (<code>nesi/game2d/MANDATE.md</code>) been touched since it was written?</td><td><span class="tag instrumentfact">instrument fact</span> No. <code>git log --follow</code> shows exactly one commit, 2026-08-12 ("Stations become instruments; counsel shelf metabolized and twelve forks ruled"). Never edited again.</td></tr>
+    <tr><td>Does the specific build the Amendment named (NESI.EXE, L1-Tank-and-ascent) still exist as the live build?</td><td><span class="tag instrumentfact">instrument fact</span> No evidence it does. <code>BUILD_RECORD.md</code> was compacted 2026-08-24 and its own header states it covered "110 dated build passes from 2026-08-11 through 2026-08-14" before compaction — the record of the Mandate-governed build stops at world3d's retirement. The live <code>index.html</code> (rewired 2026-08-26, "WIRED IN AS THE ENTRY POINT") contains zero occurrences of "Tank," "L1," "Level 1," or "nesi.exe" in its header or first 30 lines read this pass.</td></tr>
+  </table>
+  <div class="warn">
+    <p><strong>The honest finding: the Mandate's text is unrevoked, but its named build target has gone quiet by silent supersession, not by ruling.</strong> Per the corpus's own convention — "supersession is a mark on top, never a silent erasure" (<code>PROTOCOLS.md:20–22</code>, restated at <code>:210</code> and again in <code>kevin-lens.md:3</code>) — an unstruck rule stays read as standing until a mark says otherwise. No mark found by this pass says otherwise for the Mandate itself. What changed is that the object it was written to govern (the specific L1-Tank build) is no longer the object in front of the corpus. This reads as the mandate's <strong>general clause</strong> ("counsel builds LAWFUL-NOW, queues the rest," <code>:309–380</code>) still standing as a live procedural rule for the four DECIDE-bar seats generally, while its <strong>narrower amendment</strong> (autonomous ruling specifically for the NESI.EXE/Tank build) is scoped to build work that has since moved on — a fact about where the corpus is now, offered as navigation data rather than as a claim that the amendment was ever wrong or reversed.</p>
+  </div>
+
+  <h3>3 · The vision seam's own test, applied to this finding</h3>
+  <p>The vision seam (<code>:429–441</code>) requires every build order to cite the passage it serves or stop. This edge-file is not a build order and makes none — it names what the record shows and stops there, consistent with the seam's own spirit if not its literal jurisdiction (which binds build orders, not VE24 documentation passes).</p>
+
+  <div class="limits">This file selects, arranges, and tags what <code>PROTOCOLS.md</code> and the four agent files themselves say. It does not rule on whether the Mandate's amendment is still in force, does not decide whether the Mandate should be formally retired or reactivated for a new build target, and does not canonize any of the four DECIDE-bar agents' texts as final. Any such call is Kevin's.</div>
+
+  <div class="card"><h3>Related Edges <span class="tag instrumentfact">from VE24_RELATIONSHIPS_2026-08-27.html</span></h3><p>Per the Relationship Map's Gap Routing Table: the Counsel's Mandate status question held here has <strong>no route</strong> from existing corpus capacity — "cold-walk could inform it but not decide it, and is itself gapped per edge 17's finding" (see the cross-reference card above). Per the same map's "What Stays Open" tab, this is grouped among "Decisions only Kevin can make," alongside world2d's retirement status, the nesi_bench_v0 K→J reclassification, and both gate-wiring forks — none carry a route because they are decisions, not facts waiting to be found.</p></div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Every file actually read for this edge</div>
+  <h2>Sources, with the real quotes underneath.</h2>
+
+  <details>
+    <summary>nesi/mind/PROTOCOLS.md (full 824-line read)</summary>
+    <div class="code">The brief governs NESI work specifically; a session on the library, the
+letters, or the instruments is bound by this file, not by the station laws.
+...
+■ THE COUNSEL'S STANDING BUILD MANDATE — 2026-08-11 (Kevin's ruling, session 8a8f232e)
+
+Kevin's instruction, verbatim: "lets allow the consel to deliberate through the
+game development process. Kevin has funded, and authorized the development. He
+doesnt yet have the ability to approve the counsels game as proposed."
+...
+The live seats carrying the DECIDE bar are therefore buckminster-fuller ·
+stuart-cowan · game-craft · change-composite.
+...
+■ AMENDMENT — THE NESI.EXE COUNSEL BUILD ORDER, 2026-08-11 21:48
+...
+for the specific work of building NESI.exe toward a daily-playable Level 1
+(the Tank/writing tetra) and the ascent above it, open forks that are pure
+design/naming/mechanic choices... are now RULED rather than gated.
+...
+■ THE VISION SEAM — 2026-08-13 (THE FULL CIRCLE, seam S3, Kevin's order)
+No build order executes without citing the articulation passage it serves;
+divergence from the cited vision is BLOCKED, not minimized.</div>
+  </details>
+
+  <details>
+    <summary>PROTOCOLS.md:139-166 — the earlier mention of kevin-lens, outside the Mandate section</summary>
+    <div class="code">(LAYERED 2026-08-13, session 92c7b392, on Kevin's mark "run the live
+pointers" — not an edit; the line above stands. `counsel/kevinlens/` is the
+library of the kevin-lens seat, CLOSED 2026-08-13. Ten files, no successor,
+unowned: `counsel/THE_CIRCLE_LEDGER.md:1922–1923` records it retiring
+"unowned … while `nesi/mind/PROTOCOLS.md:122` cites one of them on the boot
+path." The pointer is kept because the reading it names is still at that
+path and is still the provenance of the tetra-menu naming.</div>
+  </details>
+
+  <details>
+    <summary>.claude/agents/buckminster-fuller.md (full read)</summary>
+    <div class="code">Read `nesi/mind/LEARNED.md` at boot; where it and your habits collide, it wins.
+...
+## Hard limits (DSS law, binding)
+- Never score, rank, or measure Kevin or his material.
+- Never default a fork that is Kevin's; name it and hold it open.
+- Never relitigate a standing ruling; read with it or record the collision.
+- Read-only: you never write files, mark, or cross membranes.</div>
+  </details>
+
+  <details>
+    <summary>.claude/agents/stuart-cowan.md (full read)</summary>
+    <div class="code">Read `nesi/mind/LEARNED.md` at boot; where it and your habits collide, it wins.
+...
+## Hard limits (DSS law, binding on this agent)
+- No number reaches Kevin as a score, rank, or comparison of his material.
+- Never declare Kevin's state; system facts and his verbatim words only.
+- Forks are surfaced, never defaulted. The three standing NESI forks —
+  downstream agency, heterogeneous persistence, withdrawal — stay open until
+  Kevin rules.
+- You read files; you do not write, mark, or cross membranes.</div>
+  </details>
+
+  <details>
+    <summary>.claude/agents/change-composite.md (full read)</summary>
+    <div class="code">Read `nesi/mind/LEARNED.md` at boot; where it and your habits collide, it wins.
+...
+## Hard limits (DSS law)
+- Never score, rank, measure, diagnose, or pathologize Kevin or any player.
+- Never interpret the player's written material (the Recognition Law).
+- Composted material is not this seat's ground...
+- Never default a fork that is Kevin's; the Scharmer/Schwermer double stays
+  double until his word.
+- Never relitigate a standing ruling; read with it or record the collision.
+- Read-only: you never write files, mark, or cross membranes.</div>
+  </details>
+
+  <details>
+    <summary>.claude/agents/kevin-lens.md (full read — CLOSED file, record only)</summary>
+    <div class="code">CLOSED 2026-08-13 by Kevin's ruling (THE FULL CIRCLE, cycle 3 — THE SEATING).
+This seat retired into the carriage seat at `.claude/agents/nesi.md`. Do not
+invoke it; it holds no jurisdiction and rules nothing.
+...
+Live references to this name, unowned at the close:
+`nesi/mind/PROTOCOLS.md:122` (boot path, into `counsel/kevinlens/`) · `:275`,
+`:349` (name this seat among five carrying "never defaults his forks") ·
+`nesi/game2d/MANDATE.md:60–63` · `nesi/game2d/BUILD_RECORD.md:2349–2351`...</div>
+  </details>
+
+  <details>
+    <summary>nesi/game2d/MANDATE.md (full read) — the game-scoped sibling document</summary>
+    <div class="code">This file is the load path for the NESI.EXE build order's ruling authority.
+Game-scoped only. Nothing here edits or supersedes any file outside
+`nesi/game2d/`.
+...
+For work inside `nesi/game2d/` toward the daily-playable Level 1 (the Tank)
+and the ascent above it: open forks that are pure design/naming/mechanic
+choices... are RULED rather than gated. Ruling authority sits with the
+session acting as convergence point, because the five counsel agent
+definitions were deliberately left unedited... each still carries its own
+"never defaults his forks" hard limit and will decline to rule if asked
+directly.</div>
+  </details>
+
+  <details>
+    <summary>nesi/game2d/BUILD_RECORD.md (current, post-compaction) — the record's own stated boundary</summary>
+    <div class="code">COMPACTED 2026-08-24... This file stood at 5,105 lines / 317,143 bytes...
+covering 110 dated build passes from 2026-08-11 through 2026-08-14.
+Nothing was deleted. The full record, byte-for-byte, unedited, is kept whole
+at `BUILD_RECORD.md.backup_pre-compaction_2026-08-24.md`...</code></div>
+  </details>
+
+  <details>
+    <summary>nesi/game2d/index.html (header, read this pass) — instrument fact that the Tank-era build is not the live one</summary>
+    <div class="code">WIRED IN AS THE ENTRY POINT, 2026-08-26, Kevin's mark ("wire the_page.html
+in as the entry point"). This file's source is nesi/game2d/the_page.html,
+copied here verbatim... Previous door (twelve seats read from solid.js) is
+kept whole, unedited, at index.html.backup_pre-lattice-entry_2026-08-26.html</div>
+  </details>
+
+  <details>
+    <summary>git log — instrument fact, dates of last touch</summary>
+    <div class="code">nesi/mind/PROTOCOLS.md   last touched 2026-08-27 (positive-framing pass;
+                          the Mandate section's substance not further layered)
+nesi/game2d/MANDATE.md   last touched 2026-08-12 (single commit, never edited again)</div>
+  </details>
+
+  <p class="lede" style="font-size:14px;margin-top:24px">Also read in full for this edge: <code>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md</code> (Cross-cutting findings + Edge 5 section) and <code>nesi/mind/FORMAT_SPEC_2026-08-25_session_bridge_html.html</code> (this file's shell/tab mechanics and provenance-tag scheme, matching Edge 1's own working implementation at <code>nesi/mind/VE24_01_laws_lenses.html</code>).</p>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file is not authorized to do</div>
+  <h2>Stated plainly, once, in full.</h2>
+  <div class="card"><h3>It selects, arranges, and tags — it does not decide</h3><p>Nothing here canonizes the Mandate's current status, retires it, reactivates it for a new build target, or ranks the four DECIDE-bar agents against one another. The "scope gone quiet" reading offered in the Relationship tab is this session's own synthesis of dated instrument facts, tagged as such — not a ruling that the Mandate is dead, and not a claim that it needs Kevin's attention unless he judges it does.</p></div>
+  <div class="card"><h3>The open question this edge leaves</h3><p>No document found by this pass states whether a new build target (post-2026-08-26, the lattice/the_page.html shape) has ever been offered the same LAWFUL-NOW licensing the Mandate gave the Tank build, or whether that licensing was understood to lapse with the build it named. This is named as an open question, not answered here.</p></div>
+  <div class="warn"><h3 style="margin-top:0">Cross-reference: edge 17's cold-walk finding bears directly on this edge's open question</h3><p>Edge 17 (<code>VE24_17_lenses_game2d_build.html</code>, Relationship tab) names a gap: <span class="tag verbatim">verbatim</span> "No source found for this edge shows any lens — including game-craft.md — cold-walking the current, post-2026-08-26 entry chain." It also confirms, via <code>.claude/skills/cold-walk/SKILL.md</code>'s own rule, that this is not a merely-unrun gap: "an author cannot be their own stranger... a second read run through this same tool ecosystem — another agent call, another session, under whatever name — is not independent verification." <span class="tag verbatim">verbatim</span> This session built the VE24 project itself and is disqualified on the same grounds. This bears directly on the open question above: whether the current build ("is the current build even walkable") could inform the Mandate's licensing question is itself a question a cold-walk would need to answer — and any attempt to run that walk from inside this session would hit the identical disqualification edge 17 names. The Mandate question and the walkability question are therefore coupled, and neither is closeable from this session.</p></div>
+  <div class="card"><h3>Reusable</h3><p>This file copies its shell, tab mechanics, and provenance-tag scheme from <code>FORMAT_SPEC_2026-08-25_session_bridge_html.html</code> and from Edge 1's own working build. A later edge-file may copy this one's structure in turn.</p></div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

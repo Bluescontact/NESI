@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 20 · Skills/Instruments ↔ Session-bridge format</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+:root[data-theme="dark"]{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:270px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.18;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:16px} p{max-width:76ch} .lede{font-size:17px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:15.5px;max-width:78ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14.5px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-size:13px;font-weight:700}
+details .code{margin-top:10px}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · edge 20 of 24</div><h1>SKILLS /<br>INSTRUMENTS<br>↔ SESSION-<br>BRIDGE</h1><p>F–L · one of the thinnest edges, built short</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>zero network, offline-renderable<br><br><b>SIBLING</b><br>edge 8 (B–L) covers the mandate and the checker; edge 2 (A–F) covers the 27-file skill count this edge reuses</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="skills" role="tab">F: Skills/Instruments</button>
+    <button class="tabbtn" data-tab="bridge" role="tab">L: Session-bridge format</button>
+    <button class="tabbtn" data-tab="interface" role="tab">Relationship/Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / edge-20 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is, honestly</div>
+  <h2>Adjacency without ownership — the thinnest material of the two L-touching edges built so far.</h2>
+  <p class="lede">Group F (<code>.claude/skills/*</code> — 13 files, <code>nesi/bench/*/SKILL.md</code> — 14 files, 27 total) is the corpus's procedural-instrument layer. Group L (the format spec, two worked instances, and one checker script) is the session-bridge format. The preflight manifest flagged this as one of the thinnest of the 24 edges before it was built, and a full-text grep across all 27 skill files — not just their filenames, which is all the preflight had checked — confirms that reading rather than overturns it.</p>
+  <div class="seal">
+    <div><span>SKILL FILES GREPPED</span><b>27 (13 + 14), full text, not filenames</b></div>
+    <div><span>HITS FOR "session bridge" / "FORMAT_SPEC"</span><b>0</b></div>
+    <div><span>WHO INVOKES THE CHECKER</span><b>nobody — hand-run only, confirmed by grep</b></div>
+    <div><span>DAILY-CYCLE'S "NEVER CREATES" QUOTE</span><b>CLAUDE.md's paraphrase checked verbatim — accurate</b></div>
+    <div><span>METHOD</span><b>full-text grep of all 27 SKILL.md files, direct reads, one live re-run of the checker</b></div>
+    <div><span>THEME</span><b>auto light/dark via prefers-color-scheme</b></div>
+  </div>
+  <div class="keyline">The honest finding: <strong>no skill file names the session-bridge format, and the one instrument that checks it runs only when a person types the command.</strong> This is not a gap to close inside this edge — it is what the edge actually shows, stated plainly rather than padded into a deeper relationship than the files support.</div>
+</section>
+
+<section class="panel" id="panel-skills" data-panel="skills">
+  <div class="eyebrow">Group F</div>
+  <h2>27 skill files: 13 in <code>.claude/skills/</code>, 14 in <code>nesi/bench/</code>.</h2>
+  <p><span class="tag instrumentfact">instrument fact</span> Confirmed by directory listing at build time (the two skill trees use inconsistent filename casing — three <code>nesi/bench/</code> entries use <code>skill.md</code> lowercase rather than <code>SKILL.md</code>, which is why a case-sensitive glob undercounts to 11 before a case-insensitive search finds all 14: <code>coordination</code>, <code>daily-cycle</code>, <code>diamond</code>, <code>field-kit-engine</code>, <code>graduated-trust</code>, <code>infrastructure</code>, <code>mark-record</code>, <code>membrane-controller</code>, <code>metabolizer</code>, <code>miro-handler</code>, <code>morning-pages-channel</code>, <code>provenance</code>, <code>substrate</code>, <code>transmission-engine</code>). The 27-count matches edge 2 (A–F)'s own corrected figure, reused here rather than re-derived.</p>
+  <h3>The full-text grep, this edge's own load-bearing check</h3>
+  <p>The preflight manifest for this edge named its single most important unfinished step: <em>"Full-text (not filename-only) grep of all 24 SKILL.md files for 'session bridge'/'SESSION_BRIDGE'/'FORMAT_SPEC.'"</em> <span class="tag verbatim">verbatim</span> (preflight document, Edge 20 verification list). That grep is run for this build, against the corrected count of 27, not 24:</p>
+  <div class="code">grep -riE "session.bridge|SESSION_BRIDGE|FORMAT_SPEC" .claude/skills/*/SKILL.md
+grep -riE "session.bridge|SESSION_BRIDGE|FORMAT_SPEC" nesi/bench/*/*.md   (case-insensitive filename match)
+
+→ No matches found (both directories, all 27 files)</div>
+  <p><span class="tag instrumentfact">instrument fact</span> Zero of the 27 skill files reference the session-bridge format, the format spec, or any Session Bridge filename, anywhere in their body text — not only in their names. The preflight's finding ("no skill file... references the session-bridge format, filename-grep only") upgrades from a filename-level observation to a full-text-confirmed one; the reading is the same, now on firmer ground.</p>
+  <h3><code>daily-cycle</code> — the one skill named explicitly in the mandate</h3>
+  <p><span class="tag verbatim">verbatim</span> Read in full for this edge (<code>nesi/bench/daily-cycle/SKILL.md</code>, 421 lines). Its own frontmatter and body: <em>"This skill invokes, never creates. It calls the gate and the metabolizer. It does not author instruments, patterns, or canon. No new instrument is ever built inside this skill — ever."</em> (lines 22–25). Its close-out steps run eight named checks (metabolizer, snapshot regen, gauge, membrane falsifier, drift meter, Brier ledger, governor-log line, falsifier gate, metamorphic check, law-skill drift filter) and end with one append to <code>CYCLE_LOG.md</code> — <code>session_bridge_check.js</code> is not among them, and neither is any Session Bridge file production step.</p>
+</section>
+
+<section class="panel" id="panel-bridge" data-panel="bridge">
+  <div class="eyebrow">Group L</div>
+  <h2>One spec, two worked instances, one report-only checker.</h2>
+  <p><span class="tag verbatim">verbatim</span> <code>FORMAT_SPEC_2026-08-25_session_bridge_html.html</code>, read in full: <em>"one file = one session, fully legible on its own, with every claim inside it tagged for where it actually came from."</em> Its own "Governing rules" tab states the format's limit plainly: <em>"It selects and arranges — it does not decide... The document may quote, juxtapose, diagram, and tag. It should explicitly disclaim any authority to canonize a claim, rank a person's choices, or declare a project state settled."</em></p>
+  <h3><code>tools/session_bridge_check.js</code> — read in full, and re-run live for this build</h3>
+  <p><span class="tag verbatim">verbatim</span> Its own header: <em>"REPORT-ONLY, REFUSES NOTHING: sessions are not bounded by git commits with perfect precision, so this cannot be a hard gate the way refusal_check.js is for game2d... It tells a session (or Kevin) that the gap may exist; it does not and cannot block anything."</em> Mechanism: reads bridge filenames matching <code>SESSION_BRIDGE_YYYY-MM-DD_*.html</code> out of <code>nesi/mind/</code>, compares the newest one's date against <code>git log -1</code>'s commit date, and reports a possible gap — nothing more.</p>
+  <div class="code">$ node tools/session_bridge_check.js
+session_bridge_check
+  bridge files found: 2
+  most recent bridge: SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html (2026-08-27)
+  most recent commit date: 2026-08-27
+  READING: no tracked changes newer than the most recent bridge file.
+           The mandatory-return rule holds as a filesystem fact right now.</div>
+  <p><span class="tag instrumentfact">instrument fact</span> Live re-run for this edge's own build, above — matches its self-description exactly: report-only, no exit-code refusal, plain-language reading.</p>
+</section>
+
+<section class="panel" id="panel-interface" data-panel="interface">
+  <div class="eyebrow">What actually connects these two</div>
+  <h2>Adjacency without ownership.</h2>
+  <div class="card"><h3>The mandate lives at the boot-path layer, not inside a skill</h3><p><span class="tag verbatim">verbatim</span> Root <code>CLAUDE.md</code>: <em>"This is a session-level rule, not a <code>daily-cycle</code> step... producing this file is a create action, so it is required here, at the boot-path layer, rather than folded into that skill's close-out. <code>daily-cycle</code>'s existing close-out (metabolize, snapshot, gauge, log line) is unchanged by this."</em> This is the edge's central fact: the one skill positioned to plausibly own session-bridge production explicitly does not, by direct quote in the rule that created the mandate.</p></div>
+  <div class="card"><h3>The checker is instrument-layer, not skill-layer</h3><p><code>session_bridge_check.js</code> lives in root <code>tools/</code> alongside other whole-repo checks (e.g. <code>tools/ledger.py</code>), not inside any <code>.claude/skills/</code> or <code>nesi/bench/</code> directory. It has no <code>SKILL.md</code> of its own and is not one of the 27 counted in Group F.</p></div>
+  <div class="warn"><h3>Confirmed: never invoked automatically</h3><p><span class="tag instrumentfact">instrument fact</span> Grepped for <code>session_bridge_check</code> / <code>SESSION_BRIDGE</code> across <code>nesi/game2d/tools/check_all.js</code> and everywhere under <code>nesi/game2d/gate/</code> (which runs <code>gate.mjs</code>) — zero matches in both. A separate whole-repo grep for the string <code>session_bridge</code> across every <code>.js</code> file in the project finds exactly one hit: the checker script itself. Nothing calls it. It runs only when a person types <code>node tools/session_bridge_check.js</code> by hand — the preflight's open question ("invoked automatically anywhere, or only ever run by hand?") resolves cleanly to <strong>hand-run only, no auto-invocation found anywhere in the repo</strong>.</p></div>
+  <div class="card"><h3>The terminological echo goes one way</h3><p>The format spec's own "Standard tabs" section names its per-output tabs "Gift 01, Gift 02..." — the same word the unrouted-gifts pipeline uses. Both worked Session Bridge instances use this naming (confirmed: <code>SESSION_BRIDGE_2026-08-27...html</code>'s tabs run Gift 01 through Gift 05). This is a vocabulary echo between the format and the gift-pipeline (edge 24's subject), not evidence of a Skills↔Bridge relationship — no skill file uses "Gift" this way, and this is named here only so the two thin L-touching edges (20 and 24) aren't mistaken for covering the same ground.</p></div>
+
+  <div class="card">
+    <h3>Related Edges</h3>
+    <p><span class="tag inherited">inherited</span> Per this project's own relationship map (<code>nesi/mind/VE24_RELATIONSHIPS_2026-08-27.html</code>, Relationship Map tab), two other edges corroborate this edge's own findings from different domain angles:</p>
+    <table>
+      <tr><th>Edge</th><th>Relationship</th><th>What connects them</th></tr>
+      <tr><td>Edge 8 (Protocols ↔ Session-bridge)</td><td>Sibling coverage</td><td>Covers the mandate (root <code>CLAUDE.md</code>'s "boot-path layer, not a <code>daily-cycle</code> step" rule) and the checker (<code>tools/session_bridge_check.js</code>) from the B–L angle, while this edge covers the same two objects from the F–L angle — same mandate, same checker, different domain pairing.</td></tr>
+      <tr><td>Edge 16 (Gate ↔ Session-bridge)</td><td>Corroborates</td><td>Independently confirms, from the game2d gate's own domain, that <code>session_bridge_check.js</code> has zero auto-invocation anywhere in the repo — the same finding this edge reached by grepping <code>check_all.js</code> and every <code>.js</code> file repo-wide (see Interface tab, "Confirmed: never invoked automatically"), reached separately by reading the gate's own wiring rather than by this edge's grep.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Everything cited above, with paths</div>
+  <h2>Sources</h2>
+  <table>
+    <tr><th>Claim</th><th>Source</th></tr>
+    <tr><td>27 skill files, 13+14 split, casing inconsistency</td><td>Directory listing, both trees, at build time; cross-checked against <code>nesi/mind/VE24_02_laws_skills.html</code>'s own corrected count</td></tr>
+    <tr><td>Zero full-text hits across all 27 for session-bridge terms</td><td>Grep run this build, both directories, case-insensitive, filenames and body text</td></tr>
+    <tr><td>daily-cycle's "invokes, never creates" quote</td><td><code>nesi/bench/daily-cycle/SKILL.md</code> lines 22–25, read in full</td></tr>
+    <tr><td>Format spec's self-description and rules</td><td><code>nesi/mind/FORMAT_SPEC_2026-08-25_session_bridge_html.html</code>, read in full</td></tr>
+    <tr><td>Checker's self-description and live output</td><td><code>tools/session_bridge_check.js</code>, read in full and re-run this build</td></tr>
+    <tr><td>CLAUDE.md's daily-cycle-exclusion quote</td><td>root <code>CLAUDE.md</code>, "THE LAST ACTION OF EVERY SESSION" section</td></tr>
+    <tr><td>Zero auto-invocation of the checker</td><td>Grep of <code>nesi/game2d/tools/check_all.js</code>, <code>nesi/game2d/gate/</code>, and every <code>.js</code> file repo-wide</td></tr>
+    <tr><td>"Gift NN" tab naming in both worked instances</td><td><code>SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html</code> tab list; format spec's "Standard tabs" section</td></tr>
+  </table>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file does not claim</div>
+  <h2>Limits.</h2>
+  <div class="card"><p>This file selects, arranges, and tags. It does not decide whether a skill should be built to own session-bridge production, does not rank the two domains, and does not declare any project state settled. Where the material was thin, the file stayed short rather than manufacturing depth — the preflight's own instruction for this specific edge.</p></div>
+  <div class="card"><p>The 27-file skill count and its casing note are reused from this build's own directory listing and cross-checked against edge 2's independently-derived figure; neither file re-verifies the other's every claim beyond that one shared number.</p></div>
+  <div class="card"><p>A later addition to any of the 27 skill files, or a new invocation site added to <code>check_all.js</code> or <code>gate.mjs</code>, would change this edge's central finding — it is dated to this build, not asserted as permanent.</p></div>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>

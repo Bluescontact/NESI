@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 · Edge 2 · Laws ↔ Skills/Instruments</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+:root[data-theme="dark"]{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.shell{min-height:100vh;display:grid;grid-template-columns:270px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.18;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
+main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:16px} h4{margin:1.1rem 0 .4rem;font-size:13.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em} p{max-width:76ch} .lede{font-size:17px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:15.5px;max-width:78ch}
+.warn{margin:22px 0;padding:16px 20px;border-left:3px solid var(--red);background:var(--red-soft);border-radius:0 10px 10px 0;font-size:14.5px;max-width:78ch}
+.tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
+.tag.verbatim{background:var(--green-soft);color:var(--green)} .tag.marked{background:var(--blue-soft);color:var(--blue)} .tag.inherited{background:var(--red-soft);color:var(--red)} .tag.instrumentfact{background:var(--line);color:var(--muted)} .tag.sessionderived{background:var(--gold-soft);color:var(--gold)} .tag.state{background:var(--blue-soft);color:var(--blue)}
+.code{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.pill.no{background:var(--line);color:var(--muted)}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-size:13px;font-weight:700}
+details .code{margin-top:10px}
+@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
+@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside>
+  <div class="brand"><div class="kicker">VE24 · edge 2 of 24</div><h1>LAWS ↔<br>SKILLS /<br>INSTRUMENTS</h1><p>A–F · resolved, not repeated as open questions</p></div>
+  <div class="seal-mini"><b>SELF-CONTAINED</b><br>zero network, offline-renderable<br><br><b>SIBLING</b><br>edge 1 (A–E, Laws↔Lenses) covers agents, not skills</div>
+  <nav class="tabs" role="tablist">
+    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
+    <button class="tabbtn" data-tab="laws" role="tab">A: Laws</button>
+    <button class="tabbtn" data-tab="skills" role="tab">F: Skills/Instruments</button>
+    <button class="tabbtn" data-tab="interface" role="tab">Relationship/Interface</button>
+    <button class="tabbtn" data-tab="sources" role="tab">Sources</button>
+    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
+  </nav>
+</aside>
+<main>
+<div class="topbar"><div class="crumb">VE24 / edge-02 / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> zero external requests · offline</div></div>
+
+<section class="panel active" id="panel-overview" data-panel="overview">
+  <div class="eyebrow">What this edge is</div>
+  <h2>Where the corpus's laws actually reach the corpus's skills — and where they don't yet.</h2>
+  <p class="lede">Group A (<code>nesi/mind/LEARNED.md</code>, 30 numbered laws) is the RULE domain. Group F (<code>.claude/skills/*</code> — 13 files, and <code>nesi/bench/*/SKILL.md</code> — 14 files) is the READ domain: the corpus's own procedural instruments. This edge asks a narrow, checkable question — which of the 27 skill files actually cite a specific <code>LEARNED.md</code> law number as their origin — and answers it by direct read and grep rather than by estimate.</p>
+  <div class="seal">
+    <div><span>SCOPE</span><b>27 skill files, 30 laws, 1 live drift tool</b></div>
+    <div><span>METHOD</span><b>full read + grep, plus running the actual checker</b></div>
+    <div><span>PREFLIGHT SOURCE</span><b>DRAFT_VE24_2026-08-27_preflight_manifest.md, Edge 2</b></div>
+    <div><span>OPEN ITEMS RESOLVED</span><b>3 of 3 named in the preflight</b></div>
+    <div><span>NEW FINDING</span><b>preflight's own "14" skill count corrected to 13</b></div>
+    <div><span>THEME</span><b>auto light/dark via prefers-color-scheme</b></div>
+  </div>
+  <div class="keyline">The headline finding: <strong>only 8 of the 27 skill files cite a specific <code>LEARNED.md</code> law number</strong> — 7 in <code>.claude/skills/</code>, 1 in <code>nesi/bench/</code>. The rest either cite a different source (a tool file, an agent's own internal rule, another skill's own guard) or cite no numbered law at all. This is a much smaller, more checkable relationship than "skills operationalize laws" would suggest at a glance.</div>
+  <p>Three items the preflight named as open are resolved below, plainly, in the Relationship/Interface tab: (1) the real citation table, (2) whether "25 laws" in <code>authority-check/SKILL.md:101</code> is staleness or a deliberate subset, (3) whether <code>nesi/bench/*/SKILL.md</code> is live or a parallel/older set relative to <code>.claude/skills/*</code>.</p>
+</section>
+
+<section class="panel" id="panel-laws" data-panel="laws">
+  <div class="eyebrow">Group A</div>
+  <h2><code>nesi/mind/LEARNED.md</code> — 30 numbered laws, one page.</h2>
+  <p>Read in full for this edge. <span class="tag verbatim">verbatim</span> Its own framing: <em>"PROTOCOLS carries what a session must DO. This carries what the corpus has already paid for and keeps re-learning... Where this file and a habit collide, this file wins."</em> (lines 3–6). Laws are added only with a mark and a provenance — <em>"every line below is sourced, none composed. Additions require a mark and a provenance; a line with no provenance does not belong here"</em> (lines 9–10).</p>
+  <h3>The laws this edge's citation table actually touches</h3>
+  <table>
+    <tr><th>Law</th><th>Headline</th><th>Dated</th><th>Cited by a skill file below</th></tr>
+    <tr><td>1</td><td>The want-check is the only gate</td><td>2026-08-13</td><td>record-audit</td></tr>
+    <tr><td>2</td><td>Verification needs a stranger</td><td>2026-08-12</td><td>lens-panel</td></tr>
+    <tr><td>3</td><td>Verification is prestress, not identity</td><td>2026-08-12 / reframed 2026-08-18</td><td>instrument-audit, cold-walk, daily-cycle (bench)</td></tr>
+    <tr><td>4</td><td>A blank screen passes every refusal test</td><td>2026-08-13</td><td>instrument-audit</td></tr>
+    <tr><td>5</td><td>Perception over measurement</td><td>2026-08-12</td><td>instrument-audit, route-map</td></tr>
+    <tr><td>6</td><td>Selector honesty</td><td>—</td><td>instrument-audit</td></tr>
+    <tr><td>9</td><td>The drop rule</td><td>2026-08-09</td><td>record-audit</td></tr>
+    <tr><td>11</td><td>One manifest per tetra</td><td>2026-08-13 / rescoped 2026-08-18</td><td>boundary-audit</td></tr>
+    <tr><td>14</td><td>Never declare Kevin's state</td><td>2026-08-13</td><td>record-audit</td></tr>
+    <tr><td>17</td><td>Divergence is held, never averaged</td><td>2026-08-11</td><td>record-audit, lens-panel</td></tr>
+    <tr><td>19</td><td>Naming: load-bearing only</td><td>2026-08-11</td><td>record-audit</td></tr>
+    <tr><td>20</td><td>No law becomes a lever to give Kevin less</td><td>2026-07-22</td><td>authority-check</td></tr>
+    <tr><td>22</td><td>A gate is a filesystem fact, not an exhortation</td><td>2026-08-13</td><td>boundary-audit; also the pattern <code>law_skill_drift.py</code> fired against <code>external-extraction</code></td></tr>
+    <tr><td>23</td><td>A harness that infers a state reports success it never saw</td><td>2026-08-14</td><td>instrument-audit</td></tr>
+    <tr><td>24</td><td>A constraint that edits the material to enforce itself breaks the law it serves</td><td>2026-08-13</td><td>boundary-audit</td></tr>
+    <tr><td>25</td><td>A build session must not rule its own base fork</td><td>2026-08-13</td><td>authority-check</td></tr>
+  </table>
+  <p style="color:var(--muted);font-size:13px">Laws 7, 8, 10, 12, 13, 15, 16, 18, 21, 26, 27, 28, 29, 30 — <span class="tag instrumentfact">instrument fact</span> zero direct numbered citations found in any of the 27 skill files by grep this pass. Silence here means "no skill cites this law by number," not that the law is inactive — several (16, 27) are cited elsewhere in the corpus, e.g. root <code>CLAUDE.md</code>'s FRAMING section for law 27.</p>
+</section>
+
+<section class="panel" id="panel-skills" data-panel="skills">
+  <div class="eyebrow">Group F, split</div>
+  <h2>Two skill populations, not one — different lineage, different age, different naming.</h2>
+
+  <h3>Subset 1 — <code>.claude/skills/*</code> (repo-level)</h3>
+  <p><span class="tag instrumentfact">instrument fact</span> <code>Glob</code> against <code>.claude/skills/*/SKILL.md</code> returns <strong>13</strong> files, not the 14 the preflight manifest assumed: <code>authority-check, boundary-audit, cold-walk, conservation-harness, external-extraction, full-development, instrument-audit, layout-options, lens-panel, record-audit, route-map, the-closing-check, threshold-sweep</code>. First commit touching this directory: <strong>2026-08-19</strong> (git log). These are audit/lens-shaped instruments — most describe themselves as checking something else (a claim, a boundary, an instrument, a record) rather than performing a task.</p>
+
+  <h3>Subset 2 — <code>nesi/bench/*/SKILL.md</code></h3>
+  <p><span class="tag instrumentfact">instrument fact</span> <strong>14</strong> files, not the 11 first counted this pass — a genuine undercount, corrected on verify: <code>coordination, daily-cycle, field-kit-engine, graduated-trust, infrastructure, mark-record, metabolizer, miro-handler, morning-pages-channel, provenance, transmission-engine</code>, plus three initially missed — <code>diamond/skill.md</code> (the twelve-lens double-diamond instrument), <code>membrane-controller/skill.md</code>, and <code>substrate/SKILL.md</code>. (<code>geometric_bench/</code> is a real directory but carries no `SKILL.md` at all — it was wrongly paired with membrane-controller in the first draft of this note and is not part of this count.) First commit touching this directory: <strong>2026-08-11</strong> (git log) — but its own founding note dates the underlying migration to <strong>2026-07-16</strong>. 13+14 = <strong>27</strong>, which is exactly what <code>law_skill_drift.py</code>'s own live run reports below — the two counts now agree.</p>
+
+  <div class="warn"><strong>These two subsets share zero filenames.</strong> Not one of the 13 repo-level skill names (boundary-audit, cold-walk, etc.) matches any of the 11 bench names (metabolizer, daily-cycle, etc.). They are not two views of the same instrument population — they are two different projects, built at two different times, for two different purposes, that happen to sit under a shared "skills" umbrella term. See the Relationship tab for what actually connects them.</p></div>
+</section>
+
+<section class="panel" id="panel-interface" data-panel="interface">
+  <div class="eyebrow">The three open items, resolved</div>
+  <h2>1 · The real citation table (8 of 27, not "skills operationalize laws")</h2>
+  <table>
+    <tr><th>Skill file</th><th>Set</th><th>Law(s) cited by number</th><th>How cited</th></tr>
+    <tr><td><code>authority-check</code></td><td>.claude/skills</td><td>20, 25</td><td><span class="tag verbatim">verbatim</span> frontmatter "Born from nesi/mind/LEARNED.md laws 20 and 25" + inline "Law 25's exact finding..."</td></tr>
+    <tr><td><code>boundary-audit</code></td><td>.claude/skills</td><td>11, 22, 24</td><td><span class="tag verbatim">verbatim</span> frontmatter "Born from nesi/mind/LEARNED.md laws 11, 22, and 24" + inline per-law breakdown</td></tr>
+    <tr><td><code>instrument-audit</code></td><td>.claude/skills</td><td>3, 4, 5, 6, 23</td><td><span class="tag verbatim">verbatim</span> frontmatter cites 3,5,6,23; body adds a 5th numbered section for law 4 ("the vacuous-pass test")</td></tr>
+    <tr><td><code>record-audit</code></td><td>.claude/skills</td><td>1, 9, 14, 17, 19</td><td><span class="tag verbatim">verbatim</span> frontmatter "Born from nesi/mind/LEARNED.md laws 1, 9, 14, 17, and 19"</td></tr>
+    <tr><td><code>cold-walk</code></td><td>.claude/skills</td><td>3</td><td>inline body only ("<code>LEARNED.md</code> law 3: a check holds a load by being structural") — frontmatter itself cites <code>cold_walk.js</code>/<code>cold_walk_prepare.js</code>, not a law number</td></tr>
+    <tr><td><code>lens-panel</code></td><td>.claude/skills</td><td>2, 17</td><td>inline body only, no frontmatter law citation</td></tr>
+    <tr><td><code>route-map</code></td><td>.claude/skills</td><td>5</td><td>inline body only ("Law 5: the operator's hand runs the filter")</td></tr>
+    <tr><td><code>daily-cycle</code></td><td>nesi/bench</td><td>3</td><td>inline body only, describing <code>law_skill_drift.py</code>'s own founding incident ("law 3's 2026-08-18 reframe")</td></tr>
+  </table>
+  <p>The remaining 16 files cite no <code>LEARNED.md</code> law number: 6 in <code>.claude/skills</code> (<code>conservation-harness</code>, <code>external-extraction</code>, <code>full-development</code>, <code>layout-options</code>, <code>the-closing-check</code>, <code>threshold-sweep</code>) and 10 in <code>nesi/bench</code> (<code>coordination</code>, <code>field-kit-engine</code>, <code>graduated-trust</code>, <code>infrastructure</code>, <code>mark-record</code>, <code>metabolizer</code>, <code>miro-handler</code>, <code>morning-pages-channel</code>, <code>provenance</code>, <code>transmission-engine</code>). Several of these cite a law-shaped concept without a number — e.g. <code>external-extraction</code>'s routing note: <span class="tag verbatim">verbatim</span> <em>"per this project's standing rule that no law becomes a lever to give Kevin less"</em> (a plain paraphrase of law 20, unnumbered) — and <code>metabolizer</code> names its own internal "SUBTRACTION law" and "DISPLACED-ZERO law," which read as house rules, not <code>LEARNED.md</code> citations.</p>
+
+  <h2>2 · The "25 laws" in <code>authority-check/SKILL.md:101</code> — staleness, not a deliberate subset</h2>
+  <p><span class="tag instrumentfact">instrument fact</span> <code>DRAFT_SIX_SHAPES_2026-08-20.md</code> states its own scope plainly: <span class="tag verbatim">verbatim</span> <em>"Status, at the time this draft was written (2026-08-20): draft... Built from a read-only pass over nesi/mind/LEARNED.md, LEARNED_PROVENANCE.md, MARKS_LOG.jsonl, OPEN_GATES.jsonl, nesi/game2d/tools/*.js, and git log"</em> and <em>"the 25 laws in LEARNED.md... don't cluster into six actions Kevin takes — they cluster into six questions."</em></p>
+  <p>Checking <code>LEARNED.md</code>'s own law dates against that write date resolves this cleanly: law 25 is dated 2026-08-13; law 26 is dated 2026-08-21 (the day after the draft); laws 27–30 are dated 2026-08-22 through 2026-08-27. <strong>On 2026-08-20, <code>LEARNED.md</code> genuinely held exactly 25 laws.</strong> The draft's count was accurate when written. <code>authority-check/SKILL.md</code>'s "Sibling lenses" section (last git-touched <strong>2026-08-27</strong> — today) still repeats "25 laws" while citing that same draft by name and date. This is <strong>staleness carried forward through a citation, not a deliberate subset</strong>: nothing in either file states the six-shapes clustering was scoped to exclude laws 26–30 on purpose; they simply postdate the draft and were never fed back into it.</p>
+  <div class="keyline">Resolution: the "25" is a correct historical citation to a draft's own point-in-time scope, but reads as a live claim to anyone who doesn't check the date — worth a one-line update in <code>authority-check/SKILL.md</code> noting the count is as-of 2026-08-20, not current. This edge-file does not make that edit; it names the fact <span class="tag sessionderived">session-derived</span>.</div>
+
+  <h2>3 · Is <code>nesi/bench/*/SKILL.md</code> live, or a parallel/older set? — mirror-in-waiting, per its own founding note</h2>
+  <p><span class="tag verbatim">verbatim</span> <code>nesi/bench/BENCH_NOTE.md</code>, written 2026-07-16: <em>"Verbatim copies of the 13 organ prompts (skills) from <code>~/.claude/skills/</code>... Nothing runs from here. Sessions still load the vendor copies in <code>~/.claude/skills/</code> — those remain live and load-bearing... bench.json does not exist [yet]... Repointing happens only after that mark [an unratified job-grammar mark]... Until then it is a mirror-in-waiting."</em></p>
+  <p><span class="tag verbatim">verbatim</span> <code>nesi/bench/bench.json</code>'s own status field, written the same day: <em>"REGISTRY ONLY — nothing repointed; vendor skills at ~/.claude/skills/ stay live and load-bearing; bench copies are mirrors-in-waiting."</em></p>
+  <p><span class="tag instrumentfact">instrument fact</span> A directory listing of the vendor location named in that note (the user's home-directory <code>~/.claude/skills/</code> — a different path from this repo's own <code>.claude/skills/</code>) confirms all the named organs still exist there today: <code>coordination, daily-cycle, field-kit-engine, graduated-trust, infrastructure, mark-record, membrane-controller, metabolizer, miro-handler, morning-pages-channel, provenance, substrate, transmission-engine</code>, plus two added since 2026-07-16 (<code>stigmetric-trace</code>, <code>unrouted-gifts</code>). No document found anywhere in this repo states a repointing mark was ever given.</p>
+  <div class="warn"><strong>Two separate things named "the vendor skills" collide here, worth stating plainly.</strong> Root <code>CLAUDE.md</code>'s suspension section describes the vendor <em>global</em> <code>~/.claude/CLAUDE.md</code> as suspended — a different object from the vendor <em>skill files</em> at <code>~/.claude/skills/</code>, which <code>BENCH_NOTE.md</code> describes as live and load-bearing. Nothing found this pass suspends the vendor skill files themselves.</p>
+  <div class="keyline">Resolution: <code>nesi/bench/*/SKILL.md</code> is not a parallel/older <em>alternative</em> to <code>.claude/skills/*</code> — it never overlapped with it in the first place. It is a dated (2026-07-16), unrepointed mirror of a third, separate population: the user's home-directory <code>~/.claude/skills/</code> organs. That vendor population remains the live, load-bearing copy per the bench's own founding note, with no repointing mark found on record. <code>.claude/skills/*</code> (this repo) is a distinct, newer (first commit 2026-08-19) instrument set built for a different job — reading and auditing, not performing tasks.</div>
+
+  <h3>What actually unifies the two subsets today</h3>
+  <p><span class="tag verbatim">verbatim</span> <code>tools/recognition/law_skill_drift.py</code> (built 2026-08-21) scans both <code>.claude/skills/</code> and <code>nesi/bench/</code> together as one combined population for law-citation risk, with a hard floor: <em>"Verified 2026-08-21 at 24 skill files across .claude/skills/ and nesi/bench/. A run that finds fewer than this is refused."</em> <span class="tag instrumentfact">instrument fact</span> Run live for this edge (2026-08-27): <strong>27 skill files scanned, 30 laws parsed, 4 curated risk patterns checked, 1 confirmed drift, 1 unreconciled, 0 undated.</strong> The confirmed hit: <code>.claude/skills/external-extraction/SKILL.md</code> calls itself "the gate" with no backing filesystem path in the same document, colliding with law 22 (dated 2026-08-13; the skill file was last touched 2026-08-24 — after the law). The unreconciled hit: <code>nesi/bench/daily-cycle/SKILL.md</code> predates law 3's most recent citation date and was never re-checked against it.</p>
+  <p>So the honest shape of the relationship: the two Group-F subsets are genealogically unrelated, but one mechanical instrument (born from a law-3 collision, itself a direct product of law-vs-skill drift being caught by hand once already) now treats them as one scannable set regardless of lineage — a real, live, and current bridge, even though it is procedural rather than a claim that the two subsets are "the same thing."</p>
+
+  <div class="rule"></div>
+  <h3>Related Edges</h3>
+  <div class="card">
+    <p><span class="tag sessionderived">session-derived</span> Verified cross-reference for this edge, pulled from <code>nesi/mind/VE24_RELATIONSHIPS_2026-08-27.html</code>'s Relationship Map:</p>
+    <p>· <strong>Corroborates edges 6 and 21</strong> — three independent instances of the same defect class: a documented count going stale as the corpus grows, with nothing mechanically re-checking it. This edge's own instance is the "25 laws" citation in <code>authority-check/SKILL.md:101</code>, accurate as of <code>DRAFT_SIX_SHAPES_2026-08-20.md</code>'s write date but never updated as <code>LEARNED.md</code> grew to 30 laws (see the "25 laws" resolution above). Edge 6 carries the same pattern for its "twelve skills" count; edge 21 carries it for an instrument-count reconciliation.</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-sources" data-panel="sources">
+  <div class="eyebrow">Every file read for this edge</div>
+  <h2>Sources, with the actual quotes.</h2>
+
+  <details>
+    <summary><code>nesi/mind/DRAFT_VE24_2026-08-27_preflight_manifest.md</code> — Cross-cutting findings + Edge 2 section, read in full</summary>
+    <div class="code">"Confirmed: authority-check/SKILL.md:3 — 'Born from nesi/mind/LEARNED.md
+laws 20 and 25.' At least 5 of 14 .claude/skills/* form a named cluster
+from DRAFT_SIX_SHAPES_2026-08-20.md (unread this pass)... A discrepancy:
+authority-check/SKILL.md:101 says the six-shapes cluster derives 'from the
+same read of LEARNED.md's 25 laws' — but LEARNED.md now runs through law
+30. Stale count or a specific subset — unresolved."</div>
+  </details>
+
+  <details>
+    <summary><code>nesi/mind/LEARNED.md</code> — read in full (213 lines, 30 laws)</summary>
+    <div class="code">"1 · THE WANT-CHECK IS THE ONLY GATE... — MARKS 1020, 2026-08-13."
+"30 · UNRANKED IS THE DEFAULT WHEN SURFACING MATERIAL FOR KEVIN'S
+JUDGMENT... — found 2026-08-27... Authorized as a standing law same day,
+Kevin's mark: 'mark all four, let's build them out.'"
+Falsifier line, end of file: "if a session reads it at boot and the corpus
+still re-learns one of these the hard way, the line was written wrong —
+fix the line, do not add another."</div>
+  </details>
+
+  <details>
+    <summary><code>nesi/mind/DRAFT_SIX_SHAPES_2026-08-20.md</code> — read in full</summary>
+    <div class="code">"Status, at the time this draft was written (2026-08-20): draft, not
+seated anywhere, per Kevin's instruction to gather what a survey of the
+corpus turned up and give it form... the 25 laws in LEARNED.md, the tool
+names under tools/, and the texture of MARKS_LOG.jsonl don't cluster into
+six actions Kevin takes — they cluster into six questions the work keeps
+asking of itself."
+Seating notice at top, 2026-08-21: "Four of six already have dedicated
+skills built since this draft was written — instrument-audit,
+boundary-audit, record-audit, authority-check... The remaining two reuse
+pre-existing skills: conservation-harness (lens 2) and unrouted-gifts
+(lens 6)."</div>
+  </details>
+
+  <details>
+    <summary><code>.claude/skills/authority-check/SKILL.md</code> — read in full</summary>
+    <div class="code">Frontmatter: "Born from nesi/mind/LEARNED.md laws 20 and 25 — a session
+ruling its own base fork doesn't become lawful by being carefully
+reasoned, and no law is allowed to become a lever that reduces what Kevin
+gets."
+Line 101, "Sibling lenses" section: "One of six recurring checks named in
+nesi/mind/DRAFT_SIX_SHAPES_2026-08-20.md (seated 2026-08-21) — this one is
+lens 5... See that file for how all six were drawn from the same read of
+LEARNED.md's 25 laws."
+git log -1 (this file): 2026-08-27.</div>
+  </details>
+
+  <details>
+    <summary><code>.claude/skills/boundary-audit/SKILL.md</code>, <code>instrument-audit/SKILL.md</code>, <code>record-audit/SKILL.md</code> — frontmatter read in full</summary>
+    <div class="code">boundary-audit: "Born from nesi/mind/LEARNED.md laws 11, 22, and 24 — a
+rule stated in prose is only as strong as the session currently reading
+it, and a guard that repairs the result after the fact instead of
+refusing the act breaks the very law it claims to serve."
+
+instrument-audit: "Born from nesi/mind/LEARNED.md laws 3, 5, 6, and 23 —
+a check that grades a proxy instead of the object, that measures data no
+eye would ever see, or that infers state from a symptom instead of asking
+the object directly, all pass clean while catching nothing."
+
+record-audit: "Born from nesi/mind/LEARNED.md laws 1, 9, 14, 17, and 19 —
+this corpus's own record was wrong at least twice from checking one
+source (git status) and skipping an adjacent one (git log)..."</div>
+  </details>
+
+  <details>
+    <summary><code>.claude/skills/cold-walk/SKILL.md</code>, <code>lens-panel/SKILL.md</code>, <code>route-map/SKILL.md</code> — relevant sections read</summary>
+    <div class="code">cold-walk, line 82: "(LEARNED.md law 3: a check holds a load by being
+structural, 'never because a different hand ran it')"
+
+lens-panel, lines 55-56, 65-66: "Do not average or rank the five readings
+against each other — LEARNED.md law 17 (divergence is held, never
+averaged)..." / "Not a gate. Not a score. Not a substitute for Kevin's own
+read — LEARNED.md law 2 still requires a stranger for anything claiming
+WALKABLE..."
+
+route-map, line 91: "Law 5: the operator's hand runs the filter. A
+harness that guessed which seat a file belongs to would be the classifier
+the law refuses, wearing a harness."</div>
+  </details>
+
+  <details>
+    <summary><code>.claude/skills/external-extraction/SKILL.md</code> — Routing Note section</summary>
+    <div class="code">"Close with a routing note, not a decision. Cards order nothing — they
+wait at the gate for Kevin's mark, per this project's standing rule that
+no law becomes a lever to give Kevin less and no session marks on his
+behalf." [unnumbered paraphrase of law 20]</div>
+  </details>
+
+  <details>
+    <summary><code>nesi/bench/BENCH_NOTE.md</code> — read in full</summary>
+    <div class="code">"Landed: 2026-07-16 · NESI memory-migration step 3, Kevin's mark ('run
+step 3')... Verbatim copies of the 13 organ prompts (skills) from
+~/.claude/skills/, 54 files, diff-verified byte-identical at copy time...
+Nothing runs from here. Sessions still load the vendor copies in
+~/.claude/skills/ — those remain live and load-bearing... Until then it is
+a mirror-in-waiting."</div>
+  </details>
+
+  <details>
+    <summary><code>nesi/bench/bench.json</code> — read in full</summary>
+    <div class="code">"_meta": {
+  "written": "2026-07-16",
+  "authority": "nesi_job_grammar_2026-07-15.md — RATIFIED v2.1 (M1, Kevin,
+2026-07-16)",
+  "status": "REGISTRY ONLY — nothing repointed; vendor skills at
+~/.claude/skills/ stay live and load-bearing; bench copies are
+mirrors-in-waiting (BENCH_NOTE.md)",
+  "deliberately_absent": "membrane-controller — crossing is
+unrepresentable as a job (grade-two incapacity, not prohibition)."
+}</div>
+  </details>
+
+  <details>
+    <summary><code>nesi/bench/daily-cycle/SKILL.md</code> — step 3h section</summary>
+    <div class="code">"Step 3h — Read the law-vs-skill drift filter. Run from root\:
+python tools/recognition/law_skill_drift.py ... does .claude/skills/ or
+nesi/bench/ carry a pattern a LEARNED.md law was written to close, while
+itself dating on or after that law?... law 3's 2026-08-18 reframe and
+still equated a fresh agent invocation with an independent stranger
+read — the exact collision law 3 was reframed to [rule out]."</div>
+  </details>
+
+  <details>
+    <summary><code>tools/recognition/law_skill_drift.py</code> — read in full, then run live</summary>
+    <div class="code">Header comment: "Built 2026-08-21, on the catch that named itself:
+cold-walk/SKILL.md's own step 6 was written after LEARNED.md law 3 was
+reframed... and still equated 'a fresh agent invocation' with 'a human who
+didn't write the code.'... MIN_SKILLS = 20 ... Verified 2026-08-21 at 24
+skill files across .claude/skills/ and nesi/bench/."
+
+Live run output, 2026-08-27:
+  laws parsed: 30   skill files scanned: 27   patterns checked: 4
+  confirmed drift: 1   unreconciled: 1   undated: 0
+  CONFIRMED DRIFT: .claude/skills/external-extraction/SKILL.md — law 22,
+    self-described gate with no filesystem backing in the same file.
+    evidence: "the gate" — skill last touched 2026-08-24 (git) >= law
+    dated 2026-08-13.
+  UNRECONCILED: nesi/bench/daily-cycle/SKILL.md — law 3 [2026-08-22 <
+    2026-08-24]</div>
+  </details>
+
+  <details>
+    <summary>Directory listings and git dates — instrument facts, not quotes</summary>
+    <div class="code">Glob .claude/skills/*/SKILL.md → 13 files (not 14).
+Glob nesi/bench/*/SKILL.md → 11 files.
+git log --diff-filter=A (first commit) .claude/skills → 2026-08-19.
+git log --diff-filter=A (first commit) nesi/bench → 2026-08-11.
+ls ~/.claude/skills/ (home directory, vendor location) → 15 directories
+present including all 13 named in BENCH_NOTE.md, plus stigmetric-trace
+and unrouted-gifts added since 2026-07-16.</div>
+  </details>
+</section>
+
+<section class="panel" id="panel-limits" data-panel="limits">
+  <div class="eyebrow">What this file is not authorized to do</div>
+  <h2>It selects, arranges, and tags. It does not decide, canonize, or rank.</h2>
+  <div class="card"><h3>Selects and arranges only</h3><p>Every claim above traces to a direct read, a grep, or a live tool run performed for this edge. Nothing here declares a project state settled, ranks one skill file above another, or recommends an edit — the "worth a one-line update" note in the Relationship tab names an observation, not an instruction to act.</p></div>
+  <div class="card"><h3>Unranked, per law 30</h3><p>The 8-file citation table and the 16-file non-citation list are presented whole, not curated down to a "most important" subset.</p></div>
+  <div class="card"><h3>No silent smoothing</h3><p>Where a preflight assumption didn't hold (14 skill files vs. the real 13; "25 vs 30" reading as staleness rather than a clean resolution either way) that mismatch is stated directly, not absorbed into a tidier number.</p></div>
+  <div class="card"><h3>Reusable</h3><p>This file follows <code>FORMAT_SPEC_2026-08-25_session_bridge_html.html</code>'s shell/tab mechanics and may be copied for another VE24 edge, with its own content substituted.</p></div>
+  <div class="rule"></div>
+  <h3>One new open question surfaced by this pass</h3>
+  <p><code>law_skill_drift.py</code>'s own risk table covers only 4 of 30 laws (3, 14, 22, 2) by name-pattern. The 22 laws with zero mechanical drift coverage are exactly the ones this edge-file's citation table shows being cited manually and unevenly across skill files (1, 5, 6, 9, 11, 17, 19, 20, 23, 24, 25) — meaning a citation going stale in one of those 11 laws would currently only be caught by a human re-reading the skill file by hand, the same way this edge-file's own "25 vs 30" finding was caught. Not this edge's job to close; named as navigation data per law 27.</p>
+</section>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    document.getElementById('crumb').textContent = btn.textContent.trim();
+  });
+});
+document.querySelector('.tabbtn').classList.add('active');
+</script>
+</body>
+</html>
