@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE PROCESS GUIDE — regathered 2026-08-27</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7f5f0;color:#3a3020;
+       font-family:'Courier New',Courier,monospace;font-size:13px;line-height:1.65;
+       padding:28px 16px 80px}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:16px;letter-spacing:4px;color:#1a1408}
+  .sub{font-size:10.5px;color:#a89870;letter-spacing:1px;margin:5px 0 4px}
+  .src{font-size:10px;color:#8a7a55;margin-bottom:22px}
+  .src code{background:#efece2;padding:1px 4px;border:1px solid #ddd6c4}
+
+  nav{border:1px solid #ddd6c4;background:#efece2;padding:12px 16px;margin-bottom:26px}
+  nav .navtitle{font-size:10px;letter-spacing:2px;color:#7a6840;margin-bottom:6px}
+  nav a{display:inline-block;font-size:11px;color:#2a6a1a;text-decoration:none;
+        margin:2px 12px 2px 0}
+  nav a:hover{text-decoration:underline}
+
+  h2{font-size:13px;letter-spacing:2px;color:#1a1408;text-transform:uppercase;
+     margin:34px 0 4px;padding-top:14px;border-top:1px solid #ddd6c4}
+  h2:first-of-type{border-top:none;margin-top:0}
+  .tag{font-size:9.5px;color:#a89870;letter-spacing:1px;margin-bottom:12px}
+
+  p{margin:0 0 12px}
+  .quote{border-left:3px solid #c9b98a;padding:6px 0 6px 14px;margin:10px 0 14px;
+         color:#5a4c30;font-style:italic}
+  .quote cite{display:block;font-style:normal;font-size:10px;color:#a89870;margin-top:3px}
+
+  .card{border:1px solid #ddd6c4;background:#fffdf7;padding:12px 15px;margin:0 0 10px}
+  .card h3{font-size:11.5px;color:#1a1408;margin-bottom:4px}
+  .card .meta{font-size:9.5px;color:#a89870;margin-bottom:6px;letter-spacing:.5px}
+  .card p{margin:0 0 6px;font-size:12px;color:#4a3f28}
+  .card p:last-child{margin-bottom:0}
+
+  .status{display:inline-block;font-size:9px;letter-spacing:1px;padding:2px 7px;
+          border:1px solid;margin-right:6px}
+  .status.pass{color:#2a6a1a;border-color:#2a6a1a;background:#e8f2e4}
+  .status.held{color:#8a6a10;border-color:#8a6a10;background:#f5f0e0}
+  .status.open{color:#7a5aa0;border-color:#7a5aa0;background:#f0eaf7}
+  .status.fixed{color:#1a5a8a;border-color:#1a5a8a;background:#e6eef5}
+
+  table{width:100%;border-collapse:collapse;font-size:11.5px;margin:10px 0 16px}
+  th{text-align:left;font-size:9.5px;letter-spacing:1px;color:#7a6840;
+     border-bottom:1px solid #ccc5b0;padding:5px 8px}
+  td{padding:6px 8px;border-bottom:1px solid #e8e4d8;vertical-align:top;color:#4a3f28}
+  tr:last-child td{border-bottom:none}
+
+  ul{margin:0 0 14px 20px}
+  li{margin-bottom:6px;color:#4a3f28}
+  code{font-family:inherit;background:#efece2;padding:0 3px;border:1px solid #ddd6c4;
+       font-size:11px}
+
+  .filemap{font-size:11px;background:#fffdf7;border:1px solid #ddd6c4;padding:14px 16px;
+           white-space:pre-wrap;color:#4a3f28;line-height:1.75}
+  .filemap b{color:#1a1408}
+
+  .gatebox{border:1px solid #ddd6c4;background:#efece2;padding:12px 16px;font-size:11px}
+  .gatebox .row{display:flex;justify-content:space-between;padding:3px 0;
+                border-bottom:1px solid #ddd6c4}
+  .gatebox .row:last-child{border-bottom:none}
+  .gatebox .k{color:#7a6840}
+  .gatebox .v{color:#1a1408}
+
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid #ddd6c4;
+         font-size:10px;color:#a89870}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>THE PROCESS GUIDE</h1>
+  <div class="sub">2026-08-26 regathered into one read, for 2026-08-27</div>
+  <div class="src">
+    Reconciled from <code>KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md</code>,
+    <code>gate/LEDGER.jsonl</code>, and the working tree as it stands this morning
+    (§7's fixes are made but not yet committed). Nothing here is composed —
+    every section traces to a dated passage or a ledger line in those files.
+  </div>
+
+  <nav>
+    <div class="navtitle">JUMP</div>
+    <a href="#page">1 · the page, today</a>
+    <a href="#bugs">2 · bugs already fixed</a>
+    <a href="#tetra">3 · the tetra dreams</a>
+    <a href="#weave">4 · the weave → composted</a>
+    <a href="#devpass">5 · the full-development pass</a>
+    <a href="#open">6 · what's open for today</a>
+    <a href="#gate">7 · gate, as of this morning</a>
+    <a href="#files">8 · file map</a>
+  </nav>
+
+  <h2 id="page">1 · The page, today</h2>
+  <div class="tag">index.html — NESI's entry point since 2026-08-26</div>
+  <p>
+    You type. A finished sentence — ended by <code>. ! ? …</code> — drops into a
+    day-grouped document that keeps every sentence in full. Two structural facts, and only two,
+    decide where it lands and how large it renders: how long your hands were
+    idle before you started typing it, and how many words it is. Nothing reads
+    what a sentence says.
+  </p>
+  <p>
+    It replaced a twelve-seat door built on <code>solid.js</code> geometry —
+    kept whole at <code>index.html.backup_pre-lattice-entry_2026-08-26.html</code>,
+    not deleted, superseded because it was still "a bench of links leading out,"
+    Kevin's own naming of the shape that stopped working.
+  </p>
+  <div class="quote">"menus and tabs and functions that route nowhere... I have no reason to write anything anywhere."
+    <cite>Kevin, lattice.html's header, the day before the reclaim</cite>
+  </div>
+  <p>As of this morning the page carries <b>six grounds</b>, reached from inside the writing surface itself:</p>
+  <table>
+    <tr><th>ground</th><th>what it shows</th></tr>
+    <tr><td><b>relationship</b></td><td>the margin graph — chain / near / hinge / declared edges between sentences</td></tr>
+    <tr><td><b>time</b></td><td>the same sentences read against when they landed</td></tr>
+    <tr><td><b>weave</b></td><td>the typed 4×4-and-up matrix + per-node gift-readout, composted in from <code>the_weave.html</code> (§4 below)</td></tr>
+    <tr><td><b>knowledge</b></td><td>a link out to this corpus's own <code>KNOWLEDGE_...md</code> file — plain <code>&lt;a href&gt;</code>, no fetch</td></tr>
+    <tr><td><b>categories</b></td><td>a live report over six fields the build already computes: text, timing, derived structure, manual structure, word adjacency, attention</td></tr>
+    <tr><td><b>words</b></td><td>a live concordance — what word or phrase follows a chosen word, drawn only from within that sentence's own boundary</td></tr>
+  </table>
+
+  <h2 id="bugs">2 · Bugs already fixed, same day</h2>
+  <div class="card">
+    <h3>The paste crash</h3>
+    <div class="meta"><span class="status fixed">FIXED</span> found by living with it</div>
+    <p>Pasting a long article recursed once per sentence found, paying for a full save-and-rerender before the next cut. Now one loop, one save-and-rerender per paste.</p>
+  </div>
+  <div class="card">
+    <h3>No delete</h3>
+    <div class="meta"><span class="status fixed">FIXED</span> found by living with it</div>
+    <p>"Nothing ever deleted" was true a sentence at a time, untested against an accidental block landing whole. A hover-revealed × now removes a sentence and anything referencing it, guarded by a confirm.</p>
+  </div>
+
+  <h2 id="tetra">3 · The tetra dreams — five shapes, all real, all read-only</h2>
+  <div class="tag">Kevin's framing: "each sentence as a pebble, each word as a node... map the 6 relationships at any point in the system, built a tetra an object"</div>
+  <p>All five read the same <code>localStorage["nesi.thepage"]</code> the writing page fills. None write to it (Dream B keeps its own key).</p>
+
+  <div class="card">
+    <h3>A — the four-pick lens <span class="status pass">holds at tested scale</span></h3>
+    <p><code>tetra_dream_A_fourpick.html</code> — pick four sentences, render the six edges between them. Audit fixed a declared-edge collision and a centroid-vertex layout bug. Near-pairs computation is O(n²) — fine now, would need a window at real scale (months of daily writing).</p>
+  </div>
+  <div class="card">
+    <h3>B — pebbles and stones <span class="status open">value proposition unresolved</span></h3>
+    <p><code>tetra_dream_B_pebbles.html</code> — group sentences into a named "stone"; four stones read the same tetra. Hinge detection was a fake stub (nearly everything read as a hinge) — fixed by porting the real cut-vertex algorithm. Still open: does grouping earn its complexity over Dream A's simpler four-pick, and a sentence can currently belong to more than one stone.</p>
+  </div>
+  <div class="card">
+    <h3>C — the standing tetra <span class="status fixed">stale "now" fixed</span></h3>
+    <p><code>tetra_dream_C_standing.html</code> — a companion window always showing the tetrahedron around wherever writing currently is. Originally "now" meant only the last sentence <i>written</i>, going stale during rereading. Fixed: <code>index.html</code> now writes an attention record after 1.5s hover; Dream C prefers a recent one once writing has paused.</p>
+  </div>
+  <div class="card">
+    <h3>D — the typed matrix <span class="status pass">built, verified against seeded data</span></h3>
+    <p><code>tetra_dream_D_matrix.html</code> — answers the strongest outside objection: a tetrahedron forces all six edges to look identical (undirected, symmetric), and chain/declared are directional. A 4×4 matrix has a place for pair facts off-diagonal and node facts (hinge) on the diagonal.</p>
+  </div>
+  <div class="card">
+    <h3>E — the derived gifts <span class="status pass">built, ceiling named</span></h3>
+    <p><code>tetra_dream_E_gifts.html</code> — pick one anchor sentence; the other three vertices are derived (chain gift, near gift, declared gift), never picked. Ground finding: triple illumination is not reachable by this construction — chain and near can never derive the same gift, so the fourth face's ceiling is two-lens overlap, never three. Named as a real limit of this construction, not of the tetrahedron in general.</p>
+  </div>
+
+  <h2 id="weave">4 · The weave — dropping the tetra, composting into index.html</h2>
+  <div class="quote">"let work these together into a single reweaving that doesn't require the authors scaffolding." → "bring both together compost the weave into the previous build."
+    <cite>Kevin, same day, the two instructions that produced this section</cite>
+  </div>
+  <p>
+    <code>the_weave.html</code> kept what the five dreams actually proved and dropped the
+    tetrahedron itself: A's vocabulary, B's stones (read, not rebuilt), C's live-follow,
+    D's typed grid generalized to the whole document, E's gift-readout as plain text.
+    It then composted into <code>index.html</code> as the <b>weave</b> ground — reading
+    the live build's own <code>nodes</code>/<code>edges</code>/<code>declaredEdges</code>/<code>L.hinges</code>
+    in memory, not a second parse of storage. <code>the_weave.html</code> now redirects,
+    same pattern as <code>the_page.html</code>; its prior standalone content is kept whole
+    at <code>the_weave.html.backup_pre-composting_2026-08-26.html</code>.
+  </p>
+  <table>
+    <tr><th>defect, found by using it</th><th>fix</th></tr>
+    <tr><td>Matrix + gift-readout truncated sentence text — contradicts the page's own "never truncated" discipline</td><td>every surface shows full text; headers wrap instead of ellipsizing</td></tr>
+    <tr><td>No way to change focus from inside the weave ground</td><td>every row/column header is clickable, routed through the same <code>selectSentence</code></td></tr>
+    <tr><td><code>knowledge</code> ground first fetched the file inline — a real network primitive, forbidden outright by <code>refusal_check</code> (law 3/11)</td><td>plain <code>&lt;a href&gt;</code> navigation instead</td></tr>
+    <tr><td><code>words</code> ground matched the query word case-sensitively — capitalized sentence-starts silently failed to match</td><td>query matches case-insensitively; follower word stays exact-case</td></tr>
+  </table>
+  <p>
+    A framing correction landed in the same pass: several visible strings stated what the
+    page refuses ("never truncated," "nothing read but idle time") rather than what it does.
+    Rewritten to state the positive property directly, per the standing rule in project
+    <code>CLAUDE.md</code> — negative form belongs only as a lint or a container-edge.
+  </p>
+
+  <h2 id="devpass">5 · The full-development pass — five defects, one real boundary</h2>
+  <div class="tag">a destructive audit + ground pass run against index.html as it stood at the end of §4, independently reverified</div>
+  <table>
+    <tr><th>#</th><th>defect</th><th>fix</th></tr>
+    <tr><td>1</td><td>stale code comments in <code>words</code> still described case-sensitive matching</td><td>reworded to match shipped behavior</td></tr>
+    <tr><td>2</td><td><b>the real one</b> — hinge detection never actually included declared edges, contradicting §4's own documented behavior, in two separately-drifting copies of the same logic</td><td>extracted one <code>computeHinges()</code> used by both call sites; verified with a synthetic 5-node test</td></tr>
+    <tr><td>3</td><td><code>categories</code> ground's "never truncated" copy overclaimed — several UI lists do truncate</td><td>rescoped to name where it's true (the document) and where it isn't</td></tr>
+    <tr><td>4</td><td>declared-connections list appended an ellipsis even to short sentences</td><td>matches the conditional pattern used elsewhere</td></tr>
+    <tr><td>5</td><td><code>categories</code> claimed every field fits one of six categories; layout coordinates don't</td><td>named as an explicit exception</td></tr>
+  </table>
+  <p>
+    <b>The boundary named, not a refutation:</b> sourced research (Pennebaker's LIWC,
+    the Forer/Barnum effect, pause-timing confounds, forensic stylometry) shows
+    pronoun-adjacency patterns are genuinely diagnostic material. "Measuring only
+    structure, never meaning" is true of the algorithm and was never sufficient on
+    its own — the <i>artifact</i> a <code>words</code> or <code>categories</code> ground
+    produces carries the same weight as any diagnostically-loaded writing record.
+    The build already satisfies this in practice (no export, no sync, no network call,
+    enforced by <code>refusal_check</code>) — the gap was that this was never stated.
+    Fixed by adding an honest note to both grounds.
+  </p>
+  <div class="card">
+    <h3>Verdict: DEVELOPED</h3>
+    <p><code>node tools/check_all.js</code> held 18/18 both before and after every fix in this pass. Diverge produced five alternative shapes for the whole app — offered, not built; which one (if any) develops further is Kevin's call.</p>
+  </div>
+
+  <h2 id="open">6 · What's genuinely open — decisions available today</h2>
+  <ul>
+    <li>Which shape develops further — lens, hierarchy, ambient companion, matrix, or gift-derivation — is Kevin's call; they may not need to converge into one.</li>
+    <li>Dream B's core value proposition: does grouping add enough real relationship signal to justify its own storage key and UI, over Dream A's simpler four-pick?</li>
+    <li><code>WINDOW_DAYS=21</code> and the 1.5s dwell threshold are first guesses — real numbers to tune once this gets used for months, not weeks.</li>
+    <li>Whether a different derivation of the three gifts (Dream E) could reach triple illumination, or whether §4's answer (drop the shape) is the right one.</li>
+    <li>The <code>words</code> ground's follows-concordance is intra-sentence adjacency, a different shape from Kevin's original "each word as a tetra vertex" framing — whether that framing still wants building, separately, is open.</li>
+    <li>The interest-weighted-selection idea (surfacing structurally meaningful fours instead of nearest/newest) is named in the outside-model thread, not built in any shape yet.</li>
+    <li>Whether <code>categories</code> belongs permanently in the writer's own margin, or reads as a debugging/audit view that landed at the same altitude as the others.</li>
+  </ul>
+
+  <h2 id="gate">7 · Gate, as of this morning</h2>
+  <div class="gatebox">
+    <div class="row"><span class="k">last run</span><span class="v">2026-08-27T02:40:04Z · verdict: pass · exit 0</span></div>
+    <div class="row"><span class="k">01-motion</span><span class="v">pass — 10 commits moved the thing; 40 executable files, 282 docs alongside</span></div>
+    <div class="row"><span class="k">02-selfuse</span><span class="v">pass — 3/12 organs live and routed</span></div>
+    <div class="row"><span class="k">03-blanks</span><span class="v">held — candidate only, blank assertion not installed</span></div>
+    <div class="row"><span class="k">05-subtract</span><span class="v">held — candidate only, cadence proposed not enforced</span></div>
+    <div class="row"><span class="k">06-landed</span><span class="v">admit — 1 admitted in 30d</span></div>
+    <div class="row"><span class="k">07-magnitude</span><span class="v">pass — proposal thresholds respected</span></div>
+    <div class="row"><span class="k">08-return</span><span class="v">pass — all 12 organs declare a return path</span></div>
+    <div class="row"><span class="k">09-dispute</span><span class="v">held — 1 on record, 0 open</span></div>
+    <div class="row"><span class="k">04-horizon</span><span class="v">no longer vacuous this morning — it named a returnAt of 2026-08-27 in yesterday's runs, and today's runs no longer list it as unresolved</span></div>
+  </div>
+  <p style="margin-top:10px">Run it again before extending anything: <code>node tools/check_all.js</code>, from <code>nesi/game2d</code>.</p>
+
+  <h2 id="files">8 · File map, for orientation</h2>
+  <div class="filemap"><b>index.html</b>                                        the live entry point; six grounds (relationship, time, weave, knowledge, categories, words)
+<b>the_page.html</b>                                      redirects to index.html
+<b>the_weave.html</b>                                      redirects to index.html (composted in, §4)
+<b>the_weave.html.backup_pre-composting_2026-08-26.html</b> the_weave's prior standalone content, kept whole
+<b>index.html.backup_pre-lattice-entry_2026-08-26.html</b>  the retired solid door, kept whole
+<b>lattice.html</b>                                        the original fresh-start build, superseded
+<b>tetra_dream_A_fourpick.html</b>                         Dream A — four-pick lens
+<b>tetra_dream_B_pebbles.html</b>                          Dream B — pebbles and stones
+<b>tetra_dream_C_standing.html</b>                         Dream C — the standing tetra
+<b>tetra_dream_D_matrix.html</b>                           Dream D — the typed matrix
+<b>tetra_dream_E_gifts.html</b>                            Dream E — the derived gifts
+<b>KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md</b>      the full source record, §1-9
+<b>PROMPT_FOR_OTHER_MODELS_2026-08-26.md</b>               portable brief for an out-of-family read
+<b>PROCESS_GUIDE_2026-08-27.html</b>                       this file</div>
+
+  <footer>
+    Regathered, not composed — every claim above traces to <code>KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md</code>
+    §1-9 or a ledger line in <code>gate/LEDGER.jsonl</code>. If this page and the build drift apart, the fix is to
+    update this page, not add a second pointer — the same falsifier <code>LEARNED.md</code> holds for itself.
+  </footer>
+
+</div>
+</body>
+</html>

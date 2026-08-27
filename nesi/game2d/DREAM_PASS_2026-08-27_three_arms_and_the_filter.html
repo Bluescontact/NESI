@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DREAM + DEVELOPMENT — three arms, and the filter as its own game</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7f5f0;color:#3a3020;
+       font-family:'Courier New',Courier,monospace;font-size:13px;line-height:1.65;
+       padding:28px 16px 80px}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:16px;letter-spacing:3px;color:#1a1408}
+  .sub{font-size:10.5px;color:#a89870;letter-spacing:1px;margin:5px 0 4px}
+  .src{font-size:10px;color:#8a7a55;margin-bottom:22px}
+  .src code{background:#efece2;padding:1px 4px;border:1px solid #ddd6c4}
+
+  h2{font-size:13px;letter-spacing:2px;color:#1a1408;text-transform:uppercase;
+     margin:32px 0 4px;padding-top:14px;border-top:1px solid #ddd6c4}
+  h2:first-of-type{border-top:none;margin-top:0}
+  .tag{font-size:9.5px;color:#a89870;letter-spacing:1px;margin-bottom:12px}
+
+  p{margin:0 0 12px}
+  .quote{border-left:3px solid #c9b98a;padding:6px 0 6px 14px;margin:10px 0 14px;
+         color:#5a4c30;font-style:italic}
+  .quote cite{display:block;font-style:normal;font-size:10px;color:#a89870;margin-top:3px}
+
+  .card{border:1px solid #ddd6c4;background:#fffdf7;padding:12px 15px;margin:0 0 10px}
+  .card h3{font-size:11.5px;color:#1a1408;margin-bottom:4px}
+  .card .meta{font-size:9.5px;color:#a89870;margin-bottom:6px;letter-spacing:.5px}
+  .card p{margin:0 0 6px;font-size:12px;color:#4a3f28}
+  .card p:last-child{margin-bottom:0}
+
+  .status{display:inline-block;font-size:9px;letter-spacing:1px;padding:2px 7px;
+          border:1px solid;margin-right:6px}
+  .status.real{color:#2a6a1a;border-color:#2a6a1a;background:#e8f2e4}
+  .status.new{color:#7a5aa0;border-color:#7a5aa0;background:#f0eaf7}
+  .status.risk{color:#a02a2a;border-color:#a02a2a;background:#f7e6e6}
+  .status.pick{color:#1a5a8a;border-color:#1a5a8a;background:#e6eef5}
+
+  table{width:100%;border-collapse:collapse;font-size:11.5px;margin:10px 0 16px}
+  th{text-align:left;font-size:9.5px;letter-spacing:1px;color:#7a6840;
+     border-bottom:1px solid #ccc5b0;padding:5px 8px}
+  td{padding:6px 8px;border-bottom:1px solid #e8e4d8;vertical-align:top;color:#4a3f28}
+  tr:last-child td{border-bottom:none}
+
+  ul{margin:0 0 14px 20px}
+  li{margin-bottom:6px;color:#4a3f28}
+  code{font-family:inherit;background:#efece2;padding:0 3px;border:1px solid #ddd6c4;font-size:11px}
+
+  .blocked{border:2px solid #a02a2a;background:#f7e6e6;padding:16px 18px;margin-top:10px}
+  .blocked h2{border-top:none;margin-top:0;color:#a02a2a}
+
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid #ddd6c4;
+         font-size:10px;color:#a89870}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>DREAM + DEVELOPMENT — THREE ARMS, AND THE FILTER AS ITS OWN GAME</h1>
+  <div class="sub">a development pass over 2026-08-26's work plus Kevin's new seed, 2026-08-27</div>
+  <div class="src">
+    Full-development procedure (compost → inventory → audit → ground → diverge →
+    dream → converge), run for proposal, not for build. Nothing here is written
+    to <code>index.html</code> or any live file. Every fact checked against
+    <code>ORGANS.json</code>, <code>THE_FILTER.md</code>, <code>solid.js</code>,
+    and the gate ledger — not asserted from memory.
+  </div>
+
+  <div class="quote">"The page is the intake, and let's work the shape of it... because if the page
+    opens, three arms... and we have the different water filters... The filters become
+    their own sub game."
+    <cite>Kevin, 2026-08-27 — the seed this pass develops</cite>
+  </div>
+
+  <h2>1 · Compost — what's actually being claimed</h2>
+  <ul>
+    <li><b>C1</b> — the page (<code>index.html</code>) is the intake. <span class="status real">REAL</span> — already true; TANK's own gesture is <code>I POUR</code>, and the page is exactly that.</li>
+    <li><b>C2</b> — opening the page produces three arms. <span class="status new">NEW</span> — no existing structure names three arms from the page; this is proposed, not described.</li>
+    <li><b>C3</b> — "the different water filters" already exist. <span class="status risk">CHECK</span> — see audit below; this reads as more built than it is.</li>
+    <li><b>C4</b> — the filters become their own sub-game. <span class="status real">BUILDABLE</span> — see §2; this one is closer to done than any other part of the seed.</li>
+  </ul>
+
+  <h2>2 · Inventory — what each claim actually depends on</h2>
+  <table>
+    <tr><th>claim</th><th>depends on</th></tr>
+    <tr><td>C1, the page as intake</td><td>nothing new — <code>index.html</code>, already live, already the entry point since 2026-08-26</td></tr>
+    <tr><td>C2, three arms</td><td>nothing yet — no destinations are named; the count "three" is not derived from anything on record</td></tr>
+    <tr><td>C3, "different" filters</td><td>the FILTER seat in <code>ORGANS.json</code> carries exactly <b>two</b> organs, not many: <i>behaviour-typed motion</i> (built) and <i>the tombstone</i> (unbuilt, deletion-as-marker)</td></tr>
+    <tr><td>C4, filter as sub-game</td><td>real, already-written code in <code>ascent.html</code> — three sink rates (<code>bedload</code>/<code>suspended</code>/<code>film</code>), hand-run, unlabelled, currently unrouted through any live entry point</td></tr>
+  </table>
+
+  <h2>3 · Audit — adversarial pass on the seed</h2>
+  <div class="card">
+    <h3>Finding 1 — "the different water filters" overclaims what's built</h3>
+    <div class="meta">type: unearned</div>
+    <p>Read as "several independent filter games already exist," this is false. What exists is <b>one</b> built mechanic — behaviour-typed sorting, three fractions, hand-sorted, ported into <code>ORGANS.json</code>'s own words as <i>"the cleanest organ in the tree."</i> A second FILTER organ (the tombstone — deletion recorded as a marker, never an erasure) is named in the same file but marked <code>state: absent</code>. "Different filters" is honestly two things: one built, one not, both at the same seat — not a family of sub-games waiting to be gathered.</p>
+  </div>
+  <div class="card">
+    <h3>Finding 2 — the water-filter and the writing-filter are two different animals wearing one name</h3>
+    <div class="meta">type: metaphor doing argumentative work it hasn't earned</div>
+    <p><code>THE_FILTER.md</code> (2026-08-14) already opened a real, still-open fork: whether the FILTER organ's fractions stay physical (bedload/suspended/film — safe, built, says nothing about the writer) or become Kevin's own human-side naming (lack, transactionality, emotion — which law 5 explicitly forbids automating: <i>"no automatic sorting, no computed pass, no classifier deciding what a fraction is"</i>). If today's "sub-game" is read as the second kind, it is blocked by a standing law until Kevin resolves that fork himself. If it's read as the first kind (the water, not the writing), it's already-built and safe. <b>The seed sentence doesn't say which one it means</b>, and building the wrong one either wastes work or breaks a law.</p>
+  </div>
+  <div class="card">
+    <h3>Finding 3 — "three arms" has no named content yet, and this corpus already paid for that exact mistake</h3>
+    <div class="meta">type: unfalsifiable as stated — no state of the world currently confirms or denies it</div>
+    <p>The twelve-seat door was retired on 2026-08-26 for being <i>"a bench of links leading out"</i> — Kevin's own words, the day before, named the shape: <i>"menus and tabs and functions that route nowhere... I have no reason to write anything anywhere."</i> A fresh "three arms" structure risks recreating that exact shape if two of the three arms are named before they have real content behind them, the same way the old door did.</p>
+  </div>
+
+  <h2>4 · Ground — does the seed survive its own hardest case?</h2>
+  <table>
+    <tr><th>case</th><th>who bore the cost</th><th>defeats "arms are good"?</th><th>why</th></tr>
+    <tr><td>the retired 12-seat door</td><td>Kevin — stopped writing entirely</td><td>yes, partially</td><td>arms with nothing real behind them are exactly what failed here before</td></tr>
+    <tr><td>the FILTER organ in <code>ascent.html</code></td><td>nobody — real, working, already paid for</td><td>no — supports it</td><td>this is a genuine ready arm: built mechanism, unrouted, waiting</td></tr>
+    <tr><td>the six grounds already inside <code>index.html</code></td><td>nobody</td><td>complicates it</td><td>these already ARE arms, in effect — tabs inside one page, not separate destinations. "Three arms" as separate pages/games is a different architectural choice from "one more ground," and the seed doesn't say which</td></tr>
+  </table>
+  <p><b>Minimal honest reformulation:</b> opening the page into an arm is safe exactly when that arm already has real, built material behind it — the way FILTER does. It is not safe as a general policy of "the page should have arms," because that's the same shape that already failed once. The FILTER sub-game survives this test on its own; a generic third arm, invented to round the count to three, would not.</p>
+
+  <h2>5 · Diverge — five real shapes for this material</h2>
+  <div class="card">
+    <h3>A · Inversion — the filter feeds the page, not the other way round</h3>
+    <p>Instead of the page opening outward to a filter game, route <b>withdrawn sentences</b> (the × delete already built into <code>index.html</code>, and the tombstone organ named but unbuilt at FILTER) into the water as what gets sorted. The sub-game becomes about the writer's own act of taking things out, not a decorative demo. Gains: the two long-open unbuilt pieces (tombstone, filter-as-game) resolve into one build instead of two. Loses: the "arms" framing entirely — this isn't a destination, it's a consequence of something you already do.</p>
+  </div>
+  <div class="card">
+    <h3>B · Non-sectional — filter as a seventh ground, not a separate game</h3>
+    <p>No new file, no "arm." <code>relationship</code> / <code>time</code> / <code>weave</code> / <code>knowledge</code> / <code>categories</code> / <code>words</code> already exist inside <code>index.html</code>; add <code>filter</code> as a seventh, reading the same sentences, rendering them sorting through water by idle-time or word-count (the two facts the page already privileges) instead of a fourth structural fact nobody asked for. Gains: zero new architecture, zero new "arms" decision. Loses: the sub-game framing Kevin actually asked for — this makes it smaller than he named it.</p>
+  </div>
+  <div class="card">
+    <h3>C · Radical cut — ship only the filter, standalone, decide arms later</h3>
+    <p>Extract <code>ascent.html</code>'s already-built FILTER code verbatim into its own small file. Link it from nowhere yet. The smallest possible real, playable, buildable unit — the "never routed" line in the gate goes green without deciding anything about the page's shape at all. Gains: real, shippable today, zero risk of the retired-door mistake. Loses: doesn't answer "the page opens, three arms" at all — defers the actual question.</p>
+  </div>
+  <div class="card">
+    <h3>D · Two arms, not three — name only what's real</h3>
+    <p>TANK (the page, writing intake — already built) and FILTER (the water sub-game — already built, just unrouted) become the two real arms. The third arm is named as an open slot, not filled with invented content, exactly the discipline <code>ORGANS.json</code> already uses for its own open sockets ("the computed cell," "the paired entry" — both marked <code>state: absent</code>, both left honestly empty rather than forced full). Gains: survives the ground pass in §4 by construction — nothing here is a menu item without content. Loses: doesn't give Kevin the "three" he asked for, today.</p>
+  </div>
+  <div class="card">
+    <h3>E · Ask-back — the gesture the page already has IS the filter gesture</h3>
+    <p>The page's existing connect-and-declare flow ("declared" edges, hand-drawn, never inferred) already performs FILTER's own gesture — <code>I TAKE THIS ONE OUT</code> — at sentence scale: the writer is already hand-sorting relationships out of an undifferentiated stream. Rather than building a second, separate game, name this correspondence explicitly in the UI and let one mechanism serve two organs, the way <code>ORGANS.json</code> already does elsewhere (e.g. "the computed cell" serving both a radius and CENTRE.at()). Gains: nothing new to build at all. Loses: it's an argument, not a game — Kevin may have wanted an actual separate playable thing, and this shape gives him a reading instead.</p>
+  </div>
+
+  <h2>6 · Dream — the one idea worth Kevin's time</h2>
+  <p>
+    Of everything named at the FILTER seat across two sessions, <b>one organ is closer to finished than
+    anything else unrouted in the whole tree</b> — <code>ORGANS.json</code>'s own words: <i>"the cleanest
+    organ in the tree... there is no classifier to remove because there was never one to add."</i>
+    It already satisfies both governing laws (5 and 10) by construction, not by care. The cheapest real
+    gain available today is exactly what Kevin named: pull it out, give it its own door, let the page point
+    to it. That much requires no new mechanism — only wiring.
+  </p>
+  <p>
+    The genuinely new idea — the part actually worth building, not just routing — is Shape A: right now the
+    only water in the FILTER mechanic is synthetic test data, three made-up sink rates. It sorts nothing
+    real. If instead the water is filled from the page's own <b>withdrawn</b> sentences — the ones already
+    removed by the × Kevin asked for on 2026-08-26 — the sub-game stops being a demo and starts being an
+    honest second life for something the writer actually did. Two organs that have sat unbuilt since
+    2026-08-16 (the tombstone) and 2026-08-26 (a wired sub-game) resolve into one real thing instead of
+    staying two open sockets.
+  </p>
+
+  <h2>7 · Converge — my ruling on the seed, defect by defect</h2>
+  <table>
+    <tr><th>from the audit/ground</th><th>ruling</th></tr>
+    <tr><td>"the different water filters" as already-built plural</td><td><b>reject, reformulate</b> — one filter is built (behaviour-typed sorting), one is named but not built (the tombstone). Both real, neither plural in the sense the sentence implies.</td></tr>
+    <tr><td>which filter — physical (water) or human (lack/transactionality/emotion)</td><td><b>defer to Kevin</b> — the physical one is buildable today under standing law; the human one is blocked by law 5 until he resolves <code>THE_FILTER.md</code>'s own three-way fork himself. Not this pass's call.</td></tr>
+    <tr><td>"three arms" as a settled architecture</td><td><b>reject as stated, accept as a real question</b> — no third arm has real content yet. Naming one now to hit the count repeats the retired door's own failure mode. Two arms (page, filter) are real; the third stays an open, named slot rather than a placeholder.</td></tr>
+    <tr><td>whether the sub-game should be a demo or read real data</td><td><b>accept the reformulation</b> — route withdrawn sentences into the water (Shape A) rather than synthetic test fractions. This is what makes it a game about something instead of a toy.</td></tr>
+  </table>
+
+  <div class="blocked">
+    <h2>BLOCKED — the decision is Kevin's</h2>
+    <p>This pass produced five real shapes and one recommendation (A + D combined: route withdrawn
+      sentences into the already-built FILTER mechanic, wire it as a second real arm alongside the page
+      itself, and leave a third arm as a named open slot rather than an invented one). <b>Nothing is
+      built.</b> The decisions only Kevin can make:</p>
+    <ul>
+      <li>Which shape (A–E, or a combination) to build — and whether "sub-game" means Shape C's fully
+        standalone file or Shape B's seventh ground inside <code>index.html</code>.</li>
+      <li>Whether the filter is the water (physical, safe, buildable now) or the writing (lack/
+        transactionality/emotion, blocked by law 5 until he rules on <code>THE_FILTER.md</code>'s own
+        open fork) — or both, its most expensive option, named there since 2026-08-14 and still open.</li>
+      <li>What the third arm is, if there is to be one — or whether two arms, named honestly, are enough
+        for now.</li>
+    </ul>
+  </div>
+
+  <h2>8 · Deferral accounting</h2>
+  <ul>
+    <li><b>What did this add that nothing calls?</b> Nothing — no code was written; this document is the whole of the output.</li>
+    <li><b>What did it name that it did not build?</b> The two-arm buildable slice (page + filter reading real withdrawn sentences), the third arm as an open slot, and the still-open fork in <code>THE_FILTER.md</code> about which of Kevin's three human terms the filter should ever speak.</li>
+    <li><b>What did it defer?</b> All actual code. Every shape in §5 and the recommendation in §7 await Kevin's mark before anything is written.</li>
+  </ul>
+
+  <footer>
+    Sourced against <code>ORGANS.json</code>, <code>THE_FILTER.md</code>, <code>gate/ORGANS.txt</code>,
+    <code>solid.js</code>, and <code>KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md</code>. If a claim here
+    and the build drift apart, the fix is to correct this file, not add a second pointer.
+  </footer>
+
+</div>
+</body>
+</html>

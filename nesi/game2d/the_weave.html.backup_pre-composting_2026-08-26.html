@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NESI · the weave — five dreams reread without the tetra</title>
+<style>
+/* ═══ THE WEAVE — 2026-08-26. Not a sixth dream: a reread of the five that
+   exist (tetra_dream_A_fourpick, _B_pebbles, _C_standing, _D_matrix,
+   _E_gifts), keeping what each one found and dropping the one thing all
+   five inherited without questioning until D and E started to crack it —
+   the tetrahedron itself.
+
+   D's own header names the finding first: a tetrahedron forces every one
+   of its six edges to look the same shape (undirected, single-valued,
+   symmetric), and none of chain/near/declared/hinge actually are. E's own
+   ground-finding sharpens it further: even its best-case construction can
+   only ever light two of the fourth face's three edges — the geometry
+   visually promises a three-way convergence this data can't produce. Both
+   are named in KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md §6 as open
+   questions about the shape itself. This file is one answer: stop asking
+   the data to pose as a solid, and let the four things each dream actually
+   proved stand on their own —
+
+     from A — the relationship vocabulary itself (chain / near / hinge /
+              declared / none — an honest gap where nothing connects two
+              things), and the fixed asymmetry bug (declared must never be
+              swallowed by chain)
+     from B — a stone is real structure the data model doesn't have on its
+              own, so it's read here if it exists, never rebuilt or gathered
+              from this file (that stays B's job; this file writes nothing,
+              same discipline all five already hold)
+     from C — "now" is not "last written," it's wherever attention actually
+              is, and the view should follow it without being told to
+     from D — the typed grid: pair-facts across from each other, node-facts
+              on their own line, direction shown by which side of a divider
+              a glyph appears on, not by six edges pretending to be equal
+     from E — a face can compute something an edge can't ("this was reached
+              by two different lenses") — kept here as a plain-text
+              readout for whichever sentence has focus, not a fourth vertex
+
+   No picking ritual (A's "pick four," E's "pick one anchor") is required
+   to see the shape of the document — the whole thing renders, live,
+   windowed the same way hinge-detection already is. Click any sentence to
+   focus it, or don't: the weave already centers on "now." Reads the same
+   localStorage index.html fills (nesi.thepage) and B's own stone key
+   (nesi.thepage.stones) if present. Writes nothing, to either. Nothing
+   here is deleted from the five source files — they stand exactly as they
+   were, and this is a sixth, separate read of the same ground. */
+:root{ --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
+  --gold:#e0c454; --dim:rgba(238,236,226,.55); --chain:#8aa8d6;
+  --near:rgba(238,236,226,.5); --hinge:#c1622e; --declared:#b98ee0;
+  --none:rgba(238,236,226,.14); --focus:rgba(224,196,84,.10); --stone:rgba(224,196,84,.08); }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--paper);height:100%;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{display:flex;height:100vh}
+.pool{width:300px;border-right:1px solid var(--line);overflow-y:auto;padding:16px;flex-shrink:0}
+.pool h1{font:400 15px Georgia,serif;margin:0 0 4px}
+.sub{font-size:11.5px;color:var(--dim);margin-bottom:14px;line-height:1.55}
+.item{padding:7px 9px;border:1px solid var(--line);border-radius:4px;margin-bottom:5px;
+  font-size:12px;line-height:1.4;cursor:pointer;position:relative}
+.item:hover{border-color:var(--gold)}
+.item.now{border-color:var(--gold);background:var(--focus)}
+.item .tag{font-size:9px;color:var(--gold);display:block;margin-bottom:2px;letter-spacing:.05em}
+.stage{flex:1;padding:22px;overflow:auto}
+h1,h2{font:400 15px Georgia,serif;margin:0 0 4px}
+h2{font-size:13px;color:var(--dim);margin-top:26px}
+.matrixwrap{overflow-x:auto;margin-top:12px;max-width:100%}
+table.matrix{border-collapse:collapse;font-size:11px}
+table.matrix th, table.matrix td{border:1px solid var(--line);padding:6px 8px;vertical-align:top}
+table.matrix th{background:rgba(238,236,226,.04);font-weight:400;color:var(--dim);font-size:10px;
+  white-space:normal;width:170px;max-width:170px;line-height:1.4;position:sticky;top:0}
+table.matrix th.rowhead{position:sticky;left:0;background:#181c20;z-index:1;text-align:left}
+table.matrix td{width:150px}
+table.matrix td.diag{background:rgba(224,196,84,.05)}
+table.matrix tr.focusrow td, table.matrix tr.focusrow th{background:var(--focus)}
+table.matrix td.focuscol{background:var(--focus)}
+.cell-glyph{display:block;margin-bottom:1px;font-size:10px}
+.cell-glyph.chain{color:var(--chain)}
+.cell-glyph.near{color:var(--near)}
+.cell-glyph.declared{color:var(--declared)}
+.cell-glyph.hinge{color:var(--hinge);font-weight:700}
+.cell-empty{color:rgba(238,236,226,.15)}
+.legend{margin-top:16px;font-size:10.5px;color:var(--dim);display:flex;gap:14px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:12px;height:2px;display:inline-block;background:var(--dim)}
+.gifts{margin-top:10px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;font-size:12px;
+  line-height:1.7;max-width:90ch}
+.gifts b{color:var(--gold);font-weight:400}
+.stonebox{border:1px solid var(--line);border-radius:6px;padding:9px 12px;margin-bottom:6px;font-size:11.5px}
+.stonebox .meta{font-size:10px;color:var(--dim)}
+.sharetable{font-size:10.5px;color:var(--dim);margin-top:6px;border-collapse:collapse}
+.sharetable td{padding:3px 10px 3px 0}
+.empty{color:var(--dim);font-size:12.5px}
+.note{font-size:10.5px;color:var(--dim);max-width:62ch;margin-top:16px;line-height:1.6}
+footer{font-size:10px;color:var(--dim);margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pool">
+    <h1>the weave</h1>
+    <div class="sub">Every sentence you've written, live. No picking — the grid below already shows the whole document. Click one to move focus there instead of wherever "now" is following on its own.</div>
+    <div id="items"></div>
+  </div>
+  <div class="stage">
+    <h1 id="stagehead">the weave</h1>
+    <div class="sub" id="stagesub"></div>
+    <div class="matrixwrap"><div id="matrixhost"></div></div>
+    <div class="legend">
+      <span><i style="background:var(--chain)"></i>chain — directional, row wrote before column</span>
+      <span><i style="background:var(--near)"></i>near — symmetric, shown both sides, windowed</span>
+      <span><i style="background:var(--declared)"></i>declared — directional, labeled, never swallowed by chain</span>
+      <span><i style="background:var(--hinge)"></i>hinge — a fact about the sentence itself, diagonal only</span>
+    </div>
+    <h2>what the focus sentence's own lenses reach</h2>
+    <div class="gifts" id="gifts"></div>
+    <div id="stonesSection"></div>
+    <div class="note" id="footnote"></div>
+    <footer>the_weave.html · reads nesi.thepage and nesi.thepage.stones · writes neither</footer>
+  </div>
+</div>
+<script>
+const KEY = "nesi.thepage";
+const STONE_KEY = "nesi.thepage.stones";
+function dayStamp(d){ d = d || new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+const WINDOW_DAYS = 21; // first guess, named in KNOWLEDGE §6, not derived
+function withinWindow(day, today){ if (!day) return true; return (new Date(today)-new Date(day))/86400000 <= WINDOW_DAYS; }
+const ATTENTION_KEY = "nesi.thepage.attention";
+const ATTENTION_STALE_MS = 60000;
+
+let nodes = [], declaredEdges = [], chainEdges = [], nearEdges = [], hinges = new Set(), stones = [];
+
+function load(){
+  nodes = []; declaredEdges = []; chainEdges = [];
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const seq = Array.isArray(parsed) ? parsed : (parsed.nodes || []);
+      nodes = seq.map((s,i)=>({ id:i, text:s.text, day:s.day }));
+      for (let i=1;i<nodes.length;i++) chainEdges.push({aId:nodes[i-1].id, bId:nodes[i].id});
+      declaredEdges = (Array.isArray(parsed)?[]:(parsed.declaredEdges||[])).map(e=>({aId:e.aId,bId:e.bId,label:e.label}));
+    }
+  } catch(e) {}
+  try {
+    const raw = localStorage.getItem(STONE_KEY);
+    stones = raw ? JSON.parse(raw) : [];
+  } catch(e) { stones = []; }
+
+  const chainedKeys = new Set(chainEdges.map(e=>e.aId+"-"+e.bId));
+  nearEdges = [];
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
+    const a=nodes[i], b=nodes[j];
+    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
+    if (chainedKeys.has(key)) continue;
+    if (Math.abs(i-j) <= 2) nearEdges.push({aId:a.id, bId:b.id});
+  }
+  hinges = hingeSet();
+}
+
+// ported from A/B/D/E unchanged: windowed cut-vertex detection, iterative
+// (no recursion — same discipline the_page's own paste-crash fix relied on)
+function hingeSet(){
+  const today = nodes.length ? dayStamp() : null;
+  const windowIds = new Set(nodes.filter(n=>withinWindow(n.day, today)).map(n=>n.id));
+  declaredEdges.forEach(e=>{ windowIds.add(e.aId); windowIds.add(e.bId); });
+  const activeNodes = nodes.filter(n=>windowIds.has(n.id));
+  const activeEdges = chainEdges.concat(nearEdges).filter(e=>windowIds.has(e.aId)&&windowIds.has(e.bId)).concat(declaredEdges);
+  const adj = new Map(); activeNodes.forEach(n=>adj.set(n.id,new Set()));
+  activeEdges.forEach(e=>{ if(!adj.has(e.aId)||!adj.has(e.bId)) return; adj.get(e.aId).add(e.bId); adj.get(e.bId).add(e.aId); });
+  const disc=new Map(),low=new Map(),parent=new Map(),cut=new Set(); let timer=0;
+  activeNodes.forEach(root=>{
+    if (disc.has(root.id)) return;
+    const stack=[{id:root.id,iter:0,isRoot:true,children:0,neigh:[...adj.get(root.id)]}];
+    disc.set(root.id,timer); low.set(root.id,timer); timer++;
+    while(stack.length){
+      const top=stack[stack.length-1];
+      if (top.iter<top.neigh.length){
+        const v=top.neigh[top.iter++];
+        if (v===parent.get(top.id) && !top.skip){ top.skip=true; continue; }
+        if (!disc.has(v)){ parent.set(v,top.id); disc.set(v,timer); low.set(v,timer); timer++; top.children++;
+          stack.push({id:v,iter:0,isRoot:false,children:0,neigh:[...adj.get(v)]}); }
+        else low.set(top.id, Math.min(low.get(top.id), disc.get(v)));
+      } else {
+        stack.pop();
+        if (stack.length){
+          const p=stack[stack.length-1];
+          low.set(p.id, Math.min(low.get(p.id), low.get(top.id)));
+          if (!p.isRoot && low.get(top.id)>=disc.get(p.id)) cut.add(p.id);
+          if (p.isRoot && p.children>1) cut.add(p.id);
+        }
+      }
+    }
+  });
+  return cut;
+}
+
+// from A, audit-fixed: declared must never be swallowed by chain
+function relationOf(aId,bId){
+  const isChain = chainEdges.some(e=>e.aId===aId&&e.bId===bId); // directional a->b only
+  const isChainRev = chainEdges.some(e=>e.aId===bId&&e.bId===aId);
+  const decl = declaredEdges.find(e=>e.aId===aId&&e.bId===bId); // directional a->b only
+  const out = [];
+  if (isChain) out.push({kind:"chain", text:"chain →"});
+  if (decl) out.push({kind:"declared", text:"declared →"+(decl.label?" "+decl.label:"")});
+  if (!isChain && !isChainRev && nearEdges.some(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId)))
+    out.push({kind:"near", text:"near (~)"});
+  return out;
+}
+
+// from E, unchanged: what each existing lens reaches, run outward from one node
+function chainGift(anchorId){
+  const after = chainEdges.find(e=>e.aId===anchorId);
+  if (after) return {id: after.bId, dir:"the sentence written right after it"};
+  const before = chainEdges.find(e=>e.bId===anchorId);
+  if (before) return {id: before.aId, dir:"the sentence written right before it"};
+  return null;
+}
+function nearGift(anchorId){
+  const idx = nodes.findIndex(n=>n.id===anchorId);
+  let best=null, bestDist=Infinity;
+  nearEdges.forEach(e=>{
+    let otherId=null;
+    if (e.aId===anchorId) otherId=e.bId; else if (e.bId===anchorId) otherId=e.aId; else return;
+    const oIdx = nodes.findIndex(n=>n.id===otherId);
+    const dist = Math.abs(oIdx-idx);
+    if (dist<bestDist){ bestDist=dist; best=otherId; }
+  });
+  return best===null ? null : {id:best};
+}
+function declaredGift(anchorId){
+  let found=null;
+  declaredEdges.forEach(e=>{
+    if (e.aId===anchorId) found={id:e.bId, label:e.label};
+    else if (e.bId===anchorId) found={id:e.aId, label:e.label};
+  });
+  return found;
+}
+
+// from C, unchanged: attention (dwell) beats "last written," but only once
+// writing has actually paused, and only within ATTENTION_STALE_MS
+function attentionIdx(){
+  try {
+    const raw = localStorage.getItem(ATTENTION_KEY); if (!raw) return null;
+    const a = JSON.parse(raw);
+    if (!a || typeof a.id !== "number") return null;
+    if (Date.now() - a.ts > ATTENTION_STALE_MS) return null;
+    return nodes.some(n=>n.id===a.id) ? a.id : null;
+  } catch(e) { return null; }
+}
+
+let focusId = null;      // null = "follow now" automatically
+let lastSeenCount = -1;
+let manualFocus = false; // set true only when the reader clicks a sentence
+
+function resolveNowId(){
+  if (!nodes.length) return null;
+  if (nodes.length !== lastSeenCount) { lastSeenCount = nodes.length; return nodes[nodes.length-1].id; }
+  const aId = attentionIdx();
+  return aId !== null ? aId : nodes[nodes.length-1].id;
+}
+
+function renderPool(){
+  const itemsEl = document.getElementById("items");
+  itemsEl.innerHTML = "";
+  if (!nodes.length) { itemsEl.innerHTML = '<div class="sub">No sentences yet — write in index.html first.</div>'; return; }
+  const activeId = manualFocus ? focusId : resolveNowId();
+  nodes.forEach(n=>{
+    const d = document.createElement("div");
+    d.className = "item" + (n.id===activeId ? " now" : "");
+    d.innerHTML = (n.id===activeId ? '<span class="tag">'+(manualFocus?"focused":"now")+'</span>' : "") +
+      n.text;
+    d.addEventListener("click", ()=>{
+      manualFocus = true; focusId = n.id;
+      renderAll();
+    });
+    itemsEl.appendChild(d);
+  });
+}
+
+function renderMatrix(activeId){
+  const host = document.getElementById("matrixhost");
+  host.innerHTML = "";
+  if (!nodes.length) { host.innerHTML = '<div class="empty">Nothing written yet.</div>'; return; }
+  const table = document.createElement("table"); table.className = "matrix";
+  const head = document.createElement("tr");
+  head.appendChild(document.createElement("th"));
+  nodes.forEach(n=>{
+    const th = document.createElement("th");
+    th.textContent = n.text;
+    if (n.id===activeId) th.classList.add("focuscol");
+    head.appendChild(th);
+  });
+  table.appendChild(head);
+  nodes.forEach(rowN=>{
+    const tr = document.createElement("tr");
+    if (rowN.id===activeId) tr.classList.add("focusrow");
+    const rowTh = document.createElement("th"); rowTh.className = "rowhead";
+    rowTh.textContent = rowN.text;
+    tr.appendChild(rowTh);
+    nodes.forEach(colN=>{
+      const td = document.createElement("td");
+      if (colN.id===activeId) td.classList.add("focuscol");
+      if (rowN.id===colN.id) {
+        td.className += " diag";
+        td.innerHTML = hinges.has(rowN.id)
+          ? '<span class="cell-glyph hinge">hinge</span>'
+          : '<span class="cell-empty">—</span>';
+      } else {
+        const cells = relationOf(rowN.id, colN.id);
+        td.innerHTML = cells.length
+          ? cells.map(c=>'<span class="cell-glyph '+c.kind+'">'+c.text+'</span>').join("")
+          : '<span class="cell-empty">none</span>';
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  host.appendChild(table);
+}
+
+function renderGifts(activeId){
+  const el = document.getElementById("gifts");
+  if (activeId === null) { el.innerHTML = '<span class="empty">No focus yet.</span>'; return; }
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const anchor = nodesById[activeId];
+  const cg = chainGift(activeId), ng = nearGift(activeId), dg = declaredGift(activeId);
+  const lines = [];
+  lines.push('<div><b>focus:</b> ' + anchor.text +
+    (hinges.has(activeId) ? ' <span class="cell-glyph hinge">hinge</span>' : '') + '</div>');
+  lines.push('<div><b>chain gift</b> — ' + (cg ? nodesById[cg.id].text+' ('+cg.dir+')' : 'none — an honest gap, this sentence has no chain neighbor on that side') + '</div>');
+  lines.push('<div><b>near gift</b> — ' + (ng ? nodesById[ng.id].text : 'none — nothing landed close to it in time, outside the chain') + '</div>');
+  lines.push('<div><b>declared gift</b> — ' + (dg ? nodesById[dg.id].text+(dg.label?' — "'+dg.label+'"':'') : 'none — never manually connected to anything') + '</div>');
+  const ids = [cg&&cg.id, ng&&ng.id, dg&&dg.id].filter(x=>x!==null&&x!==undefined);
+  const uniq = new Set(ids);
+  if (ids.length>=2 && uniq.size < ids.length) {
+    const which = [];
+    if (cg && dg && cg.id===dg.id) which.push("chain and declared");
+    if (ng && dg && ng.id===dg.id) which.push("near and declared");
+    lines.push('<div style="margin-top:6px;color:var(--gold)">two lenses converge here — ' + (which.join(", ")||"two gifts") + ' reach the same sentence. (from E: chain and near can never converge with each other by construction — only declared, being orthogonal to both, ever doubles one of the other two.)</div>');
+  }
+  el.innerHTML = lines.join("");
+}
+
+function renderStones(){
+  const wrap = document.getElementById("stonesSection");
+  if (!stones.length) {
+    wrap.innerHTML = '<h2>stones</h2><div class="empty">None gathered yet. Stone-grouping is a separate write layer (tetra_dream_B_pebbles.html) — this file reads it if it exists, never builds it.</div>';
+    return;
+  }
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  let html = '<h2>stones</h2>';
+  stones.forEach(s=>{
+    const words = s.memberIds.reduce((sum,id)=>{ const n=nodesById[id]; return sum + (n?n.text.split(/\s+/).filter(Boolean).length:0); },0);
+    const touchesHinge = s.memberIds.some(id=>hinges.has(id));
+    html += '<div class="stonebox"><b>'+s.name+'</b><div class="meta">'+s.memberIds.length+' pebble(s) · '+words+' word(s)'+(touchesHinge?' · touches a hinge':'')+'</div></div>';
+  });
+  if (stones.length >= 2) {
+    html += '<table class="sharetable">';
+    for (let i=0;i<stones.length;i++) for (let j=i+1;j<stones.length;j++){
+      const a=stones[i], b=stones[j];
+      const shared = a.memberIds.filter(id=>b.memberIds.includes(id)).length;
+      html += '<tr><td>'+a.name+' × '+b.name+'</td><td>'+(shared>0?shared+' shared':'no overlap')+'</td></tr>';
+    }
+    html += '</table>';
+  }
+  wrap.innerHTML = html;
+}
+
+function renderAll(){
+  const activeId = manualFocus ? focusId : resolveNowId();
+  document.getElementById("stagesub").textContent = nodes.length
+    ? nodes.length + " sentence(s), all of them, always shown — " +
+      (manualFocus ? "focus set by hand; click the same sentence again in index.html or reload to release it back to \"now\"." : "focus following where writing or attention currently is.")
+    : "No sentences yet — write in index.html first, then come back here.";
+  renderPool();
+  renderMatrix(activeId);
+  renderGifts(activeId);
+  renderStones();
+  document.getElementById("footnote").textContent =
+    "Dropped, on purpose: the tetrahedron itself. Everything the five dreams actually verified — the vocabulary, the asymmetry fix, the live-follow, the windowed hinge, the per-node gift-readout — survives here without needing four things picked or a fourth vertex invented to hold them.";
+}
+
+load(); renderAll();
+window.addEventListener("storage", e => { if (e.key===KEY || e.key===STONE_KEY || e.key===ATTENTION_KEY) { load(); renderAll(); } });
+// same-tab writes don't fire 'storage' (browser spec), so a light poll
+// covers the case this window and index.html share one tab's history.
+setInterval(()=>{ load(); renderAll(); }, 2000);
+</script>
+</body>
+</html>

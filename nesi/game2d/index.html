@@ -64,7 +64,13 @@
 :root {
   --ink:#14181c; --paper:#eeece2; --line:rgba(238,236,226,.22);
   --line-soft:rgba(238,236,226,.10); --gold:#e0c454; --dim:rgba(238,236,226,.55);
-  --hinge:#c1622e;
+  --hinge:#c1622e; --chain:#8aa8d6; --near:rgba(238,236,226,.5); --declared:#8b6fd9;
+  --focus:rgba(224,196,84,.10);
+  /* FILTER GROUND, 2026-08-27 — one colour per pronoun fraction, position/
+     shape only ever shown grouped in the standing legend, never on a mote
+     itself (see .mote below and the legend markup in #filterWrap). */
+  --frI:#e0c454; --fryou:#8aa8d6; --frwe:#7fae7a; --frus:#c98fd9;
+  --frthey:#e08a54; --frhe:#5fb8c9; --frshe:#d97fa8; --frwithdrawn:#7a7466;
 }
 * { box-sizing: border-box; }
 html, body { margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; }
@@ -84,7 +90,18 @@ h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 6px; }
 #pad:focus { border-color:var(--gold); }
 .padhint { font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); margin:0 0 26px; }
 
-.day { margin-bottom:10px; }
+/* VISIBILITY CULLING, 2026-08-27 — ported from the DEEP seat's own organ
+   ("the deep never renders" / keptAtX, real code cut whole from the tree
+   in the 2026-08-21 ascent rebuild, never re-sited until now — see
+   inbox/gift_2026-08-27_01_deep_visibility_culling.md). The organ's
+   discipline: geometry outside the visible volume is never submitted for
+   drawing at all, not drawn dark or drawn small. content-visibility is the
+   DOM's own version of that refusal — a day-group the browser can prove is
+   off-screen skips layout and paint entirely, so the document stays
+   responsive as it grows into months of daily writing, which nothing
+   before this guaranteed. contain-intrinsic-size is a placeholder height
+   only, never read as a fact about the day. */
+.day { margin-bottom:10px; content-visibility:auto; contain-intrinsic-size:0 220px; }
 .day-head { display:flex; align-items:center; gap:10px; cursor:pointer; padding:6px 0;
   border-bottom:1px solid var(--line-soft); user-select:none; }
 .day-head .dot { width:7px; height:7px; border-radius:50%; background:var(--dim); flex-shrink:0; }
@@ -151,6 +168,237 @@ svg#graph .card text { fill:var(--paper); font:13px/1.4 Georgia,serif; }
 .staged-item button.discard { background:rgba(238,236,226,.04); color:var(--dim); border-color:var(--line); }
 .declared-list .item { border-bottom:none; padding:5px 0; color:var(--dim); font-size:11.5px; }
 .declared-list .item b { color:#8b6fd9; font-weight:400; font-style:italic; }
+
+/* ═══ THE WEAVE, COMPOSTED IN — 2026-08-26. Was its own file, the_weave.html,
+   a sixth read of the five tetra_dream_* files that dropped the tetrahedron
+   they all shared (D and E's own findings named it first: forced-symmetric
+   edges, a fourth face that can only ever show two-way overlap). Composted
+   here as a third ground, alongside relationship/time, rather than left
+   standing apart — it reads the same nodes/edges/declaredEdges this file
+   already holds in memory, nothing re-fetched from storage except stones
+   (tetra_dream_B_pebbles.html's own key, still read-only, still never
+   written here). the_weave.html itself now redirects here, same pattern
+   as the_page.html; its prior content is unedited at
+   the_weave.html.backup_pre-composting_2026-08-26.html. */
+.matrixwrap { overflow-x:auto; margin-bottom:12px; }
+table.weave-matrix { border-collapse:collapse; font-size:10.5px; }
+table.weave-matrix th, table.weave-matrix td { border:1px solid var(--line); padding:5px 7px;
+  vertical-align:top; }
+table.weave-matrix th { background:rgba(238,236,226,.04); font-weight:400; color:var(--dim);
+  font-size:9.5px; white-space:normal; width:150px; max-width:150px; line-height:1.4;
+  position:sticky; top:0; }
+table.weave-matrix th.rowhead { position:sticky; left:0; background:#181c20; z-index:1; text-align:left; }
+table.weave-matrix th:hover { border-color:var(--gold); color:var(--paper); }
+table.weave-matrix td.diag { background:rgba(224,196,84,.05); }
+table.weave-matrix tr.focusrow td, table.weave-matrix tr.focusrow th { background:var(--focus); }
+table.weave-matrix td.focuscol { background:var(--focus); }
+.wcell { display:block; margin-bottom:1px; font-size:9.5px; }
+.wcell.chain { color:var(--chain); }
+.wcell.near { color:var(--near); }
+.wcell.declared { color:var(--declared); }
+.wcell.hinge { color:var(--hinge); font-weight:700; }
+.wcell-empty { color:rgba(238,236,226,.15); }
+.weave-legend { font-size:10.5px; color:var(--dim); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.weave-legend span { display:flex; align-items:center; gap:5px; }
+.weave-legend i { width:12px; height:2px; display:inline-block; background:var(--dim); }
+.gifts { border:1px solid var(--line); border-radius:6px; padding:10px 12px; font-size:11.5px;
+  line-height:1.7; margin-bottom:16px; }
+.gifts b { color:var(--gold); font-weight:400; }
+
+/* ═══ THE WORLD FACE, DREAMED 2026-08-27, BUILT 2026-08-27 (Kevin's mark:
+   "D then A"). Shape D from DREAM_PASS_2026-08-27_the_world_face.html:
+   the gift-readout above already computed exactly four points — the
+   anchor and its three derived gifts — flat, as text. This gives them
+   real volume instead, with the same tetrahedron-volume math solid.js
+   already proved (_tet(), ported below, four lines, unchanged). The
+   coordinates are not decorative: each axis is one real fact the page
+   already privileges — idle-gap and word-count, the same two structural
+   facts the whole page is placed by (KNOWLEDGE §1) — plus sequence
+   distance from the anchor, the one fact that's specifically about being
+   a GIFT rather than just a sentence. Normalized per-instance across
+   only the up-to-four points in play, so the shape reads the anchor's
+   own relative spread, not a corpus-wide scale a reader could mistake
+   for meaning. Fewer than four points is not an error state — it's the
+   same honest gap Dream A already named for an unrelated pair. */
+#giftTetra { width:100%; max-width:320px; height:auto; display:block;
+  background:rgba(238,236,226,.02); border:1px solid var(--line-soft); border-radius:4px; margin-bottom:6px; }
+#giftTetra .tface { fill:rgba(224,196,84,.10); stroke:none; }
+#giftTetra .tedge { stroke-width:1.4; fill:none; }
+#giftTetra .tedge.chain { stroke:var(--chain); }
+#giftTetra .tedge.near { stroke:var(--near); }
+#giftTetra .tedge.declared { stroke:var(--declared); }
+#giftTetra .tvert { stroke:var(--ink); stroke-width:1.5; }
+#giftTetra text { font:9.5px ui-monospace,Consolas,monospace; fill:var(--dim); }
+.tetranote { font-size:10.5px; color:var(--dim); line-height:1.6; margin-bottom:16px; }
+
+/* ═══ THE WORLD FACE, SHAPE A — built 2026-08-27. See the note above
+   `worldPicks` in the script below for what this is and reuses. */
+.worldCount { font-family:ui-monospace,Consolas,monospace; font-size:11px; color:var(--dim); margin-bottom:8px; }
+.worldCount b { color:var(--gold); font-weight:400; }
+.worldPicker { max-height:180px; overflow-y:auto; border:1px solid var(--line-soft); border-radius:4px;
+  margin-bottom:12px; }
+.worldPicker .item { padding:7px 10px; border-bottom:1px solid var(--line-soft); cursor:pointer;
+  color:var(--dim); font-size:11.5px; display:flex; gap:8px; align-items:baseline; }
+.worldPicker .item:last-child { border-bottom:none; }
+.worldPicker .item:hover { color:var(--paper); background:rgba(238,236,226,.03); }
+.worldPicker .item.picked { color:var(--paper); }
+.worldPicker .seatnum { font-family:ui-monospace,Consolas,monospace; font-size:9.5px; color:var(--gold);
+  flex-shrink:0; width:16px; }
+.worldPicker .item:not(.picked) .seatnum { color:var(--line); }
+#worldSvg { width:100%; max-width:560px; height:auto; display:block;
+  background:rgba(238,236,226,.02); border:1px solid var(--line-soft); border-radius:4px; margin-bottom:8px; }
+#worldSvg .wface { stroke:none; }
+#worldSvg .wface.tri { fill:rgba(224,196,84,.07); }
+#worldSvg .wface.sq { fill:rgba(139,111,217,.07); }
+#worldSvg .wedge { stroke:var(--line); stroke-width:1; }
+#worldSvg .wvert { stroke:var(--ink); stroke-width:1.5; fill:var(--gold); cursor:pointer; }
+#worldSvg text { font:9px ui-monospace,Consolas,monospace; fill:var(--dim); }
+.worldLegend { font-size:10.5px; color:var(--dim); line-height:1.9; margin-bottom:10px; }
+.worldLegend .seatname { color:var(--gold); font-family:ui-monospace,Consolas,monospace; font-size:9.5px; margin-right:6px; }
+.stonebox { border:1px solid var(--line); border-radius:6px; padding:8px 10px; margin-bottom:6px; font-size:11px; }
+.stonebox .meta { font-size:10px; color:var(--dim); }
+.sharetable { font-size:10px; color:var(--dim); margin-top:6px; border-collapse:collapse; }
+.sharetable td { padding:3px 10px 3px 0; }
+
+/* ═══ THE KNOWLEDGE GROUND — 2026-08-26. A fourth ground alongside
+   relationship/time/weave: not a view over the writer's own sentences, but
+   over the corpus's own account of why this file is built the way it is.
+   Fetches KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md (same origin,
+   same folder) once, renders it with a small non-library markdown pass
+   (headers, bullets, bold, code spans, paragraphs — nothing fancier is
+   needed for this one file), and never writes back to it. If the file
+   can't be fetched (e.g. opened as a bare file:// page instead of served),
+   says so honestly instead of failing silent. */
+#knowledgeWrap { font-size:12.5px; line-height:1.65; max-width:74ch; }
+#knowledgeWrap h1 { font-size:16px; margin:0 0 10px; }
+#knowledgeWrap h2 { font-size:13.5px; color:var(--paper); margin:20px 0 6px; }
+#knowledgeWrap h3 { font-size:12.5px; color:var(--dim); margin:14px 0 4px; }
+#knowledgeWrap p { margin:0 0 10px; }
+#knowledgeWrap ul { margin:0 0 10px; padding-left:18px; }
+#knowledgeWrap li { margin-bottom:5px; }
+#knowledgeWrap code { font-family:ui-monospace,Consolas,monospace; font-size:11px;
+  background:rgba(238,236,226,.08); padding:1px 4px; border-radius:2px; }
+#knowledgeWrap b { color:var(--gold); font-weight:400; }
+#knowledgeWrap hr { border:none; border-top:1px solid var(--line-soft); margin:16px 0; }
+
+/* ═══ THE WORDS GROUND — 2026-08-26. Kevin's own ask: "map every word that
+   can come after the word I." KNOWLEDGE §6 named this the one thing none of
+   the five tetra dreams ever reached — word as its own node, not just a
+   chip inside an expanded pebble (dream B). This is the first honest step
+   into that: a word-follows count, scoped to exactly what the writer typed.
+   ONE deliberate boundary, matching the rest of this file's discipline
+   (never infer beyond the two structural facts already read): a "follows"
+   edge only exists WITHIN one sentence — the writer's own adjacency, never
+   invented across a sentence break the writer never wrote. The query
+   matches case-INSENSITIVELY (fixed 2026-08-26 — "You"/"you" and "We"/"we"
+   are the same pronoun whether or not a sentence happens to start there);
+   the follower word stays exact-case, so the voice reflected back is
+   exactly as typed. The query box is free text, so any word or phrase can
+   be read this way, not just the pronoun presets. */
+.wordquery { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.wordquery label { font-size:11px; color:var(--dim); }
+.wordquery input { background:rgba(238,236,226,.04); border:1px solid var(--line); border-radius:4px;
+  color:var(--paper); font:13px Georgia,serif; padding:6px 10px; width:140px; }
+.wordquery input:focus { outline:none; border-color:var(--gold); }
+.wordstat { font-size:11px; color:var(--dim); margin-bottom:14px; line-height:1.6; }
+table.wordtable { border-collapse:collapse; font-size:12px; width:100%; }
+table.wordtable th { text-align:left; font-weight:400; color:var(--dim); font-size:10.5px;
+  border-bottom:1px solid var(--line); padding:5px 8px; }
+table.wordtable td { padding:6px 8px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+table.wordtable td.count { color:var(--gold); font-family:ui-monospace,Consolas,monospace; text-align:right; width:40px; }
+table.wordtable td.examples { color:var(--dim); font-size:11px; line-height:1.6; }
+table.wordtable td.examples span { cursor:pointer; display:block; }
+table.wordtable td.examples span:hover { color:var(--paper); }
+.note { font-size:10.5px; color:var(--dim); line-height:1.6; max-width:60ch; }
+
+.blindtoggle { display:block; font-family:ui-monospace,Consolas,monospace; font-size:10.5px;
+  color:var(--dim); margin:0 0 10px; cursor:pointer; user-select:none; }
+.blindtoggle input { margin-right:6px; vertical-align:-1px; }
+
+/* ═══ THE FILTER GROUND — 2026-08-27. Ported, not designed from nothing:
+   world2d/scripts/filters_panel.gd is a complete, already-built filter
+   sub-game (a tray of "motes," hand-dragged to five exits) that never
+   crossed from that Godot project into this HTML one — see
+   inbox/gift_2026-08-27_02_godot_filters_panel.md. What crosses here is
+   the SHAPE: a tray, motes typed but unlabeled, five exits (three
+   position-only spires, a lake, a zero-feedback set-down), a standing
+   legend carrying the words instead of each mote. What's NEW is the
+   fractions themselves — Kevin's own mark, 2026-08-27: "when we separate
+   the language into you, I, we, they, them, ect... those are the fractions
+   a user could work with." A mote's kind is a literal, case-insensitive
+   word match (the same mechanism the words ground already uses, already
+   established as reading structure, never meaning) — never a label shown
+   on the mote itself, so the hand still has to look, not read. */
+.filterTray { min-height:96px; border:1px solid var(--line-soft); border-radius:4px;
+  background:rgba(238,236,226,.02); padding:14px; display:flex; flex-wrap:wrap;
+  align-content:flex-start; gap:10px; margin-bottom:4px; position:relative; }
+.filterTray .empty { font-size:11px; color:var(--dim); }
+.mote { width:16px; height:16px; border-radius:50%; cursor:grab; flex-shrink:0;
+  transition:transform .15s, opacity .5s; box-shadow:0 0 0 1px rgba(0,0,0,.3) inset; }
+.mote:active { cursor:grabbing; }
+.mote.dragging { position:fixed; z-index:50; pointer-events:none; transform:scale(1.4); }
+.mote.leaving { opacity:0; transform:scale(.3); }
+.mote[data-kind="I"] { background:var(--frI); }
+.mote[data-kind="you"] { background:var(--fryou); }
+.mote[data-kind="we"] { background:var(--frwe); }
+.mote[data-kind="us"] { background:var(--frus); }
+.mote[data-kind="they"] { background:var(--frthey); }
+.mote[data-kind="he"] { background:var(--frhe); }
+.mote[data-kind="she"] { background:var(--frshe); }
+/* withdrawn motes read as square, not round — a different kind of thing,
+   readable from shape alone, same discipline as the round ones' colour. */
+.mote[data-kind="withdrawn"] { background:var(--frwithdrawn); border-radius:2px; }
+.filterExits { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:14px; }
+.fexit { grid-column:span 1; border:1px solid var(--line-soft); border-radius:4px; padding:10px 12px;
+  font-family:ui-monospace,Consolas,monospace; transition:border-color .15s, background .15s; }
+.fexit b { display:block; font-size:10px; letter-spacing:.03em; color:var(--paper); font-weight:400; }
+.fexit span { display:block; font-size:9.5px; color:var(--dim); margin-top:3px; }
+.fexit[data-exit="lake"], .fexit[data-exit="down"] { grid-column:span 1; }
+.fexit.hot { border-color:var(--gold); background:rgba(224,196,84,.06); }
+.filterLegend { display:flex; flex-wrap:wrap; gap:14px; font-size:10.5px; color:var(--dim);
+  border-top:1px solid var(--line-soft); padding-top:10px; }
+.filterLegend .lg-item { display:flex; align-items:center; gap:6px; }
+.filterLegend i { width:11px; height:11px; border-radius:50%; display:inline-block; }
+
+/* ═══ THE GARDEN GROUND — 2026-08-27. Ported from the GARDEN seat's own
+   "local rule with no objective" organ — real, verified reaction-diffusion
+   code cut whole from the tree in the 2026-08-21 ascent rebuild, never
+   re-sited until now (inbox/gift_2026-08-27_03_garden_growth.md). No
+   fitness, no target, no score: the field is seeded once from what already
+   happened (one seed per sentence, placed by arrival order) and relaxed to
+   a fixed point on load — never iterated while the hand is present, per
+   law 8, which this file already holds elsewhere (no offline progression). */
+#gardenCanvas { width:100%; height:140px; display:block; border:1px solid var(--line-soft);
+  border-radius:4px; background:rgba(238,236,226,.02); margin-bottom:10px; }
+
+/* ═══ THE CATEGORIES GROUND — 2026-08-26. Not a new capture, a map of what
+   this build already reads about the writer's own text, sorted into the 6
+   categories worked out with Kevin beforehand: TEXT (the sentence itself),
+   TIMING (when), DERIVED STRUCTURE (chain/near/hinge — computed, never
+   asserted), MANUAL STRUCTURE (declared/stones/dragged — the writer's own
+   hand), WORD ADJACENCY (the words ground's own layer), ATTENTION (where
+   focus is now vs. where it was). Nearly every field in nodes/edges/
+   declaredEdges/stones/the attention key falls into exactly one of these —
+   nothing here invents a category or a fact the rest of the file doesn't
+   already hold — with one named exception below.
+
+   NAMED GAP, found by audit 2026-08-26: a node's x/y/w/h/r are real
+   persisted fields and don't fit any of the six cleanly. When userMoved is
+   true they're MANUAL STRUCTURE (a hand placed them); when false they're a
+   pure output of layout()'s relaxation pass — not "derived structure" as
+   that category is defined here (chain/near/hinge only), and not really a
+   fact about the writer's own text at all. Left out of the six rather than
+   forcing a bad fit; the "dragged" stat in manual structure below counts
+   only the userMoved case, which is the one case that's actually a fact
+   about the writer's hand. */
+.catcard { border:1px solid var(--line); border-radius:6px; padding:12px 14px; margin-bottom:12px; }
+.catcard h3 { margin:0 0 4px; font-size:13px; font-weight:400; color:var(--gold); }
+.catcard .catjump { font-size:10px; color:var(--dim); font-family:ui-monospace,Consolas,monospace;
+  cursor:pointer; margin-left:4px; }
+.catcard .catjump:hover { color:var(--paper); text-decoration:underline; }
+.catcard .catdesc { font-size:11px; color:var(--dim); line-height:1.5; margin-bottom:8px; }
+.catcard .catstats { font-size:11.5px; line-height:1.8; }
+.catcard .catstats b { color:var(--paper); font-weight:400; }
 </style>
 </head>
 <body>
@@ -158,28 +406,96 @@ svg#graph .card text { fill:var(--paper); font:13px/1.4 Georgia,serif; }
   <div class="doc" id="doc">
     <div class="eyebrow">NESI · the page, 2026-08-26 — the synthesis</div>
     <h1>the page</h1>
-    <div class="sub">Write below. Each finished sentence joins today's page as real, readable text — never truncated, never a box. The shape of it lives in the margin, not in the writing itself.</div>
+    <div class="sub">Write below. Each finished sentence joins today's page exactly as you wrote it — full length, plain text, in your own voice. The shape of it lives in the margin, not in the writing itself.</div>
     <textarea id="pad" placeholder="write here — a sentence joins the page the moment it ends" spellcheck="false"></textarea>
-    <div class="padhint" id="hint">0 sentences · nothing read but idle time and length</div>
+    <label class="blindtoggle"><input type="checkbox" id="blindToggle"> blind — write here, and it leaves. kept in the store, never shown back, from the moment this is checked.</label>
+    <div class="padhint" id="hint">0 sentences · placed by idle time and length alone — your words stay yours</div>
     <div id="days"></div>
   </div>
   <div class="margin">
-    <h2>the shape, at a glance</h2>
+    <h2 id="groundHeading">the shape, at a glance</h2>
     <div class="grounds" id="grounds">
       <button class="groundbtn active" data-ground="relationship">relationship</button>
       <button class="groundbtn" data-ground="time">time</button>
+      <button class="groundbtn" data-ground="weave">weave</button>
+      <button class="groundbtn" data-ground="knowledge">knowledge</button>
+      <button class="groundbtn" data-ground="categories">categories</button>
+      <button class="groundbtn" data-ground="words">words</button>
+      <button class="groundbtn" data-ground="filter">filter</button>
+      <button class="groundbtn" data-ground="garden">garden</button>
+      <button class="groundbtn" data-ground="world">world</button>
     </div>
     <svg id="graph" role="img" aria-label="a settled graph of every sentence written, by timing — the whole corpus, not just today"></svg>
-    <div class="graph-note" id="graphNote">each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, orange means no other path currently connects around it. drag a card to arrange it — that's recorded, never read as meaning anything. click a card to jump to it.</div>
-    <h2>near this one</h2>
-    <div class="related" id="related"><div class="empty">click a sentence in the page to see what landed near it in time</div></div>
-    <h2>declare a connection</h2>
-    <div id="connectPanel"><div class="connect-empty">select a sentence, then declare what it connects to — in your own words, never guessed</div></div>
-    <div class="staged-tray" id="stagedTray"></div>
-    <div class="declared-list" id="declaredList"></div>
+    <div class="graph-note" id="graphNote">each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, orange means no other path currently connects around it. drag a card to arrange it for your own clarity — it stays where you put it. click a card to jump to it.</div>
+    <div id="weaveWrap" style="display:none">
+      <div class="matrixwrap"><div id="weaveMatrixHost"></div></div>
+      <div class="weave-legend">
+        <span><i style="background:var(--chain)"></i>chain — directional, row wrote before column</span>
+        <span><i style="background:var(--near)"></i>near — symmetric, shown both sides, windowed</span>
+        <span><i style="background:var(--declared)"></i>declared — directional, labeled, never swallowed by chain</span>
+        <span><i style="background:var(--hinge)"></i>hinge — a fact about the sentence itself, diagonal only</span>
+      </div>
+      <h2>what the focus sentence's own lenses reach</h2>
+      <div class="gifts" id="weaveGifts"></div>
+      <svg id="giftTetra" viewBox="0 0 320 260" role="img" aria-label="the anchor and its three derived gifts, as a real tetrahedron"></svg>
+      <div class="tetranote" id="tetraNote"></div>
+      <div id="weaveStones"></div>
+    </div>
+    <div id="knowledgeWrap" style="display:none"></div>
+    <div id="categoriesWrap" style="display:none"></div>
+    <div id="wordsWrap" style="display:none">
+      <div class="wordquery">
+        <label for="wordQueryInput">which word or phrase?</label>
+        <input id="wordQueryInput" type="text" value="I" spellcheck="false">
+        <button class="groundbtn wordpreset active" data-word="I">I</button>
+        <button class="groundbtn wordpreset" data-word="you">you</button>
+        <button class="groundbtn wordpreset" data-word="we">we</button>
+        <button class="groundbtn wordpreset" data-word="us">us</button>
+        <button class="groundbtn wordpreset" data-word="they">they</button>
+        <button class="groundbtn wordpreset" data-word="he">he</button>
+        <button class="groundbtn wordpreset" data-word="she">she</button>
+      </div>
+      <div class="wordstat" id="wordStat"></div>
+      <div id="wordTableHost"></div>
+      <div class="note" style="margin-top:18px">This reads your own pronoun and phrase patterns back to you — that's exactly the kind of record forensic linguistics and stylometry treat as diagnostically loaded, whoever ends up reading it. Nothing here rates or names what a pattern means, and nothing here leaves this browser: no export, no sync, no network call of any kind (index.html refuses that outright — see the knowledge ground). What you do with what you see here is yours to hold as loosely as you like.</div>
+    </div>
+    <div id="filterWrap" style="display:none">
+      <div class="filterTray" id="filterTray"></div>
+      <div class="filterExits" id="filterExits">
+        <div class="fexit" data-exit="left"><b>SEND IT DOWN A SPIRE</b><span>the left edge</span></div>
+        <div class="fexit" data-exit="base"><b>SEND IT DOWN A SPIRE</b><span>the base</span></div>
+        <div class="fexit" data-exit="right"><b>SEND IT DOWN A SPIRE</b><span>the right edge</span></div>
+        <div class="fexit" data-exit="lake"><b>DROP IT TO THE LAKE</b><span>it goes to the centre</span></div>
+        <div class="fexit" data-exit="down"><b>SET IT DOWN</b><span></span></div>
+      </div>
+      <div class="filterLegend" id="filterLegend"></div>
+      <div class="note" style="margin-top:14px">Each round mote is one pronoun found in one of your own sentences — I, you, we, us, they, he, she. Nothing sorts them for you: a mote's kind is fixed the moment it's found (the same literal, case-insensitive match the words ground already uses) and nothing labels a mote on the tray itself — only the standing legend below names the kinds, the same discipline the Godot original (<code>world2d/scripts/filters_panel.gd</code>) used for the same reason. Your hand does the separating. Dropping one anywhere costs it nothing and reads nothing back except "set it down," which shows no confirmation at all, on purpose. A square mote is a sentence you withdrew from the page — the × delete still removes it from the document for good, and now it also has somewhere to land instead of nowhere.</div>
+    </div>
+    <div id="gardenWrap" style="display:none">
+      <canvas id="gardenCanvas" width="640" height="140"></canvas>
+      <div class="note" style="margin-top:14px" id="gardenNote"></div>
+    </div>
+    <div id="worldWrap" style="display:none">
+      <div class="worldCount" id="worldCount"></div>
+      <div class="worldPicker" id="worldPicker"></div>
+      <svg id="worldSvg" viewBox="0 0 620 520" role="img" aria-label="up to twelve of your own sentences, seated on the real twelve-seat solid"></svg>
+      <div class="worldLegend" id="worldLegend"></div>
+      <div class="note" style="margin-top:12px" id="worldNote"></div>
+    </div>
+    <div id="docInteract">
+      <h2>near this one</h2>
+      <div class="related" id="related"><div class="empty">click a sentence in the page to see what landed near it in time</div></div>
+      <h2>declare a connection</h2>
+      <div id="connectPanel"><div class="connect-empty">select a sentence, then declare what it connects to — always in your own words</div></div>
+      <div class="staged-tray" id="stagedTray"></div>
+      <div class="declared-list" id="declaredList"></div>
+    </div>
   </div>
 </div>
 
+<!-- solid.js, unedited, same file ascent.html already loads — local, zero
+     dependencies, exposes window.SOLID. See the note above `worldPicks`. -->
+<script src="solid.js"></script>
 <script>
 "use strict";
 const isEnd = c => ".!?…".indexOf(c) >= 0;
@@ -188,6 +504,7 @@ function dayStamp() {
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
 const KEY = "nesi.thepage";
+const STONE_KEY = "nesi.thepage.stones"; // read-only here — tetra_dream_B_pebbles.html's own key, never written from this file
 let mark=0, nodes=[], edges=[], lastBornAt=null, segmentStart=null, nextId=0, lastNode=null;
 let selectedId = -1, newestId = -1;
 
@@ -207,10 +524,40 @@ let declaredEdges = [], nextEdgeId = 0;
 let connectArmed = false, connectFrom = -1;
 let ground = "relationship"; // TERRAIN's own reframe: a ground is a VIEW over one dataset, never a second model
 
+/* THE TOMBSTONE, composted 2026-08-27 — reconciled in, not invented. Named
+   in ORGANS.json under seat FILTER since 2026-08-16, real and unbuilt
+   until now: "a deletion recorded as a MARKER, never an erasure... a
+   deleted sentence leaves the line by way of the filter, and the bank
+   keeps it" (THE_24.md's own naming, quoted there). Kevin's own words the
+   same day, on why it isn't a supplied comparison: "Filter is the process
+   the user builds through their own decisions, gestures and clicks." This
+   doesn't reopen the × delete itself — that was a real, deliberate,
+   audited fix (KNOWLEDGE §2, "no delete" → a working delete) and stays
+   exactly as it is: a withdrawn sentence still leaves the visible document
+   for good. What was missing is where it goes. Now it has somewhere: the
+   filter ground, as its own kind of mote, verbatim, append-only — the bank
+   never trims this list, the same discipline TANK already holds. */
+let tombstones = [];
+
+/* THE WORLD FACE, SHAPE A — built 2026-08-27, Kevin's mark "D then A", from
+   DREAM_PASS_2026-08-27_the_world_face.html §3A. Twelve sentences, picked
+   by hand, seated onto the real twelve-seat solid — not a copy of its
+   geometry, the SAME one: solid.js is loaded into this page as-is
+   (`<script src="solid.js">`, zero dependencies, unedited) and this ground
+   reads its real MEMBERS (24 edges), TRIANGLES/SQUARES (14 faces) and
+   CELLS (14 volumes) directly, keyed by the same twelve NAMEs the organs
+   already use. What's built here is the mapping, not a second solid: pick
+   order fills NAMES[0..11] in order, so the first sentence you choose
+   becomes whatever TANK's position was for the organs, the second
+   whatever DAM's was, and so on — a real seat, not a decorative one. */
+let worldPicks = [];
+
 function persist() {
   try { localStorage.setItem(KEY, JSON.stringify({
-    nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved})),
-    declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label}))
+    nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved,blind:n.blind})),
+    declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label})),
+    tombstones: tombstones.map(t=>({text:t.text, day:t.day})),
+    worldPicks: worldPicks.slice()
   })); } catch(e) {}
 }
 function restore() {
@@ -222,32 +569,54 @@ function restore() {
        Kevin less): a session's own earlier writing must still restore. */
     const nodeSeq = Array.isArray(parsed) ? parsed : (Array.isArray(parsed && parsed.nodes) ? parsed.nodes : null);
     if (!nodeSeq) return;
-    nodeSeq.forEach(s => addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.userMoved));
+    nodeSeq.forEach(s => addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.userMoved, s.blind));
     const edgeSeq = Array.isArray(parsed) ? [] : (parsed.declaredEdges || []);
     edgeSeq.forEach(e => {
       declaredEdges.push({ id:e.id, aId:e.aId, bId:e.bId, label:e.label, staged:false });
       nextEdgeId = Math.max(nextEdgeId, e.id+1);
     });
+    const tombSeq = Array.isArray(parsed) ? [] : (parsed.tombstones || []);
+    tombSeq.forEach(t => tombstones.push({ text:t.text, day:t.day }));
+    const pickSeq = Array.isArray(parsed) ? [] : (parsed.worldPicks || []);
+    const liveIds = new Set(nodes.map(n=>n.id));
+    pickSeq.forEach(id => { if (liveIds.has(id)) worldPicks.push(id); }); // a picked sentence later withdrawn just leaves its seat open, not the app broken
   } catch(e) {}
 }
 function wordCount(t){ const w=t.trim(); return w?w.split(/\s+/).length:0; }
 function gapToRest(ms){ const s=Math.max(0,ms/1000); return Math.max(70,Math.min(280,70+Math.log(1+s)*60)); }
 
 /* size a card from its own word count alone — the same structural measure
-   the writing surface has used all night; text is shown in full up to
-   what the card can hold, truncated with an ellipsis and a full-text
-   title only past that, never hidden behind a bare dot. */
+   the writing surface has used all night. CORRECTED 2026-08-27, Kevin's
+   mark: "the users words and sentences should be fully visible at all
+   times" — this used to cut the card's text with an ellipsis past what a
+   fixed 30px height could hold, full text reachable only on hover. Width
+   still comes from word count (a footprint, not a cut); height now grows
+   to whatever wrapLines() actually needs, so nothing is ever cut. */
+const CARD_CHAR_W = 6.6, CARD_LINE_H = 15;
+function wrapLines(text, widthPx) {
+  const maxChars = Math.max(4, Math.floor((widthPx-16)/CARD_CHAR_W));
+  const words = text.split(/\s+/);
+  const lines = []; let cur = "";
+  words.forEach(w => {
+    const trial = cur ? cur+" "+w : w;
+    if (trial.length > maxChars && cur) { lines.push(cur); cur = w; }
+    else cur = trial;
+  });
+  if (cur) lines.push(cur);
+  return lines.length ? lines : [""];
+}
 function sizeNode(n) {
   const w = Math.max(90, Math.min(260, 60+n.words*11));
-  const h = 30;
-  n.w = w; n.h = h; n.r = Math.max(w,h)/2;
+  const lines = wrapLines(n.text, w);
+  const h = Math.max(30, lines.length*CARD_LINE_H + 14);
+  n.w = w; n.h = h; n.r = Math.max(w,h)/2; n._lines = lines;
 }
 
-function addNode(text, words, gapMs, day, x, y, userMoved) {
+function addNode(text, words, gapMs, day, x, y, userMoved, blind) {
   const n = { id:nextId++, text, words:(typeof words==="number"?words:wordCount(text)),
     gapMs:gapMs||0, day: day||dayStamp(),
     x: typeof x==="number"?x:0, y: typeof y==="number"?y:0,
-    r:6, userMoved: !!userMoved };
+    r:6, userMoved: !!userMoved, blind: !!blind };
   sizeNode(n);
   nodes.push(n);
   if (lastNode) edges.push({ aId:lastNode.id, bId:n.id, restLen:gapToRest(n.gapMs) });
@@ -264,7 +633,17 @@ function ingestOne(text) {
   const idleFrom = segmentStart===null ? finishedAt : segmentStart;
   const gapMs = lastBornAt===null ? 0 : Math.max(0, idleFrom-lastBornAt);
   lastBornAt = finishedAt; segmentStart = null;
-  return addNode(text, words, gapMs);
+  /* BLIND MODE, 2026-08-27 — ported from world2d/scripts/writing_field.gd's
+     own second view ("blind — each sentence leaves as it is finished;
+     nothing accumulates in view and nothing is said" — see
+     inbox/gift_2026-08-27_04_blind_writing_mode.md). Still committed to
+     the same store, same schema, same persist() — this flag only tells
+     renderDoc() not to draw it back. Scope, stated plainly: blind affects
+     the writing surface's own document view only; every other ground
+     still reads the sentence, the same way a hinge or a chain edge can
+     still pass through a dragged-out-of-view card elsewhere in this file. */
+  const blind = !!document.getElementById("blindToggle").checked;
+  return addNode(text, words, gapMs, undefined, undefined, undefined, undefined, blind);
 }
 function ingest(text) {
   const n = ingestOne(text); if (!n) return;
@@ -272,7 +651,7 @@ function ingest(text) {
   persist();
   renderDoc();
   document.getElementById("hint").textContent =
-    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
   setTimeout(() => { newestId = -1; renderDoc(); }, 1500);
 }
 
@@ -326,7 +705,7 @@ function bandCut() {
     persist();
     renderDoc();
     document.getElementById("hint").textContent =
-      nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+      nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
     setTimeout(() => { newestId = -1; renderDoc(); }, 1500);
   }
 }
@@ -417,14 +796,99 @@ function nearPairsFor(list, chainedKeys) {
 /* Coordinate space sized for real text cards (90-260px wide, per
    sizeNode), not the small dot-space this used to be — a user can only
    "see and arrange their own sentences" if there's actual room for the
-   sentences, not just points standing in for them. */
-const GW = 640, GH = 640;
+   sentences, not just points standing in for them.
+
+   CORRECTED 2026-08-27, Kevin's mark, after the full-text wrap landed and
+   made cards genuinely tall: "everything is stacked on top of each
+   other... the sentences should find a natural equilibrium and balance
+   where every sentence has its own space." Two real defects, not one —
+   a fixed 640×640 stage was sized for the old 30px-tall dots and never
+   grew with real multi-line cards or with how many of them there are; and
+   the repulsion below treated every card as a CIRCLE of radius
+   max(w,h)/2, which is a bad fit for the wide-short rectangles a written
+   sentence actually is — two circles can be "far enough apart" by that
+   test while their real rectangles still overlap on the axis the circle
+   over-counted. Fixed both: the stage now grows with the actual footprint
+   of what's written, and the repulsion below tests real rectangle overlap
+   on each axis and resolves along whichever axis needs the least push. */
+let GW = 640, GH = 640;
+function updateGraphDims() {
+  if (!nodes.length) { GW = 640; GH = 640; return; }
+  const PACKING_SLACK = 2.6; // real gaps + repulsion margin, not a tight bin-pack
+  const totalArea = nodes.reduce((s,n) => s + (n.w||90)*(n.h||44), 0) * PACKING_SLACK;
+  const side = Math.max(640, Math.ceil(Math.sqrt(totalArea)));
+  GW = side; GH = side;
+}
+/* AUDIT FIX, 2026-08-26: KNOWLEDGE.md (§4, hinge decay) documents declared
+   edges as counting toward hinge detection regardless of age, pulling in
+   whichever node they touch even if it's outside WINDOW_DAYS — the one
+   deliberate, cross-time signal the writer added on purpose. This
+   function's own body used to be inlined TWICE — once here, once in the
+   drag handler below — and neither copy actually added declared edges at
+   all, silently contradicting the doc since the day it was written; the
+   tetra dreams' own hingeSet() (dream A/B/D/E) all did this correctly,
+   this file's two copies did not, and had already started to drift from
+   each other in other small ways. Pulled into one function so there is
+   only one place left to be wrong. */
+function computeHinges(nearPairs){
+  const today = dayStamp();
+  const confirmedDeclared = declaredEdges.filter(e=>!e.staged);
+  const windowIds = new Set(nodes.filter(n => withinWindow(n.day, today)).map(n=>n.id));
+  confirmedDeclared.forEach(e => { windowIds.add(e.aId); windowIds.add(e.bId); });
+  const windowNodes = nodes.filter(n => windowIds.has(n.id));
+  const windowEdges = edges.concat(nearPairs).filter(e => windowIds.has(e.aId) && windowIds.has(e.bId))
+    .concat(confirmedDeclared);
+  return articulationPoints(windowNodes, windowEdges);
+}
+/* RECTANGLE separation, not circles — CORRECTED 2026-08-27 (see the note
+   above GW/GH). Real overlap on each axis, resolved along whichever axis
+   needs the smaller push, the standard fix for two axis-aligned boxes.
+   Pulled into its own function because layout() needs it twice — once
+   interleaved with the chain springs (so connected sentences still pull
+   toward each other), and again on its own afterward. That second pass
+   turned out not to be optional: measured directly, 15-45 real cards
+   reliably left 8-14 pairs still overlapping after 130 interleaved
+   rounds, no matter how many more interleaved rounds or how much extra
+   canvas were given — the springs and the separation were undoing each
+   other's work on the same nodes in the same sweep. Letting separation
+   run alone, with nothing pulling back, resolved every one of them
+   within 100-200 passes at every size tested. */
+function separatePass(gw, gh) {
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
+    const a=nodes[i], b=nodes[j];
+    const PAD = 14;
+    let dx=b.x-a.x, dy=b.y-a.y;
+    if (dx===0 && dy===0) { dx = (Math.random()-0.5)*0.5; dy = (Math.random()-0.5)*0.5; }
+    const overlapX = (a.w/2+b.w/2+PAD) - Math.abs(dx);
+    const overlapY = (a.h/2+b.h/2+PAD) - Math.abs(dy);
+    if (overlapX > 0 && overlapY > 0) {
+      if (overlapX < overlapY) {
+        const push = overlapX/2 * (dx<0?-1:1);
+        if (!a.userMoved) a.x -= push;
+        if (!b.userMoved) b.x += push;
+      } else {
+        const push = overlapY/2 * (dy<0?-1:1);
+        if (!a.userMoved) a.y -= push;
+        if (!b.userMoved) b.y += push;
+      }
+    }
+  }
+  nodes.forEach(n => { if (!n.userMoved) { n.x=Math.max(n.w/2+4,Math.min(gw-n.w/2-4,n.x)); n.y=Math.max(n.h/2+4,Math.min(gh-n.h/2-4,n.y)); } });
+}
 function layout() {
+  nodes.forEach(n => { if (!n.w) sizeNode(n); });
+  updateGraphDims();
+  /* seeded spread across the real stage, not a 60px clump at its centre —
+     the tighter the starting pile, the deeper the tangle separatePass()
+     has to undo. */
   nodes.forEach(n => {
-    if (!n.w) sizeNode(n);
-    if (n.x===0 && n.y===0 && !n.userMoved) { n.x = GW/2 + (Math.random()-0.5)*60; n.y = GH/2 + (Math.random()-0.5)*60; }
+    if (n.x===0 && n.y===0 && !n.userMoved) {
+      n.x = Math.max(n.w/2+4, Math.min(GW-n.w/2-4, GW/2 + (Math.random()-0.5)*GW*0.9));
+      n.y = Math.max(n.h/2+4, Math.min(GH-n.h/2-4, GH/2 + (Math.random()-0.5)*GH*0.9));
+    }
   });
-  for (let iter=0; iter<70; iter++) {
+  const ITERS = Math.min(220, 70 + nodes.length*4); // more nodes, more room needed, more time to find it
+  for (let iter=0; iter<ITERS; iter++) {
     edges.forEach(e => {
       const a=nodes.find(x=>x.id===e.aId), b=nodes.find(x=>x.id===e.bId);
       if (!a||!b) return;
@@ -434,29 +898,16 @@ function layout() {
       if (!a.userMoved) { a.x+=fx; a.y+=fy; }
       if (!b.userMoved) { b.x-=fx; b.y-=fy; }
     });
-    /* repulsion sized to actual card footprints (a.r+b.r), not a flat
-       point-collision radius — real text cards need real clearance or
-       they'd sit stacked and unreadable, exactly what "not dots" means. */
-    for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++){
-      const a=nodes[i], b=nodes[j];
-      const dx=b.x-a.x, dy=b.y-a.y; let d2=dx*dx+dy*dy; if(d2<1)d2=1;
-      const d=Math.sqrt(d2);
-      const minD = (a.r+b.r)*1.2;
-      if (d<minD) {
-        const f=(minD-d)*2.2; const fx=f*dx/d, fy=f*dy/d;
-        if (!a.userMoved) { a.x-=fx; a.y-=fy; }
-        if (!b.userMoved) { b.x+=fx; b.y+=fy; }
-      }
-    }
-    nodes.forEach(n => { if (!n.userMoved) { n.x=Math.max(n.w/2+4,Math.min(GW-n.w/2-4,n.x)); n.y=Math.max(n.h/2+4,Math.min(GH-n.h/2-4,n.y)); } });
+    separatePass(GW, GH);
   }
+  /* the settle phase — separation alone, nothing pulling back. This is
+     what actually closes the remaining overlaps the interleaved loop
+     above cannot; see the comment on separatePass(). */
+  const SETTLE = Math.min(400, 100 + nodes.length*3);
+  for (let s=0; s<SETTLE; s++) separatePass(GW, GH);
   const chainedKeys = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
   const nearPairs = nearPairsFor(nodes, chainedKeys);
-  const today = dayStamp();
-  const windowNodes = nodes.filter(n => withinWindow(n.day, today));
-  const windowIds = new Set(windowNodes.map(n=>n.id));
-  const windowEdges = edges.concat(nearPairs).filter(e => windowIds.has(e.aId) && windowIds.has(e.bId));
-  const hinges = articulationPoints(windowNodes, windowEdges);
+  const hinges = computeHinges(nearPairs);
   return { chainedKeys, nearPairs, hinges };
 }
 
@@ -467,7 +918,12 @@ function renderDoc() {
   const L = layout();
   _lastLayout = L;
   const byDay = new Map();
-  nodes.forEach(n => { if (!byDay.has(n.day)) byDay.set(n.day, []); byDay.get(n.day).push(n); });
+  /* blind sentences are excluded here, not lower in the loop — the day
+     head's own count reads byDay.get(day).length, and a blind sentence
+     should not even show up as a number nobody can see the text for.
+     They're still in `nodes`, still persisted, still visible to every
+     other ground — see the note at ingestOne(). */
+  nodes.forEach(n => { if (n.blind) return; if (!byDay.has(n.day)) byDay.set(n.day, []); byDay.get(n.day).push(n); });
   const days = Array.from(byDay.keys()).sort().reverse();
 
   daysEl.innerHTML = "";
@@ -492,7 +948,7 @@ function renderDoc() {
       span.style.boxShadow = charge > 0.02 ? `inset 0 -3px 0 0 rgba(224,196,84,${(0.15+charge*0.55).toFixed(2)})` : "";
       span.textContent = n.text;
       p.appendChild(span);
-      p.title = (L.hinges.has(n.id) ? "no other path currently connects around it — " : "") + "idle before this one: " + Math.round(n.gapMs/1000) + "s";
+      p.title = (L.hinges.has(n.id) ? "the one path holding its neighbors together — " : "") + "idle before this one: " + Math.round(n.gapMs/1000) + "s";
       p.addEventListener("click", () => { selectSentence(n.id, L); });
       /* ATTENTION BROADCAST, 2026-08-26 — for a companion window (e.g.
          tetra_dream_C_standing.html) to know what's being READ, not just
@@ -586,6 +1042,7 @@ function deleteNode(id) {
   pendingDeleteId = -1;
   const idx = nodes.findIndex(n => n.id === id);
   if (idx === -1) return;
+  tombstones.push({ text: nodes[idx].text, day: nodes[idx].day }); // the bank keeps it — see the note above tombstones
   nodes.splice(idx, 1);
   edges = edges.filter(e => e.aId !== id && e.bId !== id);
   declaredEdges = declaredEdges.filter(e => e.aId !== id && e.bId !== id);
@@ -599,19 +1056,19 @@ function renderConnectPanel() {
   const el = document.getElementById("connectPanel");
   if (connectArmed) {
     const from = nodes.find(n=>n.id===connectFrom);
-    el.innerHTML = `<div class="connect-armed">connecting from: <b>"${(from?from.text:"").slice(0,50)}${from&&from.text.length>50?"…":""}"</b><br>click another sentence — in the page or the graph — to connect it.</div>`;
+    el.innerHTML = `<div class="connect-armed">connecting from: <b>"${(from?from.text:"")}"</b><br>click another sentence — in the page or the graph — to connect it.</div>`;
     const cancel = document.createElement("button");
     cancel.className = "cancel-btn"; cancel.textContent = "cancel";
     cancel.addEventListener("click", () => { connectArmed=false; connectFrom=-1; renderConnectPanel(); });
     el.appendChild(cancel);
     return;
   }
-  if (selectedId < 0) { el.innerHTML = '<div class="connect-empty">select a sentence, then declare what it connects to — in your own words, never guessed</div>'; return; }
+  if (selectedId < 0) { el.innerHTML = '<div class="connect-empty">select a sentence, then declare what it connects to — always in your own words</div>'; return; }
   const n = nodes.find(x=>x.id===selectedId);
   el.innerHTML = "";
   const note = document.createElement("div");
   note.className = "connect-empty";
-  note.textContent = 'selected: "' + n.text.slice(0,50) + (n.text.length>50?"…":"") + '"';
+  note.textContent = 'selected: "' + n.text + '"';
   el.appendChild(note);
   const btn = document.createElement("button");
   btn.className = "connect-btn"; btn.textContent = "declare a connection →";
@@ -629,7 +1086,7 @@ function renderStagedTray() {
     const box = document.createElement("div");
     box.className = "staged-item"; box.dataset.id = e.id;
     const pair = document.createElement("div"); pair.className = "pair";
-    pair.textContent = '"'+a.text.slice(0,34)+(a.text.length>34?"…":"")+'"  ↔  "'+b.text.slice(0,34)+(b.text.length>34?"…":"")+'"';
+    pair.textContent = '"'+a.text+'"  ↔  "'+b.text+'"';
     box.appendChild(pair);
     const inp = document.createElement("input");
     inp.placeholder = "what connects them, in your own words"; inp.value = e.label;
@@ -661,7 +1118,7 @@ function renderDeclaredList() {
     if (!a || !b) return;
     const d = document.createElement("div");
     d.className = "item";
-    d.innerHTML = '"'+a.text.slice(0,26)+'…" <b>'+e.label+'</b> "'+b.text.slice(0,26)+'…"';
+    d.innerHTML = '"'+a.text+'" <b>'+e.label+'</b> "'+b.text+'"';
     el.appendChild(d);
   });
 }
@@ -671,11 +1128,11 @@ function renderRelated(L) {
   if (selectedId < 0) { el.innerHTML = '<div class="empty">click a sentence in the page to see what landed near it in time</div>'; return; }
   const near = L.nearPairs.filter(p => p.aId===selectedId || p.bId===selectedId)
     .map(p => nodes.find(n => n.id === (p.aId===selectedId?p.bId:p.aId)));
-  if (!near.length) { el.innerHTML = '<div class="empty">nothing else landed near this one, by timing</div>'; return; }
+  if (!near.length) { el.innerHTML = '<div class="empty">this one stands alone in time, for now</div>'; return; }
   el.innerHTML = "";
   near.forEach(n => {
     const d = document.createElement("div");
-    d.className = "item"; d.textContent = n.text.slice(0,60) + (n.text.length>60?"…":"");
+    d.className = "item"; d.textContent = n.text;
     d.addEventListener("click", () => {
       const p = document.querySelector('p.sentence[data-id="'+n.id+'"]');
       if (p) { p.closest(".day").classList.remove("collapsed"); p.scrollIntoView({behavior:"smooth", block:"center"}); }
@@ -711,23 +1168,793 @@ function graphPoint(e) {
    simple and honest rather than dressed up), y is a lane per day, both
    facts this file already holds. The underlying near/hinge computation
    never changes with the ground — only where a dot is DRAWN does. ═══ */
+/* CORRECTED 2026-08-27, same mark as the relationship ground's fix above:
+   this used to divide GW evenly by index regardless of a card's own
+   width, and centre every card in a day on one shared lane-Y regardless
+   of its height — with real multi-line cards that's a guaranteed pile-up,
+   not an edge case (measured: 48 of 105 possible pairs overlapping on 15
+   real sentences in one day). Rebuilt as a real flow layout instead of a
+   physics one — left to right in the order written, wrapping to a new row
+   only when a row is full, exactly like text wraps. Arrival order reads
+   left-to-right, top-to-bottom, same as before; the difference is that a
+   card's own size now actually reserves the space it draws into, so
+   nothing needs iterating or settling — it can't overlap by construction. */
 function timePositions() {
   const days = Array.from(new Set(nodes.map(n=>n.day))).sort();
-  const dayIndex = new Map(days.map((d,i)=>[d,i]));
-  const laneH = (GH-20) / Math.max(1,days.length);
   const pos = new Map();
-  nodes.forEach((n,i) => {
-    const x = nodes.length>1 ? 16 + (i/(nodes.length-1))*(GW-32) : GW/2;
-    const y = 10 + dayIndex.get(n.day)*laneH + laneH/2;
-    pos.set(n.id, {x,y});
+  const PAD = 14, GAP = 10;
+  let laneTop = PAD;
+  days.forEach(day => {
+    const dayNodes = nodes.filter(n => n.day===day); // append order == time order
+    let cx = PAD, cy = laneTop, rowH = 0;
+    dayNodes.forEach(n => {
+      if (cx > PAD && cx + n.w > GW - PAD) { cx = PAD; cy += rowH + GAP; rowH = 0; }
+      pos.set(n.id, { x: cx + n.w/2, y: cy + n.h/2 });
+      cx += n.w + GAP;
+      rowH = Math.max(rowH, n.h);
+    });
+    laneTop = cy + rowH + PAD*2;
   });
+  if (laneTop > GH) GH = Math.ceil(laneTop); // the flow needed more room than the shared stage had — grow it, don't compress it
   return pos;
 }
 function displayPos(n, timePos) {
   return ground==="time" ? timePos.get(n.id) : { x:n.x, y:n.y };
 }
 
+/* ═══ THE WEAVE'S OWN LENSES, composted unchanged — chain/near/declared
+   gift-derivation from tetra_dream_E_gifts.html, run over this file's own
+   live `edges`/`declaredEdges`/L.nearPairs rather than re-parsed storage. ═══ */
+function chainGiftW(anchorId){
+  const after = edges.find(e=>e.aId===anchorId);
+  if (after) return {id: after.bId, dir:"the sentence written right after it"};
+  const before = edges.find(e=>e.bId===anchorId);
+  if (before) return {id: before.aId, dir:"the sentence written right before it"};
+  return null;
+}
+function nearGiftW(anchorId, L){
+  const idx = nodes.findIndex(n=>n.id===anchorId);
+  let best=null, bestDist=Infinity;
+  L.nearPairs.forEach(e=>{
+    let otherId=null;
+    if (e.aId===anchorId) otherId=e.bId; else if (e.bId===anchorId) otherId=e.aId; else return;
+    const oIdx = nodes.findIndex(n=>n.id===otherId);
+    const dist = Math.abs(oIdx-idx);
+    if (dist<bestDist){ bestDist=dist; best=otherId; }
+  });
+  return best===null ? null : {id:best};
+}
+function declaredGiftW(anchorId){
+  let found=null;
+  declaredEdges.filter(e=>!e.staged).forEach(e=>{
+    if (e.aId===anchorId) found={id:e.bId, label:e.label};
+    else if (e.bId===anchorId) found={id:e.aId, label:e.label};
+  });
+  return found;
+}
+// from tetra_dream_A_fourpick.html, audit-fixed: declared must never be swallowed by chain
+function relationOfW(aId,bId,L){
+  const isChain = edges.some(e=>e.aId===aId&&e.bId===bId);
+  const isChainRev = edges.some(e=>e.aId===bId&&e.bId===aId);
+  const decl = declaredEdges.find(e=>!e.staged && e.aId===aId&&e.bId===bId);
+  const out = [];
+  if (isChain) out.push({kind:"chain", text:"chain →"});
+  if (decl) out.push({kind:"declared", text:"declared →"+(decl.label?" "+decl.label:"")});
+  if (!isChain && !isChainRev && L.nearPairs.some(e=>(e.aId===aId&&e.bId===bId)||(e.aId===bId&&e.bId===aId)))
+    out.push({kind:"near", text:"near (~)"});
+  return out;
+}
+function renderWeaveMatrix(L, activeId) {
+  const host = document.getElementById("weaveMatrixHost");
+  host.innerHTML = "";
+  if (!nodes.length) { host.innerHTML = '<div class="connect-empty">Nothing written yet.</div>'; return; }
+  const table = document.createElement("table"); table.className = "weave-matrix";
+  const head = document.createElement("tr");
+  head.appendChild(document.createElement("th"));
+  nodes.forEach(n=>{
+    const th = document.createElement("th");
+    th.textContent = n.text;
+    th.style.cursor = "pointer";
+    th.title = "click to focus this sentence";
+    if (n.id===activeId) th.classList.add("focuscol");
+    th.addEventListener("click", () => selectSentence(n.id, L));
+    head.appendChild(th);
+  });
+  table.appendChild(head);
+  nodes.forEach(rowN=>{
+    const tr = document.createElement("tr");
+    if (rowN.id===activeId) tr.classList.add("focusrow");
+    const rowTh = document.createElement("th"); rowTh.className = "rowhead";
+    rowTh.textContent = rowN.text;
+    rowTh.style.cursor = "pointer";
+    rowTh.title = "click to focus this sentence";
+    rowTh.addEventListener("click", () => selectSentence(rowN.id, L));
+    tr.appendChild(rowTh);
+    nodes.forEach(colN=>{
+      const td = document.createElement("td");
+      if (colN.id===activeId) td.classList.add("focuscol");
+      if (rowN.id===colN.id) {
+        td.className += " diag";
+        td.innerHTML = L.hinges.has(rowN.id)
+          ? '<span class="wcell hinge">hinge</span>'
+          : '<span class="wcell-empty">—</span>';
+      } else {
+        const cells = relationOfW(rowN.id, colN.id, L);
+        td.innerHTML = cells.length
+          ? cells.map(c=>'<span class="wcell '+c.kind+'">'+c.text+'</span>').join("")
+          : '<span class="wcell-empty">none</span>';
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  host.appendChild(table);
+}
+/* ═══ THE WORLD FACE, SHAPE D — see the note above #giftTetra's CSS.
+   Ported unchanged from solid.js's own _tet(): the tetrahedron-volume
+   formula, four lines, same math, run on four real points instead of
+   twelve. */
+function _tetSub(a,b){ return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
+function _tetCross(a,b){ return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]; }
+function _tetDot(a,b){ return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]; }
+function tetVolume(p,q,r,s){
+  return Math.abs(_tetDot(_tetSub(q,p), _tetCross(_tetSub(r,p), _tetSub(s,p)))) / 6;
+}
+/* three real axes, not invented ones: idle-gap and word-count are the
+   same two structural facts the whole page is already placed by
+   (KNOWLEDGE §1); sequence distance from the anchor is the one fact
+   that's specifically about being a GIFT. Normalized per-instance across
+   only the points in play, so the shape is a reading of THIS anchor's
+   own spread, never a cross-sentence scale. */
+function giftTetraPoints(anchor, cg, ng, dg, nodesById){
+  const idx = new Map(nodes.map((n,i)=>[n.id,i]));
+  const pts = [{ role:"anchor", n: anchor }];
+  if (cg) pts.push({ role:"chain", n: nodesById[cg.id] });
+  if (ng) pts.push({ role:"near", n: nodesById[ng.id] });
+  if (dg) pts.push({ role:"declared", n: nodesById[dg.id] });
+  const gaps = pts.map(p => Math.log(1+Math.max(0,p.n.gapMs)/1000));
+  const words = pts.map(p => p.n.words);
+  const seqs = pts.map(p => Math.abs(idx.get(p.n.id) - idx.get(anchor.id)));
+  const norm = arr => { const lo=Math.min(...arr), hi=Math.max(...arr); return arr.map(v => hi===lo ? 50 : (v-lo)/(hi-lo)*100); };
+  const gx = norm(gaps), gy = norm(words), gz = norm(seqs);
+  pts.forEach((p,i) => { p.xyz = [gx[i], gy[i], gz[i]]; });
+  return pts;
+}
+function project3(xyz){
+  const [x,y,z] = xyz;
+  const cos30 = Math.cos(Math.PI/6), sin30 = Math.sin(Math.PI/6);
+  return [160 + (x-z)*cos30*1.1, 190 + ((x+z)*sin30 - y)*0.9];
+}
+function renderGiftTetra(pts){
+  const svg = document.getElementById("giftTetra");
+  const note = document.getElementById("tetraNote");
+  svg.innerHTML = "";
+  if (!pts.length) { note.textContent = ""; return; }
+  const screen = pts.map(p => project3(p.xyz));
+  if (pts.length === 4) {
+    [[0,1,2],[0,1,3],[0,2,3],[1,2,3]].forEach(f => {
+      svg.appendChild(svgEl("path",{ d:"M"+f.map(i=>screen[i].join(",")).join("L")+"Z", class:"tface" }));
+    });
+  }
+  for (let i=1;i<pts.length;i++)
+    svg.appendChild(svgEl("line",{x1:screen[0][0],y1:screen[0][1],x2:screen[i][0],y2:screen[i][1], class:"tedge "+pts[i].role}));
+  for (let i=1;i<pts.length;i++) for (let j=i+1;j<pts.length;j++)
+    svg.appendChild(svgEl("line",{x1:screen[i][0],y1:screen[i][1],x2:screen[j][0],y2:screen[j][1], stroke:"var(--line-soft)", "stroke-width":1}));
+  const roleColor = { anchor:"var(--gold)", chain:"var(--chain)", near:"var(--near)", declared:"var(--declared)" };
+  pts.forEach((p,i) => svg.appendChild(svgEl("circle",{cx:screen[i][0],cy:screen[i][1],r:5, fill:roleColor[p.role], class:"tvert"})));
+  if (pts.length === 4) {
+    const vol = tetVolume(...pts.map(p=>p.xyz));
+    note.textContent = "volume: "+vol.toFixed(1)+" — how far idle-time, length, and sequence distance actually pull this anchor's three gifts apart, from it and from each other. Relative to this anchor's own spread only, never comparable across sentences.";
+  } else {
+    const have = pts.map(p=>p.role).filter(r=>r!=="anchor");
+    note.textContent = pts.length===1
+      ? "no gift yet reaches this sentence — a single point, no volume to have."
+      : "aperture open — only "+have.join(" and ")+" reach"+(have.length===1?"es":"")+" this sentence, so there's no fourth point yet to close a real volume with.";
+  }
+}
+function renderWeaveGifts(L, activeId) {
+  const el = document.getElementById("weaveGifts");
+  if (activeId === null) { el.innerHTML = '<span class="connect-empty">click a sentence to focus it.</span>'; document.getElementById("giftTetra").innerHTML=""; document.getElementById("tetraNote").textContent=""; return; }
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const anchor = nodesById[activeId];
+  const cg = chainGiftW(activeId), ng = nearGiftW(activeId, L), dg = declaredGiftW(activeId);
+  const lines = [];
+  lines.push('<div><b>focus:</b> ' + anchor.text +
+    (L.hinges.has(activeId) ? ' <span class="wcell hinge">hinge</span>' : '') + '</div>');
+  lines.push('<div><b>chain gift</b> — ' + (cg ? nodesById[cg.id].text+' ('+cg.dir+')' : 'none — an honest gap, this sentence has no chain neighbor on that side') + '</div>');
+  lines.push('<div><b>near gift</b> — ' + (ng ? nodesById[ng.id].text : 'none — nothing landed close to it in time, outside the chain') + '</div>');
+  lines.push('<div><b>declared gift</b> — ' + (dg ? nodesById[dg.id].text+(dg.label?' — "'+dg.label+'"':'') : 'none — never manually connected to anything') + '</div>');
+  const ids = [cg&&cg.id, ng&&ng.id, dg&&dg.id].filter(x=>x!==null&&x!==undefined);
+  const uniq = new Set(ids);
+  if (ids.length>=2 && uniq.size < ids.length) {
+    const which = [];
+    if (cg && dg && cg.id===dg.id) which.push("chain and declared");
+    if (ng && dg && ng.id===dg.id) which.push("near and declared");
+    lines.push('<div style="margin-top:6px;color:var(--gold)">two lenses converge here — ' + (which.join(", ")||"two gifts") + ' reach the same sentence.</div>');
+  }
+  el.innerHTML = lines.join("");
+  renderGiftTetra(giftTetraPoints(anchor, cg, ng, dg, nodesById));
+}
+function renderWeaveStones() {
+  const wrap = document.getElementById("weaveStones");
+  let stones = [];
+  try { const raw = localStorage.getItem(STONE_KEY); stones = raw ? JSON.parse(raw) : []; } catch(e) {}
+  if (!stones.length) {
+    wrap.innerHTML = '<h2>stones</h2><div class="connect-empty">None gathered yet. Stone-grouping is a separate write layer (tetra_dream_B_pebbles.html) — this reads it if it exists, never builds it here.</div>';
+    return;
+  }
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const L = layoutCache();
+  let html = '<h2>stones</h2>';
+  stones.forEach(s=>{
+    const words = s.memberIds.reduce((sum,id)=>{ const n=nodesById[id]; return sum + (n?n.text.split(/\s+/).filter(Boolean).length:0); },0);
+    const touchesHinge = s.memberIds.some(id=>L.hinges.has(id));
+    html += '<div class="stonebox"><b>'+s.name+'</b><div class="meta">'+s.memberIds.length+' pebble(s) · '+words+' word(s)'+(touchesHinge?' · touches a hinge':'')+'</div></div>';
+  });
+  if (stones.length >= 2) {
+    html += '<table class="sharetable">';
+    for (let i=0;i<stones.length;i++) for (let j=i+1;j<stones.length;j++){
+      const a=stones[i], b=stones[j];
+      const shared = a.memberIds.filter(id=>b.memberIds.includes(id)).length;
+      html += '<tr><td>'+a.name+' × '+b.name+'</td><td>'+(shared>0?shared+' shared':'no overlap')+'</td></tr>';
+    }
+    html += '</table>';
+  }
+  wrap.innerHTML = html;
+}
+function renderWeave(L) {
+  const activeId = selectedId >= 0 ? selectedId : (nodes.length ? nodes[nodes.length-1].id : null);
+  renderWeaveMatrix(L, activeId);
+  renderWeaveGifts(L, activeId);
+  renderWeaveStones();
+}
+
+/* ═══ THE KNOWLEDGE GROUND — a fourth view, not over the writer's own
+   sentences but over the corpus's own account of this build.
+
+   CORRECTED, 2026-08-26: the first draft of this ground fetched the file
+   and rendered it inline — a real `fetch(` call, same-origin, read-only.
+   `node tools/check_all.js` caught it same day: refusal_check enforces law
+   3/11 ("no model call, nothing reaches outward") by forbidding the
+   construct outright, with no carve-out for a benign same-origin read —
+   its own header names why: "loosening a refusal check is his word, not
+   mine." So this doesn't render the file's content at all; it links to it.
+   A plain <a href>, opened by the reader's own click, is a normal
+   navigation, not a network primitive the script initiates — the same
+   category `the_page.html` and `the_weave.html` already use for their own
+   redirects. Embedding the file's text as a literal string instead was
+   considered and set aside: that would create a second copy to drift from
+   the first, the exact failure mode this corpus already names elsewhere
+   ("a second copy of the geometry would drift... and the drift would be
+   invisible") — a link to the one real file is more honest than a stale
+   copy of it. */
+const KNOWLEDGE_FILE = "KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md";
+function renderKnowledge(){
+  const el = document.getElementById("knowledgeWrap");
+  el.innerHTML = '<div class="connect-empty">This ground doesn\'t fetch or render the file — '+
+    'index.html refuses any network primitive by design (refusal_check, law 3/11: '+
+    '"no model call, nothing reaches outward"). <a href="'+KNOWLEDGE_FILE+'" target="_blank" '+
+    'rel="noopener" style="color:var(--gold)">Open '+KNOWLEDGE_FILE+' in a new tab →</a></div>';
+}
+
+/* ═══ THE WORDS GROUND ═══ tokenize splits on whitespace (same rule dream
+   B's word-chips already use), then strips only LEADING/TRAILING
+   punctuation per token — "I," and "I." both read as "I", but an
+   apostrophe inside a word (I've, don't) is kept, since stripping it would
+   silently invent a different word the writer didn't write. */
+function tokenize(text){
+  return text.split(/\s+/).filter(Boolean).map(w => w.replace(/^[^\w']+|[^\w']+$/g, ""));
+}
+/* PHRASE QUERY, 2026-08-26 — Kevin's own follow-up: single-word "what
+   follows I" finds a next-word, not the actual habits of phrasing ("I
+   need to", "I think this"). Generalized to any phrase: the query is
+   split into its own tokens, and a match requires the whole run of query
+   tokens to appear contiguously (case-insensitive) — still strictly
+   WITHIN one sentence, same boundary as the single-word version. A
+   one-word query is just the len-1 case of the same loop, so nothing
+   about "I"/"you"/"we" above changes. */
+function wordFollowsMap(query){
+  const followers = new Map(); // followerWord -> { count, nodeIds: Set }
+  let queryCount = 0, endOfSentenceCount = 0;
+  const queryTokens = query.trim().split(/\s+/).filter(Boolean).map(w => w.toLowerCase());
+  const qLen = queryTokens.length;
+  if (!qLen) return { followers, queryCount, endOfSentenceCount };
+  nodes.forEach(n => {
+    const words = tokenize(n.text);
+    for (let i=0;i+qLen<=words.length;i++){
+      /* the query phrase matches regardless of case — "You"/"you" and
+         "We"/"we" are the same pronoun whether or not a sentence happens
+         to start there; only the FOLLOWER word below stays exact, so the
+         voice reflected back is exactly as typed, capitals included. */
+      let hit = true;
+      for (let k=0;k<qLen;k++){ if (words[i+k].toLowerCase() !== queryTokens[k]) { hit = false; break; } }
+      if (!hit) continue;
+      queryCount++;
+      const nextIdx = i+qLen;
+      if (nextIdx >= words.length) { endOfSentenceCount++; continue; }
+      const next = words[nextIdx];
+      if (!next) continue;
+      if (!followers.has(next)) followers.set(next, { count:0, nodeIds:new Set() });
+      const f = followers.get(next);
+      f.count++; f.nodeIds.add(n.id);
+    }
+  });
+  return { followers, queryCount, endOfSentenceCount };
+}
+function renderWords(){
+  const input = document.getElementById("wordQueryInput");
+  const query = input.value; // matched case-insensitively below; displayed here exactly as typed
+  const statEl = document.getElementById("wordStat");
+  const hostEl = document.getElementById("wordTableHost");
+  if (!nodes.length) { statEl.textContent = ""; hostEl.innerHTML = '<div class="connect-empty">Nothing written yet.</div>'; return; }
+  if (!query) { statEl.textContent = ""; hostEl.innerHTML = '<div class="connect-empty">type a word above.</div>'; return; }
+  const { followers, queryCount, endOfSentenceCount } = wordFollowsMap(query);
+  if (!queryCount) {
+    statEl.textContent = '"'+query+'" hasn\'t appeared yet, in what you\'ve written so far.';
+    hostEl.innerHTML = "";
+    return;
+  }
+  statEl.textContent = '"'+query+'" appears '+queryCount+' time'+(queryCount===1?"":"s")+
+    ' · '+followers.size+' distinct word'+(followers.size===1?"":"s")+' follow it'+
+    (endOfSentenceCount ? ' · '+endOfSentenceCount+' time'+(endOfSentenceCount===1?"":"s")+' it closed the sentence, with nothing after it' : '');
+  const rows = Array.from(followers.entries()).sort((a,b) => b[1].count - a[1].count);
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const table = document.createElement("table"); table.className = "wordtable";
+  const head = document.createElement("tr");
+  head.innerHTML = "<th>follows \""+query+"\" with</th><th>count</th><th>where you wrote it</th>";
+  table.appendChild(head);
+  rows.forEach(([word, info]) => {
+    const tr = document.createElement("tr");
+    const wordTd = document.createElement("td"); wordTd.textContent = word;
+    const countTd = document.createElement("td"); countTd.className = "count"; countTd.textContent = info.count;
+    const exTd = document.createElement("td"); exTd.className = "examples";
+    Array.from(info.nodeIds).slice(0,3).forEach(id => {
+      const n = nodesById[id]; if (!n) return;
+      const span = document.createElement("span");
+      span.textContent = n.text;
+      span.addEventListener("click", () => selectSentence(id, layoutCache()));
+      exTd.appendChild(span);
+    });
+    if (info.nodeIds.size > 3) {
+      const more = document.createElement("span");
+      more.style.cursor = "default";
+      more.textContent = "+ "+(info.nodeIds.size-3)+" more";
+      exTd.appendChild(more);
+    }
+    tr.appendChild(wordTd); tr.appendChild(countTd); tr.appendChild(exTd);
+    table.appendChild(tr);
+  });
+  hostEl.innerHTML = ""; hostEl.appendChild(table);
+}
+document.getElementById("wordQueryInput").addEventListener("input", () => {
+  const v = document.getElementById("wordQueryInput").value;
+  document.querySelectorAll(".wordpreset").forEach(b => b.classList.toggle("active", b.dataset.word===v));
+  renderWords();
+});
+document.querySelectorAll(".wordpreset").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("wordQueryInput").value = btn.dataset.word;
+    document.querySelectorAll(".wordpreset").forEach(b => b.classList.toggle("active", b===btn));
+    renderWords();
+  });
+});
+
+/* ═══ THE FILTER GROUND, LIVE — 2026-08-27 ═══ see the CSS block above and
+   inbox/gift_2026-08-27_02_godot_filters_panel.md for what this ports and
+   why. PRONOUN_KINDS matches the words ground's own preset list exactly —
+   one vocabulary, not a second one invented for this ground. */
+const PRONOUN_KINDS = ["I","you","we","us","they","he","she"];
+function pronounKindsInText(text) {
+  const words = tokenize(text).map(w => w.toLowerCase());
+  return PRONOUN_KINDS.filter(k => words.includes(k.toLowerCase()));
+}
+let _filterMoteSeq = 0;
+function buildMotes() {
+  const MOTE_CAP = 48;
+  const motes = [];
+  for (let i = nodes.length - 1; i >= 0 && motes.length < MOTE_CAP; i--) {
+    const n = nodes[i];
+    pronounKindsInText(n.text).forEach(kind => {
+      if (motes.length >= MOTE_CAP) return;
+      motes.push({ id: _filterMoteSeq++, nodeId: n.id, kind });
+    });
+  }
+  /* WITHDRAWN, composted 2026-08-27 — the tombstone (see the note above
+     `tombstones`). One mote per withdrawn sentence, oldest withdrawal
+     first so a long-gone one isn't buried by cap math the way a
+     just-written one already can be. Landing one on any exit only clears
+     it from this tray for this visit — the bank underneath still keeps
+     it, so it's back next time the ground opens, same as before it was
+     ever sorted. That's a real limit, named rather than hidden: nothing
+     here yet lets a withdrawal be filed away for good. */
+  for (let i = 0; i < tombstones.length && motes.length < MOTE_CAP; i++) {
+    motes.push({ id: _filterMoteSeq++, nodeId: null, kind: "withdrawn", tombIdx: i });
+  }
+  return motes;
+}
+let _filterMotes = null;
+function renderFilter() {
+  const tray = document.getElementById("filterTray");
+  const legend = document.getElementById("filterLegend");
+  if (!nodes.length && !tombstones.length) { tray.innerHTML = '<div class="empty">Nothing written yet.</div>'; legend.innerHTML = ""; return; }
+  if (!_filterMotes) _filterMotes = buildMotes();
+  if (!_filterMotes.length) {
+    tray.innerHTML = '<div class="empty">none of I / you / we / us / they / he / she has appeared yet, in what you\'ve written so far.</div>';
+    legend.innerHTML = ""; return;
+  }
+  tray.innerHTML = "";
+  _filterMotes.forEach(m => {
+    const d = document.createElement("div");
+    d.className = "mote"; d.dataset.kind = m.kind; d.dataset.moteId = m.id;
+    tray.appendChild(d);
+    wireMoteDrag(d, m);
+  });
+  legend.innerHTML = PRONOUN_KINDS.map(k =>
+    '<span class="lg-item"><i style="background:var(--fr'+k+')"></i>'+k+'</span>'
+  ).join("") + (tombstones.length
+    ? '<span class="lg-item"><i style="background:var(--frwithdrawn);border-radius:2px"></i>withdrawn</span>'
+    : "");
+}
+function wireMoteDrag(el, mote) {
+  el.addEventListener("pointerdown", ev => {
+    ev.preventDefault();
+    const startRect = el.getBoundingClientRect();
+    el.classList.add("dragging");
+    el.style.left = startRect.left + "px"; el.style.top = startRect.top + "px";
+    const move = mv => {
+      el.style.left = (mv.clientX - 8) + "px"; el.style.top = (mv.clientY - 8) + "px";
+      document.querySelectorAll(".fexit").forEach(fx => {
+        const r = fx.getBoundingClientRect();
+        fx.classList.toggle("hot", mv.clientX>=r.left && mv.clientX<=r.right && mv.clientY>=r.top && mv.clientY<=r.bottom);
+      });
+    };
+    const up = uv => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      let landed = null;
+      document.querySelectorAll(".fexit").forEach(fx => {
+        const r = fx.getBoundingClientRect();
+        if (uv.clientX>=r.left && uv.clientX<=r.right && uv.clientY>=r.top && uv.clientY<=r.bottom) landed = fx.dataset.exit;
+        fx.classList.remove("hot");
+      });
+      _filterMotes = _filterMotes.filter(m => m.id !== mote.id);
+      if (landed === "down") {
+        /* SET IT DOWN — no destination, no animation, no confirmation.
+           Ported exactly: the mote leaves the tray and nothing happens. */
+        el.remove();
+      } else if (landed) {
+        el.classList.add("leaving");
+        setTimeout(() => el.remove(), 500);
+      } else {
+        el.classList.remove("dragging");
+        el.style.left = ""; el.style.top = "";
+      }
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  });
+}
+
+/* ═══ THE GARDEN GROUND, LIVE — 2026-08-27 ═══ see
+   inbox/gift_2026-08-27_03_garden_growth.md. D and decay are first
+   guesses, ported structurally (the same discipline WINDOW_DAYS=21
+   already names in this file) — not a byte-for-byte numeric port, since
+   the original constants were never quoted verbatim in what survived to
+   ORGANS.json. Seeded once from arrival order alone; run to a fixed point
+   on render, never per-frame, per law 8 (nothing here advances while
+   nobody is looking or simulates forward between visits). */
+function renderGarden() {
+  const canvas = document.getElementById("gardenCanvas");
+  const note = document.getElementById("gardenNote");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!nodes.length) {
+    note.textContent = "nothing to grow from yet — the bed fills from what you've already written, never from looking at it.";
+    return;
+  }
+  const N = 120, D = 0.12, decay = 0.003, STEPS = 120;
+  let f = new Float32Array(N);
+  nodes.forEach((n, i) => {
+    const pos = Math.min(N-1, Math.floor((i / nodes.length) * N));
+    f[pos] = Math.min(1, f[pos] + 1.0);
+  });
+  for (let s = 0; s < STEPS; s++) {
+    const nx = new Float32Array(N);
+    for (let i = 0; i < N; i++) {
+      const l = f[i>0?i-1:i], r = f[i<N-1?i+1:i];
+      const v = f[i] + D*(l+r-2*f[i]) - decay*f[i];
+      nx[i] = v>0 ? (v>1?1:v) : 0;
+    }
+    f = nx;
+  }
+  const w = canvas.width, h = canvas.height, cw = w/N;
+  ctx.fillStyle = "rgba(224,196,84,.55)";
+  ctx.beginPath(); ctx.moveTo(0, h);
+  for (let i=0;i<N;i++) ctx.lineTo(i*cw, h - f[i]*(h-8));
+  ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+  note.textContent = "grown from "+nodes.length+" sentence"+(nodes.length===1?"":"s")+", arrival order only — no fitness, no target, and running this again changes nothing that hasn't been written since.";
+}
+
+/* ═══ THE WORLD GROUND, LIVE — SHAPE A, built 2026-08-27 ═══ see the note
+   above `worldPicks` for what this reuses from solid.js and why. */
+function toggleWorldPick(id) {
+  const i = worldPicks.indexOf(id);
+  if (i >= 0) worldPicks.splice(i,1);
+  else { if (worldPicks.length >= 12) return; worldPicks.push(id); }
+  persist();
+  renderGraph(layoutCache());
+}
+function project3Room(xyz, cx, cy, scale) {
+  const [x,y,z] = xyz;
+  const cos30 = Math.cos(Math.PI/6), sin30 = Math.sin(Math.PI/6);
+  return [cx + (x-z)*cos30*scale, cy + ((x+z)*sin30 - y)*scale*0.85];
+}
+/* the room's own volume — the same cell math solid.js runs for the pinned
+   organs' world (CELLS: 8 tetra + 6 pyramid, every one apexed at a
+   centre), run here on this room's own real coordinates and this room's
+   own centroid, because a picked room has no fixed origin the way the
+   pinned solid does. TRADES supplies the ring order a pyramid's diagonal
+   split needs — reused, not re-derived. Only defined once all twelve
+   seats are filled; a partial room has real faces and real edges but no
+   total volume yet, the same honest-gap discipline as Shape D. */
+function roomVolume(xyzOf, seatedNames) {
+  const centre = [0,1,2].map(k => seatedNames.reduce((s,nm)=>s+xyzOf[nm][k],0)/seatedNames.length);
+  let vol = 0;
+  SOLID.CELLS.forEach(c => {
+    if (!c.seats.every(s => xyzOf[s])) return;
+    if (c.kind === "tetra") {
+      vol += tetVolume(centre, ...c.seats.map(s=>xyzOf[s]));
+    } else {
+      const trade = SOLID.TRADES.find(t => t.seats.length===c.seats.length && t.seats.every(s=>c.seats.includes(s)));
+      const ring = trade ? trade.ring : c.seats;
+      const o = [ring[0], ring[1], ring[3], ring[2]];
+      vol += tetVolume(centre, xyzOf[o[0]], xyzOf[o[1]], xyzOf[o[2]]) + tetVolume(centre, xyzOf[o[0]], xyzOf[o[2]], xyzOf[o[3]]);
+    }
+  });
+  return vol;
+}
+function renderWorld() {
+  const countEl = document.getElementById("worldCount");
+  const pickerEl = document.getElementById("worldPicker");
+  const svg = document.getElementById("worldSvg");
+  const legendEl = document.getElementById("worldLegend");
+  const noteEl = document.getElementById("worldNote");
+
+  const pickable = nodes.filter(n => !n.blind);
+  countEl.innerHTML = "<b>"+worldPicks.length+"</b>/12 seated";
+
+  if (!pickable.length) {
+    pickerEl.innerHTML = '<div class="item" style="cursor:default">Nothing written yet to seat.</div>';
+  } else {
+    pickerEl.innerHTML = "";
+    pickable.forEach(n => {
+      const seatIdx = worldPicks.indexOf(n.id);
+      const row = document.createElement("div");
+      row.className = "item" + (seatIdx>=0 ? " picked" : "");
+      const num = document.createElement("span"); num.className = "seatnum";
+      num.textContent = seatIdx>=0 ? String(seatIdx+1) : "+";
+      row.appendChild(num);
+      const txt = document.createElement("span"); txt.textContent = n.text;
+      row.appendChild(txt);
+      row.addEventListener("click", () => toggleWorldPick(n.id));
+      pickerEl.appendChild(row);
+    });
+  }
+
+  svg.innerHTML = "";
+  if (!worldPicks.length) {
+    noteEl.textContent = "pick sentences above, in the order you want them seated — the first fills the seat TANK held for the organs, the second DAM's, and on through all twelve.";
+    legendEl.innerHTML = "";
+    return;
+  }
+
+  const nodesById = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const NAMES = SOLID.NAMES;
+  const seatOf = {};
+  worldPicks.forEach((id,i) => { if (i<12 && nodesById[id]) seatOf[NAMES[i]] = nodesById[id]; });
+  const filledNames = Object.keys(seatOf);
+
+  /* real coordinates, Shape D's own discipline continued: idle-gap and
+     word-count, the two facts the whole page is placed by, plus arrival
+     order — normalized across only the seated set, so the room reads its
+     own relative spread, never a corpus-wide scale. */
+  const gaps = filledNames.map(nm => Math.log(1+Math.max(0,seatOf[nm].gapMs)/1000));
+  const words = filledNames.map(nm => seatOf[nm].words);
+  const arrivals = filledNames.map(nm => nodes.findIndex(n=>n.id===seatOf[nm].id));
+  const norm = arr => { const lo=Math.min(...arr), hi=Math.max(...arr); return arr.map(v => hi===lo?50:(v-lo)/(hi-lo)*100); };
+  const gx = norm(gaps), gy = norm(words), gz = norm(arrivals);
+  const xyzOf = {};
+  filledNames.forEach((nm,i) => { xyzOf[nm] = [gx[i], gy[i], gz[i]]; });
+
+  const screenOf = {};
+  filledNames.forEach(nm => { screenOf[nm] = project3Room(xyzOf[nm], 300, 250, 2.0); });
+
+  SOLID.TRIANGLES.forEach(t => {
+    if (t.seats.every(s => screenOf[s]))
+      svg.appendChild(svgEl("path",{ d:"M"+t.seats.map(s=>screenOf[s].join(",")).join("L")+"Z", class:"wface tri" }));
+  });
+  SOLID.SQUARES.forEach(q => {
+    if (q.seats.every(s => screenOf[s]))
+      svg.appendChild(svgEl("path",{ d:"M"+q.seats.map(s=>screenOf[s].join(",")).join("L")+"Z", class:"wface sq" }));
+  });
+  SOLID.MEMBERS.forEach(m => {
+    if (screenOf[m.a] && screenOf[m.b])
+      svg.appendChild(svgEl("line",{x1:screenOf[m.a][0],y1:screenOf[m.a][1],x2:screenOf[m.b][0],y2:screenOf[m.b][1], class:"wedge"}));
+  });
+  filledNames.forEach(nm => {
+    const [x,y] = screenOf[nm];
+    const c = svgEl("circle",{cx:x,cy:y,r:6,class:"wvert"});
+    c.addEventListener("click", () => toggleWorldPick(seatOf[nm].id));
+    svg.appendChild(c);
+    const t = svgEl("text",{x:x+8,y:y+3}); t.textContent = nm;
+    svg.appendChild(t);
+  });
+
+  legendEl.innerHTML = filledNames.map(nm =>
+    '<div><span class="seatname">'+nm+'</span>'+seatOf[nm].text+'</div>'
+  ).join("");
+
+  if (filledNames.length === 12) {
+    const vol = roomVolume(xyzOf, filledNames);
+    noteEl.textContent = "room volume: "+vol.toFixed(1)+" — all twelve seats filled, all twenty-four edges and all fourteen faces real. Relative to this room's own spread only, the same as the standing tetrahedron's own volume — not comparable to another room, or to the organs' own pinned 20.";
+  } else {
+    noteEl.textContent = filledNames.length+" of 12 seated. "+SOLID.MEMBERS.filter(m=>screenOf[m.a]&&screenOf[m.b]).length+" of 24 edges real so far, "+
+      SOLID.TRIANGLES.filter(t=>t.seats.every(s=>screenOf[s])).length+" of 8 triangular faces, "+
+      SOLID.SQUARES.filter(q=>q.seats.every(s=>screenOf[s])).length+" of 6 square faces. No total volume yet — an honest gap, same as an open aperture on the standing tetrahedron.";
+  }
+}
+
+/* ═══ THE CATEGORIES GROUND, LIVE ═══ every stat below reads a field this
+   file (or a composted sibling) already computes — no new measurement. */
+function renderCategories(L){
+  const el = document.getElementById("categoriesWrap");
+  if (!nodes.length) { el.innerHTML = '<div class="connect-empty">Nothing written yet.</div>'; return; }
+  const totalWords = nodes.reduce((s,n)=>s+n.words,0);
+  const avgWords = (totalWords/nodes.length).toFixed(1);
+  const days = new Set(nodes.map(n=>n.day));
+  const gaps = nodes.map(n=>n.gapMs).filter(g=>g>0);
+  const avgIdleS = gaps.length ? Math.round(gaps.reduce((s,g)=>s+g,0)/gaps.length/1000) : 0;
+  const maxIdleS = gaps.length ? Math.round(Math.max(...gaps)/1000) : 0;
+  const confirmedDeclared = declaredEdges.filter(e=>!e.staged);
+  const stagedDeclared = declaredEdges.filter(e=>e.staged);
+  let stones = [];
+  try { const raw = localStorage.getItem(STONE_KEY); stones = raw ? JSON.parse(raw) : []; } catch(e) {}
+  const dragged = nodes.filter(n=>n.userMoved).length;
+  const allWords = new Set();
+  let totalTokens = 0;
+  nodes.forEach(n => tokenize(n.text).forEach(w => { if (!w) return; totalTokens++; allWords.add(w.toLowerCase()); }));
+  let attentionNote = "no live dwell — attention is following the last-written sentence";
+  try {
+    const raw = localStorage.getItem("nesi.thepage.attention");
+    if (raw) {
+      const a = JSON.parse(raw);
+      if (a && typeof a.id==="number" && Date.now()-a.ts <= 60000) {
+        const n = nodes.find(x=>x.id===a.id);
+        if (n) attentionNote = "currently dwelling on: “"+n.text+"”";
+      }
+    }
+  } catch(e) {}
+  const lastNode = nodes[nodes.length-1];
+  let attendedId = lastNode.id;
+  try {
+    const raw = localStorage.getItem("nesi.thepage.attention");
+    if (raw) { const a = JSON.parse(raw); if (a && typeof a.id==="number" && Date.now()-a.ts<=60000 && nodes.some(n=>n.id===a.id)) attendedId = a.id; }
+  } catch(e) {}
+
+  /* JUMP-WIRED, 2026-08-26 — Kevin's own follow-up: a report you can't act
+     on is a dead end. Each card names where its own facts actually live —
+     a ground to switch to, or a sentence to scroll the document to —
+     reusing the exact navigation this file already has (the grounds
+     click handler, the same jump-to-sentence pattern renderRelated's own
+     "near this one" list already uses), not a new mechanism. */
+  const cards = [
+    { title:"1 · text", jump:{type:"sentence", id:nodes[0].id, label:"→ first sentence"},
+      desc:"the sentence itself — verbatim and full in the page below; shortened for space in some cards and lists elsewhere (the full text is always still there, in the page) — plus what's derived directly from it alone.",
+      stats: [ "<b>"+nodes.length+"</b> sentence"+(nodes.length===1?"":"s"), "<b>"+totalWords+"</b> word"+(totalWords===1?"":"s")+" total", "<b>"+avgWords+"</b> words per sentence, on average" ] },
+    { title:"2 · timing", jump:{type:"ground", ground:"time", label:"→ time ground"},
+      desc:"when — idle time before writing, day, arrival order. pure chronology; nothing here reads what a sentence says.",
+      stats: [ "<b>"+days.size+"</b> day"+(days.size===1?"":"s")+" written across", "<b>"+avgIdleS+"s</b> average idle before a sentence", "<b>"+maxIdleS+"s</b> longest idle before any one sentence" ] },
+    { title:"3 · derived structure", jump:{type:"ground", ground:"weave", label:"→ weave ground"},
+      desc:"chain / near / hinge — relationships computed automatically from timing and order alone; never asserted by the writer.",
+      stats: [ "<b>"+edges.length+"</b> chain edge"+(edges.length===1?"":"s"), "<b>"+L.nearPairs.length+"</b> near pair"+(L.nearPairs.length===1?"":"s"), "<b>"+L.hinges.size+"</b> hinge"+(L.hinges.size===1?"":"s")+" (windowed, "+WINDOW_DAYS+" days)" ] },
+    { title:"4 · manual structure", jump:{type:"ground", ground:"weave", label:"→ weave ground"},
+      desc:"declared edges, stones, dragged position, withdrawals — every relationship or arrangement a hand decided, not a formula.",
+      stats: [ "<b>"+confirmedDeclared.length+"</b> declared connection"+(confirmedDeclared.length===1?"":"s")+(stagedDeclared.length?" ("+stagedDeclared.length+" staged, unconfirmed)":""), "<b>"+stones.length+"</b> stone"+(stones.length===1?"":"s")+" gathered", "<b>"+dragged+"</b> sentence"+(dragged===1?"":"s")+" dragged into place by hand", "<b>"+tombstones.length+"</b> sentence"+(tombstones.length===1?"":"s")+" withdrawn, kept in the filter's bank" ] },
+    { title:"5 · word adjacency", jump:{type:"ground", ground:"words", label:"→ words ground"},
+      desc:"what word follows what word, strictly within one sentence you wrote — never crossing a boundary you didn't write.",
+      stats: [ "<b>"+totalTokens+"</b> word token"+(totalTokens===1?"":"s")+" total", "<b>"+allWords.size+"</b> distinct word"+(allWords.size===1?"":"s")+" used" ] },
+    { title:"6 · attention", jump:{type:"sentence", id:attendedId, label:"→ where attention is"},
+      desc:"where focus is now, versus where it last was — a fact about presence, never analyzed for mood or meaning.",
+      stats: [ attentionNote, "last written: “"+lastNode.text+"”" ] },
+  ];
+  el.innerHTML = cards.map((c,i) =>
+    '<div class="catcard"><h3>'+c.title+' <span class="catjump" data-idx="'+i+'">'+c.jump.label+'</span></h3><div class="catdesc">'+c.desc+'</div><div class="catstats">'+
+    c.stats.map(s=>'<div>'+s+'</div>').join("")+'</div></div>'
+  ).join("") + '<div class="note" style="margin-top:6px">An average is already one step past a raw fact — "45s average idle" reads like a trait ("I hesitate") the timing research this app leans on explicitly can\'t support from a single number. Read these as what they are: a count, not a verdict.</div>';
+  el.querySelectorAll(".catjump").forEach(span => {
+    const c = cards[Number(span.dataset.idx)];
+    span.addEventListener("click", () => {
+      if (c.jump.type==="ground") { const btn = document.querySelector('#grounds .groundbtn[data-ground="'+c.jump.ground+'"]'); if (btn) btn.click(); }
+      else if (c.jump.type==="sentence") {
+        const p = document.querySelector('p.sentence[data-id="'+c.jump.id+'"]');
+        if (p) { p.closest(".day").classList.remove("collapsed"); p.scrollIntoView({behavior:"smooth", block:"center"}); }
+      }
+    });
+  });
+}
+
 function renderGraph(L) {
+  const weaveWrap = document.getElementById("weaveWrap");
+  const knowledgeWrap = document.getElementById("knowledgeWrap");
+  const categoriesWrap = document.getElementById("categoriesWrap");
+  const wordsWrap = document.getElementById("wordsWrap");
+  const filterWrap = document.getElementById("filterWrap");
+  const gardenWrap = document.getElementById("gardenWrap");
+  const worldWrap = document.getElementById("worldWrap");
+  if (ground === "world") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
+    filterWrap.style.display = "none"; gardenWrap.style.display = "none";
+    worldWrap.style.display = "";
+    renderWorld();
+    return;
+  }
+  worldWrap.style.display = "none";
+  if (ground === "garden") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
+    filterWrap.style.display = "none";
+    gardenWrap.style.display = "";
+    renderGarden();
+    return;
+  }
+  gardenWrap.style.display = "none";
+  if (ground === "filter") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
+    filterWrap.style.display = "";
+    renderFilter();
+    return;
+  }
+  filterWrap.style.display = "none";
+  if (ground === "categories") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none";
+    knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none";
+    categoriesWrap.style.display = "";
+    renderCategories(L);
+    return;
+  }
+  categoriesWrap.style.display = "none";
+  if (ground === "words") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none";
+    knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "";
+    renderWords();
+    return;
+  }
+  wordsWrap.style.display = "none";
+  if (ground === "knowledge") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none";
+    knowledgeWrap.style.display = "";
+    renderKnowledge();
+    return;
+  }
+  knowledgeWrap.style.display = "none";
+  if (ground === "weave") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "";
+    renderWeave(L);
+    return;
+  }
+  weaveWrap.style.display = "none";
+  graphSvg.style.display = "";
   if (!nodes.length) { graphSvg.innerHTML = ""; return; }
   const timePos = ground==="time" ? timePositions() : null;
   const P = n => displayPos(n, timePos);
@@ -752,10 +1979,11 @@ function renderGraph(L) {
       stroke:"#8b6fd9", "stroke-width": e.staged?1.2:1.8, "stroke-dasharray": e.staged?"3 3":"none",
       opacity: e.staged?0.6:0.85}));
   });
-  /* real cards, not dots — a rect sized by sizeNode() plus its actual
-     text, truncated only past what the card can hold, full text always
-     available on hover. Stroke color, not fill, carries state (hinge,
-     selected, connect-source) so the text stays readable regardless. */
+  /* real cards, not dots — a rect sized by sizeNode() to fit its own full
+     text, wrapped onto as many lines as it needs (CORRECTED 2026-08-27,
+     Kevin's mark: full text visible at all times, nothing cut). Stroke
+     color, not fill, carries state (hinge, selected, connect-source) so
+     the text stays readable regardless. */
   nodes.forEach(n => {
     const p = P(n);
     const strokeColor = n.id===connectFrom ? "#8b6fd9"
@@ -766,9 +1994,14 @@ function renderGraph(L) {
       transform:"translate("+(p.x-n.w/2)+","+(p.y-n.h/2)+")" });
     const rect = svgEl("rect", { width:n.w, height:n.h, stroke:strokeColor, "stroke-width":strokeW });
     g.appendChild(rect);
-    const label = n.text.length > Math.floor(n.w/6.6) ? n.text.slice(0, Math.floor(n.w/6.6)-1)+"…" : n.text;
-    const txt = svgEl("text", { x:8, y:n.h/2+4, "text-anchor":"start" });
-    txt.textContent = label;
+    const lines = n._lines || wrapLines(n.text, n.w);
+    const firstY = (n.h - (lines.length-1)*CARD_LINE_H)/2 + 4;
+    const txt = svgEl("text", { x:8, y:firstY, "text-anchor":"start" });
+    lines.forEach((line,i) => {
+      const tspan = svgEl("tspan", { x:8, dy: i===0?0:CARD_LINE_H });
+      tspan.textContent = line;
+      txt.appendChild(tspan);
+    });
     g.appendChild(txt);
     if (ground==="relationship") {
       g.addEventListener("pointerdown", e => {
@@ -794,36 +2027,51 @@ graphSvg.addEventListener("pointermove", e => {
   n.x = Math.max(n.w/2+2,Math.min(GW-n.w/2-2, p.x+dragDX));
   n.y = Math.max(n.h/2+2,Math.min(GH-n.h/2-2, p.y+dragDY));
   n.userMoved = true;
-  /* Reuses the same windowed hinge logic layout() applies — a second, ad-hoc
-     copy here (as shipped before 2026-08-26) would silently drift from it,
-     same class of fault this file's own comments elsewhere already refuse. */
+  /* Calls the SAME computeHinges() layout() uses — this used to be a second,
+     ad-hoc inline copy, and it had already drifted (missing the declared-
+     edges fix above) despite its own comment naming that exact risk.
+     Fixed by removing the duplicate, not by re-syncing it. */
   const chainedKeys2 = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
   const nearPairs2 = nearPairsFor(nodes, chainedKeys2);
-  const today2 = dayStamp();
-  const windowIds2 = new Set(nodes.filter(x=>withinWindow(x.day, today2)).map(x=>x.id));
-  const L2 = { chainedKeys:chainedKeys2, nearPairs:nearPairs2,
-    hinges: articulationPoints(nodes.filter(x=>windowIds2.has(x.id)),
-      edges.concat(nearPairs2).filter(e=>windowIds2.has(e.aId)&&windowIds2.has(e.bId))) };
+  const L2 = { chainedKeys:chainedKeys2, nearPairs:nearPairs2, hinges: computeHinges(nearPairs2) };
   renderGraph(L2);
 });
 function endDrag() { if (dragId>=0) { dragId=-1; persist(); } }
 graphSvg.addEventListener("pointerup", endDrag);
 graphSvg.addEventListener("pointercancel", endDrag);
 
+const GROUND_HEADINGS = {
+  relationship: "the shape, at a glance",
+  time: "the shape, at a glance",
+  weave: "the weave — every relationship, typed",
+  knowledge: "knowledge — why this file is built the way it is",
+  categories: "categories — what this build already reads",
+  words: "words — what follows your own words",
+  filter: "filter — I, you, we, us, they, he, she, separated by hand",
+  garden: "garden — a shape grown from what you've already written",
+  world: "world — twelve of your own sentences, seated on the real solid",
+};
 document.getElementById("grounds").addEventListener("click", e => {
   const btn = e.target.closest(".groundbtn"); if (!btn) return;
   ground = btn.dataset.ground;
-  document.querySelectorAll(".groundbtn").forEach(b => b.classList.toggle("active", b===btn));
+  document.querySelectorAll("#grounds .groundbtn").forEach(b => b.classList.toggle("active", b===btn));
+  document.getElementById("groundHeading").textContent = GROUND_HEADINGS[ground] || "the shape, at a glance";
+  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="world";
+  document.getElementById("graphNote").style.display = wordShapes ? "none" : "";
+  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="world") ? "none" : "";
+  if (ground==="filter") _filterMotes = null; // fresh tray each time the ground is opened
   document.getElementById("graphNote").textContent = ground==="time"
-    ? "same sentences, laid out left to right by arrival order, one lane per day. dragging is off in this view — declutter in the relationship view instead."
-    : "each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, violet lines are ones you declared yourself, orange means no other path currently connects around it. drag a card to arrange it — that's recorded, never read as meaning anything. click a card to jump to it.";
+    ? "same sentences, laid out left to right by arrival order, one lane per day. switch to the relationship view to declutter by dragging."
+    : wordShapes
+    ? ""
+    : "each card is one of your own sentences. gold lines are arrival order, faint dashed lines simply landed near each other in time, violet lines are ones you declared yourself, orange means no other path currently connects around it. drag a card to arrange it for your own clarity — it stays where you put it. click a card to jump to it.";
   renderGraph(layoutCache());
 });
 
 restore();
 renderDoc();
 document.getElementById("hint").textContent =
-  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · nothing read but idle time and length";
+  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
 </script>
 </body>
 </html>

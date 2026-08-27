@@ -265,7 +265,240 @@ touches the anchor; it's where the three lenses' reach can overlap.
   lenses" — only a face-level object, holding the outputs of three
   processes at once, can.
 
-## 6 · What's genuinely open
+## 6 · Fourth pass — the weave: dropping the tetra, composting into the_page itself
+
+Same day, a later pass. Kevin's own instruction: *"let work these together
+into a single reweaving that doesn't require the authors scaffolding."* Read
+against §4 and §5 above, "the author's scaffolding" names one specific
+thing — the tetrahedron itself, the shape D's own header and E's own
+ground-finding had already started to crack (six edges forced to look
+alike when they aren't; a fourth face that can only ever show two-way
+overlap, never the three-way convergence the geometry visually promises).
+
+**Built — `the_weave.html`, a sixth read, not a sixth dream.** Kept what the
+five actually proved and dropped only the tetrahedron: A's relationship
+vocabulary and its declared-never-swallowed-by-chain fix; B's stones, read
+but never rebuilt (this file writes nothing, to either `nesi.thepage` or
+`nesi.thepage.stones`); C's live-follow ("now" is wherever attention or
+writing currently is, not just the last write); D's typed grid, generalized
+from a picked four to the whole document; E's per-node gift-readout, kept
+as plain text instead of a fourth vertex. No picking ritual required — the
+whole document renders, live.
+
+**Composted — into `index.html` itself**, on Kevin's next instruction:
+*"bring both together compost the weave into the previous build."* The
+standalone file's content became a third "ground" (`weave`) alongside the
+existing `relationship`/`time` toggle, reading this file's own live
+`nodes`/`edges`/`declaredEdges`/`L.hinges` in memory rather than a second
+parse of storage. `the_weave.html` now redirects into `index.html`, same
+pattern as `the_page.html`; its prior standalone content is kept whole,
+unedited, at `the_weave.html.backup_pre-composting_2026-08-26.html`.
+
+**Real defects found by living with it, fixed same pass:**
+- The composted matrix and the standalone file both originally truncated
+  sentence text (pool list, matrix headers, gift readout) — a direct
+  contradiction of the writing surface's own "never truncated" discipline
+  from §1. Kevin caught it directly: *"the sentences should never be
+  cut off."* Fixed — every surface shows full text; row/column headers wrap
+  onto multiple lines instead of ellipsizing as the document grows.
+- Once composted, the matrix had no way to change focus from inside the
+  weave ground itself — you could only refocus by scrolling back to the
+  document or switching grounds. Kevin caught this by using it: *"i dont
+  see anyway to interact with the weave."* Fixed — every row and column
+  header is now clickable, routed through the same `selectSentence` the
+  document already calls.
+
+**Two more grounds added, same pass, each Kevin's own ask:**
+- **`knowledge`** — a one-click way to reach this file from inside the
+  writing surface. **Corrected same day**: the first build fetched the file
+  and rendered it inline — a real `fetch(`, same-origin, read-only — until
+  `node tools/check_all.js` caught it: `refusal_check` forbids the
+  construct outright under law 3/11 ("no model call, nothing reaches
+  outward"), no carve-out for a benign read, by the check's own stated
+  design ("loosening a refusal check is his word, not mine"). Fixed to a
+  plain `<a href>` the reader clicks to open the file in a new tab — a
+  normal navigation, not a network primitive the script initiates, the
+  same category `the_page.html`/`the_weave.html` already use for their own
+  redirects. Embedding the file's text as a literal string was considered
+  and set aside instead: that would create a second copy to drift from the
+  first, the exact failure this corpus already names elsewhere.
+- **`words`** — Kevin's ask: *"map every word that can come after the word
+  I."* Built as a live concordance over the writer's own sentences, scoped
+  by the same discipline as chain/near/hinge: a "follows" edge only exists
+  WITHIN one sentence, never invented across a boundary the writer didn't
+  write. **Real bug found and fixed in the same breath**: the first draft
+  matched the query word case-sensitively, so "You"/"We" capitalized at a
+  sentence's start silently failed to match the lowercase preset buttons —
+  the query now matches case-insensitively while the follower word stays
+  exact-case, so the voice reflected back is exactly as typed. Extended
+  twice more on Kevin's own follow-ups: preset buttons for I/you/we, then
+  us/they, then he/she (all eight now); then a phrase-query generalization
+  (`"I need"` → what follows the whole phrase, not just one word) so the
+  ground can surface actual habits of phrasing, not isolated next-words.
+- **`categories`** — after a clarifying check on which sense of "user
+  retention memory/data" Kevin meant (confirmed: a taxonomy of what this
+  build already reads, explicitly *not* engagement/retention-hook design —
+  that second reading was named and set aside, not built), a live report
+  over six categories that partition every field this file or a composted
+  sibling already computes: **text** (the sentence itself, verbatim), **timing**
+  (idle-before, day, arrival order), **derived structure** (chain/near/hinge
+  — computed, never asserted), **manual structure** (declared edges, stones,
+  dragged position — the writer's own hand), **word adjacency** (the `words`
+  ground's own layer), **attention** (dwell vs. last-written, never analyzed
+  for mood). No new capture — every stat traces to a field named elsewhere
+  in this document. Each card was later wired with a `→ jump` link into the
+  ground or sentence its own facts live in, so the report isn't a dead end.
+
+**A framing correction, same pass, not specific to any one ground.** Kevin's
+mark, mid-session: *"'never truncated, never a box'... That should have been
+could and moved to the back as a lint... The goal of nesi is to allow users
+to find value in their own voice."* Read against the standing rule (project
+`CLAUDE.md`, "FRAMING," 2026-08-17 and extended 2026-08-22): negative form
+belongs only as a lint or a container-edge, never as general prose. Several
+visible strings violated it — "never truncated, never a box," "nothing read
+but idle time and length," "never read as meaning anything," "never
+guessed," "dragging is off in this view," "no other path currently connects
+around it," "nothing else landed near this one." All rewritten to state
+what the page *does* (shows sentences in full, places by idle-time-and-
+length alone, stays where you drag it, holds a path together) rather than
+what it refuses. The one place the refusal still needed to exist — the
+actual discipline of never truncating — was already backgrounded as a code
+comment (§1 above, in effect), not user-facing copy, which is where "moved
+to the back as a lint" points: it was already there, once the front-facing
+line stopped repeating it.
+
+**Named honestly, not solved, by this pass:**
+- This file (the one you're reading) went stale relative to the build for
+  part of the session — it named five dreams and said nothing about the
+  weave, the composting, or three of the four new grounds. This section is
+  the fix; the falsifier is the same one `LEARNED.md` holds for itself — if
+  a session reads this file at boot and the build has still drifted past
+  it, the fix is to update the line, not add another pointer.
+- Verification for this whole pass ran against seeded test sentences ("I
+  need to finish this today," "They said it would work," and similar) in
+  an isolated session browser connected to another session's already-running
+  dev server. localStorage is browser-scoped, not server-scoped, so this
+  shouldn't have touched anyone's actual writing — but it was never
+  confirmed from the other side.
+- `node tools/check_all.js` — run against this pass, later the same day,
+  on Kevin's own instruction. It caught a real defect this whole section
+  had already been written and closed around: the `knowledge` ground's
+  `fetch(` call, forbidden outright by `refusal_check` under law 3/11 (see
+  above). 17 of 18 held on the first run; fixing the fetch brought it to
+  18 of 18. Everything else in this section was still verified by hand
+  (console checks, seeded-data walks, click-through) before the suite ran
+  — the suite caught the one thing hand-verification had no way to catch,
+  because it isn't a behavior bug, it's a build-time law this project
+  enforces mechanically rather than by care.
+- Whether `categories`, specifically, belongs permanently in the writer's
+  own margin, or reads more like a debugging/audit view that happened to
+  get built at the same altitude as the others, is an open question this
+  pass raised but didn't answer.
+
+## 7 · A full-development pass, same day — one real bug found, one real boundary named
+
+Kevin's own instruction: *"run one more development on the page and offer
+the return."* A real run of this corpus's `full-development` procedure
+(compost, inventory, adversarial audit, ground, diverge, dream, converge,
+route-and-place, then a fresh independent verify) against `index.html` as
+it stood at the end of §6 — not a rewrite, a destructive pass first, on
+principle, because a defect found after polish costs the polish.
+
+**Audit found five real defects, all fixed, all confirmed by a fresh
+verify subagent that had not seen the reasoning:**
+1. Two code comments in the `words` ground still asserted case-*sensitive*
+   matching after the case-insensitivity fix (§6) had already shipped —
+   the code was right, the comments were a stale leftover. Reworded to
+   match what the code actually does.
+2. **The real one.** Hinge detection never actually included declared
+   edges, directly contradicting §4's own documented behavior ("declared
+   edges count regardless of age... pull in whichever node they touch even
+   if it's outside the window") — a doc/code mismatch that had stood since
+   the day §4 was written, in *both* of two separately-drifting copies of
+   the same logic (`layout()`, and a second ad-hoc inline copy in the drag
+   handler, whose own comment worried about exactly this drift and turned
+   out to have already suffered it). Fixed by extracting one
+   `computeHinges()` function used by both call sites — not by patching
+   the two copies back into agreement, which would only defer the next
+   drift. Verified behaviorally with a synthetic 5-node test: two
+   disconnected 3- and 2-node chains produce hinge `{1}`; adding one
+   declared edge bridging them produces hinge `{1,2,3}` — the fix moves a
+   real number, not just a comment.
+3. The `categories` ground's "never truncated" copy was stated as a
+   general property of "the sentence itself," when the SVG graph cards,
+   the connect panel, and the staged-declaration tray all truncate the
+   same text with an ellipsis. Rescoped to name where it's true (the
+   document) and where it isn't (some cards and lists) — first pass at
+   this fix introduced a *new* overclaim ("always a hover away," true only
+   of the SVG cards' own tooltip), caught by the same verify subagent and
+   corrected to point back at the one place the full text is guaranteed:
+   the page itself.
+4. The declared-connections list appended an ellipsis unconditionally,
+   even to sentences under 26 characters — a small, literal false signal
+   that more text existed. Fixed to match the conditional pattern already
+   used everywhere else in the file.
+5. The categories ground's own comment claimed every persisted field
+   falls into exactly one of the six categories; a node's layout
+   coordinates (`x`/`y`/`w`/`h`/`r`) don't cleanly fit any of them. Named
+   as an explicit, honest exception rather than quietly true or silently
+   wrong.
+
+**Ground pass found the one real boundary worth naming, not a refutation.**
+Real, sourced research (Pennebaker's LIWC program; the Forer/Barnum effect;
+pause-timing confounds in writing-process research; forensic
+stylometry) shows pronoun-adjacency patterns are genuinely diagnostic
+material — for depression indicators, for authorship/psychological-trait
+inference, for the kind of self-insight that's also exactly the shape a
+Barnum statement exploits. The governing claim ("measuring only structure,
+never meaning, is safe") is true of the *algorithm* and was never
+sufficient on its own — the *artifact* a `words` or `categories` ground
+produces is the kind of record that's diagnostically loaded regardless of
+who or what reads it next, refusal-to-interpret in the code notwithstanding.
+**Reformulated, not gutted**: refusing to interpret in the algorithm is
+necessary but not sufficient; the artifact needs the same care as any
+other diagnostically-loaded writing record. Checked against the actual
+build: `index.html` already satisfies this in practice (no export, no
+sync, no network call of any kind — enforced by `refusal_check`, not just
+intended) — the gap was that this was never *stated*. Fixed by adding an
+honest note to both the `words` and `categories` grounds naming the risk
+plainly and the boundary that already holds against it, and a second note
+on `categories`' averaged stats specifically (an average is one step past
+a raw fact, which the pause-timing research says can't be attributed to a
+single cause).
+
+**Diverge produced five real shapes for the same material — offered, not
+built,** per this corpus's own standing rule that which shape gets
+developed further is Kevin's call, not a session's: an inversion
+(structure-first, writing secondary), a non-sectional single continuous
+surface, a radical cut down to chain alone (with a specific, defensible
+case for why near/hinge/declared/categories could each be cut), a
+timeline-as-instrument rebuild around the two facts the app already
+privileges (idle time, word count), and an ask-back query surface
+replacing six fixed tabs with one open question box. Five alternative
+openings for the `<h1>`/tagline were also produced, in different
+registers, as finished copy, not advice.
+
+**Verdict: DEVELOPED.** All five audit defects and the ground counterexample
+are resolved and independently reverified; `node tools/check_all.js` holds
+at 18 of 18 both before and after every fix in this pass. Nothing here
+required a decision only Kevin could make — the diverge shapes are
+material for a *future* decision, not a blocker on this one.
+
+**Deferral accounting:**
+- *What did this add that nothing calls?* Nothing — every fix corrects an
+  existing, reachable code path or corrects copy already visible in a
+  live ground.
+- *What did it name that it did not build?* The five diverged shapes for
+  the whole app, and the specific case for cutting near/hinge/declared/
+  categories down to chain alone. Named, not attempted — that decision
+  belongs to Kevin, same as §6 already holds for which of the original
+  five tetra dreams gets developed further.
+- *What did it defer?* Whether `categories` belongs at this altitude
+  permanently (§6's own open question, untouched by this pass); retrofitting
+  hover-accessible full text onto the connect panel/staged tray/declared
+  list/related list (named honestly in defect 3's fix rather than built).
+
+## 8 · What's genuinely open
 
 - Which shape (or shapes) actually get developed further — a lens, a
   hierarchy, an ambient companion, a matrix, a gift-derivation — is Kevin's
@@ -281,22 +514,27 @@ touches the anchor; it's where the three lenses' reach can overlap.
   best, shape for this data — D by replacing it outright with a matrix, E by
   showing the tetrahedron's fourth face can only ever report a two-way
   overlap under this construction, never the three-way convergence the
-  geometry visually promises. Whether that's a finding worth carrying
-  forward, or a sign a different derivation of the three gifts would reach
-  triple, is open.
-- None of the five touch word-level nodes yet — Kevin's own framing named
-  "each word as a node," and only Dream B's word-chip display (inside an
-  expanded pebble) gets anywhere near that; no prototype yet treats a word
-  itself as a tetra vertex.
+  geometry visually promises. §6's `the_weave` and its composting into
+  `index.html` is one answer (drop the shape entirely); whether that's the
+  right answer, or whether a different derivation of the three gifts would
+  reach triple, is still open.
+- Word-level structure now has one real foothold — the `words` ground's
+  follows-concordance (§6) — but it is NOT "each word as a tetra vertex" in
+  Kevin's original framing; it's an intra-sentence adjacency count, a
+  different shape of the same idea. Whether the original word-as-vertex
+  framing still wants building, separately, is open.
 - The interest-weighted-selection idea (surfacing structurally meaningful
   fours instead of whatever's nearest/newest) is named, not built, in any
-  of the five dreams.
+  of the five original dreams or the weave that followed them.
 
-## 7 · Files, for orientation
+## 9 · Files, for orientation
 
 ```
-index.html                                        — the live entry point
+index.html                                        — the live entry point; now carries six grounds
+                                                     (relationship, time, weave, knowledge, categories, words)
 the_page.html                                      — redirects to index.html
+the_weave.html                                     — redirects to index.html (composted in, §6)
+the_weave.html.backup_pre-composting_2026-08-26.html — the_weave's prior standalone content, kept whole
 index.html.backup_pre-lattice-entry_2026-08-26.html — the retired solid door, kept whole
 lattice.html                                        — the original fresh-start build (superseded by the_page synthesis)
 dream_A_document.html / dream_B_settle.html / dream_C_manual_delta.html — the writing-surface's own dream cycle (already converged into the_page)
