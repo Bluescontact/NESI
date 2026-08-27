@@ -93,7 +93,7 @@ const NODE = [
      tested the retired GESTURES vocabulary; S4-S5 (seam.js's own
      sillMechanic/growRoot) are untouched and still the whole of what it
      checks now — see its own header. */
-  ["sweep_thresholds", "two feel constants, swept across their real input space, none ruled on"],
+  ["sweep_thresholds", "two feel constants swept for feel, one geometry check swept for correctness and fixed"],
   /* REGISTERED 2026-08-20 on Kevin's mark, closing a fact-lens gap the
      process-geometry reconciliation pass found: "zero dependencies, ever"
      (THE_BUILD_SHAPE.md, THE_KIT.md, THE_HAND_FROM_THE_COMMONS.md) was

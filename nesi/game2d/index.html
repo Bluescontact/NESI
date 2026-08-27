@@ -2201,18 +2201,24 @@ graphSvg.addEventListener("pointermove", e => {
    related, not just near each other. Drag one card until it visually
    overlaps another — the geometric fact IS the confirmation — and the
    same staged-declare tray text-declare already uses opens, pre-filled,
-   ready for a label. Threshold: actual rectangle overlap (distance between
-   centers less than the sum of each card's own already-computed radius,
-   n.r), not an invented number — carrying one card fully onto another is
-   the deliberate act; ordinary rearrangement passing nearby never
-   overlaps. Provisional: not yet swept against real drag behavior — see
-   PREFLIGHT_2026-08-27_gifts_8-14.md. */
+   ready for a label.
+
+   SWEPT 2026-08-27 — tools/sweep_ratify_threshold.js. The first version
+   used dist(center,center) < (a.r+b.r), a circle-radius-sum proxy for
+   "actual rectangle overlap." Swept across this build's real card-size
+   range (r: 45-547px, aspect ratio 0.24-5.91, from word counts 1-144):
+   the circle proxy false-positive-ratified (fired with the rectangles
+   nowhere near touching) on up to 44% of the sampled offset space for
+   size-mismatched cards, worst case 416px apart while "confirmed."
+   That's not a knife-edge in one number — it's the wrong shape of check.
+   Fixed by testing real axis-aligned rectangle overlap directly, which is
+   exact (no proxy, no constant to tune) and just as cheap. */
 function checkRatifyByCrossing(dragged) {
   for (const n of nodes) {
     if (n.id === dragged.id) continue;
-    const dx = n.x - dragged.x, dy = n.y - dragged.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    if (dist >= (n.r + dragged.r)) continue;
+    const overlaps = Math.abs(n.x - dragged.x) < (n.w + dragged.w) / 2
+                   && Math.abs(n.y - dragged.y) < (n.h + dragged.h) / 2;
+    if (!overlaps) continue;
     const already = declaredEdges.some(e =>
       (e.aId===dragged.id && e.bId===n.id) || (e.aId===n.id && e.bId===dragged.id));
     if (already) continue;

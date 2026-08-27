@@ -55,9 +55,12 @@ as filed — its own reading already named why.
    A second, physical way to confirm a real relationship between two
    sentences — drag one across the other's position — alongside the
    existing text-declare flow, not replacing it. `index.html`,
-   `checkRatifyByCrossing()`. Threshold: real rectangle overlap (sum of
-   each card's own radius), not an invented number — **provisional, not
-   yet swept against real drag behavior**, per `PREFLIGHT_2026-08-27_gifts_8-14.md`.
+   `checkRatifyByCrossing()`. **Swept 2026-08-27** (`tools/sweep_thresholds.js`,
+   S6): the first version's circle-radius-sum proxy false-positive-ratified
+   on up to 44% of the sampled offset space for size-mismatched cards
+   (worst case 416px apart while "confirmed") — not a knife-edge, the
+   wrong shape of check. Fixed to exact axis-aligned rectangle overlap,
+   which needed no constant to tune at all. No longer provisional.
 
 ## Cards 9–14 — full pass on the remaining 33 candidates from `LENS_REPORT_2026-08-27.md`
 

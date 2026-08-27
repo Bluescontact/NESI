@@ -119,6 +119,68 @@ const refuse = (n, pass, note) => { R.push({ n, note, pass, isCheck: true }); if
     ". Whether that pace is right is Kevin's read, not this instrument's — reported for his eye, not ruled on.");
 }
 
+/* ═══ S6 · index.html checkRatifyByCrossing() — gift_2026-08-27_08, swept
+   2026-08-27. First version used dist(center,center) < (a.r+b.r), a circle-
+   radius-sum proxy for "actual rectangle overlap." Swept across this
+   build's real card-size range (r: 45-547px from word counts 1-144, aspect
+   ratio 0.24-5.91): the circle proxy false-positive-ratified up to 44% of
+   the sampled offset space for size-mismatched cards, worst case 416px
+   apart while "confirmed" — not a knife-edge, the wrong shape of check.
+   Fixed to real axis-aligned rectangle overlap, which is exact, no
+   constant to tune. THIS is the refusable self-consistency assertion: does
+   the live code in index.html still test real overlap, or has it drifted
+   back toward a proxy? Ported directly from index.html's own
+   checkRatifyByCrossing(), not re-described. */
+{
+  const fs = require("fs");
+  const indexSrc = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+  const fnMatch = indexSrc.match(/function checkRatifyByCrossing\(dragged\) \{[\s\S]*?\n\}/);
+  const usesRealOverlap = fnMatch && /Math\.abs\(n\.x - dragged\.x\) < \(n\.w \+ dragged\.w\) \/ 2/.test(fnMatch[0]);
+  const usesCircleProxy = fnMatch && /n\.r \+ dragged\.r/.test(fnMatch[0]);
+  refuse("S6 checkRatifyByCrossing() found in index.html", !!fnMatch,
+    fnMatch ? "present" : "MISSING — gift 8's routing may have been reverted");
+  refuse("S6 tests real w/h rectangle overlap, not a radius-sum proxy",
+    usesRealOverlap && !usesCircleProxy,
+    usesRealOverlap ? "confirmed exact overlap test" : "REGRESSED to (or still uses) a circle-radius proxy — re-run the false-positive sweep before trusting this");
+
+  // Re-derive the sweep's own headline number so a future change to card
+  // sizing (CARD_CHAR_W, the 60+words*11 formula, etc.) gets re-measured
+  // rather than silently trusted from this comment's memory.
+  const CARD_CHAR_W = 6.6, CARD_LINE_H = 15;
+  function wrapLines(text, widthPx) {
+    const maxChars = Math.max(4, Math.floor((widthPx - 16) / CARD_CHAR_W));
+    const words = text.split(/\s+/);
+    const lines = []; let cur = "";
+    words.forEach(w => { const t = cur ? cur + " " + w : w;
+      if (t.length > maxChars && cur) { lines.push(cur); cur = w; } else cur = t; });
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [""];
+  }
+  function cardSize(wordCount, avgWordLen) {
+    const w = Math.max(90, Math.min(260, 60 + wordCount * 11));
+    const text = Array.from({length: wordCount}, () => "x".repeat(Math.max(1, avgWordLen))).join(" ");
+    const lines = wrapLines(text, w);
+    const h = Math.max(30, lines.length * CARD_LINE_H + 14);
+    return { w, h, r: Math.max(w, h) / 2 };
+  }
+  function circleTest(a, b, dist) { return dist < (a.r + b.r); }
+  function rectOverlap(a, dx, dy, b) {
+    return Math.abs(dx) < (a.w + b.w) / 2 && Math.abs(dy) < (a.h + b.h) / 2;
+  }
+  const a = cardSize(1, 2), b = cardSize(144, 12); // the sweep's own worst-case pair
+  const STEP = 4, maxOffset = a.r + b.r + 40;
+  let samples = 0, falsePos = 0, worstGap = 0;
+  for (let dx = -maxOffset; dx <= maxOffset; dx += STEP) {
+    for (let dy = -maxOffset; dy <= maxOffset; dy += STEP) {
+      const dist = Math.hypot(dx, dy);
+      samples++;
+      if (circleTest(a, b, dist) && !rectOverlap(a, dx, dy, b)) { falsePos++; worstGap = Math.max(worstGap, (a.r+b.r) - dist); }
+    }
+  }
+  report("S6 the retired circle-proxy's own worst-case false-positive rate (small vs. large card, re-measured live)",
+    falsePos + " of " + samples + " sampled offsets (" + (100*falsePos/samples).toFixed(1) + "%), worst gap " + worstGap.toFixed(0) + "px — this is why S6's fix uses real overlap, not a smaller circle constant");
+}
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 for (const r of R) {
   if (r.isCheck) console.log((r.pass ? "  ok  " : "  FAIL") + "  " + r.n + (r.note ? "   [" + r.note + "]" : ""));
@@ -126,5 +188,5 @@ for (const r of R) {
 }
 console.log(refused
   ? "\nsweep_thresholds: " + refused + " REFUSED — a threshold's real behavior does not match what it claims\n"
-  : "\nsweep_thresholds: measured, reported, nothing refused — two constants swept, none ruled on for feel\n");
+  : "\nsweep_thresholds: measured, reported, nothing refused — three constants swept, none ruled on for feel\n");
 process.exit(refused ? 1 : 0);
