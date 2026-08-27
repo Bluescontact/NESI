@@ -113,7 +113,7 @@ of them is cut.
 Then rebuild — a rebuild, not a patch. Patching preserves the order that was
 supposed to be under test.
 
-### 9. Verify
+### 9. Verify — not optional, regardless of the piece's size or stakes
 
 A fresh subagent that has not seen the reasoning. Give it the before file, the
 after file, and the defect list. It reports FIXED / PARTIAL / NOT FIXED /
@@ -121,7 +121,14 @@ REGRESSED per defect, verbatim, and re-verifies every fact from scratch,
 including facts introduced by the revision.
 
 Revisions introduce defects. A run that skips this stage has not been developed;
-it has been rewritten confidently.
+it has been rewritten confidently. **This is not a judgment call to weigh
+against the piece's length or how "operational" it looks** — on 2026-08-27,
+two short operational drafts skipped this stage as "not earning its cost,"
+and an independently-run verify pass on both, requested after the fact, found
+real regressions the converge stage had introduced on *both*: a fabricated
+quote, an inverted fact, an overclaimed instrument coverage, a miscounted
+figure. Two for two. Stage 9 always runs; the only thing "size of the piece"
+may resize is stage 5 (diverge).
 
 ## Ending a run
 
@@ -129,12 +136,15 @@ The last message says exactly one of:
 
 - **DEVELOPED** — here is the rebuilt piece, here is what audit and ground
   found, here is what changed structurally and why, here is the word count
-  against target.
+  against target, and **here is stage 9's per-defect verify table**, run by a
+  fresh subagent against the actual before/after files. A piece is not
+  DEVELOPED until verify has run against the specific revision being called
+  done — if converge changes anything after verify ran, verify runs again.
 - **BLOCKED** — here is the defect or counterexample that cannot be resolved
   without a decision only the author can make. Name the decision.
 
 Exactly one of these two applies. "Strengthened throughout, ready for another
-pass" is the failure mode wearing a hat.
+pass" is the failure mode wearing a hat. So is "DEVELOPED, verify deferred."
 
 ## Deferral accounting
 

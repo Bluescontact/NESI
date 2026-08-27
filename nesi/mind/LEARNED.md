@@ -190,6 +190,21 @@ carried the claim, not the citation. Routed same day into
 `.claude/skills/external-extraction/SKILL.md`; full development at
 `nesi/mind/EXTRACTION_2026-08-24_aakash_product_builder_developed.html`.
 
+**30 · UNRANKED IS THE DEFAULT WHEN SURFACING MATERIAL FOR KEVIN'S JUDGMENT.**
+A session choosing which few items are "worth" showing Kevin is a relevance
+ruling by another name, even when honestly disclaimed as "not a
+recommendation." Default: surface the material whole and unranked; a ranked
+shortlist requires its own explicit mark for that instance. Specializes law 8
+(filter, never a queue) and law 12 (the field, not the doorway) at the
+specific moment a session drafts a proposal *for* Kevin rather than *to* him.
+— found 2026-08-27: a development-pass draft (Action 2, naming back a
+suspended mechanism) offered a three-item candidate list while its own
+closing section disclaimed doing exactly that; an adversarial ground pass
+named the collision with THE DROP RULE (law 9) directly, and the rebuild
+dropped the list for an unranked shape-statement plus one open question.
+Authorized as a standing law same day, Kevin's mark: "mark all four, let's
+build them out."
+
 ---
 
 *Falsifier for this file: if a session reads it at boot and the corpus still

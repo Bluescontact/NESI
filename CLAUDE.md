@@ -33,6 +33,46 @@ the line, do not add another.*
 
 ---
 
+## THE LAST ACTION OF EVERY SESSION
+
+**Added 2026-08-27 on Kevin's mark:** *"i want the session bridge html wired
+as the mandatory return in a session. it keeps the work inside of a session
+cleanly bounded, and transferable."*
+
+**Every session ends by producing one Session Bridge HTML file.** The shape
+is specified in full, self-demonstrating, at
+`nesi/mind/FORMAT_SPEC_2026-08-25_session_bridge_html.html` — read it before
+building the first one. A worked example exists at
+`nesi/mind/SESSION_BRIDGE_2026-08-25_build_state_survey.html`. Write the new
+file to `nesi/mind/SESSION_BRIDGE_<date>_<slug>.html`, one file per session,
+self-contained (no network, no CDN, works offline), tabs at minimum:
+Overview, Prompts (verbatim, untouched), one tab per substantive piece of
+output, Process, and Sources — with every non-trivial claim carrying a
+provenance tag per the spec's Provenance tab.
+
+This is the session's own boundary made a filesystem fact rather than an
+exhortation, the same shape law 12 already names for other material: the
+session is legible whole, on its own, without reconstructing it from
+scattered files or a chat log — and it is what carries forward if the work
+continues in a different session or a different model.
+
+**This is a session-level rule, not a `daily-cycle` step.** `daily-cycle`'s
+own law is *"it invokes, never creates... no new instrument is ever built
+inside this skill — ever"* — producing this file is a create action, so it
+is required here, at the boot-path layer, rather than folded into that
+skill's close-out. `daily-cycle`'s existing close-out (metabolize, snapshot,
+gauge, log line) is unchanged by this.
+
+**Checked, not just stated, 2026-08-27, same mark:** `node
+tools/session_bridge_check.js` (run from the repo root) compares the most
+recent Session Bridge file against the most recent tracked change and flags
+a gap if one exists. Report-only, refuses nothing — sessions aren't bounded
+by commits precisely enough for a hard gate — but it turns "did the last
+session produce its return" from a question a session has to remember to
+ask itself into one a script can answer.
+
+---
+
 ## THE SCOPE OF THIS FILE
 
 It routes one document. Everything else stands where Kevin left it.

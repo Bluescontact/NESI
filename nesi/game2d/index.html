@@ -119,6 +119,17 @@ p.sentence { position:relative; font:16px/1.7 Georgia,serif; margin:0 0 12px; pa
 p.sentence.hinge { border-left-color:var(--hinge); }
 p.sentence.justarrived { background: rgba(224,196,84,.10); }
 p.sentence .charge-underline { display:inline; box-shadow: inset 0 -3px 0 0 rgba(224,196,84,0); transition: box-shadow .3s; }
+/* THE HANDLE, 2026-08-27 — Kevin's own read: "I see a wall of text, i can
+   find or locate a handle... I dont see automated differentiation emerging
+   from the relationships between words." The filter ground already computes
+   which of I/you/we/us/they/he/she a sentence contains (pronounKindsInText)
+   but that fact only ever surfaced behind a manual query or a dragged mote
+   in a separate ground — never in the wall of text itself, where a reader
+   actually needs a handle to grab. This puts the same computation, same
+   colours, directly on every sentence, automatically, with no ground to
+   open and no word to type first. */
+p.sentence .ptick-row { display:inline-flex; gap:3px; margin-right:9px; vertical-align:middle; }
+p.sentence .ptick { width:6px; height:6px; border-radius:50%; display:inline-block; box-shadow:0 0 0 1px rgba(0,0,0,.3) inset; }
 p.sentence .del { position:absolute; right:-2px; top:0; width:20px; height:20px; line-height:18px;
   text-align:center; padding:0; border:1px solid var(--line); border-radius:3px; background:var(--ink);
   color:var(--dim); font-size:13px; cursor:pointer; opacity:0; transition:opacity .15s; }
@@ -370,6 +381,8 @@ table.wordtable td.examples span:hover { color:var(--paper); }
    law 8, which this file already holds elsewhere (no offline progression). */
 #gardenCanvas { width:100%; height:140px; display:block; border:1px solid var(--line-soft);
   border-radius:4px; background:rgba(238,236,226,.02); margin-bottom:10px; }
+#tarpCanvas { width:100%; height:420px; display:block; border:1px solid var(--line-soft);
+  border-radius:4px; background:rgba(238,236,226,.02); margin-bottom:10px; }
 
 /* ═══ THE CATEGORIES GROUND — 2026-08-26. Not a new capture, a map of what
    this build already reads about the writer's own text, sorted into the 6
@@ -423,6 +436,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
       <button class="groundbtn" data-ground="words">words</button>
       <button class="groundbtn" data-ground="filter">filter</button>
       <button class="groundbtn" data-ground="garden">garden</button>
+      <button class="groundbtn" data-ground="tarp">tarp</button>
       <button class="groundbtn" data-ground="world">world</button>
     </div>
     <svg id="graph" role="img" aria-label="a settled graph of every sentence written, by timing — the whole corpus, not just today"></svg>
@@ -474,6 +488,10 @@ table.wordtable td.examples span:hover { color:var(--paper); }
     <div id="gardenWrap" style="display:none">
       <canvas id="gardenCanvas" width="640" height="140"></canvas>
       <div class="note" style="margin-top:14px" id="gardenNote"></div>
+    </div>
+    <div id="tarpWrap" style="display:none">
+      <canvas id="tarpCanvas" width="640" height="420"></canvas>
+      <div class="note" style="margin-top:14px" id="tarpNote"></div>
     </div>
     <div id="worldWrap" style="display:none">
       <div class="worldCount" id="worldCount"></div>
@@ -552,13 +570,31 @@ let tombstones = [];
    whatever DAM's was, and so on — a real seat, not a decorative one. */
 let worldPicks = [];
 
+/* WRITE, READ BACK, ONLY THEN TRUST IT — gift_2026-08-27_06, routed from
+   world3d's deposit.gd:129-160. A localStorage write can silently fail or
+   truncate (quota exceeded, private-browsing limits, a corrupted write) and
+   nothing here would ever know. So: write, read the same key back, compare
+   against what was meant to land. On mismatch, don't proceed as if it
+   worked — the page already has a place to say so, the same .padhint line
+   that already changes text after every save. */
+let lastPersistFailed = false;
 function persist() {
-  try { localStorage.setItem(KEY, JSON.stringify({
+  const json = JSON.stringify({
     nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved,blind:n.blind})),
     declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label})),
     tombstones: tombstones.map(t=>({text:t.text, day:t.day})),
     worldPicks: worldPicks.slice()
-  })); } catch(e) {}
+  });
+  try {
+    localStorage.setItem(KEY, json);
+    lastPersistFailed = (localStorage.getItem(KEY) !== json);
+  } catch(e) { lastPersistFailed = true; }
+}
+function hintText() {
+  const n = nodes.length + " sentence" + (nodes.length===1?"":"s");
+  return lastPersistFailed
+    ? n + " · the last save didn't land — what you see here may not be on disk"
+    : n + " · placed by idle time and length alone — your words stay yours";
 }
 function restore() {
   try {
@@ -650,8 +686,7 @@ function ingest(text) {
   newestId = n.id;
   persist();
   renderDoc();
-  document.getElementById("hint").textContent =
-    nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
+  document.getElementById("hint").textContent = hintText();
   setTimeout(() => { newestId = -1; renderDoc(); }, 1500);
 }
 
@@ -704,8 +739,7 @@ function bandCut() {
     newestId = last.id;
     persist();
     renderDoc();
-    document.getElementById("hint").textContent =
-      nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
+    document.getElementById("hint").textContent = hintText();
     setTimeout(() => { newestId = -1; renderDoc(); }, 1500);
   }
 }
@@ -942,6 +976,19 @@ function renderDoc() {
       const p = document.createElement("p");
       p.className = "sentence" + (L.hinges.has(n.id) ? " hinge" : "") + (n.id===newestId ? " justarrived" : "");
       p.dataset.id = n.id;
+      const kinds = pronounKindsInText(n.text);
+      if (kinds.length) {
+        const row = document.createElement("span");
+        row.className = "ptick-row";
+        row.title = kinds.join(" · ");
+        kinds.forEach(k => {
+          const t = document.createElement("span");
+          t.className = "ptick";
+          t.style.background = "var(--fr" + k + ")";
+          row.appendChild(t);
+        });
+        p.appendChild(row);
+      }
       const span = document.createElement("span");
       span.className = "charge-underline";
       const charge = nodeCharge(n);
@@ -1675,6 +1722,43 @@ function renderGarden() {
   note.textContent = "grown from "+nodes.length+" sentence"+(nodes.length===1?"":"s")+", arrival order only — no fitness, no target, and running this again changes nothing that hasn't been written since.";
 }
 
+/* ═══ THE SORTING TARP, LIVE — 2026-08-27 ═══ see
+   inbox/gift_2026-08-27_07_sorting_tarp.md, routed from
+   nesi/world3d/.walk/_snapshot/scripts/sorting_tarp.gd. Every sentence laid
+   out at once as an anonymous slab — footprint (area) is word count, shade
+   (opacity) is how long it's sat here (older = more solid). No text, no
+   label, no number, anywhere — the same discipline law 2 already holds
+   elsewhere in this build. A deterministic grid-pack, run once on render,
+   never per-frame: the same pile reads the same way twice. */
+function renderTarp() {
+  const canvas = document.getElementById("tarpCanvas");
+  const note = document.getElementById("tarpNote");
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  if (!nodes.length) {
+    note.textContent = "nothing on the tarp yet — it fills from what you've already written, never from reading it.";
+    return;
+  }
+  const cols = Math.max(1, Math.ceil(Math.sqrt(nodes.length * (w / h))));
+  const rows = Math.ceil(nodes.length / cols);
+  const cellW = w / cols, cellH = h / rows;
+  const maxWords = Math.max(1, ...nodes.map(n => n.words || 1));
+  const days = nodes.map(n => n.day || 0);
+  const minDay = Math.min(...days), maxDay = Math.max(...days);
+  const daySpan = Math.max(1, maxDay - minDay);
+  nodes.forEach((n, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    const cx = col * cellW + cellW/2, cy = row * cellH + cellH/2;
+    const frac = Math.sqrt(Math.min(1, (n.words || 1) / maxWords));
+    const bw = Math.max(6, frac * cellW * 0.82), bh = Math.max(6, frac * cellH * 0.82);
+    const age = 1 - ((n.day || 0) - minDay) / daySpan; // 0 = newest, 1 = oldest
+    ctx.fillStyle = "rgba(224,196,84," + (0.18 + age*0.5).toFixed(3) + ")";
+    ctx.fillRect(cx - bw/2, cy - bh/2, bw, bh);
+  });
+  note.textContent = nodes.length+" sentence"+(nodes.length===1?"":"s")+" on the tarp, laid out once — footprint is how much you wrote, shade is how long it's sat here. No text, no label, no number, anywhere; the same pile reads the same way twice.";
+}
+
 /* ═══ THE WORLD GROUND, LIVE — SHAPE A, built 2026-08-27 ═══ see the note
    above `worldPicks` for what this reuses from solid.js and why. */
 function toggleWorldPick(id) {
@@ -1891,16 +1975,28 @@ function renderGraph(L) {
   const filterWrap = document.getElementById("filterWrap");
   const gardenWrap = document.getElementById("gardenWrap");
   const worldWrap = document.getElementById("worldWrap");
+  const tarpWrap = document.getElementById("tarpWrap");
   if (ground === "world") {
     graphSvg.style.display = "none";
     weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
     wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
     filterWrap.style.display = "none"; gardenWrap.style.display = "none";
+    tarpWrap.style.display = "none";
     worldWrap.style.display = "";
     renderWorld();
     return;
   }
   worldWrap.style.display = "none";
+  if (ground === "tarp") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
+    filterWrap.style.display = "none"; gardenWrap.style.display = "none";
+    tarpWrap.style.display = "";
+    renderTarp();
+    return;
+  }
+  tarpWrap.style.display = "none";
   if (ground === "garden") {
     graphSvg.style.display = "none";
     weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
@@ -2049,6 +2145,7 @@ const GROUND_HEADINGS = {
   words: "words — what follows your own words",
   filter: "filter — I, you, we, us, they, he, she, separated by hand",
   garden: "garden — a shape grown from what you've already written",
+  tarp: "tarp — see the shape of everything you've written, without reading a word of it",
   world: "world — twelve of your own sentences, seated on the real solid",
 };
 document.getElementById("grounds").addEventListener("click", e => {
@@ -2056,9 +2153,9 @@ document.getElementById("grounds").addEventListener("click", e => {
   ground = btn.dataset.ground;
   document.querySelectorAll("#grounds .groundbtn").forEach(b => b.classList.toggle("active", b===btn));
   document.getElementById("groundHeading").textContent = GROUND_HEADINGS[ground] || "the shape, at a glance";
-  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="world";
+  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world";
   document.getElementById("graphNote").style.display = wordShapes ? "none" : "";
-  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="world") ? "none" : "";
+  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world") ? "none" : "";
   if (ground==="filter") _filterMotes = null; // fresh tray each time the ground is opened
   document.getElementById("graphNote").textContent = ground==="time"
     ? "same sentences, laid out left to right by arrival order, one lane per day. switch to the relationship view to declutter by dragging."
@@ -2070,8 +2167,7 @@ document.getElementById("grounds").addEventListener("click", e => {
 
 restore();
 renderDoc();
-document.getElementById("hint").textContent =
-  nodes.length + " sentence" + (nodes.length===1?"":"s") + " · placed by idle time and length alone — your words stay yours";
+document.getElementById("hint").textContent = hintText();
 </script>
 </body>
 </html>
