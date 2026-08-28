@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>VE24 Traversal</title>
+<style>
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--shadow:0 18px 45px rgba(40,34,22,.08);}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--shadow:none;}}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}
+.shell{min-height:100vh;display:grid;grid-template-columns:280px 1fr 340px}
+aside{border-right:1px solid var(--line);padding:20px 16px;overflow:auto;max-height:100vh;position:sticky;top:0}
+.brand{padding:2px 4px 16px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:19px;line-height:1.2;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
+.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 0 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
+.group-h{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:14px 0 6px}
+.vbtn{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 10px;margin-bottom:6px;font-size:13px;color:var(--ink)}
+.vbtn:hover{background:var(--gold-soft)}
+.vbtn.active{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.vbtn small{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
+.vbtn.active small{color:var(--surface);opacity:.75}
+main{padding:26px 30px;overflow:auto;max-height:100vh}
+h2{font-size:24px;letter-spacing:-.02em;margin:0 0 4px}
+.lede{color:var(--muted);font-size:14px;max-width:60ch;margin:0 0 18px}
+svg{width:100%;height:auto;max-width:640px;display:block;margin:0 auto}
+.vnode{cursor:pointer}
+.vnode circle{stroke:var(--surface);stroke-width:2px;transition:r .15s}
+.vnode text{font-size:11px;font-weight:800;fill:var(--surface);text-anchor:middle;pointer-events:none}
+.vnode:hover circle{filter:brightness(1.1)}
+.edge-line{stroke:var(--line);stroke-width:1.4px;transition:stroke .15s,stroke-width .15s}
+.edge-line.lit{stroke:var(--gold);stroke-width:3px}
+.edge-line.picked{stroke:var(--red);stroke-width:4px}
+.legend{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.walklog{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+.walklog h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px}
+.walkstep{display:inline-block;background:var(--gold-soft);color:var(--gold);border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700;margin:0 5px 5px 0}
+.walkstep.edge{background:var(--blue-soft);color:var(--blue)}
+panel-right{display:block}
+.rightpane{border-left:1px solid var(--line);padding:20px 18px;overflow:auto;max-height:100vh;position:sticky;top:0}
+.rightpane h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px}
+.edgecard{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:12px 13px;margin-bottom:10px}
+.edgecard h4{margin:0 0 4px;font-size:14px}
+.edgecard a{color:var(--gold);text-decoration:none;font-size:12.5px;word-break:break-all}
+.edgecard a:hover{text-decoration:underline}
+.reltag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin:0 4px 4px 0}
+.reltag.dep{background:var(--red-soft);color:var(--red)} .reltag.corr{background:var(--green-soft);color:var(--green)} .reltag.other{background:var(--line);color:var(--muted)}
+.reljump{display:block;width:100%;text-align:left;border:1px dashed var(--line);border-radius:8px;background:transparent;padding:7px 9px;margin:6px 0 0;font-size:12px;color:var(--ink)}
+.reljump:hover{background:var(--gold-soft)}
+.empty{color:var(--muted);font-size:13px;font-style:italic}
+.resetbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--muted);margin-top:10px}
+.resetbtn:hover{background:var(--red-soft);color:var(--red)}
+@media(max-width:980px){.shell{grid-template-columns:1fr} aside,.rightpane{position:relative;max-height:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside>
+  <div class="brand"><div class="kicker">VE24 · traversal</div><h1>WALK THE VE24<br>GRAPH</h1><p>pick a vertex, follow its edges, follow the citations</p></div>
+  <div class="seal-mini"><b>BUILT</b> 2026-08-27, Kevin's mark: "work on category C"<br><br><b>WHAT THIS IS</b> the twelve domains and 24 edges as a real graph you can move through — not a 25th document to read flat, a way to walk the 24 that already exist. Links go to the actual edge-files and to <code>VE24_RELATIONSHIPS_2026-08-27.html</code>'s own relationship rows.</div>
+  <div class="group-h">Rule · A–D</div>
+  <div id="grp-rule"></div>
+  <div class="group-h">Read · E–H</div>
+  <div id="grp-read"></div>
+  <div class="group-h">Build · I–L</div>
+  <div id="grp-build"></div>
+</aside>
+
+<main>
+  <h2 id="mainhead">Select a vertex to begin</h2>
+  <p class="lede" id="mainlede">Each of the twelve domains touches exactly four edges — the vector equilibrium's own geometry, not a choice. Click one to see its four edges lit on the graph and listed on the right. Click an edge's citation to jump to whatever it depends on or corroborates, and watch the walk log below trace the path.</p>
+  <svg id="graph" viewBox="0 0 640 640"></svg>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--blue)"></i> Rule (A–D)</span>
+    <span><i class="dot" style="background:var(--gold)"></i> Read (E–H)</span>
+    <span><i class="dot" style="background:var(--green)"></i> Build (I–L)</span>
+  </div>
+  <div class="walklog">
+    <h3>Walk log — the path taken this session</h3>
+    <div id="walksteps"><span class="empty">nothing walked yet</span></div>
+    <button class="resetbtn" onclick="resetWalk()">clear walk</button>
+  </div>
+</main>
+
+<div class="rightpane" id="rightpane">
+  <h3>Edges</h3>
+  <div id="edgelist"><p class="empty">no vertex selected</p></div>
+</div>
+
+</div>
+
+<script>
+// ---- data: the 12 domains, computed positions on a circle ----
+const DOMAINS = {
+  A:{name:"Laws", group:"rule"}, B:{name:"Protocols", group:"rule"},
+  C:{name:"Memory/Suspension", group:"rule"}, D:{name:"Gate/Ledger", group:"rule"},
+  E:{name:"Lenses", group:"read"}, F:{name:"Skills/Instruments", group:"read"},
+  G:{name:"Tools/Checks", group:"read"}, H:{name:"Gift-pipeline", group:"read"},
+  I:{name:"game2d build", group:"build"}, J:{name:"Retired builds", group:"build"},
+  K:{name:"Library-at-large", group:"build"}, L:{name:"Session-bridge", group:"build"}
+};
+const GROUP_COLOR = {rule:"var(--blue)", read:"var(--gold)", build:"var(--green)"};
+
+// ---- the 24 edges, exactly as built ----
+const EDGES = [
+  {n:1,pair:"A-E",file:"VE24_01_laws_lenses.html"},
+  {n:2,pair:"A-F",file:"VE24_02_laws_skills.html"},
+  {n:3,pair:"A-I",file:"VE24_03_laws_game2d_build.html"},
+  {n:4,pair:"A-J",file:"VE24_04_laws_retired_builds.html"},
+  {n:5,pair:"B-E",file:"VE24_05_protocols_lenses.html"},
+  {n:6,pair:"B-F",file:"VE24_06_protocols_skills.html"},
+  {n:7,pair:"B-K",file:"VE24_07_protocols_library.html"},
+  {n:8,pair:"B-L",file:"VE24_08_protocols_session_bridge.html"},
+  {n:9,pair:"C-G",file:"VE24_09_memory_tools.html"},
+  {n:10,pair:"C-H",file:"VE24_10_memory_gift_pipeline.html"},
+  {n:11,pair:"C-I",file:"VE24_11_memory_game2d_build.html"},
+  {n:12,pair:"C-J",file:"VE24_12_memory_retired_builds.html"},
+  {n:13,pair:"D-G",file:"VE24_13_gate_tools.html"},
+  {n:14,pair:"D-H",file:"VE24_14_gate_gift_pipeline.html"},
+  {n:15,pair:"D-K",file:"VE24_15_gate_library.html"},
+  {n:16,pair:"D-L",file:"VE24_16_gate_session_bridge.html"},
+  {n:17,pair:"E-I",file:"VE24_17_lenses_game2d_build.html"},
+  {n:18,pair:"E-K",file:"VE24_18_lenses_library.html"},
+  {n:19,pair:"F-J",file:"VE24_19_skills_retired_builds.html"},
+  {n:20,pair:"F-L",file:"VE24_20_skills_session_bridge.html"},
+  {n:21,pair:"G-I",file:"VE24_21_tools_game2d_build.html"},
+  {n:22,pair:"G-K",file:"VE24_22_tools_library.html"},
+  {n:23,pair:"H-J",file:"VE24_23_gift_pipeline_retired_builds.html"},
+  {n:24,pair:"H-L",file:"VE24_24_gift_pipeline_session_bridge.html"}
+];
+
+// ---- the relationship map, transcribed from VE24_RELATIONSHIPS_2026-08-27.html's own table ----
+// (the cold-walk row that lived here — edge 17's routing proposal — is struck per Kevin's
+// mark 2026-08-27 and is not included: see edge 17 and the relationships file directly.)
+const RELATIONS = [
+  {type:"dep", edges:[9,21], text:"edge 9's instrument-count discrepancy is fully resolved by edge 21's reconciliation"},
+  {type:"dep", edges:[13,21], text:"same instrument-count discrepancy, same open citation gap"},
+  {type:"dep", edges:[13,15], text:"edge 13's nesi_bench_v0 gate/ledger disposition is resolved by edge 15's direct read"},
+  {type:"dep", edges:[14,18], text:"edge 14's unglossed \"six parallel judges\" phrase — edge 18 investigated this identity"},
+  {type:"dep", edges:[18,1,7,19], text:"edge 18 inherits edge 1's lens-boot baseline, edge 7's K-census, edge 19's ROOTS-array finding"},
+  {type:"dep", edges:[19,23], text:"overlapping gift-card citations — together verified cards 5,6,7,8 of 14"},
+  {type:"dep", edges:[15,22,7], text:"both edges cite edge 7's K-census (45 dirs, ~140 files) as canonical"},
+  {type:"dep", edges:[24,23], text:"edge 24's stale \"23 doesn't exist yet\" note — edge 23 now exists, consistent"},
+  {type:"corr", edges:[1,3], text:"both independently found a \"law N\" citation tracing to an older system than LEARNED.md's 30"},
+  {type:"corr", edges:[2,6,21], text:"three independent instances of a documented count going stale as the corpus grows"},
+  {type:"corr", edges:[9,10,11], text:"three instrument families each confirm the suspension has zero footprint in code"},
+  {type:"corr", edges:[10,14,19], text:"all three cite the identical library_lens.js CODE_EXTS blind spot"},
+  {type:"corr", edges:[14,16], text:"the game2d gate is structurally isolated from gift-pipeline and session-bridge alike — a pattern"},
+  {type:"corr", edges:[19,23,24], text:"unrouted-gifts' expected tooling doesn't exist locally; the real pipeline runs by hand"},
+  {type:"corr", edges:[21,22], text:"both caught and self-corrected a wrong headline count on their own first pass"},
+  {type:"other", edges:[12,15], text:"would-resolve-if-combined: edge 12's RETIRED.md convention gives a test edge 15's own question could use"},
+  {type:"other", edges:[12,16], text:"would-resolve-if-combined: edge 16's retired 04-horizon is a fifth instance of edge 12's \"kept whole\" convention"},
+  {type:"other", edges:[1,3,6], text:"false-cognate risk: edge 6's \"twelve skills\" and edges 1/3's \"twelve laws\" are unrelated despite the shared number"},
+  {type:"other", edges:[4,7,15], text:"unresolved cross-edge: the same \"dormant, never formally retired\" shape recurs three times, all Kevin's call"}
+];
+
+// ---- derive vertex -> 4 edges ----
+const VERTEX_EDGES = {};
+Object.keys(DOMAINS).forEach(v => VERTEX_EDGES[v] = []);
+EDGES.forEach(e => { const [a,b] = e.pair.split("-"); VERTEX_EDGES[a].push(e.n); VERTEX_EDGES[b].push(e.n); });
+
+// ---- derive edge -> relation entries ----
+const EDGE_RELATIONS = {};
+EDGES.forEach(e => EDGE_RELATIONS[e.n] = []);
+RELATIONS.forEach(r => r.edges.forEach(n => { if(EDGE_RELATIONS[n]) EDGE_RELATIONS[n].push(r); }));
+
+// ---- circle layout ----
+const CX=320, CY=310, R=250;
+const ORDER = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+const POS = {};
+ORDER.forEach((v,i) => {
+  const ang = (Math.PI*2 * i/12) - Math.PI/2;
+  POS[v] = { x: CX + R*Math.cos(ang), y: CY + R*Math.sin(ang) };
+});
+
+let selectedVertex = null;
+let selectedEdge = null;
+const walk = [];
+
+function edgeId(n){ return "edge-"+n; }
+
+function buildGraph(){
+  const svg = document.getElementById("graph");
+  let html = "";
+  EDGES.forEach(e => {
+    const [a,b] = e.pair.split("-");
+    html += `<line id="${edgeId(e.n)}" class="edge-line" x1="${POS[a].x}" y1="${POS[a].y}" x2="${POS[b].x}" y2="${POS[b].y}" data-n="${e.n}" onclick="pickEdge(${e.n})"></line>`;
+  });
+  ORDER.forEach(v => {
+    const d = DOMAINS[v];
+    html += `<g class="vnode" id="v-${v}" onclick="pickVertex('${v}')">
+      <circle cx="${POS[v].x}" cy="${POS[v].y}" r="22" fill="${GROUP_COLOR[d.group]}"></circle>
+      <text x="${POS[v].x}" y="${POS[v].y+4}">${v}</text>
+    </g>`;
+  });
+  svg.innerHTML = html;
+}
+
+function buildSidebar(){
+  const groups = {rule:"grp-rule", read:"grp-read", build:"grp-build"};
+  Object.entries(groups).forEach(([g,id]) => {
+    const el = document.getElementById(id);
+    el.innerHTML = ORDER.filter(v => DOMAINS[v].group===g).map(v =>
+      `<button class="vbtn" id="btn-${v}" onclick="pickVertex('${v}')">${v} · ${DOMAINS[v].name}<small>edges ${VERTEX_EDGES[v].join(", ")}</small></button>`
+    ).join("");
+  });
+}
+
+function clearHighlights(){
+  document.querySelectorAll(".edge-line").forEach(l => l.classList.remove("lit","picked"));
+  document.querySelectorAll(".vbtn").forEach(b => b.classList.remove("active"));
+}
+
+function pickVertex(v){
+  selectedVertex = v; selectedEdge = null;
+  clearHighlights();
+  document.getElementById("btn-"+v).classList.add("active");
+  VERTEX_EDGES[v].forEach(n => document.getElementById(edgeId(n)).classList.add("lit"));
+  document.getElementById("mainhead").textContent = v + " · " + DOMAINS[v].name;
+  document.getElementById("mainlede").textContent = "Four edges touch this vertex. Click one below, or on the graph, to read its relationships.";
+  renderEdgeList(v);
+  logStep({type:"vertex", val:v});
+}
+
+function pickEdge(n){
+  selectedEdge = n;
+  const e = EDGES.find(x=>x.n===n);
+  document.querySelectorAll(".edge-line").forEach(l => l.classList.remove("picked"));
+  document.getElementById(edgeId(n)).classList.add("picked");
+  renderEdgeDetail(e);
+  logStep({type:"edge", val:n});
+}
+
+function renderEdgeList(v){
+  const pane = document.getElementById("edgelist");
+  pane.innerHTML = VERTEX_EDGES[v].map(n => {
+    const e = EDGES.find(x=>x.n===n);
+    const [a,b] = e.pair.split("-");
+    const other = a===v ? b : a;
+    return `<div class="edgecard">
+      <h4>Edge ${n} — ${a}↔${b}</h4>
+      <p style="margin:4px 0;font-size:12.5px;color:var(--muted)">touches ${other} · ${DOMAINS[other].name}</p>
+      <button class="reljump" onclick="pickEdge(${n})">walk this edge →</button>
+      <a href="${e.file}" target="_blank">${e.file}</a>
+    </div>`;
+  }).join("");
+}
+
+function renderEdgeDetail(e){
+  const pane = document.getElementById("edgelist");
+  const rels = EDGE_RELATIONS[e.n];
+  const [a,b] = e.pair.split("-");
+  let html = `<div class="edgecard">
+    <h4>Edge ${e.n} — ${a}↔${b}</h4>
+    <p style="margin:4px 0;font-size:12.5px;color:var(--muted)">${DOMAINS[a].name} ↔ ${DOMAINS[b].name}</p>
+    <a href="${e.file}" target="_blank">open ${e.file}</a>
+  </div>`;
+  if(rels.length===0){
+    html += `<p class="empty">No cross-edge relationship is recorded for this edge in VE24_RELATIONSHIPS_2026-08-27.html — it stands independently of the other 23.</p>`;
+  } else {
+    html += `<h3 style="margin-top:14px">Relationships (from VE24_RELATIONSHIPS_2026-08-27.html)</h3>`;
+    rels.forEach(r => {
+      const tagClass = r.type==="dep" ? "dep" : r.type==="corr" ? "corr" : "other";
+      const tagLabel = r.type==="dep" ? "depends-on" : r.type==="corr" ? "corroborates" : "noted";
+      const others = r.edges.filter(x=>x!==e.n);
+      html += `<div class="edgecard">
+        <span class="reltag ${tagClass}">${tagLabel}</span>
+        <p style="margin:6px 0;font-size:13px">${r.text}</p>
+        ${others.map(o => `<button class="reljump" onclick="jumpToEdge(${o})">→ walk to edge ${o} (${EDGES.find(x=>x.n===o).pair})</button>`).join("")}
+      </div>`;
+    });
+  }
+  pane.innerHTML = html;
+}
+
+function jumpToEdge(n){
+  const e = EDGES.find(x=>x.n===n);
+  const [a] = e.pair.split("-");
+  // land the vertex selection on one endpoint so the graph view follows the walk
+  pickVertex(a);
+  pickEdge(n);
+}
+
+function logStep(step){
+  walk.push(step);
+  renderWalk();
+}
+
+function renderWalk(){
+  const el = document.getElementById("walksteps");
+  if(walk.length===0){ el.innerHTML = `<span class="empty">nothing walked yet</span>`; return; }
+  el.innerHTML = walk.map(s => s.type==="vertex"
+    ? `<span class="walkstep">${s.val}</span>`
+    : `<span class="walkstep edge">edge ${s.val}</span>`
+  ).join("→ ");
+}
+
+function resetWalk(){
+  walk.length = 0;
+  renderWalk();
+  clearHighlights();
+  selectedVertex = null; selectedEdge = null;
+  document.getElementById("mainhead").textContent = "Select a vertex to begin";
+  document.getElementById("mainlede").textContent = "Each of the twelve domains touches exactly four edges — the vector equilibrium's own geometry, not a choice. Click one to see its four edges lit on the graph and listed on the right. Click an edge's citation to jump to whatever it depends on or corroborates, and watch the walk log below trace the path.";
+  document.getElementById("edgelist").innerHTML = `<p class="empty">no vertex selected</p>`;
+}
+
+buildGraph();
+buildSidebar();
+</script>
+</body>
+</html>

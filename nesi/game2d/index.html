@@ -118,6 +118,14 @@ p.sentence { position:relative; font:16px/1.7 Georgia,serif; margin:0 0 12px; pa
   border-left:2px solid transparent; transition: border-color .3s, background .8s; }
 p.sentence.hinge { border-left-color:var(--hinge); }
 p.sentence.justarrived { background: rgba(224,196,84,.10); }
+
+/* THE BURN, SHAPE 3 TEST — 2026-08-27, gift_2026-08-27_13, converged from
+   DRAFT_BURN_SHEET_2026-08-27_design_proposal.md's dream/converge stages:
+   the smallest test of "does sustained attention as an irreversible mark
+   mean anything," attached to code that already runs (the dwell-attention
+   broadcast), no new canvas, no new ground, no number anywhere. Quality
+   only — dimmer, flatter, permanent. */
+p.sentence.overread { opacity: .58; filter: saturate(.35); }
 p.sentence .charge-underline { display:inline; box-shadow: inset 0 -3px 0 0 rgba(224,196,84,0); transition: box-shadow .3s; }
 /* THE HANDLE, 2026-08-27 — Kevin's own read: "I see a wall of text, i can
    find or locate a handle... I dont see automated differentiation emerging
@@ -515,6 +523,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
       <svg id="worldSvg" viewBox="0 0 620 520" role="img" aria-label="up to twelve of your own sentences, seated on the real twelve-seat solid"></svg>
       <div class="worldLegend" id="worldLegend"></div>
       <div class="note" style="margin-top:12px" id="worldNote"></div>
+      <div class="note" style="margin-top:6px" id="worldGrain"></div>
     </div>
     <div id="docInteract">
       <h2>near this one</h2>
@@ -633,6 +642,17 @@ let tombstones = [];
    whatever DAM's was, and so on — a real seat, not a decorative one. */
 let worldPicks = [];
 
+/* THE BURN, SHAPE 3 TEST — see the CSS comment above p.sentence.overread.
+   attentionCount is real, held-dwell-count per sentence (each 1.5s dwell
+   the existing attention broadcast already fires is one count); once a
+   sentence crosses OVERREAD_AT counts, it goes into overreadIds and never
+   comes back out — no decay, no self-heal, matching the source mechanic's
+   own "law 12: quitting loses nothing" shape, tested small before any
+   fuller station is built. */
+const OVERREAD_AT = 5;
+let attentionCount = {};
+let overreadIds = new Set();
+
 /* WRITE, READ BACK, ONLY THEN TRUST IT — gift_2026-08-27_06, routed from
    world3d's deposit.gd:129-160. A localStorage write can silently fail or
    truncate (quota exceeded, private-browsing limits, a corrupted write) and
@@ -646,7 +666,9 @@ function persist() {
     nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved,blind:n.blind})),
     declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label})),
     tombstones: tombstones.map(t=>({text:t.text, day:t.day})),
-    worldPicks: worldPicks.slice()
+    worldPicks: worldPicks.slice(),
+    attentionCount: {...attentionCount},
+    overreadIds: [...overreadIds]
   });
   try {
     localStorage.setItem(KEY, json);
@@ -679,6 +701,8 @@ function restore() {
     const pickSeq = Array.isArray(parsed) ? [] : (parsed.worldPicks || []);
     const liveIds = new Set(nodes.map(n=>n.id));
     pickSeq.forEach(id => { if (liveIds.has(id)) worldPicks.push(id); }); // a picked sentence later withdrawn just leaves its seat open, not the app broken
+    if (!Array.isArray(parsed) && parsed.attentionCount) attentionCount = {...parsed.attentionCount};
+    if (!Array.isArray(parsed) && Array.isArray(parsed.overreadIds)) overreadIds = new Set(parsed.overreadIds);
   } catch(e) {}
 }
 function wordCount(t){ const w=t.trim(); return w?w.split(/\s+/).length:0; }
@@ -1037,7 +1061,7 @@ function renderDoc() {
     body.className = "day-body";
     byDay.get(day).forEach(n => {
       const p = document.createElement("p");
-      p.className = "sentence" + (L.hinges.has(n.id) ? " hinge" : "") + (n.id===newestId ? " justarrived" : "");
+      p.className = "sentence" + (L.hinges.has(n.id) ? " hinge" : "") + (n.id===newestId ? " justarrived" : "") + (overreadIds.has(n.id) ? " overread" : "");
       p.dataset.id = n.id;
       const kinds = pronounKindsInText(n.text);
       if (kinds.length) {
@@ -1073,6 +1097,14 @@ function renderDoc() {
       p.addEventListener("mouseenter", () => {
         dwellTimer = setTimeout(() => {
           try { localStorage.setItem("nesi.thepage.attention", JSON.stringify({ id: n.id, ts: Date.now() })); } catch(e) {}
+          if (!overreadIds.has(n.id)) {
+            attentionCount[n.id] = (attentionCount[n.id] || 0) + 1;
+            if (attentionCount[n.id] >= OVERREAD_AT) {
+              overreadIds.add(n.id);
+              p.classList.add("overread");
+            }
+            persist();
+          }
         }, 1500);
       });
       p.addEventListener("mouseleave", () => { if (dwellTimer) { clearTimeout(dwellTimer); dwellTimer = null; } });
@@ -1860,12 +1892,39 @@ function roomVolume(xyzOf, seatedNames) {
   });
   return vol;
 }
+/* SITE IT ON THE GRAIN, NEVER BY HAND — gift_2026-08-27_09, routed from
+   world3d's river.gd:1-24/160-244. That file sited a river and a dam by
+   reading three facts off real terrain (the highest point, the steepest
+   descent from it, the narrowest crossing along that descent) — zero
+   authored coordinates anywhere. The direct translation for this room:
+   solid.js's own EMBED table is the terrain here (the vector equilibrium's
+   real seat positions, not the idle-gap/word-count room coordinates above,
+   which are the writer's own material and stay untouched by this). Given
+   whichever seats are already filled, this finds the one still-open seat
+   whose REAL position is farthest, on average, from the real positions
+   already filled — the sparsest region of the actual solid, not a guess.
+   It is offered, never applied: law 5 (the hand does the separating) still
+   holds here exactly as it holds everywhere else in this room — nothing is
+   auto-seated, this only names where the grain currently points. */
+function deriveGrain(filledNames) {
+  const EMBED = SOLID.EMBED;
+  const open = SOLID.NAMES.filter(nm => !filledNames.includes(nm));
+  if (!filledNames.length || !open.length) return null;
+  const dist = (p,q) => Math.hypot(p[0]-q[0], p[1]-q[1], p[2]-q[2]);
+  let best = null, bestAvg = -1;
+  open.forEach(nm => {
+    const avgDist = filledNames.reduce((s,f) => s + dist(EMBED[nm], EMBED[f]), 0) / filledNames.length;
+    if (avgDist > bestAvg) { bestAvg = avgDist; best = nm; }
+  });
+  return best;
+}
 function renderWorld() {
   const countEl = document.getElementById("worldCount");
   const pickerEl = document.getElementById("worldPicker");
   const svg = document.getElementById("worldSvg");
   const legendEl = document.getElementById("worldLegend");
   const noteEl = document.getElementById("worldNote");
+  const grainEl = document.getElementById("worldGrain");
 
   const pickable = nodes.filter(n => !n.blind);
   countEl.innerHTML = "<b>"+worldPicks.length+"</b>/12 seated";
@@ -1892,6 +1951,7 @@ function renderWorld() {
   if (!worldPicks.length) {
     noteEl.textContent = "pick sentences above, in the order you want them seated — the first fills the seat TANK held for the organs, the second DAM's, and on through all twelve.";
     legendEl.innerHTML = "";
+    grainEl.textContent = "";
     return;
   }
 
@@ -1900,6 +1960,11 @@ function renderWorld() {
   const seatOf = {};
   worldPicks.forEach((id,i) => { if (i<12 && nodesById[id]) seatOf[NAMES[i]] = nodesById[id]; });
   const filledNames = Object.keys(seatOf);
+
+  const grain = deriveGrain(filledNames);
+  grainEl.textContent = grain
+    ? "the grain: " + grain + "'s seat sits farthest, on the real solid, from what's already seated — nothing is placed until your own hand picks it."
+    : "";
 
   /* real coordinates, Shape D's own discipline continued: idle-gap and
      word-count, the two facts the whole page is placed by, plus arrival

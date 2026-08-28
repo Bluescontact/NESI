@@ -1,5 +1,25 @@
 # INBOX — unrouted gifts found for the lattice, 2026-08-27
 
+## Wired to the gate — Kevin's mark, 2026-08-27
+
+Decision D5 of the VE24 relationships pass named a real gap: routing a gift
+card into the live build had never once gone through a gate `admit` call —
+cards 1-4 landed by direct commit, `MARKS.jsonl` stayed silent for 9 days
+past the newest cards. Kevin's mark: **"wire to the gate."** Closed two ways:
+
+1. **Retroactive.** Cards 1-4 are now admitted for real —
+   `node gate/admit.mjs <id> --made "…" --at "../index.html"`, one call per
+   card, run 2026-08-27. Check `gate/MARKS.jsonl`'s tail for the four
+   `gift_0{1,2,3,4}_*` entries; `gate/instruments/06-landed.mjs` reads them
+   on the next `node gate/gate.mjs` run same as any other admission.
+2. **Going forward.** Routing a gift card — committing its capacity into
+   `index.html` or any other live file — is not complete until the same
+   command runs for it: `node gate/admit.mjs <gift-id> --made "<what it made
+   possible>" --at "<path in the live build>"`. The id should match the
+   gift's own filename stem. This is the same mechanism already used for
+   every other builder admission in this project; nothing new was invented,
+   the gift-pipeline was just never pointed at it before.
+
 ## Cards 1–4 — routed
 
 All four were built into `index.html` the same day they were filed: #1
@@ -77,12 +97,15 @@ ledgers, structural-proxy testing) was independently found already-built and
 more developed inside `nesi/game2d` itself. Six gifts survived, three from
 world3d, two from world2d, one from the composted pre-rebuild `ascent.html`.
 
-9. **[site it on the grain, never by hand](gift_2026-08-27_09_grain_siting.md)**
+9. **[site it on the grain, never by hand](gift_2026-08-27_09_grain_siting.md)** — **routed**
    capacity: M · effort: M · confidence: M
-   A siting algorithm that reads a placement (river course, dam throat)
-   purely off the data's own shape — no authored coordinate anywhere.
-   Portable to any game2d feature that needs to site something from
-   `solid.js`'s own structure instead of an author's eye.
+   Built into the WORLD FACE ground: given whichever seats are already
+   picked, `deriveGrain()` reads `solid.js`'s own real EMBED coordinates
+   and names the unseated seat farthest, on average, from what's already
+   seated — the true antipode when only one seat is filled, verified
+   directly against `SOLID.antipodeOf()`. Offered as a note only, never
+   auto-applied — law 5 (the hand does the separating) still holds; nothing
+   is placed until the writer's own click. Admitted to the gate 2026-08-27.
 
 10. **[the freshet test](gift_2026-08-27_10_freshet_test.md)** — **routed**
     capacity: M · effort: L · confidence: M
@@ -112,11 +135,20 @@ world3d, two from world2d, one from the composted pre-rebuild `ascent.html`.
     read-only, honestly labeled as such, not a fake toggle over nothing.
     `index.html`, `CASE`/`renderCase()`/`CASE_CONSTRAINTS`.
 
-13. **[the burn that never heals itself](gift_2026-08-27_13_the_burn.md)**
+13. **[the burn that never heals itself](gift_2026-08-27_13_the_burn.md)** — **partially routed**
     capacity: M · effort: M · confidence: M
     Sustained attention on one spot accumulates heat and can scorch a
     receiver permanently shut — a qualitative, session-surviving cost with
-    no number ever shown.
+    no number ever shown. Ran through a full `full-development` dream-and-
+    develop pass (`DRAFT_BURN_SHEET_2026-08-27_design_proposal.md`) after
+    the first direct-port attempt was caught mischaracterizing the actual
+    source mechanic. Converged recommendation (shape 3) built and verified
+    2026-08-27: five real dwell-cycles on a sentence permanently mark it
+    `overread` (dimmed, desaturated, never a number), attached to the
+    existing attention-broadcast hook, no canvas, no new ground, survives
+    reload, never decays — tested end to end in a live browser. The fuller
+    station (aiming, three receivers, water-routing) remains unbuilt and
+    undecided; this is the small test, not the full mechanic.
 
 14. **[a rule for the sheet, not a solver](gift_2026-08-27_14_rule_for_the_sheet.md)**
     capacity: M · effort: M · confidence: M

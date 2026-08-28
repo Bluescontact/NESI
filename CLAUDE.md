@@ -71,6 +71,18 @@ by commits precisely enough for a hard gate — but it turns "did the last
 session produce its return" from a question a session has to remember to
 ask itself into one a script can answer.
 
+**Wired to the gate, 2026-08-27, Kevin's mark ("wire to the gate," decision
+D5 of the VE24 relationships pass):** producing a Session Bridge file is not
+complete until it is admitted — `node gate/admit.mjs
+session_bridge_<date>_<slug> --made "<what this session's return made
+possible>" --at "nesi/mind/SESSION_BRIDGE_<date>_<slug>.html"`, run from
+`nesi/game2d/gate/`. This is the same mechanism the gift-pipeline now uses
+(`nesi/game2d/inbox/INDEX.md`'s own "Wired to the gate" section); before
+this mark neither pipeline had ever once gone through it. All three existing
+bridge files were admitted retroactively the same day this line was added —
+check `nesi/game2d/gate/MARKS.jsonl`'s tail for the `session_bridge_*`
+entries.
+
 ---
 
 ## THE SCOPE OF THIS FILE

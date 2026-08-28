@@ -306,6 +306,44 @@ and gets the full answer. → companion to the FULL FREEZE above and to
 
 ---
 
+# ■ THE COUNSEL IS RETIRED — 2026-08-27, Kevin's mark
+
+Decision D4 of the VE24 relationships pass, put to him as: is the 2026-08-11
+Counsel's Standing Build Mandate below still the operative authority for the
+DECIDE-bar class, now that `lens-panel` runs all five lenses as a standing,
+on-demand capability rather than the Mandate's original ad hoc bench-and-tag
+apparatus? His ruling, verbatim: **"retire the counsel. offer nutrients, and
+best practices forward."**
+
+**The Mandate below no longer binds.** Nothing below is deleted — it stands
+underneath exactly as written and layered, which is this corpus's own
+convention: supersession is a mark on top, never a silent erasure. Read it as
+history from here.
+
+**What retires with it, named plainly:** the LAWFUL-NOW tag system
+(`counsel/<seat>/*.md`, dated licences to build without asking first), the
+`python tools/gates.py open --gate ...` NEEDS-KEVIN mechanism as this
+Mandate's own bespoke instrument, and the NESI.exe amendment's "session as
+convergence point, ruling design forks and logging to BUILD_RECORD.md"
+authority. None of these carry forward by inference into any other context.
+
+**What does not retire, because it was never this Mandate's alone:** each of
+the five lens agents' own hard limits ("never scores Kevin, never defaults
+his forks") are written into their own definition files independently of
+this Mandate and are untouched by its retirement. `lens-panel` (authorized
+2026-08-27, the same day as this retirement) already supersedes the
+practical function this Mandate served — asking all five at once — without
+needing the Mandate's own tag-and-gate apparatus to do it.
+
+**Nutrients and best practices, carried forward per Kevin's own instruction
+rather than left buried in a retired section:** see
+`nesi/mind/DRAFT_NUTRIENTS_2026-08-27_from_the_retired_counsel_mandate.md` —
+proposed lines, sourced to this Mandate's own text, offered for Kevin's mark
+under `LEARNED.md`'s own admission rule (a session proposes, his mark
+admits). Nothing there is self-admitted by this retirement.
+
+---
+
 # ■ THE COUNSEL'S STANDING BUILD MANDATE — 2026-08-11 (Kevin's ruling, session 8a8f232e)
 
 Kevin's instruction, verbatim: *"lets allow the consel to deliberate through the
