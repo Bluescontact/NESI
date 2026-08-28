@@ -30,6 +30,11 @@ rhythm/.last_brief
 !/tools/gates.py
 !/tools/decisions.py
 !/tools/surface.py
+# The Group K scanner, 2026-08-27/28 (Kevin's mark, "build it" on
+# PREFLIGHT_2026-08-27_k_lens.md). Reuses library_lens.js's own scoring
+# discipline against the library-at-large rather than retired-build lineage.
+# Tracked so the instrument travels with the corpus it scans.
+!/tools/k_lens.js
 # The boot hook, 2026-08-17 (Kevin's mark: "set up the hook layer"). It reads
 # LEARNED.md and injects it at SessionStart, which is what makes the route a
 # filesystem fact rather than an instruction. Tracked so it travels with the
