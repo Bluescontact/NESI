@@ -41,6 +41,20 @@ rhythm/.last_brief
 # deposit it carries. The settings.json that calls it stays out by the rule
 # above, so a clone gets the script and wires it by hand.
 !/tools/boot_hook.py
+# The harness boot layer, 2026-08-31 (Kevin's mark: "add them to the
+# allowlist"). Same gap boot_hook.py's own entry above already named,
+# never closed for its sibling: boot_hook_harness.py is wired into
+# settings.json's SessionStart hook exactly the way boot_hook.py is, and
+# calls the three instruments below with --summary on every boot, but none
+# of the five files were tracked — a boot path that does not survive a
+# checkout is not routed, and this one wasn't. Closed the same day
+# agent_usage_check.js was built (skill/agent usage had no instrument for
+# agents at all before this).
+!/tools/boot_hook_harness.py
+!/tools/check_harness.js
+!/tools/framing_check_skills.js
+!/tools/lens_usage_check.js
+!/tools/agent_usage_check.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
