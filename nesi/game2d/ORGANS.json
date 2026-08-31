@@ -49,6 +49,10 @@
     {
      "where": "tree rings / varve deposition",
      "domain": "biology"
+    },
+    {
+     "where": "nesi_bench_v0/ledger.py — record()/read_all(), append-only JSONL, loud on failure (LedgerWriteError), never silent, no update path at all",
+     "domain": "a different, inactive NESI build (nesi_bench_v0) — independently sighted 2026-08-31 while reviewing library_lens.js's candidate pool, not authored to match"
     }
    ],
    "members": {
