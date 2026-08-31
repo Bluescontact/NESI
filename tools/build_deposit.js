@@ -17,7 +17,8 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  GAME2D, MIND, copyFile, rmrf, walk, traceGameFiles, traceAdmitted, classifyFile,
+  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk,
+  traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit');
@@ -81,16 +82,48 @@ function main() {
     }
   }
 
+  // Move 2, Kevin's mark 2026-08-31: skills/agents only promote on real
+  // invocation evidence (session transcripts), not the mark-log proxy that
+  // undercounted full-development 38x and overcounted record-audit 3-to-0.
+  // A skill/agent with zero real invocations is held back, not silently
+  // dropped — heldBack below names every one.
+  const { skills, agents, rootsFound } = traceRealInvocations();
+  const heldBack = { skills: [], agents: [] };
+
+  for (const [name, info] of Object.entries(skills)) {
+    if (info.count < 1) { heldBack.skills.push(name); continue; }
+    const src = path.join(SKILLS_DIR, info.folder);
+    const dest = path.join(OUT, 'patterns', 'skills', info.folder);
+    for (const rel of walk(src)) copyFile(path.join(src, rel), path.join(dest, rel));
+    manifest.patterns.push({
+      path: `.claude/skills/${info.folder}`, category: classifyFile(path.join(src, 'SKILL.md')),
+      realInvocations: info.count, lastInvoked: info.lastTs,
+    });
+  }
+  for (const [name, info] of Object.entries(agents)) {
+    if (info.direct + info.adopted < 1) { heldBack.agents.push(name); continue; }
+    const src = path.join(AGENTS_DIR, name + '.md');
+    copyFile(src, path.join(OUT, 'patterns', 'agents', name + '.md'));
+    manifest.patterns.push({
+      path: `.claude/agents/${name}.md`, category: classifyFile(src),
+      realInvocations: { direct: info.direct, adopted: info.adopted }, lastInvoked: info.lastTs,
+    });
+  }
+
   const typologyCounts = {};
   for (const p of manifest.patterns) typologyCounts[p.category] = (typologyCounts[p.category] || 0) + 1;
 
   fs.writeFileSync(
     path.join(OUT, 'MANIFEST.json'),
-    JSON.stringify({ generatedBy: 'tools/build_deposit.js', marksCount: marks.length, typologyCounts, manifest }, null, 2)
+    JSON.stringify({
+      generatedBy: 'tools/build_deposit.js', marksCount: marks.length, invocationRootsScanned: rootsFound,
+      typologyCounts, heldBack, manifest,
+    }, null, 2)
   );
 
   console.log(`game:     ${manifest.game.length} file(s)`);
   console.log(`patterns: ${manifest.patterns.length} file(s) (${marks.length} marks read) — ${JSON.stringify(typologyCounts)}`);
+  console.log(`  held back (0 real invocations): ${heldBack.skills.length} skill(s), ${heldBack.agents.length} agent(s)`);
   console.log(`compost:  ${manifest.compost.length} file(s)`);
 }
 

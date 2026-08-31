@@ -4,11 +4,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { classify } = require('./typology_classify');
 
 const ROOT = path.resolve(__dirname, '..');
 const GAME2D = path.join(ROOT, 'nesi', 'game2d');
 const MIND = path.join(ROOT, 'nesi', 'mind');
+const SKILLS_DIR = path.join(ROOT, '.claude', 'skills');
+const AGENTS_DIR = path.join(ROOT, '.claude', 'agents');
+// Same named-not-globbed project slugs as skill_invocation_check.js /
+// agent_invocation_check.js — see those files' headers for why.
+const PROJECT_SLUGS = [
+  'C--Users-KMEAR-OneDrive-Desktop-DSS-content',
+  'C--Users-KMEAR-dev-DSS-content',
+];
+const PROJECTS_ROOT = path.join(os.homedir(), '.claude', 'projects');
 
 function readLines(file) {
   if (!fs.existsSync(file)) return [];
@@ -92,8 +102,83 @@ function classifyFile(absPath, extraBlob = '') {
   return classify(text + ' ' + extraBlob);
 }
 
+// Recognition capacity for skills/agents — real invocations, not mark-log
+// mentions. Same instrument as tools/skill_invocation_check.js and
+// tools/agent_invocation_check.js (built 2026-08-31 on Kevin's own catch:
+// the mark-log signal undercounted full-development by 38x and overcounted
+// record-audit by 3-to-0). This is what move 2 wires into the deposit: a
+// skill or agent only gets copied into patterns/ if it was actually RUN.
+function traceRealInvocations() {
+  const skillFolders = fs.existsSync(SKILLS_DIR)
+    ? fs.readdirSync(SKILLS_DIR, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name)
+    : [];
+  const skills = {};
+  for (const folder of skillFolders) {
+    const skillMd = path.join(SKILLS_DIR, folder, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) continue; // struck/superseded/not-a-skill — out of scope
+    const head = fs.readFileSync(skillMd, 'utf8').slice(0, 500);
+    const m = /^name:\s*(.+)$/m.exec(head);
+    const name = m ? m[1].trim() : folder;
+    skills[name] = { folder, count: 0, lastTs: null };
+  }
+
+  const agentFiles = fs.existsSync(AGENTS_DIR)
+    ? fs.readdirSync(AGENTS_DIR).filter((f) => f.endsWith('.md'))
+    : [];
+  const agents = {};
+  for (const f of agentFiles) {
+    const name = f.replace(/\.md$/, '');
+    agents[name] = { direct: 0, adopted: 0, lastTs: null };
+  }
+
+  const roots = PROJECT_SLUGS.map((s) => path.join(PROJECTS_ROOT, s)).filter((p) => fs.existsSync(p));
+  const TS_RE = /"timestamp":"([^"]+)"/;
+
+  for (const root of roots) {
+    const files = fs.readdirSync(root).filter((f) => f.endsWith('.jsonl'));
+    for (const file of files) {
+      let text;
+      try { text = fs.readFileSync(path.join(root, file), 'utf8'); } catch (e) { continue; }
+
+      if (text.includes('"commandName"')) {
+        for (const line of text.split('\n')) {
+          if (!line.includes('"commandName"')) continue;
+          const cm = /"commandName":"([^"]+)"/.exec(line);
+          if (!cm || !(cm[1] in skills)) continue;
+          skills[cm[1]].count++;
+          const tm = TS_RE.exec(line);
+          if (tm && (!skills[cm[1]].lastTs || tm[1] > skills[cm[1]].lastTs)) skills[cm[1]].lastTs = tm[1];
+        }
+      }
+
+      if (text.includes('"name":"Agent"')) {
+        for (const line of text.split('\n')) {
+          if (!line.includes('"name":"Agent"') || !line.includes('subagent_type')) continue;
+          const st = /"subagent_type":"([^"]+)"/.exec(line);
+          if (!st) continue;
+          const tm = TS_RE.exec(line);
+          const ts = tm ? tm[1] : null;
+          if (st[1] in agents) {
+            agents[st[1]].direct++;
+            if (ts && (!agents[st[1]].lastTs || ts > agents[st[1]].lastTs)) agents[st[1]].lastTs = ts;
+            continue;
+          }
+          for (const name of Object.keys(agents)) {
+            if (line.includes('.claude/agents/' + name + '.md') || line.includes('.claude\\\\agents\\\\' + name + '.md')) {
+              agents[name].adopted++;
+              if (ts && (!agents[name].lastTs || ts > agents[name].lastTs)) agents[name].lastTs = ts;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return { skills, agents, rootsFound: roots.length };
+}
+
 module.exports = {
-  ROOT, GAME2D, MIND,
+  ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR,
   readLines, copyFile, rmrf, walk,
-  traceGameFiles, traceAdmitted, classifyFile,
+  traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 };
