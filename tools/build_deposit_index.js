@@ -103,9 +103,14 @@ function main() {
   }
 
   const heldBack = manifest.heldBack || { skills: [], agents: [] };
-  const heldBackHtml = (heldBack.skills.length || heldBack.agents.length)
+  const agentHeldBack = (heldBack.agents || []).map((a) => {
+    if (typeof a === 'string') return `agent: ${a} — zero real invocations`; // older MANIFEST.json shape
+    const inv = `${a.realInvocations.direct} direct + ${a.realInvocations.adopted} adopted`;
+    return `agent: ${a.name} — ${a.reason} (${inv} real invocation${a.realInvocations.direct + a.realInvocations.adopted === 1 ? '' : 's'}, held back anyway)`;
+  });
+  const heldBackHtml = (heldBack.skills.length || agentHeldBack.length)
     ? `<p>Held back — considered, not promoted, named rather than dropped:</p>
-       <ul class="filelist">${[...heldBack.skills.map((s) => `skill: ${s}`), ...heldBack.agents.map((a) => `agent: ${a}`)].map((s) => `<li>${esc(s)}</li>`).join('')}</ul>`
+       <ul class="filelist">${[...heldBack.skills.map((s) => `skill: ${s} — zero real invocations`), ...agentHeldBack].map((s) => `<li>${esc(s)}</li>`).join('')}</ul>`
     : '<p class="catnote">Nothing held back this run.</p>';
 
   const html = `<!DOCTYPE html>
@@ -167,7 +172,7 @@ ${typologySections}
 ${invocationTable(skillEntries, 'skill')}
 
 <h2 id="agents">Agents</h2>
-<p class="section-note">The standing lens panel. Same real-invocation gate as skills.</p>
+<p class="section-note">Not deposited yet, by design — the current 6 are v0.1 and named after individuals; each needs its own development pass into an invariant, a lint, or a heliostat-style backend before crossing here. See Held back below.</p>
 ${invocationTable(agentEntries, 'agent')}
 
 <div class="rule"></div>

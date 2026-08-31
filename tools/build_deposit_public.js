@@ -159,13 +159,16 @@ function main() {
       realInvocations: info.count, lastInvoked: info.lastTs,
     });
   }
+  // Agents: NOT promoted, regardless of invocation count. Kevin's mark,
+  // 2026-08-31: "what i have built with the 6 agents is a v0.1. I dont
+  // want to use any individual's name for an agent or process. So each of
+  // the 6 deserves it's own development pass... so those stay on this side
+  // of the pipeline for now." A naming/identity policy, not a usage
+  // judgment — real invocation counts shown for context, not as cause.
   for (const [name, info] of Object.entries(agents)) {
-    if (info.direct + info.adopted < 1) { heldBack.agents.push(name); continue; }
-    const src = path.join(AGENTS_DIR, name + '.md');
-    copyFile(src, path.join(OUT, 'patterns', 'agents', name + '.md'));
-    manifest.patterns.push({
-      path: `.claude/agents/${name}.md`, category: classifyFile(src),
-      realInvocations: { direct: info.direct, adopted: info.adopted }, lastInvoked: info.lastTs,
+    heldBack.agents.push({
+      name, reason: "v0.1 — named after an individual; awaiting its own development pass before deposit",
+      realInvocations: { direct: info.direct, adopted: info.adopted },
     });
   }
 
@@ -182,7 +185,7 @@ function main() {
 
   console.log(`game:        ${manifest.game.length} file(s)`);
   console.log(`patterns:    ${manifest.patterns.length} file(s) (${marks.length} marks read) — ${JSON.stringify(typologyCounts)}`);
-  console.log(`  held back (0 real invocations): ${heldBack.skills.length} skill(s), ${heldBack.agents.length} agent(s)`);
+  console.log(`  held back: ${heldBack.skills.length} skill(s) (0 real invocations), ${heldBack.agents.length} agent(s) (v0.1, pending development)`);
   console.log(`tributaries: ${tributaries.length} entries`);
   console.log('compost:     not included in the public output');
 }
