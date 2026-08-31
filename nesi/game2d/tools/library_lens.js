@@ -64,10 +64,44 @@ const ROOTS = [
   // and 20+ siblings) is the actual code the world3d root's dormant sibling
   // never had scanned at all before this.
   { label: "nesi_v2_conductor", dir: path.join(NESI, "conductor") },
+  // The fresh walk, 2026-08-31 (Kevin's mark: "run a fresh scan on
+  // territory the lens hasn't walked"). ROOT below is NESI's parent —
+  // the corpus root. Chosen deliberately: territories Kevin has named as
+  // holding abandoned value (the widget app, the design-system surface,
+  // root tools/) plus every code-bearing sibling never walked before.
+  // Prose-only trees (decks, substack, counsel, patterns/) carry no
+  // CODE_EXTS files worth ranking — they wait for a reading pass, not
+  // this scanner.
+  { label: "_widgets",            dir: path.join(NESI, "..", "_widgets") },
+  { label: "ds-kit",              dir: path.join(NESI, "..", "ds-kit") },
+  { label: "tools_root",          dir: path.join(NESI, "..", "tools") },
+  { label: "village_app",         dir: path.join(NESI, "..", "village_app") },
+  { label: "osg-v6",              dir: path.join(NESI, "..", "osg-v6") },
+  { label: "osg_organ",           dir: path.join(NESI, "..", "osg_organ") },
+  { label: "mito-mcp",            dir: path.join(NESI, "..", "mito-mcp") },
+  { label: "podcast_narrator",    dir: path.join(NESI, "..", "podcast_narrator") },
+  { label: "kwp",                 dir: path.join(NESI, "..", "kwp") },
+  { label: "kit",                 dir: path.join(NESI, "..", "kit") },
+  { label: "coherence-codex",     dir: path.join(NESI, "..", "coherence-codex") },
+  { label: "aoc-v2",              dir: path.join(NESI, "..", "aoc-v2") },
+  { label: "netlify_forms_relay", dir: path.join(NESI, "..", "netlify_forms_relay") },
+  { label: "open_ledger",         dir: path.join(NESI, "..", "open_ledger") },
+  { label: "rhythm",              dir: path.join(NESI, "..", "rhythm") },
+  { label: "held_refusal",        dir: path.join(NESI, "..", "held_refusal") },
+  { label: "gate_root",           dir: path.join(NESI, "..", "gate") },
+  { label: "instruments_root",    dir: path.join(NESI, "..", "instruments") },
+  { label: "nesi/workbench",      dir: path.join(NESI, "workbench") },
+  { label: "nesi/net",            dir: path.join(NESI, "net") },
+  { label: "nesi/forest",         dir: path.join(NESI, "forest") },
+  { label: "nesi/interrogator",   dir: path.join(NESI, "interrogator") },
+  { label: "nesi/continuity",     dir: path.join(NESI, "continuity") },
+  { label: "nesi/world",          dir: path.join(NESI, "world") },
 ];
 const CODE_EXTS = new Set([".gd", ".js", ".py", ".html"]);
 const MAX_DEPTH = 6;
-const SKIP_DIRS = new Set(["__pycache__", "node_modules", ".git", ".import", ".godot"]);
+const SKIP_DIRS = new Set(["__pycache__", "node_modules", ".git", ".import", ".godot",
+  // Python venvs (podcast_narrator ships one) — library code, not this corpus's own work
+  "venv", ".venv", "site-packages", "Lib", "Scripts"]);
 
 function walk(dir, depth, out) {
   if (depth > MAX_DEPTH) return;
