@@ -87,6 +87,12 @@ rhythm/.last_brief
 # closed twice this session for the harness files and the deposit
 # pipeline.
 !/tools/stale_count_check.js
+# The spine, 2026-08-31 (Kevin's mark: "lets commit those 8, and assemble
+# the deposits onto them. Thats the spine."). The eight nucleation points
+# from nesi/UPSTREAM_2026-08-31_nucleation_points.md as data, plus the one
+# seating map of deposit items under them — the single source (crystal 7)
+# both deposit pipelines and the arrangement organ read.
+!/tools/spine.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

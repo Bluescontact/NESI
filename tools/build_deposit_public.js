@@ -21,6 +21,7 @@ const {
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
+const { SPINE_DOC } = require('./spine');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit_public');
 const MECHANISM_DIRS = ['gate', 'tools', 'inbox'];
@@ -116,6 +117,14 @@ function main() {
   // in the public deposit. Only what a real mark actually points to.
   for (const rel of admittedRootPaths) {
     const src = path.join(ROOT, rel);
+    // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
+    // them. Thats the spine.") is the deposit's upstream layer — it lands
+    // at the top level, before game/ and patterns/, not filed under them.
+    if (rel.replace(/\\/g, '/') === SPINE_DOC) {
+      copyFile(src, path.join(OUT, path.basename(rel)));
+      manifest.spine = path.basename(rel);
+      continue;
+    }
     copyFile(src, path.join(OUT, 'patterns', 'root', rel));
     manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
   }

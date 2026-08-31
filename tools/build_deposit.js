@@ -20,6 +20,7 @@ const {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
+const { SPINE_DOC } = require('./spine');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit');
 
@@ -78,6 +79,14 @@ function main() {
   // in the deposit. Only what a real mark actually points to.
   for (const rel of admittedRootPaths) {
     const src = path.join(ROOT, rel);
+    // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
+    // them. Thats the spine.") lands at the deposit's top level, before
+    // game/ and patterns/ — see tools/spine.js, the seating's one source.
+    if (rel.replace(/\\/g, '/') === SPINE_DOC) {
+      copyFile(src, path.join(OUT, path.basename(rel)));
+      manifest.spine = path.basename(rel);
+      continue;
+    }
     copyFile(src, path.join(OUT, 'patterns', 'root', rel));
     manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
   }

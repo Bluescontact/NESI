@@ -1,5 +1,14 @@
 # UPSTREAM — NESI's nucleation points
 
+> **CROSSED — 2026-08-31, Kevin's mark: *"lets commit those 8, and assemble the
+> deposits onto them. Thats the spine."*** The eight crystals below are no longer
+> a proposal: they are the spine the deposits assemble onto. Each deposit item
+> attaches under the crystal that accounts for it (the seating map lives in
+> `tools/spine.js` — one source, per crystal 7); crystal 4's seat list is empty
+> on purpose. The "Standing" paragraph below is kept as written — it was true
+> when assembled, and this notice is the layer that changes it, per crystal 2's
+> own convention.
+
 **What this file is.** Kevin's ask, 2026-08-31: *"what are nesi's nucleation points,
 because those crystals are upstream of everything kevin is putting into the repo...
 a full upstream reconciliation."* The trigger was the knowledge-tetra doc

@@ -27,6 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { CRYSTALS, SEATS, SPINE_MARK_ID } = require('./spine');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit_public');
 
@@ -80,17 +81,50 @@ function main() {
     </section>`;
   }).join('\n');
 
-  const giftRows = tributaries.map((t) => {
-    const cardLink = t.card ? `<a href="${esc(repoPath('game2d/inbox/' + t.card.split('/').slice(1).join('/')))}">${esc(t.card)}</a>` : null;
-    const bridgeLink = t.bridge ? `<a href="${esc(repoPath(t.bridge))}">${esc(t.bridge)}</a>` : null;
-    const directLink = t.direct ? `<a href="${esc(repoPath(t.direct))}">${esc(t.direct)}</a>` : null;
-    return `<tr>
+  function traceLink(t) {
+    if (t.card) return `<a href="${esc(repoPath('game2d/inbox/' + t.card.split('/').slice(1).join('/')))}">${esc(t.card)}</a>`;
+    if (t.bridge) return `<a href="${esc(repoPath(t.bridge))}">${esc(t.bridge)}</a>`;
+    if (t.direct) return `<a href="${esc(repoPath(t.direct))}">${esc(t.direct)}</a>`;
+    return null;
+  }
+
+  const giftRows = tributaries.map((t) => `<tr>
       <td><span class="dot dot-${esc(t.category || 'organ')}"></span>${esc(t.id)}</td>
       <td>${esc(t.category || '—')}</td>
       <td>${esc(t.made || '')}</td>
-      <td>${cardLink || bridgeLink || directLink || '—'}</td>
-    </tr>`;
+      <td>${traceLink(t) || '—'}</td>
+    </tr>`).join('\n');
+
+  // --- THE SPINE (Kevin's mark, 2026-08-31: "lets commit those 8, and
+  // assemble the deposits onto them. Thats the spine."). The eight
+  // nucleation points, each with the deposit items seated under it —
+  // seating read from tools/spine.js, the one source. A mark with no seat
+  // renders in UNSEATED, visible rather than silently dropped.
+  const spineDocName = manifest.manifest.spine || null;
+  const seatedIds = new Set();
+  const crystalSections = CRYSTALS.map((c, i) => {
+    const seated = tributaries.filter((t) => SEATS[t.id]?.crystal === c.id);
+    seated.forEach((t) => seatedIds.add(t.id));
+    const items = seated.length
+      ? `<ul class="seatlist">${seated.map((t) => {
+          const link = traceLink(t);
+          return `<li><b>${esc(t.id)}</b> — ${esc(SEATS[t.id].why)}${link ? ` · ${link}` : ''}</li>`;
+        }).join('')}</ul>`
+      : (c.id === 'c4'
+        ? '<p class="catnote">Nothing seats here, on purpose — this crystal governs shape, not tooling. The center stays empty; an empty seat list is this crystal demonstrating itself.</p>'
+        : '<p class="catnote">Nothing seated here yet.</p>');
+    return `<section class="cat crystal">
+      <h3><span class="cnum">${i + 1}</span>${esc(c.name)} <span class="count">${seated.length || ''}</span></h3>
+      <p class="catnote">${esc(c.line)}</p>
+      ${items}
+    </section>`;
   }).join('\n');
+  const unseated = tributaries.filter((t) => !seatedIds.has(t.id) && t.id !== SPINE_MARK_ID);
+  const unseatedHtml = unseated.length
+    ? `<section class="cat"><h3>unseated <span class="count">${unseated.length}</span></h3>
+       <p class="catnote">Admitted, but not yet seated under a crystal — listed rather than forced into a fit (the spine's own falsifier: a real thing no crystal accounts for means the spine is incomplete, not that the thing is wrong).</p>
+       <ul class="seatlist">${unseated.map((t) => `<li><b>${esc(t.id)}</b> — ${esc(t.made || '')}</li>`).join('')}</ul></section>`
+    : '';
 
   function invocationTable(entries, kind) {
     if (!entries.length) return '<p class="catnote">None promoted.</p>';
@@ -131,6 +165,7 @@ a{color:var(--blue)} code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas
 header{margin-bottom:40px} .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
 h1{font-size:42px;letter-spacing:-.03em;margin:8px 0 10px} .lede{font-size:18px;color:var(--muted);max-width:66ch}
 .cta{display:inline-block;margin-top:18px;padding:12px 22px;background:var(--ink);color:var(--bg);border-radius:10px;text-decoration:none;font-weight:700}
+.cta-2{background:transparent;color:var(--ink);border:1px solid var(--line);margin-left:8px}
 nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 44px} nav.jump a{font-size:12px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted)}
 h2{font-size:24px;letter-spacing:-.02em;margin:0 0 6px;padding-top:8px} .section-note{color:var(--muted);font-size:14px;max-width:70ch;margin:0 0 20px}
 .cat{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px 18px;margin-bottom:12px}
@@ -139,6 +174,9 @@ h2{font-size:24px;letter-spacing:-.02em;margin:0 0 6px;padding-top:8px} .section
 .catnote{color:var(--muted);font-size:12.5px;margin:0 0 10px}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .dot-organ{background:var(--blue)} .dot-nutrient{background:var(--green)} .dot-lens{background:var(--purple)} .dot-seed{background:var(--gold)} .dot-pollen{background:var(--red)}
+.crystal{border-left:3px solid var(--gold)}
+.cnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-size:12px;font-weight:800;flex:none}
+.seatlist{list-style:none;margin:0;padding:0} .seatlist li{font-size:13px;padding:4px 0;border-top:1px solid var(--line)} .seatlist li:first-child{border-top:0}
 .filelist{list-style:none;margin:0;padding:0;columns:2;gap:20px} .filelist li{font-size:13px;padding:3px 0;break-inside:avoid}
 table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 26px} th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em}
 .rule{height:1px;background:var(--line);margin:36px 0}
@@ -150,8 +188,8 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
 <header>
   <div class="kicker">The deposit · generated by tools/build_deposit_index.js</div>
   <h1>NESI</h1>
-  <p class="lede">NESI is a small browser game about writing and reflection — no login, no score, nothing sent anywhere. This repository has the game, and the design material behind it, organized so you can see where each piece came from without any background on how it was built.</p>
-  <a class="cta" href="game/index.html">Open the game →</a>
+  <p class="lede">NESI is a small browser game about writing and reflection — no login, no score, nothing sent anywhere. This repository has the game, and the design material behind it, assembled onto a spine of eight principles ("nucleation points") that recurred through every version of the work — so you can see not just where each piece came from, but why it was kept.</p>
+  <a class="cta" href="game/index.html">Open the game →</a>${spineDocName ? `\n  <a class="cta cta-2" href="${esc(spineDocName)}">Read the spine →</a>` : ''}
 </header>
 
 <div class="explainer">
@@ -159,6 +197,7 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
   <p>Two things. <b>The game itself</b> (<code>game/</code>) — open <code>game/index.html</code> and it runs, nothing else required. And <b>the material that shaped it</b> (<code>patterns/</code>) — small pieces of design work, writing, and tooling that were reviewed and kept, each one traceable back to where the idea for it actually came from.</p>
   <p>A few sections below use terms specific to how this project tracks its own work. Each is explained inline where it's used, and defined again here:</p>
   <ul class="glossary">
+    <li><b>spine / nucleation point / crystal</b> — one of eight principles this project found recurring through every era of its own work, used as the top-level organization of this deposit. The full argument, with evidence for each, is one document at the top of this repository.</li>
     <li><b>admitted / "the gate"</b> — this project keeps a running, timestamped log of every piece of work it decides to keep. "Admitted" means it's in that log — a deliberate decision, recorded, not just a file that happens to exist.</li>
     <li><b>gift</b> — one accepted piece of work (a feature, a fix, an idea) — called that because nothing here is assigned or owed; it's offered and either kept or not.</li>
     <li><b>tributary / traced to</b> — the actual source a gift came from: a written proposal, an earlier recorded decision, or another part of the game. Nothing is presented without saying where it came from.</li>
@@ -169,6 +208,7 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
 </div>
 
 <nav class="jump">
+  <a href="#spine">The spine (8)</a>
   <a href="#gifts">Gifts &amp; tributaries (${tributaries.length})</a>
   <a href="#typology">Typology (${manifest.manifest.patterns.length - skillEntries.length - agentEntries.length})</a>
   <a href="#skills">Skills (${skillEntries.length})</a>
@@ -176,6 +216,12 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
   <a href="#heldback">Held back</a>
 </nav>
 
+<h2 id="spine">The spine — eight nucleation points</h2>
+<p class="section-note">Eight principles that kept independently reappearing across every version of this work — including the abandoned ones — identified by applying the project's own recurrence test to its own history${spineDocName ? `, argued in full in <a href="${esc(spineDocName)}">${esc(spineDocName)}</a>` : ''}. Everything else in this deposit attaches under the crystal that accounts for it; each item's one-line reason is given at its seat. A seat is a proposal, not a verdict.</p>
+${crystalSections}
+${unseatedHtml}
+
+<div class="rule"></div>
 <h2 id="gifts">Gifts &amp; tributaries</h2>
 <p class="section-note">Every accepted ("admitted") piece of work, traced back to where it actually came from — a written proposal, an earlier recorded decision, or the game itself. "Category" is the typology guess described below.</p>
 <table><tr><th>id</th><th>category</th><th>made</th><th>traced to</th></tr>${giftRows}</table>
@@ -205,7 +251,7 @@ ${heldBackHtml}
 
   fs.writeFileSync(path.join(OUT, 'index.html'), html);
   fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
-  console.log(`index.html written — ${tributaries.length} tributaries, ${order.filter((c) => byCategory[c]?.length).length} typology categories, ${skillEntries.length} skill(s), ${agentEntries.length} agent(s)`);
+  console.log(`index.html written — spine: ${CRYSTALS.length} crystals, ${seatedIds.size} seated, ${unseated.length} unseated · ${tributaries.length} tributaries, ${order.filter((c) => byCategory[c]?.length).length} typology categories, ${skillEntries.length} skill(s), ${agentEntries.length} agent(s)`);
 }
 
 main();
