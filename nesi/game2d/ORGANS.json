@@ -1231,6 +1231,134 @@
    }
   },
   {
+   "organ": "the prior-art check",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "before building, search an existing index for a close match and return one of three verdicts: already exists (here it is), close (worth a look before assuming this is new), or genuinely new. The search runs on the idea, not on a keyword the author has to guess.",
+   "extract": "the check runs BEFORE the build, not after, and it answers in a fixed three-way vocabulary rather than a similarity score a person has to interpret. THE VERDICT COMING BEFORE THE WORK IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- pre-build novelty-checking is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "patent prior-art search -- a filing is checked against existing patents before it proceeds, a close match blocks or narrows it",
+     "domain": "intellectual property law"
+    },
+    {
+     "where": "academic citation/similarity checking before publication -- a manuscript checked against the existing literature for what it duplicates or is close to",
+     "domain": "academic publishing"
+    },
+    {
+     "where": "taxonomic description of a new species -- checked against existing described species before a name is proposed",
+     "domain": "biology / taxonomy"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing nesi/conductor/check_idea.py ('Already built, or new? ... already built (here's the file), close to something (worth a look), or genuinely new') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the honest blank",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a field whose true value is unknown renders as visibly, explicitly unknown -- flagged, not filled. Never a fabricated plausible-sounding value standing in for an absence.",
+   "extract": "there is a real branch for 'cannot be named' that renders differently from every populated value, and nothing generates a guess to avoid taking that branch. THE VISIBLE FLAG ON AN ABSENCE IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- refusing to fabricate a filler value is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "'no answer' / 'prefer not to say' as its own explicit survey-response category, never silently imputed as a guessed value",
+     "domain": "statistics / survey design"
+    },
+    {
+     "where": "'terra incognita' on historical maps -- unmapped regions marked explicitly blank rather than filled with invented terrain",
+     "domain": "cartography"
+    },
+    {
+     "where": "a 'pending' / 'not yet tested' lab-result field, kept structurally distinct from and never conflated with a negative result",
+     "domain": "medicine / lab reporting"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing nesi/conductor/held.py ('a hold whose gap can't be named renders flagged (gap == \"\"). Never fabricate a plausible-sounding gap to fill the field') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the draft",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "a mutable scratch state that silently autosaves on every change, kept structurally apart from the committed file -- which changes only on one explicit act. Closing mid-edit loses nothing; the real file is untouched until Save.",
+   "extract": "there are two persistence paths, not one -- a cheap, silent, continuous one for the scratch state, and a single explicit-only path for the real file -- and nothing ever writes the real file except that one call. THE SEPARATION OF THE TWO PATHS IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- a two-tier commit boundary is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "an email client's Drafts folder -- autosaved continuously, never sent until an explicit Send",
+     "domain": "communication"
+    },
+    {
+     "where": "a contract redline under negotiation -- marked up freely, not binding until signature",
+     "domain": "law"
+    },
+    {
+     "where": "a pending, uncleared bank transaction -- visible and reversible until it posts to the ledger",
+     "domain": "finance"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing nesi/conductor/deepdive.py ('Unsaved keystrokes autosave to deepdive_state.json as a DRAFT (never touches the real file) so closing mid-edit loses nothing; the file itself only changes on an explicit Save') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the loud stub",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "when a real dependency isn't wired, output the correctly-shaped placeholder anyway -- but badge it so unmistakably that it can never pass as the real thing, to any downstream reader, human or code.",
+   "extract": "the stub and the real output have the exact same shape, so the caller doesn't break -- and the stub is loudly, structurally marked, so nothing can silently treat it as real. THE SHAPE MATCHES AND THE BADGE NEVER LIES IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- a placeholder that is shape-compatible yet unmistakably marked is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "a flight simulator's every display explicitly labeled SIMULATOR, never able to be confused with a real cockpit readout",
+     "domain": "aviation training"
+    },
+    {
+     "where": "a stunt prop marked unmistakably as a prop on a film or theatre set, correctly shaped but never mistakable for the real object",
+     "domain": "entertainment / theatre"
+    },
+    {
+     "where": "a crash-test dummy -- correctly shaped and instrumented like a passenger, structurally and visibly never a real one",
+     "domain": "automotive safety testing"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing nesi/conductor/bench.py ('every call lands on the stub: correctly-SHAPED output, loudly labeled [STUB ...], badged stub=True so it can never pass as real production') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
    "organ": "the tombstone",
    "seat": "FILTER",
    "form": "mechanism",
