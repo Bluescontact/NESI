@@ -1039,6 +1039,70 @@
    }
   },
   {
+   "organ": "the throat",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "placement derived, not authored: run steepest-descent from the highest standing point to find the course, then find that course's narrowest cross-section. That point — the throat — is where a holding structure stands, because it is the least wall that holds the most.",
+   "extract": "no coordinate appears anywhere in the placing logic — only two derived facts read off the medium itself: the path of steepest descent, and the narrowest point along it. THE REFUSAL TO HARD-CODE A POSITION IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat — none of the twelve gestures states 'I am placed where the medium's own geometry determines,' which is a different claim than DAM's hold-then-release. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "dam siting at a river's narrowest gorge (e.g. Hoover Dam at Black Canyon) — the practice of choosing a dam's location by the canyon's own narrowest point, not by survey preference",
+     "domain": "civil engineering"
+    },
+    {
+     "where": "D8 / steepest-descent flow-direction algorithms over a digital elevation model — a drainage network is computed from the terrain, never drawn by hand",
+     "domain": "hydrology / GIS"
+    },
+    {
+     "where": "vascular branching (Murray's law) — vessel diameter and branch point are derived from flow, not authored",
+     "domain": "biology"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing world3d/.walk/_snapshot/scripts/river.gd (Kevin's own mark 2026-08-05: 'sited on the grain, never by hand') during a pattern-recognition pass over soil material -- not a code port, world3d is a different substrate entirely. game2d has no placement-by-derivation mechanism yet. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the shape-sorter",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "player",
+   "mechanism": "an interface where form alone -- footprint, thickness, silhouette -- carries every bit of meaning a hand needs to act. Zero labels, zero words. One physical gesture (a press, a fold, a slot) completes the action.",
+   "extract": "no label anywhere in the interface, and the action is one physical gesture rather than a menu or a sentence. THE REFUSAL TO USE WORDS IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- this is about communication modality (shape instead of language), a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "a child's shape-sorter toy -- only the correct shape fits the slot, nothing is labeled",
+     "domain": "early-childhood / toy design"
+    },
+    {
+     "where": "an industrial emergency-stop / kill switch -- one obvious press, no confirmation dialog, shape and color alone convey function",
+     "domain": "industrial control"
+    },
+    {
+     "where": "tactile product controls (distinctly shaped oven dials, braille-free tactile switches) shaped per function so a hand acts correctly without reading",
+     "domain": "accessible / tactile design"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing world3d/.walk/_snapshot/scripts/sorting_tarp.gd (Kevin's own brief 2026-08-06: 'a button that folds a sorting tarp doesnt need language processing') during a pattern-recognition pass over soil material. Distinct from game2d's own already-admitted gift_07_sorting_tarp, which names a different mechanic (a ground/view called 'tarp') -- this organ is about wordless physical approval, not that view. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
    "organ": "the tombstone",
    "seat": "FILTER",
    "form": "mechanism",
