@@ -1190,6 +1190,18 @@
     {
      "where": "nesi/conductor/continuity.py — \"a derived resume-VIEW, never a source of truth. The ledgers and queues are\" — the same state-derived-by-reading-the-record mechanism, in an inactive Python build, authored independently of this organ's recognition",
      "domain": "a different, inactive NESI build (v2 conductor) — imported through the gate 2026-08-31"
+    },
+    {
+     "where": "osg_organ/engine.py — \"The world is never stored. Every call to world_state() re-derives it from the real ledgers\" — density, landmarks, encounters, gates, offers all derived per call, nothing written",
+     "domain": "a different, inactive NESI build (the OSG organ) — fresh-walk scan 2026-08-31"
+    },
+    {
+     "where": "gate/update_state_view.py — the gate's state view auto-generated from gate_data.json on every update, never edited directly",
+     "domain": "a different, inactive NESI build (the prior gate) — fresh-walk scan 2026-08-31"
+    },
+    {
+     "where": "rhythm/brief.py — \"the two emails, generated from the GATE by owned compute... a mechanical read of gate_data.json\"",
+     "domain": "a different, inactive NESI build (rhythm) — fresh-walk scan 2026-08-31"
     }
    ],
    "members": {},
@@ -1286,6 +1298,10 @@
     {
      "where": "a 'pending' / 'not yet tested' lab-result field, kept structurally distinct from and never conflated with a negative result",
      "domain": "medicine / lab reporting"
+    },
+    {
+     "where": "tools/codex_index/grounder.py — a HOLD verdict is refused unless it carries \"the exact condition that makes it decidable\" — the gap must be named to hold",
+     "domain": "a different corpus instrument (the codex grounder) — fresh-walk scan 2026-08-31"
     }
    ],
    "members": {},

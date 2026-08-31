@@ -72,6 +72,14 @@ const SEATS = {
   'continuity_derived_view':                 { crystal: 'c7', why: 'a resume-view derived from the ledgers, never a source of truth of its own' },
   'held_named_gaps':                         { crystal: 'c6', why: 'everything held carries the name of what it is waiting for — the honest blank, working' },
   'prior_art_check_tool':                    { crystal: 'c7', why: 'already built, or new? — the check that keeps a mechanism from existing twice' },
+  // Fresh-walk filter pass, 2026-08-31 — standouts from the 18 new roots,
+  // each file read and its mechanism verified before admission.
+  'codex_grounder':                          { crystal: 'c6', why: 'a typed verdict, and a HOLD must name the exact condition that makes it decidable' },
+  'codex_query':                             { crystal: 'c7', why: 'match by mechanism, not vocabulary — and the cache is never a second truth' },
+  'osg_world_engine':                        { crystal: 'c7', why: 'the world is never stored — every read re-derives it from the real ledgers' },
+  'leaf_audit':                              { crystal: 'c6', why: 'the no-ask discipline enforced by the build, not by vigilance — poison-tested' },
+  'field_render':                            { crystal: 'c1', why: 'the machine offers no relation vocabulary — naming the relation is the writer’s act alone' },
+  'converger_capture':                       { crystal: 'c2', why: 'authorship machine-checkable: verbatim, source must be kevin, anything else refused' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
