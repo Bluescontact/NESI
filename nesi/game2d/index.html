@@ -614,6 +614,73 @@ const CASE_CONSTRAINTS = [
     keeps:"the sort, and the words themselves, stay your hand's" }
 ];
 
+/* THE PROJECTION, built 2026-08-31 — recognized as an organ in ORGANS.json
+   the same day, from world3d's field_kernel.js: "project() rebuilds a
+   world from events alone; verify() checks live state against a fresh
+   replay. If they ever disagree, the kernel is wrong, not the game built
+   on it." Ported as a real mechanism, not a metaphor.
+
+   HONEST SCOPE, stated plainly rather than oversold: this verifies THIS
+   SESSION's own live actions only. A fresh page load resets the log; it
+   does not replay restore()'s reconstruction of earlier sittings. Making
+   restore() itself log-derived would mean the log replacing persist()'s
+   snapshot as the actual store — a real, much larger, separate build, not
+   attempted here. What this DOES prove: every live mutation this session
+   made (a sentence written, an edge declared, a deletion, a world pick,
+   a sentence crossing into overread) is independently reconstructable
+   from a plain append-only record of what happened — logged at the exact
+   moment it happens, by a second, separate line of code from the one that
+   changed the live state — and the two never silently drift apart.
+
+   VERIFIED AGAINST REAL LIVE STATE, not a shadow counter — an earlier
+   draft of this compared the log to a counter incremented at the same
+   call site as the log, which can never catch a real bug (both sides
+   always move together by construction). Caught live, by testing it:
+   pushing directly to `tombstones` without going through the logged path
+   should have broken verification and didn't, because the "live" side
+   wasn't actually live. Fixed by comparing against tombstones.length and
+   overreadIds.size themselves — the real collections — not a proxy.
+
+   SCOPED TO WHAT'S GENUINELY VERIFIABLE: tombstones and overreads only
+   ever grow within a session (confirmed in this file's own comments —
+   "no decay, no self-heal" for overreads; a tombstone is never removed).
+   A length-delta from a session-start baseline is a trustworthy second
+   measurement for these two. Nodes, edges, and world-picks can also
+   SHRINK within a session (delete, un-pick) — a simple length-delta
+   there would false-positive on a perfectly legitimate delete. Their
+   log counts are still reported, honestly labeled as logged-only, not
+   verified — true to what a fresh replay can actually stand behind. */
+let PROJECTION_LOG = [];
+let PROJECTION_BASELINE = null; // set once, right after restore(), before any live mutation
+function logEvent(kind) { PROJECTION_LOG.push({ kind, seq: PROJECTION_LOG.length }); }
+function project(log) {
+  const s = { tombstones:0, overreads:0, nodesCreated:0, edgesCreated:0, picksToggled:0 };
+  for (const e of log) {
+    if (e.kind === "tombstone") s.tombstones++;
+    else if (e.kind === "overread") s.overreads++;
+    else if (e.kind === "node") s.nodesCreated++;
+    else if (e.kind === "edge") s.edgesCreated++;
+    else if (e.kind === "pick_add" || e.kind === "pick_remove") s.picksToggled++;
+  }
+  return s;
+}
+function verifyProjection() {
+  const projected = project(PROJECTION_LOG);
+  const liveTombstones = tombstones.length - PROJECTION_BASELINE.tombstones;
+  const liveOverreads = overreadIds.size - PROJECTION_BASELINE.overreads;
+  const mismatches = [];
+  if (projected.tombstones !== liveTombstones) mismatches.push("tombstones");
+  if (projected.overreads !== liveOverreads) mismatches.push("overreads");
+  return {
+    match: mismatches.length === 0,
+    verified: { tombstones: { log: projected.tombstones, live: liveTombstones },
+                overreads: { log: projected.overreads, live: liveOverreads } },
+    loggedOnly: { nodesCreated: projected.nodesCreated, edgesCreated: projected.edgesCreated, picksToggled: projected.picksToggled },
+    mismatches,
+    events: PROJECTION_LOG.length
+  };
+}
+
 /* THE TOMBSTONE, composted 2026-08-27 — reconciled in, not invented. Named
    in ORGANS.json under seat FILTER since 2026-08-16, real and unbuilt
    until now: "a deletion recorded as a MARKER, never an erasure... a
@@ -766,7 +833,10 @@ function ingestOne(text) {
      still reads the sentence, the same way a hinge or a chain edge can
      still pass through a dragged-out-of-view card elsewhere in this file. */
   const blind = !!document.getElementById("blindToggle").checked;
-  return addNode(text, words, gapMs, undefined, undefined, undefined, undefined, blind);
+  const n = addNode(text, words, gapMs, undefined, undefined, undefined, undefined, blind);
+  logEvent("node"); // the real choke point — both bandCut() (typed, punctuation-triggered)
+                     // and ingest()'s Enter-key path create nodes only through here
+  return n;
 }
 function ingest(text) {
   const n = ingestOne(text); if (!n) return;
@@ -1101,6 +1171,7 @@ function renderDoc() {
             attentionCount[n.id] = (attentionCount[n.id] || 0) + 1;
             if (attentionCount[n.id] >= OVERREAD_AT) {
               overreadIds.add(n.id);
+              logEvent("overread");
               p.classList.add("overread");
             }
             persist();
@@ -1138,6 +1209,7 @@ function selectSentence(id, L) {
   if (connectArmed && id !== connectFrom) {
     const e = { id: nextEdgeId++, aId: connectFrom, bId: id, label: "", staged: true };
     declaredEdges.push(e);
+    logEvent("edge");
     connectArmed = false; connectFrom = -1;
     renderDoc();
     setTimeout(() => { const inp = document.querySelector('.staged-item[data-id="'+e.id+'"] input'); if (inp) inp.focus(); }, 0);
@@ -1185,6 +1257,7 @@ function deleteNode(id) {
   const idx = nodes.findIndex(n => n.id === id);
   if (idx === -1) return;
   tombstones.push({ text: nodes[idx].text, day: nodes[idx].day }); // the bank keeps it — see the note above tombstones
+  logEvent("tombstone");
   nodes.splice(idx, 1);
   edges = edges.filter(e => e.aId !== id && e.bId !== id);
   declaredEdges = declaredEdges.filter(e => e.aId !== id && e.bId !== id);
@@ -1858,8 +1931,8 @@ function renderTarp() {
    above `worldPicks` for what this reuses from solid.js and why. */
 function toggleWorldPick(id) {
   const i = worldPicks.indexOf(id);
-  if (i >= 0) worldPicks.splice(i,1);
-  else { if (worldPicks.length >= 12) return; worldPicks.push(id); }
+  if (i >= 0) { worldPicks.splice(i,1); logEvent("pick_remove"); }
+  else { if (worldPicks.length >= 12) return; worldPicks.push(id); logEvent("pick_add"); }
   persist();
   renderGraph(layoutCache());
 }
@@ -2289,6 +2362,7 @@ function checkRatifyByCrossing(dragged) {
     if (already) continue;
     const e = { id: nextEdgeId++, aId: dragged.id, bId: n.id, label: "", staged: true };
     declaredEdges.push(e);
+    logEvent("edge");
     persist(); renderDoc();
     setTimeout(() => { const inp = document.querySelector('.staged-item[data-id="'+e.id+'"] input'); if (inp) inp.focus(); }, 0);
     return; // one ratification per drag — the first real overlap wins
@@ -2350,6 +2424,13 @@ function renderCase() {
   html += CASE.ops.length
     ? CASE.ops.map(o => '<div class="caserow"><span class="k">'+o.kind+'</span><span class="v quiet">'+o.what+'</span></div>').join("")
     : '<div class="caserow"><span class="k">—</span><span class="v quiet">nothing yet</span></div>';
+  html += '<div class="rule"></div><h4>the projection — state vs. a fresh replay of this session\'s own log</h4>';
+  const pv = verifyProjection();
+  html += '<div class="caserow"><span class="k">events logged</span><span class="v quiet">'+pv.events+'</span></div>';
+  html += '<div class="caserow"><span class="k">replay vs. live</span><span class="v'+(pv.match?' quiet':'')+'">'+(pv.match?'match':'MISMATCH: '+pv.mismatches.join(", "))+'</span></div>';
+  html += '<div class="caserow"><span class="k">verified (tombstones)</span><span class="v quiet">log '+pv.verified.tombstones.log+' / live '+pv.verified.tombstones.live+'</span></div>';
+  html += '<div class="caserow"><span class="k">verified (overreads)</span><span class="v quiet">log '+pv.verified.overreads.log+' / live '+pv.verified.overreads.live+'</span></div>';
+  html += '<div class="caserow"><span class="k">logged only</span><span class="v quiet">nodes '+pv.loggedOnly.nodesCreated+' · edges '+pv.loggedOnly.edgesCreated+' · picks '+pv.loggedOnly.picksToggled+'</span></div>';
   html += '<div class="rule"></div><h4>what is binding, in this build</h4>';
   html += CASE_CONSTRAINTS.map(c =>
     '<div class="constraint"><div class="says">'+c.says+'</div><div class="keeps">keeps: '+c.keeps+'</div></div>'
@@ -2370,6 +2451,7 @@ function typingIntoField(el) {
 }
 
 restore();
+PROJECTION_BASELINE = { tombstones: tombstones.length, overreads: overreadIds.size };
 renderDoc();
 document.getElementById("hint").textContent = hintText();
 </script>
