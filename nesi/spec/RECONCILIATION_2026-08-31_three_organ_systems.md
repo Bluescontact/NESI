@@ -104,14 +104,18 @@ things** in each:
 | **DEEP** | "I LET IT GO DOWN" — content-addressed store, no `list()` (by-law); visibility culling (built) | THE DEEP — the Lake's dark, unrendered part; never renders, even to Kevin |
 | **GROUND** | "I LET IT SETTLE" — relaxation to rest (built); background compaction (by-law) | the accretion rule — terrain as pure function of the ledgers, ground rises where marks land |
 
-None of these are the same mechanism wearing two names. They are two
-separately-invented ideas that happen to have converged on the same English
-word — aiming, depth, and settling are common enough concepts that two
-unrelated design passes reached for them independently. **This is not
-flagged as an error to fix.** Whether it's worth relating them — game2d's
-HELIOSTAT gesture and the world's Heliostat place, for instance, both being
-about "aim/alignment" — is a naming judgment only Kevin can make, not
-something a reconciliation pass should default.
+**DECIDED, 2026-08-31 (Kevin's mark: "decide the HELIOSTAT/DEEP/GROUND
+naming collisions"):** on inspection, all three are the same mechanism,
+independently invented. game2d's "partition of unity" (weights across
+contributors summing to one) IS the world's computed-overlap CONVENER.
+game2d's "content-addressed store with no `list()`" IS "the Deep never
+renders, even to Kevin." game2d's "relaxation to rest" IS the accretion
+rule's "ground unwalked flattens slowly, never to zero." Not renamed, not
+merged in code — different codebases, both names earned — but each now
+carries a fifth sighting in `ORGANS.json` recording the world-naming layer
+as an independent confirming domain, per that file's own recurrence-test
+law (three-plus sightings in three-plus unrelated domains is what makes a
+mechanism a real organ, not a trick).
 
 ---
 
@@ -130,12 +134,23 @@ game2d's own history starts gathering pace. **Superseded by inactivity, not
 by a mark** — said plainly rather than left ambiguous, per this corpus's
 own rule that a thing not built for a month is a fact, not a judgment.
 
-**The world3d/naming system (system 2) is the one genuinely open fork.**
-It is real, human-walked, unfinished by its own honest account, and
-explicitly blocked — per page 5 of `NESI_AS_A_WHOLE_2026-08-04.md` — not on
-craft but on Kevin not yet being able to say what he wants inside it. That
-block is dated 2026-08-02 and, per this same file, has not been named
-closed since.
+**The world3d/naming system (system 2) — CLOSED, 2026-08-31 (Kevin's mark).**
+Not an open fork after all. Kevin's ruling: both system 2 (world3d) and
+system 3 (NESI v2) are abandoned projects — they imploded under the weight
+of their own debris, not paused pending a decision. Both are now **SOIL**:
+composted, not deleted, explicitly available to extract from and mine for
+game2d, the repo this session's deposit pipeline actually ships. This
+supersedes the "genuinely open fork" reading two paragraphs up — caught to
+`MARKS_LOG.jsonl` 2026-08-31T09:56:58.
+
+What "soil" means here in practice: nothing is ported wholesale. `worth.py`
+(system 3's one flagship-complete spec'd organ — "completes the recognition
+law's four mechanics"), the accretion rule and dam mechanic (system 2, real
+design, never built), and the 40-region Godot terrain layout are all real
+material a later extraction pass can draw single mechanisms from — the same
+relationship `tools/library_lens.js` already has to `world2d/`, `bench/`,
+and `game2d/_compost` for gift-sourcing. Neither codebase is revived as its
+own thing; neither is silently deleted.
 
 ---
 
@@ -143,14 +158,16 @@ closed since.
 
 **Decided, by evidence, not by mark:** the three systems are not
 duplicates of each other and none needs to be deleted or merged into
-another. game2d is the live build. NESI v2 is dormant. World3d is open and
-blocked on a felt-read, not a build task.
+another. game2d is the live build.
 
-**Not decided, and not this document's to decide:** whether the HELIOSTAT /
-DEEP / GROUND name-echoes should be resolved into one shared vocabulary or
-left as coincidence; whether NESI v2 should be formally retired or left
-exactly as-is (dormant but present); whether world3d's open block should be
-picked back up, and if so, with what verb set. Each of these is a mark
+**Decided, by Kevin's mark, 2026-08-31:** the HELIOSTAT/DEEP/GROUND
+collisions (same organs, independently sighted — see above). NESI v2 and
+world3d are both soil — composted, available to mine, neither revived nor
+erased.
+
+**Not decided, and not this document's to decide:** which specific
+mechanisms from that soil are worth actually extracting into game2d, and
+when. That's the next pass, not this one.
 only Kevin makes.
 
 *Nothing here is crossed. This is the map, so the three bodies are held

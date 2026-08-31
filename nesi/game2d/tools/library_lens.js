@@ -57,6 +57,13 @@ const ROOTS = [
   { label: "bench",            dir: path.join(NESI, "bench") },
   { label: "nesi_bench_v0",    dir: path.join(NESI, "nesi_bench_v0") },
   { label: "game2d/_compost",  dir: path.join(GAME2D, "_compost") },
+  // NESI v2's organ body — Kevin's mark 2026-08-31: v2 and world3d both
+  // "imploded under the weight of debris," neither revived nor deleted,
+  // both soil to mine into game2d. world3d was already a root above;
+  // conductor/ (worth.py, tension_table.py, heartwood.py, coordination_surface.py,
+  // and 20+ siblings) is the actual code the world3d root's dormant sibling
+  // never had scanned at all before this.
+  { label: "nesi_v2_conductor", dir: path.join(NESI, "conductor") },
 ];
 const CODE_EXTS = new Set([".gd", ".js", ".py", ".html"]);
 const MAX_DEPTH = 6;
