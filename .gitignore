@@ -61,6 +61,16 @@ rhythm/.last_brief
 # own catch. These read session transcripts directly instead.
 !/tools/skill_invocation_check.js
 !/tools/agent_invocation_check.js
+# The deposit pipeline itself, 2026-08-30/31. Same gap as the harness files
+# above, caught later: build_deposit.js / build_deposit_public.js /
+# deposit_lib.js are the actual mechanism that ships this corpus to
+# Bluescontact/NESI, run by hand each time, and were never tracked.
+# typology_classify.js added 2026-08-31 (Kevin's mark: "proceed on 1" —
+# THE TYPOLOGY, ported from nesi/conductor/tension_table.py).
+!/tools/build_deposit.js
+!/tools/build_deposit_public.js
+!/tools/deposit_lib.js
+!/tools/typology_classify.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
