@@ -80,6 +80,21 @@ const SEATS = {
   'leaf_audit':                              { crystal: 'c6', why: 'the no-ask discipline enforced by the build, not by vigilance — poison-tested' },
   'field_render':                            { crystal: 'c1', why: 'the machine offers no relation vocabulary — naming the relation is the writer’s act alone' },
   'converger_capture':                       { crystal: 'c2', why: 'authorship machine-checkable: verbatim, source must be kevin, anything else refused' },
+  // THE TEN ORGANS (Kevin: "bring forward and prepare the 10 organs for
+  // the gate") — the imperative actions that survived the real-pressure
+  // collapse of the 157-pattern canon, 2026-07-29/30. Each subsumes a
+  // dozen-plus folded patterns; the folded members stay OUT of the gate
+  // so the doctrine crosses once (crystal 7).
+  'mark_it_at_the_body':                     { crystal: 'c2', why: 'the crossing law as an action — the verdict held at the origin, fail closed past its reach' },
+  'route_every_cost':                        { crystal: 'c5', why: 'every generated cost lands somewhere named, or the move stops' },
+  'place_it_and_close':                      { crystal: 'c5', why: 'the gift completes at the placing — close your own record, forfeit the claim' },
+  'hand_over_what_runs':                     { crystal: 'c5', why: 'strip yourself out of the load path — what leaves regenerates without you' },
+  'set_the_floor':                           { crystal: 'c2', why: 'the record that says it is set is not emitted until the leveling was actually performed' },
+  'stake_the_read':                          { crystal: 'c6', why: 'validation by exposure — a read staked where it costs you if wrong' },
+  'refuse_where_seen':                       { crystal: 'c5', why: 'the no placed once, cleanly, in the shared channel — then nothing added' },
+  'discharge_the_no':                        { crystal: 'c4', why: 'the empty middle engineered — refuse in the build, delete the bypass, nothing decided at execution' },
+  'force_the_definition':                    { crystal: 'c6', why: 'an undefined condition resolves to written-in-shared-text or visibly-refused, nothing between' },
+  'move_the_load':                           { crystal: 'c3', why: 'the fix is topological — add the second node, move the mandate, never modify the node' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,

@@ -5,7 +5,11 @@
 > a proposal: they are the spine the deposits assemble onto. Each deposit item
 > attaches under the crystal that accounts for it (the seating map lives in
 > `tools/spine.js` — one source, per crystal 7); crystal 4's seat list is empty
-> on purpose. The "Standing" paragraph below is kept as written — it was true
+> on purpose. *(Layered, later the same day: crystal 4 gained its first real
+> occupant when the ten organs crossed — `discharge_the_no_at_load_time`, the
+> empty middle engineered rather than policed. The seat was empty until
+> something genuinely of the crystal arrived, which is how it should fill.)*
+> The "Standing" paragraph below is kept as written — it was true
 > when assembled, and this notice is the layer that changes it, per crystal 2's
 > own convention.
 
