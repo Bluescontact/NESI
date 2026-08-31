@@ -1,0 +1,13 @@
+Invariant: 2.0
+Codex: 1.0.0
+Compiled-from: The Architecture of Coherence v2.0 (Kevin Mears), Appendix A + Reference
+Lock-status: INVARIANT.md and GLOSSARY.md are read-only after lock; changes require an Invariant version bump and a propagation re-check of all conforming artifacts.
+
+Mirror-declaration (layered 2026-08-31, crystal-7 resolution): the source of
+truth for the Invariant's DOCTRINE is the manuscript copy at
+aoc-v2/00_invariant/INVARIANT.md; this codex's copies are the compiled,
+locked DEPLOYMENT rendering. If the two ever disagree on substance, that is
+a drift event to surface, never to silently resolve; formatting may differ,
+doctrine may not. Verified content-equivalent 2026-08-31 (the register-names
+canonicity clause appears as prose in the source and as the "(canonical)"
+table marker here; this copy additionally carries the version-bump clause).

@@ -93,6 +93,18 @@ rhythm/.last_brief
 # seating map of deposit items under them — the single source (crystal 7)
 # both deposit pipelines and the arrangement organ read.
 !/tools/spine.js
+# The ROS_RI cross-origin audit, 2026-08-31 (Kevin's mark: "work the
+# ROS_RI staged block") — five pages admitted at the gate; an admitted
+# artifact's source is version-controlled. Fourth instance of the
+# untracked-real-artifact gap closed this session.
+!/ROS_RI_site/
+# The coherence codex + the manuscript invariant's mirror declaration,
+# 2026-08-31 — the crystal-7 resolution layered onto VERSION and
+# MIRROR.md must be in history, or the resolution itself can drift.
+!/coherence-codex/
+!/aoc-v2/
+/aoc-v2/*
+!/aoc-v2/00_invariant/
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
