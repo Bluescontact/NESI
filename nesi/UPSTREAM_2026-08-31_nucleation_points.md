@@ -1,327 +1,278 @@
 # UPSTREAM — NESI's nucleation points
 
 > **CROSSED — 2026-08-31, Kevin's mark: *"lets commit those 8, and assemble the
-> deposits onto them. Thats the spine."*** The eight crystals below are no longer
-> a proposal: they are the spine the deposits assemble onto. Each deposit item
-> attaches under the crystal that accounts for it (the seating map lives in
-> `tools/spine.js` — one source, per crystal 7); crystal 4's seat list is empty
-> on purpose. *(Layered, later the same day: crystal 4 gained its first real
+> deposits onto them. Thats the spine."*** The eight crystals below are the spine
+> the deposits assemble onto. Each deposit item attaches under the crystal that
+> accounts for it (the seating map lives in `tools/spine.js` — one source, per
+> crystal 7). *(Layered, later the same day: crystal 4 gained its first real
 > occupant when the ten organs crossed — `discharge_the_no_at_load_time`, the
-> empty middle engineered rather than policed. The seat was empty until
-> something genuinely of the crystal arrived, which is how it should fill.)*
-> The "Standing" paragraph below is kept as written — it was true
-> when assembled, and this notice is the layer that changes it, per crystal 2's
-> own convention.
-
-**What this file is.** Kevin's ask, 2026-08-31: *"what are nesi's nucleation points,
-because those crystals are upstream of everything kevin is putting into the repo...
-a full upstream reconciliation."* The trigger was the knowledge-tetra doc
-(`game2d/KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md`) sitting in the deposit
-looking like an upstream document while actually being a build-log of one leaf
-feature — and behind it, the fact that the corpus holds at least six separate
-claims to define NESI's top-level shape, none reconciled against the others.
-
-**The method.** This corpus already owns the right instrument for the question:
-`game2d/ORGANS.json`'s recurrence test — *"an organ is confirmed at three or more
-sightings in three or more unrelated domains. One project doing a clever thing is a
-trick."* Applied here to the frames themselves: a nucleation point is a structure
-that **independently recrystallized across builds that were not copying each
-other** — including builds that later imploded. The frames are the sightings. What
-recurs through the wreckage is the crystal; what appeared once and needed defending
-is a frame.
-
-**Provenance of this pass.** Run twice, same day, on Kevin's instruction — the
-second pass re-derived the list from the survey rather than rereading the first
-draft, and found an eighth crystal the first pass had missed (crystal 8, the
-single source). The falsifier at the bottom worked once already.
-
-**Standing.** A proposal, assembled from what is on disk, every claim cited.
-Nothing here crosses anything. Kevin's mark is the only crossing — which is itself
-crystal 2 below, and this file obeying it is one more sighting.
+> empty middle engineered rather than policed.)*
+>
+> **DEVELOPED — 2026-08-31, on Kevin's instruction ("run a full development at
+> this point").** A full adversarial pass ran on this document: audit (19
+> defects found, all ruled on), ground (the governing claim as first written
+> did not survive; the minimal honest reformulation below did), diverge, and an
+> independent verify. The eight crystals are unchanged — they are Kevin's
+> crossing and nothing found here guts one. What changed: the claims wrapped
+> around them are now graded honestly, the falsifier fires in both directions,
+> the sighting lists are corrected and de-duplicated, and three candidate
+> seatings are put to the felt read instead of being quietly absorbed. The
+> pre-development text is held byte-for-byte in git at commit `2e6b434`.
 
 ---
 
-## Part 1 · The frames surveyed (the raw material, with status)
+This corpus was built in pieces over about three months, and most of the
+pieces failed. This document names the eight structures that did not — the
+ones that kept turning up across builds and eras, including builds that later
+collapsed. Everything else in the deposit seats under one of these eight. Each
+comes with the evidence it stands on, graded honestly; at the bottom is the
+test that would show this document wrong, in both of the directions it can be
+wrong.
 
-| Frame | Where | Date | Status today |
+---
+
+## THE SPINE — the eight crystals
+
+The numbering here is the numbering in `tools/spine.js`; the two must never
+drift. One line of law and the single strongest verified sighting each; the
+full corrected evidence is in Appendix A.
+
+**1 · THE RECOGNITION LAW** — the mechanic never does the recognizing: the
+machine surfaces and holds still while the person does the seeing.
+Strongest sighting: `refusal_check` in game2d's suite — no model call, nothing
+outward, no score or reward cue, enforced mechanically at every commit.
+(6 verified sightings.)
+
+**2 · THE MARK IS THE ONLY CROSSING** — nothing binds except by Kevin's own
+mark, and supersession is a layer on top, never an erasure. One standing
+exception, recorded below.
+Strongest sighting: `gate/admit.mjs` + `MARKS.jsonl` — the gate itself, which
+refuses a mark whose path resolves to no real file.
+(6 verified sightings.)
+
+**3 · THE UNIT IS THE MECHANISM, NEVER THE PROJECT** — extract the pattern
+that recurs; leave the project it was found in.
+Strongest sighting: Kevin's mark 2026-08-16, verbatim in `ORGANS.json`: *"I
+want to extract from projects, and use code bits, rather than importing whole
+projects."* (4 verified sightings.)
+
+**4 · THE HELD CENTER** — no component, score, or master node ever sits at
+the middle of a frame; the middle holds the law, the person, or nothing.
+Strongest sighting: THE COLLAPSE's four nodes, closing words of the surviving
+digest: *"Centre stays empty."*
+(3 verified sightings — at the recurrence threshold, not above it, after this
+development's de-duplication. Stated plainly rather than padded.)
+
+**5 · THE GIFT ORIENTATION** — everything faces outward, and the labor of
+landing clean is paid upfront.
+Strongest sighting: Kevin's words, NESI.md's closing section: *"I do the
+cognitive burden of the gift upfront... the labor of making a thing land
+clean moves onto me, before anyone else touches it."*
+(6 verified sightings.)
+
+**6 · THE CLAIM CARRIES ITS OWN FALSIFIER** — no assertion stands on
+confidence; "a fact, not a claim" is the highest standing anything has.
+Strongest sighting: the projection (built 2026-08-31) verifying state by
+fresh replay and claiming as verified only the two properties its method can
+actually verify, the rest labeled logged-only.
+(5 verified sightings.)
+
+**7 · THE SINGLE SOURCE** — a fact lives in one place; a copy is a drift
+waiting to happen.
+Strongest sighting: the `computeHinges()` repair — two separately-drifting
+copies of one logic fixed by extraction into one function, *"not by patching
+the two copies back into agreement, which would only defer the next drift."*
+(4 verified sightings.)
+
+**8 · THE TETRA/VE GEOMETRY** — the corpus's form-language: a signature, not
+a law. "It should be a tetra" is never an argument; the mechanism earns the
+seat and the shape describes it afterward.
+Strongest sighting: its own record — ratified once and downgraded to history
+inside ten days; built as UI once and retired; run at sentence level, where
+its own experiments found the shape forcing six identical edges onto
+relationships that aren't identical. The caveat is the evidence.
+(6 sightings of the image recurring; see the method note below for why this
+grading extends further than crystal 8.)
+
+---
+
+## THE METHOD, stated honestly
+
+The instrument is borrowed from `ORGANS.json`: *"an organ is confirmed at
+three or more sightings in three or more unrelated domains."* Applied to the
+corpus's own architectural frames, it cannot deliver what it delivers for
+organs, and this document no longer pretends otherwise:
+
+- **"Crystal" means exactly this and no more:** a structure with three or
+  more verified sightings across this corpus's builds and eras. The chemistry
+  metaphor is a name, not an argument — it does not import independence.
+- **Every sighting for every crystal is inside one author-and-assistant
+  lineage.** The first draft applied that caveat only to crystal 8; the
+  development applies it to all eight. What the test measures inside one
+  corpus is which laws were *kept* — re-arrived at, enforced, and repaired
+  across eras — not which truths exist independently of the author. That is
+  signature-grade evidence. Law-grade would take a sighting from outside the
+  lineage, and none of the eight has one yet.
+- **Recurrence detects habit as reliably as merit.** The corpus itself proved
+  this: elaborate binding meta-machinery (the widget chassis, the decision
+  brake, the counsel seats, the memory index) recurred across eras exactly as
+  reliably as these eight — and Kevin suspended it wholesale on 2026-08-15 as
+  debris. Recurrence proposes; the mark disposes. The eight below bind
+  because Kevin crossed them, not because they recurred.
+
+## THE FALSIFIER — now firing in both directions
+
+- **Missing crystal:** something real ships that none of the eight accounts
+  for → the list is incomplete; a candidate ninth is named with its own
+  sightings and put to Kevin's felt read.
+- **Forced fit:** something is seated under a crystal only by stretching →
+  the seating is wrong and is unseated, not defended. Three challenged
+  seatings stand open right now (next section) — the first draft's falsifier
+  could not see this direction at all, which is how they got in.
+- **The method itself:** a sighting that fails independent verification is
+  removed; a crystal that drops below three verified sightings loses
+  confirmed status and says so (crystal 4 sits exactly at three today).
+- Firing record, honestly: the second pass of the original run found crystal
+  7 missing — an editorial catch during drafting, not a firing of the stated
+  trigger. This development pass fired the forced-fit direction three times.
+  Both facts are the record; neither is inflated into more than it was.
+
+## STANDING EXCEPTION to crystal 2
+
+`gate/CLOSED.jsonl` records one mark closed on a third party's withdrawn
+consent: never mined, routed, or read again — an erasure-of-use, not a layer,
+and an authority (another person's consent, retroactive once articulated,
+enforceable or not) that outranks the kept-whole convention. Crystal 2 as
+written did not state this; the gate already enforces it in code. Recorded
+here so the law and the code agree.
+
+## CHALLENGED AND CANDIDATE SEATINGS — Kevin's felt read decides
+
+The development's ground pass surfaced structures with crystal-grade evidence
+that the eight do not honestly cover. They are named here, not seated —
+seating is a crossing, and the mark is the only crossing:
+
+1. **The felt read / somatic authority** (~7 sightings: never-direct-the-body,
+   the blank body-line as a complete record, the felt-read queue in conductor
+   code, the somatic canon gate). Currently one bullet under crystal 1 — a
+   forced fit: crystal 1 is a negative law about the machine; this is a
+   positive law about what the instrument of judgment *is*. Candidate ninth.
+2. **The HELD state** (~7 sightings: HOLD-with-named-condition, silence
+   defaults to stop, fail-closed DENY, the staging ledger). Crystal 2 governs
+   the crossing event; nothing governs the standing third state between raw
+   and crossed. Candidate tenth.
+3. **Positive form / FRAMING** (3 sightings). The first draft demoted it for
+   descending from one standing rule — a criterion that, applied evenly,
+   would also demote most of crystal 1's post-canon sightings. The demotion
+   is retracted; it stands as a candidate on the same footing as the others.
+4. Open from the first draft, unchanged: whether 4 is 1-as-geometry and 6/7
+   are 2's epistemics — merging is a felt read, not an inference, and no
+   merge is performed here.
+
+---
+
+## APPENDIX A — verified sightings, corrected
+
+Corrections from the audit are applied throughout: falsified or misattributed
+quotes fixed, self-testimony cut, double-counts merged.
+
+**Crystal 1 (6):** `patterns/the_recognition_law.md` — the only row marked
+CANON in NESI.md's own table (other library material is treated as canon
+elsewhere; this is the one explicit crossing record) · the writing surface
+reads two structural facts and never the words — quoted in its *corrected*
+form: the earlier "nothing reads what a sentence says" was caught false by
+the corpus itself (lattice.html: word count was already shaping layout) and
+repaired, which is a better sighting than the original claim · THE TYPOLOGY's
+self-limit: "a PROPOSAL, not a verdict" · NESI.md:138 on self_map.html:
+"self-authored only — nothing inferred, nothing scored, no other organ reads
+it" (NESI.md's description, not the page's own text) · the drag rule: moved
+cards recorded, never read as meaning · `refusal_check`, mechanical
+enforcement at commit.
+
+**Crystal 2 (6):** `gate/admit.mjs` + `MARKS.jsonl` · `MARKS_LOG.jsonl`, the
+corpus-wide append-only mark ledger · the retired door: superseded notice
+layered on top, build kept whole below · `PROTOCOLS.md`: ratified by mark,
+lifted by mark, re-marked "read as history, never as instruction" · the
+vendor CLAUDE.md suspension convention: "supersession is a mark on top, never
+a silent erasure" · `marks_guard_check`: "only a hand's click writes to a
+marks ledger — a fact, not a claim." (The document's own compliance is no
+longer counted; a thing does not sight itself.)
+
+**Crystal 3 (4):** the ORGANS.json schema — sightings as evidence, never
+dependencies · the SOIL ruling: v2 and world3d mined, neither revived nor
+erased · the deposit pipeline's gifts-and-tributaries model: the derived
+member crosses, traced, never the source wholesale · the typology port —
+which is *copying by design*, and counts here as enforcement of the
+extraction discipline, not as independent arrival. (The recurrence test
+itself is no longer listed; the instrument does not sight its own crystal.)
+
+**Crystal 4 (3 — at threshold):** THE COLLAPSE digest: "Centre stays empty" ·
+NESI.md: "worth is the held center the geometry pivots on, not a face of its
+own," and the held-centers family (one source, counted once) · the twelve-seat
+door on the cuboctahedron: "The solid has twelve vertices and no thirteenth,
+which is the whole of its honesty" (the door and the VE are one artifact,
+counted once; Fuller's solid being centered is a property of geometry, not a
+corpus sighting, and is not counted).
+
+**Crystal 5 (6):** The Warm One card — the five moves pre-built · THE
+COLLAPSE's OUTSIDE node: "let something leave; smallest node, only outward
+direction" · the CAST gesture-seat: "I GIVE IT AWAY" · Kevin's deposit
+instruction, verbatim, caught to MARKS_LOG 2026-08-31 (late, during this
+development — the audit found it quoted but uncatchable): *"any reader could
+pick it up, and not have to remove any debris or its creation before use, or
+understanding"* · the Held Refusal doctrine — boundaries published ahead of
+any ask · library_lens.js's unit of discovery being the gift.
+
+**Crystal 6 (5):** NESI.md Face 4 shipping its own falsifier · gift_10, the
+freshet test · the game2d check suite — 18 checks run headless at every
+commit, 3 more waiting for a page (21 in the table; the first draft's "18
+mechanical checks" undercounted) · the gate's refusal of fictional admissions
+· the projection's honest scoping. (LEARNED.md's laws-with-falsifiers stand
+if independently verified; the tetra doc's "named, not solved" sections are
+no longer counted — naming an open problem is not shipping a kill-test.)
+
+**Crystal 7 (4):** `display_law_check` — "one law, stated in three places,
+and the copies agree" · the hinge-logic repair — one duplicated pair of call
+sites, drifted, fixed once by extraction (the first draft counted this repair
+twice) · the `knowledge` ground's build decision — embedding a second copy
+"considered and set aside... the exact failure this corpus already names" ·
+the 2026-08-18 compression convention — full text in exactly one named
+backup, pointer everywhere else.
+
+**Crystal 8 (6 recurrences of the image):** the FULL FREEZE geometry
+(ratified 2026-08-07, history since 2026-08-17, with the net/entry-tetra
+collision recorded and unreconciled in PROTOCOLS.md's own words) · THE
+COLLAPSE's "each its own tetra" · the four faces · world3d's "a world that is
+a tetrahedron" · the twelve-seat door · the knowledge-tetra experiments,
+whose own dreams found the shape's limits.
+
+## APPENDIX B — the frames, surveyed and resolved
+
+| Frame | Where | Status | Resolution |
 |---|---|---|---|
-| The four faces — GIFT / ENGINE / INFRASTRUCTURE / SELF, one law at center | `nesi/NESI.md` | 2026-07-25 | a **locator**, by its own words — "not a plan," nothing crossed |
-| THE TYPOLOGY — ORGAN · NUTRIENT · LENS · SEED · POLLEN · TENSION-ONLY | `nesi/conductor/tension_table.py` → ported live to `tools/typology_classify.js` | 2026-07-24 | **live code**, self-declared "a proposal, not a verdict" |
-| THE COLLAPSE — WORLD / LIBRARY / INSTRUMENT / OUTSIDE, "centre stays empty" | primary source **lost**; digest only in `CYCLE_LOG.md` (2026-08-07 entry) | 2026-08-07 | unrecoverable as text; substance cited later as real |
-| FULL FREEZE geometry — game inside a cuboctahedron, entry a single tetra, the net as the 2D surface | `nesi/mind/PROTOCOLS.md` §THE FORM IS NAMED | 2026-08-07, ratified same day | **history, not instruction** since the 2026-08-17 lift — by the file's own mark |
-| The twelve-seat door — cuboctahedron's 12 vertices as UI | `game2d/index.html.backup_pre-lattice-entry_2026-08-26.html` | 2026-08-16 | **retired as entry point** 2026-08-26 ("a door with a bench of thirteen links... exactly the shape he named as the problem"); kept whole |
-| The 12 gesture-seats + recurrence test | `game2d/ORGANS.json` header | 2026-08-16 | **live** — the daily working system, 37 organs seated |
-| The three organ systems reconciliation | `nesi/spec/RECONCILIATION_2026-08-31_three_organ_systems.md` | 2026-08-31 | decided: game2d live; world3d + NESI v2 are SOIL |
-| The knowledge tetra | `game2d/KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md` | 2026-08-26 | a **build-log** of sentence-level experiments, not corpus canon — ruled so by this file |
+| The four faces | `nesi/NESI.md`, 2026-07-25 | a locator, by its own words | an articulation of 1, 4, 5 at that build's scale |
+| THE TYPOLOGY | `conductor/tension_table.py` → `tools/typology_classify.js` | live code, self-limited | crystal 3's working instrument |
+| THE COLLAPSE | primary text lost; digest in `CYCLE_LOG.md` | unrecoverable | what survives is inside 4 and 5 |
+| FULL FREEZE geometry | `PROTOCOLS.md`, 2026-08-07 | history, not instruction | crystal 8's strongest expression |
+| The twelve-seat door | game2d backup, 2026-08-16 | retired, kept whole | 8 as UI, retired; 2 and 4 in its handling |
+| Gesture-seats + recurrence test | `ORGANS.json`, 2026-08-16 | live daily system | crystal 3's other instrument, and this doc's method |
+| Three-organ-system reconciliation | `nesi/spec/`, 2026-08-31 | decided | 2 and 3 in action |
+| The knowledge tetra | game2d, 2026-08-26 | a build-log, placed by layered note | 8 at the smallest scale |
 
-Six of these eight are dead, downgraded, or self-limiting. That is not failure —
-it is the data. What follows is what survived **all** of them.
+Six of eight are dead, downgraded, or self-limiting — which is the survey's
+result, offered as what it is: a small sample from one practice, not a
+statistical argument.
 
----
+## APPENDIX C — the deposit, as it stands
 
-## Part 2 · The crystals
+Facts now, not proposals: this document sits at the deposits' top level;
+`tools/spine.js` carries the eight and the seating of every admitted item;
+tools attach downstream because a crystal accounts for them; the index
+renders an UNSEATED section for anything no crystal honestly holds, and the
+challenged seatings above are the current entries in that spirit.
 
-Eight structures pass the recurrence test. Each is listed with its sightings —
-the actual places it recrystallized, across builds that were not consulting each
-other. These are what is upstream of everything going into the repo.
-
-### Crystal 1 — THE RECOGNITION LAW: the mechanic never does the recognizing
-
-The only thing in the entire corpus explicitly **crossed to canon**
-(`patterns/the_recognition_law.md`, per NESI.md's own table). No worth-score, no
-rank, no verdict; the machine surfaces and holds still while the person does the
-seeing.
-
-Sightings, independently arrived at:
-- `patterns/the_recognition_law.md` — the canon crossing itself.
-- The writing surface's core discipline: *"Nothing reads what a sentence says"* —
-  only idle time and word count are ever measured (`game2d/index.html`, and the
-  tetra doc §1 naming it "load-bearing").
-- THE TYPOLOGY's own self-limit: *"a PROPOSAL, not a verdict... Kevin's felt read
-  is the authority, always"* — a classifier that refuses to be a judge.
-- `self_map.html`: "self-authored only — nothing inferred, nothing scored, no
-  other organ reads it."
-- The drag rule: a moved card is recorded and *"never read as meaning anything."*
-- The attention record: reads only *which* sentence was dwelled on, never what it
-  says.
-- `refusal_check` in `check_all.js`: no model call, nothing outward, no score or
-  reward cue — the law enforced mechanically at build time.
-
-Seven sightings across game, tooling, docs, and lint. **The deepest crystal.**
-Every other frame either carries it or was built to protect it.
-
-### Crystal 2 — THE MARK IS THE ONLY CROSSING (and supersession is a layer, never an erasure)
-
-Nothing becomes binding except by Kevin's own mark; nothing binding is ever
-silently deleted — it is retired by a mark layered on top, kept whole underneath.
-
-Sightings:
-- `game2d/gate/admit.mjs` + `MARKS.jsonl` — the gate itself; "an admission may be
-  generous; it may not be fictional."
-- `MARKS_LOG.jsonl` — the corpus-wide append-only mark ledger.
-- The retired door: superseded notice layered on top, the whole build kept intact
-  below.
-- `PROTOCOLS.md`: the FULL FREEZE ratified by mark, lifted by mark, geometry
-  section re-marked "read as history, never as instruction."
-- The vendor `CLAUDE.md` suspension, 2026-08-15: "supersession is a mark on top,
-  never a silent erasure" — stated as the corpus's own convention.
-- `marks_guard_check`: "only a hand's click writes to a marks ledger — a fact, not
-  a claim."
-- "the append-only log" organ itself — five sightings of its own, the most
-  confirmed organ in ORGANS.json.
-
-The most heavily-sighted crystal. It is the corpus's **constitutional process**:
-crystal 1 says what the machine may not do; crystal 2 says who may change anything.
-
-### Crystal 3 — THE UNIT IS THE MECHANISM, NEVER THE PROJECT
-
-Kevin's mark, 2026-08-16, verbatim in ORGANS.json: *"I want to extract from
-projects, and use code bits, rather than importing whole projects. I'm searching
-for patterns, and mechanism, and the organs that populate the VE."*
-
-Sightings:
-- ORGANS.json's whole schema — sightings as evidence, never dependencies.
-- The SOIL ruling, 2026-08-31: NESI v2 and world3d mined for mechanisms, neither
-  revived nor erased.
-- `typology_classify.js` — the classifier extracted alive from a composted body,
-  the port note naming the discipline explicitly.
-- The deposit pipeline's gifts-and-tributaries model: what crosses is the derived
-  load-bearing member, traced to its source, never the source wholesale.
-- The recurrence test itself — a mechanism seen in storage, graphics, and biology
-  is an organ; a project doing it once is a trick.
-
-This crystal is **why the corpus survives its own implosions**. Both abandoned
-builds went down "under the weight of debris" — whole-project weight. What was
-extracted as mechanism is still running.
-
-### Crystal 4 — THE HELD CENTER: the middle of every frame is deliberately empty
-
-The subtlest crystal, and the one no single document ever claimed — which is
-exactly what makes its recurrence real.
-
-Sightings:
-- THE COLLAPSE's four nodes: *"Centre stays empty"* — the digest's own closing words.
-- The four faces: the center is not a fifth face — it is the one law; and *"worth
-  is the held center the geometry pivots on, not a face of its own"* (NESI.md,
-  Face 4's derivation).
-- The cuboctahedron itself — Fuller's **vector equilibrium**: twelve vertices in
-  balance around a center that holds no vertex.
-- The twelve-seat door's honesty clause: *"The solid has twelve vertices and no
-  thirteenth, which is the whole of its honesty"* — no boss seat, no summary node.
-- The geometric spine's "held-centers family" — the accreted self as centers held,
-  not occupied.
-
-Five sightings. The corpus never puts a master node in the middle of anything.
-The center is where the law sits, or the person sits, or nothing sits — never a
-component, never a score, never a summary. This is crystal 1 expressed as geometry.
-
-### Crystal 5 — THE GIFT ORIENTATION: everything faces outward, and the labor of landing clean is paid upfront
-
-Kevin's own words, mid-session 2026-07-25 (NESI.md's closing section): *"I do the
-cognitive burden of the gift upfront... the labor of making a thing land clean
-moves onto me, before anyone else touches it."*
-
-Sightings:
-- The Warm One card — the five moves pre-built so a stranger never invents the form.
-- THE COLLAPSE's OUTSIDE node — *"gift/claim/place/hand-off → let something leave;
-  smallest node, only outward direction."*
-- The CAST gesture-seat — "I GIVE IT AWAY."
-- The deposit pipeline's whole purpose — the repo as a **deposit** a stranger can
-  pick up "and not have to remove any debris of its creation before use" (Kevin's
-  mark, this week).
-- The Held Refusal doctrine — boundaries published ahead of any ask, the relational
-  cost carried once, in advance.
-- library_lens.js's unit of discovery being the *gift* — value that left a build
-  and landed.
-
-Six sightings. This is the corpus's **direction of flow**: crystals 1–4 govern the
-inside; crystal 5 says the inside exists to send things out clean.
-
-### Crystal 6 — THE CLAIM CARRIES ITS OWN FALSIFIER
-
-No assertion stands on confidence. A claim ships with the test that would kill it,
-and "a fact, not a claim" is the highest standing anything can have.
-
-Sightings:
-- NESI.md Face 4 ships with its own falsifier ("if the split was ceremony, not
-  structure").
-- gift_10, the freshet test — "a named one-line falsifier for any ambient readout."
-- `check_all.js`'s instrument suite — 18 mechanical checks, several self-described
-  as "a fact, not a claim."
-- The gate's refusal of fictional admissions — a mark must resolve to a real file.
-- LEARNED.md's own laws carrying falsifiers, and the tetra doc's every section
-  naming what was "named, not solved."
-- The projection (built 2026-08-31): state verified by fresh replay against
-  independent live state — and honestly scoped to only the two properties the
-  method can actually verify, the rest labeled "logged only."
-
-Six sightings. This is the corpus's **epistemics** — the reason its documents can
-be trusted by a stranger with none of its vocabulary.
-
-### Crystal 7 — THE SINGLE SOURCE: a fact lives in one place, and a copy is a drift waiting to happen
-
-Found by the second pass, not the first. Where a fact must appear twice, the
-corpus either routes both readers through one function, or installs a check that
-the copies still agree — it never just trusts the duplicate.
-
-Sightings:
-- `display_law_check` — *"one law, stated in three places, and the copies agree"* —
-  a standing instrument that exists only because the corpus treats agreement
-  between copies as something to verify, not assume.
-- The `computeHinges()` fix (tetra doc §7, defect 2): two separately-drifting
-  copies of hinge logic repaired *"not by patching the two copies back into
-  agreement, which would only defer the next drift"* — by extracting one function
-  both call sites use. The second copy's own comment had worried about exactly
-  this drift, and had already suffered it.
-- The `knowledge` ground's build decision: embedding the doc's text as a literal
-  string was *"considered and set aside... that would create a second copy to
-  drift from the first, the exact failure this corpus already names elsewhere."*
-- The hinge-windowing fix (tetra doc §4): "both places it computed hinges — they
-  were two separate copies before this, now the second reuses the same windowing
-  rather than drifting."
-- The 2026-08-18 compression convention: the suspended CLAUDE.md/MEMORY.md bodies
-  live byte-for-byte in exactly one backup file each, named as the *"sole holder
-  of the inline text"* — pointer everywhere else, content in one place.
-
-Five sightings, spanning lint, code repair, build decision, and archival
-convention. This is the corpus's **memory hygiene** — and the quiet partner of
-crystal 2: append-only tells you where history goes; single-source tells you
-where truth lives now.
-
-### Crystal 8 — THE TETRA/VE GEOMETRY (real, but a different kind of crystal — read the caveat)
-
-The 4-vertex/6-edge tetrahedron and its jitterbug partner the cuboctahedron recur
-more often than any other *image* in the corpus:
-
-- The FULL FREEZE geometry — game inside the cuboctahedron, entry a single tetra
-  (ratified 2026-08-07, history since 2026-08-17).
-- THE COLLAPSE — four nodes, *"each its own tetra."*
-- The four faces — a quaternity with an edge between every pair.
-- world3d — "a world that is a tetrahedron, water as the operating medium."
-- The twelve-seat door — the cuboctahedron's real coordinates as UI.
-- The knowledge-tetra dreams — the same primitive run down at sentence level.
-
-Six sightings — **but all inside one author's corpus**, which the recurrence test
-itself would flag: this is recurrence within one mind, not across unrelated
-domains. So the honest ruling is narrower than the others:
-
-**The geometry is NESI's signature, not its law.** It is how Kevin's structural
-intuition crystallizes — reliably, unforced, across every era of the work — and
-that makes it genuinely upstream *as form-language*. But its record as binding
-architecture is mixed: ratified once, downgraded to history; built as UI once,
-retired ("menus and tabs that route nowhere"); run at sentence level, where its
-own dreams D and E found the shape forcing six identical edges onto relationships
-that aren't identical, and the weave dropped it. And one collision is still
-standing, recorded in PROTOCOLS.md's own words: *"the net and the entry-tetra
-line have not been reconciled, and no reconciliation is inferred."*
-
-Ruling proposed: the geometry keeps its seat as the corpus's form-language and
-loses nothing — but no future build treats "it should be a tetra" as an argument.
-The mechanism earns the seat; the shape describes it afterward. (This is crystal
-3 applied to the geometry itself.)
-
----
-
-## Part 3 · What the frames were, in the crystals' light
-
-With eight crystals named, every surveyed frame resolves without being deleted:
-
-- **The four faces** — a true *articulation* of crystals 1, 4, and 5 at the scale
-  of 2026-07-25's build. A locator then, a locator now. Not upstream; downstream
-  of the crystals, pointing at builds mostly since retired or composted.
-- **THE COLLAPSE** — the same crystals sighted at corpus-architecture scale. Its
-  text is lost; what it carried that survives is already inside crystals 4 and 5.
-  Nothing to restore.
-- **THE TYPOLOGY** — crystal 3's working instrument: a five-way sort of *what a
-  mechanism is* (does work / feeds / reveals / travels whole / travels partial).
-  Live, correctly self-limited by crystal 1. Keeps running as is.
-- **The gesture-seats + recurrence test** — crystal 3's other working instrument,
-  and the source of this file's own method. The live daily system.
-- **The FULL FREEZE geometry + the door** — crystal 8's two strongest expressions,
-  one downgraded, one retired, both kept whole under crystal 2. History, honored.
-- **The knowledge tetra** — crystal 8 run at the smallest scale, honestly logged,
-  its own experiments discovering the caveat that Part 2 rules on. A build-log; a
-  note to that effect layered on the file itself.
-- **The three-organ-system reconciliation** — crystals 2 and 3 in action, same day
-  as this file. Stands as written.
-
----
-
-## Part 4 · What this means for the deposit
-
-The repo's upstream layer, for a stranger picking it up cold, is **the eight
-crystals — not any one frame**. Concretely:
-
-1. This file is the upstream document the knowledge-tetra doc was mistaken for.
-   If admitted, it belongs at the deposit's top level, before the game and the
-   patterns.
-2. The knowledge-tetra doc stays in the deposit as what it is — the honest
-   build-log of the writing surface's relationship experiments — with the layered
-   note distinguishing it from canon.
-3. Lower-tier tools and functionality attach *downstream* of the crystals: a tool
-   enters the deposit because a crystal accounts for it (the projection under
-   crystal 6, the typology under crystal 3, the gate under crystal 2, the
-   display-law lint under crystal 7...), which is the condensation Kevin named —
-   the library condensing into the upstream structures, not accumulating beside
-   them.
-4. Open, not decided here:
-   - Whether the crystals eventually collapse further (4 is arguably 1-as-geometry;
-     6 is arguably 2-as-epistemics; 7 is arguably 2's other face). Left as eight
-     because each has independent sightings; merging them is a felt read, not an
-     inference.
-   - A candidate ninth, three sightings, left to the felt read rather than seated
-     by inference: **positive form** — a surface states what it does; the refusal
-     lives at the edge as a lint, never in the prose (the FRAMING marks of
-     2026-08-17/22, `framing_check`, and the §6 rewrite pass "never truncated" →
-     "shows sentences in full"). Real, but its sightings all descend from one
-     explicit standing rule, so it may be a law with enforcement rather than an
-     independently recurring crystal.
-
-**Falsifier for this whole file:** if a future build ships something real that
-none of the eight crystals accounts for, this reconciliation was incomplete —
-the fix is a ninth crystal with its own sightings, not a forced fit under an
-existing one. (This falsifier has fired once already: the second pass of this
-same day's run found crystal 7 missing from the first pass's seven.)
-
-*Assembled 2026-08-31, two passes. A proposal. Nothing here crosses; the mark is
-Kevin's.*
+*First assembled 2026-08-31, two passes. Crossed the same day, Kevin's mark.
+Developed the same day, on his instruction: 19 audit defects ruled on, the
+ground pass's reformulation adopted, three candidate seatings put to the felt
+read. The eight are his; the evidence-grading and the symmetric falsifier are
+what this pass added; the pre-development text is whole in git.*

@@ -24,7 +24,7 @@ const CRYSTALS = [
   { id: 'c3', name: 'the unit is the mechanism, never the project',
     line: 'extract the pattern that recurs; leave the project it was found in' },
   { id: 'c4', name: 'the held center',
-    line: 'the middle of every frame is deliberately empty — the law sits there, or the person, never a component or a score' },
+    line: 'no component, score, or master node ever sits at the middle of a frame — the middle holds the law, the person, or nothing' },
   { id: 'c5', name: 'the gift orientation',
     line: 'everything faces outward, and the labor of landing clean is paid upfront' },
   { id: 'c6', name: 'the claim carries its own falsifier',
