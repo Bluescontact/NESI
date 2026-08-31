@@ -1,5 +1,18 @@
 # KNOWLEDGE — the page, and the tetra of six relationships
 
+> **PLACED, 2026-08-31, on Kevin's read of the deposit.** This file is a
+> **build-log** — the honest session record of the writing surface's
+> relationship experiments (five tetra dreams, the weave, the composting, a
+> full-development pass) — and it is a companion to `index.html`, which is what
+> its own first line has always said. It is **not** the corpus's upstream
+> document, and it does not define "the knowledge tetra" as a corpus-wide
+> structure; Kevin caught it reading as one from inside the deposit ("a very
+> partial articulation... an undeveloped stub... concerning because it's an
+> upstream document"). The actual upstream reconciliation — NESI's nucleation
+> points, with the tetra's real standing ruled among them — is at
+> `nesi/UPSTREAM_2026-08-31_nucleation_points.md`. Everything below stands
+> unedited, as the build-log it is.
+
 **Companion to `index.html`.** Written 2026-08-26, same day as the reclaim.
 This is the reference doc for what the page is, why it exists, what's been
 built around it, and what's still genuinely open. Read this before extending
