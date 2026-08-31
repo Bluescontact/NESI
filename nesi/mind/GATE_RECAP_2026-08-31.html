@@ -6,50 +6,63 @@
 <meta name="color-scheme" content="light dark">
 <title>Gate Recap · 2026-08-31 · what's crossed</title>
 <style>
-:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--purple:#6a5490;--purple-soft:#e8e2f0;--shadow:0 18px 45px rgba(40,34,22,.08);}
-@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--purple:#a998cf;--purple-soft:#2a2438;--shadow:none;}}
-*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif} button{font:inherit} code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr} aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;background:color-mix(in srgb,var(--surface) 72%, transparent);backdrop-filter:blur(12px);overflow:auto} .brand{padding:4px 7px 18px} .brand .kicker{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750} .brand h1{font-size:20px;line-height:1.15;margin:8px 0 5px;letter-spacing:-.02em} .brand p{font-size:12px;color:var(--muted);margin:0}
-.seal-mini{border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin:0 5px 16px;background:var(--surface);font-size:11px;color:var(--muted)} .seal-mini b{color:var(--ink)}
-.tabs{display:grid;gap:3px} .tabbtn{border:0;background:transparent;color:var(--muted);padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;font-size:13px} .tabbtn:hover{background:var(--gold-soft);color:var(--ink)} .tabbtn.active{background:var(--ink);color:var(--surface)}
-main{min-width:0} .topbar{height:54px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%, transparent);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 28px} .crumb{font-size:12px;color:var(--muted)} .status{display:flex;gap:7px;align-items:center;font-size:11px;color:var(--muted)} .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
-.panel{display:none;max-width:920px;margin:0 auto;padding:44px 42px 80px} .panel.active{display:block;animation:rise .18s ease-out} @keyframes rise{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
-h2{font-size:30px;letter-spacing:-.03em;line-height:1.15;margin:7px 0 14px} h3{margin:1.4rem 0 .5rem;font-size:17px} p{max-width:76ch} .lede{font-size:18px;color:var(--muted);max-width:70ch;margin-bottom:26px} .rule{height:1px;background:var(--line);margin:28px 0}
+:root{--bg:#f4f1ea;--surface:#fffdf8;--ink:#181815;--muted:#6a685f;--line:#d8d2c4;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;--purple:#6a5490;--purple-soft:#e8e2f0;}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--surface:#1a1916;--ink:#f1eee6;--muted:#aaa59a;--line:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;--purple:#a998cf;--purple-soft:#2a2438;}}
+*{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 0 100px}
+a{color:var(--blue)} code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px}
+header{padding:40px 0 24px;border-bottom:1px solid var(--line)}
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{font-size:34px;letter-spacing:-.02em;margin:10px 0 8px}
+.lede{font-size:17px;color:var(--muted);max-width:70ch}
+nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);padding:12px 0;z-index:5;border-bottom:1px solid var(--line)}
+nav.jump a{font-size:12px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted);background:var(--surface)}
+nav.jump a:hover{background:var(--gold-soft);color:var(--ink)}
+section{padding:40px 0;border-bottom:1px solid var(--line)} section:last-of-type{border-bottom:0}
+h2{font-size:26px;letter-spacing:-.02em;margin:0 0 10px}
+p{max-width:76ch}
 .eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
-.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);margin:20px 0 28px} .seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0} .seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
-.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px} .card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
+.seal{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin:20px 0 8px}
+.seal>div{padding:14px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .seal>div:nth-child(3n){border-right:0}
+.seal span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:4px} .seal b{font-size:12px}
+.card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:18px 20px;margin-bottom:14px}
+.card h3{margin-top:0} .card p{font-size:14px;color:var(--muted)}
 .keyline{margin:22px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 10px 10px 0;font-size:16px;max-width:80ch}
 .tag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;padding:4px 8px;border-radius:999px;margin:2px 4px 2px 0}
 .tag.organ{background:var(--blue-soft);color:var(--blue)} .tag.nutrient{background:var(--green-soft);color:var(--green)} .tag.lens{background:var(--purple-soft);color:var(--purple)} .tag.seed{background:var(--gold-soft);color:var(--gold)} .tag.pollen{background:var(--red-soft);color:var(--red)}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0} th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.process{counter-reset:step;display:grid;gap:10px;max-width:840px} .process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px} .process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800} .process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
-.route-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;background:var(--surface)} .route-card h3{margin:0 0 4px;font-size:15px}
-details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--surface)} details summary{cursor:pointer;font-weight:700;font-size:13px}
-@media(max-width:820px){.shell{display:block} aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)} .tabs{display:flex;overflow:auto;padding-bottom:3px} .tabbtn{white-space:nowrap} .seal{grid-template-columns:1fr 1fr} .panel{padding:30px 20px 60px} .topbar{padding:0 20px}}
-@media print{aside,.topbar{display:none} .shell{display:block} .panel{display:block!important;page-break-before:always;max-width:none} .panel:first-of-type{page-break-before:auto} body{background:white;color:black}}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.process{counter-reset:step;display:grid;gap:10px;max-width:840px}
+.process article{counter-increment:step;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px}
+.process article:before{content:counter(step,decimal-leading-zero);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--surface);font-size:10px;font-weight:800}
+.process h3{margin:1px 0 3px;font-size:14px} .process p{margin:0;color:var(--muted);font-size:13px}
+.note{color:var(--muted);font-size:13px}
+footer{color:var(--muted);font-size:12px;padding-top:40px;text-align:center}
+@media print{nav.jump{display:none} body{background:white;color:black}}
 </style>
 </head>
 <body>
-<div class="shell">
-<aside>
-  <div class="brand"><div class="kicker">Gate recap · 2026-08-31</div><h1>WHAT'S<br>CROSSED<br>THE GATE</h1><p>24 real admissions, and what's pushed live to Bluescontact/NESI</p></div>
-  <div class="seal-mini"><b>JUST PUSHED</b><br>Bluescontact/NESI, public deposit, force-pushed this turn<br><br><b>SCOPE</b><br>every admitted mark to date, and the 10 organs recognized but not admitted</div>
-  <nav class="tabs" role="tablist">
-    <button class="tabbtn" data-tab="overview" role="tab">Overview</button>
-    <button class="tabbtn" data-tab="before" role="tab">Before This Session (14)</button>
-    <button class="tabbtn" data-tab="today" role="tab">Crossed Today (10)</button>
-    <button class="tabbtn" data-tab="typology" role="tab">By Typology</button>
-    <button class="tabbtn" data-tab="organs" role="tab">Recognized, Not Crossed (10)</button>
-    <button class="tabbtn" data-tab="limits" role="tab">Limits</button>
-  </nav>
-</aside>
-<main>
-<div class="topbar"><div class="crumb">gate-recap / <span id="crumb">overview</span></div><div class="status"><span class="dot"></span> live at bluescontact.github.io/NESI</div></div>
+<div class="wrap">
+<header>
+  <div class="kicker">Gate recap · 2026-08-31 · single-scroll anchor nav format</div>
+  <h1>What's Crossed the Gate</h1>
+  <p class="lede">24 real admissions, and what's pushed live to Bluescontact/NESI. Every one of these was admitted by the same mechanism — <code>gate/admit.mjs</code>, an append-only ledger, never a session's own say-so.</p>
+</header>
+<nav class="jump">
+  <a href="#overview">Overview</a>
+  <a href="#before">Before This Session (14)</a>
+  <a href="#today">Crossed Today (10)</a>
+  <a href="#typology">By Typology</a>
+  <a href="#organs">Recognized, Not Crossed (10)</a>
+  <a href="#limits">Limits</a>
+</nav>
 
-<section class="panel active" id="panel-overview" data-panel="overview">
+<section id="overview">
   <div class="eyebrow">What this recaps</div>
-  <h2>24 real admissions to nesi/game2d/gate/MARKS.jsonl, and where each one actually is now.</h2>
-  <p class="lede">Every one of these was admitted by the same mechanism — <code>gate/admit.mjs</code>, an append-only ledger, never a session's own say-so. Ten crossed today, in one sitting: two real tools built earlier this session finally routed, then eight of this session's own instruments admitted in a batch on the direct ask "send what ready to the gate."</p>
+  <h2>24 real admissions, and where each one actually is now.</h2>
+  <p style="margin-bottom:14px">Ten crossed today, in one sitting: two real tools built earlier this session finally routed, then eight of this session's own instruments admitted in a batch on the direct ask "send what ready to the gate."</p>
   <div class="seal">
     <div><span>TOTAL ADMITTED</span><b>24 real marks (a 25th, closed on consent grounds, is permanently excluded — see Limits)</b></div>
     <div><span>CROSSED TODAY</span><b>10 — k_lens.js, stale_count_check.js, and 8 of this session's own instruments</b></div>
@@ -61,7 +74,7 @@ details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin
   <div class="keyline">The throughline: a mark only lands here if something real backs it — a working file, a verified fix, a built instrument. Proposals stay proposals (see the VE24 lens-panel's item 4, still open) until they're actually true.</div>
 </section>
 
-<section class="panel" id="panel-before" data-panel="before">
+<section id="before">
   <div class="eyebrow">Standing before this session began</div>
   <h2>14 admissions, already crossed, carried forward.</h2>
   <table><tr><th>id</th><th>category</th><th>made possible</th></tr>
@@ -80,10 +93,10 @@ details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin
     <tr><td>gift_09_grain_siting</td><td><span class="tag seed">seed</span></td><td>the WORLD FACE ground names, from solid.js's own vertex geometry, the farthest unseated seat.</td></tr>
     <tr><td>gift_13_burn_shape3_test</td><td><span class="tag seed">seed</span></td><td>five real dwell-cycles permanently mark a sentence overread, surviving reload.</td></tr>
   </table>
-  <p class="section-note" style="color:var(--muted);font-size:13px">One 15th mark from this era is permanently excluded here on consent grounds — see the Limits tab.</p>
+  <p class="note">One 15th mark from this era is permanently excluded here on consent grounds — see Limits.</p>
 </section>
 
-<section class="panel" id="panel-today" data-panel="today">
+<section id="today">
   <div class="eyebrow">Crossed today, 2026-08-31</div>
   <h2>10 admissions, in the order they landed.</h2>
   <div class="process">
@@ -97,13 +110,13 @@ details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin
     <article><h3>typology_classify <span class="tag pollen">pollen</span></h3><p>THE TYPOLOGY, ported from the real classifier already sitting in nesi/conductor/tension_table.py — part of the v2 body ruled soil this same session.</p></article>
     <article><h3>deposit_pipeline <span class="tag nutrient">nutrient</span></h3><p>the two-organ pipeline itself — filter organ and arrangement organ — admitted as one capability, anchored at build_deposit_public.js, its actual entry point.</p></article>
   </div>
-  <p style="color:var(--muted);font-size:13px">Nine listed above; the tenth (<code>session_bridge_2026-08-30_onedrive_relocation</code>, <span class="tag organ">organ</span>) predates today's batch but landed in the same recent stretch — the record of the working directory's move out of OneDrive.</p>
+  <p class="note">Nine listed above; the tenth (<code>session_bridge_2026-08-30_onedrive_relocation</code>, <span class="tag organ">organ</span>) predates today's batch but landed in the same recent stretch — the record of the working directory's move out of OneDrive.</p>
 </section>
 
-<section class="panel" id="panel-typology" data-panel="typology">
+<section id="typology">
   <div class="eyebrow">THE TYPOLOGY, applied to what's actually crossed</div>
   <h2>A proposal per admission, never a verdict.</h2>
-  <p>Every category below is a keyword-floor guess from <code>tools/typology_classify.js</code>, ported from <code>nesi/conductor/tension_table.py</code>. Read it as a rough sort, not a ruling.</p>
+  <p style="margin-bottom:10px">Every category below is a keyword-floor guess from <code>tools/typology_classify.js</code>, ported from <code>nesi/conductor/tension_table.py</code>. Read it as a rough sort, not a ruling.</p>
   <table><tr><th>category</th><th>count</th><th>what it means</th></tr>
     <tr><td><span class="tag seed">seed</span></td><td>15</td><td>travels · whole — a complete, given piece of work.</td></tr>
     <tr><td><span class="tag nutrient">nutrient</span></td><td>5</td><td>stays · partial — a reusable resource other work draws on.</td></tr>
@@ -113,10 +126,10 @@ details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin
   </table>
 </section>
 
-<section class="panel" id="panel-organs" data-panel="organs">
+<section id="organs">
   <div class="eyebrow">Recognized this session, correctly NOT gate material</div>
   <h2>10 organ candidates, found in soil, none built in game2d yet.</h2>
-  <p class="lede">A separate track from admission. Reviewing 199 already-scanned candidates across three lens reports, working from the correction "not code migration — recognition of shapes and patterns," ten mechanisms passed the recurrence test (three-plus sightings in three-plus unrelated real domains) and were added to <code>ORGANS.json</code> — all seated <code>—</code>, held open, none built.</p>
+  <p style="margin-bottom:14px">A separate track from admission. Reviewing 199 already-scanned candidates across three lens reports, working from the correction "not code migration — recognition of shapes and patterns," ten mechanisms passed the recurrence test (three-plus sightings in three-plus unrelated real domains) and were added to <code>ORGANS.json</code> — all seated <code>—</code>, held open, none built.</p>
   <table><tr><th>organ</th><th>the shape</th><th>real-world sightings</th></tr>
     <tr><td>the throat</td><td>placement derived from steepest-descent + narrowest cross-section</td><td>dam siting, GIS flow-routing, vascular branching</td></tr>
     <tr><td>the shape-sorter</td><td>form alone carries meaning, zero words</td><td>toy design, industrial e-stops, tactile controls</td></tr>
@@ -129,31 +142,19 @@ details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin
     <tr><td>the draft</td><td>a silently-autosaving scratch state, apart from a committed file</td><td>email drafts, contract redlines, pending bank transactions</td></tr>
     <tr><td>the loud stub</td><td>a shape-compatible placeholder, unmistakably badged</td><td>flight simulators, stage props, crash-test dummies</td></tr>
   </table>
-  <p style="color:var(--muted);font-size:13px">Also: one new sighting added to the already-admitted "append-only log" organ (<code>nesi_bench_v0/ledger.py</code>, an independent build of the same mechanism).</p>
+  <p class="note">Also: one new sighting added to the already-admitted "append-only log" organ (<code>nesi_bench_v0/ledger.py</code>, an independent build of the same mechanism).</p>
 </section>
 
-<section class="panel" id="panel-limits" data-panel="limits">
+<section id="limits">
   <div class="eyebrow">What this page is not authorized to do</div>
   <h2>It recaps. It does not re-open anything closed.</h2>
   <div class="card"><h3>The 25th mark, permanently excluded</h3><p>One mark exists in the raw ledger but is deliberately absent from every table above and from every deposit output — closed on consent grounds by Kevin's mark 2026-08-31, never to be mined, routed, or read again in any future session. The closure record itself lives once, at <code>gate/CLOSED.jsonl</code> — not repeated here, on the same principle that closed it.</p></div>
-  <div class="card"><h3>No organ is a gate item</h3><p>The 10 recognized organs are shapes, not capabilities. None runs in game2d. None is a deposit candidate until someone actually builds it there — recognizing a pattern and admitting a working thing are two different acts, and this page keeps them on two different tabs on purpose.</p></div>
+  <div class="card"><h3>No organ is a gate item</h3><p>The 10 recognized organs are shapes, not capabilities. None runs in game2d. None is a deposit candidate until someone actually builds it there — recognizing a pattern and admitting a working thing are two different acts, and this page keeps them in two different sections on purpose.</p></div>
   <div class="card"><h3>Item 4 of the VE24 lens-panel manifest stays open</h3><p>Not because it was missed — because Fuller's own reading declined to rule on it and named the branch choice as Kevin's alone. Nothing on this page defaults it.</p></div>
   <div class="card"><h3>No ranking</h3><p>The 24 admissions are listed in the order they actually landed, not by importance.</p></div>
 </section>
 
-</main>
+<footer>Built to FORMAT_SPEC_2026-08-31_single_scroll_anchor_nav.html — zero JavaScript in this file.</footer>
 </div>
-<script>
-document.querySelectorAll('.tabbtn').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
-    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
-    btn.classList.add('active');
-    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-    document.getElementById('crumb').textContent = btn.textContent.trim();
-  });
-});
-document.querySelector('.tabbtn').classList.add('active');
-</script>
 </body>
 </html>
