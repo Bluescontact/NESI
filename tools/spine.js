@@ -95,6 +95,15 @@ const SEATS = {
   'discharge_the_no':                        { crystal: 'c4', why: 'the empty middle engineered — refuse in the build, delete the bypass, nothing decided at execution' },
   'force_the_definition':                    { crystal: 'c6', why: 'an undefined condition resolves to written-in-shared-text or visibly-refused, nothing between' },
   'move_the_load':                           { crystal: 'c3', why: 'the fix is topological — add the second node, move the mandate, never modify the node' },
+  // The ROS_RI staged block (Kevin: "work the ROS_RI staged block") —
+  // the cross-origin audit of 2026-06-12, un-ruled for 2.5 months, now
+  // crossed as artifacts. Its candidate mechanisms stay candidates for
+  // the felt read; the crossing moved the block, not the verdicts.
+  'ros_ri_commons':                          { crystal: 'c5', why: 'eight cards a stranger can run cold — the convergence is the credential, no origin named' },
+  'ros_ri_new_screen':                       { crystal: 'c6', why: 'candidates survive only an adversarial collapse screen — six stand, one dies to a named edge' },
+  'ros_ri_reverse_audit':                    { crystal: 'c6', why: 'the canon audited from inside the other frame — 14 of 15 findings honestly collapsed' },
+  'ros_ri_cross_fold':                       { crystal: 'c7', why: '45 verdicts, each with a named fold-target — nothing enters twice unaccounted' },
+  'ros_ri_overview':                         { crystal: 'c6', why: 'two origins, each structurally blind to its own failure direction — the second mark at framework scale' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,

@@ -33,6 +33,26 @@ function main() {
   rmrf(path.join(OUT, 'compost'));
   fs.mkdirSync(OUT, { recursive: true });
 
+  // Crystal-7 resolution, 2026-08-31: compost/ is a full mirror of
+  // nesi/game2d + nesi/mind, and a reading pass flagged it as "two live,
+  // writable, indistinguishable copies of the law." It is DERIVED — this
+  // marker names the winner and the regeneration path, and the rmrf above
+  // means any edit made here is destroyed on the next run, which the
+  // marker says out loud so no one loses work to it.
+  fs.mkdirSync(path.join(OUT, 'compost'), { recursive: true });
+  fs.writeFileSync(path.join(OUT, 'compost', '_DERIVED_DO_NOT_EDIT.md'),
+`# DERIVED COPY — never edit here
+
+Everything under compost/ (and game/, patterns/) is REGENERATED from the
+source corpus by \`tools/build_deposit.js\` on every run; this whole tree is
+deleted and rebuilt each time. The source of truth is the corpus itself
+(nesi/game2d, nesi/mind, and the paths the gate's marks point to). An edit
+made here is not a fork of the law — it is work that will be silently
+destroyed on the next pipeline run. Edit the source, then re-run:
+
+    node tools/build_deposit.js
+`);
+
   const { gameFiles, knowledgeFromMind } = traceGameFiles();
   const { marks, admittedGamePaths, admittedMindPaths, admittedRootPaths, gateMechanism } = traceAdmitted();
 

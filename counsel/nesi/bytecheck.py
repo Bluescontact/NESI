@@ -11,7 +11,10 @@ bytes are in the corpus.
 import os
 import sys
 
-ROOT = r"C:\Users\KMEAR\OneDrive\Desktop\DSS content"
+# ROOT repointed 2026-08-31 (crystal-7 resolution): the corpus relocated out of
+# OneDrive on 2026-08-30 (SESSION_BRIDGE_2026-08-30_onedrive_relocation); this
+# falsifier had kept checking the stale pre-relocation tree.
+ROOT = r"C:\Users\KMEAR\dev\DSS content"
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".walk", "_widgets"}
 EXTS = {".md", ".jsonl", ".html", ".txt", ".json", ".js", ".py", ".gd"}
 
