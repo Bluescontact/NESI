@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
+  ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 
@@ -32,7 +32,7 @@ function main() {
   fs.mkdirSync(OUT, { recursive: true });
 
   const { gameFiles, knowledgeFromMind } = traceGameFiles();
-  const { marks, admittedGamePaths, admittedMindPaths, gateMechanism } = traceAdmitted();
+  const { marks, admittedGamePaths, admittedMindPaths, admittedRootPaths, gateMechanism } = traceAdmitted();
 
   const gameSet = new Set(gameFiles);
   const patternsFromGame = new Set([...admittedGamePaths, ...gateMechanism]);
@@ -71,6 +71,15 @@ function main() {
     copyFile(src, destRoot);
     if (bucket === 'patterns') manifest.patterns.push({ path: `mind/${rel}`, category: classifyFile(src) });
     else manifest[bucket].push(`mind/${rel}`);
+  }
+
+  // Root-level admissions (e.g. tools/k_lens.js) — copied individually, not
+  // walked, since ROOT is the whole corpus and almost none of it belongs
+  // in the deposit. Only what a real mark actually points to.
+  for (const rel of admittedRootPaths) {
+    const src = path.join(ROOT, rel);
+    copyFile(src, path.join(OUT, 'patterns', 'root', rel));
+    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
   }
 
   if (!knowledgeFromMind) {

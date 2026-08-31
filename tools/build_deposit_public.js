@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
+  ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
@@ -71,7 +71,7 @@ function main() {
   fs.mkdirSync(OUT, { recursive: true });
 
   const { gameFiles, knowledgeFromMind } = traceGameFiles();
-  const { marks, admittedGamePaths, admittedMindPaths, gateMechanism } = traceAdmitted();
+  const { marks, admittedGamePaths, admittedMindPaths, admittedRootPaths, gateMechanism } = traceAdmitted();
 
   const gameSet = new Set(gameFiles);
   const patternsFromGame = new Set([...admittedGamePaths, ...gateMechanism]);
@@ -111,6 +111,15 @@ function main() {
     manifest.patterns.push({ path: `mind/${rel}`, category: classifyFile(src) });
   }
 
+  // Root-level admissions (e.g. tools/k_lens.js) — copied individually,
+  // never walked; ROOT is the whole corpus and almost none of it belongs
+  // in the public deposit. Only what a real mark actually points to.
+  for (const rel of admittedRootPaths) {
+    const src = path.join(ROOT, rel);
+    copyFile(src, path.join(OUT, 'patterns', 'root', rel));
+    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
+  }
+
   if (!knowledgeFromMind) {
     const kRe = /KNOWLEDGE_FILE\s*=\s*["']([^"']+)["']/;
     const html = fs.readFileSync(path.join(GAME2D, 'index.html'), 'utf8');
@@ -142,7 +151,18 @@ function main() {
       const bridgePath = entry.bridge ? path.join(GAME2D, '..', entry.bridge) : null;
       entry.category = bridgePath ? classifyFile(bridgePath, m.made) : classify(m.made);
     } else {
-      entry.category = classify(m.made);
+      // Direct admission — no gift card, no session bridge, just a mark
+      // pointing straight at a real file (e.g. tools/k_lens.js). "at" IS
+      // the traced-to location here; resolve it to a manifest-style path
+      // (game2d/…, mind/…, root/…) so the index can link it directly.
+      const gateDir = path.join(GAME2D, 'gate');
+      const resolved = m.at ? path.resolve(gateDir, m.at) : null;
+      if (resolved && fs.existsSync(resolved)) {
+        if (resolved.startsWith(GAME2D)) entry.direct = 'game2d/' + path.relative(GAME2D, resolved).replace(/\\/g, '/');
+        else if (resolved.startsWith(MIND)) entry.direct = 'mind/' + path.relative(MIND, resolved).replace(/\\/g, '/');
+        else if (resolved.startsWith(ROOT)) entry.direct = 'root/' + path.relative(ROOT, resolved).replace(/\\/g, '/');
+      }
+      entry.category = resolved && fs.existsSync(resolved) ? classifyFile(resolved, m.made) : classify(m.made);
     }
     return entry;
   });

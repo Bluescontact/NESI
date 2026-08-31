@@ -116,6 +116,12 @@ function traceAdmitted() {
 
   const admittedGamePaths = new Set();
   const admittedMindPaths = new Set();
+  // Root-level admissions — e.g. tools/k_lens.js, admitted 2026-08-31. The
+  // gate's own "at" field isn't scoped to game2d/mind; a mark can point
+  // anywhere under the corpus root. Missed entirely until this admission
+  // surfaced the gap: the mark existed, the pipeline just never looked
+  // outside GAME2D/MIND for what it pointed at.
+  const admittedRootPaths = new Set();
   const GATE_DIR = path.join(GAME2D, 'gate'); // admit.mjs runs with cwd here — "at" is relative to it
   for (const m of marks) {
     if (!m.at) continue;
@@ -123,13 +129,14 @@ function traceAdmitted() {
     if (!fs.existsSync(resolved)) continue;
     if (resolved.startsWith(GAME2D)) admittedGamePaths.add(path.relative(GAME2D, resolved));
     else if (resolved.startsWith(MIND)) admittedMindPaths.add(path.relative(MIND, resolved));
+    else if (resolved.startsWith(ROOT)) admittedRootPaths.add(path.relative(ROOT, resolved));
   }
 
   const gateMechanism = ['gate', 'tools'].filter((d) =>
     fs.existsSync(path.join(GAME2D, d))
   );
 
-  return { marks, admittedGamePaths, admittedMindPaths, gateMechanism };
+  return { marks, admittedGamePaths, admittedMindPaths, admittedRootPaths, gateMechanism };
 }
 
 // THE TYPOLOGY, applied to a deposit item — a category PROPOSAL (organ,
