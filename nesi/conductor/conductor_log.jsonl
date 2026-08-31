@@ -180,3 +180,6 @@
 {"ts": "2026-08-30T18:55:05", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-08-30T19:19:10", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-08-30T19:22:27", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T20:35:42", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T20:37:05", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T20:37:43", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
