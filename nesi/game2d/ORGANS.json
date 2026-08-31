@@ -373,6 +373,10 @@
     {
      "where": "sediment settling to angle of repose",
      "domain": "sedimentology"
+    },
+    {
+     "where": "the accretion rule (THE_WHOLE_NAMING_2026-07-31.md §3): terrain as a pure function of the ledgers, ground unwalked flattens slowly but never to zero",
+     "domain": "game-lore, independently named 2026-07-31 — sighted here 2026-08-31 while reconciling the three organ systems, not authored to match"
     }
    ],
    "members": {
@@ -451,6 +455,10 @@
     {
      "where": "a seed bank / soil seed reserve",
      "domain": "biology"
+    },
+    {
+     "where": "THE DEEP (THE_WHOLE_NAMING_2026-07-31.md §4.7 / NESI_AS_A_WHOLE_2026-08-04.md p3): the Lake's unrendered part, dark by construction, even to Kevin — a later mark can open a window, but darkness cannot be retrofitted once broken",
+     "domain": "game-lore, independently named 2026-07-31 — sighted here 2026-08-31 while reconciling the three organ systems, not authored to match"
     }
    ],
    "members": {
@@ -652,6 +660,10 @@
     {
      "where": "leaf area index competition for light",
      "domain": "biology"
+    },
+    {
+     "where": "The Heliostat / CONVENER (THE_WHOLE_NAMING_2026-07-31.md §1, §7 amendment 4; NESI_AS_A_WHOLE_2026-08-04.md p8): overlap computed as the intersection of declared yes-marks, 'you can see where two people's light aligns' — geometry, never recommendation",
+     "domain": "game-lore, independently named 2026-07-31 — sighted here 2026-08-31 while reconciling the three organ systems, not authored to match"
     }
    ],
    "members": {
