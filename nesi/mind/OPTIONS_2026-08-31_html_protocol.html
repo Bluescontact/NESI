@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>NESI · the option spaces · the html protocol</title>
+<!--
+  THE DECISION SURFACE, matching decisions.html / options.html's own chassis laws:
+  · A MARK COPIES. Nothing sent, nothing submitted, no path leaves this page.
+  · READING IS NEVER GATED BEHIND THE ACT. Every option's whole object renders
+    above its own control, before any mark is asked for.
+  · PRE-AUTHORED EXITS. Every fork carries "hold — not tonight" as a real option.
+  · DEPTH ZERO. All options on one surface, open, at once. Not a wizard.
+  · NOTHING IS DEFAULTED. No fork opens with an option chosen.
+  · This page's OWN navigation is the live proof-of-concept: plain anchor links,
+    zero JavaScript anywhere in this file. If you can click these and land on
+    a section, that already answers part of the question below.
+-->
+<style>
+:root{--bg:#f7f5f0;--sf:#fffdf8;--sf2:#f1ede4;--ink:#181815;--g:#6f6a5e;--gb:#8d8578;--bdr:#d8d2c5;--gold:#b28225;--gold-soft:#f1e5c9;--blue:#436a77;--blue-soft:#dfeaed;--red:#924d43;--red-soft:#f0dfdc;--green:#496b55;--green-soft:#dfebe2;}
+@media(prefers-color-scheme:dark){:root{--bg:#11110f;--sf:#1a1916;--sf2:#211f1b;--ink:#f1eee6;--g:#aaa59a;--gb:#8a857a;--bdr:#38352f;--gold:#d2a851;--gold-soft:#362d1d;--blue:#7facba;--blue-soft:#1b2c31;--red:#c47b70;--red-soft:#352321;--green:#83a98d;--green-soft:#1d2d22;}}
+*{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 0 100px}
+a{color:var(--blue)} code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:var(--sf);border:1px solid var(--bdr);border-radius:4px;padding:1px 5px}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+header{padding:40px 0 24px;border-bottom:1px solid var(--bdr)}
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);font-weight:700}
+h1{font-size:34px;letter-spacing:-.02em;margin:10px 0 8px}
+.lede{font-size:17px;color:var(--g);max-width:70ch}
+nav.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);padding:12px 0;z-index:5;border-bottom:1px solid var(--bdr)}
+nav.jump a{font-size:12px;padding:7px 13px;border:1px solid var(--bdr);border-radius:999px;text-decoration:none;color:var(--g);background:var(--sf)}
+nav.jump a:hover{background:var(--gold-soft);color:var(--ink)}
+section{padding:40px 0;border-bottom:1px solid var(--bdr)} section:last-of-type{border-bottom:0}
+h2{font-size:24px;letter-spacing:-.01em;margin:0 0 6px}
+.section-note{color:var(--g);font-size:14px;max-width:70ch;margin:0 0 20px}
+.card{border:1px solid var(--bdr);border-radius:12px;background:var(--sf);padding:18px 20px;margin-bottom:14px}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{font-size:13.5px;color:var(--g);margin:0 0 8px}
+.warn{border-left:3px solid var(--red);background:var(--red-soft);padding:14px 18px;border-radius:0 10px 10px 0;font-size:13.5px;margin:16px 0}
+.mk{background:var(--sf);border:1px solid var(--bdr);border-left:3px solid var(--gold);padding:14px 18px;margin:18px 0;border-radius:0 10px 10px 0}
+.exit{background:var(--sf2);border:1px dashed var(--bdr);padding:10px 14px;border-radius:8px;font-size:12.5px;color:var(--g);margin-top:10px}
+/* ── demo A: single-scroll anchor nav (this page's own mechanism) ── */
+.demoA{border:1px solid var(--bdr);border-radius:12px;overflow:hidden;background:var(--sf)}
+.demoA .demonav{display:flex;gap:6px;padding:12px;background:var(--sf2);border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.demoA .demonav a{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:999px;text-decoration:none;color:var(--g);background:var(--sf)}
+.demoA .demobody{padding:16px 20px;max-height:220px;overflow:auto}
+.demoA .demosec{padding:14px 0;border-bottom:1px dotted var(--bdr)}
+.demoA .demosec:last-child{border-bottom:0}
+.demoA .demosec h4{font-size:13px;margin:0 0 4px}
+.demoA .demosec p{font-size:12.5px;color:var(--g);margin:0}
+/* ── demo B: css :target tabs, zero JS ── */
+.demoB{border:1px solid var(--bdr);border-radius:12px;overflow:hidden;background:var(--sf)}
+.demoB .demonav{display:flex;gap:6px;padding:12px;background:var(--sf2);border-bottom:1px solid var(--bdr)}
+.demoB .demonav a{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:999px;text-decoration:none;color:var(--g);background:var(--sf)}
+.demoB .tpanel{display:none;padding:16px 20px;font-size:12.5px;color:var(--g)}
+#dbA:target ~ .demobodyB #tpA,
+#dbB:target ~ .demobodyB #tpB,
+#dbC:target ~ .demobodyB #tpC{display:block}
+.demobodyB #tpA{display:block} /* default shown until another is targeted */
+#dbB:target ~ .demobodyB #tpA,
+#dbC:target ~ .demobodyB #tpA{display:none}
+/* ── demo C: details/summary accordion, zero JS, zero CSS trick ── */
+.demoC details{border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;margin-bottom:8px;background:var(--sf)}
+.demoC summary{cursor:pointer;font-weight:600;font-size:13px}
+.demoC p{font-size:12.5px;color:var(--g);margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--bdr);vertical-align:top}
+th{color:var(--g);font-size:10px;text-transform:uppercase;letter-spacing:.07em}
+footer{color:var(--g);font-size:12px;padding-top:40px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">The option spaces · 2026-08-31</div>
+  <h1>The HTML protocol: what to do about tabs that won't click</h1>
+  <p class="lede">Kevin: "run a full development on the html protocol based on past widget, ui, tetra, and html ideas and structures... creating both context, and decisions for kevin, as well the open option spaces." This page's own navigation below uses plain anchor links — zero JavaScript, anywhere in this file. If clicking works here, that alone is informative.</p>
+</header>
+<nav class="jump">
+  <a href="#context">Context</a>
+  <a href="#diagnosis">What I actually know</a>
+  <a href="#optionA">Option A — single scroll + anchor nav</a>
+  <a href="#optionB">Option B — CSS :target tabs</a>
+  <a href="#optionC">Option C — details/summary accordion</a>
+  <a href="#optionD">Option D — keep JS tabs, add fallback</a>
+  <a href="#recommendation">My read</a>
+  <a href="#exit">The exit</a>
+</nav>
+
+<section id="context">
+  <h2>Context — where the current format came from</h2>
+  <p class="section-note">Drawn from three lines of past work already in this corpus.</p>
+  <div class="card">
+    <h3>The widget chassis (DS_LITE.html, DS_v1.html, <code>tools/surface.py</code>)</h3>
+    <p>The daily-decision widget system — real, heavily used, 556+ rendered widgets. Notably: it does <em>not</em> use tabbed panels. It's a single scrolling surface per widget, no JS-driven show/hide navigation at all. The chassis lineage (v1 through v10) converged on simplicity, not on more interactive chrome.</p>
+  </div>
+  <div class="card">
+    <h3>Session Bridge HTML (<code>FORMAT_SPEC_2026-08-25</code>)</h3>
+    <p>The format this page is a sibling of — sidebar tabs, one <code>&lt;script&gt;</code> block, click listeners toggling <code>.active</code>. Its own howto step 7 says "open the finished file with no network connection... if anything fails to load or render, fix it" — but that check was written for <em>network</em> dependencies, not for whether a <em>viewer</em> executes inline script at all. That gap was never tested.</p>
+  </div>
+  <div class="card">
+    <h3>decisions.html / options.html (the decision-surface convention this page follows)</h3>
+    <p>Built 2026-08-12 and 2026-08-16. Both use plain HTML forms and controls, not a tab system — "depth zero... this is the field, not a doorway." Their own convention already leans away from hidden/tabbed content toward everything visible at once.</p>
+  </div>
+</section>
+
+<section id="diagnosis">
+  <h2>What I actually know, stated plainly</h2>
+  <div class="warn"><b>I cannot fully verify this.</b> My own browser tool renders any file outside a specific stale project path as a non-interactive static snapshot — a limitation that's been true all session, unrelated to your report. I copied the file into three different locations trying to get a real click-test and couldn't get past it. So I audited the code by hand instead.</div>
+  <p style="margin:14px 0;font-size:14px">The tab-switching code itself is standard and, as far as I can tell reading it closely twice, correct — plain <code>addEventListener('click', ...)</code>, no CSP block, nothing inside a <code>&lt;form&gt;</code> that could trigger a submit/reload. My best-supported guess is that wherever you're opening these files, JavaScript isn't executing — most likely because it's going through some kind of preview/viewer rather than a full browser, the same category of sandboxing my own tool just showed me directly. I can't confirm that with certainty, which is exactly why this is a decision surface and not a fix I just applied.</p>
+</section>
+
+<section id="optionA">
+  <h2>Option A — single scroll, sticky anchor nav</h2>
+  <p class="section-note">Abandons hide/show entirely. Every section is always in the document; the sidebar becomes a list of <code>&lt;a href="#section"&gt;</code> links that jump you there. This is the mechanism this whole page you're reading right now uses.</p>
+  <div class="demoA">
+    <div class="demonav"><a href="#dA1">One</a><a href="#dA2">Two</a><a href="#dA3">Three</a></div>
+    <div class="demobody">
+      <div class="demosec" id="dA1"><h4>Section one</h4><p>Try the nav above — it's a real, live demo, not a screenshot.</p></div>
+      <div class="demosec" id="dA2"><h4>Section two</h4><p>No JavaScript anywhere in this block. Native browser anchor scrolling only.</p></div>
+      <div class="demosec" id="dA3"><h4>Section three</h4><p>Works with JS off, CSS off, in any renderer that understands basic HTML — the most universally compatible option here.</p></div>
+    </div>
+  </div>
+  <table>
+    <tr><th>gains</th><td>Maximum compatibility — works absolutely everywhere, including text-only or heavily sandboxed renderers. Shareable deep links to a section. Nothing to break.</td></tr>
+    <tr><th>costs</th><td>Loses the "one screen, one topic" feel — everything is one long page. Print/scan behavior changes (arguably improves — <code>@media print</code> becomes unnecessary, it already prints linearly).</td></tr>
+  </table>
+</section>
+
+<section id="optionB">
+  <h2>Option B — CSS <code>:target</code> tabs, zero JavaScript</h2>
+  <p class="section-note">Keeps the show/one-panel-at-a-time feel of the current format, but the mechanism is pure CSS instead of a script. <code>&lt;a href="#panel"&gt;</code> plus a <code>:target</code> selector does the hiding/showing.</p>
+  <div class="demoB">
+    <div class="demonav"><a href="#dbA">Tab A</a> <a href="#dbB">Tab B</a> <a href="#dbC">Tab C</a></div>
+    <span id="dbA"></span><span id="dbB"></span><span id="dbC"></span>
+    <div class="demobodyB">
+      <div class="tpanel" id="tpA">Tab A's content — shown by default, no JS anywhere.</div>
+      <div class="tpanel" id="tpB">Tab B's content — shown only when its anchor is the page's :target.</div>
+      <div class="tpanel" id="tpC">Tab C's content — same mechanism, third pane.</div>
+    </div>
+  </div>
+  <table>
+    <tr><th>gains</th><td>Visually closest to the current format — same one-panel-at-a-time feel, same sidebar-of-buttons look (styled as pills or a vertical list either way). Zero script.</td></tr>
+    <tr><th>costs</th><td>Depends on CSS being enabled (a much safer bet than JS in most restrictive viewers, but not absolute zero). The CSS itself is a little more intricate to write correctly — worth double-testing before trusting it as the new default.</td></tr>
+  </table>
+</section>
+
+<section id="optionC">
+  <h2>Option C — <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> accordion</h2>
+  <p class="section-note">Every section becomes a native, browser-built-in collapsible block. No CSS trick, no JS, no anchor mechanics — this is a first-class HTML element built exactly for this.</p>
+  <div class="demoC">
+    <details open><summary>Section one (open by default)</summary><p>Native disclosure widget. Click the triangle or the summary line.</p></details>
+    <details><summary>Section two (closed by default)</summary><p>Keyboard-accessible out of the box, no ARIA wiring needed.</p></details>
+    <details><summary>Section three</summary><p>Multiple sections can be open at once, unlike a strict one-at-a-time tab.</p></details>
+  </div>
+  <table>
+    <tr><th>gains</th><td>The single most bulletproof option — <code>&lt;details&gt;</code> has been a standard HTML element since 2013, essentially guaranteed to work anywhere HTML renders at all, print included.</td></tr>
+    <tr><th>costs</th><td>Furthest visually from the current sidebar-tab look. Reads as a FAQ/accordion, not a document with sections. Long content inside one open panel can get tall.</td></tr>
+  </table>
+</section>
+
+<section id="optionD">
+  <h2>Option D — keep the current JS tabs, add a <code>&lt;noscript&gt;</code> fallback</h2>
+  <p class="section-note">Changes nothing about the working case (JS enabled, real browser) — same look, same feel. Adds a <code>&lt;noscript&gt;</code> block that forces every panel visible and stacked when script doesn't run, so the content is at least readable instead of stuck on one tab forever.</p>
+  <table>
+    <tr><th>gains</th><td>Zero visual change when it works. Diagnostic — if you ever see all panels stacked and readable, that confirms script isn't running in that viewer, settling the open question above for good.</td></tr>
+    <tr><th>costs</th><td>Doesn't fix the click problem, it just makes the failure survivable. Still not interactive in a no-JS context — you'd read it top to bottom like a plain document, same as Option A but without Option A's clean anchor nav.</td></tr>
+  </table>
+</section>
+
+<section id="recommendation">
+  <h2>My read, offered as a read — not a default</h2>
+  <div class="mk">If I had to build the next one today, I'd reach for <b>Option A</b>. It's the only one of the four with zero dependency on anything that could be sandboxed — no JS, no CSS-selector trick to get right, nothing but native anchor links and normal document flow. It's also the option closest to what the widget chassis (DS_LITE/DS_v1) already converged on independently: a single scrolling surface, not tabbed chrome. But this is a preference stated once, not a mark — the table above is unranked on purpose, and Option B keeps more of the current visual identity if that matters more to you than the compatibility ceiling.</div>
+</section>
+
+<section id="exit">
+  <h2>Exit</h2>
+  <div class="exit"><b>Hold — not tonight.</b> Nothing here requires a decision now. The current session-bridge format keeps shipping exactly as it has been until you say otherwise — this page changes nothing on its own.</div>
+</section>
+
+<footer>Nothing on this page directs a body, a day, or a schedule. No score, no default, no path that leaves this file.</footer>
+</div>
+</body>
+</html>
