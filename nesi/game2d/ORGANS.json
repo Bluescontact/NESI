@@ -1103,6 +1103,102 @@
    }
   },
   {
+   "organ": "the gauge",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "an accumulating magnitude rendered as a physical/qualitative property -- heat, tilt, strain, position, colour -- never as a number, bar, or count. The refusal is total: no digit anywhere in the readout.",
+   "extract": "the value exists and changes, but nothing in the interface converts it to a count. THE REFUSAL TO QUANTIFY THE DISPLAY IS THE ORGAN, not the absence of the underlying value.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- this is about a display's own refusal to numerate, a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "analog automotive gauges -- a fuel or temperature needle's position, not a digital readout",
+     "domain": "instrumentation / automotive"
+    },
+    {
+     "where": "a mercury thermometer's column height as the reading itself, not a printed number",
+     "domain": "measurement / thermometry"
+    },
+    {
+     "where": "costly signaling in animal behaviour (a peacock's tail, a chameleon's colour shift) -- magnitude conveyed by a physical quality, structurally incapable of being read as a digit",
+     "domain": "biology"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing world2d/scripts/station.gd's own Law 2 ('nothing on any station may render a number, a bar, a meter or a count... a quality, never a quantity') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the VU meter",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a magnitude computed purely from current rate or flow, with no access to history, count, or content -- structurally incapable of becoming a score because nothing about it persists. Decays to its floor the instant input stops.",
+   "extract": "no accumulator anywhere in the read path -- only an instantaneous rate, sampled and decayed. THE REFUSAL TO STORE A RUNNING TOTAL IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- amnesiac, rate-only telemetry is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "audio peak/VU meters -- current signal level only, resets to silence instantly, no memory of a loud moment past",
+     "domain": "audio engineering"
+    },
+    {
+     "where": "instantaneous network-throughput graphs (current bits-per-second), structurally distinct from a cumulative bytes-transferred counter",
+     "domain": "networking"
+    },
+    {
+     "where": "a speedometer versus an odometer -- current speed only, resets to zero when stopped; the odometer is a structurally separate accumulator organ",
+     "domain": "automotive"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing world3d/.walk/_snapshot/scripts/spires.gd's cylinder ring (Kevin's marks 2026-08-06; the file's own guard: 'the response would be identical for a thousand words of grief and a thousand words of grocery lists, because it reads FLOW and has no access to anything else... if it ever reads a count, a history, or a mark, it has become a score') during a pattern-recognition pass over soil material. Related to but distinct from the already-admitted gift_10_freshet_test (a falsifier that CHECKS for this property) -- this organ is the readout itself, not the test of it. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
+   "organ": "the projection",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "state is never mutated directly -- it is derived by replaying an append-only event log from the start. The log is the sole authority; a live state can be checked at any time by a fresh replay, and if the two disagree, the log is right and the running state is wrong.",
+   "extract": "there is no write path into 'current state' anywhere -- only events appended to the log, and a projection function that rebuilds state from them. THE REFUSAL TO LET STATE OUTRANK ITS OWN LOG IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- this is a claim about where authority lives (the log, never the live state), a different claim than any of the twelve gestures makes, and a different claim than 'the append-only log' organ (TANK), which is about the storage mechanism, not about deriving state from it. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "double-entry bookkeeping -- the transaction ledger is the sole source of truth; a balance sheet is a derived, recomputable projection of it, never itself the record of account",
+     "domain": "accounting"
+    },
+    {
+     "where": "sediment stratigraphy -- the rock record is an append-only deposit; the present landscape is a projection legible by reading the strata, never itself the record",
+     "domain": "geology"
+    },
+    {
+     "where": "common-law precedent -- current legal interpretation is derived by reasoning over the accumulated case record; earlier rulings are never overwritten, only reinterpreted going forward",
+     "domain": "law"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing _overnight_build/app/surfaces/game2d/field_kernel.js ('project() rebuilds a world from events alone; verify() checks live state against a fresh replay. If they ever disagree, the kernel is wrong, not the game built on it') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
    "organ": "the tombstone",
    "seat": "FILTER",
    "form": "mechanism",
