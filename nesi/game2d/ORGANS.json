@@ -1199,6 +1199,38 @@
    }
   },
   {
+   "organ": "the ratchet",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a value that moves in one direction only, mechanically -- not by convention or care. Revisiting an earlier state can add to it but structurally cannot remove or lower what's already there.",
+   "extract": "there is no code path anywhere that decreases the value or clears an earlier gain -- not a rule observed, a path that does not exist. THE ABSENCE OF A DOWNWARD PATH IS THE ORGAN, distinct from 'the append-only log' (which is about how records are stored) -- this is about a single value's direction of travel.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat -- monotonic-only progression is a different claim than any of the twelve gestures makes. Held open rather than forced.",
+   "sightings": [
+    {
+     "where": "a mechanical ratchet and pawl (bicycle freewheels, torque wrenches) -- rotation permitted one way, physically blocked the other",
+     "domain": "mechanical engineering"
+    },
+    {
+     "where": "the second law of thermodynamics -- entropy in a closed system only increases",
+     "domain": "physics"
+    },
+    {
+     "where": "acquired immunity -- exposure history only accumulates; the immune system does not 'forget' a prior exposure back to naive state",
+     "domain": "immunology"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 while reviewing _overnight_build/app/surfaces/game2d/level_one.html ('unlocks are monotonic -- open only ever grows, and no path in this file removes a face, clears a sentence, or lowers a threshold') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+   }
+  },
+  {
    "organ": "the tombstone",
    "seat": "FILTER",
    "form": "mechanism",
