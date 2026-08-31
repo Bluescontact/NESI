@@ -71,6 +71,14 @@ rhythm/.last_brief
 !/tools/build_deposit_public.js
 !/tools/deposit_lib.js
 !/tools/typology_classify.js
+# The arrangement organ, 2026-08-31 (Kevin's mark: "we need an organ on
+# each side of the pipeline... The organ we are running now is on the
+# other end.. prefiltering."). build_deposit_public.js is the source-side
+# organ: decides WHAT qualifies. This is the destination-side organ: reads
+# the already-filtered deposit and composes it into one navigable index —
+# nesi_deposit_public/index.html — instead of leaving a visitor to
+# cross-reference raw folders and JSON by hand.
+!/tools/build_deposit_index.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

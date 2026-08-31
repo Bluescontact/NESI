@@ -55,7 +55,19 @@ function findSessionBridge(markAt) {
 }
 
 function main() {
-  rmrf(OUT);
+  // Clear only the generated content, never the whole OUT dir — that would
+  // also delete .git. Same bug, same fix as build_deposit.js's earlier one;
+  // this file never got it, and it silently ate nesi_deposit_public/.git
+  // on every rerun since the OneDrive relocation. Found 2026-08-31 when a
+  // requested diff against origin/main turned up unrelated main-corpus
+  // files in what should have been the deposit's own history — the real
+  // symptom was git commands "in nesi_deposit_public" silently operating
+  // on the parent repo instead, because there was no nested repo there to
+  // receive them.
+  rmrf(path.join(OUT, 'game'));
+  rmrf(path.join(OUT, 'patterns'));
+  fs.rmSync(path.join(OUT, 'MANIFEST.json'), { force: true });
+  fs.rmSync(path.join(OUT, 'TRIBUTARIES.json'), { force: true });
   fs.mkdirSync(OUT, { recursive: true });
 
   const { gameFiles, knowledgeFromMind } = traceGameFiles();
