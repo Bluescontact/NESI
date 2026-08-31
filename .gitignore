@@ -55,6 +55,12 @@ rhythm/.last_brief
 !/tools/framing_check_skills.js
 !/tools/lens_usage_check.js
 !/tools/agent_usage_check.js
+# Real-invocation siblings, same day, same mark: the mark-log signal above
+# undercounted (full-development: 1 mark-log mention, 38 real invocations)
+# and overcounted (record-audit: 3 mentions, 0 real invocations) — Kevin's
+# own catch. These read session transcripts directly instead.
+!/tools/skill_invocation_check.js
+!/tools/agent_invocation_check.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

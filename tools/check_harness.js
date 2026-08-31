@@ -43,6 +43,10 @@ const HARNESS = [
     "are the skills in .claude/skills/ named vs. actually invoked, per MARKS_LOG.jsonl"],
   ["agent_usage_check", "agent_usage_check.js", "REPORT",
     "are the agents in .claude/agents/ named vs. actually invoked, per MARKS_LOG.jsonl"],
+  ["skill_invocation_check", "skill_invocation_check.js", "REPORT",
+    "were the skills in .claude/skills/ actually RUN, per real session transcripts — not a mark-log proxy"],
+  ["agent_invocation_check", "agent_invocation_check.js", "REPORT",
+    "were the agents in .claude/agents/ actually RUN (direct + adopted-persona), per real session transcripts"],
 ];
 
 let fail = 0, crash = 0;
@@ -69,7 +73,7 @@ for (const [name, file, kind, holds] of HARNESS) {
   else if (code === 0) mark = kind === "REPORT" ? "report" : "ok    ";
   else { mark = "FAIL  "; fail++; }
 
-  console.log("  " + mark + " " + name.padEnd(22) + holds);
+  console.log("  " + mark + " " + name.padEnd(24) + holds);
   const lines = out.split("\n").filter(l => l.trim());
   for (const l of lines) console.log("         " + l);
   console.log("");

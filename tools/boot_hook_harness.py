@@ -25,16 +25,21 @@ each registered instrument directly with --summary: pure file/log reads,
 well under a second combined, one line each. The full dated reading is one
 command away for a hand that wants it, named in the line itself.
 
-Three instruments as of 2026-08-31: framing_check_skills.js (is the
+Five instruments as of 2026-08-31: framing_check_skills.js (is the
 negative-framing shape reproducing in new skills/agents), lens_usage_check.js
-(are the skills in .claude/skills/ named vs. actually invoked, per
-MARKS_LOG.jsonl — built 2026-08-23, on the same method, applied one layer
-over: not "is a law reaching new files" but "is a named check ever actually
-run"; generalized 2026-08-31 from six hardcoded lenses to every skill with a
-live SKILL.md), and agent_usage_check.js (the same question asked of
-.claude/agents/, which had no usage instrument at all before 2026-08-31).
-Listed in INSTRUMENTS below by name, never by glob, for the same reason
-check_all.js names its own instruments explicitly.
+and agent_usage_check.js (are skills/agents named vs. actually invoked, per
+MARKS_LOG.jsonl — a mark-log mention, which is presence in a decision, not
+proof of a run), and skill_invocation_check.js / agent_invocation_check.js
+(the same question asked of the REAL record instead: session transcripts'
+own "commandName"/"subagent_type" fields, written by the harness itself
+when something actually runs). The last two exist because Kevin caught the
+gap directly, 2026-08-31: "kevin uses the 7 with one mention" — the
+mark-log proxy undercounted real use by a wide margin (full-development:
+1 mark-log mention, 38 real invocations) and in one case overcounted it
+(record-audit: 3 mark-log mentions, 0 real invocations). Both signals are
+kept, not merged — they measure genuinely different things. Listed in
+INSTRUMENTS below by name, never by glob, for the same reason check_all.js
+names its own instruments explicitly.
 
 FRAMING, same rule boot_hook.py already states from Kevin's 2026-08-17 mark:
 negative form only where it is a lint or a container's edge. What this hook
@@ -52,6 +57,8 @@ INSTRUMENTS = [
     "framing_check_skills.js",
     "lens_usage_check.js",
     "agent_usage_check.js",
+    "skill_invocation_check.js",
+    "agent_invocation_check.js",
 ]
 
 
