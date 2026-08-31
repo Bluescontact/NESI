@@ -1186,16 +1186,20 @@
     {
      "where": "common-law precedent -- current legal interpretation is derived by reasoning over the accumulated case record; earlier rulings are never overwritten, only reinterpreted going forward",
      "domain": "law"
+    },
+    {
+     "where": "nesi/conductor/continuity.py — \"a derived resume-VIEW, never a source of truth. The ledgers and queues are\" — the same state-derived-by-reading-the-record mechanism, in an inactive Python build, authored independently of this organ's recognition",
+     "domain": "a different, inactive NESI build (v2 conductor) — imported through the gate 2026-08-31"
     }
    ],
    "members": {},
    "contact": {},
    "built": {
-    "state": "absent",
-    "at": "—",
-    "probe": null,
+    "state": "present",
+    "at": "index.html — PROJECTION_LOG / logEvent() / project() / verifyProjection(), displayed in the case panel (TAB)",
+    "probe": "verifyProjection().match",
     "probe_in": "code",
-    "finding": "recognized 2026-08-31 while reviewing _overnight_build/app/surfaces/game2d/field_kernel.js ('project() rebuilds a world from events alone; verify() checks live state against a fresh replay. If they ever disagree, the kernel is wrong, not the game built on it') during a pattern-recognition pass over soil material. Not built in game2d. The seat, if one exists, is open."
+    "finding": "BUILT 2026-08-31 (Kevin: \"run a phase transition, and develop and build nesi from what we have now\"). Session-scoped event log over the six live mutation sites, verified by fresh replay against independently-tracked live state via a post-restore baseline. Honestly scoped: tombstones and overreads verified (monotonic in-session); node/edge/pick counts logged only, never claimed verified. Two bugs found and fixed by live testing before landing: wrong hook point (ingest vs ingestOne), and a shadow-counter verify that could never catch real drift."
    }
   },
   {
@@ -1432,6 +1436,70 @@
     "probe": null,
     "probe_in": "code",
     "finding": "the trades are derived in solid.js as TRADES but nothing performs one. The socket is open, and law 2 governs anything drawn from it."
+   }
+  },
+  {
+   "organ": "the second mark",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a crossing above a named threshold requires two independent confirmations before it proceeds; one signature moves ordinary things, two move the consequential ones. The independence of the two checks is the load-bearing part — they must not share a failure mode.",
+   "extract": "the threshold names WHICH crossings need the second mark, so the rule costs nothing on ordinary work. REQUIRING INDEPENDENCE, NOT REPETITION, IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat — held open rather than forced.",
+   "sightings": [
+    {
+     "where": "the two-person integrity rule — consequential actions (weapons release, vault access) require two people acting independently",
+     "domain": "security / military command"
+    },
+    {
+     "where": "required pull-request review approvals — a change merges only with an approval from someone other than its author",
+     "domain": "software engineering"
+    },
+    {
+     "where": "contract countersignature / two-signature checks above an amount threshold",
+     "domain": "law / finance"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 importing soil through the gate: nesi/conductor/preflight.py (\"the two-sign-off seam-clean check... the motor gates go-live on two sign-offs: metabolizer and bench\") and, independently inside this corpus, gate instrument 07-magnitude (a proposal above 6/10 carries a confirmed second mark). Two bodies of this corpus arrived at it separately. Not built in game2d."
+   }
+  },
+  {
+   "organ": "the seam",
+   "seat": "—",
+   "form": "mechanism",
+   "path": "either",
+   "mechanism": "a boundary module that names the interface and is forbidden to know any implementation; swapping the implementation means writing a new module that satisfies the seam, never touching the call sites behind it.",
+   "extract": "the seam has zero imports of what implements it — enforced ignorance, not just convention. THE REFUSAL TO KNOW IS THE ORGAN.",
+   "why_this_seat": "recognized as a genuine shape, not yet given a seat — held open rather than forced.",
+   "sightings": [
+    {
+     "where": "ports-and-adapters / hexagonal architecture — the domain core declares ports; adapters satisfy them; the core never imports an adapter",
+     "domain": "software architecture"
+    },
+    {
+     "where": "a hardware abstraction layer — the OS above it cannot tell which physical device answered",
+     "domain": "operating systems"
+    },
+    {
+     "where": "the standardized shipping container — the ship, crane and truck handle the interface and never the cargo",
+     "domain": "logistics"
+    }
+   ],
+   "members": {},
+   "contact": {},
+   "built": {
+    "state": "absent",
+    "at": "—",
+    "probe": null,
+    "probe_in": "code",
+    "finding": "recognized 2026-08-31 importing soil through the gate: nesi/bench/geometric_bench/renderer_seam.py (\"zero third-party imports on purpose: it is not allowed to know pywebview exists\"), the same seam built twice — again in nesi_bench_v0/renderer/ — two bench builds independently reaching for it. Not built in game2d as a named module; index.html's zero-dependency law is adjacent but not the same claim."
    }
   }
  ],

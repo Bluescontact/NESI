@@ -63,6 +63,15 @@ const SEATS = {
   'deposit_pipeline':                        { crystal: 'c5', why: 'the labor of landing clean, paid upfront, as code' },
   'harness_boot_layer':                      { crystal: 'c6', why: 'instruments at boot — the corpus checks itself before it speaks' },
   'ledger_tools':                            { crystal: 'c2', why: 'the append-only machinery itself' },
+  // Imported from soil through the gate, 2026-08-31 (Kevin: "continue
+  // importing previous work through the gate after being filtered for
+  // the gate") — filtered by mechanism, each backing or extending an
+  // organ, each file verified real before admission.
+  'second_mark_preflight':                   { crystal: 'c2', why: 'a consequential crossing needs two independent confirmations — crossing discipline, hardened' },
+  'renderer_seam':                           { crystal: 'c3', why: 'the boundary that keeps a mechanism swappable — forbidden to know its implementation' },
+  'continuity_derived_view':                 { crystal: 'c7', why: 'a resume-view derived from the ledgers, never a source of truth of its own' },
+  'held_named_gaps':                         { crystal: 'c6', why: 'everything held carries the name of what it is waiting for — the honest blank, working' },
+  'prior_art_check_tool':                    { crystal: 'c7', why: 'already built, or new? — the check that keeps a mechanism from existing twice' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
