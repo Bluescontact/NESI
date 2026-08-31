@@ -434,6 +434,9 @@ def regenerate():
         signs_html += f'<div class="signs-lab">the door reads</div><div class="gauges">{chips}</div>'
     if signs.get("skin_law"):
         signs_html += f'<div class="membrane">the membrane holds — {_esc(signs["skin_law"])}</div>'
+    # SKIN v1 (2026-08-30): the metabolic reading — the boundary's live line
+    if signs.get("metabolism"):
+        signs_html += f'<div class="membrane">{_esc(signs["metabolism"])}</div>'
     cats = signs.get("categories", {})
     if cats:
         cchips = "".join(f'<span class="cat">{_esc(k)} · <b>{v}</b></span>' for k, v in cats.items())

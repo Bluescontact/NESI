@@ -174,3 +174,9 @@
 {"ts": "2026-08-22T23:21:01", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-08-22T23:21:08", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
 {"ts": "2026-08-22T23:22:10", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T18:52:44", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T18:52:56", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T18:53:04", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T18:55:05", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T19:19:10", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}
+{"ts": "2026-08-30T19:22:27", "event": "local-engine-registered", "engine": "local", "model": "hermes3:8b"}

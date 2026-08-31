@@ -26,8 +26,14 @@ gate — is it wanted. Law 22 is the *enforcement* gate — can the machine be
 stopped mechanically. A filesystem gate can stop the machine; it cannot decide
 the work.** — named 2026-08-24, see provenance.
 
-**2 · VERIFICATION NEEDS A STRANGER.** No WALKABLE without a stranger read;
-machine-proved surfaces are UNWITNESSED. — Kevin, MARKS 993, 2026-08-12.
+**2 · STRUCK ENTIRELY.** Kevin's mark, 2026-08-30: *"the learned. #2 stranger
+verification.. strike that entirely."* The law text is gone from this page;
+the incident behind it remains history at `LEARNED_PROVENANCE.md`. The number
+is kept only so cross-references (law 3's coverage list, older documents)
+resolve to this strike rather than to nothing. The cold-walk skill, which
+stood on this law, was struck the same day on his second mark ("strike the
+cold-walk skill too") — its file stands whole at
+`.claude/skills/cold-walk/SKILL.md.struck_2026-08-30.md`, no longer loading.
 
 **3 · VERIFICATION IS PRESTRESS, NOT IDENTITY.** A check holds a load because
 it is structural and general — re-evaluating, independent of who built it —

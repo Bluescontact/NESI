@@ -75,7 +75,8 @@ def _signs():
     """The intake + membrane organs' read-only state (pass C): the door (glance
     gauges), the membrane (skin law + tension-table category counts), the
     reach-back (interrogator's one line). Each guarded; missing = empty."""
-    out = {"gauges": [], "skin_law": "", "categories": {}, "reach": "", "worth_marked": 0}
+    out = {"gauges": [], "skin_law": "", "metabolism": "", "categories": {},
+           "reach": "", "worth_marked": 0}
     try:
         import worth
         out["worth_marked"] = len(worth.marked_set())
@@ -91,6 +92,13 @@ def _signs():
     try:
         import skin
         out["skin_law"] = str(skin.law_summary())
+    except Exception:
+        pass
+    try:
+        import skin
+        # SKIN v1 (2026-08-30): the metabolic reading's one wired viewer.
+        # Guarded separately so a metabolism failure can never cost the law line.
+        out["metabolism"] = str(skin.metabolism().get("line", ""))
     except Exception:
         pass
     try:

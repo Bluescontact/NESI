@@ -143,6 +143,9 @@ The decision surface is `nesi/game2d/options.html`; marks live there and in
 node tools/check_all.js
 ```
 
-Run from `nesi/game2d/`. Twelve instruments hold or refuse; three more run in the
-page. A green suite is the floor; the verdict comes from the eye and from a
-stranger — `LEARNED.md` law 5 and law 2 carry that, and both were paid for.
+Run from `nesi/game2d/`. The NODE/ESM/GATE arrays in `check_all.js` hold, refuse,
+or report — read that file for the current count rather than a number here, since
+the count has already grown past what a fixed digit in this file could track;
+three more (`IN_PAGE`) run in the page. A green suite is the floor; the verdict
+comes from the eye — `LEARNED.md` law 5 carries that, and it was paid for.
+(Law 2, the stranger read, was struck entirely on Kevin's mark, 2026-08-30.)

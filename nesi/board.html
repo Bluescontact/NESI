@@ -32,6 +32,37 @@ svg{width:100%;height:auto;display:block}
 .ember:hover{transform:translateY(-2px)}
 @keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
 .pulse-dot{animation:breathe 3.2s ease-in-out infinite}
+
+/* THE ROUND — merged directly from play.html. Same file, same localStorage key,
+   so playing IS how an ember grows here — not a separate app reporting a number. */
+.round{width:100%;max-width:760px;margin-top:18px;border:1px solid var(--bdr);background:#fff;padding:18px 20px}
+.round-step{margin-top:18px}
+.round-step:first-child{margin-top:0}
+.step-n{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;color:var(--gd);text-transform:uppercase;margin-bottom:6px}
+.step-h{font-size:16px;color:var(--gb);margin-bottom:4px}
+.step-say{font-size:12px;color:var(--gd);line-height:1.55;margin-bottom:10px}
+.row{display:flex;gap:8px}
+input[type=text],textarea{flex:1;font-family:Georgia,serif;font-size:14px;color:var(--gb);background:var(--bg);
+  border:1px solid var(--bdr);padding:9px 11px;width:100%}
+textarea{min-height:64px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:none;border-color:var(--gd)}
+.round button{font-family:'Courier New',monospace;font-size:11px;letter-spacing:1px;color:var(--gb);background:var(--sf);
+  border:1px solid var(--gd);padding:9px 14px;cursor:pointer;white-space:nowrap}
+.round button:hover{background:var(--sf2)}
+.round button.quiet{border-color:var(--bdr);color:var(--gd);background:none}
+.round button.warm{border-color:var(--ember);color:var(--ember)}
+.pile{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.piece{font-size:13px;background:var(--bg);border:1px solid var(--bdr);padding:7px 11px;cursor:pointer;transition:all .15s;position:relative}
+.piece:hover{border-color:var(--gd)}
+.piece.warm{border-color:var(--ember);background:var(--ember-bg);color:var(--gb);box-shadow:0 0 0 1px var(--ember)}
+.piece .x{color:var(--gf);margin-left:8px;font-family:monospace}
+.hint2{font-size:11px;color:var(--gf);font-style:italic;margin-top:8px}
+.hidden{display:none}
+.thread{background:var(--bg);border:1px solid var(--ember);border-left:3px solid var(--ember);padding:14px;margin-top:12px}
+.thread-q{font-size:12px;color:var(--gd);margin-bottom:8px}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.done-msg{font-size:14px;color:var(--leaf);font-style:italic;margin-top:10px;line-height:1.5}
+
 .rail{width:100%;max-width:760px;margin-top:16px;border:1px solid var(--bdr);background:#fff;
   padding:0;min-height:0;overflow:hidden;transition:min-height .2s}
 .rail.on{min-height:96px}
@@ -72,7 +103,7 @@ svg{width:100%;height:auto;display:block}
     <div class="name">NESI</div>
     <div class="tag">a game you play with pieces of your own life</div>
   </div>
-  <div class="hint">You're looking at the whole thing. Things come in at the way-in, settle into the soil, and grow into embers you can pick up and hand on.</div>
+  <div class="hint">You're looking at the whole thing. Things come in at the way-in, settle into the soil, and grow into embers you can pick up and hand on. <b>Play a round below — it grows right here, on this board, immediately.</b></div>
 
   <div class="board">
     <svg viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" aria-label="The NESI board">
@@ -104,18 +135,58 @@ svg{width:100%;height:auto;display:block}
         <path d="M400 238 C392 214 396 196 402 176" stroke="var(--bark)" stroke-width="4" fill="none" stroke-linecap="round"/>
         <ellipse cx="400" cy="176" rx="150" ry="86" fill="var(--leaf)" opacity="0.13"/>
         <ellipse cx="400" cy="176" rx="150" ry="86" fill="none" stroke="var(--leaf)" stroke-width="1" opacity="0.4"/>
-        <ellipse cx="400" cy="176" rx="30" ry="18" fill="none" stroke="var(--bark)" stroke-width="1" opacity="0.34"/><ellipse cx="400" cy="176" rx="50" ry="29" fill="none" stroke="var(--bark)" stroke-width="1" opacity="0.29"/>
         <text x="400" y="70" class="lab-b" text-anchor="middle">THE FOREST</text>
-        <text x="400" y="86" class="plain" text-anchor="middle">the self · 176 patterns · 32 crossings · rings: 2026-07, 2026-08</text>
+        <text x="400" y="86" class="plain" text-anchor="middle" id="hwCaption">the embers grow here — play a round below</text>
         <g id="embers"></g>
       </g>
     </svg>
   </div>
 
+  <!-- THE ROUND — real mechanic, merged in from play.html. Writes to the SAME
+       localStorage key the SVG forest above reads. Playing = growing. -->
+  <div class="round">
+    <div class="round-step" id="s1">
+      <div class="step-n">1 · empty your pockets</div>
+      <div class="step-h">Put down a handful of things.</div>
+      <div class="step-say">Things you did, made, fixed, gave, or got through lately. Don't sort them, don't rank them — just lay them where you can see them.</div>
+      <div class="row">
+        <input type="text" id="pieceInput" placeholder="something from your life lately…" autocomplete="off">
+        <button id="addBtn">put it down</button>
+      </div>
+      <div class="pile" id="pile"></div>
+      <div class="hint2" id="s1hint"></div>
+    </div>
+
+    <div class="round-step hidden" id="s2">
+      <div class="step-n">2 · feel for the warm one</div>
+      <div class="step-h">Which one has a little heat on it?</div>
+      <div class="step-say">Click the one you keep coming back to. You don't have to explain why. And if none is warm today, that's a real round too.</div>
+      <button class="quiet" id="fallowBtn">nothing's warm today — let it go</button>
+    </div>
+
+    <div class="round-step hidden" id="s3">
+      <div class="step-n">3 · pull the thread</div>
+      <div class="step-h">Write one small true thing.</div>
+      <div class="thread">
+        <div class="thread-q">Take the warm one — "<span id="warmEcho"></span>". What did you do that someone else couldn't have — or couldn't, until you showed them how? No wrong answers, no one is marking this.</div>
+        <textarea id="threadText" placeholder="one small true thing, in your own words…"></textarea>
+        <div class="acts">
+          <button class="warm" id="keepBtn">keep it</button>
+          <button id="handBtn">hand it over</button>
+        </div>
+        <div class="done-msg hidden" id="doneMsg"></div>
+      </div>
+    </div>
+
+    <div class="round-step hidden" id="s5">
+      <button class="quiet" id="letGoBtn">let go — put the round down</button>
+    </div>
+  </div>
+
   <div class="held" id="held"><div class="held-lab">what you're holding — 7, each with its open edge</div><div class="held-item"><span class="ht">2026-07-16_test_pile_fallback_5e5111</span><span class="hg">felt hold — no anchor given</span></div><div class="held-item"><span class="ht">unmark_selftest_000000</span><span class="hg">until 2026-08-01</span></div><div class="held-item"><span class="ht">Engine dark</span><span class="hg">bench.invoke is a stub on every op (draft/break/refine/semantic_pull). No engine</span></div><div class="held-item"><span class="ht">Trickster Detector — form-side, never built</span><span class="hg">load_off_the_vulnerable_node crossed to canon 2026-07-21 (actor-side built). The</span></div><div class="held-item"><span class="ht">~20 brief-only holds</span><span class="hg">Roughly 20 patterns exist only inside substrate briefs in _INTAKE — never re-scr</span></div><div class="held-item"><span class="ht">The shared missing register</span><span class="hg">A register named as missing across more than one hold — what it would contain an</span></div><div class="held-item"><span class="ht">~90 unread briefs</span><span class="hg">Substrate briefs staged in _INTAKE that have not been opened and read against ca</span></div></div>
   <div class="returns" id="returns">come back · quiet — nothing has anchored a return right now</div>
 
-  <div class="signs" id="signs"><div class="signs-lab">the door reads</div><div class="gauges"><span class="gauge">System state · <b>AT REST</b></span><span class="gauge">Rented cognition · <b>CONSENTED</b></span><span class="gauge">Money-lags gauge · <b>UNTESTED</b></span><span class="gauge">Governor cutoff · <b>ARMED — UNFIRED</b></span><span class="gauge">Second sensor · <b>OUT-OF-FAMILY ACTIVE</b></span><span class="gauge">Pile state · <b>SHRINKING</b></span></div><div class="membrane">the membrane holds — load never rests on the vulnerable node — whatever the adversary can attack (the form&#x27;s inhabitability, or the actor&#x27;s person) carries none of the weight</div><div class="cats"><span class="cat">organ · <b>49</b></span><span class="cat">nutrient · <b>25</b></span><span class="cat">lens · <b>49</b></span><span class="cat">seed · <b>53</b></span><span class="cat">pollen · <b>0</b></span></div><div class="membrane" style="font-style:normal;color:var(--gd)">what carries charge · surface-and-mark ready — you mark, no one else, no score</div><div class="reach"><span class="rl">the reach-back asks</span>21 of 23 helds are past 14 days with no condition named — look, or is the hold the answer?</div></div>
+  <div class="signs" id="signs"><div class="signs-lab">the door reads</div><div class="gauges"><span class="gauge">System state · <b>AT REST</b></span><span class="gauge">Rented cognition · <b>CONSENTED</b></span><span class="gauge">Money-lags gauge · <b>UNTESTED</b></span><span class="gauge">Governor cutoff · <b>ARMED — UNFIRED</b></span><span class="gauge">Second sensor · <b>OUT-OF-FAMILY ACTIVE</b></span><span class="gauge">Pile state · <b>GROWING</b></span></div><div class="membrane">the membrane holds — load never rests on the vulnerable node — whatever the adversary can attack (the form&#x27;s inhabitability, or the actor&#x27;s person) carries none of the weight</div><div class="membrane">the membrane reads — 70 asks standing, 70 past the 7d window · promote_ready holds 8 file(s), oldest 57d — wash · 25 nutrient(s), 1 with declared graft edges</div><div class="cats"><span class="cat">organ · <b>49</b></span><span class="cat">nutrient · <b>25</b></span><span class="cat">lens · <b>49</b></span><span class="cat">seed · <b>53</b></span><span class="cat">pollen · <b>0</b></span></div><div class="membrane" style="font-style:normal;color:var(--gd)">what carries charge · surface-and-mark ready — you mark, no one else, no score</div><div class="reach"><span class="rl">the reach-back asks</span>21 of 23 helds are past 14 days with no condition named — look, or is the hold the answer?</div></div>
 
   <div class="rail" id="rail">
     <div class="rail-inner">
@@ -133,37 +204,130 @@ svg{width:100%;height:auto;display:block}
   </div>
 
 <script>
-const EMBERS = [{"t": "made a floor that holds a stranger without asking anything back"}, {"t": "showed someone the inverter, and they could run it without me"}, {"t": "sat beside me while I worked, and asked for nothing"}];
-const SPOTS = [[336, 150], [452, 140], [400, 196], [300, 182], [496, 178], [370, 120], [340, 116], [462, 200], [408, 108], [286, 150], [514, 148], [378, 210]];
-const g = document.getElementById('embers');
+// ONE store, shared by the round and the board's forest render — the fix for
+// "playing a round doesn't show up on the board." Same key play.html used.
+const KEY = "nesi.embers.v1";
+const SPOTS = [[336, 150], [452, 140], [400, 196], [300, 182], [496, 178], [370, 120],
+               [340, 116], [462, 200], [408, 108], [286, 150], [514, 148], [378, 210]];
 const NS = "http://www.w3.org/2000/svg";
-EMBERS.forEach((e,i)=>{
-  const [x,y] = SPOTS[i % SPOTS.length];
-  const grp = document.createElementNS(NS,'g');
-  grp.setAttribute('class','ember'); grp.setAttribute('tabindex','0');
-  const halo = document.createElementNS(NS,'circle');
-  halo.setAttribute('cx',x); halo.setAttribute('cy',y); halo.setAttribute('r',10);
-  halo.setAttribute('fill','var(--ember-glow)'); halo.setAttribute('opacity','0.28');
-  const dot = document.createElementNS(NS,'circle');
-  dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r',5.5);
-  dot.setAttribute('fill','var(--ember)');
-  grp.appendChild(halo); grp.appendChild(dot);
-  grp.addEventListener('click',()=>pickUp(i));
-  grp.addEventListener('keydown',ev=>{if(ev.key==='Enter')pickUp(i);});
-  g.appendChild(grp);
-});
-document.getElementById('ecount').textContent = EMBERS.length;
-if(!EMBERS.length){ document.getElementById('empty').style.display='block'; }
+
+function loadEmbers(){ try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ return []; } }
+function saveEmbers(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+
+// --- render the SVG forest from the live store (no Python baking needed to see it) ---
+function renderForest(){
+  const list = loadEmbers();
+  const g = document.getElementById('embers');
+  g.innerHTML = "";
+  list.forEach((e,i)=>{
+    const [x,y] = SPOTS[i % SPOTS.length];
+    const grp = document.createElementNS(NS,'g');
+    grp.setAttribute('class','ember'); grp.setAttribute('tabindex','0');
+    const halo = document.createElementNS(NS,'circle');
+    halo.setAttribute('cx',x); halo.setAttribute('cy',y); halo.setAttribute('r',10);
+    halo.setAttribute('fill','var(--ember-glow)'); halo.setAttribute('opacity','0.28');
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r',5.5);
+    dot.setAttribute('fill','var(--ember)');
+    grp.appendChild(halo); grp.appendChild(dot);
+    grp.addEventListener('click',()=>pickUp(i, list));
+    grp.addEventListener('keydown',ev=>{if(ev.key==='Enter')pickUp(i, list);});
+    g.appendChild(grp);
+  });
+  document.getElementById('ecount').textContent = list.length;
+  document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+  document.getElementById('hwCaption').textContent = list.length
+    ? ('the self · ' + list.length + ' embers grown')
+    : 'the embers grow here — play a round below';
+}
 const rail=document.getElementById('rail'), rtxt=document.getElementById('rail-txt'), ract=document.getElementById('rail-act');
 let openIdx=-1;
-function pickUp(i){
+function pickUp(i, list){
   if(openIdx===i){ rail.classList.remove('on'); openIdx=-1; return; }
-  openIdx=i; rtxt.textContent='“'+EMBERS[i].t+'”';
-  ract.innerHTML='click <b id="hand">hand it over</b> and it\'s given — no one owes you anything back.';
+  openIdx=i; rtxt.textContent='"'+list[i].text+'"';
+  ract.innerHTML = list[i].given
+    ? '<span class="given">given — nobody owed you anything back.</span>'
+    : 'kept — yours, in your own hand.';
   rail.classList.add('on');
-  const h=document.getElementById('hand'); if(h) h.onclick=give;
 }
-function give(){ ract.innerHTML='<span class="given">given. it\'s theirs now — and the grove still holds it.</span>'; }
+
+// --- the round itself (moves 1-5), same logic as play.html ---
+let pile = [];
+let nextId = 1;
+const $ = id => document.getElementById(id);
+function show(id){ $(id).classList.remove("hidden"); }
+function hide(id){ $(id).classList.add("hidden"); }
+
+function renderPile(){
+  const el = $("pile"); el.innerHTML = "";
+  pile.forEach(p => {
+    const d = document.createElement("span");
+    d.className = "piece" + (p.warm ? " warm" : "");
+    d.innerHTML = p.text.replace(/</g,"&lt;") + '<span class="x" title="remove">×</span>';
+    d.onclick = (ev) => {
+      if (ev.target.classList.contains("x")) { pile = pile.filter(x => x.id !== p.id); afterPileChange(); return; }
+      pile.forEach(x => x.warm = (x.id === p.id));
+      afterPileChange();
+    };
+    el.appendChild(d);
+  });
+}
+function afterPileChange(){
+  renderPile();
+  if (pile.length >= 1) show("s2"); else hide("s2");
+  const warm = pile.find(p => p.warm);
+  if (warm){ $("warmEcho").textContent = warm.text; show("s3"); } else { hide("s3"); }
+  $("s1hint").textContent = pile.length ? "click one to feel for the warm one · click × to drop a piece" : "";
+}
+$("addBtn").onclick = addPiece;
+$("pieceInput").addEventListener("keydown", e => { if (e.key === "Enter") addPiece(); });
+function addPiece(){
+  const v = $("pieceInput").value.trim();
+  if (!v) return;
+  pile.push({ id: nextId++, text: v, warm: false });
+  $("pieceInput").value = "";
+  $("pieceInput").focus();
+  afterPileChange();
+}
+function completeRound(given){
+  const warm = pile.find(p => p.warm);
+  const text = $("threadText").value.trim();
+  if (!text){ $("threadText").focus(); return; }
+  const list = loadEmbers();
+  const now = new Date();
+  list.unshift({ text, from: warm ? warm.text : "", given: !!given, when: now.toISOString().slice(0,10) });
+  saveEmbers(list);
+  renderForest();
+  const msg = given
+    ? "given. it's theirs now — nobody owes you anything back. and the grove still holds it — look up."
+    : "kept. it's yours, in your own hand — and it's in the grove above.";
+  $("doneMsg").textContent = "— " + msg;
+  show("doneMsg");
+  hide("s2");
+  $("threadText").disabled = true; $("keepBtn").disabled = true; $("handBtn").disabled = true;
+  show("s5");
+}
+$("keepBtn").onclick = () => completeRound(false);
+$("handBtn").onclick = () => completeRound(true);
+$("fallowBtn").onclick = () => {
+  hide("s2"); hide("s3");
+  $("s1hint").textContent = "nothing was warm today. that's a real round. let it be a pile, and let go.";
+  show("s5");
+};
+$("letGoBtn").onclick = resetRound;
+function resetRound(){
+  pile = [];
+  $("threadText").value = ""; $("threadText").disabled = false;
+  $("keepBtn").disabled = false; $("handBtn").disabled = false;
+  hide("doneMsg"); hide("s2"); hide("s3"); hide("s5");
+  $("s1hint").textContent = "";
+  renderPile();
+  $("pieceInput").focus();
+}
+
+renderForest();
+renderPile();
+$("pieceInput").focus();
 </script>
 </body>
 </html>
