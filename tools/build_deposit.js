@@ -19,6 +19,7 @@ const path = require('path');
 const {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
+  PIPELINE_MECHANISM,
 } = require('./deposit_lib');
 const { SPINE_DOC } = require('./spine');
 
@@ -74,21 +75,47 @@ function main() {
     else manifest[bucket].push(`mind/${rel}`);
   }
 
+  // Invocation evidence traced before the root loop — same dedup as the
+  // public pipeline (2026-08-31 audit): a mark pointing into a skill
+  // folder the shelf promotes defers to the shelf's one copy.
+  const { skills, agents, rootsFound } = traceRealInvocations();
+  const promotedSkillFolders = new Set(
+    Object.values(skills).filter((s) => s.count >= 1).map((s) => s.folder)
+  );
+
   // Root-level admissions (e.g. tools/k_lens.js) — copied individually, not
   // walked, since ROOT is the whole corpus and almost none of it belongs
   // in the deposit. Only what a real mark actually points to.
+  const carriedBySkillsShelf = [];
   for (const rel of admittedRootPaths) {
     const src = path.join(ROOT, rel);
+    const norm = rel.replace(/\\/g, '/');
     // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
     // them. Thats the spine.") lands at the deposit's top level, before
     // game/ and patterns/ — see tools/spine.js, the seating's one source.
-    if (rel.replace(/\\/g, '/') === SPINE_DOC) {
+    if (norm === SPINE_DOC) {
       copyFile(src, path.join(OUT, path.basename(rel)));
       manifest.spine = path.basename(rel);
       continue;
     }
+    const skillMatch = /^\.claude\/skills\/([^/]+)\//.exec(norm);
+    if (skillMatch && promotedSkillFolders.has(skillMatch[1])) {
+      carriedBySkillsShelf.push(norm);
+      continue;
+    }
     copyFile(src, path.join(OUT, 'patterns', 'root', rel));
     manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
+  }
+
+  // The pipeline mechanism, shipped complete — same reform as the public
+  // pipeline; see deposit_lib.js's PIPELINE_MECHANISM note.
+  for (const rel of PIPELINE_MECHANISM) {
+    const src = path.join(ROOT, rel);
+    if (!fs.existsSync(src)) continue;
+    const dest = path.join(OUT, 'patterns', 'root', rel);
+    if (fs.existsSync(dest)) continue; // already carried by its own mark
+    copyFile(src, dest);
+    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src), via: 'pipeline-mechanism' });
   }
 
   if (!knowledgeFromMind) {
@@ -106,7 +133,7 @@ function main() {
   // undercounted full-development 38x and overcounted record-audit 3-to-0.
   // A skill/agent with zero real invocations is held back, not silently
   // dropped — heldBack below names every one.
-  const { skills, agents, rootsFound } = traceRealInvocations();
+  // (skills/agents/rootsFound traced above, before the root loop.)
   const heldBack = { skills: [], agents: [] };
 
   for (const [name, info] of Object.entries(skills)) {
@@ -140,7 +167,7 @@ function main() {
     path.join(OUT, 'MANIFEST.json'),
     JSON.stringify({
       generatedBy: 'tools/build_deposit.js', marksCount: marks.length, invocationRootsScanned: rootsFound,
-      typologyCounts, heldBack, manifest,
+      typologyCounts, heldBack, carriedBySkillsShelf, manifest,
     }, null, 2)
   );
 

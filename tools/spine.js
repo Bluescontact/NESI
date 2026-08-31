@@ -65,4 +65,20 @@ const SEATS = {
   'ledger_tools':                            { crystal: 'c2', why: 'the append-only machinery itself' },
 };
 
-module.exports = { SPINE_DOC, SPINE_MARK_ID, CRYSTALS, SEATS };
+// Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
+// self-admitting files, evidence-gated shelves) rather than by individual
+// mark. Found by the 2026-08-31 deposit audit (Kevin's mark: "inventory,
+// audit, and reform what's on the git, and attach what carries onto the
+// new spine"): these were in the deposit but attached to no crystal.
+// Same discipline as SEATS: each unit, one seat, one why, felt read wins.
+const UNIT_SEATS = [
+  { unit: 'the game',              href: 'game/index.html',            crystal: 'c1', why: 'the writing surface itself — built so the machine can only surface and hold still' },
+  { unit: 'the gate mechanism',    href: 'patterns/game-gate/gate/',   crystal: 'c2', why: 'admit.mjs and the ledgers — the crossing machinery, carried whole and runnable' },
+  { unit: 'the instrument suite',  href: 'patterns/game-gate/tools/',  crystal: 'c6', why: 'check_all.js and the live checks — the build proves itself before it speaks' },
+  { unit: 'the inbox record',      href: 'patterns/game-gate/inbox/',  crystal: 'c5', why: 'the gift cards and scan reports — where each gift was surfaced before it crossed' },
+  { unit: 'LEARNED.md',            href: 'patterns/LEARNED.md',        crystal: 'c6', why: 'the laws, each carrying its own falsifier' },
+  { unit: 'the skills shelf',      href: 'patterns/skills/',           crystal: 'c6', why: 'shipped only on real-invocation evidence — a mention is not a run' },
+  { unit: 'the pipeline mechanism', href: 'patterns/root/tools/',      crystal: 'c5', why: 'the two organs that build this deposit, shipped complete and runnable — the labor of landing clean, as code' },
+];
+
+module.exports = { SPINE_DOC, SPINE_MARK_ID, CRYSTALS, SEATS, UNIT_SEATS };

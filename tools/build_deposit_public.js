@@ -19,6 +19,7 @@ const path = require('path');
 const {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
+  PIPELINE_MECHANISM, isPublicDebris,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
 const { SPINE_DOC } = require('./spine');
@@ -80,6 +81,12 @@ function main() {
   const allGame2dFiles = walk(GAME2D);
   const manifest = { game: [], patterns: [] };
   const closedIds = closedMarkIds();
+  // 2026-08-31 audit (Kevin's mark: "inventory, audit, and reform what's
+  // on the git"): the bulk mechanism-carry was shipping creation debris —
+  // tools/retired/ (20 files), a LEDGER backup, a .pre_gate dotfile —
+  // while the README claimed retired passes stay private. Excluded now,
+  // counted and named in MANIFEST.json rather than silently dropped.
+  const excludedDebris = [];
 
   for (const rel of allGame2dFiles) {
     const top = rel.split(path.sep)[0];
@@ -92,6 +99,10 @@ function main() {
     if (gameSet.has(rel)) bucket = 'game';
     else if (patternsFromGame.has(rel) || MECHANISM_DIRS.includes(top)) bucket = 'patterns';
     if (!bucket) continue; // everything else: left out, not copied anywhere
+    if (bucket === 'patterns' && isPublicDebris(rel)) {
+      excludedDebris.push('game2d/' + rel.replace(/\\/g, '/'));
+      continue;
+    }
 
     const src = path.join(GAME2D, rel);
     const destRoot = bucket === 'game'
@@ -112,21 +123,54 @@ function main() {
     manifest.patterns.push({ path: `mind/${rel}`, category: classifyFile(src) });
   }
 
+  // Invocation evidence is traced BEFORE the root loop so root-level
+  // admissions that point into .claude/skills/ can defer to the skills
+  // shelf instead of writing a second copy (2026-08-31 audit: the
+  // the-closing-check SKILL.md shipped twice — once via its mark under
+  // patterns/root/, once via promotion under patterns/skills/ — two
+  // copies of one file, the exact drift crystal 7 names).
+  const { skills, agents, rootsFound } = traceRealInvocations();
+  const promotedSkillFolders = new Set(
+    Object.values(skills).filter((s) => s.count >= 1).map((s) => s.folder)
+  );
+
   // Root-level admissions (e.g. tools/k_lens.js) — copied individually,
   // never walked; ROOT is the whole corpus and almost none of it belongs
   // in the public deposit. Only what a real mark actually points to.
+  const carriedBySkillsShelf = [];
   for (const rel of admittedRootPaths) {
     const src = path.join(ROOT, rel);
+    const norm = rel.replace(/\\/g, '/');
     // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
     // them. Thats the spine.") is the deposit's upstream layer — it lands
     // at the top level, before game/ and patterns/, not filed under them.
-    if (rel.replace(/\\/g, '/') === SPINE_DOC) {
+    if (norm === SPINE_DOC) {
       copyFile(src, path.join(OUT, path.basename(rel)));
       manifest.spine = path.basename(rel);
       continue;
     }
+    // A mark pointing into a skill folder the shelf already promotes:
+    // the shelf's copy is the one copy; the mark is honored in the
+    // manifest without a duplicate file.
+    const skillMatch = /^\.claude\/skills\/([^/]+)\//.exec(norm);
+    if (skillMatch && promotedSkillFolders.has(skillMatch[1])) {
+      carriedBySkillsShelf.push(norm);
+      continue;
+    }
     copyFile(src, path.join(OUT, 'patterns', 'root', rel));
     manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
+  }
+
+  // The pipeline mechanism, shipped complete (see deposit_lib.js's
+  // PIPELINE_MECHANISM note) — the deposit's own builder must run for a
+  // stranger, and spine.js must travel with the index that renders it.
+  for (const rel of PIPELINE_MECHANISM) {
+    const src = path.join(ROOT, rel);
+    if (!fs.existsSync(src)) continue;
+    const dest = path.join(OUT, 'patterns', 'root', rel);
+    if (fs.existsSync(dest)) continue; // already carried by its own mark
+    copyFile(src, dest);
+    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src), via: 'pipeline-mechanism' });
   }
 
   if (!knowledgeFromMind) {
@@ -181,7 +225,7 @@ function main() {
   // invocation evidence only — see build_deposit.js for the full rationale.
   // Public deposit gets the same gate; a skill/agent nobody has actually
   // run doesn't ship, and heldBack names it rather than hiding it.
-  const { skills, agents, rootsFound } = traceRealInvocations();
+  // (skills/agents/rootsFound traced above, before the root loop.)
   const heldBack = { skills: [], agents: [] };
 
   for (const [name, info] of Object.entries(skills)) {
@@ -214,7 +258,9 @@ function main() {
     path.join(OUT, 'MANIFEST.json'),
     JSON.stringify({
       generatedBy: 'tools/build_deposit_public.js', marksCount: marks.length, invocationRootsScanned: rootsFound,
-      typologyCounts, heldBack, manifest,
+      typologyCounts, heldBack,
+      excludedDebris, carriedBySkillsShelf,
+      manifest,
     }, null, 2)
   );
 
@@ -222,6 +268,7 @@ function main() {
   console.log(`patterns:    ${manifest.patterns.length} file(s) (${marks.length} marks read) — ${JSON.stringify(typologyCounts)}`);
   console.log(`  held back: ${heldBack.skills.length} skill(s) (0 real invocations), ${heldBack.agents.length} agent(s) (v0.1, pending development)`);
   console.log(`tributaries: ${tributaries.length} entries`);
+  console.log(`excluded:    ${excludedDebris.length} debris file(s) (retired/backup/dotfile — named in MANIFEST.json); ${carriedBySkillsShelf.length} root admission(s) deduped to the skills shelf`);
   console.log('compost:     not included in the public output');
 }
 

@@ -27,7 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { CRYSTALS, SEATS, SPINE_MARK_ID } = require('./spine');
+const { CRYSTALS, SEATS, UNIT_SEATS, SPINE_MARK_ID } = require('./spine');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit_public');
 
@@ -105,18 +105,26 @@ function main() {
   const crystalSections = CRYSTALS.map((c, i) => {
     const seated = tributaries.filter((t) => SEATS[t.id]?.crystal === c.id);
     seated.forEach((t) => seatedIds.add(t.id));
-    const items = seated.length
+    const units = UNIT_SEATS.filter((u) => u.crystal === c.id);
+    const markItems = seated.length
       ? `<ul class="seatlist">${seated.map((t) => {
           const link = traceLink(t);
           return `<li><b>${esc(t.id)}</b> — ${esc(SEATS[t.id].why)}${link ? ` · ${link}` : ''}</li>`;
         }).join('')}</ul>`
-      : (c.id === 'c4'
+      : '';
+    const unitItems = units.length
+      ? `<p class="catnote unithead">carried whole under this crystal:</p>
+         <ul class="seatlist">${units.map((u) => `<li><b><a href="${esc(u.href)}">${esc(u.unit)}</a></b> — ${esc(u.why)}</li>`).join('')}</ul>`
+      : '';
+    const emptyNote = (!seated.length && !units.length)
+      ? (c.id === 'c4'
         ? '<p class="catnote">Nothing seats here, on purpose — this crystal governs shape, not tooling. The center stays empty; an empty seat list is this crystal demonstrating itself.</p>'
-        : '<p class="catnote">Nothing seated here yet.</p>');
+        : '<p class="catnote">Nothing seated here yet.</p>')
+      : '';
     return `<section class="cat crystal">
-      <h3><span class="cnum">${i + 1}</span>${esc(c.name)} <span class="count">${seated.length || ''}</span></h3>
+      <h3><span class="cnum">${i + 1}</span>${esc(c.name)} <span class="count">${(seated.length + units.length) || ''}</span></h3>
       <p class="catnote">${esc(c.line)}</p>
-      ${items}
+      ${markItems}${unitItems}${emptyNote}
     </section>`;
   }).join('\n');
   const unseated = tributaries.filter((t) => !seatedIds.has(t.id) && t.id !== SPINE_MARK_ID);
@@ -149,6 +157,16 @@ function main() {
        <ul class="filelist">${[...heldBack.skills.map((s) => `skill: ${s} — zero real invocations`), ...agentHeldBack].map((s) => `<li>${esc(s)}</li>`).join('')}</ul>`
     : '<p class="catnote">Nothing held back this run.</p>';
 
+  // Debris excluded from the public copy by the 2026-08-31 audit —
+  // retired instruments, backup layers, dotfile working copies. All still
+  // whole in the source corpus and the private deposit; named here so the
+  // exclusion is a fact on the page, never a silent drop.
+  const excludedDebris = manifest.excludedDebris || [];
+  const debrisHtml = excludedDebris.length
+    ? `<p>Also left out of this public copy as build debris — retired instruments, backup layers, and working dotfiles, all kept whole in the source corpus (where supersession stays a layer, never an erasure):</p>
+       <ul class="filelist">${excludedDebris.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>`
+    : '';
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,6 +195,7 @@ h2{font-size:24px;letter-spacing:-.02em;margin:0 0 6px;padding-top:8px} .section
 .crystal{border-left:3px solid var(--gold)}
 .cnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-size:12px;font-weight:800;flex:none}
 .seatlist{list-style:none;margin:0;padding:0} .seatlist li{font-size:13px;padding:4px 0;border-top:1px solid var(--line)} .seatlist li:first-child{border-top:0}
+.unithead{margin:12px 0 2px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:10.5px}
 .filelist{list-style:none;margin:0;padding:0;columns:2;gap:20px} .filelist li{font-size:13px;padding:3px 0;break-inside:avoid}
 table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 26px} th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)} th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em}
 .rule{height:1px;background:var(--line);margin:36px 0}
@@ -242,6 +261,7 @@ ${invocationTable(agentEntries, 'agent')}
 <h2 id="heldback">Held back</h2>
 <p class="section-note">Nothing here was silently dropped. This lists everything that was considered and deliberately not included, and why.</p>
 ${heldBackHtml}
+${debrisHtml}
 
 <footer>Generated ${manifest.generatedBy ? 'by ' + esc(manifest.generatedBy) + ', composed by tools/build_deposit_index.js' : ''} — ${manifest.marksCount} decisions read, ${manifest.invocationRootsScanned || 0} session-history record(s) scanned.</footer>
 </div>

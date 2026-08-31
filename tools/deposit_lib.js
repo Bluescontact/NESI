@@ -63,6 +63,36 @@ function rmrf(dir) {
   if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
 }
 
+// The pipeline mechanism's own files, shipped together so the deposit's
+// build_deposit_public.js actually RUNS for a stranger (it requires
+// deposit_lib and spine) and so the seating's single source (spine.js —
+// crystal 7) travels with the index that renders it. Found by the
+// 2026-08-31 deposit audit: the deposit_pipeline mark's "at" points at
+// one file, but the mechanism is four more.
+const PIPELINE_MECHANISM = [
+  'tools/deposit_lib.js',
+  'tools/spine.js',
+  'tools/typology_classify.js',
+  'tools/build_deposit.js',
+  'tools/build_deposit_index.js',
+];
+
+// Creation debris that must not ship in the PUBLIC deposit (the private
+// deposit keeps everything): retired instruments, backup layers, and
+// dot-prefixed working files. The source corpus keeps all of it whole —
+// supersession stays a layer THERE; the public deposit is the gift, and
+// "any reader could pick it up, and not have to remove any debris of its
+// creation before use" (Kevin's mark). Exclusions are counted and named
+// in MANIFEST.json, never silent.
+function isPublicDebris(rel) {
+  const norm = rel.replace(/\\/g, '/');
+  const base = norm.split('/').pop();
+  if (norm.split('/').includes('retired')) return true;
+  if (/\.backup[_.]/.test(base)) return true;
+  if (base.startsWith('.')) return true;
+  return false;
+}
+
 function walk(dir, base = dir) {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -229,4 +259,5 @@ module.exports = {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR,
   readLines, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
+  PIPELINE_MECHANISM, isPublicDebris,
 };
