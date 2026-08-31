@@ -79,6 +79,14 @@ rhythm/.last_brief
 # nesi_deposit_public/index.html — instead of leaving a visitor to
 # cross-reference raw folders and JSON by hand.
 !/tools/build_deposit_index.js
+# The stale-count checker, 2026-08-31 (developing item 2 of
+# DRAFT_LENS_PANEL_VE24_2026-08-27_preflight_manifest.md, "develop the 5
+# please" — Kevin's mark). Real, working, report-only; found live drift on
+# first run this session (LEARNED.md 30→36 laws, .claude/skills/ 13→14).
+# A third instance of the same untracked-real-instrument gap already
+# closed twice this session for the harness files and the deposit
+# pipeline.
+!/tools/stale_count_check.js
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.
