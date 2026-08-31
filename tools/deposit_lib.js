@@ -30,6 +30,35 @@ function copyFile(src, dest) {
   fs.copyFileSync(src, dest);
 }
 
+// Every closed mark id — see gate/CLOSED.jsonl. Exported so pipelines can
+// redact, not just skip promoting, a closed mark's raw ledger line.
+function closedMarkIds() {
+  return new Set(
+    readLines(path.join(GAME2D, 'gate', 'CLOSED.jsonl'))
+      .map((line) => { try { return JSON.parse(line).id; } catch { return null; } })
+      .filter(Boolean)
+  );
+}
+
+// Copies a file, except: if it's gate/MARKS.jsonl (the one file that could
+// ever carry a closed mark's own line), lines whose "id" is closed are
+// dropped from the COPY only — the source ledger at nesi/game2d/gate/
+// keeps its append-only line, untouched, same law every other ledger in
+// this corpus holds. "Not to be routed" (Kevin's mark, 2026-08-31) means
+// the deposit's own copy of the ledger can't carry the line either, even
+// though the copy is otherwise a verbatim mirror of the gate mechanism.
+function copyFileRedactingClosed(rel, src, dest, closedIds) {
+  const isMarksLedger = rel === 'gate/MARKS.jsonl' || rel === path.join('gate', 'MARKS.jsonl');
+  if (!isMarksLedger || closedIds.size === 0) return copyFile(src, dest);
+  const kept = readLines(src).filter((line) => {
+    let id;
+    try { id = JSON.parse(line).id; } catch { return true; }
+    return !closedIds.has(id);
+  });
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, kept.join('\n') + (kept.length ? '\n' : ''));
+}
+
 function rmrf(dir) {
   if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
 }
@@ -67,11 +96,23 @@ function traceGameFiles() {
   return { gameFiles: [...files], knowledgeFromMind };
 }
 
-// Recognition capacity: every path a real mark in MARKS.jsonl points to.
+// Recognition capacity: every path a real mark in MARKS.jsonl points to —
+// except a mark closed in gate/CLOSED.jsonl. CLOSED is checked here, once,
+// so every pipeline that calls traceAdmitted() inherits the exclusion
+// automatically; a mark closed for consent reasons must never depend on
+// each pipeline separately remembering to filter it. See gate/CLOSED.jsonl
+// for the first entry and why (Kevin's mark, 2026-08-31: consent
+// withdrawn — never mined, routed, or read again in any future session).
 function traceAdmitted() {
+  const closedIds = new Set(
+    readLines(path.join(GAME2D, 'gate', 'CLOSED.jsonl'))
+      .map((line) => { try { return JSON.parse(line).id; } catch { return null; } })
+      .filter(Boolean)
+  );
   const marks = readLines(path.join(GAME2D, 'gate', 'MARKS.jsonl'))
     .map((line) => { try { return JSON.parse(line); } catch { return null; } })
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((m) => !closedIds.has(m.id));
 
   const admittedGamePaths = new Set();
   const admittedMindPaths = new Set();
@@ -179,6 +220,6 @@ function traceRealInvocations() {
 
 module.exports = {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR,
-  readLines, copyFile, rmrf, walk,
+  readLines, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 };

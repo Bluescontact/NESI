@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk,
+  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
@@ -78,9 +78,15 @@ function main() {
 
   const allGame2dFiles = walk(GAME2D);
   const manifest = { game: [], patterns: [] };
+  const closedIds = closedMarkIds();
 
   for (const rel of allGame2dFiles) {
     const top = rel.split(path.sep)[0];
+    // gate/CLOSED.jsonl names why a mark is closed — appropriate to keep
+    // locally (the private deposit never leaves this machine without a
+    // separate, explicit push), but its own closure text still names the
+    // person involved, so it does not belong in the public deposit at all.
+    if (rel === 'gate/CLOSED.jsonl' || rel === path.join('gate', 'CLOSED.jsonl')) continue;
     let bucket = null;
     if (gameSet.has(rel)) bucket = 'game';
     else if (patternsFromGame.has(rel) || MECHANISM_DIRS.includes(top)) bucket = 'patterns';
@@ -90,7 +96,7 @@ function main() {
     const destRoot = bucket === 'game'
       ? path.join(OUT, 'game', rel)
       : path.join(OUT, 'patterns', 'game-gate', rel);
-    copyFile(src, destRoot);
+    copyFileRedactingClosed(rel, src, destRoot, closedIds);
     if (bucket === 'patterns') manifest.patterns.push({ path: `game2d/${rel}`, category: classifyFile(src) });
     else manifest[bucket].push(`game2d/${rel}`);
   }

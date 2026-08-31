@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk,
+  GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
 } = require('./deposit_lib');
 
@@ -41,6 +41,7 @@ function main() {
   const allMindFiles = walk(MIND);
 
   const manifest = { game: [], patterns: [], compost: [] };
+  const closedIds = closedMarkIds();
 
   for (const rel of allGame2dFiles) {
     const top = rel.split(path.sep)[0];
@@ -53,7 +54,7 @@ function main() {
     const destRoot = bucket === 'game' ? path.join(OUT, 'game', rel)
       : bucket === 'patterns' ? path.join(OUT, 'patterns', 'game-gate', rel)
       : path.join(OUT, 'compost', 'game2d', rel);
-    copyFile(src, destRoot);
+    copyFileRedactingClosed(rel, src, destRoot, closedIds);
     if (bucket === 'patterns') manifest.patterns.push({ path: `game2d/${rel}`, category: classifyFile(src) });
     else manifest[bucket].push(`game2d/${rel}`);
   }
