@@ -105,6 +105,14 @@ rhythm/.last_brief
 !/aoc-v2/
 /aoc-v2/*
 !/aoc-v2/00_invariant/
+# The crystallized outward pieces, 2026-08-31 (Kevin's mark: "batch four
+# needs to be developed and crystalized without personal language or
+# content crossing") — gate-admitted artifacts; their sources belong in
+# history. Narrow: crystallized/ only, the working originals with their
+# names stay untracked.
+!/substack/
+/substack/*
+!/substack/crystallized/
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

@@ -167,6 +167,27 @@ const SEATS = {
   'six_returns_seam':                        { crystal: 'c3', why: 'where the systems meet and none can see' },
   'six_returns_trim_tab':                    { crystal: 'c3', why: 'the smallest intervention that moves the whole intersection' },
   'six_returns_floor':                       { crystal: 'c5', why: 'the cost is not a tax on the work — it is the entry condition' },
+  // Batch 4 (Kevin: "strip other peoples names. batch four needs to be
+  // developed and crystalized without personal language or content
+  // crossing") — the outward writing: twelve pieces verified clean of
+  // personal names, plus crystallized versions of the pieces that
+  // carried them. The working originals with their names stay
+  // source-side; the pattern crosses, the instance does not.
+  'witnessing_without_merging':              { crystal: 'c4', why: 'presence that registers without merging — and the brake on its own most consoling sentence' },
+  'comprehension_not_recognition':           { crystal: 'c1', why: 'recognition is the name landing on something already there — the reader finds you' },
+  'public_library_gifts':                    { crystal: 'c1', why: '24 gifts with every framework word stripped — the law stated for a stranger' },
+  'genesis_readme':                          { crystal: 'c2', why: 'the human is the gate — not a bolted-on safety feature, the architecture' },
+  'genesis_behavioral_tests':                { crystal: 'c6', why: 'running the OS vs. wearing its vocabulary — the test is behavior, not language' },
+  'kit_index':                               { crystal: 'c5', why: '24 prescriptions, each shipped with the condition under which it fires' },
+  'kit_bio':                                 { crystal: 'c6', why: 'a brake that has never fired in a real push is a claim about a brake' },
+  'kit_inst':                                { crystal: 'c5', why: 'unstated cost lands on whoever had no authority to refuse it — so state it' },
+  'kit_rel':                                 { crystal: 'c4', why: 'labor dressed as restraint, named — the boundary held instead of performed' },
+  'kit_tech':                                { crystal: 'c3', why: 'the technical substrate’s prescriptions, mechanism by mechanism' },
+  'kit_economic':                            { crystal: 'c5', why: 'the three fates of cost at practitioner scale' },
+  'kit_spatial':                             { crystal: 'c3', why: 'the practices express the place’s logic, not the logic itself — rule travels, form re-roots' },
+  'five_terms_and_the_loop':                 { crystal: 'c6', why: 'five terms, five self-run tests — and the loop’s own limit stated as the load-bearing line' },
+  'hunger_under_naming':                     { crystal: 'c6', why: 'an outside contribution absorbed at mechanism level — and the question whether precision is a fix, or the same hunger better dressed' },
+  'match_noun_to_harm':                      { crystal: 'c6', why: 'event-shaped harm names the role-and-decision; structure-shaped harm names the mechanism — the wrong shape hands the structure a scapegoat' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
