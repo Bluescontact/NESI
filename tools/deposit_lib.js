@@ -109,6 +109,16 @@ function denamePublicText(text) {
   // Catch-all for embedded residue (identifiers, regex literals in this
   // file's own shipped copy): any remaining substring, any case.
   t = t.replace(/kevin/gi, 'keeper');
+  // Machine-path scrub (2026-09-01 full development, audit defect 2: the
+  // username and corpus location leaked through tool sources, a lens
+  // report, and the manifests — de-naming the person is not de-locating
+  // the machine). Same discipline: copies transformed, sources verbatim.
+  t = t.replace(/C:\\+Users\\+KMEAR\\+(?:OneDrive\\+Desktop\\+DSS content|dev\\+DSS content)/g, '<corpus-root>');
+  t = t.replace(/C:\/Users\/KMEAR\/(?:OneDrive\/Desktop\/DSS content|dev\/DSS content)/g, '<corpus-root>');
+  t = t.replace(/C:\\+Users\\+KMEAR/g, '<home>');
+  t = t.replace(/C:\/Users\/KMEAR/g, '<home>');
+  t = t.replace(/C--Users-KMEAR-(?:OneDrive-Desktop|dev)-DSS-content/g, '<corpus-slug>');
+  t = t.replace(/KMEAR/g, '<user>');
   // Re-capitalize at sentence and line starts.
   t = t.replace(/(^|[.!?]\s+|\n\s*)the keeper/g, (m, p) => p + 'The keeper');
   return t;

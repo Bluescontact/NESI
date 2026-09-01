@@ -58,7 +58,9 @@ function readJsonl(p) {
 function main() {
   const tribPath = path.join(OUT, 'TRIBUTARIES.json');
   if (!fs.existsSync(tribPath)) { console.error('[build_weave] REFUSED — run build_deposit_public.js first.'); process.exit(1); }
-  const tributaries = JSON.parse(fs.readFileSync(tribPath, 'utf8'));
+  const tribRaw = JSON.parse(fs.readFileSync(tribPath, 'utf8'));
+  // 2026-09-01: TRIBUTARIES ships as {note, entries}; accept the bare array too
+  const tributaries = Array.isArray(tribRaw) ? tribRaw : tribRaw.entries;
   const organs = JSON.parse(fs.readFileSync(ORGANS_PATH, 'utf8')).organs;
   const strands = readJsonl(DECLARATIONS).sort((x, y) => (y.ts || '').localeCompare(x.ts || ''));
   const ids = tributaries.map((t) => t.id).filter((id) => id !== SPINE_MARK_ID);

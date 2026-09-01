@@ -1175,8 +1175,7 @@ function renderDoc() {
   _lastLayout = L;
   const byDay = new Map();
   /* blind sentences are excluded here, not lower in the loop — the day
-     head's own count reads byDay.get(day).length, and a blind sentence
-     should not even show up as a number nobody can see the text for.
+     a blind sentence should not surface in a day it can't be read in.
      They're still in `nodes`, still persisted, still visible to every
      other ground — see the note at ingestOne(). */
   nodes.forEach(n => { if (n.blind) return; if (!byDay.has(n.day)) byDay.set(n.day, []); byDay.get(n.day).push(n); });
@@ -1189,7 +1188,7 @@ function renderDoc() {
     wrap.className = "day" + (isToday ? "" : " collapsed");
     const head = document.createElement("div");
     head.className = "day-head" + (isToday ? " today" : "");
-    head.innerHTML = `<span class="dot"></span><span class="lbl">${day}</span><span class="count">${byDay.get(day).length}</span>`;
+    head.innerHTML = `<span class="dot"></span><span class="lbl">${day}</span>`;
     head.addEventListener("click", () => { wrap.classList.toggle("collapsed"); });
     wrap.appendChild(head);
     const body = document.createElement("div");
@@ -2081,7 +2080,7 @@ function renderWorld() {
   const grainEl = document.getElementById("worldGrain");
 
   const pickable = nodes.filter(n => !n.blind);
-  countEl.innerHTML = "<b>"+worldPicks.length+"</b>/12 seated";
+  countEl.textContent = worldPicks.length ? "seats taken" : "no seats taken yet";
 
   if (!pickable.length) {
     pickerEl.innerHTML = '<div class="item" style="cursor:default">Nothing written yet to seat.</div>';
@@ -2164,9 +2163,7 @@ function renderWorld() {
     const vol = roomVolume(xyzOf, filledNames);
     noteEl.textContent = "room volume: "+vol.toFixed(1)+" — all twelve seats filled, all twenty-four edges and all fourteen faces real. Relative to this room's own spread only, the same as the standing tetrahedron's own volume — not comparable to another room, or to the organs' own pinned 20.";
   } else {
-    noteEl.textContent = filledNames.length+" of 12 seated. "+SOLID.MEMBERS.filter(m=>screenOf[m.a]&&screenOf[m.b]).length+" of 24 edges real so far, "+
-      SOLID.TRIANGLES.filter(t=>t.seats.every(s=>screenOf[s])).length+" of 8 triangular faces, "+
-      SOLID.SQUARES.filter(q=>q.seats.every(s=>screenOf[s])).length+" of 6 square faces. No total volume yet — an honest gap, same as an open aperture on the standing tetrahedron.";
+    noteEl.textContent = "Seats are still open — some edges and faces are real, others not yet. No total volume yet — an honest gap, same as an open aperture on the standing tetrahedron.";
   }
 }
 

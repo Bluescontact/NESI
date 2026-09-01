@@ -3,6 +3,21 @@
 *Direction document. Not a build spec. Kevin holds the gate.*
 *Developed 2026-06-21.*
 
+> **HELD NOTICE — layered 2026-09-01, on Kevin's ruling in session**
+> (*"Those three places where it drew blood are membrane functions not yet
+> scoped or built"* — *"scope those three membrane functions into the rebuild
+> as held"*). A ground pass ran this framing against the commons record
+> (Ostrom's sixth design principle; Freeman 1970; the LETS and time-bank
+> record). Three of its claims below now read as **held, not solved**:
+> the dispute claim ("disputes are out of scope by design") — the gathering
+> is the arena in practice and is not yet declared (**HELD-1**); the
+> no-central-authority claim — the keeper holds the gate and the vocabulary,
+> which is a center, declared rather than denied (**HELD-2**); and the
+> sufficiency of vocabulary discipline — the schema refuses the ledger frame;
+> only the room can refuse the debt (**HELD-3** carries the rest). Conditions
+> and scope: the deposit's `HELD.md`. The text below stands as written —
+> supersession is a layer, never an erasure.
+
 ---
 
 ## The frame

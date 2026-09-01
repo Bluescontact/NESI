@@ -237,7 +237,13 @@ function main() {
     }
     return entry;
   });
-  fs.writeFileSync(path.join(OUT, 'TRIBUTARIES.json'), JSON.stringify(tributaries, null, 2));
+  // 2026-09-01 full development, audit defect 6: at/bridge values are
+  // source-corpus coordinates; the public copy says so instead of shipping
+  // a traceability claim that fails where it's made.
+  fs.writeFileSync(path.join(OUT, 'TRIBUTARIES.json'), JSON.stringify({
+    note: 'at/bridge values are source-corpus coordinates and do not resolve from this public tree except where a card path is given (workshop/game-gate/inbox/)',
+    entries: tributaries,
+  }, null, 2));
 
   // Move 2, Kevin's mark 2026-08-31: skills/agents promote on real
   // invocation evidence only — see build_deposit.js for the full rationale.
@@ -245,6 +251,13 @@ function main() {
   // run doesn't ship, and heldBack names it rather than hiding it.
   // (skills/agents/rootsFound traced above, before the root loop.)
   const heldBack = { skills: [], agents: [] };
+  // 2026-09-01 full development, audit defect 4: the seed's tests cross,
+  // the seed itself does not (Kevin's crossing to make, not the pipeline's)
+  // — heldBack names it rather than letting the folder advertise it.
+  heldBack.documents = [{
+    name: 'GENESIS_SEED_v4 (+ DEMONSTRATION.md)',
+    reason: 'the seed is distributed elsewhere; only its behavioral tests ship in house/genesis-seed/ — see HELD.md',
+  }];
 
   for (const [name, info] of Object.entries(skills)) {
     if (info.count < 1) { heldBack.skills.push(name); continue; }
@@ -301,6 +314,28 @@ function main() {
     const before = fs.readFileSync(full, 'utf8');
     const after = denamePublicText(before);
     if (after !== before) { fs.writeFileSync(full, after); denamed++; }
+  }
+
+  // 2026-09-01 full development: day_one.html crosses into workshop/
+  // game-gate/ while its solid.js sibling ships at game/solid.js — the
+  // copied page's script tag must follow the deposit layout, not the
+  // source layout (the one broken src in the shipped tree).
+  // The mirror-audit record and its instrument ship together (the
+  // falsifier travels with the pattern): the report already crossed into
+  // the public repo with the 2026-09-01 import commit, and README/HELD.md
+  // reference both. Carried explicitly here so a regeneration doesn't
+  // orphan those references; a gate mark formalizing the crossing is
+  // Kevin's to add.
+  for (const f of ['MIRROR_AUDIT_2026-09-01.md', 'gamification-mirror.md']) {
+    const src = path.join(ROOT, 'audit', f);
+    if (fs.existsSync(src)) copyFile(src, path.join(OUT, 'workshop', 'audit', f));
+  }
+
+  const dayOne = path.join(OUT, 'workshop', 'game-gate', 'day_one.html');
+  if (fs.existsSync(dayOne)) {
+    const before = fs.readFileSync(dayOne, 'utf8');
+    const after = before.replace('<script src="solid.js"></script>', '<script src="../../game/solid.js"></script>');
+    if (after !== before) fs.writeFileSync(dayOne, after);
   }
 
   console.log(`game:        ${manifest.game.length} file(s)`);

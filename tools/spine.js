@@ -219,13 +219,13 @@ const SEATS = {
 // new spine"): these were in the deposit but attached to no crystal.
 // Same discipline as SEATS: each unit, one seat, one why, felt read wins.
 const UNIT_SEATS = [
-  { unit: 'the game',              href: 'game/index.html',            crystal: 'c1', why: 'the writing surface itself — built so the machine can only surface and hold still' },
+  { unit: 'the game',              href: 'game/index.html',            crystal: 'c1', why: 'the writing surface itself — built so the machine can only surface and hold still (its build knowledge: the page and the tetra, in game/)' },
   { unit: 'the gate mechanism',    href: 'workshop/game-gate/gate/',   crystal: 'c2', why: 'admit.mjs and the ledgers — the crossing machinery, carried whole and runnable' },
   { unit: 'the instrument suite',  href: 'workshop/game-gate/tools/',  crystal: 'c6', why: 'check_all.js and the live checks — the build proves itself before it speaks' },
   { unit: 'the inbox record',      href: 'workshop/game-gate/inbox/',  crystal: 'c5', why: 'the gift cards and scan reports — where each gift was surfaced before it crossed' },
   { unit: 'LEARNED.md',            href: 'workshop/LEARNED.md',        crystal: 'c6', why: 'the laws, each carrying its own falsifier' },
   { unit: 'the skills shelf',      href: 'workshop/skills/',           crystal: 'c6', why: 'shipped only on real-invocation evidence — a mention is not a run' },
-  { unit: 'the pipeline mechanism', href: 'workshop/tools/',      crystal: 'c5', why: 'the two organs that build this deposit, shipped complete and runnable — the labor of landing clean, as code' },
+  { unit: 'the pipeline mechanism', href: 'workshop/tools/',      crystal: 'c5', why: 'the two organs that build this deposit — source published for inspection; they run only from the private corpus they read — the labor of landing clean, as code' },
 ];
 
 // THE THREE ROOMS (the keeper's mark, 2026-09-01: "it should be a house
