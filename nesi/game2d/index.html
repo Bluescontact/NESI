@@ -964,14 +964,51 @@ function articulationPoints(nodeList, edgeList){
   });
   return cut;
 }
+/* NEAR RE-FOUNDED, 2026-09-01 (the mapping-relationships pass) — a real
+   doc/code drift caught by the scale ladder: the knowledge doc has always
+   said near means "landed close together in time, not sequential," but this
+   function measured CANVAS DISTANCE on a randomly-seeded layout — so at 128
+   sentences (1,871 words, the keeper's functional volume) near saturated
+   into 1,326 pairs that were mostly an artifact of packing density. Same
+   defect class as the corpus's own falsified "nothing reads what a
+   sentence says" line: the doc was right, the code drifted.
+
+   Near now IS temporal: the writing splits into PASSAGES at real pauses
+   (an idle before a sentence longer than PASSAGE_BREAK_MS starts a new
+   passage — gapMs only, volume never content), and near joins sentences
+   written in the same breath, within NEAR_REACH steps, excluding the
+   chain-adjacent pair the chain already names. Both constants are feel
+   constants, swept at 128, sweepable again.
+
+   What this buys, measured: near pairs go from O(n^2) mush to ~O(n)
+   same-breath neighbors, deterministic across reloads (position was
+   never deterministic), and the "near this one" panel's own sentence —
+   "what landed near it in time" — becomes true. */
+const PASSAGE_BREAK_MS = 90 * 1000; // a real pause; swept 2026-09-01
+const NEAR_REACH = 2;               // same-breath steps; swept 2026-09-01
+function passagesFor(list) {
+  const out = [];
+  let cur = [];
+  list.forEach((n, i) => {
+    if (i > 0 && (n.gapMs || 0) > PASSAGE_BREAK_MS) { out.push(cur); cur = []; }
+    cur.push(n);
+  });
+  if (cur.length) out.push(cur);
+  return out;
+}
 function nearPairsFor(list, chainedKeys) {
-  const out=[];
-  for (let i=0;i<list.length;i++) for (let j=i+1;j<list.length;j++){
-    const a=list[i], b=list[j];
-    const key = a.id<b.id? a.id+"-"+b.id : b.id+"-"+a.id;
-    if (chainedKeys && chainedKeys.has(key)) continue;
-    const dist=Math.hypot(b.x-a.x,b.y-a.y);
-    if (dist < (a.r+b.r)*2.0) out.push({aId:a.id,bId:b.id});
+  const out = [];
+  for (const passage of passagesFor(list)) {
+    for (let i = 0; i < passage.length; i++) {
+      for (let k = 2; k <= NEAR_REACH; k++) { // k=1 is the chain's own pair
+        const j = i + k;
+        if (j >= passage.length) break;
+        const a = passage[i], b = passage[j];
+        const key = a.id < b.id ? a.id + "-" + b.id : b.id + "-" + a.id;
+        if (chainedKeys && chainedKeys.has(key)) continue;
+        out.push({ aId: a.id, bId: b.id });
+      }
+    }
   }
   return out;
 }
@@ -1480,10 +1517,26 @@ function renderWeaveMatrix(L, activeId) {
   const host = document.getElementById("weaveMatrixHost");
   host.innerHTML = "";
   if (!nodes.length) { host.innerHTML = '<div class="connect-empty">Nothing written yet.</div>'; return; }
+  /* THE WEAVE WINDOW, 2026-09-01 (the mapping-relationships pass) — the
+     matrix is n-squared cells and was measured at 16,384 cells / ~1s at
+     128 sentences: past roughly 40 it stops being a read. The matrix now
+     shows ONE PASSAGE — the breath of writing around the focused
+     sentence (or the latest breath) — which is the scale a matrix can
+     actually be read at. The whole document is always below; every other
+     passage is one click away in the page itself. */
+  const allSpoken = spoken();
+  const passages = passagesFor(allSpoken);
+  const act = passages.find(ps => ps.some(n => n.id === activeId)) || passages[passages.length - 1] || [];
+  const windowNote = document.createElement("div");
+  windowNote.className = "connect-empty";
+  windowNote.textContent = passages.length > 1 || act.length < allSpoken.length
+    ? "showing one passage — " + act.length + " of " + allSpoken.length + " sentences, the breath around " + (activeId != null && act.some(n=>n.id===activeId) ? "your focus" : "the latest writing") + "; click any sentence in the page to move the window"
+    : "showing all " + act.length + " sentences — one continuous passage so far";
+  host.appendChild(windowNote);
   const table = document.createElement("table"); table.className = "weave-matrix";
   const head = document.createElement("tr");
   head.appendChild(document.createElement("th"));
-  spoken().forEach(n=>{
+  act.forEach(n=>{
     const th = document.createElement("th");
     th.textContent = n.text;
     th.style.cursor = "pointer";
@@ -1493,7 +1546,7 @@ function renderWeaveMatrix(L, activeId) {
     head.appendChild(th);
   });
   table.appendChild(head);
-  spoken().forEach(rowN=>{
+  act.forEach(rowN=>{
     const tr = document.createElement("tr");
     if (rowN.id===activeId) tr.classList.add("focusrow");
     const rowTh = document.createElement("th"); rowTh.className = "rowhead";
@@ -1502,7 +1555,7 @@ function renderWeaveMatrix(L, activeId) {
     rowTh.title = "click to focus this sentence";
     rowTh.addEventListener("click", () => selectSentence(rowN.id, L));
     tr.appendChild(rowTh);
-    spoken().forEach(colN=>{
+    act.forEach(colN=>{
       const td = document.createElement("td");
       if (colN.id===activeId) td.classList.add("focuscol");
       if (rowN.id===colN.id) {
