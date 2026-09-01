@@ -200,6 +200,12 @@ const SEATS = {
   'the_weave':                                { crystal: 'c3', why: 'connective tissue from declared kinship only — every edge cited, the undeclared listed honestly, never linked by guesswork' },
   'declare_channel':                          { crystal: 'c2', why: 'a strand exists only as a hand’s appended ledger line — the relation named in free text the machine never suggests' },
   'open_ledger_circuit':                      { crystal: 'c5', why: 'the gift circuit running — a person-less field, current with no balance, the Brake set from the body, gaps as the growth signal' },
+  // Upstream of the tributaries, 2026-09-01 (the keeper's mark: "lets
+  // build upstream of the tributaries now") — built from THE_CATCHMENT
+  // naming, the corpus's own account of what is above the headwaters.
+  'the_catchment_naming':                     { crystal: 'c1', why: 'the guard as incapacity, not restraint — the system was never upstream, by geography' },
+  'headwaters':                               { crystal: 'c10', why: 'the receiving ground — what lands here is held, not read; nothing crosses on its own' },
+  'the_spring':                               { crystal: 'c1', why: 'volume facts only, identical for grief and grocery lists — it receives, it does not go looking' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
