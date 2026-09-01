@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RI Kit — Tech · Technical Reading</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --surface: #ffffff;
+      --border: #ddd8cf;
+      --text: #1c1916;
+      --muted: #6b6460;
+      --accent: #2d4a3e;
+      --accent-soft: #e6efeb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    .substrate-code {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    h1 { font-size: 1.4rem; font-weight: normal; }
+    .tagline { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-top: 0.3rem; }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.78rem;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: monospace;
+    }
+    nav a:hover { background: var(--accent-soft); }
+    nav a.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .prescription {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .p-number {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .p-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 0.85rem;
+    }
+    .p-text { color: var(--text); margin-bottom: 1rem; }
+    .reading-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 0.8rem;
+    }
+    .reading-label {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .reading-text { font-size: 0.88rem; color: var(--muted); }
+    .four-lenses {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin: 0.8rem 0;
+    }
+    .lens {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+    }
+    .lens-name { font-weight: bold; font-size: 0.8rem; color: var(--accent); }
+    .canon-ref {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-top: 0.7rem;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="substrate-code">TECH · Technical Reading · Recognition Infrastructure Kit</div>
+    <h1>Technical Reading</h1>
+    <div class="tagline">The tool's structure is the statement. Design the position before the output.</div>
+  </header>
+
+  <nav>
+    <a href="index.html">Index</a>
+    <a href="bio.html">Bio</a>
+    <a href="inst.html">Inst</a>
+    <a href="rel.html">Rel</a>
+    <a href="tech.html" class="current">Tech</a>
+    <a href="economic.html">Eco</a>
+    <a href="spatial.html">Spatial</a>
+  </nav>
+
+  <div class="prescription">
+    <div class="p-number">Tech · 1</div>
+    <div class="p-title">Stance before output</div>
+    <p class="p-text">The vocabulary an agent uses to analyze a situation discloses their structural position before the content of the analysis becomes legible. The domain term names where the agent is standing. Before producing any output, name the stance explicitly: what am I measuring from? What is invisible from this position? Which failure modes does this lens see and which does it miss? The stance is not an opinion to declare — it is a structural position that determines what's in frame and what's outside it.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when beginning any technical analysis, design brief, or structural read. The single-stance trap: the expert's dominant lens produces outputs that feel complete because they are internally consistent — the missing elements are simply invisible from that position. Different positions on the same object produce different but equally valid readings. Naming the stance before output lets the receiver locate the read on a map, not just receive it as a verdict.</p>
+    <div class="canon-ref">↳ domain_term_names_stance · deliverable_as_self_disclosure</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Tech · 2</div>
+    <div class="p-title">The deliverable discloses the sender</div>
+    <p class="p-text">A sequence of design choices — what is foregrounded, what is omitted, what is measured, what is valued — is a structural self-disclosure. The deliverable tells you where the sender is standing before you read the content. Before sending, read your own deliverable as topographic data about your structural position: what did I optimize for? What went unexamined? What would this look like from the opposite position? The choices that feel obvious are the ones that most clearly name the stance.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when reviewing a deliverable before sending, or when reading a deliverable from another agent. The self-read is the most generative form: which omissions are invisible to me because they're in my blind spot, not because they're unimportant? The receiver's read: this deliverable positions the sender. Knowing the position doesn't invalidate the content — it contextualizes it and names what would need to be supplemented from a different position.</p>
+    <div class="canon-ref">↳ deliverable_as_self_disclosure · domain_term_names_stance · reception_as_territory_map</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Tech · 3</div>
+    <div class="p-title">Four lenses, one object</div>
+    <p class="p-text">Any analysis benefits from four simultaneous reading positions. These are not sequential steps — they are parallel lenses that each see what the others miss.</p>
+    <div class="four-lenses">
+      <div class="lens">
+        <div class="lens-name">Grounder</div>
+        What is the current state? What is actually happening?
+      </div>
+      <div class="lens">
+        <div class="lens-name">Dreamer</div>
+        What could exist? What does the desired state feel like?
+      </div>
+      <div class="lens">
+        <div class="lens-name">Governor</div>
+        What does this cost? Body, clock, topology — what does it take?
+      </div>
+      <div class="lens">
+        <div class="lens-name">Shaper</div>
+        What do we build? What is the specific next action?
+      </div>
+    </div>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when designing a system, planning a build, or diagnosing a failure. The single-lens trap: the expert runs their dominant lens and produces an internally consistent analysis that misses the failure modes visible from the other three. A technical analysis with no Governor pass misses cost. A technical analysis with no Dreamer pass misses better-than-current possibilities. A technical analysis with no Grounder pass misses what is actually happening right now. Running all four in sequence is not the move — running them simultaneously, on the same object, is.</p>
+    <div class="canon-ref">↳ tetrahedral_agent_protocol · conditions_over_direction</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Tech · 4</div>
+    <div class="p-title">Build the conditions, not the direction</div>
+    <p class="p-text">A system that requires ongoing direction to produce the correct behavior is not finished infrastructure. The design question is: what conditions would make the desired routing happen without intervention? Set those. Then step back and read what the system does without you. If work waits for a push — if participants route toward the director's model rather than through the field — the conditions are not yet set, or direction has been running long enough that participants have stopped routing through the conditions entirely.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when a technical system requires continuous maintenance or supervision to function correctly. Three conditions that make emergence possible: sufficient resources (participants don't need to compete), genuine relationships (coordination through trust, not exchange), clear vision (a shared image that routes rather than directs). Failure mode: the configurer who stays in the loop after setting conditions competes with emergence. Direction is a lower-bandwidth channel than field routing — the director sees less of the system than the conditions do. Pre-load failure: a fully-configured system is more brittle than an unconfigured one for demands the designer didn't anticipate.</p>
+    <div class="canon-ref">↳ conditions_over_direction · future_image_as_pull · the_governor (pre-load)</div>
+  </div>
+
+  <footer>
+    <a href="index.html">← Kit index</a> &nbsp;·&nbsp; Tech · 4 prescriptions · Canon: domain_term_names_stance, deliverable_as_self_disclosure, tetrahedral_agent_protocol, conditions_over_direction
+  </footer>
+
+</div>
+</body>
+</html>

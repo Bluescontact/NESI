@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RI Kit — Recognition Infrastructure Practitioner Reference</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --surface: #ffffff;
+      --border: #ddd8cf;
+      --text: #1c1916;
+      --muted: #6b6460;
+      --accent: #2d4a3e;
+      --accent-soft: #e6efeb;
+      --draft-border: #c8a96b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    .kit-label {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 { font-size: 1.5rem; font-weight: normal; color: var(--text); }
+    .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-family: monospace;
+    }
+    .what-this-is {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .substrate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .substrate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color 0.15s;
+    }
+    .substrate-card:hover { border-color: var(--accent); }
+    .substrate-code {
+      font-family: monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .substrate-name { font-size: 1rem; font-weight: bold; margin-bottom: 0.3rem; }
+    .substrate-tagline { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-bottom: 0.9rem; }
+    .prescription-list { list-style: none; }
+    .prescription-list li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 0.2rem 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .prescription-list li::before {
+      content: attr(data-n);
+      color: var(--border);
+      flex-shrink: 0;
+      font-family: monospace;
+      font-size: 0.7rem;
+      padding-top: 0.05rem;
+    }
+    .draft-chip {
+      font-size: 0.65rem;
+      font-family: monospace;
+      text-transform: uppercase;
+      color: var(--draft-border);
+      border: 1px solid var(--draft-border);
+      padding: 0.05rem 0.35rem;
+      border-radius: 2px;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+    .quick-ref-header {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="kit-label">Recognition Infrastructure</div>
+    <h1>Practitioner Kit</h1>
+    <div class="meta">32-pattern canon · 6 substrates · 24 prescriptions · v1.0 · 2026-06-26</div>
+  </header>
+
+  <div class="what-this-is">
+    Each prescription names a structural move derived from the RI canon. The move applies in the named substrate — somatic, institutional, relational, technical, economic, or spatial. The reading section names when the prescription fires and which pattern underlies it.
+  </div>
+
+  <div class="quick-ref-header">Substrates — click to open</div>
+
+  <div class="substrate-grid">
+
+    <a href="bio.html" class="substrate-card">
+      <div class="substrate-code">BIO · Somatic</div>
+      <div class="substrate-name">Biological Reading</div>
+      <div class="substrate-tagline">The body is the coordinate origin. When it can't be trusted, halt.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Trust the origin, not the signal</li>
+        <li data-n="2">Run the brake before depletion</li>
+        <li data-n="3">Name the leak before surplus hides it</li>
+        <li data-n="4">Read dread-of-closure as structural</li>
+      </ul>
+    </a>
+
+    <a href="inst.html" class="substrate-card">
+      <div class="substrate-code">INST · Institutional</div>
+      <div class="substrate-name">Institutional Reading</div>
+      <div class="substrate-tagline">Authority and cost travel separately. Name where each one lands.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Define before you delegate</li>
+        <li data-n="2">Track where the cost landed</li>
+        <li data-n="3">Put it in writing before the room assembles</li>
+        <li data-n="4">Demand the specifiable gap</li>
+      </ul>
+    </a>
+
+    <a href="rel.html" class="substrate-card">
+      <div class="substrate-code">REL · Relational</div>
+      <div class="substrate-name">Relational Reading</div>
+      <div class="substrate-tagline">The connection is bilateral or it is one node reaching.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Name the limit inside the work</li>
+        <li data-n="2">Read reception as territory, not verdict</li>
+        <li data-n="3">Register fully, absorb without merging</li>
+        <li data-n="4">The close holds in silence</li>
+      </ul>
+      <span class="draft-chip">4 scripted sentences at gate</span>
+    </a>
+
+    <a href="tech.html" class="substrate-card">
+      <div class="substrate-code">TECH · Technical</div>
+      <div class="substrate-name">Technical Reading</div>
+      <div class="substrate-tagline">The tool's structure is the statement. Design the position before the output.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Stance before output</li>
+        <li data-n="2">The deliverable discloses the sender</li>
+        <li data-n="3">Four lenses, one object</li>
+        <li data-n="4">Build the conditions, not the direction</li>
+      </ul>
+    </a>
+
+    <a href="economic.html" class="substrate-card">
+      <div class="substrate-code">ECO · Economic</div>
+      <div class="substrate-name">Economic Reading</div>
+      <div class="substrate-tagline">The floor first. Everything else is upstream of whether the floor holds.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Build the floor before anything else</li>
+        <li data-n="2">Need less, not earn more</li>
+        <li data-n="3">Three columns, one forbidden</li>
+        <li data-n="4">Name what the exit actually costs</li>
+      </ul>
+    </a>
+
+    <a href="spatial.html" class="substrate-card">
+      <div class="substrate-code">SPA · Spatial</div>
+      <div class="substrate-name">Spatial Reading</div>
+      <div class="substrate-tagline">Design the container. Read what routes through it.</div>
+      <ul class="prescription-list">
+        <li data-n="1">Village logic, not village aesthetics</li>
+        <li data-n="2">Design from no ejection lever</li>
+        <li data-n="3">Wait for the bilateral route</li>
+        <li data-n="4">Set conditions, then read the fold</li>
+      </ul>
+    </a>
+
+  </div>
+
+  <footer>
+    Kit staged 2026-06-26 · the keeper holds the gate · Nothing crosses without the mark<br>
+    Canon: <code>patterns/*.md</code> · Codex: <code>tools/codex_index/</code> · Gate: <code>gate/data/gate_data.json</code>
+  </footer>
+
+</div>
+</body>
+</html>

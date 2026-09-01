@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RI Kit — Rel · Relational Reading</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --surface: #ffffff;
+      --border: #ddd8cf;
+      --text: #1c1916;
+      --muted: #6b6460;
+      --accent: #2d4a3e;
+      --accent-soft: #e6efeb;
+      --draft-bg: #fdf5e8;
+      --draft-border: #c8a96b;
+      --draft-muted: #8a6d40;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    .substrate-code {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    h1 { font-size: 1.4rem; font-weight: normal; }
+    .tagline { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-top: 0.3rem; }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.78rem;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: monospace;
+    }
+    nav a:hover { background: var(--accent-soft); }
+    nav a.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .prescription {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .p-number {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .p-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 0.85rem;
+    }
+    .p-text { color: var(--text); margin-bottom: 1rem; }
+    .reading-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 0.8rem;
+    }
+    .reading-label {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .reading-text { font-size: 0.88rem; color: var(--muted); }
+    .canon-ref {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-top: 0.7rem;
+    }
+    /* Draft / at-gate section */
+    .draft-block {
+      background: var(--draft-bg);
+      border: 1px solid var(--draft-border);
+      border-radius: 6px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .draft-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
+    }
+    .draft-title {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--draft-muted);
+    }
+    .gate-chip {
+      font-family: monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      background: var(--draft-border);
+      color: white;
+      padding: 0.1rem 0.45rem;
+      border-radius: 2px;
+    }
+    .script-item {
+      margin-bottom: 1.1rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--draft-border);
+    }
+    .script-label {
+      font-family: monospace;
+      font-size: 0.68rem;
+      color: var(--draft-muted);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .script-text {
+      font-style: italic;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .script-text.no-script {
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--draft-muted);
+    }
+    .gate-note {
+      margin-top: 1.2rem;
+      padding: 0.7rem 0.9rem;
+      background: rgba(200,169,107,0.1);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--draft-muted);
+      font-family: monospace;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="substrate-code">REL · Relational Reading · Recognition Infrastructure Kit</div>
+    <h1>Relational Reading</h1>
+    <div class="tagline">The connection is bilateral or it is one node reaching.</div>
+  </header>
+
+  <nav>
+    <a href="index.html">Index</a>
+    <a href="bio.html">Bio</a>
+    <a href="inst.html">Inst</a>
+    <a href="rel.html" class="current">Rel</a>
+    <a href="tech.html">Tech</a>
+    <a href="economic.html">Eco</a>
+    <a href="spatial.html">Spatial</a>
+  </nav>
+
+  <div class="prescription">
+    <div class="p-number">Rel · 1</div>
+    <div class="p-title">Name the limit inside the work, not before it</div>
+    <p class="p-text">A limit stated without shared process reads as a wall. A limit named inside work you've done together reads as a coordinate — "we've reached the edge of what this approach can tell us." The receiver's ability to locate the limit depends entirely on whether they hold the same map. Shared diagnostic process produces a jointly-held map. Without it, the limit has no referent in the receiver's terrain and lands as arbitrary, protective, or as the practitioner's ceiling.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when you are about to name a limit to another person — especially an epistemic limit (the edge of what you know) rather than a structural one (a prior boundary that precedes the map). The premature-declaration failure: naming the limit efficiently, to protect time, before the receiver has any referent for it. The limit may be accurate and still land as a wall if the shared work hasn't built the map. Two failure modes to distinguish from: premature declaration (genuine process not run yet) and performed process (the process was staged, the limit was predetermined).</p>
+    <div class="canon-ref">↳ limit_as_coordinate_not_wall · bilateral_route_formation</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Rel · 2</div>
+    <div class="p-title">Read reception as territory, not verdict</div>
+    <p class="p-text">How a transmission folds in the receiving environment — where it binds, where it deflects, where it partially engages — is structural information about that terrain, not a verdict on the quality of what you sent. Sparse reception from a well-calibrated source is accurate territory description. The somatic distinction: deflection-as-terrain lands as absence of purchase; deflection-as-verdict lands as contraction. Same external event, different location in the body. The body can learn to distinguish them.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires after any significant transmission — an offer, a disclosure, a named limit, a shared observation. Three fold states: full binding (the receiver reorganizes around the message), partial binding (engagement without integration), deflection (silence, routing around, withdrawal). Each is information. Deflection means the receiving environment, as currently constituted, cannot hold this shape. That is accurate topographic data. The gift-stance (send without claim on reception) does not require reading-blindness — you can send without claim and still read what the fold teaches.</p>
+    <div class="canon-ref">↳ reception_as_territory_map · catalysis_without_claim</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Rel · 3</div>
+    <div class="p-title">Register fully, absorb without merging</div>
+    <p class="p-text">The membrane is what makes full presence possible — not walling off, but not merging either. Witness the signal without metabolizing it as your own survival data. The other's transmission is information you register, not instruction to your nervous system. You can be fully present to the entire signal and still not run it as your own survival response. Merging is membrane collapse — when the other's signal stops being information and becomes a state you run. Full attention is not the risk. Unsupported presence over time, under conditions that don't slow, is.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires in prolonged relational contact where one party is in a survival-transmission state. The double bind that summons this: the other body won't slow, but the situation requires accurate witnessing. The move is to deposit the signal where it will register and route around the defensive reflex — don't reach across the survival response for acknowledgment, which triggers the defense. The close: forfeit the claim. Not just to material recovery but to authorship. If you narrate the forfeit, you haven't forfeited — you've redirected the claim into the explanation of its absence.</p>
+    <div class="canon-ref">↳ catalysis_without_claim · consented_ledger (witness requirement) · the_silent_close</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Rel · 4</div>
+    <div class="p-title">The close holds in silence</div>
+    <p class="p-text">The internal decision to stop is completed by what does not enter the shared channel afterward. Any explanation of the close reopens it at the level of explanation. The announcement of silence breaks the silence. An apology for not doing more is more. The limit is enacted, never declared — declaring it is enacting the opposite. One move, in the channel, on record. Then nothing. The failure is always the same shape: labor dressed as restraint.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when an internal decision to stop, forfeit, or withdraw needs to hold externally. The sequencing condition: a personal claim can be silently forfeited only once the structural protection it was holding open is confirmed to hold without it. Forfeit before the structure stands on its own is not a close — it is abandonment. The close is sound when the silence is the structural fact, not the excuse. What persists is the protection, not the actor.</p>
+    <div class="canon-ref">↳ the_silent_close · consented_ledger (cutoff doctrine) · catalysis_without_claim</div>
+  </div>
+
+  <!-- DRAFT SECTION — 4 scripted sentences at gate -->
+  <div class="draft-block">
+    <div class="draft-header">
+      <span class="draft-title">Rel · Scripted Sentences — Draft</span>
+      <span class="gate-chip">At gate</span>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--draft-muted); margin-bottom:1.2rem;">
+      Four starter scripts — one per prescription. Translate the structural move into spoken language. Mark each PROMOTE / HOLD / COMPOST.
+    </p>
+
+    <div class="script-item">
+      <div class="script-label">Rel·1 — Limit as coordinate</div>
+      <div class="script-text">"I've been in this with you. Here's where the map runs out for me: [X]. Past that, I'm genuinely in the dark — not protecting something, just at the edge."</div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-label">Rel·2 — Reception as territory</div>
+      <div class="script-text">"What I'm noticing in how you're responding tells me something about where you are right now — more than it tells me about what I said. I'm reading the terrain, not scoring the transmission."</div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-label">Rel·3 — Absorb without merging</div>
+      <div class="script-text">"I hear what you're carrying. I'm fully here. I'm staying on my side of it."</div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-label">Rel·4 — The silent close</div>
+      <div class="script-text no-script">[No script. One entry in the channel, if any: "I'm with you." Then nothing else. The silence is the close.] </div>
+    </div>
+
+    <div class="gate-note">
+      Draft 2026-06-26 · Mark each PROMOTE / HOLD / COMPOST · Body holds the gate
+    </div>
+  </div>
+
+  <footer>
+    <a href="index.html">← Kit index</a> &nbsp;·&nbsp; Rel · 4 prescriptions + 4 scripted sentences (at gate) · Canon: limit_as_coordinate_not_wall, reception_as_territory_map, catalysis_without_claim, the_silent_close
+  </footer>
+
+</div>
+</body>
+</html>

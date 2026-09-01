@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RI Kit — Spatial · Spatial Reading</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --surface: #ffffff;
+      --border: #ddd8cf;
+      --text: #1c1916;
+      --muted: #6b6460;
+      --accent: #2d4a3e;
+      --accent-soft: #e6efeb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    .substrate-code {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    h1 { font-size: 1.4rem; font-weight: normal; }
+    .tagline { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-top: 0.3rem; }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.78rem;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: monospace;
+    }
+    nav a:hover { background: var(--accent-soft); }
+    nav a.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .prescription {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .p-number {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .p-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 0.85rem;
+    }
+    .p-text { color: var(--text); margin-bottom: 1rem; }
+    .reading-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 0.8rem;
+    }
+    .reading-label {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .reading-text { font-size: 0.88rem; color: var(--muted); }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin: 0.8rem 0;
+      font-size: 0.82rem;
+    }
+    .col-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.6rem 0.8rem;
+    }
+    .col-box-name { font-weight: bold; font-size: 0.78rem; color: var(--accent); margin-bottom: 0.3rem; }
+    .canon-ref {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-top: 0.7rem;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="substrate-code">SPA · Spatial Reading · Recognition Infrastructure Kit</div>
+    <h1>Spatial Reading</h1>
+    <div class="tagline">Design the container. Read what routes through it.</div>
+  </header>
+
+  <nav>
+    <a href="index.html">Index</a>
+    <a href="bio.html">Bio</a>
+    <a href="inst.html">Inst</a>
+    <a href="rel.html">Rel</a>
+    <a href="tech.html">Tech</a>
+    <a href="economic.html">Eco</a>
+    <a href="spatial.html" class="current">Spatial</a>
+  </nav>
+
+  <div class="prescription">
+    <div class="p-number">Spa · 1</div>
+    <div class="p-title">Village logic, not village aesthetics</div>
+    <p class="p-text">The variable that distinguishes a village container from a system container is the retention logic — what counts as sufficient reason to keep someone inside. The system container holds you in relation to your productive function; the moment you become illegible as a contributing node, ejection is structurally automatic. The village container held the whole person across periods of non-contribution: the child, the grieving, the recovering, the latent. Rebuild the retention logic. The practices — shared meals, communal labor, mutual aid — were expressions of that logic, not the logic itself.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when designing communal or shared space. The reconstruction failure: building the aesthetics of village (community events, warm culture, mission alignment) without the retention logic. The legibility check: does membership require current, demonstrable, role-legible value? If yes, the retention logic is system, not village — regardless of the aesthetic. The village's retention mechanism had a cost: the same mesh that held the latent also held the nonconforming. A reconstructed container needs to hold latent value without becoming a closed system that enforces conformity as the price of membership.</p>
+    <div class="canon-ref">↳ village_container_vs_system_container · ejection_immunity_personal_node</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Spa · 2</div>
+    <div class="p-title">Design from no ejection lever</div>
+    <p class="p-text">The ejection lever exists wherever membership requires a gatekeeper's ongoing consent. Eliminating it requires a topology shift: each participant holds their own instance of the shared infrastructure rather than accessing a central copy through a holder. Protocol membership is self-certified; platform membership is host-certified. The shift is from gatekeeper-architecture to gatekeeperless architecture — not from bad gatekeepers to good ones.</p>
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-box-name">Platform (lever present)</div>
+        Central copy · host-certified membership · ejection possible at any re-grant
+      </div>
+      <div class="col-box">
+        <div class="col-box-name">Protocol (lever absent)</div>
+        Distributed instance · self-certified membership · no central node to pull
+      </div>
+    </div>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when designing membership or participation architecture. Three partial-immunity failure modes: (1) partial instantiation — participant holds content but not tooling, or tooling but not identity; the dependency restores the lever at that point; (2) network-effect hollowing — participant owns their node but other nodes refuse to federate; ownership survives, participation may not; (3) fork divergence — distributed ownership produces N diverging instances; coherence requires a reconciliation mechanism that can re-introduce a central authority. The open edge: minimum viable instantiation — what is the smallest set of owned components that eliminates the lever without requiring total self-sufficiency?</p>
+    <div class="canon-ref">↳ ejection_immunity_personal_node · village_container_vs_system_container · bilateral_route_formation</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Spa · 3</div>
+    <div class="p-title">Wait for the bilateral route</div>
+    <p class="p-text">A connection between two nodes exists only when both are operating from their own ground. You cannot install a connection to another node. Force applied to the other node's participation produces simulation (compliance without genuine engagement) or damage (the other node moves further from its own ground to escape the pressure). Every productive effort is self-directed: deepen your own participation, clarify your own ground, remain available without collapsing into the other node's rhythm. The route forms when the second node arrives at its own participation — your readiness is a precondition, not a cause.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when a desired connection is not forming. Route integrity is as strong as the weaker participation — a barely-present second node produces a correspondingly fragile route. Routes are not permanent: they exist while both instances are participating and dissolve when either withdraws. Re-formation requires both nodes to return to their own ground again. What persists between instances of connection is not the route but each node's capacity to participate. The asymmetric-participation trap: one party running the protocol, the other not, produces the appearance of connection while the structural condition is absent. When the non-participating party stops, the "connection" vanishes.</p>
+    <div class="canon-ref">↳ bilateral_route_formation · ejection_immunity_personal_node · reception_as_territory_map</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Spa · 4</div>
+    <div class="p-title">Set conditions, then read the fold</div>
+    <p class="p-text">Configure the space so that the desired routing happens without ongoing direction. Then step back and read what the space does without you: what binds here, what deflects, what routes automatically? Deflection is topographic data about the space — information about the terrain's current capacity to hold particular shapes. A space where certain patterns don't land is a space where those patterns are not yet structurally supported. The fold tells you what the conditions actually produce, not what you intended them to produce.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Two-move check. (1) Conditions check: does work route without prompting? If participants wait for direction, either the conditions aren't set or the director's ongoing presence has replaced the field as the routing mechanism. (2) Fold check: what does the reception pattern of transmissions through this space tell you about its topology? Full binding, partial binding, deflection — each is information. The two failure modes that mirror each other: the configurer who stays in the loop competes with emergence (direction wins over field), and the configurer who reads deflection as verdict misses what the fold is actually saying about the terrain.</p>
+    <div class="canon-ref">↳ conditions_over_direction · reception_as_territory_map · inhabitable_without_author</div>
+  </div>
+
+  <footer>
+    <a href="index.html">← Kit index</a> &nbsp;·&nbsp; Spatial · 4 prescriptions · Canon: village_container_vs_system_container, ejection_immunity_personal_node, bilateral_route_formation, conditions_over_direction
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RI Kit — Bio · Somatic Reading</title>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --surface: #ffffff;
+      --border: #ddd8cf;
+      --text: #1c1916;
+      --muted: #6b6460;
+      --accent: #2d4a3e;
+      --accent-soft: #e6efeb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      padding: 2.5rem 1.5rem;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    .substrate-code {
+      font-family: monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    h1 { font-size: 1.4rem; font-weight: normal; }
+    .tagline { font-size: 0.88rem; color: var(--muted); font-style: italic; margin-top: 0.3rem; }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.78rem;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: monospace;
+    }
+    nav a:hover { background: var(--accent-soft); }
+    nav a.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .prescription {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+    .p-number {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .p-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+    .p-text { color: var(--text); margin-bottom: 1rem; }
+    .reading-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 0.8rem;
+    }
+    .reading-label {
+      font-family: monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .reading-text { font-size: 0.88rem; color: var(--muted); }
+    .canon-ref {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-top: 0.7rem;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="substrate-code">BIO · Somatic Reading · Recognition Infrastructure Kit</div>
+    <h1>Biological Reading</h1>
+    <div class="tagline">The body is the coordinate origin. When it can't be trusted, halt.</div>
+  </header>
+
+  <nav>
+    <a href="index.html">Index</a>
+    <a href="bio.html" class="current">Bio</a>
+    <a href="inst.html">Inst</a>
+    <a href="rel.html">Rel</a>
+    <a href="tech.html">Tech</a>
+    <a href="economic.html">Eco</a>
+    <a href="spatial.html">Spatial</a>
+  </nav>
+
+  <div class="prescription">
+    <div class="p-number">Bio · 1</div>
+    <div class="p-title">Trust the origin, not the signal</div>
+    <p class="p-text">The body is not the last sensor in a chain — it is the coordinate zero from which all other readings are measured. When the felt sense goes quiet before you expect it to, surface before you proceed. The failure mode is not that the body lies — it's that it lies at the lethal end, when it's depleted enough to register "fine" while you bleed. If the origin cannot be trusted: fail closed, not redirect. Halt is the correct behavior at a compromised origin.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when: you are about to proceed on a reading that feels clear but something underneath isn't settling. The question is not "am I certain?" but "am I measuring from a trustworthy origin?" A second body is not there to audit yours from outside — that's impossible and produces the regress. A second body reads from a sensor that doesn't share your failure mode. Divergence between the two sensors is the signal.</p>
+    <div class="canon-ref">↳ witness_as_origin · consented_ledger (witness requirement)</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Bio · 2</div>
+    <div class="p-title">Run the brake before depletion</div>
+    <p class="p-text">Three instruments on two cadences. Daily: body alone — still willing? STOP or CONTINUE. Cycle: all three — body (still willing?), clock (obligations intact?), topology (relational bandwidth available?). When the body returns STOP, the work stops — regardless of the work's importance, deadline, or apparent necessity. The brake that has never fired in a real push is not a brake. It is a claim about a brake.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires before major deposits — before saying yes to something substantial, before a significant push. The cadence is structural, not responsive: the brake runs on schedule, not on demand. Three axis types: single-resource dread is the body axis; accumulated obligation without release is the clock axis; reduced bandwidth in key relationships is the topology axis. All three can return false-CONTINUE — surplus in one masks depletion in another. The cross-resource check is the guard.</p>
+    <div class="canon-ref">↳ the_governor · consented_ledger (cross-resource)</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Bio · 3</div>
+    <div class="p-title">Name the leak before surplus hides it</div>
+    <p class="p-text">Feel the costs you can. Consent to the ones you can't. Never let abundance in one resource mask depletion in another. Set the cutoff before the depletion, not after — the spent body's judgment is the corrupted instrument. A ledger closed by decision is a real ledger. One that requires full reconciliation is a treadmill: the accounting is itself a cost that reopens the ledger the moment it is checked.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when: you feel fine on one axis and something else is persistently off. Surplus in time can hide depletion in creative capacity. Surplus in energy can hide relational depletion. The cross-resource falsifier: chart all four axes simultaneously (body, time, relationship, creative). The hidden column — leaks you haven't named — is always present. The discipline is moving its contents into the "consented" column as fast as surplus moves them back.</p>
+    <div class="canon-ref">↳ consented_ledger · the_governor (three axes)</div>
+  </div>
+
+  <div class="prescription">
+    <div class="p-number">Bio · 4</div>
+    <div class="p-title">Read dread-of-closure as structural, not somatic</div>
+    <p class="p-text">When approaching enough feels like threat — when completion reads as loss without a nameable specific — the loop is generating the scarcity, not you. The phenomenological test: genuine concern produces a specific read (this element is insufficient, here is what sufficient looks like). Structural dread produces a diffuse read (something's not right, not yet, almost) without a specifiable missing element. The felt virtue of maintaining standards and the structural dread of closure are phenomenologically identical in real time. Only the specificity of the gap distinguishes them.</p>
+    <hr class="reading-divider">
+    <div class="reading-label">Reading</div>
+    <p class="reading-text">Fires when: you are close to a clear threshold and find yourself moving the threshold. Chart approach-instances: how many times has this threshold been genuinely approached and then modified without passage? Three or more, without a specifiable missing element = structural. The calibration problem: if clean passage has never been registered in this domain, the body has no somatic zero for closure. The instrument cannot self-calibrate. That is when outside verification becomes load-bearing, not optional.</p>
+    <div class="canon-ref">↳ dread_of_sufficiency · manufactured_deficit_loop · gate_as_f4</div>
+  </div>
+
+  <footer>
+    <a href="index.html">← Kit index</a> &nbsp;·&nbsp; Bio · 4 prescriptions · Canon: witness_as_origin, the_governor, consented_ledger, dread_of_sufficiency
+  </footer>
+
+</div>
+</body>
+</html>
