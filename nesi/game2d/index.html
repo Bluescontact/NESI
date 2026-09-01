@@ -461,6 +461,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
       <button class="groundbtn" data-ground="filter">filter</button>
       <button class="groundbtn" data-ground="garden">garden</button>
       <button class="groundbtn" data-ground="tarp">tarp</button>
+      <button class="groundbtn" data-ground="trace">trace</button>
       <button class="groundbtn" data-ground="world">world</button>
     </div>
     <svg id="graph" role="img" aria-label="a settled graph of every sentence written, by timing — the whole corpus, not just today"></svg>
@@ -516,6 +517,16 @@ table.wordtable td.examples span:hover { color:var(--paper); }
     <div id="tarpWrap" style="display:none">
       <canvas id="tarpCanvas" width="640" height="420"></canvas>
       <div class="note" style="margin-top:14px" id="tarpNote"></div>
+    </div>
+    <div id="traceWrap" style="display:none">
+      <div id="traceSieves" style="margin:0 0 8px; font-size:11px; color:var(--dim)">
+        show:
+        <label style="margin-right:10px"><input type="checkbox" id="sieveLong"> long</label>
+        <label style="margin-right:10px"><input type="checkbox" id="sieveOpen"> openings</label>
+        <label><input type="checkbox" id="sieveDecl"> declared</label>
+      </div>
+      <svg id="traceSvg" width="100%" height="150" preserveAspectRatio="xMinYMid meet"></svg>
+      <div class="note" style="margin-top:14px" id="traceNote"></div>
     </div>
     <div id="worldWrap" style="display:none">
       <div class="worldCount" id="worldCount"></div>
@@ -2238,6 +2249,92 @@ function renderCategories(L){
   });
 }
 
+/* THE TRACE, 2026-09-01 — built by the mapping-relationships development
+   from two of the dream's five shapes at once (the movements and the
+   session-waveform are one object seen twice): the session as a single
+   horizontal trace. First named "the score" for the musical sense —
+   refusal_check REFUSED the commit outright (the build forbids the
+   score/reward vocabulary and the lint cannot tell music from points;
+   loosening a refusal check is the keeper's word, not a session's), so
+   the name yielded. The check working exactly as built. Each sentence is a vertical stroke — height is its word count,
+   nothing on the surface is text — and a real pause renders as literal
+   blank width, so the passage boundaries ARE the gaps: the morning's own
+   silences, drawn. A small flag marks where a declaration was made. The
+   first view that gets better with volume: 128 sentences make a richer
+   waveform than 8, where every card view degrades.
+
+   The walk-back rides on it: three sieves — long, openings, declared —
+   each a pure structural filter (length, position-after-pause, the
+   writer's own declarations), lighting matching strokes so a
+   half-remembered sentence can be found by structural memory. Click a
+   spoken stroke to select it and jump the page there; a blind stroke
+   draws (volume, the tarp's own law) and answers nothing.
+   Laws held: volume never content; no machine vocabulary; no prompts. */
+function renderTrace(){
+  const svg = document.getElementById("traceSvg");
+  const note = document.getElementById("traceNote");
+  svg.innerHTML = "";
+  const all = nodes; // strokes are volume — blind included, like the counter and the tarp
+  if (!all.length){ note.textContent = "Nothing written yet — the trace begins with the first sentence."; return; }
+  const sp = spoken();
+  const passages = passagesFor(sp);
+  const spokenWords = sp.map(n=>n.words).sort((a,b)=>a-b);
+  const p75 = spokenWords.length ? spokenWords[Math.floor(spokenWords.length*0.75)] : 0;
+  const openIds = new Set(passages.map(ps=>ps[0] && ps[0].id).filter(id=>id!=null));
+  const declIds = new Set();
+  declaredEdges.filter(e=>!e.staged).forEach(e=>{ declIds.add(e.aId); declIds.add(e.bId); });
+  const sieveLong = document.getElementById("sieveLong").checked;
+  const sieveOpen = document.getElementById("sieveOpen").checked;
+  const sieveDecl = document.getElementById("sieveDecl").checked;
+  const anySieve = sieveLong || sieveOpen || sieveDecl;
+  const passes = n => (sieveLong && n.words >= p75) || (sieveOpen && openIds.has(n.id)) || (sieveDecl && declIds.has(n.id));
+  const H = 150, BASE = H - 22, MAXBAR = 100;
+  const maxW = Math.max(1, ...all.map(n=>n.words||1));
+  const breaks = all.filter((n,i)=> i>0 && (n.gapMs||0) > PASSAGE_BREAK_MS).length;
+  const slot = Math.max(2, Math.min(8, Math.floor(600 / (all.length + breaks*4 + 2))));
+  const gapW = slot * 4;
+  let x = 8;
+  const W = 8 + all.length*(slot+1) + breaks*gapW + 8;
+  svg.setAttribute("viewBox", "0 0 " + Math.max(640, W) + " " + H);
+  svg.appendChild(svgEl("line", {x1:0, y1:BASE+1, x2:Math.max(640,W), y2:BASE+1, stroke:"var(--line, rgba(238,236,226,.22))", "stroke-width":1}));
+  all.forEach((n, i) => {
+    if (i>0 && (n.gapMs||0) > PASSAGE_BREAK_MS){
+      // the silence, drawn: blank width with a small tick where writing resumed
+      svg.appendChild(svgEl("line", {x1:x+gapW/2, y1:BASE-4, x2:x+gapW/2, y2:BASE+8, stroke:"var(--dim, #777)", "stroke-width":1, "stroke-dasharray":"2 2"}));
+      x += gapW;
+    }
+    const h = Math.max(3, Math.round((Math.min(n.words||1, maxW)/maxW) * MAXBAR));
+    const lit = !anySieve || (!n.blind && passes(n));
+    const isSel = n.id === selectedId;
+    const r = svgEl("rect", { x:x, y:BASE-h, width:slot, height:h,
+      fill: isSel ? "var(--gold, #e0c454)" : (n.blind ? "rgba(238,236,226,.10)" : (lit ? "rgba(224,196,84,.75)" : "rgba(238,236,226,.14)")) });
+    if (!n.blind){
+      r.style.cursor = "pointer";
+      r.addEventListener("click", () => {
+        selectSentence(n.id, layoutCache());
+        const pEl = document.querySelector('p.sentence[data-id="'+n.id+'"]');
+        if (pEl) pEl.scrollIntoView({behavior:"smooth", block:"center"});
+        renderTrace();
+      });
+    }
+    svg.appendChild(r);
+    if (declIds.has(n.id)){
+      svg.appendChild(svgEl("path", {d:"M"+(x+slot/2-3)+" "+(BASE-h-9)+" l6 0 l-3 5 z", fill:"#8b6fd9"}));
+    }
+    x += slot + 1;
+  });
+  const parts = [];
+  parts.push(all.length + " stroke" + (all.length===1?"":"s") + " — height is word count, nothing here is text");
+  parts.push(passages.length + " passage" + (passages.length===1?"":"s") + (breaks ? " — the blank widths are your own silences" : " so far"));
+  if (declIds.size) parts.push("flags mark where a declaration was made");
+  parts.push("click a stroke to select it and jump the page there");
+  if (anySieve) parts.push("sieve on: lit strokes match — long is the top quarter by words, openings are the first after a pause, declared are the ones your hand connected");
+  note.textContent = parts.join(" · ") + ".";
+}
+["sieveLong","sieveOpen","sieveDecl"].forEach(id => {
+  document.addEventListener("change", e => { if (e.target && e.target.id === id && ground === "trace") renderTrace(); });
+});
+
 function renderGraph(L) {
   const weaveWrap = document.getElementById("weaveWrap");
   const knowledgeWrap = document.getElementById("knowledgeWrap");
@@ -2247,6 +2344,18 @@ function renderGraph(L) {
   const gardenWrap = document.getElementById("gardenWrap");
   const worldWrap = document.getElementById("worldWrap");
   const tarpWrap = document.getElementById("tarpWrap");
+  const traceWrap = document.getElementById("traceWrap");
+  if (ground === "trace") {
+    graphSvg.style.display = "none";
+    weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
+    wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
+    filterWrap.style.display = "none"; gardenWrap.style.display = "none";
+    tarpWrap.style.display = "none"; worldWrap.style.display = "none";
+    traceWrap.style.display = "";
+    renderTrace();
+    return;
+  }
+  traceWrap.style.display = "none";
   if (ground === "world") {
     graphSvg.style.display = "none";
     weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
@@ -2466,9 +2575,9 @@ document.getElementById("grounds").addEventListener("click", e => {
   ground = btn.dataset.ground;
   document.querySelectorAll("#grounds .groundbtn").forEach(b => b.classList.toggle("active", b===btn));
   document.getElementById("groundHeading").textContent = GROUND_HEADINGS[ground] || "the shape, at a glance";
-  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world";
+  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="trace";
   document.getElementById("graphNote").style.display = wordShapes ? "none" : "";
-  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world") ? "none" : "";
+  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="trace") ? "none" : "";
   if (ground==="filter") _filterMotes = null; // fresh tray each time the ground is opened
   document.getElementById("graphNote").textContent = ground==="time"
     ? "same sentences, laid out left to right by arrival order, one lane per day. switch to the relationship view to declutter by dragging."
