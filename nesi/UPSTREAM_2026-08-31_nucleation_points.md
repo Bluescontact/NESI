@@ -3,8 +3,8 @@
 > **CROSSED — 2026-08-31, Kevin's mark: *"lets commit those 8, and assemble the
 > deposits onto them. Thats the spine."*** The eight crystals below are the spine
 > the deposits assemble onto. Each deposit item attaches under the crystal that
-> accounts for it (the seating map lives in `tools/spine.js` — one source, per
-> crystal 7). *(Layered, later the same day: crystal 4 gained its first real
+> accounts for it (the seating map lives in `tools/spine.js` — in the public
+> deposit, `patterns/root/tools/spine.js` — one source, per crystal 7). *(Layered, later the same day: crystal 4 gained its first real
 > occupant when the ten organs crossed — `discharge_the_no_at_load_time`, the
 > empty middle engineered rather than policed.)*
 >
@@ -17,7 +17,10 @@
 > around them are now graded honestly, the falsifier fires in both directions,
 > the sighting lists are corrected and de-duplicated, and three candidate
 > seatings are put to the felt read instead of being quietly absorbed. The
-> pre-development text is held byte-for-byte in git at commit `2e6b434`.
+> pre-development text is held byte-for-byte in the source corpus's git
+> history (commit `2e6b434` there — the public repository carries only the
+> developed text; nothing about the prior version is hidden, it is simply
+> archived where the work happened).
 
 ---
 
@@ -139,8 +142,9 @@ organs, and this document no longer pretends otherwise:
 
 ## STANDING EXCEPTION to crystal 2
 
-`gate/CLOSED.jsonl` records one mark closed on a third party's withdrawn
-consent: never mined, routed, or read again — an erasure-of-use, not a layer,
+`gate/CLOSED.jsonl` (kept in the private source corpus; deliberately not
+published) records one mark closed on a third party's withdrawn consent:
+never mined, routed, or read again — an erasure-of-use, not a layer,
 and an authority (another person's consent, retroactive once articulated,
 enforceable or not) that outranks the kept-whole convention. Crystal 2 as
 written did not state this; the gate already enforces it in code. Recorded
@@ -228,7 +232,8 @@ cards recorded, never read as meaning · `refusal_check`, mechanical
 enforcement at commit.
 
 **Crystal 2 (6):** `gate/admit.mjs` + `MARKS.jsonl` · `MARKS_LOG.jsonl`, the
-corpus-wide append-only mark ledger · the retired door: superseded notice
+corpus-wide append-only mark ledger (source corpus; not shipped in the
+public copy) · the retired door: superseded notice
 layered on top, build kept whole below · `PROTOCOLS.md`: ratified by mark,
 lifted by mark, re-marked "read as history, never as instruction" · the
 vendor CLAUDE.md suspension convention: "supersession is a mark on top, never
