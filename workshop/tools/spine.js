@@ -42,6 +42,8 @@ const CRYSTALS = [
     line: 'between raw and crossed stands a third state: held, with its named condition — silence defaults to stop, uncertainty fails closed' },
   { id: 'c11', name: 'positive form',
     line: 'state what a thing does, never what it refuses — the refusal lives in a lint or at an edge, not in the prose' },
+  { id: 'c12', name: 'the game is the container',
+    line: 'the game is the container that carries the infrastructure for a user — a document describes; only play transmits' },
 ];
 
 // mark id -> { crystal, why }. The why is the seat's own one-line account.

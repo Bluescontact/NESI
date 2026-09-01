@@ -86,9 +86,12 @@ judged.</p>
   <h2>The village and the routes</h2>
   <p class="note">The circuit at person scale, carried here as play. You record
   your view of what each person carries — they hold their own node, and this
-  page cannot hold it for them. A route is bilateral: you can open your end;
-  only their own word opens theirs, and this page will never open it for
-  them.</p>
+  page cannot hold it for them. What this page can witness about a route is
+  your side only: your end, and what your hand recorded of theirs. And a
+  route waits on the filter: the levels exist so that the lack, the
+  transactionality, and the emotion settle out of what you carry before it
+  reaches another hand — what remains is recognition, and what falls out is
+  a gift. Work a run to its close before you reach toward a person.</p>
   <div id="village"></div>
   <label>a person</label><input type="text" id="vName" placeholder="their name, as you call them">
   <label>what you heard them carry</label><input type="text" id="vCarries">
@@ -99,7 +102,8 @@ judged.</p>
     <h3>the brake</h3>
     <p class="note">A ceiling set from the body, not from paper. When more is
     flowing than you can hold, say so — every route rests until your hand
-    releases it. No one else can trip it, and no one else can release it.</p>
+    releases it. Nothing on this page trips or releases it but your own
+    hand.</p>
     <button id="brakeBtn"></button>
   </div>
 </div>
@@ -341,6 +345,7 @@ function renderGift(){
 });
 
 /* ── the village and the routes: the circuit, carried as play ─────────── */
+function anyClosed(){ return Object.keys(st.edges).some(function(k){return st.edges[k].done;}); }
 function renderVillage(){
   var panel=document.getElementById("villagePanel");
   if(!st.seat){ panel.hidden=true; return; }
@@ -350,7 +355,9 @@ function renderVillage(){
     return '<div class="entry"><span class="id">'+escp(p.name)+'</span>'+
       '<span class="made">'+(p.carries?'carries, as you heard it: '+escp(p.carries):'')+
       (p.refuses?' · refuses, as you heard it: '+escp(p.refuses):'')+'</span>'+
-      '<span class="when"><a href="#" data-route="'+i+'">open your end of a route to them</a></span></div>';
+      '<span class="when">'+(anyClosed()
+        ? '<a href="#" data-route="'+i+'">open your end of a route to them</a>'
+        : 'a route to them waits on the filter — work a run to its close first, so what reaches them has been settled, aimed, and returned across a week')+'</span></div>';
   }).join('');
   v.querySelectorAll('[data-route]').forEach(function(a){
     a.addEventListener('click',function(ev){ev.preventDefault();
@@ -364,8 +371,9 @@ function renderVillage(){
   var r=document.getElementById("routes");
   r.innerHTML=st.routes.map(function(rt,i){
     var stateWord = st.brake ? 'resting — the brake is on'
-      : rt.state==='one-end' ? 'one end open — the other end is theirs to open, and this page cannot open it for them'
-      : rt.state==='flowing' ? 'flowing' : 'resting';
+      : rt.state==='one-end' ? 'your end is open — the other end is theirs alone, and this page cannot see it'
+      : rt.state==='flowing' ? 'you say they said yes — recorded by your hand, witnessed by no one here'
+      : 'resting';
     var h='<div class="entry"><span class="id">you — '+escp(rt.person)+'</span>'+
       '<span class="made">'+escp(rt.what||'(unnamed flow)')+'</span>'+
       '<span class="when">'+stateWord+(rt.word?' · their word: “'+escp(rt.word)+'”':'')+'</span>';
@@ -374,7 +382,7 @@ function renderVillage(){
       if(rt.state==='flowing') h+='<span class="when"><a href="#" data-rest="'+i+'">let it rest</a> · landed as <a href="#" data-felt-g="'+i+'">gift</a> or <a href="#" data-felt-e="'+i+'">extraction</a> — yours to say'+(rt.felt?' · you said: '+rt.felt:'')+'</span>';
       if(rt.state==='resting') h+='<span class="when"><a href="#" data-flow="'+i+'">re-open it</a> — a rested route re-opens anytime; no “complete,” no “paid”</span>';
     }
-    if(rt.felt==='extraction') h+='<span class="when">that read belongs in the room: bring it to the gathering — say to those involved, “I want to bring something to the gathering.” What the arena can and cannot decide: <a href="../house/membrane/01_THE_DISPUTE_ARENA.html">the dispute arena</a>.</span>';
+    if(rt.felt==='extraction') h+='<span class="when">the room is there if you want it: a gathering convenes on one sentence — “I want to bring something to the gathering” — and what it can and cannot decide is written: <a href="../house/membrane/01_THE_DISPUTE_ARENA.html">the dispute arena</a>. Where this read goes is yours to say.</span>';
     return h+'</div>';
   }).join('');
   r.querySelectorAll('a[href="#"]').forEach(function(a){
