@@ -247,6 +247,20 @@ function main() {
     doorways++;
   }
 
+  // 3. the inbox bench manifest — a derived listing of the cards actually
+  // present, regenerated every run, so the shop floor reads the bench
+  // itself rather than asserting a count (fourth-pass mirror audit, the
+  // painted-gauge finding). Note: the inbox's INDEX.html (rendered from
+  // INDEX.md) collides case-insensitively with a doorway index.html on
+  // Windows, so the bench gets a manifest instead of a doorway.
+  const inboxDir = path.join(ROOT, 'workshop', 'game-gate', 'inbox');
+  if (fs.existsSync(inboxDir)) {
+    const cards = fs.readdirSync(inboxDir)
+      .filter((n) => /\.md$/i.test(n) && !/^INDEX\.md$/i.test(n))
+      .map((n) => ({ file: n.replace(/\.md$/i, '.html'), label: titleOf(path.join(inboxDir, n)) || n }));
+    fs.writeFileSync(path.join(inboxDir, 'bench.json'), JSON.stringify({ generatedBy: 'workshop/tools/render_pages.js', cards }, null, 2));
+  }
+
   console.log('rendered ' + rendered + ' page(s); doorways for ' + doorways + ' room(s)');
 }
 

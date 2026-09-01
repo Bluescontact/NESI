@@ -53,7 +53,7 @@ live from the shop's own ledgers, the same files the mechanisms write.</p>
   written up so it can be judged. Nothing on this bench is part of the house
   yet.</p>
   <div id="inbox"></div>
-  <p class="stationfoot"><a href="game-gate/inbox/INDEX.html">how the pipeline works</a> · <a href="game-gate/inbox/index.html">the cards</a></p>
+  <p class="stationfoot"><a href="game-gate/inbox/INDEX.html">how the pipeline works</a></p>
 </div>
 
 <div class="station" id="st-gate">
@@ -91,7 +91,7 @@ live from the shop's own ledgers, the same files the mechanisms write.</p>
   report it isn't. A held gauge is waiting on a named open question, and
   holding is a lawful state here.</p>
   <div id="gauges"></div>
-  <p class="stationfoot">from the last gate run · the instruments: <a href="game-gate/gate/instruments/index.html">source</a> · independent audits of these mechanics: <a href="audit/index.html">the audits</a></p>
+  <p class="stationfoot">showing the most recent run only — every run is on <a href="game-gate/gate/LEDGER.jsonl">the ledger</a> · the instruments: <a href="game-gate/gate/instruments/index.html">source</a> · independent audits of these mechanics, including of this page: <a href="audit/index.html">the audits</a></p>
 </div>
 
 <div class="station" id="st-compost">
@@ -158,15 +158,31 @@ by room: <a href="tools/index.html">the pipeline</a> ·
       '<span class="made">'+esc(x.cause||x.reason||'')+'</span></div>').join('');
     const lastSub=[...ledger].reverse().find(e=>e.kind==='subtract');
     if(lastSub){
-      const dueBy=new Date(Date.parse(lastSub.ts)+14*86400000);
-      $('due').innerHTML='last subtraction pass: <span class="due">'+day(lastSub.ts)+'</span> · the gate requires the next by <span class="due">'+dueBy.toISOString().slice(0,10)+'</span> — if it lapses, the gate refuses in the open.';
+      // the quota is read from the same file the instrument reads — one
+      // source, no second copy of the law (fourth-pass audit seam)
+      let quota=14;
+      try{
+        const conf=await (await fetch('game-gate/gate/gate.conf')).text();
+        const m=conf.match(/^\s*subtract_quota_days\s*=\s*(\d+)/m);
+        if(m)quota=parseInt(m[1],10);
+      }catch(e){}
+      const dueBy=new Date(Date.parse(lastSub.ts)+quota*86400000);
+      $('due').innerHTML='last subtraction pass: <span class="due">'+day(lastSub.ts)+'</span> · the gate requires the next by <span class="due">'+dueBy.toISOString().slice(0,10)+'</span> ('+quota+'-day quota, read from <a href="game-gate/gate/gate.conf">gate.conf</a>) — if it lapses, the gate refuses in the open.';
     }
   }catch(e){fail('compost','the compost record could not be read from here')}
 
+  // station 1 reads the bench itself — the cards actually present, by name
+  // (fourth-pass audit, the one DECORATES: a hardcoded count in live-feed
+  // clothing; replaced with a real read of the inbox's own listing)
   try{
-    const r=await fetch('game-gate/inbox/INDEX.md'); if(!r.ok) throw 0;
-    $('inbox').innerHTML='<div class="entry"><span class="made">Fourteen gift cards from one harvest sit on this bench, with the pipeline that found, carded, and routed them written up beside them. Every card that crossed did so at the gate — station 2 is where you check it.</span></div>';
-  }catch(e){fail('inbox','the inbox index could not be read from here')}
+    const r=await fetch('game-gate/inbox/bench.json'); if(!r.ok) throw 0;
+    const bench=await r.json();
+    const cards=(bench.cards||[]).filter(c=>/^gift_/.test(c.file));
+    if(!cards.length) throw 0;
+    $('inbox').innerHTML=cards.slice(0,5).map(c=>
+      '<div class="entry"><a href="game-gate/inbox/'+esc(c.file)+'"><span class="made">'+esc(c.label)+'</span></a></div>').join('')+
+      '<div class="entry"><span class="when">read from <a href="game-gate/inbox/bench.json">the bench manifest</a>, regenerated with the site — a card here is not part of the house; crossing happens at station 2, on the record</span></div>';
+  }catch(e){fail('inbox','the bench manifest could not be read from here — the cards are at game-gate/inbox/')}
 })();
 </script>
 </body>

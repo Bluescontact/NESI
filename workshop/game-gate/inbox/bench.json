@@ -1,0 +1,77 @@
+{
+  "generatedBy": "workshop/tools/render_pages.js",
+  "cards": [
+    {
+      "file": "gift_2026-08-27_01_deep_visibility_culling.html",
+      "label": "GIFT — visibility culling as refusal-to-draw"
+    },
+    {
+      "file": "gift_2026-08-27_02_godot_filters_panel.html",
+      "label": "GIFT — the hand-sorted filter panel"
+    },
+    {
+      "file": "gift_2026-08-27_03_garden_growth.html",
+      "label": "GIFT — the local rule with no objective"
+    },
+    {
+      "file": "gift_2026-08-27_04_blind_writing_mode.html",
+      "label": "GIFT — the blind intake mode"
+    },
+    {
+      "file": "gift_2026-08-27_05_arrived_edit.html",
+      "label": "GIFT — the arrived edit"
+    },
+    {
+      "file": "gift_2026-08-27_06_verified_write.html",
+      "label": "GIFT — write, read back, only then trust it"
+    },
+    {
+      "file": "gift_2026-08-27_07_sorting_tarp.html",
+      "label": "GIFT — the sorting tarp"
+    },
+    {
+      "file": "gift_2026-08-27_08_ratify_by_crossing.html",
+      "label": "GIFT — ratify by crossing, not by naming"
+    },
+    {
+      "file": "gift_2026-08-27_09_grain_siting.html",
+      "label": "GIFT — site it on the grain, never by hand"
+    },
+    {
+      "file": "gift_2026-08-27_10_freshet_test.html",
+      "label": "GIFT — the freshet test"
+    },
+    {
+      "file": "gift_2026-08-27_11_set_it_down.html",
+      "label": "GIFT — set it down, the refusal as a real, equal third option"
+    },
+    {
+      "file": "gift_2026-08-27_12_the_case.html",
+      "label": "GIFT — the case, a hand-openable panel that proves what is actually happening"
+    },
+    {
+      "file": "gift_2026-08-27_13_the_burn.html",
+      "label": "GIFT — the burn that never heals itself"
+    },
+    {
+      "file": "gift_2026-08-27_14_rule_for_the_sheet.html",
+      "label": "GIFT — a rule for the sheet, not a solver"
+    },
+    {
+      "file": "K_LENS_REPORT_2026-08-28.html",
+      "label": "K LENS — a scan of Group K (Library-at-large), a scan not a judgment, 2026-08-28"
+    },
+    {
+      "file": "LENS_REPORT_2026-08-27.html",
+      "label": "LIBRARY LENS — a scan, not a judgment, 2026-08-27"
+    },
+    {
+      "file": "LENS_REPORT_2026-08-31.html",
+      "label": "LIBRARY LENS — a scan, not a judgment, 2026-08-31"
+    },
+    {
+      "file": "PREFLIGHT_2026-08-27_gifts_8-14.html",
+      "label": "PREFLIGHT — the manifest grammar for a batch of gift cards, as pattern"
+    }
+  ]
+}
