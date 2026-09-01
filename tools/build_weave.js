@@ -46,6 +46,7 @@ const SET_DEFS = [
   { name: 'the open ledger', test: (id) => id.startsWith('open_ledger'), declared_in: 'admitted as doctrine + schema + runnable demo' },
   { name: 'the genesis seed', test: (id) => id.startsWith('genesis_'), declared_in: 'admitted as onboarding + behavioral tests' },
   { name: 'the crystallized essays', test: (id) => ['match_noun_to_harm','hunger_under_naming','five_terms_and_the_loop'].includes(id), declared_in: 'each provenance line: crystallized per the commons rule, working originals source-side' },
+  { name: 'the session bridges', test: (id) => id.startsWith('session_bridge_'), declared_in: 'one record convention, declared by their shared naming — dated state, layered never erased' },
 ];
 
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
