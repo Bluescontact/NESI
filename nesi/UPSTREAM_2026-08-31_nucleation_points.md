@@ -16,8 +16,16 @@
 > crossing and nothing found here guts one. What changed: the claims wrapped
 > around them are now graded honestly, the falsifier fires in both directions,
 > the sighting lists are corrected and de-duplicated, and three candidate
-> seatings are put to the felt read instead of being quietly absorbed. The
-> pre-development text is held byte-for-byte in the source corpus's git
+> seatings are put to the felt read instead of being quietly absorbed.
+>
+> **SEATED — 2026-09-01, the keeper's mark: "seat the three candidate
+> crystals."** The two candidates the ground pass surfaced and the retracted
+> FRAMING demotion are crystals now: 9 (the felt read), 10 (the held state),
+> 11 (positive form). The count stands at eleven. The held VE hypothesis is
+> not advanced by this — the seating was the felt read answering the ground
+> pass, and the hypothesis's degree and circuit conditions remain untested.
+>
+> The pre-development text is held byte-for-byte in the source corpus's git
 > history (commit `2e6b434` there — the public repository carries only the
 > developed text; nothing about the prior version is hidden, it is simply
 > archived where the work happened).
@@ -25,16 +33,17 @@
 ---
 
 This corpus was built in pieces over about three months, and most of the
-pieces failed. This document names the eight structures that did not — the
+pieces failed. This document names the structures that did not — the
 ones that kept turning up across builds and eras, including builds that later
-collapsed. Everything else in the deposit seats under one of these eight. Each
+collapsed: eight crossed at first assembly, three more seated later by the
+keeper's felt read. Everything else in the deposit seats under one of them. Each
 comes with the evidence it stands on, graded honestly; at the bottom is the
 test that would show this document wrong, in both of the directions it can be
 wrong.
 
 ---
 
-## THE SPINE — the eight crystals
+## THE SPINE — the crystals (eight crossed 2026-08-31; 9–11 seated 2026-09-01)
 
 The numbering here is the numbering in `tools/spine.js`; the two must never
 drift. One line of law and the single strongest verified sighting each; the
@@ -97,6 +106,35 @@ relationships that aren't identical. The caveat is the evidence.
 (6 sightings of the image recurring; see the method note below for why this
 grading extends further than crystal 8.)
 
+**9 · THE FELT READ** — the instrument of judgment is the body: prompted,
+never passed, simulated, inferred, or directed; a blank body-line is a
+complete record. *(Seated 2026-09-01 — previously a forced fit under
+crystal 1, caught by this document's own ground pass.)*
+Strongest sighting: the mark-record's closing law — "the line is yours or it
+is blank. No score, no analysis, no machine-written line — ever."
+(~7 sightings: never-direct-the-body, the blank field as complete record,
+the felt-read queue in conductor code, the somatic canon gate, the
+artifact grammar's not-automatable clause.)
+
+**10 · THE HELD STATE** — between raw and crossed stands a third state:
+held, with its named condition — silence defaults to stop, uncertainty
+fails closed. *(Seated 2026-09-01 — previously unaccounted, surfaced by the
+same ground pass.)*
+Strongest sighting: "an unedited line reads as HOLD — silence is not
+'proceed'" — a build gate that stayed closed on silence.
+(~7 sightings: HOLD-with-named-condition, the staging ledger, fail-closed
+DENY in the membrane controller, the rhythm doctrine, the grounder's
+HOLD-condition rule.)
+
+**11 · POSITIVE FORM** — state what a thing does, never what it refuses;
+the refusal lives in a lint or at an edge, not in the prose. *(Seated
+2026-09-01 — the first draft's demotion was retracted as inconsistently
+applied, and the felt read seated it.)*
+Strongest sighting: the framing rule enforced mechanically at every commit
+(framing_check in the game's suite), plus the documented rewrite pass that
+converted seven refusal-form strings to what the page does.
+(3 sightings — at the recurrence threshold, stated plainly.)
+
 ---
 
 ## THE METHOD, stated honestly
@@ -150,7 +188,10 @@ enforceable or not) that outranks the kept-whole convention. Crystal 2 as
 written did not state this; the gate already enforces it in code. Recorded
 here so the law and the code agree.
 
-## CHALLENGED AND CANDIDATE SEATINGS — Kevin's felt read decides
+## CHALLENGED AND CANDIDATE SEATINGS — resolved 2026-09-01
+
+*(Items 1–3 below were seated as crystals 9–11 by the keeper's mark; the
+text is kept as written, per the layering convention. Item 4 stays open.)*
 
 The development's ground pass surfaced structures with crystal-grade evidence
 that the eight do not honestly cover. They are named here, not seated —
@@ -179,6 +220,11 @@ seating is a crossing, and the mark is the only crossing:
 crystals around the VE?... record it as a held hypothesis"*), under the HELD
 discipline's own rule: a hold carries the exact condition that makes it
 decidable.
+
+*(Layered 2026-09-01: the count moved from eleven-in-view to ELEVEN SEATED
+when crystals 9–11 crossed. The hypothesis did not move it — the ground
+pass and the felt read did — and conditions 2–4 remain untested. One more
+would make twelve; that sentence is an observation, not an aim.)*
 
 **The hypothesis:** the crystals are the twelve vertices of the vector
 equilibrium — twelve around a center nothing occupies. The count today is

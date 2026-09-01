@@ -18,7 +18,7 @@
 // Usage, from gate/:
 //   node declare.mjs <a> <b> --rel "<the relation, in your own words>" [--by "<where this was declared, if reading the record>"]
 //
-// <a> and <b> are mark ids from MARKS.jsonl, or crystal ids c1..c8.
+// <a> and <b> are mark ids from MARKS.jsonl, or crystal ids c1..c11.
 // --by distinguishes a strand READ FROM THE RECORD (citation required)
 // from one declared fresh by the hand (no --by needed; the line itself
 // is the declaration).
@@ -30,7 +30,7 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MARKS = path.join(HERE, 'MARKS.jsonl');
 const LEDGER = path.join(HERE, 'DECLARATIONS.jsonl');
-const CRYSTAL_IDS = new Set(['c1','c2','c3','c4','c5','c6','c7','c8']);
+const CRYSTAL_IDS = new Set(['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11']); // 9-11 seated 2026-09-01
 
 const args = process.argv.slice(2);
 const positional = [];
@@ -54,7 +54,7 @@ const markIds = new Set(
 );
 for (const end of [a, b]) {
   if (!markIds.has(end) && !CRYSTAL_IDS.has(end)) {
-    refuse(`"${end}" is neither an admitted mark nor a crystal (c1..c8). A declaration may be generous; it may not be fictional.`);
+    refuse(`"${end}" is neither an admitted mark nor a crystal (c1..c11). A declaration may be generous; it may not be fictional.`);
   }
 }
 if (a === b) refuse('a strand needs two distinct ends.');

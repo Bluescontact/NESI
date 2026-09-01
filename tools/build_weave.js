@@ -95,8 +95,8 @@ function main() {
   // for the held VE hypothesis, reported as what stands.
   const cdeg = {};
   strands.forEach((e) => {
-    if (/^c[1-8]$/.test(e.a)) cdeg[e.a] = (cdeg[e.a] || 0) + 1;
-    if (/^c[1-8]$/.test(e.b)) cdeg[e.b] = (cdeg[e.b] || 0) + 1;
+    if (/^c(?:[1-9]|1[01])$/.test(e.a)) cdeg[e.a] = (cdeg[e.a] || 0) + 1;
+    if (/^c(?:[1-9]|1[01])$/.test(e.b)) cdeg[e.b] = (cdeg[e.b] || 0) + 1;
   });
 
   const loomRows = gap.map((id) => {

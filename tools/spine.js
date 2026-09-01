@@ -33,6 +33,15 @@ const CRYSTALS = [
     line: 'a fact lives in one place; a copy is a drift waiting to happen' },
   { id: 'c8', name: 'the tetra/VE geometry',
     line: 'the corpus’s form-language — a signature, not a law; "it should be a tetra" is never an argument' },
+  // Crystals 9-11, seated 2026-09-01 on the keeper's mark ("seat the
+  // three candidate crystals") — the two candidates the spine document's
+  // own ground pass surfaced, and the retracted FRAMING demotion.
+  { id: 'c9', name: 'the felt read',
+    line: 'the instrument of judgment is the body — prompted, never passed, simulated, inferred, or directed; a blank body-line is a complete record' },
+  { id: 'c10', name: 'the held state',
+    line: 'between raw and crossed stands a third state: held, with its named condition — silence defaults to stop, uncertainty fails closed' },
+  { id: 'c11', name: 'positive form',
+    line: 'state what a thing does, never what it refuses — the refusal lives in a lint or at an edge, not in the prose' },
 ];
 
 // mark id -> { crystal, why }. The why is the seat's own one-line account.
@@ -70,7 +79,7 @@ const SEATS = {
   'second_mark_preflight':                   { crystal: 'c2', why: 'a consequential crossing needs two independent confirmations — crossing discipline, hardened' },
   'renderer_seam':                           { crystal: 'c3', why: 'the boundary that keeps a mechanism swappable — forbidden to know its implementation' },
   'continuity_derived_view':                 { crystal: 'c7', why: 'a resume-view derived from the ledgers, never a source of truth of its own' },
-  'held_named_gaps':                         { crystal: 'c6', why: 'everything held carries the name of what it is waiting for — the honest blank, working' },
+  'held_named_gaps':                         { crystal: 'c10', why: 'everything held carries the name of what it is waiting for — the honest blank, working' },
   'prior_art_check_tool':                    { crystal: 'c7', why: 'already built, or new? — the check that keeps a mechanism from existing twice' },
   // Fresh-walk filter pass, 2026-08-31 — standouts from the 18 new roots,
   // each file read and its mechanism verified before admission.
@@ -138,10 +147,10 @@ const SEATS = {
   'no_blur':                                 { crystal: 'c5', why: 'my gift and words, and their gifts and words, always held separately' },
   'blur_check':                              { crystal: 'c6', why: 'the lint that names its own limit — two rules need a human read' },
   'violation_register':                      { crystal: 'c2', why: 'a fabricated record is a falsifier violation, not a recovery path' },
-  'watchers':                                { crystal: 'c6', why: 'unresolved tension held visible — no organ authorized to close it' },
+  'watchers':                                { crystal: 'c10', why: 'unresolved tension held visible — no organ authorized to close it' },
   'foundation_audit':                        { crystal: 'c1', why: 'the build verified against the recognition law, gaps named, corrections made in-document' },
-  'rhythm_doctrine':                         { crystal: 'c4', why: 'silence defaults to stop — the system waits, it never nags' },
-  'rhythm_config':                           { crystal: 'c6', why: 'null means off, every judgment field carries its owner — absence is a visible held state' },
+  'rhythm_doctrine':                         { crystal: 'c10', why: 'silence defaults to stop — the system waits, it never nags' },
+  'rhythm_config':                           { crystal: 'c10', why: 'null means off, every judgment field carries its owner — absence is a visible held state' },
   'codex_invariant':                         { crystal: 'c8', why: 'the governance geometry locked on one page, its falsifier welded in' },
   'codex_agent_invariant':                   { crystal: 'c6', why: 'no causal path from describing a loop better to a loop closing — investigate, don’t claim' },
   'codex_readme':                            { crystal: 'c5', why: 'a report of failure is worth more than a report of success — the gift carries no return address' },
@@ -156,7 +165,7 @@ const SEATS = {
   'unlocated_load':                          { crystal: 'c3', why: 'silent container failure named as structure — the load relocates to whoever cannot refuse it' },
   'routing_manifest':                        { crystal: 'c2', why: '5101 lines in, 5101 out, every rule derived from the record — the one exception named' },
   'containers_law':                          { crystal: 'c6', why: 'no in-action, a wish; no out-action, a landfill — and a taxonomy that cuts itself rather than patching' },
-  'artifact_grammar':                        { crystal: 'c1', why: 'the felt read defined as deliberately not automatable — prompted, never passed, simulated, or inferred' },
+  'artifact_grammar':                        { crystal: 'c9', why: 'the felt read defined as deliberately not automatable — prompted, never passed, simulated, or inferred' },
   'floor_kit_gate':                          { crystal: 'c4', why: 'four of five questions exist to stop the reader — the kit holds its center empty by construction' },
   'floor_kit_method':                        { crystal: 'c3', why: 'the leveling act as a runnable procedure — the mechanism, extracted' },
   'floor_kit_proof':                         { crystal: 'c6', why: 'what a set floor demonstrates, and how to check the leveling actually happened' },
