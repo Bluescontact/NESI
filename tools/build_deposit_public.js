@@ -20,6 +20,7 @@ const {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
   PIPELINE_MECHANISM, isPublicDebris, DENAME_EXTS, denamePublicText,
+  crystallizedCounterpart,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
 const { SPINE_DOC } = require('./spine');
@@ -87,6 +88,7 @@ function main() {
   // while the README claimed retired passes stay private. Excluded now,
   // counted and named in MANIFEST.json rather than silently dropped.
   const excludedDebris = [];
+  const sublimated = []; // records shipped as their crystallized counterparts
 
   for (const rel of allGame2dFiles) {
     const top = rel.split(path.sep)[0];
@@ -103,8 +105,14 @@ function main() {
       excludedDebris.push('game2d/' + rel.replace(/\\/g, '/'));
       continue;
     }
+    // crystallized/ folders never copy at their own path — their content
+    // enters only by replacing the raw record at ITS path (below).
+    if (rel.replace(/\\/g, '/').includes('crystallized/')) continue;
 
-    const src = path.join(GAME2D, rel);
+    const src0 = path.join(GAME2D, rel);
+    const crys = crystallizedCounterpart(src0);
+    if (crys) sublimated.push('game2d/' + rel.replace(/\\/g, '/'));
+    const src = crys || src0;
     const destRoot = bucket === 'game'
       ? path.join(OUT, 'game', rel)
       : path.join(OUT, 'patterns', 'game-gate', rel);
@@ -117,8 +125,11 @@ function main() {
   if (knowledgeFromMind) patternsFromMind.add(knowledgeFromMind);
 
   for (const rel of patternsFromMind) {
-    const src = path.join(MIND, rel);
-    if (!fs.existsSync(src)) continue;
+    const src0 = path.join(MIND, rel);
+    if (!fs.existsSync(src0)) continue;
+    const crys = crystallizedCounterpart(src0);
+    if (crys) sublimated.push('mind/' + rel.replace(/\\/g, '/'));
+    const src = crys || src0;
     copyFile(src, path.join(OUT, 'patterns', rel));
     manifest.patterns.push({ path: `mind/${rel}`, category: classifyFile(src) });
   }
@@ -266,7 +277,7 @@ function main() {
     JSON.stringify({
       generatedBy: 'tools/build_deposit_public.js', marksCount: marks.length, invocationRootsScanned: rootsFound,
       typologyCounts, heldBack,
-      excludedDebris, carriedBySkillsShelf,
+      excludedDebris, carriedBySkillsShelf, sublimated,
       manifest,
     }, null, 2)
   );
@@ -287,6 +298,7 @@ function main() {
 
   console.log(`game:        ${manifest.game.length} file(s)`);
   console.log(`de-named:    ${denamed} file(s) transformed at the crossing (the keeper)`);
+  console.log(`sublimated:  ${sublimated.length} record(s) crossed as their crystallized counterparts`);
   console.log(`patterns:    ${manifest.patterns.length} file(s) (${marks.length} marks read) — ${JSON.stringify(typologyCounts)}`);
   console.log(`  held back: ${heldBack.skills.length} skill(s) (0 real invocations), ${heldBack.agents.length} agent(s) (v0.1, pending development)`);
   console.log(`tributaries: ${tributaries.length} entries`);

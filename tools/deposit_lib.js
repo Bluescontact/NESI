@@ -106,6 +106,21 @@ function denamePublicText(text) {
   return t;
 }
 
+// The sublimation stage (Kevin's mark, 2026-09-01: "do the same
+// crystallization pass on previous deposits... use the soil deposited to
+// allow a new medium to sublimate/deposit"). A session-instance record
+// with a crystallized counterpart — same filename, in a crystallized/
+// sibling folder — crosses into the PUBLIC deposit as the counterpart,
+// at the SAME public path, so links and marks hold. The source corpus
+// keeps both phases: the working record verbatim, the crystal beside it.
+// The private deposit keeps the raw record (the named record is the
+// private side's job).
+function crystallizedCounterpart(srcAbs) {
+  const dir = path.dirname(srcAbs);
+  const candidate = path.join(dir, 'crystallized', path.basename(srcAbs));
+  return fs.existsSync(candidate) ? candidate : null;
+}
+
 // Creation debris that must not ship in the PUBLIC deposit (the private
 // deposit keeps everything): retired instruments, backup layers, and
 // dot-prefixed working files. The source corpus keeps all of it whole —
@@ -289,4 +304,5 @@ module.exports = {
   readLines, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
   PIPELINE_MECHANISM, isPublicDebris, DENAME_EXTS, denamePublicText,
+  crystallizedCounterpart,
 };
