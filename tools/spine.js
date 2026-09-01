@@ -145,6 +145,28 @@ const SEATS = {
   'codex_invariant':                         { crystal: 'c8', why: 'the governance geometry locked on one page, its falsifier welded in' },
   'codex_agent_invariant':                   { crystal: 'c6', why: 'no causal path from describing a loop better to a loop closing — investigate, don’t claim' },
   'codex_readme':                            { crystal: 'c5', why: 'a report of failure is worth more than a report of success — the gift carries no return address' },
+  // Batch 3 of the reading-pass queue (Kevin: "run batch 3") — the
+  // _INTAKE finished layer plus the two mind/ law files: the standing
+  // doctrine that never got a crossing, the two complete kits, and the
+  // filter run that balanced to zero.
+  'precession_law':                          { crystal: 'c1', why: 'pointing at a secondary effect destroys it — the no-pointing constraint derived from mechanism, not policy' },
+  'membrane_filter':                         { crystal: 'c1', why: 'the shape sorts; nothing identifies anything — the law at its most literal' },
+  'deletable_keystone':                      { crystal: 'c5', why: 'a floor is real only when it survives the removal of the one who set it' },
+  'reducer_refusal':                         { crystal: 'c6', why: 'built to subtract, refused on evidence, and reported the refusal — the falsifier that indicts its own instrument' },
+  'unlocated_load':                          { crystal: 'c3', why: 'silent container failure named as structure — the load relocates to whoever cannot refuse it' },
+  'routing_manifest':                        { crystal: 'c2', why: '5101 lines in, 5101 out, every rule derived from the record — the one exception named' },
+  'containers_law':                          { crystal: 'c6', why: 'no in-action, a wish; no out-action, a landfill — and a taxonomy that cuts itself rather than patching' },
+  'artifact_grammar':                        { crystal: 'c1', why: 'the felt read defined as deliberately not automatable — prompted, never passed, simulated, or inferred' },
+  'floor_kit_gate':                          { crystal: 'c4', why: 'four of five questions exist to stop the reader — the kit holds its center empty by construction' },
+  'floor_kit_method':                        { crystal: 'c3', why: 'the leveling act as a runnable procedure — the mechanism, extracted' },
+  'floor_kit_proof':                         { crystal: 'c6', why: 'what a set floor demonstrates, and how to check the leveling actually happened' },
+  'floor_kit_floor':                         { crystal: 'c5', why: 'the kit’s landing — complete, usable by a stranger' },
+  'six_returns_vertex':                      { crystal: 'c3', why: 'three correct systems, one impossible intersection — a defect that belongs to no party' },
+  'six_returns_pattern':                     { crystal: 'c3', why: 'the shared structure, abstracted past its three instances' },
+  'six_returns_method':                      { crystal: 'c6', why: 'every claim anchored to a document or marked unanchored' },
+  'six_returns_seam':                        { crystal: 'c3', why: 'where the systems meet and none can see' },
+  'six_returns_trim_tab':                    { crystal: 'c3', why: 'the smallest intervention that moves the whole intersection' },
+  'six_returns_floor':                       { crystal: 'c5', why: 'the cost is not a tax on the work — it is the entry condition' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
