@@ -117,6 +117,10 @@ rhythm/.last_brief
 !/substack/
 /substack/*
 !/substack/crystallized/
+# The open ledger, 2026-09-01 (circuit.html crystallized through the
+# gate) -- the admitted sources and their crystallized counterparts
+# belong in history. Sixth closure of the untracked-admitted-source gap.
+!/open_ledger/
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

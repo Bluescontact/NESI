@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Circuit — on the Open Ledger</title>
+<style>
+  :root{
+    --bg:#faf8f3; --surface:#ffffff; --ink:#1c1a16; --soft:#6b655a;
+    --line:#e7e1d4; --gold:#9a7320; --gold-soft:#f3ead2;
+    --stop:#9a3b2a; --stop-soft:#f6e7e2; --key:#3a6b53; --key-soft:#e6f0ea;
+    --copper:#b5713a; --blue:#3f6f93; --r:10px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 80px}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  h1{font-size:26px;letter-spacing:-.01em;margin:0}
+  .sub{color:var(--soft);font-size:13px;margin:2px 0 0}
+  .brake{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;background:#fff;color:var(--soft);white-space:nowrap}
+  .brake.warn{border-color:var(--stop);background:var(--stop-soft);color:var(--stop);font-weight:700}
+  .tabs{display:flex;gap:4px;margin:18px 0 22px;border-bottom:1px solid var(--line)}
+  .tabs button{border:0;background:none;padding:11px 16px;font:inherit;font-weight:600;color:var(--soft);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--gold)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:20px}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:0 0 14px;font-weight:600}
+  label{display:block;font-size:13px;color:var(--soft);margin:10px 0 4px}
+  input,select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;color:var(--ink)}
+  input::placeholder{color:#b7b0a2}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+  .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center}
+  button.act{border:1px solid var(--gold);background:var(--gold-soft);color:var(--gold);padding:9px 14px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer}
+  button.act:hover{background:#ecdfbf}
+  button.ghost{border:1px solid var(--line);background:#fff;color:var(--soft);padding:9px 14px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer}
+  button.ghost:hover{background:#f6f3ec}
+  button.tiny{font-size:11px;padding:4px 9px}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{font-size:12px;padding:7px 12px;flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;font:inherit;font-weight:600;color:var(--soft);cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .line{padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .line:last-child{border-bottom:0}
+  .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .tag.need{background:var(--stop-soft);color:var(--stop)}
+  .tag.gift{background:var(--gold-soft);color:var(--gold)}
+  .tag.refusal{background:#eceaf4;color:#5b4f86}
+  .tag.gathering{background:var(--key-soft);color:var(--key)}
+  .dom{font-size:11px;color:var(--soft);background:#f1ece1;padding:2px 7px;border-radius:6px}
+  .desc{flex:1;min-width:150px}
+  .wt{color:var(--soft);font-size:13px;font-style:italic}
+  .st{font-size:11px;color:var(--soft);text-transform:uppercase;letter-spacing:.05em}
+  .mine{font-size:10px;font-weight:700;color:var(--key);background:var(--key-soft);padding:2px 6px;border-radius:5px;text-transform:uppercase;letter-spacing:.05em}
+  .empty{color:#b7b0a2;font-style:italic;padding:8px 0}
+  .sublabel{font-size:12px;color:var(--soft);margin:18px 0 6px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+  .sublabel:first-child{margin-top:0}
+  .note{font-size:13px;color:var(--soft);line-height:1.5}
+  .cond{width:10px;height:10px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:5px}
+  .cond.copper{background:var(--copper)} .cond.blue{background:var(--blue)}
+  .meter{height:10px;background:#efe9dc;border-radius:6px;overflow:hidden;margin:6px 0 4px}
+  .meter > i{display:block;height:100%;background:var(--key)}
+  .big{font-size:28px;font-weight:700;letter-spacing:-.01em}
+  .foot{margin-top:14px;font-size:12px;color:#b7b0a2}
+  code{background:#f1ece1;padding:1px 5px;border-radius:4px;font-size:12px}
+  a{color:var(--gold)}
+  svg{width:100%;height:auto;display:block}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>The Circuit</h1>
+      <p class="sub" id="runsub">on the Open Ledger · the floor</p>
+    </div>
+    <div class="brake" id="brakeChip">Brake — not set</div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button data-tab="self" aria-selected="true">Self</button>
+    <button data-tab="field" aria-selected="false">Field</button>
+    <button data-tab="routes" aria-selected="false">Routes</button>
+    <button data-tab="system" aria-selected="false">System</button>
+  </div>
+
+  <!-- SELF -->
+  <section id="tab-self">
+    <div class="card">
+      <h2>Carry &amp; refuse — your node</h2>
+      <div class="seg" id="selfKind">
+        <button data-kind="gift" aria-pressed="true">A gift I carry</button>
+        <button data-kind="need" aria-pressed="false">A need I hold</button>
+        <button data-kind="refusal" aria-pressed="false">A refusal</button>
+      </div>
+      <div class="grid2">
+        <div><label>Domain</label><input id="selfDomain" list="domains" placeholder="transport · food · building · care · land · skills" /></div>
+        <div><label id="selfWlabel">Visible weight <span style="color:#b7b0a2">(words, never a number)</span></label><input id="selfWeight" placeholder="e.g. &quot;a few mornings&quot;" /></div>
+      </div>
+      <label>In words</label>
+      <input id="selfDesc" placeholder="what you carry, need, or won't carry" />
+      <div class="row">
+        <button class="act" id="selfPost">Add to my node</button>
+        <button class="ghost" id="seed">Seed an example circle</button>
+        <button class="ghost" id="wipe">Clear everything</button>
+      </div>
+      <p class="note" style="margin-top:14px">You keep the key to everything here — this is your node, and no one can take it from you. What you <em>won't</em> carry is as structural as what you will.</p>
+    </div>
+    <div class="card">
+      <h2>What I carry</h2><div id="myGifts"></div>
+      <div class="sublabel">What I hold as need</div><div id="myNeeds"></div>
+      <div class="sublabel">What I refuse</div><div id="myRefusals"></div>
+    </div>
+  </section>
+
+  <!-- FIELD -->
+  <section id="tab-field" class="hidden">
+    <div class="card">
+      <h2>The field — what's circulating</h2>
+      <p class="note" style="margin-top:-4px">Under the topology you marked, the field is not a directory of people — it's everything moving through the commons, person-less. The same person flows as gift and as need and is never typed. Reach to people lives in the roster below, used only to gather.</p>
+      <div class="sublabel" style="margin-top:16px">Gifts in the field</div><div id="fieldGifts"></div>
+      <div class="sublabel">Open needs (the floor's gaps)</div><div id="fieldNeeds"></div>
+      <div class="sublabel">Refusals held · gatherings called</div><div id="fieldOther"></div>
+    </div>
+    <div class="card">
+      <h2>Reach roster — who to gather</h2>
+      <p class="note" style="margin-top:-4px">A way to find people for the room. Carries reach, nothing else — no name, no role, no record of what they carry. Decoupled from every entry above.</p>
+      <div class="grid2" style="margin-top:12px">
+        <div><label>Reach</label><input id="contactReach" placeholder="how to find them — a phone, a corner, a description" /></div>
+      </div>
+      <div class="row"><button class="act" id="addContact">Add to roster</button>
+        <input id="gatheringDesc" placeholder="…or call a gathering" style="flex:1;min-width:160px" />
+        <button class="ghost" id="callGathering">Call it</button>
+      </div>
+      <div class="sublabel" style="margin-top:16px">Roster</div><div id="roster"></div>
+    </div>
+  </section>
+
+  <!-- ROUTES -->
+  <section id="tab-routes" class="hidden">
+    <div class="card">
+      <h2>Open a conductor</h2>
+      <p class="note" style="margin-top:-4px">A conductor forms where one of your needs meets a gift in the field. <span class="cond copper"></span><b>Copper</b> = same domain, tight. <span class="cond blue"></span><b>Blue</b> = crosses domains, inferential reach. A conductor carries current — <em>flowing · resting · gap</em> — and records no balance, no settlement, nothing owed.</p>
+      <div class="grid2" style="margin-top:14px">
+        <div><label>My need</label><select id="routeNeed"></select></div>
+        <div><label>A gift in the field</label><select id="routeGift"></select></div>
+      </div>
+      <div class="row"><button class="act" id="openRoute">Set it flowing</button></div>
+      <p class="note" style="margin-top:12px">Bilateral consent — both ends choosing to conduct — is the federated layer, where each person runs their own node. Here you propose the conductor.</p>
+    </div>
+    <div class="card"><h2>Conductors</h2><div id="routeList"></div></div>
+  </section>
+
+  <!-- SYSTEM -->
+  <section id="tab-system" class="hidden">
+    <div class="card">
+      <h2>Coverage</h2>
+      <div class="big" id="covBig">0 of 0</div>
+      <div class="meter"><i id="covBar" style="width:0%"></i></div>
+      <p class="note" id="covNote">of your held needs have a conductor to a gift in the field.</p>
+    </div>
+    <div class="card">
+      <h2>The schematic</h2>
+      <div id="schematic"></div>
+      <p class="note">You as the central bus; your needs on the ring — hollow where there's a gap, filled where current can flow. Copper and blue conductors reach to the gifts that answer them.</p>
+    </div>
+    <div class="card">
+      <h2>Gaps — the growth signal</h2>
+      <p class="note" style="margin-top:-4px">Your needs with no conductor yet. Open terminals: the voltage is there, nothing's connected. Each gap is a question of who to invite.</p>
+      <div id="gapList" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <h2>The Brake</h2>
+      <p class="note" style="margin-top:-4px">A ceiling on how many conductors you let flow at once — set from the body, not from paper. It trips into warning when more is flowing than you can hold. You set it; your body confirms it.</p>
+      <div class="row">
+        <input id="brakeInput" type="number" min="0" placeholder="e.g. 3" style="width:120px" />
+        <button class="act" id="setBrake">Set ceiling</button>
+        <button class="ghost" id="clearBrake">Clear</button>
+        <span class="note" id="brakeState"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Running on</h2>
+      <input id="runningOn" placeholder="the source the whole circuit runs on" />
+      <p class="note" style="margin-top:8px">The bus distributes from a source. Here it's the non-transactional mechanism — off-grid, near-zero burn, the standing gift-form economy.</p>
+    </div>
+  </section>
+
+  <p class="foot">Persists in this browser. Built on the Open Ledger (Topology A · held-key ownership) — same spine as <code>SCHEMA.sql</code>: no recipient, no amount, no decline log, no role, no claim. Why it cannot hold debt → <a href="demo.html">the demonstration</a>. Pre-gate; Kevin holds the mark.</p>
+</div>
+
+<datalist id="domains">
+  <option>transport</option><option>food</option><option>building</option><option>repair</option>
+  <option>care</option><option>land</option><option>skills</option><option>tools</option><option>power</option>
+</datalist>
+
+<script>
+// ── Persistence layer = the Open Ledger (Topology A). localStorage IS the store. ──
+const LS = 'open_ledger_v1';
+const DB = load() || {
+  commons: { id:'c1', name:'the floor', running_on:'off-grid · near-zero burn · the gift-form economy' },
+  entries: [],   // {id,kind,domain,description,weight,state,holder_proof,posted_at}
+  contacts: [],  // {id,reach}  — reach only, no name; references no entry
+  routes: [],    // {id,need_id,gift_id,conductor,state,opened_at}  — no balance, ever
+  keyring: [],   // YOUR secrets. This, and only this, is your node.
+  brake: { ceiling:null }
+};
+let nid = DB.entries.reduce((m,e)=>Math.max(m, +(''+e.id).slice(1)||0),0)
+        + DB.routes.reduce((m,r)=>Math.max(m, +(''+r.id).slice(1)||0),0) + 1;
+let kc = 0, selfKind = 'gift', tab = 'self';
+
+function load(){ try{ return JSON.parse(localStorage.getItem(LS)); }catch(e){ return null; } }
+function save(){ localStorage.setItem(LS, JSON.stringify(DB)); }
+
+function hash(s){ let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return ('0000000'+h.toString(16)).slice(-8); }
+function secret(){ return 'k_'+Math.random().toString(36).slice(2)+(++kc)+nid; }
+function iHold(e){ return DB.keyring.some(k=>hash(k)===e.holder_proof); }
+function esc(s){ return (s==null?'':''+s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function byId(id){ return DB.entries.find(e=>e.id===id); }
+
+function post(kind, domain, description, weight, mine){
+  if(!description.trim()) return null;
+  const sec = secret();
+  const e = { id:'e'+(nid++), kind, domain:(domain||'').trim()||null,
+    description:description.trim(), weight:(weight||'').trim()||null,
+    state: kind==='need'?'gap':(kind==='gift'?'flowing':null),
+    holder_proof: hash(sec), posted_at: Date.now() };
+  DB.entries.push(e);
+  if(mine) DB.keyring.push(sec);
+  save(); return e;
+}
+function retract(id){
+  const i = DB.entries.findIndex(e=>e.id===id);
+  if(i<0 || !iHold(DB.entries[i])) return;
+  DB.entries.splice(i,1);
+  DB.routes = DB.routes.filter(r=>r.need_id!==id && r.gift_id!==id);
+  save(); render();
+}
+function openRoute(needId, giftId){
+  const n=byId(needId), g=byId(giftId);
+  if(!n||!g) return;
+  const conductor = (n.domain && g.domain && n.domain===g.domain) ? 'copper' : 'blue';
+  DB.routes.push({ id:'r'+(nid++), need_id:needId, gift_id:giftId, conductor, state:'flowing', opened_at:Date.now() });
+  n.state='flowing'; save(); render();
+}
+function setRouteState(id, st){
+  const r=DB.routes.find(x=>x.id===id); if(!r) return;
+  r.state=st;
+  const n=byId(r.need_id); if(n) n.state = st==='flowing'?'flowing':(st==='resting'?'resting':'gap');
+  save(); render();
+}
+function removeRoute(id){ DB.routes=DB.routes.filter(r=>r.id!==id); save(); render(); }
+
+const myNode    = ()=>DB.entries.filter(iHold);
+const myNeeds   = ()=>myNode().filter(e=>e.kind==='need');
+const fieldGifts= ()=>DB.entries.filter(e=>e.kind==='gift');
+const routeFor  = (needId)=>DB.routes.find(r=>r.need_id===needId);
+
+// ── render ──
+function lineEl(e, opts){
+  opts=opts||{};
+  const d=document.createElement('div'); d.className='line';
+  let h = '<span class="tag '+e.kind+'">'+e.kind+'</span>';
+  if(e.domain) h+='<span class="dom">'+esc(e.domain)+'</span>';
+  h += '<span class="desc">'+esc(e.description)+(e.weight?' <span class="wt">— '+esc(e.weight)+'</span>':'')+'</span>';
+  if(opts.showMine && iHold(e)) h+='<span class="mine">yours</span>';
+  if(e.state) h+='<span class="st">'+e.state+'</span>';
+  d.innerHTML=h;
+  if(opts.retract && iHold(e)){ const b=mkBtn('retract',()=>retract(e.id)); d.appendChild(b); }
+  return d;
+}
+function mkBtn(txt,fn){ const b=document.createElement('button'); b.className='ghost tiny'; b.textContent=txt; b.onclick=fn; return b; }
+function fill(id,list,empty,opts){ const el=document.getElementById(id); if(!el)return; el.innerHTML=list.length?'':'<div class="empty">'+empty+'</div>'; list.forEach(e=>el.appendChild(lineEl(e,opts))); }
+
+function render(){
+  // header / brake
+  DB.commons.running_on = DB.commons.running_on || '';
+  document.getElementById('runsub').textContent = 'on the Open Ledger · '+DB.commons.name;
+  const flowing = DB.routes.filter(r=>r.state==='flowing').length;
+  const chip=document.getElementById('brakeChip');
+  if(DB.brake.ceiling==null){ chip.textContent='Brake — not set'; chip.className='brake'; }
+  else { const over=flowing>DB.brake.ceiling; chip.textContent=(over?'⚠ ':'')+'Brake '+flowing+' / '+DB.brake.ceiling+' flowing'; chip.className='brake'+(over?' warn':''); }
+
+  // self
+  fill('myGifts', myNode().filter(e=>e.kind==='gift'), 'Nothing carried yet.', {retract:true});
+  fill('myNeeds', myNode().filter(e=>e.kind==='need'), 'No needs held.', {retract:true});
+  fill('myRefusals', myNode().filter(e=>e.kind==='refusal'), 'No refusals named.', {retract:true});
+
+  // field
+  fill('fieldGifts', DB.entries.filter(e=>e.kind==='gift'), 'No gifts circulating.', {showMine:true});
+  fill('fieldNeeds', DB.entries.filter(e=>e.kind==='need'&&e.state==='gap'), 'No open gaps.', {showMine:true});
+  fill('fieldOther', DB.entries.filter(e=>e.kind==='refusal'||e.kind==='gathering'), 'None.', {showMine:true});
+  const ros=document.getElementById('roster');
+  ros.innerHTML = DB.contacts.length?'':'<div class="empty">No one on the roster yet.</div>';
+  DB.contacts.forEach(c=>{ const d=document.createElement('div'); d.className='line';
+    d.innerHTML='<span class="desc">'+esc(c.reach)+'</span>';
+    d.appendChild(mkBtn('remove',()=>{ DB.contacts=DB.contacts.filter(x=>x.id!==c.id); save(); render(); })); ros.appendChild(d); });
+
+  // routes
+  const ns=document.getElementById('routeNeed'), gs=document.getElementById('routeGift');
+  ns.innerHTML = myNeeds().map(n=>'<option value="'+n.id+'">'+esc(n.description)+(n.domain?' ['+esc(n.domain)+']':'')+'</option>').join('') || '<option value="">— name a need in Self first —</option>';
+  gs.innerHTML = fieldGifts().map(g=>'<option value="'+g.id+'">'+esc(g.description)+(g.domain?' ['+esc(g.domain)+']':'')+'</option>').join('') || '<option value="">— no gifts in the field —</option>';
+  const rl=document.getElementById('routeList');
+  rl.innerHTML = DB.routes.length?'':'<div class="empty">No conductors open. Name a need and a gift, then set one flowing.</div>';
+  DB.routes.forEach(r=>{ const n=byId(r.need_id), g=byId(r.gift_id); if(!n||!g) return;
+    const d=document.createElement('div'); d.className='line';
+    d.innerHTML='<span class="cond '+r.conductor+'"></span><span class="desc">'+esc(n.description)+' <span class="wt">↔ '+esc(g.description)+'</span></span><span class="st">'+r.state+'</span>';
+    if(r.state!=='flowing') d.appendChild(mkBtn('flow',()=>setRouteState(r.id,'flowing')));
+    if(r.state!=='resting') d.appendChild(mkBtn('rest',()=>setRouteState(r.id,'resting')));
+    if(r.state!=='gap') d.appendChild(mkBtn('re-open as gap',()=>setRouteState(r.id,'gap')));
+    d.appendChild(mkBtn('remove',()=>removeRoute(r.id))); rl.appendChild(d); });
+
+  // system
+  const mn=myNeeds(), reach=mn.filter(n=>routeFor(n.id));
+  document.getElementById('covBig').textContent = reach.length+' of '+mn.length;
+  document.getElementById('covBar').style.width = (mn.length?Math.round(100*reach.length/mn.length):0)+'%';
+  fill('gapList', mn.filter(n=>!routeFor(n.id)), 'No gaps — every held need has a conductor.', {});
+  drawSchematic(mn);
+  const bi=document.getElementById('brakeState');
+  bi.textContent = DB.brake.ceiling==null ? 'No ceiling set.' : ('Ceiling '+DB.brake.ceiling+' · '+flowing+' flowing.');
+  document.getElementById('runningOn').value = DB.commons.running_on;
+}
+
+function drawSchematic(needs){
+  const W=640,H=300,cx=W/2,cy=H/2, R=110;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  // conductors first
+  needs.forEach((n,i)=>{ const a=(i/Math.max(needs.length,1))*2*Math.PI-Math.PI/2;
+    const nx=cx+R*Math.cos(a), ny=cy+R*Math.sin(a); const r=routeFor(n.id);
+    if(r){ const g=byId(r.gift_id); const gx=cx+(R+70)*Math.cos(a), gy=cy+(R+70)*Math.sin(a);
+      s+='<line x1="'+nx+'" y1="'+ny+'" x2="'+gx+'" y2="'+gy+'" stroke="'+(r.conductor==='copper'?'#b5713a':'#3f6f93')+'" stroke-width="2.5"/>';
+      s+='<circle cx="'+gx+'" cy="'+gy+'" r="6" fill="#9a7320"/>';
+      if(g) s+='<text x="'+gx+'" y="'+(gy+(Math.sin(a)<0?-10:18))+'" font-size="10" fill="#6b655a" text-anchor="middle">'+esc((g.description||'').slice(0,16))+'</text>'; }
+    s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+nx+'" y2="'+ny+'" stroke="#e7e1d4" stroke-width="1.5"/>';
+  });
+  // need nodes
+  needs.forEach((n,i)=>{ const a=(i/Math.max(needs.length,1))*2*Math.PI-Math.PI/2;
+    const nx=cx+R*Math.cos(a), ny=cy+R*Math.sin(a); const filled=!!routeFor(n.id);
+    s+='<circle cx="'+nx+'" cy="'+ny+'" r="9" fill="'+(filled?'#9a3b2a':'#faf8f3')+'" stroke="#9a3b2a" stroke-width="2"/>';
+    s+='<text x="'+nx+'" y="'+(ny+(Math.sin(a)<0?-14:22))+'" font-size="10" fill="#1c1a16" text-anchor="middle">'+esc((n.description||'').slice(0,16))+'</text>';
+  });
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="26" fill="#1c1a16"/><text x="'+cx+'" y="'+(cy+4)+'" font-size="12" fill="#faf8f3" text-anchor="middle">you</text>';
+  if(!needs.length) s+='<text x="'+cx+'" y="'+(cy+60)+'" font-size="12" fill="#b7b0a2" text-anchor="middle">name a need in Self to light the bus</text>';
+  s+='</svg>';
+  document.getElementById('schematic').innerHTML=s;
+}
+
+// ── wiring ──
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  tab=b.dataset.tab;
+  document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  ['self','field','routes','system'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab));
+});
+document.querySelectorAll('#selfKind button').forEach(b=>b.onclick=()=>{
+  selfKind=b.dataset.kind;
+  document.querySelectorAll('#selfKind button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const w=selfKind!=='refusal'; document.getElementById('selfWlabel').style.display=w?'block':'none';
+  document.getElementById('selfWeight').style.display=w?'block':'none';
+});
+document.getElementById('selfPost').onclick=()=>{
+  post(selfKind, val('selfDomain'), val('selfDesc'), val('selfWeight'), true);
+  clear('selfDesc'); clear('selfWeight'); render();
+};
+document.getElementById('addContact').onclick=()=>{
+  const reach=val('contactReach'); if(!reach.trim()) return;
+  DB.contacts.push({id:'p'+(nid++),reach:reach.trim()}); save(); clear('contactReach'); render();
+};
+document.getElementById('callGathering').onclick=()=>{ post('gathering','',val('gatheringDesc'),'',true); clear('gatheringDesc'); render(); };
+document.getElementById('openRoute').onclick=()=>{ openRoute(val('routeNeed'), val('routeGift')); };
+document.getElementById('setBrake').onclick=()=>{ const v=parseInt(val('brakeInput'),10); DB.brake.ceiling=isNaN(v)?null:Math.max(0,v); save(); render(); };
+document.getElementById('clearBrake').onclick=()=>{ DB.brake.ceiling=null; clear('brakeInput'); save(); render(); };
+document.getElementById('runningOn').onchange=e=>{ DB.commons.running_on=e.target.value; save(); };
+document.getElementById('seed').onclick=()=>{
+  post('gift','transport','a truck and time on weekday mornings','a few mornings',true);
+  post('gift','power','help wiring a solar array','a day',true);
+  post('need','building','a hand setting fence posts','a back that holds out',true);
+  post('need','transport','a ride to the clinic Thursday','half a day',true);
+  post('refusal','','I don\'t carry overnight work','',true);
+  post('gift','food','surplus garden vegetables each week','what the rows give',false);
+  post('gathering','','Sunday potluck at the big table','',false);
+  DB.contacts.push({id:'p'+(nid++),reach:'next farm over'});
+  save(); render();
+};
+document.getElementById('wipe').onclick=()=>{
+  if(!confirm('Clear the whole circuit in this browser?')) return;
+  DB.entries=[]; DB.routes=[]; DB.contacts=[]; DB.keyring=[]; DB.brake={ceiling:null}; save(); render();
+};
+function val(id){ return document.getElementById(id).value; }
+function clear(id){ document.getElementById(id).value=''; }
+
+render();
+</script>
+</body>
+</html>
