@@ -150,7 +150,10 @@ function main() {
   // in the public deposit. Only what a real mark actually points to.
   const carriedBySkillsShelf = [];
   for (const rel of admittedRootPaths) {
-    const src = path.join(ROOT, rel);
+    const src0 = path.join(ROOT, rel);
+    const rootCrys = crystallizedCounterpart(src0);
+    if (rootCrys) sublimated.push('root/' + rel.replace(/\\/g, '/'));
+    const src = rootCrys || src0;
     const norm = rel.replace(/\\/g, '/');
     // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
     // them. Thats the spine.") is the deposit's upstream layer — it lands
