@@ -41,9 +41,6 @@ label{color:var(--dim);font-size:13px;letter-spacing:.08em;text-transform:upperc
 .terms b{color:var(--paper);font-weight:400}
 .act{border-top:1px solid var(--line);padding:14px 0}
 .act h3{font-size:13px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
-.rootline{height:10px;margin:6px 0 2px;display:flex;gap:4px;align-items:center}
-.rootline i{display:block;height:4px;width:26px;background:var(--root);border-radius:2px;opacity:.85}
-.rootline i.faint{background:var(--line)}
 .kept{color:var(--paper);font-style:italic;border-left:2px solid var(--line);padding:4px 12px;margin:6px 0}
 .laws{margin-top:30px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px;line-height:1.8}
 .beat{color:var(--dim);font-style:italic;font-size:13.5px}
@@ -120,7 +117,9 @@ var GESTURES = {
   OVERWINTERING:"I COME BACK", GARDEN:"I LET IT GROW", CAST:"I GIVE IT AWAY"
 };
 var KINDWORD = { fall:"the fall", rise:"the rise", turn:"the turn — crossed by having reached the bottom", "return":"the return" };
-var WEEK_DAYS = ["first","second","third","fourth","fifth","sixth","seventh"];
+/* fifth-pass mirror audit: no ordinal day-words, no per-requirement
+   checklist — a count without digits is still a count. Cards say only
+   whether a run is open or closed; the acts speak for themselves. */
 
 /* ── state: the compounding substrate ─────────────────────────────────── */
 var KEY="nesi_walk_v1";
@@ -198,13 +197,7 @@ function facesFor(m){
   return {tri:tri,sq:sq};
 }
 function stateWords(es){
-  var w=[];
-  w.push(es.kept.length? "settled":"nothing settled yet");
-  w.push(es.aim? "aimed "+es.aim:"not yet aimed");
-  if(es.days.length>=7) w.push("the week is in");
-  else if(es.days.length) w.push("the "+WEEK_DAYS[es.days.length-1]+" day is in");
-  else w.push("the week not begun");
-  return w.join(" · ");
+  return es.days.length ? "open — the root is growing" : "open";
 }
 function renderEdges(){
   if(!st.seat){ edgesPanel.hidden=true; return; }
@@ -243,20 +236,22 @@ function openLevel(m){
      '<button id="keepLine">keep it</button></div>';
 
   h+='<div class="act"><h3>the light — aim it</h3>'+
-     '<p class="note">Aim down, into the window ('+(f.sq?f.sq.axis:'—')+'), and the charge gathers in one place; aim out, along the run, and it spreads. Nothing favors one. The aim is the act.</p>'+
+     '<p class="note">Aim down, into the window ('+(f.sq?f.sq.axis:'—')+'), and what you keep on this run gathers at that window with everything else aimed into it. Aim out, along the run, and what you keep stays with this run alone. The gift at the door out assembles accordingly — the aim decides where your lines land when they leave. Nothing favors one; both are real.</p>'+
      (es.aim? '<p class="state"><b>aimed '+es.aim+'</b> — you can re-aim; the last aim stands</p>':'')+
      '<button id="aimDown">aim down, into the window</button><button id="aimOut">aim out, along the run</button></div>';
 
-  var dots=''; for(var i=0;i<7;i++) dots+='<i class="'+(i<es.days.length?'':'faint')+'"></i>';
+  var weekWord = es.days.length>=7 ? "the week is in"
+    : es.days.length ? "the root is growing — it does not show its length"
+    : "the week not begun";
   h+='<div class="act"><h3>the growth — the week</h3>'+
-     '<p class="note">Each level is a week. A day counts by your returning on it — not by effort, not by amount. Absence never subtracts; the root only grows.</p>'+
-     '<div class="rootline">'+dots+'</div>'+
-     '<p class="state">'+(es.days.length>=7?'<b>the week is in</b>':(es.days.indexOf(today())>=0?'today is in the root — come back tomorrow':'<button id="tendDay">tend it today</button>'))+'</p></div>';
+     '<p class="note">Each level is a week. A day counts by your returning on it — not by effort, not by amount. Absence never subtracts; the root only grows. The root does not show its length: no bar fills here, and the week arrives when it arrives.</p>'+
+     '<p class="state"><b>'+weekWord+'</b>'+(es.days.length>=7?'':(es.days.indexOf(today())>=0?' · today is in — come back tomorrow':'')) +'</p>'+
+     (es.days.length>=7||es.days.indexOf(today())>=0?'':'<button id="tendDay">tend it today</button>')+'</div>';
 
   var closed = es.kept.length>0 && es.aim && es.days.length>=7;
   if(closed && !es.done){ es.done=true; save(); }
   if(es.done){
-    h+='<div class="act"><h3>closed</h3><p class="note">Settled, aimed, and the week is in — this run holds. The map draws it solid, and you may walk it: your position moves to '+far+' whenever you choose, by clicking its seat on the map.</p></div>';
+    h+='<div class="act"><h3>closed</h3><p class="note">Kept, aimed, and returned across a week — that is everything this page can witness, and it is all it claims. Whether the run held is yours to say; the machine never does the recognizing. The map draws it solid, and you may walk it: your position moves to '+far+' whenever you choose, by clicking its seat on the map.</p></div>';
   }
   h+='<p class="note" style="margin-top:10px"><a id="backToRuns" href="#">back to the runs</a></p>';
   levelPanel.innerHTML=h;
@@ -281,12 +276,31 @@ function renderGift(){
   var p=document.getElementById("giftPanel");
   if(!door.done){ p.hidden=true; return; }
   p.hidden=false;
-  var lines=[];
+  // the aim is read here, and only here (fifth-pass mirror audit: a
+  // mandatory choice must change something downstream): down-aimed runs
+  // pool their kept lines at their window with everything else aimed
+  // into it; out-aimed (or unaimed) runs keep theirs by the run's name.
+  var windows={}, byRun=[];
   Object.keys(st.edges).forEach(function(k){
-    st.edges[k].kept.forEach(function(l){ if(l) lines.push(l); });
+    var es2=st.edges[k];
+    var kept=es2.kept.filter(function(l){return l;});
+    if(!kept.length) return;
+    var m2=S.MEMBERS.find(function(mm){return mm.key===k;});
+    if(es2.aim==="down" && m2){
+      var sq2=S.SQUARES.find(function(q){return q.seats.indexOf(m2.a)>=0&&q.seats.indexOf(m2.b)>=0;});
+      var ax=sq2?sq2.axis:"the window";
+      (windows[ax]=windows[ax]||[]).push.apply(windows[ax],kept);
+    } else {
+      byRun.push({run:k, lines:kept});
+    }
   });
+  var parts=[];
+  Object.keys(windows).forEach(function(ax){
+    parts.push("gathered at the window "+ax+":\n"+windows[ax].join("\n"));
+  });
+  byRun.forEach(function(r){ parts.push("along the run "+r.run+":\n"+r.lines.join("\n")); });
   document.getElementById("giftOut").textContent =
-    lines.length? lines.join("\n") : "(everything you kept was kept blank — a complete gift is still a gift)";
+    parts.length? parts.join("\n\n") : "(everything you kept was kept blank — a complete gift is still a gift)";
 }
 
 /* ── the position card ────────────────────────────────────────────────── */
