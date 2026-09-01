@@ -35,17 +35,13 @@ export function run() {
   const quota = num(c, 'subtract_quota_days', 14);
   const events = ledger();
 
-  // Fork remains open: where the subtraction quota lives. begin/end can be
-  // used deliberately, but this runner does not yet turn the proposed cadence
-  // into an enforcing law.
-  const passes = events.filter((e) => e.kind === 'subtract');
-  return HOLD(
-    passes.length,
-    `candidate only — ${passes.length} subtraction pass(es) are on record; proposed cadence ${quota}d is not enforced. ` +
-      `The fork "where the subtraction quota lives" remains open.`
-  );
-
-  /* UNREACHABLE CANDIDATE ENFORCEMENT — retained below as executable design.
+  // Fork CLOSED 2026-09-01, the keeper's instruction ("build the subtraction
+  // membrane"), after the second mirror audit named this the item drifting
+  // fastest toward its fork (129 admitted in 30d, zero passes ever run).
+  // The quota lives in gate.conf (subtract_quota_days), enforced here; the
+  // membrane's law is house/membrane/04_THE_SUBTRACTION_MEMBRANE.md in the
+  // public deposit. The enforcement below is the design retained since
+  // Card 13, made reachable.
 
   if (events.length === 0) {
     return VACUOUS('the ledger is empty — no subtraction pass was examined, so the quota cannot be said to be met');
@@ -74,7 +70,6 @@ export function run() {
 
   const removed = passes.reduce((n, e) => n + (e.removed?.length ?? 0), 0);
   return PASS(events.length, `${passes.length} pass(es), ${removed} item(s) composted; last ${Math.floor(age)}d ago`);
-  */
 }
 
 // ── cli ───────────────────────────────────────────────────────────────────
