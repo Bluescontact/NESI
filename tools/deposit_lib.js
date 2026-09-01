@@ -200,7 +200,12 @@ function traceAdmitted() {
   const GATE_DIR = path.join(GAME2D, 'gate'); // admit.mjs runs with cwd here — "at" is relative to it
   for (const m of marks) {
     if (!m.at) continue;
-    const resolved = path.resolve(GATE_DIR, m.at);
+    let resolved = path.resolve(GATE_DIR, m.at);
+    // Reconciliation 2026-09-01: one early mark (the relocation bridge, of
+    // all things) wrote its "at" corpus-root-relative, before the path
+    // convention settled. The ledger is append-only, so the READING heals
+    // rather than the record: gate-relative first, corpus-root fallback.
+    if (!fs.existsSync(resolved)) resolved = path.resolve(ROOT, m.at);
     if (!fs.existsSync(resolved)) continue;
     if (resolved.startsWith(GAME2D)) admittedGamePaths.add(path.relative(GAME2D, resolved));
     else if (resolved.startsWith(MIND)) admittedMindPaths.add(path.relative(MIND, resolved));

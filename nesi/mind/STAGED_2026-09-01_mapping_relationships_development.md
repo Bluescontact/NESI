@@ -1,5 +1,17 @@
 # STAGED — the mapping-relationships development pass
 
+> **■ OPENED AND RUN, 2026-09-01** (the keeper's words: "open the
+> mapping-relationships pass" → "run development then"). Delivered: near
+> re-founded on time (candidate move 1 — the audit found the doc/code
+> drift under it); the weave windowed to the passage (move 5); hinge's
+> fork resolved by measurement (move 2 — earns); THE SCORE built as the
+> eleventh ground (the dream's movements + waveform as one object, with
+> the walk-back's sieves — moves toward 4 and 6), surviving its own
+> refusal-check story. **Still open:** stones (move 3), the glossed page
+> and the relief (dream shapes at the felt read), and whether
+> near-as-pairs dies into passage membership. The text below stands as
+> staged, per the layering convention.
+
 **Held, per crystal 10: staged with its named condition — opens on the
 keeper's word.** The keeper's marks, 2026-09-01: *"for it to be functional
 for me need to be able to run 750 to 2000 words... but we haven't

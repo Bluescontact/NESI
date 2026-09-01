@@ -50,7 +50,8 @@ function findGiftCard(giftId) {
 }
 
 function findSessionBridge(markAt) {
-  const resolved = path.resolve(path.join(GAME2D, 'gate'), markAt);
+  let resolved = path.resolve(path.join(GAME2D, 'gate'), markAt);
+  if (!fs.existsSync(resolved)) resolved = path.resolve(ROOT, markAt); // same root fallback as traceAdmitted
   if (resolved.startsWith(MIND) && fs.existsSync(resolved)) {
     return path.relative(path.resolve(path.join(GAME2D, '..')), resolved).replace(/\\/g, '/');
   }

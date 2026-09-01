@@ -1,5 +1,15 @@
 # STAGED — the gameplay debug session
 
+> **■ OPENED AND RUN, 2026-09-01** (the keeper's word: "you dont need me to
+> walk the game... you can play test it without me"). The walk ran whole;
+> one real bug found by playing and fixed (the blind promise held only in
+> the document — see the blind filter in the build). Then the keeper's
+> scale bar arrived (750–2000 words) and the scale ladder ran: constants
+> swept clean at 128 sentences. **Still open from this brief:** the
+> 33-page dispositions (F1 — a design fork), the three in-page checks
+> (F3), gift cards 5/11/14 (F4), and the second-session naming (F2 — the
+> keeper's). The text below stands as staged, per the layering convention.
+
 **Held, per crystal 10: staged with its named condition.** The keeper's mark,
 2026-09-01: *"stage the next work session to debug, and resolve gameplay and
 dead ends inside of nesi."* This document is the staging — the found-work

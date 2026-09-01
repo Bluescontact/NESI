@@ -540,6 +540,42 @@ material for a *future* decision, not a blocker on this one.
   fours instead of whatever's nearest/newest) is named, not built, in any
   of the five original dreams or the weave that followed them.
 
+## 8b · Addendum, 2026-09-01 — what moved past this file since it was written
+
+This file's own falsifier (§6) says: *"if a session reads this file at boot
+and the build has drifted past it, the fix is to update the line."* A
+repo-wide reconciliation on 2026-09-01 found the drift and this section is
+the update — a dated layer, everything above kept as written.
+
+- **The blind filter (2026-09-01).** The blind toggle's promise held in the
+  document and nowhere else — the margin cards drew the text, the weave
+  matrix put it in headers, the concordance indexed its words. Found by
+  playing, fixed at one gate: `spoken()` — text-bearing surfaces read
+  spoken sentences only; volume-only surfaces (tarp, garden, counters)
+  read all.
+- **Near re-founded on time (2026-09-01).** §1's margin-graph description
+  of *near* ("landed close together in time") had drifted in code to
+  canvas distance on a randomly-seeded layout. Near is now temporal:
+  the writing splits into PASSAGES at real pauses (idle > 90s, swept) and
+  near joins same-breath sentences within two steps. Measured at 128
+  sentences: 1,326 pairs of layout artifact became 126 same-breath
+  neighbors, and hinge — silent at every scale in a burst — came back
+  alive (0 → 12) once near stopped saturating the graph.
+- **The weave ground windows to the passage.** The full matrix was
+  measured unusable past ~40 sentences (16,384 cells at 128); it now
+  shows the breath around the focused sentence, with the count stated.
+- **THE SCORE (2026-09-01), an eleventh ground.** The session as one
+  horizontal trace — stroke height is word count, real pauses render as
+  literal blank width, flags mark declarations, three structural sieves
+  (long · openings · declared) light strokes for finding by structural
+  memory. Named in the musical sense; `refusal_check` refused the first
+  commit (it cannot tell music from points), the ground shipped once as
+  "trace", and the keeper made the exception in his own words — the
+  narrow lift and the whole story live in `tools/refusal_check.js`.
+- **Scale constants graduate with volume.** PACKING_SLACK and SETTLE were
+  swept at 128 sentences (1,871 words — the keeper's stated functional
+  band) until card separation was clean; small pages keep the tight feel.
+
 ## 9 · Files, for orientation
 
 ```
