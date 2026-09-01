@@ -124,6 +124,27 @@ const SEATS = {
   'same_quartet':                            { crystal: 'c8', why: 'assembly is sequential; structure is simultaneous — the four-fold’s contradiction resolved' },
   'precesse':                                { crystal: 'c8', why: 'the result arrives orthogonal to intended action — the 90-degree return' },
   'stigmergic_deposit':                      { crystal: 'c5', why: 'the deposit field routes without a director — the depositor becomes optional, the field does not' },
+  // Batch 2 of the reading-pass queue (Kevin: "run batch 2") — the
+  // integrity artifacts: the mark-record constitution, the shadow
+  // registry, the open ledger set, the boundary lint, the breach
+  // register, the fail-closed rhythm, and the coherence codex (its
+  // crystal-7 breach resolved before crossing).
+  'mark_record_constitution':                { crystal: 'c2', why: 'the mark-record’s five fields, and the standing prohibition: no patterns-across-marks, ever' },
+  'mark_record_template':                    { crystal: 'c5', why: '632 bytes a stranger can adopt in thirty seconds' },
+  'negative_workspace':                      { crystal: 'c6', why: 'a negative that can be named and not stopped is the next instrument’s specification' },
+  'open_ledger':                             { crystal: 'c3', why: 'debt is not prohibited — it is unrepresentable; the frame holds in any hands' },
+  'open_ledger_schema':                      { crystal: 'c3', why: 'the rule enforced by the absence of the field that would represent its violation' },
+  'open_ledger_demo':                        { crystal: 'c5', why: 'a stranger tries the five moves and hits “there is no field for this”' },
+  'no_blur':                                 { crystal: 'c5', why: 'my gift and words, and their gifts and words, always held separately' },
+  'blur_check':                              { crystal: 'c6', why: 'the lint that names its own limit — two rules need a human read' },
+  'violation_register':                      { crystal: 'c2', why: 'a fabricated record is a falsifier violation, not a recovery path' },
+  'watchers':                                { crystal: 'c6', why: 'unresolved tension held visible — no organ authorized to close it' },
+  'foundation_audit':                        { crystal: 'c1', why: 'the build verified against the recognition law, gaps named, corrections made in-document' },
+  'rhythm_doctrine':                         { crystal: 'c4', why: 'silence defaults to stop — the system waits, it never nags' },
+  'rhythm_config':                           { crystal: 'c6', why: 'null means off, every judgment field carries its owner — absence is a visible held state' },
+  'codex_invariant':                         { crystal: 'c8', why: 'the governance geometry locked on one page, its falsifier welded in' },
+  'codex_agent_invariant':                   { crystal: 'c6', why: 'no causal path from describing a loop better to a loop closing — investigate, don’t claim' },
+  'codex_readme':                            { crystal: 'c5', why: 'a report of failure is worth more than a report of success — the gift carries no return address' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,

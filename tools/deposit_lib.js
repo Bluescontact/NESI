@@ -87,7 +87,7 @@ const PIPELINE_MECHANISM = [
 // into the commons is pattern, never instance... There is no one in it."
 // The transform is deterministic and declared (index glossary + README),
 // never silent.
-const DENAME_EXTS = new Set(['.md', '.html', '.htm', '.js', '.mjs', '.py', '.json', '.jsonl', '.txt', '.css', '.conf']);
+const DENAME_EXTS = new Set(['.md', '.html', '.htm', '.js', '.mjs', '.py', '.json', '.jsonl', '.txt', '.css', '.conf', '.sql', '.ts', '.tsx', '.yml', '.yaml', '.svg']);
 function denamePublicText(text) {
   let t = text;
   // Specific forms first, so the general pass can't mangle them.
