@@ -19,7 +19,7 @@ const path = require('path');
 const {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
-  PIPELINE_MECHANISM, isPublicDebris,
+  PIPELINE_MECHANISM, isPublicDebris, DENAME_EXTS, denamePublicText,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
 const { SPINE_DOC } = require('./spine');
@@ -244,9 +244,16 @@ function main() {
   // the 6 deserves it's own development pass... so those stay on this side
   // of the pipeline for now." A naming/identity policy, not a usage
   // judgment — real invocation counts shown for context, not as cause.
-  for (const [name, info] of Object.entries(agents)) {
+  // Agent NAMES are individuals' names and do not cross into the public
+  // copy (Kevin's marks 2026-08-31: the agents ruling + "lets remove
+  // kevin from the work"); the count and the reason cross, the names stay
+  // in the source corpus.
+  let agentIdx = 0;
+  for (const [, info] of Object.entries(agents)) {
+    agentIdx++;
     heldBack.agents.push({
-      name, reason: "v0.1 — named after an individual; awaiting its own development pass before deposit",
+      name: `agent ${agentIdx} of ${Object.keys(agents).length}`,
+      reason: "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
       realInvocations: { direct: info.direct, adopted: info.adopted },
     });
   }
@@ -264,7 +271,22 @@ function main() {
     }, null, 2)
   );
 
+  // The de-naming post-pass: every text file in the public output, after
+  // all copies and manifests are written. See deposit_lib.js's
+  // denamePublicText note — copies transformed, sources verbatim.
+  let denamed = 0;
+  for (const rel of walk(OUT)) {
+    const norm = rel.replace(/\\/g, '/');
+    if (norm.startsWith('.git/') || norm.startsWith('_archive/')) continue;
+    if (!DENAME_EXTS.has(path.extname(rel).toLowerCase())) continue;
+    const full = path.join(OUT, rel);
+    const before = fs.readFileSync(full, 'utf8');
+    const after = denamePublicText(before);
+    if (after !== before) { fs.writeFileSync(full, after); denamed++; }
+  }
+
   console.log(`game:        ${manifest.game.length} file(s)`);
+  console.log(`de-named:    ${denamed} file(s) transformed at the crossing (the keeper)`);
   console.log(`patterns:    ${manifest.patterns.length} file(s) (${marks.length} marks read) — ${JSON.stringify(typologyCounts)}`);
   console.log(`  held back: ${heldBack.skills.length} skill(s) (0 real invocations), ${heldBack.agents.length} agent(s) (v0.1, pending development)`);
   console.log(`tributaries: ${tributaries.length} entries`);

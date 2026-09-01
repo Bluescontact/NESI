@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CRYSTALS, SEATS, UNIT_SEATS, SPINE_MARK_ID } = require('./spine');
+const { denamePublicText } = require('./deposit_lib');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit_public');
 
@@ -216,7 +217,7 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
   <p>Two things. <b>The game itself</b> (<code>game/</code>) — open <code>game/index.html</code> and it runs, nothing else required. And <b>the material that shaped it</b> (<code>patterns/</code>) — small pieces of design work, writing, and tooling that were reviewed and kept, each one traceable back to where the idea for it actually came from.</p>
   <p>A few sections below use terms specific to how this project tracks its own work. Each is explained inline where it's used, and defined again here:</p>
   <ul class="glossary">
-    <li><b>Kevin / "Kevin's mark"</b> — Kevin Mears, the author of this work. His name recurs throughout because it is part of the mechanism, not a signature: nothing in this project becomes binding except by his explicitly recorded decision (a "mark"), and the records below quote those decisions verbatim rather than paraphrasing them. Where you see "Kevin's mark" or "Kevin's felt read," read it as "the one human judgment this system refuses to automate."</li>
+    <li><b>the keeper / "the keeper's mark"</b> — the one person this project belongs to. Nothing here becomes binding except by their explicitly recorded decision (a "mark"), and the records below quote those decisions verbatim. The keeper is deliberately unnamed in this public copy — the project's own commons rule is that what crosses outward is "pattern, never instance — there is no one in it" — and the de-naming is a declared, mechanical transform applied when files cross into this repository; the source corpus keeps the full named record. Read "the keeper's mark" or "the keeper's felt read" as: the one human judgment this system refuses to automate.</li>
     <li><b>spine / nucleation point / crystal</b> — one of eight principles this project found recurring through every era of its own work, used as the top-level organization of this deposit. The full argument, with evidence for each, is one document at the top of this repository.</li>
     <li><b>admitted / "the gate"</b> — this project keeps a running, timestamped log of every piece of work it decides to keep. "Admitted" means it's in that log — a deliberate decision, recorded, not just a file that happens to exist.</li>
     <li><b>gift</b> — one accepted piece of work (a feature, a fix, an idea) — called that because nothing here is assigned or owed; it's offered and either kept or not.</li>
@@ -270,7 +271,10 @@ ${debrisHtml}
 </html>
 `;
 
-  fs.writeFileSync(path.join(OUT, 'index.html'), html);
+  // The de-naming transform (Kevin's mark 2026-08-31) applies to this
+  // generated page too — crystal/seat strings come from spine.js, whose
+  // source text carries the name; the public rendering does not.
+  fs.writeFileSync(path.join(OUT, 'index.html'), denamePublicText(html));
   fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
   console.log(`index.html written — spine: ${CRYSTALS.length} crystals, ${seatedIds.size} seated, ${unseated.length} unseated · ${tributaries.length} tributaries, ${order.filter((c) => byCategory[c]?.length).length} typology categories, ${skillEntries.length} skill(s), ${agentEntries.length} agent(s)`);
 }

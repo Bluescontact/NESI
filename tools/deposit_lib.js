@@ -77,6 +77,35 @@ const PIPELINE_MECHANISM = [
   'tools/build_deposit_index.js',
 ];
 
+// De-naming at the crossing (Kevin's mark, 2026-08-31: "lets remove kevin
+// from the work"). The PUBLIC deposit replaces the author's name with the
+// role-word "the keeper" in every copied text file — the same mechanism
+// class as the consent redaction: the transform runs on COPIES only, the
+// source corpus's records stay verbatim, the append-only law is intact.
+// Grounded in the corpus's own commons rule
+// (frameworks/composting_a_situation_into_the_commons.md): "What crosses
+// into the commons is pattern, never instance... There is no one in it."
+// The transform is deterministic and declared (index glossary + README),
+// never silent.
+const DENAME_EXTS = new Set(['.md', '.html', '.htm', '.js', '.mjs', '.py', '.json', '.jsonl', '.txt', '.css', '.conf']);
+function denamePublicText(text) {
+  let t = text;
+  // Specific forms first, so the general pass can't mangle them.
+  t = t.replace(/kevin[-_]?lens/gi, 'a held-back lens agent');
+  t = t.replace(/kevins-water/gi, 'keepers-water'); // filename form, coupled to game2d's data file
+  t = t.replace(/Kevin Mears/g, 'the keeper');
+  t = t.replace(/KEVIN'S/g, "THE KEEPER'S").replace(/KEVIN/g, 'THE KEEPER');
+  t = t.replace(/Kevin's/g, "the keeper's").replace(/kevin's/g, "the keeper's");
+  t = t.replace(/Kevin/g, 'the keeper').replace(/\bkevin\b/g, 'the keeper');
+  t = t.replace(/\bkevins\b/gi, "the keeper's");
+  // Catch-all for embedded residue (identifiers, regex literals in this
+  // file's own shipped copy): any remaining substring, any case.
+  t = t.replace(/kevin/gi, 'keeper');
+  // Re-capitalize at sentence and line starts.
+  t = t.replace(/(^|[.!?]\s+|\n\s*)the keeper/g, (m, p) => p + 'The keeper');
+  return t;
+}
+
 // Creation debris that must not ship in the PUBLIC deposit (the private
 // deposit keeps everything): retired instruments, backup layers, and
 // dot-prefixed working files. The source corpus keeps all of it whole —
@@ -259,5 +288,5 @@ module.exports = {
   ROOT, GAME2D, MIND, SKILLS_DIR, AGENTS_DIR,
   readLines, copyFile, rmrf, walk, closedMarkIds, copyFileRedactingClosed,
   traceGameFiles, traceAdmitted, classifyFile, traceRealInvocations,
-  PIPELINE_MECHANISM, isPublicDebris,
+  PIPELINE_MECHANISM, isPublicDebris, DENAME_EXTS, denamePublicText,
 };
