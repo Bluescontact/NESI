@@ -445,7 +445,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
     <div class="sub">Write below. Each finished sentence joins today's page exactly as you wrote it — full length, plain text, in your own voice. The shape of it lives in the margin, not in the writing itself.</div>
     <textarea id="pad" placeholder="write here — a sentence joins the page the moment it ends" spellcheck="false"></textarea>
     <label class="blindtoggle"><input type="checkbox" id="blindToggle"> blind — write here, and it leaves. kept in the store, never shown back, from the moment this is checked.</label>
-    <div class="padhint" id="hint">0 sentences · placed by idle time and length alone — your words stay yours</div>
+    <div class="padhint" id="hint">placed by idle time and length alone — your words stay yours</div>
     <div id="days"></div>
   </div>
   <div id="caseWrap" aria-hidden="true"></div>
@@ -754,10 +754,13 @@ function persist() {
   } catch(e) { lastPersistFailed = true; }
 }
 function hintText() {
-  const n = nodes.length + " sentence" + (nodes.length===1?"":"s");
+  // Mirror audit 2026-09-01 (audit/MIRROR_AUDIT_2026-09-01.md, entry 1):
+  // the sentence count was a tally on a surface whose own displayed law says no
+  // tally reaches the player. The count is removed; the persist-failure warning
+  // — the line's real work — stays.
   return lastPersistFailed
-    ? n + " · the last save didn't land — what you see here may not be on disk"
-    : n + " · placed by idle time and length alone — your words stay yours";
+    ? "the last save didn't land — what you see here may not be on disk"
+    : "placed by idle time and length alone — your words stay yours";
 }
 function restore() {
   try {

@@ -159,7 +159,11 @@ footer{color:var(--muted);font-size:12px;margin-top:44px}
 <h2 id="strands">The strands — newest first</h2>
 <p class="note">Every strand: two ends, the relation in the hand's own words, the date, and the receipt.</p>
 <div class="card">${strands.map((e) => `<div class="strand"><span class="m">${esc(e.a)}</span> <span class="rel">—[ ${esc(e.rel)} ]—</span> <span class="m">${esc(e.b)}</span> <span class="when">${esc((e.ts || '').slice(0, 10))}${e.source === 'the hand' ? ' · the hand’s own declaration' : ''}</span>${e.declared_in ? `<span class="cite">${esc(e.declared_in)}</span>` : ''}</div>`).join('')}</div>
-<p class="note">Declared crystal degrees today: ${CRYSTALS.map((c) => `${c.id}:${cdeg[c.id] || 0}`).join(' · ')}. The held twelve-around-the-VE hypothesis needs every crystal at exactly four, arrived at without aiming — this line is data, never a target.</p>
+<!-- Mirror audit 2026-09-01 (audit/MIRROR_AUDIT_2026-09-01.md, entry 15):
+     the per-crystal degree tally displayed here had a named winning configuration
+     (every crystal at exactly four) restrained only by a disclaimer — a broken frame
+     by the repo's own open-ledger law. The display is removed; the degrees remain
+     derivable from gate/DECLARATIONS.jsonl by a deliberate query. -->
 
 <h2 id="sets">Declared sets</h2>
 <p class="note">Bodies admitted as one thing — membership is the set's own naming, not a grouping guess.</p>
