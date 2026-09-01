@@ -206,6 +206,7 @@ const SEATS = {
   'the_catchment_naming':                     { crystal: 'c1', why: 'the guard as incapacity, not restraint — the system was never upstream, by geography' },
   'headwaters':                               { crystal: 'c10', why: 'the receiving ground — what lands here is held, not read; nothing crosses on its own' },
   'the_spring':                               { crystal: 'c1', why: 'volume facts only, identical for grief and grocery lists — it receives, it does not go looking' },
+  'headwaters.first_crossing':                { crystal: 'c5', why: 'the upstream path walked once for real — dropped, surfaced, crossed' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
