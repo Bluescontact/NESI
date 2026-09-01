@@ -146,7 +146,7 @@ footer{color:var(--muted);font-size:12px;margin-top:44px}
 <div class="wrap">
 <div class="kicker">The weave · a projection of gate/DECLARATIONS.jsonl — re-derived every run, never a second truth</div>
 <h1>The weave</h1>
-<p class="lede">The connective tissue over this deposit. A strand exists here only because a hand declared it — in an append-only ledger this page merely renders (<a href="patterns/game-gate/gate/DECLARATIONS.jsonl">the ledger itself ships in this repository</a>). Every strand carries its own name, written as free text by the hand that made it — the machine offers no vocabulary — and the receipt of where it was declared. Nothing on this page computes similarity. <a href="index.html">Back to the index</a> · <a href="UPSTREAM_2026-08-31_nucleation_points.md">the spine</a>.</p>
+<p class="lede">The connective tissue over this deposit. A strand exists here only because a hand declared it — in an append-only ledger this page merely renders (<a href="workshop/game-gate/gate/DECLARATIONS.jsonl">the ledger itself ships in this repository</a>). Every strand carries its own name, written as free text by the hand that made it — the machine offers no vocabulary — and the receipt of where it was declared. Nothing on this page computes similarity. <a href="index.html">Back to the index</a> · <a href="UPSTREAM_2026-08-31_nucleation_points.md">the spine</a>.</p>
 
 <nav class="jump"><a href="#loom">The loom</a><a href="#strands">The strands</a><a href="#sets">Declared sets</a><a href="#organs">Organ threads</a><a href="#lineages">Lineages</a></nav>
 

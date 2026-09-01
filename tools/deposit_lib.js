@@ -92,9 +92,16 @@ const DENAME_EXTS = new Set(['.md', '.html', '.htm', '.js', '.mjs', '.py', '.jso
 function denamePublicText(text) {
   let t = text;
   // Specific forms first, so the general pass can't mangle them.
+  // The essay-site domain carries the full name — a half-transformed URL
+  // would leave the surname standing (caught 2026-09-01 in a shipped URL).
+  // The whole URL is withheld with the name.
+  t = t.replace(/https?:\/\/(?:www\.)?kevinmears\.substack\.com[^\s)\]`'"<>]*/gi,
+    "(the keeper's published essay — URL withheld with the name)");
+  t = t.replace(/kevinmears/gi, 'the keeper');
   t = t.replace(/kevin[-_]?lens/gi, 'a held-back lens agent');
   t = t.replace(/kevins-water/gi, 'keepers-water'); // filename form, coupled to game2d's data file
   t = t.replace(/Kevin Mears/g, 'the keeper');
+  t = t.replace(/mears/gi, 'the keeper'); // the surname, any embedding — boundary-free so the shipped copy of this very line cleans itself
   t = t.replace(/KEVIN'S/g, "THE KEEPER'S").replace(/KEVIN/g, 'THE KEEPER');
   t = t.replace(/Kevin's/g, "the keeper's").replace(/kevin's/g, "the keeper's");
   t = t.replace(/Kevin/g, 'the keeper').replace(/\bkevin\b/g, 'the keeper');
@@ -235,7 +242,7 @@ function classifyFile(absPath, extraBlob = '') {
 // tools/agent_invocation_check.js (built 2026-08-31 on Kevin's own catch:
 // the mark-log signal undercounted full-development by 38x and overcounted
 // record-audit by 3-to-0). This is what move 2 wires into the deposit: a
-// skill or agent only gets copied into patterns/ if it was actually RUN.
+// skill or agent only gets copied into workshop/ if it was actually RUN.
 function traceRealInvocations() {
   const skillFolders = fs.existsSync(SKILLS_DIR)
     ? fs.readdirSync(SKILLS_DIR, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name)

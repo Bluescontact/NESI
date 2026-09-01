@@ -23,7 +23,7 @@ const {
   crystallizedCounterpart,
 } = require('./deposit_lib');
 const { classify } = require('./typology_classify');
-const { SPINE_DOC } = require('./spine');
+const { SPINE_DOC, housePathFor } = require('./spine');
 
 const OUT = path.join(path.resolve(__dirname, '..'), 'nesi_deposit_public');
 const MECHANISM_DIRS = ['gate', 'tools', 'inbox'];
@@ -69,7 +69,9 @@ function main() {
   // on the parent repo instead, because there was no nested repo there to
   // receive them.
   rmrf(path.join(OUT, 'game'));
-  rmrf(path.join(OUT, 'patterns'));
+  rmrf(path.join(OUT, 'patterns')); // pre-rework layout, cleared if present
+  rmrf(path.join(OUT, 'house'));
+  rmrf(path.join(OUT, 'workshop'));
   fs.rmSync(path.join(OUT, 'MANIFEST.json'), { force: true });
   fs.rmSync(path.join(OUT, 'TRIBUTARIES.json'), { force: true });
   fs.mkdirSync(OUT, { recursive: true });
@@ -116,7 +118,7 @@ function main() {
     const src = crys || src0;
     const destRoot = bucket === 'game'
       ? path.join(OUT, 'game', rel)
-      : path.join(OUT, 'patterns', 'game-gate', rel);
+      : path.join(OUT, 'workshop', 'game-gate', rel);
     copyFileRedactingClosed(rel, src, destRoot, closedIds);
     if (bucket === 'patterns') manifest.patterns.push({ path: `game2d/${rel}`, category: classifyFile(src) });
     else manifest[bucket].push(`game2d/${rel}`);
@@ -131,7 +133,7 @@ function main() {
     const crys = crystallizedCounterpart(src0);
     if (crys) sublimated.push('mind/' + rel.replace(/\\/g, '/'));
     const src = crys || src0;
-    copyFile(src, path.join(OUT, 'patterns', rel));
+    copyFile(src, path.join(OUT, 'workshop', rel));
     manifest.patterns.push({ path: `mind/${rel}`, category: classifyFile(src) });
   }
 
@@ -139,7 +141,7 @@ function main() {
   // admissions that point into .claude/skills/ can defer to the skills
   // shelf instead of writing a second copy (2026-08-31 audit: the
   // the-closing-check SKILL.md shipped twice — once via its mark under
-  // patterns/root/, once via promotion under patterns/skills/ — two
+  // workshop/, once via promotion under workshop/skills/ — two
   // copies of one file, the exact drift crystal 7 names).
   const { skills, agents, rootsFound } = traceRealInvocations();
   const promotedSkillFolders = new Set(
@@ -158,7 +160,7 @@ function main() {
     const norm = rel.replace(/\\/g, '/');
     // The spine (Kevin's mark 2026-08-31: "assemble the deposits onto
     // them. Thats the spine.") is the deposit's upstream layer — it lands
-    // at the top level, before game/ and patterns/, not filed under them.
+    // at the top level, before the three rooms, not filed inside them.
     if (norm === SPINE_DOC) {
       copyFile(src, path.join(OUT, path.basename(rel)));
       manifest.spine = path.basename(rel);
@@ -172,8 +174,9 @@ function main() {
       carriedBySkillsShelf.push(norm);
       continue;
     }
-    copyFile(src, path.join(OUT, 'patterns', 'root', rel));
-    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src) });
+    const houseDest = housePathFor(norm);
+    copyFile(src, houseDest ? path.join(OUT, houseDest) : path.join(OUT, 'workshop', rel));
+    manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src), ...(houseDest ? { room: 'house' } : {}) });
   }
 
   // The pipeline mechanism, shipped complete (see deposit_lib.js's
@@ -182,7 +185,7 @@ function main() {
   for (const rel of PIPELINE_MECHANISM) {
     const src = path.join(ROOT, rel);
     if (!fs.existsSync(src)) continue;
-    const dest = path.join(OUT, 'patterns', 'root', rel);
+    const dest = path.join(OUT, 'workshop', rel);
     if (fs.existsSync(dest)) continue; // already carried by its own mark
     copyFile(src, dest);
     manifest.patterns.push({ path: `root/${rel}`, category: classifyFile(src), via: 'pipeline-mechanism' });
@@ -210,7 +213,7 @@ function main() {
       entry.card = findGiftCard(m.id);
       entry.sourceRoots = LENS_ROOTS;
       entry.sourceNote = 'candidates surfaced by tools/library_lens.js scanning the sourceRoots below; '
-        + 'the full scan record is in patterns/game-gate/inbox/LENS_REPORT_2026-08-27.md and '
+        + 'the full scan record is in workshop/game-gate/inbox/LENS_REPORT_2026-08-27.md and '
         + 'K_LENS_REPORT_2026-08-28.md. Root trees themselves are not republished here.';
       const cardPath = entry.card ? path.join(GAME2D, entry.card) : null;
       entry.category = cardPath ? classifyFile(cardPath, m.made) : classify(m.made);
@@ -246,7 +249,7 @@ function main() {
   for (const [name, info] of Object.entries(skills)) {
     if (info.count < 1) { heldBack.skills.push(name); continue; }
     const src = path.join(SKILLS_DIR, info.folder);
-    const dest = path.join(OUT, 'patterns', 'skills', info.folder);
+    const dest = path.join(OUT, 'workshop', 'skills', info.folder);
     for (const rel of walk(src)) copyFile(path.join(src, rel), path.join(dest, rel));
     manifest.patterns.push({
       path: `.claude/skills/${info.folder}`, category: classifyFile(path.join(src, 'SKILL.md')),

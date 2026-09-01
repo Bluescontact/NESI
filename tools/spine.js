@@ -217,12 +217,41 @@ const SEATS = {
 // Same discipline as SEATS: each unit, one seat, one why, felt read wins.
 const UNIT_SEATS = [
   { unit: 'the game',              href: 'game/index.html',            crystal: 'c1', why: 'the writing surface itself — built so the machine can only surface and hold still' },
-  { unit: 'the gate mechanism',    href: 'patterns/game-gate/gate/',   crystal: 'c2', why: 'admit.mjs and the ledgers — the crossing machinery, carried whole and runnable' },
-  { unit: 'the instrument suite',  href: 'patterns/game-gate/tools/',  crystal: 'c6', why: 'check_all.js and the live checks — the build proves itself before it speaks' },
-  { unit: 'the inbox record',      href: 'patterns/game-gate/inbox/',  crystal: 'c5', why: 'the gift cards and scan reports — where each gift was surfaced before it crossed' },
-  { unit: 'LEARNED.md',            href: 'patterns/LEARNED.md',        crystal: 'c6', why: 'the laws, each carrying its own falsifier' },
-  { unit: 'the skills shelf',      href: 'patterns/skills/',           crystal: 'c6', why: 'shipped only on real-invocation evidence — a mention is not a run' },
-  { unit: 'the pipeline mechanism', href: 'patterns/root/tools/',      crystal: 'c5', why: 'the two organs that build this deposit, shipped complete and runnable — the labor of landing clean, as code' },
+  { unit: 'the gate mechanism',    href: 'workshop/game-gate/gate/',   crystal: 'c2', why: 'admit.mjs and the ledgers — the crossing machinery, carried whole and runnable' },
+  { unit: 'the instrument suite',  href: 'workshop/game-gate/tools/',  crystal: 'c6', why: 'check_all.js and the live checks — the build proves itself before it speaks' },
+  { unit: 'the inbox record',      href: 'workshop/game-gate/inbox/',  crystal: 'c5', why: 'the gift cards and scan reports — where each gift was surfaced before it crossed' },
+  { unit: 'LEARNED.md',            href: 'workshop/LEARNED.md',        crystal: 'c6', why: 'the laws, each carrying its own falsifier' },
+  { unit: 'the skills shelf',      href: 'workshop/skills/',           crystal: 'c6', why: 'shipped only on real-invocation evidence — a mention is not a run' },
+  { unit: 'the pipeline mechanism', href: 'workshop/tools/',      crystal: 'c5', why: 'the two organs that build this deposit, shipped complete and runnable — the labor of landing clean, as code' },
 ];
 
-module.exports = { SPINE_DOC, SPINE_MARK_ID, CRYSTALS, SEATS, UNIT_SEATS };
+// THE THREE ROOMS (the keeper's mark, 2026-09-01: "it should be a house
+// and a workshop, and a game"). The HOUSE holds the usable things — what
+// a visitor picks up and something happens. Everything not mapped here is
+// WORKSHOP: the doctrine, the patterns, the making apparatus and its
+// records, labeled as the making. The GAME is game/, the first door.
+// Source-prefix map — one source, applied by the pipeline and every
+// path-mapper alike.
+const HOUSE_PREFIXES = [
+  ['open_ledger/',                'house/open-ledger/'],
+  ['genesis_seed_share/',         'house/genesis-seed/'],
+  ['kit/',                        'house/kit/'],
+  ['_INTAKE/THE_FLOOR_KIT/',      'house/floor-kit/'],
+  ['_INTAKE/THE_SIX_RETURNS/',    'house/six-returns/'],
+  ['substack/crystallized/',      'house/essays/'],
+  ['substack/witnessing_without_merging.md', 'house/essays/witnessing_without_merging.md'],
+  ['substack/comprehension_is_not_recognition.md', 'house/essays/comprehension_is_not_recognition.md'],
+  ['public_site/library.html',    'house/library.html'],
+  ['marks/_TEMPLATE.md',          'house/starters/mark-template.md'],
+];
+function housePathFor(rel) {
+  const norm = rel.replace(/\\/g, '/');
+  for (const [pre, dest] of HOUSE_PREFIXES) {
+    if (norm === pre) return dest;
+    if (pre.endsWith('/') && norm.startsWith(pre)) return dest + norm.slice(pre.length);
+    if (norm === pre.replace(/\/$/, '')) return dest;
+  }
+  return null;
+}
+
+module.exports = { SPINE_DOC, SPINE_MARK_ID, CRYSTALS, SEATS, UNIT_SEATS, HOUSE_PREFIXES, housePathFor };
