@@ -42,6 +42,11 @@ label{color:var(--dim);font-size:13px;letter-spacing:.08em;text-transform:upperc
 .act{border-top:1px solid var(--line);padding:14px 0}
 .act h3{font-size:13px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
 .kept{color:var(--paper);font-style:italic;border-left:2px solid var(--line);padding:4px 12px;margin:6px 0}
+.entry{border-top:1px solid var(--line);padding:9px 0;font-size:14.5px}
+.entry:first-of-type{border-top:0}
+.entry .id{color:var(--gold);font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.entry .made{display:block;color:var(--paper)}
+.entry .when{display:block;color:var(--dim);font-size:13px;margin-top:2px}
 .laws{margin-top:30px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px;line-height:1.8}
 .beat{color:var(--dim);font-style:italic;font-size:13.5px}
 [hidden]{display:none!important}
@@ -75,6 +80,28 @@ judged.</p>
   <label>what I refuse</label><input type="text" id="posRefuse">
   <p class="note">What you refuse is as structurally important as what you
   carry. The gap between them is your ground. Blank is complete.</p>
+</div>
+
+<div class="panel" id="villagePanel" hidden>
+  <h2>The village and the routes</h2>
+  <p class="note">The circuit at person scale, carried here as play. You record
+  your view of what each person carries — they hold their own node, and this
+  page cannot hold it for them. A route is bilateral: you can open your end;
+  only their own word opens theirs, and this page will never open it for
+  them.</p>
+  <div id="village"></div>
+  <label>a person</label><input type="text" id="vName" placeholder="their name, as you call them">
+  <label>what you heard them carry</label><input type="text" id="vCarries">
+  <label>what you heard them refuse</label><input type="text" id="vRefuses">
+  <button id="addPerson">add them to your village</button>
+  <div id="routes"></div>
+  <div class="act" id="brakeAct">
+    <h3>the brake</h3>
+    <p class="note">A ceiling set from the body, not from paper. When more is
+    flowing than you can hold, say so — every route rests until your hand
+    releases it. No one else can trip it, and no one else can release it.</p>
+    <button id="brakeBtn"></button>
+  </div>
 </div>
 
 <div class="panel" id="edgesPanel" hidden>
@@ -129,6 +156,9 @@ var st = load();
 st.position = st.position || {carry:"",need:"",refuse:""};
 st.edges = st.edges || {};   // key -> {kept:[..], aim:null|'down'|'out', days:[dates], done:false}
 st.walked = st.walked || []; // edge keys walked (position moved along them)
+st.village = st.village || []; // [{name,carries,refuses}]
+st.routes = st.routes || [];   // [{person,what,word,state:'one-end'|'flowing'|'resting',felt}]
+st.brake = st.brake || false;
 function edgeState(key){ if(!st.edges[key]) st.edges[key]={kept:[],aim:null,days:[],done:false}; return st.edges[key]; }
 function today(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 
@@ -310,11 +340,72 @@ function renderGift(){
   input.addEventListener("input",function(){ st.position[f.toLowerCase()]=input.value; save(); });
 });
 
+/* ── the village and the routes: the circuit, carried as play ─────────── */
+function renderVillage(){
+  var panel=document.getElementById("villagePanel");
+  if(!st.seat){ panel.hidden=true; return; }
+  panel.hidden=false;
+  var v=document.getElementById("village");
+  v.innerHTML=st.village.map(function(p,i){
+    return '<div class="entry"><span class="id">'+escp(p.name)+'</span>'+
+      '<span class="made">'+(p.carries?'carries, as you heard it: '+escp(p.carries):'')+
+      (p.refuses?' · refuses, as you heard it: '+escp(p.refuses):'')+'</span>'+
+      '<span class="when"><a href="#" data-route="'+i+'">open your end of a route to them</a></span></div>';
+  }).join('');
+  v.querySelectorAll('[data-route]').forEach(function(a){
+    a.addEventListener('click',function(ev){ev.preventDefault();
+      var p=st.village[+a.getAttribute('data-route')];
+      var what=prompt('What flows on this route, in your words? (What you carry meeting what you heard they need — or the other way around.)');
+      if(what===null) return;
+      st.routes.push({person:p.name,what:(what||'').trim(),word:null,state:'one-end',felt:null});
+      save(); renderVillage();
+    });
+  });
+  var r=document.getElementById("routes");
+  r.innerHTML=st.routes.map(function(rt,i){
+    var stateWord = st.brake ? 'resting — the brake is on'
+      : rt.state==='one-end' ? 'one end open — the other end is theirs to open, and this page cannot open it for them'
+      : rt.state==='flowing' ? 'flowing' : 'resting';
+    var h='<div class="entry"><span class="id">you — '+escp(rt.person)+'</span>'+
+      '<span class="made">'+escp(rt.what||'(unnamed flow)')+'</span>'+
+      '<span class="when">'+stateWord+(rt.word?' · their word: “'+escp(rt.word)+'”':'')+'</span>';
+    if(!st.brake){
+      if(rt.state==='one-end') h+='<span class="when"><a href="#" data-word="'+i+'">record their word — the consent you actually received, in their words</a></span>';
+      if(rt.state==='flowing') h+='<span class="when"><a href="#" data-rest="'+i+'">let it rest</a> · landed as <a href="#" data-felt-g="'+i+'">gift</a> or <a href="#" data-felt-e="'+i+'">extraction</a> — yours to say'+(rt.felt?' · you said: '+rt.felt:'')+'</span>';
+      if(rt.state==='resting') h+='<span class="when"><a href="#" data-flow="'+i+'">re-open it</a> — a rested route re-opens anytime; no “complete,” no “paid”</span>';
+    }
+    if(rt.felt==='extraction') h+='<span class="when">that read belongs in the room: bring it to the gathering — say to those involved, “I want to bring something to the gathering.” What the arena can and cannot decide: <a href="../house/membrane/01_THE_DISPUTE_ARENA.html">the dispute arena</a>.</span>';
+    return h+'</div>';
+  }).join('');
+  r.querySelectorAll('a[href="#"]').forEach(function(a){
+    a.addEventListener('click',function(ev){ev.preventDefault();
+      var g=function(n){return a.getAttribute(n);};
+      if(g('data-word')!==null){ var w=prompt('Their word, as they gave it — this page records only consent you actually received:');
+        if(w&&w.trim()){ st.routes[+g('data-word')].word=w.trim(); st.routes[+g('data-word')].state='flowing'; } }
+      else if(g('data-rest')!==null){ st.routes[+g('data-rest')].state='resting'; }
+      else if(g('data-flow')!==null){ st.routes[+g('data-flow')].state='flowing'; }
+      else if(g('data-felt-g')!==null){ st.routes[+g('data-felt-g')].felt='gift'; }
+      else if(g('data-felt-e')!==null){ st.routes[+g('data-felt-e')].felt='extraction'; }
+      save(); renderVillage();
+    });
+  });
+  var b=document.getElementById("brakeBtn");
+  b.textContent = st.brake ? 'release the brake — my hand, my say' : 'more is flowing than I can hold';
+  b.onclick=function(){ st.brake=!st.brake; save(); renderVillage(); };
+}
+document.getElementById("addPerson").addEventListener("click",function(){
+  var n=document.getElementById("vName").value.trim();
+  if(!n) return;
+  st.village.push({name:n,carries:document.getElementById("vCarries").value.trim(),refuses:document.getElementById("vRefuses").value.trim()});
+  document.getElementById("vName").value="";document.getElementById("vCarries").value="";document.getElementById("vRefuses").value="";
+  save(); renderVillage();
+});
+
 /* ── set it down ──────────────────────────────────────────────────────── */
 document.getElementById("setDown").addEventListener("click",function(){
   if(!confirm("Set the walk down? Quitting loses nothing that mattered — but this clears this browser's record of it, and only your browser holds it.")) return;
   try{ localStorage.removeItem(KEY); }catch(e){}
-  st={position:{carry:"",need:"",refuse:""},edges:{},walked:[]};
+  st={position:{carry:"",need:"",refuse:""},edges:{},walked:[],village:[],routes:[],brake:false};
   render();
 });
 
@@ -334,6 +425,7 @@ function render(){
     levelPanel.hidden=true;
   }
   renderEdges();
+  renderVillage();
   renderGift();
 }
 render();

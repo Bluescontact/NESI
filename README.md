@@ -28,7 +28,7 @@ home, nothing keeps score of you.
 and the **six returns** ([`house/six-returns/`](house/six-returns/)),
 which are deliberately personal. The ideas load-bearing under all of it
 are collected in [**the spine**](UPSTREAM_2026-08-31_nucleation_points.md):
-eleven principles this work kept arriving at, each with its evidence and
+twelve principles this work kept arriving at, each with its evidence and
 the test that would show it wrong.
 
 **If you want the strange thing first** — there is a page here that
