@@ -189,6 +189,7 @@ const SEATS = {
   'hunger_under_naming':                     { crystal: 'c6', why: 'an outside contribution absorbed at mechanism level — and the question whether precision is a fix, or the same hunger better dressed' },
   'match_noun_to_harm':                      { crystal: 'c6', why: 'event-shaped harm names the role-and-decision; structure-shaped harm names the mechanism — the wrong shape hands the structure a scapegoat' },
   'the_weave':                                { crystal: 'c3', why: 'connective tissue from declared kinship only — every edge cited, the undeclared listed honestly, never linked by guesswork' },
+  'declare_channel':                          { crystal: 'c2', why: 'a strand exists only as a hand’s appended ledger line — the relation named in free text the machine never suggests' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
