@@ -461,7 +461,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
       <button class="groundbtn" data-ground="filter">filter</button>
       <button class="groundbtn" data-ground="garden">garden</button>
       <button class="groundbtn" data-ground="tarp">tarp</button>
-      <button class="groundbtn" data-ground="trace">trace</button>
+      <button class="groundbtn" data-ground="score">score</button>
       <button class="groundbtn" data-ground="world">world</button>
     </div>
     <svg id="graph" role="img" aria-label="a settled graph of every sentence written, by timing — the whole corpus, not just today"></svg>
@@ -518,15 +518,15 @@ table.wordtable td.examples span:hover { color:var(--paper); }
       <canvas id="tarpCanvas" width="640" height="420"></canvas>
       <div class="note" style="margin-top:14px" id="tarpNote"></div>
     </div>
-    <div id="traceWrap" style="display:none">
-      <div id="traceSieves" style="margin:0 0 8px; font-size:11px; color:var(--dim)">
+    <div id="scoreWrap" style="display:none">
+      <div id="scoreSieves" style="margin:0 0 8px; font-size:11px; color:var(--dim)">
         show:
         <label style="margin-right:10px"><input type="checkbox" id="sieveLong"> long</label>
         <label style="margin-right:10px"><input type="checkbox" id="sieveOpen"> openings</label>
         <label><input type="checkbox" id="sieveDecl"> declared</label>
       </div>
-      <svg id="traceSvg" width="100%" height="150" preserveAspectRatio="xMinYMid meet"></svg>
-      <div class="note" style="margin-top:14px" id="traceNote"></div>
+      <svg id="scoreSvg" width="100%" height="150" preserveAspectRatio="xMinYMid meet"></svg>
+      <div class="note" style="margin-top:14px" id="scoreNote"></div>
     </div>
     <div id="worldWrap" style="display:none">
       <div class="worldCount" id="worldCount"></div>
@@ -2249,14 +2249,20 @@ function renderCategories(L){
   });
 }
 
-/* THE TRACE, 2026-09-01 — built by the mapping-relationships development
+/* THE SCORE, 2026-09-01 — built by the mapping-relationships development
    from two of the dream's five shapes at once (the movements and the
    session-waveform are one object seen twice): the session as a single
-   horizontal trace. First named "the score" for the musical sense —
-   refusal_check REFUSED the commit outright (the build forbids the
-   score/reward vocabulary and the lint cannot tell music from points;
-   loosening a refusal check is the keeper's word, not a session's), so
-   the name yielded. The check working exactly as built. Each sentence is a vertical stroke — height is its word count,
+   horizontal trace, in the MUSICAL sense of score — the morning as
+   notation. The name has a history worth keeping: refusal_check REFUSED
+   the first commit outright (the build forbids the points-and-reward
+   vocabulary and the lint cannot tell music from points), the ground
+   shipped one commit as "trace", and then the keeper made the exception
+   in his own words — "we can make an exception for musical scores...
+   Please try again" — which is the only thing that loosens a refusal
+   check. The exception is narrow (see refusal_check.js: the bare word,
+   this page only; scoring constructs stay forbidden everywhere). The
+   gate refused its own builder, the keeper ruled, the name came back:
+   the whole crossing discipline, demonstrated on one word. Each sentence is a vertical stroke — height is its word count,
    nothing on the surface is text — and a real pause renders as literal
    blank width, so the passage boundaries ARE the gaps: the morning's own
    silences, drawn. A small flag marks where a declaration was made. The
@@ -2270,9 +2276,9 @@ function renderCategories(L){
    spoken stroke to select it and jump the page there; a blind stroke
    draws (volume, the tarp's own law) and answers nothing.
    Laws held: volume never content; no machine vocabulary; no prompts. */
-function renderTrace(){
-  const svg = document.getElementById("traceSvg");
-  const note = document.getElementById("traceNote");
+function renderScore(){
+  const svg = document.getElementById("scoreSvg");
+  const note = document.getElementById("scoreNote");
   svg.innerHTML = "";
   const all = nodes; // strokes are volume — blind included, like the counter and the tarp
   if (!all.length){ note.textContent = "Nothing written yet — the trace begins with the first sentence."; return; }
@@ -2314,7 +2320,7 @@ function renderTrace(){
         selectSentence(n.id, layoutCache());
         const pEl = document.querySelector('p.sentence[data-id="'+n.id+'"]');
         if (pEl) pEl.scrollIntoView({behavior:"smooth", block:"center"});
-        renderTrace();
+        renderScore();
       });
     }
     svg.appendChild(r);
@@ -2332,7 +2338,7 @@ function renderTrace(){
   note.textContent = parts.join(" · ") + ".";
 }
 ["sieveLong","sieveOpen","sieveDecl"].forEach(id => {
-  document.addEventListener("change", e => { if (e.target && e.target.id === id && ground === "trace") renderTrace(); });
+  document.addEventListener("change", e => { if (e.target && e.target.id === id && ground === "score") renderScore(); });
 });
 
 function renderGraph(L) {
@@ -2344,18 +2350,18 @@ function renderGraph(L) {
   const gardenWrap = document.getElementById("gardenWrap");
   const worldWrap = document.getElementById("worldWrap");
   const tarpWrap = document.getElementById("tarpWrap");
-  const traceWrap = document.getElementById("traceWrap");
-  if (ground === "trace") {
+  const scoreWrap = document.getElementById("scoreWrap");
+  if (ground === "score") {
     graphSvg.style.display = "none";
     weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
     wordsWrap.style.display = "none"; categoriesWrap.style.display = "none";
     filterWrap.style.display = "none"; gardenWrap.style.display = "none";
     tarpWrap.style.display = "none"; worldWrap.style.display = "none";
-    traceWrap.style.display = "";
-    renderTrace();
+    scoreWrap.style.display = "";
+    renderScore();
     return;
   }
-  traceWrap.style.display = "none";
+  scoreWrap.style.display = "none";
   if (ground === "world") {
     graphSvg.style.display = "none";
     weaveWrap.style.display = "none"; knowledgeWrap.style.display = "none";
@@ -2575,9 +2581,9 @@ document.getElementById("grounds").addEventListener("click", e => {
   ground = btn.dataset.ground;
   document.querySelectorAll("#grounds .groundbtn").forEach(b => b.classList.toggle("active", b===btn));
   document.getElementById("groundHeading").textContent = GROUND_HEADINGS[ground] || "the shape, at a glance";
-  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="trace";
+  const wordShapes = ground==="weave"||ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="score";
   document.getElementById("graphNote").style.display = wordShapes ? "none" : "";
-  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="trace") ? "none" : "";
+  document.getElementById("docInteract").style.display = (ground==="knowledge"||ground==="words"||ground==="categories"||ground==="filter"||ground==="garden"||ground==="tarp"||ground==="world"||ground==="score") ? "none" : "";
   if (ground==="filter") _filterMotes = null; // fresh tray each time the ground is opened
   document.getElementById("graphNote").textContent = ground==="time"
     ? "same sentences, laid out left to right by arrival order, one lane per day. switch to the relationship view to declutter by dragging."

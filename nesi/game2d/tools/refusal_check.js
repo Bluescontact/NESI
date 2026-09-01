@@ -99,8 +99,25 @@ if (!targets.length) { console.error("[refusal_check] nothing to check"); proces
    three tokens at all (confirmed: 0 occurrences), so the exemptions have
    nothing left to exempt. Never as a blanket suppression, so a real breach
    cannot hide behind one — this file now trusts the wildcard presence check
-   below for ascent.html, same as every other page. */
-const EXEMPT = {};
+   below for ascent.html, same as every other page.
+
+   ■ THE MUSICAL EXCEPTION, 2026-09-01 — the keeper's own words, which are
+   the only thing that loosens this file: "we can make an exception for
+   musical scores... Please try again." Context: the mapping-relationships
+   development built the session-as-waveform ground and named it "the
+   score" in the musical sense; this check refused the commit outright
+   (correctly — it cannot tell music from points), the ground shipped one
+   commit as "trace", and the keeper made the exception in his own words.
+   The lift is NARROW: the bare word is allowed on index.html only, for
+   that ground; the scoring CONSTRUCTS added to law 2's list below
+   ("score:", "score =", "high score", "scoreboard", "your score") stay
+   forbidden everywhere, index.html included — so a real scoring breach
+   still cannot hide behind the music. */
+const EXEMPT = {
+  "index.html": {
+    "score": "the musical sense — the session-as-waveform ground; the keeper's exception, 2026-09-01, his words: 'we can make an exception for musical scores'",
+  },
+};
 
 let anyFail = 0;
 for (const target of targets) {
@@ -150,6 +167,11 @@ const groups = {
   ],
   "law 2 — no number reaches the player": [
     "score",
+    "score:",
+    "score =",
+    "high score",
+    "scoreboard",
+    "your score",
     "leaderboard",
     "achievement",
     "streak",
