@@ -1,0 +1,1042 @@
+{
+  "generatedBy": "tools/build_deposit_public.js",
+  "marksCount": 128,
+  "invocationRootsScanned": 1,
+  "typologyCounts": {
+    "seed": 96,
+    "nutrient": 83,
+    "lens": 19,
+    "organ": 1,
+    "pollen": 14
+  },
+  "heldBack": {
+    "skills": [
+      "conservation-harness",
+      "layout-options",
+      "record-audit",
+      "route-map"
+    ],
+    "agents": [
+      {
+        "name": "agent 1 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 42,
+          "adopted": 7
+        }
+      },
+      {
+        "name": "agent 2 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 33,
+          "adopted": 5
+        }
+      },
+      {
+        "name": "agent 3 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 48,
+          "adopted": 8
+        }
+      },
+      {
+        "name": "agent 4 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 18,
+          "adopted": 9
+        }
+      },
+      {
+        "name": "agent 5 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 10,
+          "adopted": 3
+        }
+      },
+      {
+        "name": "agent 6 of 6",
+        "reason": "v0.1 — named after an individual (name withheld from the public copy); awaiting its own development pass before deposit",
+        "realInvocations": {
+          "direct": 42,
+          "adopted": 6
+        }
+      }
+    ],
+    "documents": [
+      {
+        "name": "GENESIS_SEED_v4 (+ DEMONSTRATION.md)",
+        "reason": "the seed is distributed elsewhere; only its behavioral tests ship in house/genesis-seed/ — see HELD.md"
+      }
+    ]
+  },
+  "excludedDebris": [
+    "game2d/gate/LEDGER.jsonl.backup_pre-compaction_2026-08-24.jsonl",
+    "game2d/tools/.check_all.js.pre_gate",
+    "game2d/tools/retired/04-horizon.mjs",
+    "game2d/tools/retired/assertion_audit.py",
+    "game2d/tools/retired/bloom_check.js",
+    "game2d/tools/retired/boot_check.js",
+    "game2d/tools/retired/conserve_seating.js",
+    "game2d/tools/retired/conserve_stations.js",
+    "game2d/tools/retired/constraint_lint.js",
+    "game2d/tools/retired/cut_check.js",
+    "game2d/tools/retired/first_four.js",
+    "game2d/tools/retired/green_check.js",
+    "game2d/tools/retired/head_check.js",
+    "game2d/tools/retired/hold_check.js",
+    "game2d/tools/retired/kit_check.js",
+    "game2d/tools/retired/night_check.js",
+    "game2d/tools/retired/pattern_lint.js",
+    "game2d/tools/retired/reach_check.js",
+    "game2d/tools/retired/RETIRED.md",
+    "game2d/tools/retired/seats.js",
+    "game2d/tools/retired/still_check.js",
+    "game2d/tools/retired/wire_check.js"
+  ],
+  "carriedBySkillsShelf": [
+    ".claude/skills/the-closing-check/SKILL.md"
+  ],
+  "sublimated": [
+    "game2d/inbox/gift_2026-08-27_01_deep_visibility_culling.md",
+    "game2d/inbox/gift_2026-08-27_02_godot_filters_panel.md",
+    "game2d/inbox/gift_2026-08-27_03_garden_growth.md",
+    "game2d/inbox/gift_2026-08-27_04_blind_writing_mode.md",
+    "game2d/inbox/gift_2026-08-27_05_arrived_edit.md",
+    "game2d/inbox/gift_2026-08-27_06_verified_write.md",
+    "game2d/inbox/gift_2026-08-27_07_sorting_tarp.md",
+    "game2d/inbox/gift_2026-08-27_08_ratify_by_crossing.md",
+    "game2d/inbox/gift_2026-08-27_09_grain_siting.md",
+    "game2d/inbox/gift_2026-08-27_10_freshet_test.md",
+    "game2d/inbox/gift_2026-08-27_11_set_it_down.md",
+    "game2d/inbox/gift_2026-08-27_12_the_case.md",
+    "game2d/inbox/gift_2026-08-27_13_the_burn.md",
+    "game2d/inbox/gift_2026-08-27_14_rule_for_the_sheet.md",
+    "game2d/inbox/INDEX.md",
+    "game2d/inbox/PREFLIGHT_2026-08-27_gifts_8-14.md",
+    "mind/LEARNED.md",
+    "mind/SESSION_BRIDGE_2026-08-25_build_state_survey.html",
+    "mind/SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html",
+    "mind/SESSION_BRIDGE_2026-08-30_onedrive_relocation.html",
+    "root/public_site/library.html",
+    "root/open_ledger/circuit.html"
+  ],
+  "manifest": {
+    "game": [
+      "game2d/index.html",
+      "game2d/solid.js",
+      "game2d/KNOWLEDGE_the_page_and_the_tetra_2026-08-26.md"
+    ],
+    "patterns": [
+      {
+        "path": "game2d/day_one.html",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\admit.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\COMPOST.jsonl",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/gate\\DECLARATIONS.jsonl",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\declare.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\deposits.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\derive_routes.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\gate.conf",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/gate\\gate.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\01-motion.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\02-selfuse.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\03-blanks.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\05-subtract.mjs",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/gate\\instruments\\06-landed.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\07-magnitude.mjs",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/gate\\instruments\\08-return.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\instruments\\09-dispute.mjs",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/gate\\KEYS.txt",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/gate\\LEDGER.jsonl",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\lib.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\MARKS.jsonl",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\ORGANS.txt",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\project.mjs",
+        "category": "organ"
+      },
+      {
+        "path": "game2d/gate\\RETURNS.txt",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/gate\\route-server.mjs",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/gate\\STANDING.json",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/gate\\tests\\gate.test.mjs",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_01_deep_visibility_culling.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_02_godot_filters_panel.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_03_garden_growth.md",
+        "category": "pollen"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_04_blind_writing_mode.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_05_arrived_edit.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_06_verified_write.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_07_sorting_tarp.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_08_ratify_by_crossing.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_09_grain_siting.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_10_freshet_test.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_11_set_it_down.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_12_the_case.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_13_the_burn.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/inbox\\gift_2026-08-27_14_rule_for_the_sheet.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\INDEX.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/inbox\\K_LENS_REPORT_2026-08-28.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/inbox\\LENS_REPORT_2026-08-27.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/inbox\\LENS_REPORT_2026-08-31.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/inbox\\PREFLIGHT_2026-08-27_gifts_8-14.md",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\already_answered.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\answer_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\build_consolidated.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\check_all.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\cold_walk.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\cold_walk_prepare.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\conserve.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\crossing_audit.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\daily_walk.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\display_law_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\door_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\edge_input_table.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\field_data.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\framing_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\gather.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\git-hooks\\pre-commit",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\hand_check.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\junkyard.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\library_lens.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\load_check.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\map_build.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\marks_guard_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\organ_audit.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\organ_map.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\played.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\pour.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\predicate_filter.mjs",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\refusal_check.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\release_filter.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\route_map.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\runner.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\scope_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\solid_check.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\standing.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\standing_check.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\store_guard.js",
+        "category": "lens"
+      },
+      {
+        "path": "game2d/tools\\sweep_thresholds.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "game2d/tools\\traversal.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\traversal_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\world_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "game2d/tools\\zero_dependencies_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "mind/LEARNED.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "mind/SESSION_BRIDGE_2026-08-25_build_state_survey.html",
+        "category": "seed"
+      },
+      {
+        "path": "mind/SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html",
+        "category": "seed"
+      },
+      {
+        "path": "mind/SESSION_BRIDGE_2026-08-30_onedrive_relocation.html",
+        "category": "seed"
+      },
+      {
+        "path": "mind/CONTAINERS.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "mind/ARTIFACT_GRAMMAR.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/tools\\k_lens.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/tools\\stale_count_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\lens_usage_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\agent_usage_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\skill_invocation_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\agent_invocation_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\typology_classify.js",
+        "category": "pollen"
+      },
+      {
+        "path": "root/tools\\build_deposit_public.js",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/tools\\boot_hook_harness.py",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\marks.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/nesi\\conductor\\preflight.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/nesi\\bench\\geometric_bench\\renderer_seam.py",
+        "category": "seed"
+      },
+      {
+        "path": "root/nesi\\conductor\\continuity.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/nesi\\conductor\\held.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/nesi\\conductor\\check_idea.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/tools\\codex_index\\grounder.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/tools\\codex_index\\query.py",
+        "category": "seed"
+      },
+      {
+        "path": "root/osg_organ\\engine.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/held_refusal\\leaf_audit.py",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\field_render.py",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools\\converger_capture.py",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\mark_it_at_the_body_or_it_does_not_cross.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/patterns\\route_every_cost_to_a_named_landing.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\place_it_and_close_your_own_record.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\hand_over_what_runs_without_you.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\set_the_floor.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/patterns\\stake_the_read.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/patterns\\refuse_where_it_can_be_seen.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\discharge_the_no_at_load_time.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\force_the_definition.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/patterns\\move_the_load_not_the_effort.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/ROS_RI_site\\commons.html",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/ROS_RI_site\\new-screen.html",
+        "category": "pollen"
+      },
+      {
+        "path": "root/ROS_RI_site\\reverse.html",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/ROS_RI_site\\cross-fold.html",
+        "category": "seed"
+      },
+      {
+        "path": "root/ROS_RI_site\\index.html",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\witness_as_origin.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/patterns\\consented_ledger.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\falsifier_travels_with_pattern.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/frameworks\\type_system.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/frameworks\\composting_a_situation_into_the_commons.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/frameworks\\pre_clearance_class.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/frameworks\\register_audit.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\gate_as_f4.md",
+        "category": "lens"
+      },
+      {
+        "path": "root/patterns\\the_locating_move.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\the_daylight_test.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/patterns\\the_governor.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\tetrahedral_agent_protocol.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\setting_the_floor_container_minimum.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\same_quartet_assembly_standing.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/patterns\\precesse.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/patterns\\stigmergic_deposit_practice.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/marks\\README.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/marks\\_TEMPLATE.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/negative_workspace\\README.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/open_ledger\\THE_OPEN_LEDGER.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/open_ledger\\SCHEMA.sql",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/open_ledger\\demo.html",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/boundary\\NO_BLUR.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/boundary\\blur_check.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/membrane\\VIOLATION_REGISTER.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/membrane\\WATCHERS.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/audit\\foundation_report.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/rhythm\\README.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/rhythm\\config.json",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/coherence-codex\\INVARIANT.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/coherence-codex\\deploy\\agent-invariant.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/coherence-codex\\README.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/_INTAKE\\PRECESSION_2026-08-07.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/_INTAKE\\THE_MEMBRANE_FILTER_2026-08-07.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/_INTAKE\\2026-07-23_the_deletable_keystone.md",
+        "category": "pollen"
+      },
+      {
+        "path": "root/_INTAKE\\REDUCER_invariant_index_2026-07-24.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/_INTAKE\\UNLOCATED_LOAD_2026-08-02.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/_INTAKE\\membrane_routes\\ROUTING_MANIFEST.md",
+        "category": "nutrient"
+      },
+      {
+        "path": "root/_INTAKE\\THE_FLOOR_KIT\\00_THE_GATE.md",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_FLOOR_KIT\\01_THE_METHOD.md",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_FLOOR_KIT\\02_THE_PROOF.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_FLOOR_KIT\\03_THE_FLOOR.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\01_THE_VERTEX.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\02_THE_PATTERN.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\03_THE_METHOD.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\04_THE_SEAM.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\05_THE_TRIM_TAB.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/_INTAKE\\THE_SIX_RETURNS\\06_THE_FLOOR.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/substack\\witnessing_without_merging.md",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/substack\\comprehension_is_not_recognition.md",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/public_site\\library.html",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/genesis_seed_share\\README.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/genesis_seed_share\\BEHAVIORAL_TESTS.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\index.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\bio.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\inst.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\rel.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\tech.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\economic.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/kit\\spatial.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/substack\\crystallized\\the_five_terms_and_the_loop.html",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/substack\\crystallized\\the_hunger_under_naming.md",
+        "category": "pollen",
+        "room": "house"
+      },
+      {
+        "path": "root/substack\\crystallized\\match_the_noun_to_the_harm.md",
+        "category": "pollen",
+        "room": "house"
+      },
+      {
+        "path": "root/tools\\build_weave.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/open_ledger\\circuit.html",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/nesi\\spec\\THE_CATCHMENT_2026-08-04.md",
+        "category": "lens"
+      },
+      {
+        "path": "root/nesi\\headwaters\\README.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/nesi\\headwaters\\spring.js",
+        "category": "seed"
+      },
+      {
+        "path": "root/nesi\\headwaters\\second_water.md",
+        "category": "seed"
+      },
+      {
+        "path": "root/open_ledger\\schema.ts",
+        "category": "seed",
+        "room": "house"
+      },
+      {
+        "path": "root/CIRCUIT_TOOL.md",
+        "category": "nutrient",
+        "room": "house"
+      },
+      {
+        "path": "root/ROS_RI_site\\style.css",
+        "category": "seed"
+      },
+      {
+        "path": "root/tools/deposit_lib.js",
+        "category": "nutrient",
+        "via": "pipeline-mechanism"
+      },
+      {
+        "path": "root/tools/spine.js",
+        "category": "nutrient",
+        "via": "pipeline-mechanism"
+      },
+      {
+        "path": "root/tools/build_deposit.js",
+        "category": "nutrient",
+        "via": "pipeline-mechanism"
+      },
+      {
+        "path": "root/tools/build_deposit_index.js",
+        "category": "pollen",
+        "via": "pipeline-mechanism"
+      },
+      {
+        "path": ".claude/skills/authority-check",
+        "category": "seed",
+        "realInvocations": 1,
+        "lastInvoked": "2026-08-21T19:27:30.804Z"
+      },
+      {
+        "path": ".claude/skills/boundary-audit",
+        "category": "seed",
+        "realInvocations": 2,
+        "lastInvoked": "2026-08-23T15:53:38.592Z"
+      },
+      {
+        "path": ".claude/skills/external-extraction",
+        "category": "nutrient",
+        "realInvocations": 3,
+        "lastInvoked": "2026-08-26T06:31:10.300Z"
+      },
+      {
+        "path": ".claude/skills/full-development",
+        "category": "nutrient",
+        "realInvocations": 39,
+        "lastInvoked": "2026-08-31T17:37:58.080Z"
+      },
+      {
+        "path": ".claude/skills/instrument-audit",
+        "category": "lens",
+        "realInvocations": 2,
+        "lastInvoked": "2026-08-28T03:33:50.573Z"
+      },
+      {
+        "path": ".claude/skills/lens-panel",
+        "category": "seed",
+        "realInvocations": 2,
+        "lastInvoked": "2026-08-28T04:27:46.089Z"
+      },
+      {
+        "path": ".claude/skills/the-closing-check",
+        "category": "seed",
+        "realInvocations": 1,
+        "lastInvoked": "2026-08-24T23:46:40.256Z"
+      },
+      {
+        "path": ".claude/skills/threshold-sweep",
+        "category": "seed",
+        "realInvocations": 1,
+        "lastInvoked": "2026-08-27T22:59:02.352Z"
+      }
+    ],
+    "spine": "UPSTREAM_2026-08-31_nucleation_points.md"
+  }
+}

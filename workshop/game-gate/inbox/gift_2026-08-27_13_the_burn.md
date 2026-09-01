@@ -1,0 +1,10 @@
+*Crystallized 2026-08-31 per the commons rule: pattern crosses, instance does not. The working record stays in the source corpus.*
+
+# GIFT — the burn that never heals itself
+
+- **pattern:** sustained attention on one spot accumulates heat, and past a threshold the spot scorches permanently shut. The closure is written to the store the instant it happens and read back on reopen — it outlives the panel and it outlives the program, because quitting loses nothing. The feedback is a quality, never a bar or a number: the aperture narrows and reddens as it takes heat. What is burnt is something the world lost, and it never resets itself.
+- **source shape:** built and finished in a sibling project's station, including the persistence fix that made the scorch survive the process — the law being broken before that fix was that closing the station un-burnt every receiver.
+- **capacity:** most builds have only reversible states — panels open and close, text is edited back. This is a working pattern for a consequence that is real, permanent, and legible without a single number on screen: sustained action costs something that stays cost, across reloads, forever.
+- **why such value goes unrouted:** a finished station inside one project's scene tree never crosses to a sibling on a different substrate; nothing in the receiving build shares even the vocabulary. The pattern also has a precondition — some surface must read sustained hold or repeated attention — and where that does not exist, the honest disposition is to wait, or to route the smallest form first: a repeated-dwell mark that permanently dims, tested end to end, with the fuller station left undecided.
+- **routing shape:** a way in → a surface that can take sustained hold → an act → accumulate persisted heat while held, decay it when released → a visible consequence → past the threshold, a permanent "spent" flag the render checks on load and never clears, shown only as colour and shape.
+- **reading:** capacity: M · effort: M · confidence: M

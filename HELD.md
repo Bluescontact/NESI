@@ -3,79 +3,65 @@
 Between raw and crossed stands a third state: **held**, with its named
 condition — silence defaults to stop, uncertainty fails closed (crystal 10 of
 [the spine](UPSTREAM_2026-08-31_nucleation_points.md)). This file is that
-state's public surface. Everything here is on the record and blocking nothing;
-each entry carries the condition that would close it. Closing any entry is a
-crossing, and the mark is the keeper's alone.
+state's public surface. Each open entry carries the condition that would
+close it; closed entries stay on the record with the decision that closed
+them — supersession is a layer, never an erasure.
 
 ---
 
-## Membrane functions — scoped 2026-09-01, the keeper's ruling
+## CLOSED — built 2026-09-01, the keeper's instruction
 
-A development pass ran this deposit's governing claims against the real
-record. Three claims drew blood — Ostrom's sixth design principle (enduring
-commons all carry low-cost conflict-resolution arenas), Freeman's *Tyranny of
-Structurelessness* (removing formal authority makes power invisible, not
-absent), and the de-anonymization and Luhmann-archive record (a name removed
-is not an identity removed, and not a corpus made portable). The keeper's
-ruling, verbatim: *"Those three places where it drew blood are membrane
-functions not yet scoped or built"* — *"scope those three membrane functions
-into the rebuild as held."*
+*"Build the three scoped membrane functions, the held back seed and the
+workshop."* All five entries below were held on 2026-09-01 and built or
+crossed the same day, on that instruction:
 
-### HELD-1 · The dispute arena
-The circuit has no enforcement mechanism, so every dispute lands in the
-gathering — the informal arena **is** the dispute mechanism, it is
-load-bearing, and it is unaccountable until named. When built: the arena
-named; who convenes it, what it can and cannot decide, how its record is
-kept — an arena, not an authority. The schema stays incapable of computing
-debt; the arena handles what the schema refuses.
-**Condition:** held until the keeper crosses a written arena definition.
-Until then every circuit document states plainly that the gathering is the
-arena and that it is not yet declared.
+- **HELD-1 · The dispute arena** — BUILT:
+  [`house/membrane/01_THE_DISPUTE_ARENA.md`](house/membrane/01_THE_DISPUTE_ARENA.md).
+  The gathering is named as the arena; who convenes it, what it can and
+  cannot decide, and how its record is kept are declared. The schema stays
+  incapable of computing debt.
+- **HELD-2 · The declared center** — BUILT:
+  [`house/membrane/02_THE_DECLARED_CENTER.md`](house/membrane/02_THE_DECLARED_CENTER.md).
+  What the keeper holds (the gate, the vocabulary, the mark), what that
+  does not permit, what a participant can check it against, and the
+  fail-closed succession rule. Any line the keeper re-words supersedes the
+  built text by layering.
+- **HELD-3 · The outward transform** — BUILT:
+  [`house/membrane/03_THE_OUTWARD_TRANSFORM.md`](house/membrane/03_THE_OUTWARD_TRANSFORM.md).
+  Both halves: the honest statement (de-named, not de-identified) and the
+  six-line landing-clean checklist.
+- **The genesis seed** — CROSSED: `GENESIS_SEED_v4.md` and
+  `DEMONSTRATION.md` now ship in
+  [`house/genesis-seed/`](house/genesis-seed/), passed through the
+  de-naming transform at the crossing. The behavioral tests finally have
+  the seed they test.
+- **The workshop** — RETURNED: [`workshop/`](workshop/) is back in the
+  deposit as a declared room — the making, kept honestly in the open: the
+  gate, the pipeline sources, the check suites, the records, the audits
+  (including the gamification-mirror Deep Review and its instrument), with
+  [`weave.html`](weave.html) and the manifest/tributary accounting beside
+  it. It is labeled as the making, never passed off as the thing.
 
-### HELD-2 · The declared center
-The schematic draws the keeper as central bus while the framing claims no
-central authority. The keeper holds the gate, the vocabulary, and the mark —
-that is a center, and it is declared here rather than denied. When built: a
-declaration at the same surface as the ownership claims — what the keeper
-holds, what that does and does not permit against another node, and what a
-participant can check it against.
-**Condition:** held until the keeper writes and crosses the declaration in
-his own words.
+## OPEN
 
-### HELD-3 · The outward transform
-What crosses outward is **de-named, not de-identified**: the transform
-removes the name as a norm of reading, not as a guarantee, and the essays in
-`house/six-returns/` and `house/essays/` are deliberately instance-borne.
-De-naming does not by itself make a personal corpus usable by others;
-portability is paid by the landing-clean labor of crystal 5, of which the
-rename is the smallest part. When built, two halves: (a) an honest statement
-of what the transform does and does not remove; (b) the landing-clean
-checklist an item must pass before it ships outward.
-**Condition:** held until both halves exist in writing and cross.
-
----
-
-## Held back from this deposit
-
-- **The workshop** — the making: the gate that admitted every piece, the
-  pipeline that derives this repository, the check suites, the gift cards
-  and session records, the weave of declared relations, and the audits
-  (including the 2026-09-01 gamification-mirror Deep Review, whose four
-  BOUNDARY items stand on its record there). All of it lives whole in the
-  private source corpus. Condition: any piece of it returns to the public
-  copy only by the keeper's crossing.
-- **The genesis seed** (`GENESIS_SEED_v4` and `DEMONSTRATION.md`) — its
-  tests ship in `house/genesis-seed/`; the seed is distributed elsewhere.
-  Condition: ships when the keeper crosses it into the deposit.
 - **The VE hypothesis** — twelve crystals around the vector equilibrium;
   held on the keeper's mark 2026-08-31 with its four-part decidability
-  condition, stated in full in the spine document.
+  condition, stated in full in the spine document. No pass may aim at
+  twelve; the count must arrive as output.
+- **The mirror audit's four BOUNDARY items** — the burn, the justarrived
+  flash, 06-landed's count while 05-subtract stays held, the KEYS.txt
+  compliance keys; on the record in
+  [`workshop/audit/MIRROR_AUDIT_2026-09-01.md`](workshop/audit/MIRROR_AUDIT_2026-09-01.md),
+  blocking nothing, each awaiting its named fork.
+- **The membrane functions in practice** — the three built documents
+  declare; only a running circuit can prove. Each carries its own
+  falsifier; re-read them against the first real circuit that runs.
 
 ## Development record
 
 This deposit was rebuilt by a full development pass on 2026-09-01 —
 inventory, adversarial audit, ground against the commons record, diverge,
-converge, rebuild, independent verify — and then reduced to the floor on
-the keeper's word: the finished things ship; the scaffolding went home to
-the source corpus. Nothing in this file binds anyone; it is the map of
-what would.
+converge, rebuild, independent verify — reduced to the floor on the
+keeper's word, and then completed the same day: the membrane functions
+built, the seed crossed, the workshop returned. Nothing in this file binds
+anyone; it is the map of what does and does not yet stand.

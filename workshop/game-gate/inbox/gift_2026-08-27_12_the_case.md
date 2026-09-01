@@ -1,0 +1,10 @@
+*Crystallized 2026-08-31 per the commons rule: pattern crosses, instance does not. The working record stays in the source corpus.*
+
+# GIFT — the case, a hand-openable panel that proves what is actually happening
+
+- **pattern:** a key-toggled overlay that suspends the world — you are looking at the machine or you are playing it, never both — and shows two things: a live instrument row (recent store reads/writes; whether any model call or network request has ever fired, which starts and stays at "none" because none exist), and a registry of every refusal and boundary active at the current face, each with a line saying what it says and a line naming what it keeps, each individually liftable by the hand, with boundaries the build introduced marked apart from boundaries the person set. Nothing in it is a number and nothing in it is about the player.
+- **source shape:** built in an earlier build's canvas draw-loop and dropped when a rebuild removed that loop.
+- **capacity:** most systems prove their refusals only by absence — a player must take on faith that nothing calls out and nothing hides, while the load-bearing boundaries are enforced invisibly at build time. This makes both visible and inspectable from inside, and hands the switch to the player. Where a build's refusals are enforced by absence rather than by conditional code, the honest port is a read-only list labeled as such — never a fake toggle over nothing.
+- **why such value goes unrouted:** an organ dropped with the render loop it depended on is not struck for cause; the concept simply never gets reattached to the successor's render path, and its sibling checks retire in the same pass.
+- **routing shape:** a way in → one key handler in the current render path → an act → a panel listing the live constraint set and a real log of the system's own store calls, instrumented rather than asserted → a visible consequence → a player can open the case at any seat and see for themselves.
+- **reading:** capacity: H · effort: M · confidence: M

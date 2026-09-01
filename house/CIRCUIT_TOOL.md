@@ -14,8 +14,11 @@
 > no-central-authority claim — the keeper holds the gate and the vocabulary,
 > which is a center, declared rather than denied (**HELD-2**); and the
 > sufficiency of vocabulary discipline — the schema refuses the ledger frame;
-> only the room can refuse the debt (**HELD-3** carries the rest). Conditions
-> and scope: the deposit's `HELD.md`. The text below stands as written —
+> only the room can refuse the debt (**HELD-3** carries the rest).
+> **Built, 2026-09-01, on the keeper's instruction:** the three functions
+> now stand in [`membrane/`](membrane/01_THE_DISPUTE_ARENA.md) — the
+> dispute arena, the declared center, the outward transform; the register
+> (`HELD.md`) records the closing. The text below stands as written —
 > supersession is a layer, never an erasure.
 
 ---

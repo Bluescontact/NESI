@@ -1,0 +1,35 @@
+#!/bin/sh
+# pre-commit — runs the gate before a change lands, built on the mark
+# "build all three" (2026-08-25).
+#
+# The gap this closes: gate/gate.mjs and tools/check_all.js already produce
+# real exit codes, but nothing required anyone to check them before a commit
+# landed. This makes running the suite the default for any commit that
+# touches nesi/game2d/, rather than something a hand has to remember.
+#
+# It does not make the gate unbypassable — `git commit --no-verify` still
+# skips it — but that is now a visible, deliberate, typed choice instead of
+# the silent default of just committing.
+#
+# NOT INSTALLED BY GIT ITSELF: .git/hooks is never tracked, so a fresh clone
+# needs this copied in once. From the repo root:
+#   cp nesi/game2d/tools/git-hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+
+set -e
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+if git diff --cached --name-only | grep -q '^nesi/game2d/'; then
+  echo "pre-commit: nesi/game2d/ touched — running tools/check_all.js"
+  if ! (cd nesi/game2d && node tools/check_all.js); then
+    status=$?
+    echo ""
+    echo "pre-commit: the gate did not hold. Commit refused."
+    echo "            fix the break, or deliberately skip with: git commit --no-verify"
+    exit 1
+  fi
+fi
+
+exit 0

@@ -42,7 +42,7 @@ The Open Ledger **shows the cost and hides the debt.**
 
 The ledger has no `felt_as_gift`, no `quality`, no `sentiment` column — and that absence is honest, not an oversight. The one thing the tool cannot decide is whether a given gift was *felt* as gift or as extraction wearing gift's face. The schema makes the frame unbreakable on paper; it still can't read the room.
 
-That part doesn't live in the tool. It lives in the people the tool gathers — which is exactly why `gathering` is a first-class kind with its own view, not decoration. The ledger routes people to the room. The room does the felt-read. And the room is where visible cost gets **received as gift** instead of **tallied as owed**. That makes the gathering the circuit's dispute arena in practice — load-bearing, and not yet declared. It is held, with its condition, in the deposit's [held register](../../HELD.md) (HELD-1).
+That part doesn't live in the tool. It lives in the people the tool gathers — which is exactly why `gathering` is a first-class kind with its own view, not decoration. The ledger routes people to the room. The room does the felt-read. And the room is where visible cost gets **received as gift** instead of **tallied as owed**. That makes the gathering the circuit's dispute arena — load-bearing, and now declared: [01_THE_DISPUTE_ARENA.md](../membrane/01_THE_DISPUTE_ARENA.md) names who convenes it, what it can and cannot decide, and how its record is kept.
 
 ---
 

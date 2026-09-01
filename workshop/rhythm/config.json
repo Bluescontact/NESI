@@ -1,0 +1,51 @@
+{
+  "_purpose": "Reserved-zero config for the daily rhythm. FAIL-CLOSED: any field left null means that capability stays OFF. Silence defaults to stop — if the keeper hasn't set it, nothing sends and no channel listens. The [THE KEEPER] fields are his to set; the system reads them and never assumes a default for them.",
+
+  "_marked_2026-06-09": "the keeper's marks folded in: send_time=dawn · drop_path.mode=file · retention.raw_pages=shred_after_harvest · overnight.cognition=mechanical_only. STILL UNSET (fail-closed → outbox-only): mail.to_addr + rhythm/.mail_creds. Until those, the rhythm generates to the outbox and sends nothing. Remaining go-live step: schedule the overnight cycle on the bus.",
+
+  "send_time": "dawn",
+  "_send_time": "[THE KEEPER] morning brief send. e.g. \"07:00\" (local), \"dawn\", or \"on_first_connectivity\". null = no morning send (fail-closed).",
+
+  "evening_close_time": "on_day_loops_close",
+  "_evening_close_time": "when the evening receipt fires. \"on_day_loops_close\" (default) or a clock time. The receipt only confirms; it owes nothing, so it is safe-on by default.",
+
+  "drop_path": {
+    "mode": "file",
+    "_mode": "[THE KEEPER ✓ 2026-06-09: file] morning-pages intake: \"file\" | \"email\" | \"both\". null = the 750-words channel is inactive (fail-closed). Set to file: drop into rhythm/pages_inbox/, no inbound-mail dependency.",
+    "file_dir": "rhythm/pages_inbox",
+    "email_address": null,
+    "_email_address": "[THE KEEPER] inbound address to poll, only if mode includes email."
+  },
+
+  "mail": {
+    "mechanism": "outbox_queue",
+    "_mechanism": "FAIL-CLOSED default: write each email to rhythm/outbox/, never send, never drop. Becomes \"smtp\" only when creds_file exists. Connectivity loss => stays queued, flushed on reconnect.",
+    "smtp_host": null,
+    "smtp_port": 587,
+    "smtp_user": null,
+    "from_addr": null,
+    "to_addr": null,
+    "_addrs": "[THE KEEPER] from/to + smtp_host/user. Uses an account the keeper ALREADY has (no new service). The provider dependency is named in the ledger — see rhythm/README.md.",
+    "creds_file": "rhythm/.mail_creds",
+    "_creds_file": "gitignored; the keeper writes the password here. Absent => emails stay in the outbox queue (fail-closed). The system never holds the secret in this config."
+  },
+
+  "retention": {
+    "raw_pages": "shred_after_harvest",
+    "_raw_pages": "[THE KEEPER ✓ 2026-06-09: shred_after_harvest] metabolize the work-objects, then delete the raw text immediately. Nothing raw persists — most protective. Options were gated_zone_until_delete | keep_7_days.",
+    "gated_zone": "rhythm/_pages_gated",
+    "_gated_zone": "the keeper's delete controls this folder. NEVER read by any analysis. The displaced-zero guard applies here at its strongest."
+  },
+
+  "selection_rule": "bottleneck_first",
+  "_selection_rule": "default until the keeper marks the meta-read (queue item: 'Queue ordering'). \"bottleneck_first\" | \"biggest_mark_first\". Named visibly in every email; reversible; never silent.",
+
+  "overnight": {
+    "cognition": "mechanical_only",
+    "_cognition": "FAIL-CLOSED re: the rented-cognition leak. \"mechanical_only\" = owned compute overnight (snapshot, GATE rebuild, stats, converger-if-mechanical, queue/generate email); AI-metabolism of drops is DEFERRED to the in-session daily-cycle. \"ai_metabolize\" is available ONLY after the rented-cognition leak is consented (queue item 1) AND the keeper opts in here — because nightly AI metabolism deepens that exact leak.",
+    "self_report": "verbose_first_3_nights",
+    "_self_report": "first 3 nights: a one-line did-it-complete / what-broke / what-skipped in the morning email. After 3 clean nights -> \"exceptions_only\" (SUBTRACTION applied to the rhythm itself)."
+  },
+
+  "_law": "Overnight stages; it never marks and never crosses. Replies are intake (compost, or a mark logged per mark-record). No reply = no movement. No reminder emails, no re-sends, no escalation, ever. Nothing here creates a new membrane crossing path."
+}
