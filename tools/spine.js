@@ -104,6 +104,26 @@ const SEATS = {
   'ros_ri_reverse_audit':                    { crystal: 'c6', why: 'the canon audited from inside the other frame — 14 of 15 findings honestly collapsed' },
   'ros_ri_cross_fold':                       { crystal: 'c7', why: '45 verdicts, each with a named fold-target — nothing enters twice unaccounted' },
   'ros_ri_overview':                         { crystal: 'c6', why: 'two origins, each structurally blind to its own failure direction — the second mark at framework scale' },
+  // Batch 1 of the reading-pass queue (Kevin: "run batch 1") — the
+  // doctrine core from patterns/ and frameworks/: the two axioms, the
+  // type system, the commons rule the de-naming stands on, and the
+  // discriminators. Every file and key line verified before admission.
+  'witness_as_origin':                       { crystal: 'c1', why: 'the axiom underneath — the origin is the zero all witnessing is measured from, never a point that gets witnessed' },
+  'consented_ledger_axiom':                  { crystal: 'c5', why: 'three fates of cost, and only externalizing unpriced is forbidden — the gift economy’s accounting law' },
+  'falsifier_travels':                       { crystal: 'c6', why: 'the against-side rides welded to the artifact at the crossing — never archived elsewhere' },
+  'type_system':                             { crystal: 'c3', why: 'axiom / pattern / instance kept apart — axioms need no children, they are the floor' },
+  'commons_composting_rule':                 { crystal: 'c5', why: 'what crosses outward is pattern, never instance — there is no one in it' },
+  'pre_clearance_class':                     { crystal: 'c2', why: 'the reserved zero moved to the class definition — the keeper ratifies the class, not each member' },
+  'register_audit':                          { crystal: 'c7', why: 'six drift checks against a named authority, with a gate against auditing your own console as a transmission' },
+  'gate_as_f4':                              { crystal: 'c6', why: 'a veto without a stated discharge condition is structurally a pump — the discriminator is definitional, testable' },
+  'the_locating_move':                       { crystal: 'c1', why: 'the law’s positive form: locate, never steer' },
+  'the_daylight_test':                       { crystal: 'c6', why: 'a pre-screen that names its own limit — mechanism cannot be the discriminator, the ratification stays with the body' },
+  'the_governor':                            { crystal: 'c4', why: 'the brake protecting the body the whole thing runs on — a self-feeding engine must not come to require cost' },
+  'tetra_agent_protocol':                    { crystal: 'c8', why: 'four vertices in opposed tension, the synthesis center a separate step — the geometry as working method' },
+  'floor_container_minimum':                 { crystal: 'c8', why: 'the minimum rigid form applied to human containers — every element does load, nothing decorative' },
+  'same_quartet':                            { crystal: 'c8', why: 'assembly is sequential; structure is simultaneous — the four-fold’s contradiction resolved' },
+  'precesse':                                { crystal: 'c8', why: 'the result arrives orthogonal to intended action — the 90-degree return' },
+  'stigmergic_deposit':                      { crystal: 'c5', why: 'the deposit field routes without a director — the depositor becomes optional, the field does not' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
