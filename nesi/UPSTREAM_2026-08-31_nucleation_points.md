@@ -169,6 +169,44 @@ seating is a crossing, and the mark is the only crossing:
    are 2's epistemics — merging is a felt read, not an inference, and no
    merge is performed here.
 
+## HELD HYPOTHESIS — twelve crystals around the VE
+
+**Held on Kevin's mark, 2026-08-31** (*"what if there are actually 12
+crystals around the VE?... record it as a held hypothesis"*), under the HELD
+discipline's own rule: a hold carries the exact condition that makes it
+decidable.
+
+**The hypothesis:** the crystals are the twelve vertices of the vector
+equilibrium — twelve around a center nothing occupies. The count today is
+suggestive, not confirming: eight crossed plus three named candidates is
+eleven, and the corpus has independently produced twelve-around-an-empty-
+center at least twice (the gesture-seats; the twelve-seat door, "no
+thirteenth, which is the whole of its honesty"). Crystal 4 already states
+the empty center.
+
+**What the corpus has already ruled, which this hold does not override:**
+the COLLAPSE extract prompt — *"No fixed count. Do not aim for twelve"* ;
+the twelve-lenses disposition — DO-NOT-BUILD the VE-vertex flatten, *"two
+different twelves"* (the twelve gesture-seats are game2d mechanism-seats,
+not corpus principles; mapping one twelve onto the other is the refused
+flatten); and crystal 8's own law — the shape is never an argument.
+
+**The decidability condition, in four parts, all required:**
+1. *Count as output* — exactly twelve structures earn seats by the standing
+   bar (3+ verified sightings, seated by Kevin's felt read), with no pass
+   ever aiming at twelve. Stopping at ten or running to fourteen kills it.
+2. *Degree four* — each seated crystal shows exactly four load-bearing
+   relations to other crystals (fragments already visible: 4↔1, 6↔2, 7↔2,
+   8↔3).
+3. *Four circuits* — the twelve arrange into four six-member great-circle
+   families without forcing.
+4. *The empty thirteenth* — the center stays unoccupied (already crystal 4).
+
+If the evidence walks there on its own, the VE will have described the
+result afterward — which is what crystal 8 permits. Until all four parts
+hold, this is a hypothesis on hold, not a target, and no seat is created,
+moved, or renumbered because of it.
+
 ---
 
 ## APPENDIX A — verified sightings, corrected
