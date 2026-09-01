@@ -121,6 +121,20 @@ rhythm/.last_brief
 # gate) -- the admitted sources and their crystallized counterparts
 # belong in history. Sixth closure of the untracked-admitted-source gap.
 !/open_ledger/
+# The circuit tool framing, 2026-09-01 (admitted as circuit_tool.framing so
+# the open ledger's own reference resolves in the house). Seventh closure of
+# the untracked-admitted-source gap.
+!/CIRCUIT_TOOL.md
+# The library page and its crystallized counterpart, 2026-09-01 (the source
+# was admitted 2026-08-31 but never tracked -- the gap predates the
+# convention; the counterpart was written in the three-rooms walk). Narrow
+# on purpose: only the admitted page and the crystallized/ sibling cross
+# into history; the rest of the personal site stays untracked. Eighth
+# closure of the untracked-admitted-source gap.
+!/public_site/
+/public_site/*
+!/public_site/library.html
+!/public_site/crystallized/
 # The counsel seats' definition files, 2026-08-13 (Kevin's mark, THE FULL CIRCLE).
 # The trim tabs change how the five seats read and had no version history at all.
 # Narrow on purpose: agents/ only — settings.json and settings.local.json stay out.

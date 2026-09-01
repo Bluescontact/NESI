@@ -255,19 +255,20 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
 <h2 id="house">The house — the usable things</h2>
 <p class="section-note">Each of these is a thing, not a description of one: open it and use it. The drawings, the doctrine, and the jigs that made them live in the workshop below, labeled as the making.</p>
 <ul class="glossary">
-  <li><b><a href="house/open-ledger/demo.html">the open ledger</a></b> — try the five transactional moves and find there is no field for them; <a href="house/open-ledger/circuit.html">the gift circuit</a> runs on the same spine, in your browser, nothing else needed</li>
+  <li><b><a href="house/open-ledger/demo.html">the open ledger</a></b> — try the five transactional moves and find there is no field for them; <a href="house/open-ledger/circuit.html">the gift circuit</a> runs on the same spine, in your browser, nothing else needed; <a href="house/open-ledger/THE_OPEN_LEDGER.md">the spine document</a> and <a href="house/CIRCUIT_TOOL.md">the circuit framing</a> carry the design</li>
   <li><b><a href="house/genesis-seed/README.md">the genesis seed</a></b> — paste-and-run onboarding for any model, with <a href="house/genesis-seed/BEHAVIORAL_TESTS.md">copy-paste behavioral tests</a> that tell running-it from wearing-its-vocabulary</li>
   <li><b><a href="house/kit/index.html">the practitioner kit</a></b> — 24 prescriptions across six substrates, each with the condition under which it fires</li>
   <li><b><a href="house/floor-kit/00_THE_GATE.md">the floor kit</a></b> — a four-document method whose first page exists to stop the wrong reader</li>
   <li><b><a href="house/six-returns/01_THE_VERTEX.md">the six returns</a></b> — three real disputes abstracted to one structure, every claim anchored to a record</li>
   <li><b><a href="house/library.html">the library of gifts</a></b> — 24 patterns with every framework word stripped, complete in a paragraph each</li>
   <li><b>the essays</b> — the crystallized outward writing, pattern never instance: <a href="house/essays/witnessing_without_merging.md">witnessing without merging</a> · <a href="house/essays/comprehension_is_not_recognition.md">comprehension is not recognition</a> · <a href="house/essays/match_the_noun_to_the_harm.md">match the noun to the harm</a> · <a href="house/essays/the_hunger_under_naming.md">the hunger under naming</a> · <a href="house/essays/the_five_terms_and_the_loop.html">the five terms and the loop</a></li>
-  <li><b><a href="house/starters/mark-template.md">the mark template</a></b> — a mark form a stranger can adopt in thirty seconds</li>
+  <li><b><a href="house/starters/_TEMPLATE.md">the mark template</a></b> — a mark form a stranger can adopt in thirty seconds, with <a href="house/starters/README.md">its one-page how</a></li>
   <li><i>Also ready to use, shelved in the workshop with their making (one home each, per crystal 7):</i> <a href="workshop/coherence-codex/deploy/agent-invariant.md">the paste-able agent invariant</a> · <a href="workshop/ROS_RI_site/commons.html">the eight commons cards</a></li>
 </ul>
 
 <div class="rule"></div>
 <h2 id="spine">The workshop · the spine — ${CRYSTALS.length} nucleation points</h2>
+<p class="section-note">One reading note for the workshop: its records are the making, kept whole. A record may point at material that stayed in the private source corpus — a pointer that leaves this repository is a fact of the record, not a broken promise; nothing is rewritten to hide it.</p>
 <p class="section-note">The principles that kept reappearing across every version of this work — including the abandoned ones — identified by applying the project's own recurrence test to its own history${spineDocName ? `, argued in full in <a href="${esc(spineDocName)}">${esc(spineDocName)}</a>` : ''}. Everything else in this deposit attaches under the crystal that accounts for it; each item's one-line reason is given at its seat. A seat is a proposal, not a verdict.</p>
 ${crystalSections}
 ${unseatedHtml}

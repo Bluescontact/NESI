@@ -113,6 +113,7 @@ const SEATS = {
   'ros_ri_reverse_audit':                    { crystal: 'c6', why: 'the canon audited from inside the other frame — 14 of 15 findings honestly collapsed' },
   'ros_ri_cross_fold':                       { crystal: 'c7', why: '45 verdicts, each with a named fold-target — nothing enters twice unaccounted' },
   'ros_ri_overview':                         { crystal: 'c6', why: 'two origins, each structurally blind to its own failure direction — the second mark at framework scale' },
+  'ros_ri_style':                            { crystal: 'c7', why: 'one face for five surfaces — the look lives in one file, never five copies' },
   // Batch 1 of the reading-pass queue (Kevin: "run batch 1") — the
   // doctrine core from patterns/ and frameworks/: the two axioms, the
   // type system, the commons rule the de-naming stands on, and the
@@ -143,6 +144,8 @@ const SEATS = {
   'negative_workspace':                      { crystal: 'c6', why: 'a negative that can be named and not stopped is the next instrument’s specification' },
   'open_ledger':                             { crystal: 'c3', why: 'debt is not prohibited — it is unrepresentable; the frame holds in any hands' },
   'open_ledger_schema':                      { crystal: 'c3', why: 'the rule enforced by the absence of the field that would represent its violation' },
+  'open_ledger.schema_view':                 { crystal: 'c3', why: 'the typed view of the same absences — the mechanism stated twice, in SQL and in types, so no reader depends on knowing one language' },
+  'circuit_tool.framing':                    { crystal: 'c3', why: 'the same tool named by what it routes — direction document, not build spec; the frame offered without the person wired into it' },
   'open_ledger_demo':                        { crystal: 'c5', why: 'a stranger tries the five moves and hits “there is no field for this”' },
   'no_blur':                                 { crystal: 'c5', why: 'my gift and words, and their gifts and words, always held separately' },
   'blur_check':                              { crystal: 'c6', why: 'the lint that names its own limit — two rules need a human read' },
@@ -234,6 +237,8 @@ const UNIT_SEATS = [
 // path-mapper alike.
 const HOUSE_PREFIXES = [
   ['open_ledger/',                'house/open-ledger/'],
+  ['CIRCUIT_TOOL.md',             'house/CIRCUIT_TOOL.md'],
+  ['marks/',                      'house/starters/'],
   ['genesis_seed_share/',         'house/genesis-seed/'],
   ['kit/',                        'house/kit/'],
   ['_INTAKE/THE_FLOOR_KIT/',      'house/floor-kit/'],
@@ -242,7 +247,6 @@ const HOUSE_PREFIXES = [
   ['substack/witnessing_without_merging.md', 'house/essays/witnessing_without_merging.md'],
   ['substack/comprehension_is_not_recognition.md', 'house/essays/comprehension_is_not_recognition.md'],
   ['public_site/library.html',    'house/library.html'],
-  ['marks/_TEMPLATE.md',          'house/starters/mark-template.md'],
 ];
 function housePathFor(rel) {
   const norm = rel.replace(/\\/g, '/');
