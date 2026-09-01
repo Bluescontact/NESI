@@ -5,66 +5,169 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The workshop · NESI</title>
 <style>
-:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21;--ok:#7fa66a;--held:#8fb0c9}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
-main{max-width:720px;margin:0 auto}
-h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
-h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
-h3{font-size:16px;font-weight:600;margin:26px 0 8px}
-p,li{margin:0 0 12px}
-ul,ol{padding-left:24px;margin:0 0 14px}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.65 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:760px;margin:0 auto}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+h1{font-size:30px;font-weight:400;margin:0 0 8px;letter-spacing:.4px}
+.lede{color:var(--dim);margin-bottom:8px}
+.loop{color:var(--dim);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:30px}
+.station{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin:16px 0}
+.station h2{font-size:14px;font-weight:400;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin:0 0 4px}
+.station .what{color:var(--dim);font-size:14px;margin:0 0 12px}
 a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
 a:hover{border-bottom-color:var(--gold)}
-blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
-blockquote p:last-child{margin-bottom:0}
-code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
-pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
-pre code{background:none;padding:0}
-hr{border:0;border-top:1px solid var(--line);margin:28px 0}
-em{color:var(--dim)}
-table{border-collapse:collapse;margin:0 0 14px;width:100%}
-th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
-nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
-nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
-nav.crumb a:hover{color:var(--gold)}
-footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
-.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
-.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
-.roomlist a.item span{color:var(--dim);font-size:14px}
+.entry{border-top:1px solid var(--line);padding:9px 0;font-size:14.5px}
+.entry:first-of-type{border-top:0}
+.entry .id{color:var(--gold);font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.entry .made{display:block;color:var(--paper)}
+.entry .when{color:var(--dim);font-size:12.5px}
+.entry .rel{color:var(--dim);font-style:italic}
+.gauge{display:flex;gap:10px;border-top:1px solid var(--line);padding:8px 0;font-size:14px;align-items:baseline}
+.gauge:first-of-type{border-top:0}
+.gauge .dot{width:8px;flex:none;font-family:ui-monospace,monospace}
+.g-ok{color:var(--ok)} .g-held{color:var(--held)}
+.gauge .gid{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--paper);width:110px;flex:none}
+.gauge .gnote{color:var(--dim)}
+.stationfoot{margin-top:12px;font-size:13px;color:var(--dim)}
+.honest{margin-top:34px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.due{color:var(--paper)}
+.err{color:var(--dim);font-style:italic}
 </style>
 </head>
 <body>
 <main>
-<nav class="crumb"><a href="../index.html">NESI</a> &middot; <a href="../workshop/index.html">workshop</a></nav>
-<!-- render_pages.js doorway -->
+<nav class="crumb"><a href="../index.html">NESI</a> &middot; workshop</nav>
 <h1>The workshop</h1>
-<p>The making, in the open: the gate, the pipeline sources, the checks, the records, the audits.</p>
-<div class="roomlist">
-<a class="item" href="ARTIFACT_GRAMMAR.html"><b>ARTIFACT GRAMMAR — the definition layer</b><span>ARTIFACT_GRAMMAR.md</span></a>
-<a class="item" href="CONTAINERS.html"><b>CONTAINERS — the container law</b><span>CONTAINERS.md</span></a>
-<a class="item" href="LEARNED.html"><b>THE LEARNED — crystallized</b><span>LEARNED.md</span></a>
-<a class="item" href="SESSION_BRIDGE_2026-08-25_build_state_survey.html"><b>Crystallized · Build-state survey record · 2026-08-25</b><span>SESSION_BRIDGE_2026-08-25_build_state_survey.html</span></a>
-<a class="item" href="SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html"><b>Crystallized · Three actions and the return · 2026-08-27</b><span>SESSION_BRIDGE_2026-08-27_three_actions_and_the_return.html</span></a>
-<a class="item" href="SESSION_BRIDGE_2026-08-30_onedrive_relocation.html"><b>Record — the relocation out of a sync boundary</b><span>SESSION_BRIDGE_2026-08-30_onedrive_relocation.html</span></a>
-<a class="item" href="_INTAKE/index.html"><b>_INTAKE</b><span>a room</span></a>
-<a class="item" href="audit/index.html"><b>The audits</b><span>Independent reviews of this project’s own mechanics, with their instrument.</span></a>
-<a class="item" href="boundary/index.html"><b>boundary</b><span>a room</span></a>
-<a class="item" href="coherence-codex/index.html"><b>coherence-codex</b><span>a room</span></a>
-<a class="item" href="frameworks/index.html"><b>frameworks</b><span>a room</span></a>
-<a class="item" href="game-gate/index.html"><b>game-gate</b><span>a room</span></a>
-<a class="item" href="held_refusal/index.html"><b>held_refusal</b><span>a room</span></a>
-<a class="item" href="membrane/index.html"><b>membrane</b><span>a room</span></a>
-<a class="item" href="negative_workspace/index.html"><b>negative_workspace</b><span>a room</span></a>
-<a class="item" href="nesi/index.html"><b>nesi</b><span>a room</span></a>
-<a class="item" href="osg_organ/index.html"><b>osg_organ</b><span>a room</span></a>
-<a class="item" href="patterns/index.html"><b>The patterns</b><span>Working pattern documents, as admitted.</span></a>
-<a class="item" href="rhythm/index.html"><b>rhythm</b><span>a room</span></a>
-<a class="item" href="ROS_RI_site/index.html"><b>ROS_RI_site</b><span>a room</span></a>
-<a class="item" href="skills/index.html"><b>skills</b><span>a room</span></a>
-<a class="item" href="tools/index.html"><b>tools</b><span>a room</span></a>
+<p class="lede">This is not an archive — it is the shop where the rest of the
+house gets made, and it runs a loop you can walk. Everything below is read
+live from the shop's own ledgers, the same files the mechanisms write.</p>
+<div class="loop">inbox → the gate → the spine → the loom → the gauges → the compost</div>
+
+<div class="station" id="st-inbox">
+  <h2>1 · The inbox — the receiving bench</h2>
+  <p class="what">Gifts arrive here as cards — capacity found in past work,
+  written up so it can be judged. Nothing on this bench is part of the house
+  yet.</p>
+  <div id="inbox"></div>
+  <p class="stationfoot"><a href="game-gate/inbox/INDEX.html">how the pipeline works</a> · <a href="game-gate/inbox/index.html">the cards</a></p>
 </div>
-<footer class="pagefoot"><a href="../index.html">the front door</a></footer>
+
+<div class="station" id="st-gate">
+  <h2>2 · The gate — the crossing bench</h2>
+  <p class="what">Nothing enters the house except by a recorded decision. Each
+  crossing below is quoted from the ledger the gate itself writes — the
+  decision, verbatim, with its date. The mechanism that refuses bad crossings
+  is <a href="game-gate/gate/admit.mjs">code, not policy</a>.</p>
+  <div id="marks"></div>
+  <p class="stationfoot">latest crossings · full record: <a href="game-gate/gate/MARKS.jsonl">MARKS.jsonl</a></p>
+</div>
+
+<div class="station" id="st-spine">
+  <h2>3 · The spine — the seating</h2>
+  <p class="what">Everything admitted gets seated under one of the eleven
+  principles the work kept arriving at. The principles, with their evidence
+  and the test that would show each wrong, are
+  <a href="../UPSTREAM_2026-08-31_nucleation_points.html">the spine</a>.</p>
+</div>
+
+<div class="station" id="st-loom">
+  <h2>4 · The loom — declared relations</h2>
+  <p class="what">Relations between pieces are declared by a hand at a prompt,
+  never inferred by a machine. Each strand: two ends, the relation in the
+  hand's own words, and its receipt. The woven whole is
+  <a href="../weave.html">the weave</a>.</p>
+  <div id="strands"></div>
+  <p class="stationfoot">latest strands · full record: <a href="game-gate/gate/DECLARATIONS.jsonl">DECLARATIONS.jsonl</a></p>
+</div>
+
+<div class="station" id="st-gauges">
+  <h2>5 · The gauges — the shop's own health</h2>
+  <p class="what">Instruments that read these same ledgers and report, in
+  their own words, whether the shop is working — including the ones that
+  report it isn't. A held gauge is waiting on a named open question, and
+  holding is a lawful state here.</p>
+  <div id="gauges"></div>
+  <p class="stationfoot">from the last gate run · the instruments: <a href="game-gate/gate/instruments/index.html">source</a> · independent audits of these mechanics: <a href="audit/index.html">the audits</a></p>
+</div>
+
+<div class="station" id="st-compost">
+  <h2>6 · The compost — the outflow</h2>
+  <p class="what">A shop that only accumulates rots. Removal runs on an
+  enforced schedule (<a href="../house/membrane/04_THE_SUBTRACTION_MEMBRANE.html">the
+  subtraction membrane</a>); everything removed lands here with its cause,
+  and the full original is always kept.</p>
+  <div id="compost"></div>
+  <div id="due" class="stationfoot"></div>
+</div>
+
+<p class="honest">Honesty note: this page is the shop seen through its own
+glass. The levers — admitting, declaring, subtracting — are command-line
+mechanisms that run where the work lives; a web page can watch the ledgers
+but cannot pull a lever, and does not pretend to. The rest of the shop, room
+by room: <a href="tools/index.html">the pipeline</a> ·
+<a href="game-gate/index.html">the gate room</a> ·
+<a href="patterns/index.html">the patterns</a> ·
+<a href="audit/index.html">the audits</a> ·
+<a href="_INTAKE/index.html">the intake</a> ·
+<a href="index_rooms.html">everything else</a>.</p>
 </main>
+<script>
+(async function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const day=ts=>(ts||'').slice(0,10);
+  async function jsonl(path){
+    const r=await fetch(path); if(!r.ok) throw new Error(path);
+    return (await r.text()).split(/\r?\n/).filter(l=>l.trim()&&!l.startsWith('#')).map(l=>{try{return JSON.parse(l)}catch(e){return null}}).filter(Boolean);
+  }
+  function fail(id,msg){$(id).innerHTML='<div class="err">'+esc(msg)+'</div>';}
+
+  try{
+    const marks=(await jsonl('game-gate/gate/MARKS.jsonl')).filter(m=>m.kind==='mark');
+    $('marks').innerHTML=marks.slice(-6).reverse().map(m=>
+      '<div class="entry"><span class="id">'+esc(m.id||'')+'</span> <span class="when">'+day(m.ts)+'</span>'+
+      '<span class="made">'+esc(m.made||'')+'</span></div>').join('');
+  }catch(e){fail('marks','the marks ledger could not be read from here')}
+
+  try{
+    const d=await jsonl('game-gate/gate/DECLARATIONS.jsonl');
+    $('strands').innerHTML=d.slice(-5).reverse().map(s=>
+      '<div class="entry"><span class="id">'+esc(s.a)+'</span> <span class="rel">—[ '+esc(s.rel)+' ]—</span> <span class="id">'+esc(s.b)+'</span> <span class="when">'+day(s.ts)+'</span></div>').join('');
+  }catch(e){fail('strands','the declarations ledger could not be read from here')}
+
+  let ledger=[];
+  try{ledger=await jsonl('game-gate/gate/LEDGER.jsonl');}catch(e){}
+  try{
+    const lastRun=[...ledger].reverse().find(e=>e.kind==='gate-run');
+    if(!lastRun||!lastRun.instruments) throw new Error('no run');
+    $('gauges').innerHTML=lastRun.instruments.map(i=>{
+      const held=i.status!=='pass';
+      return '<div class="gauge"><span class="dot '+(held?'g-held':'g-ok')+'">'+(held?'◇':'●')+'</span>'+
+        '<span class="gid">'+esc(i.id)+'</span><span class="gnote">'+esc(i.note||i.status)+'</span></div>';
+    }).join('')+'<div class="gauge"><span class="dot"></span><span class="gid"></span><span class="gnote">last run '+day(lastRun.ts)+' — '+esc(lastRun.verdict)+'</span></div>';
+  }catch(e){fail('gauges','no gate run is on the ledger yet')}
+
+  try{
+    const c=await jsonl('game-gate/gate/COMPOST.jsonl');
+    $('compost').innerHTML=c.slice(-4).reverse().map(x=>
+      '<div class="entry"><span class="id">'+esc(x.id||x.item||'')+'</span> <span class="when">'+day(x.ts)+'</span>'+
+      '<span class="made">'+esc(x.cause||x.reason||'')+'</span></div>').join('');
+    const lastSub=[...ledger].reverse().find(e=>e.kind==='subtract');
+    if(lastSub){
+      const dueBy=new Date(Date.parse(lastSub.ts)+14*86400000);
+      $('due').innerHTML='last subtraction pass: <span class="due">'+day(lastSub.ts)+'</span> · the gate requires the next by <span class="due">'+dueBy.toISOString().slice(0,10)+'</span> — if it lapses, the gate refuses in the open.';
+    }
+  }catch(e){fail('compost','the compost record could not be read from here')}
+
+  try{
+    const r=await fetch('game-gate/inbox/INDEX.md'); if(!r.ok) throw 0;
+    $('inbox').innerHTML='<div class="entry"><span class="made">Fourteen gift cards from one harvest sit on this bench, with the pipeline that found, carded, and routed them written up beside them. Every card that crossed did so at the gate — station 2 is where you check it.</span></div>';
+  }catch(e){fail('inbox','the inbox index could not be read from here')}
+})();
+</script>
 </body>
 </html>
