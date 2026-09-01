@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Threshold sweep · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/threshold-sweep/index.html">threshold-sweep</a></nav>
+<hr>
+<p>name: threshold-sweep description: For any numeric constant a player's success or a screen's legibility depends on — a hit-radius, a timing window, a drag distance, a hold duration, a darkness/contrast value — sweep it across the real input space instead of placing it by eye, and produce a coverage map, not an opinion. Use before shipping any such constant, or when asked to "sweep this," "did we place this by eye," "check this threshold," or "is this readable/reachable." Absorbs visual/atmospheric tuning (read the actual renders, not the intent). Born from the game-craft lens's Node 1 law — "NEVER PLACE A PHYSICS OBJECTIVE BY EYE" — and a live 2026-08-19 finding that nesi/game2d/seam.js's REACH=900 and ROOT_STEP=0.22 carried forward unswept across two files. Built and registered the same day (tools/sweep_thresholds.js): found a genuine knife-edge in a drag gesture, confirmed one constant's real behavior differs from its own nominal value, and corrected a wrong claim made earlier in the same session by measuring instead of re-asserting it.</p>
+<hr>
+<h1>Threshold sweep</h1>
+<p><em>"His walk found a beacon that was provably unreachable and another reachable within 30px but not within its 19px radius: technically fair, actually cruel."</em> A constant placed by eye reads correctly in the designer's head and fails somewhere in the real input space the designer never actually tried. The failure is invisible to reasoning about the constant and obvious the first time something sweeps the range it will actually be evaluated against.</p>
+<p>This applies to two kinds of constant, by the same procedure: a <b>physics or interaction gate</b> (does this input succeed or fail) and a <b>visual parameter</b> (does this render read as intended). The second is not a separate skill — <em>"TUNE DARKNESS WITH SCREENSHOTS, NOT INTENT... read the pixels, not the plan"</em> is the identical law applied to image-space instead of input-space: sweep the actual range of states it will render under, and read the actual output, not a description of it.</p>
+<h2>The procedure</h2>
+<h3>1. Name the constant and what success means</h3>
+<p>State it as a number with units, and state the pass/fail (or graded) function it gates — not "the timing feels right" but "a hold of ≥X ms opens the sill" or "a click within Ypx of the target counts."</p>
+<h3>2. Name the real input space — not a single test case</h3>
+<p>For an interaction constant: the actual range of positions, velocities, hold-durations, or drag-paths a real hand could produce, not the one clean example that motivated the number. For a visual constant: the actual range of states it will be evaluated under — every time-of-day, every accumulated level, every device/display condition that changes what's on screen — not the one screenshot taken while building it.</p>
+<h3>3. Generate a sweep, not a spot-check</h3>
+<p>Write a script that evaluates the success function (or, for visual constants, produces the actual renders — real screenshots, not a described mockup) across that space, sampled densely enough to find edges, not just midpoints. Output a coverage map: where it holds, where it fails, and how close the nearest failure is to anything a real hand or a real render state would actually land on.</p>
+<p>Register the sweep script wherever this project's existing check suite runs on every pass (the equivalent of this game's <code>check_all.js</code>), the same way <code>organ_audit.js</code> and the other structural instruments are registered there — not left as a standalone script a future session has to remember to re-invoke. A sweep that only ran once, by hand, the day the constant was introduced gives no protection against the next change that moves the input space out from under it.</p>
+<h3>4. Read the actual result — same rule as cold-walk's outside verdict</h3>
+<p>For visual output specifically, hand the actual renders to a reader who wasn't holding the intended mood in their head while building it. "Reads as atmospherically dark" from the person who wrote the darkness value is not evidence; the PNG, looked at cold, is.</p>
+<h3>5. Flag knife-edges explicitly</h3>
+<p>If the map shows the constant is only satisfied within a margin no real input or render state would land on by more than a hair — even if it technically passes — that is a finding, not a pass. Site objectives and thresholds where <em>many</em> solutions clear them, not exactly one.</p>
+<h3>6. For timer/animation-driven constants: control the clock, don't wait on it</h3>
+<p>A constant gated by real elapsed time (<code>performance.now()</code>, <code>setInterval</code>, <code>requestAnimationFrame</code>) doesn't need the sweep to actually sit through real seconds. Monkey-patch the clock and the timer functions the code reads (<code>global.performance = { now: () =&gt; controllableValue }</code>, <code>global.setInterval = (fn) =&gt; { store fn, return a fake id }</code>), then advance the fake clock and invoke the stored callback yourself. This makes a sweep across "smooth 60fps" through "throttled background tab" instantaneous and exact instead of a slow, noisy real-time observation — and it's how a real defect class (a threshold that silently takes 3x longer under throttling) gets caught deterministically rather than by luck.</p>
+<h3>7. Refuse only where the number lies about itself; report everything else</h3>
+<p>A threshold-sweep instrument's standing stops at feel — "should a hold take 300ms or 900ms" is exactly the kind of fork this corpus holds open, the same as any other. What it <em>can</em> refuse on, the same way <code>hand_check</code>/<code>solid_check</code> refuse: whether the constant's <b>measured, real behavior matches its own claimed number</b> — a threshold that claims <code>900</code> but actually fires at a frame-rate-dependent value nowhere near 900 is the surface lying about its own mechanic, this corpus's own named defect class, and that's refusable. Register the instrument as a REPORT-class row in the check suite (like <code>organ_map</code>/<code>organ_audit</code> — exits clean, prints what it found) with a small number of genuine REFUSE-class assertions inside it for the self-consistency checks specifically. Don't make the whole instrument refuse on a feel number; that manufactures authority the skill doesn't have.</p>
+<h2>Ending states</h2>
+<ul><li><b>SWEPT</b> — here is the coverage map, here is where it's safe, here is the narrowest margin found and whether anything real would actually hit it.</li><li><b>UNSWEPT</b> — say so plainly if there wasn't time or the input space couldn't be enumerated yet. An eyeballed number that says nothing about itself is honest; ship it under UNSWEPT, next to its own true label, never beside a green checkmark it hasn't earned.</li></ul>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

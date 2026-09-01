@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GIFT — a rule for the sheet, not a solver · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/game-gate/index.html">game-gate</a> &middot; <a href="../../../workshop/game-gate/inbox/index.html">inbox</a></nav>
+<p><em>Crystallized 2026-08-31 per the commons rule: pattern crosses, instance does not. The working record stays in the source corpus.</em></p>
+<h1>GIFT — a rule for the sheet, not a solver</h1>
+<ul><li><b>pattern:</b> a tension membrane whose shape is a rule, not a simulation: each point of a sampled grid is displaced from the pull by a pure exponential falloff — one <code>exp()</code> per point, no solver, no iteration — and strain is simply the pull's reach. Pull past the reach threshold and the sheet tears; a torn membrane holds nothing. It heals only by elapsed real time, against a persisted timestamp — never while watched, never on demand, and nothing asks you to wait.</li><li><b>source shape:</b> built and finished in a sibling project's station, sibling to the burn station and governed by the same persistence law.</li><li><b>capacity:</b> a cheap, non-physics way to render a responsive, tactile-feeling surface, plus a distinct kind of consequence from a permanent scorch: a temporary but real cost the player cannot rush, because the countdown runs on the wall clock whether or not the page is open. Tension obeyed, not simulated.</li><li><b>why such value goes unrouted:</b> a finished station never crosses a project boundary, and the pattern has a precondition — a surface or connector rendered as sampled points — that the receiving build may not have. Where no consumer exists, the honest disposition is deferral, not inventing a surface to force the gift in.</li><li><b>routing shape:</b> a way in → a surface rendered as sampled points → an act → displace each point by <code>exp(-distance/k)</code> scaled by pull length; past the reach constant, flip a persisted torn state with a close-timestamp → a visible consequence → while torn the surface is inert, and it un-tears only once real time has actually elapsed, even across a reload.</li><li><b>reading:</b> capacity: M · effort: M · confidence: M</li></ul>
+<footer class="pagefoot">Rendered from <a href="gift_2026-08-27_14_rule_for_the_sheet.md">gift_2026-08-27_14_rule_for_the_sheet.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Declared Center · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../house/index.html">house</a> &middot; <a href="../../house/membrane/index.html">membrane</a></nav>
+<h1>The Declared Center</h1>
+<p>There is no such thing as a structureless group — removing the formal center of a project doesn't remove its center; it hides it. This project has a center: one person, called <b>the keeper</b> in these pages, holds specific powers. Rather than claim "no central authority," this document says exactly what the center is, what it cannot do, and how you can check both.</p>
+<h2>What the keeper holds</h2>
+<ol><li><b>The gate.</b> Nothing enters this project or crosses into this public copy except by the keeper's recorded decision. The gate's refusals are enforced in code, and the decisions are quoted verbatim in the record.</li><li><b>The vocabulary.</b> The circuit's canonical terms (carry, hold, route, flow, rest, gap, refusal) and its refusal of debt-language are the keeper's design decisions.</li><li><b>The record.</b> Admissions, publications, and supersessions happen by the keeper's explicitly recorded decision, and only by it.</li></ol>
+<h2>What holding the center does not permit</h2>
+<ul><li>The keeper <b>cannot open, close, or force a route</b> between any two other participants. Routes exist only where both ends consent.</li><li>The keeper <b>cannot read, score, or aggregate</b> another participant's gifts, needs, refusals, or limits. Each person's node is self-authored and self-held.</li><li>The keeper <b>cannot remove anyone.</b> Each participant holds their own node; there is nothing for the center to take.</li><li>The keeper <b>cannot decide another person's judgment</b> of whether something landed as gift or extraction — in the dispute arena or anywhere else. That judgment belongs to the person who bore the cost.</li><li>Authority over the <em>project</em> is not authority over <em>people</em>. The gate governs what this project publishes and binds itself to — never what another participant may do.</li></ul>
+<h2>How to check this</h2>
+<ul><li><b>The gate's record</b> — every admission carries a quoted decision; a decision without a record did not happen.</li><li><b>The data model</b> (<a href="../open-ledger/SCHEMA.sql">SCHEMA.sql</a>) — the declared incapacities (no counterparty, no price, no debt) are structural; a backdoor for the center would have to appear in this public file to exist.</li><li><b>The arena's record</b> (<a href="01_THE_DISPUTE_ARENA.html">the dispute arena</a>) — if the keeper's word is settling disputes outside the gathering, the center has outgrown this declaration, and the record will show it.</li><li><b>This document's own history</b> — it is public and versioned. A silent change to what the center claims would itself violate the project's layering rule (old text kept under new, never erased).</li></ul>
+<h2>If the keeper stops keeping</h2>
+<p>The project has exactly one keeper and does not pretend otherwise. If the keeper stops, the gate closes rather than passing to an unnamed successor. What survives is what was already given away: everything in this repository works standalone, and that — not an inherited center — is the designed continuity.</p>
+<hr>
+<p><b>How to show this wrong:</b> any observed keeper action inside the "does not permit" list falsifies the declaration. The honest response is to record the violation in the open — not to amend the list to fit it.</p>
+<p><em>Record: built 2026-09-01. Any line of it the keeper re-words supersedes this text, by layering. Decision history in the workshop and commit log.</em></p>
+<footer class="pagefoot">Rendered from <a href="02_THE_DECLARED_CENTER.md">02_THE_DECLARED_CENTER.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

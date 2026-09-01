@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lens panel — cheap, on-demand, all five at once · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/lens-panel/index.html">lens-panel</a></nav>
+<hr>
+<p>name: lens-panel description: Fan out the five standing lens agents (buckminster-fuller, stuart-cowan, change-composite, game-craft, nesi) over one piece of material in a single call, instead of the keeper naming each one. Use when asked to "run the lens panel", "read this through all five lenses", "panel this", or when a whole slice/build/decision would benefit from all five perspectives at once rather than one at a time. Read-only — none of the five write, mark, or cross a membrane; routing what they find still goes through the normal gate.</p>
+<hr>
+<h1>Lens panel — cheap, on-demand, all five at once</h1>
+<p>Authorized 2026-08-27, the keeper's mark ("mark all four, let's build them out"), as the resolution of the standing-trigger tension named in <code>nesi/mind/DRAFT_ACTION3_2026-08-27_standing_lens_panel.md</code>: five lens agents exist and are already scoped correctly, but firing them one at a time meant a slice could ship without more than one of them ever reading it. A standing per-slice or per-session <em>automatic</em> trigger was found to risk a Governor reading (findings arriving faster than the keeper can digest them, <code>daily-cycle</code>'s own named failure) before it risks anything else — so that half of the original proposal stays open, pending its own separate mark. <b>This skill is the other half: the cheap half, live now.</b> It doesn't fire itself. It makes firing all five cost one request instead of five.</p>
+<h2>What it does</h2>
+<p>Given a target (a file, a slice, a decision, a piece of material — whatever the invoking session names), spawn the five lens agents <b>in parallel</b>, each given the same target and no knowledge of the others' output:</p>
+<ul><li><code>buckminster-fuller</code> — comprehensive anticipatory design science: tensegrity, vector equilibrium/jitterbug, trim tab, ephemeralization, synergy, the world-game.</li><li><code>stuart-cowan</code> — ecological design, regenerative economics, complex-systems latency, Fuller geometry.</li><li><code>change-composite</code> — the eight-voice executive-and-social-change reading: what the design does to a human being and a social field.</li><li><code>game-craft</code> — loop integrity, feel, teaching-through-play, systemic depth, emergence, restraint, filtered through NESI's own refusals.</li><li><code>nesi</code> — the carriage seat. Carries forward only what the record already holds verbatim; never authors a line. <b>On fresh, unrecorded material she may have nothing to return — a blank read from her is a complete, expected outcome, not a failure of the panel.</b></li></ul>
+<p>Each of the five is read-only by its own hard limits — none can gate a build, write a file, or cross a membrane. This skill does not change that. Whatever any of them finds still goes through the normal gate (inbox, a mark) exactly like any other finding — this skill only cuts the cost of asking all five, it does not shortcut what happens to the answer.</p>
+<h2>How to invoke the five</h2>
+<p>Use the <code>Agent</code> tool, one call per lens, sent in the same message so they run concurrently — this is a normal parallel fan-out, not a <code>Workflow</code> orchestration, and needs no special opt-in. Give each agent the same target material/path and a neutral one-line framing of what's being read; do not tell one lens what another is expected to find.</p>
+<h2>Returning the panel</h2>
+<p>Do not average or rank the five readings against each other — <code>LEARNED.md</code> law 17 (divergence is held, never averaged): where lenses disagree, the disagreement is itself the finding, and it is reported as such, not resolved into a single verdict. Present all five (or four, if <code>nesi</code> came back blank) side by side, each attributed to its own lens, and stop there. This skill selects and arranges the panel; it does not decide anything the panel found.</p>
+<h2>What this is not</h2>
+<p>Not a gate. Not a score. Not a substitute for the keeper's own read — <code>LEARNED.md</code> law 2 still requires a stranger for anything claiming WALKABLE, and none of these five lenses count as that stranger; they are a wider reading, not a verification pass. Not a standing trigger — this skill only runs when someone asks it to.</p>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

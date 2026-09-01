@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARTIFACT GRAMMAR — the definition layer · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../index.html">NESI</a> &middot; <a href="../workshop/index.html">workshop</a></nav>
+<h1>ARTIFACT GRAMMAR — the definition layer</h1>
+<p><b>Drafted:</b> 2026-07-16 · NESI memory-migration step 5 · <b>Status: RATIFIED — the keeper's mark 2026-07-16, "ratify as written." This file is NESI-side authority for vocabulary; questions resolve here first.</b> <b>Why this file exists:</b> Tier 3 of the memory migration found that the artifacts carry the grammar <em>in use</em> (provenance, verdicts, mark-reasoning inline) but never <em>define</em> it. A cold reader sees the pattern working, not the pattern stated. This file is the missing definition layer. It was informed by a live experiment: Copilot was handed the vocabulary key and still drifted four of the load-bearing words the moment its task turned generative — so each definition below carries its observed wrong reading as a negative example. Definitions don't bind when the reader's task turns generative; that is this file's own operating caveat, stated up front.</p>
+<hr>
+<h2>0 · How to read this file</h2>
+<p>Every word here is load-bearing: the system's integrity depends on these words keeping their exact meanings across sessions, engines, and readers. Each entry has three parts — <b>IS</b> (the definition), <b>IS NOT</b> (the observed or likely drift), and <b>IN ARTIFACTS</b> (how the word must appear when used in a document). If you are an AI reading this: your fluency does not license reinterpretation. When in doubt, quote the definition rather than paraphrasing it — paraphrase is where the drift starts.</p>
+<h2>1 · The vocabulary</h2>
+<h3>mark</h3>
+<ul><li><b>IS:</b> a human decision, typed by the keeper. The only thing that ratifies, promotes, deletes, or publishes anything. AI never marks.</li><li><b>IS NOT:</b> <em>"becomes canon"</em> (Copilot's drift). A mark is the human act, not the resulting state change. Material doesn't "get marked" by accumulating machine confidence.</li><li><b>IN ARTIFACTS:</b> every mark is recorded with date + the keeper's words when available ("the keeper's mark: 'compost the other two'"). A document that changed state must show which mark changed it.</li></ul>
+<h3>stage</h3>
+<ul><li><b>IS:</b> to produce output that <em>awaits</em> a mark. All machine work is staging. Staged material is complete, inspectable, and inert until marked.</li><li><b>IS NOT:</b> a soft form of done. Staged ≠ accepted-pending-formality. A staged thing may be composted without ever being read.</li><li><b>IN ARTIFACTS:</b> staged documents say so in their status line ("STAGED — awaiting the keeper's mark") and never describe themselves as decided.</li></ul>
+<h3>cross / the membrane</h3>
+<ul><li><b>IS:</b> the one-way passage between private material and the public-facing library (canon). Crossing is a ceremony the keeper performs; it cannot be queued, batched, or automated. The Membrane Controller holds exclusive write authority at the two crossing points.</li><li><b>IS NOT:</b> <em>"contradiction"</em> (Copilot's drift — it read "cross" as conflict). Crossing is movement through a boundary, not tension between claims.</li><li><b>IN ARTIFACTS:</b> a crossed pattern records its crossing date and the mark that crossed it. Private instances never cross; only the abstracted pattern does ([[feedback_composting_threshold]]).</li></ul>
+<h3>compost</h3>
+<ul><li><b>IS:</b> to retire material with a recorded reason. Nothing is deleted silently; compost leaves a line. Composted material stays on disk as lineage.</li><li><b>IS NOT:</b> failure or erasure. Compost is a normal metabolic outcome — most material should compost. A composted direction can seed a later one.</li><li><b>IN ARTIFACTS:</b> the compost line states the reason in plain words, ideally the keeper's own ("the keeper's one-line falsifier: 'would the keeper actually use this? no.'").</li></ul>
+<h3>HOLD</h3>
+<ul><li><b>IS:</b> a verdict meaning "not yet, <b>and here is the named condition that would change it</b>." The condition is mandatory — a HOLD without a re-screen condition is just procrastination with a label.</li><li><b>IS NOT:</b> <em>"felt-sense of safety"</em> (Copilot's drift — it collapsed HOLD into <em>holding</em>, the machine's care function). HOLD the verdict and holding the function share a root deliberately, but the verdict is a routing decision, not an embrace.</li><li><b>IN ARTIFACTS:</b> every HOLD carries its condition inline: "HELD — aspirational until a real workshop→scaffold rebuild is observed."</li></ul>
+<h3>uncross <em>(fourth verb — ratified 2026-07-19, the keeper's mark: "keep undo, update the rules")</em></h3>
+<ul><li><b>IS:</b> the keeper's one-motion rollback of a mistaken cross — the pattern folds to <code>patterns/_folded/</code> (kept, never deleted), the index rebuilds sync-loud or the fold reverts, and the ledger records <code>uncross</code>. The keeper-only, like every mark.</li><li><b>IS NOT:</b> an automatic or engine-initiated reversal, a soft delete, or "contradiction." It fires only on the keeper's touch, only on a crossed object, and leaves the full trail.</li><li><b>IN ARTIFACTS:</b> an uncrossed pattern's record shows both events — the cross and the uncross, dated — never a silently vanished entry. A ledger line reading <code>correction</code> is an <b>annotation</b>, not a mark: it names a discrepancy on the page (per rule 4 below) and no code acts on it.</li></ul>
+<h3>canon / patterns/ / the lint</h3>
+<ul><li><b>IS:</b> the library of ~90 ratified, transferable patterns — the flat reference surface all new work is checked against. The keeper's figure: a machinist's flat table, precision overbuilt in, that other tools get built and checked against.</li><li><b>IS NOT:</b> <em>"ruleset"</em> (Copilot's drift). The lint doesn't command; it <em>references</em>. New work is screened against it for coherence, not compliance.</li><li><b>IN ARTIFACTS:</b> cite patterns by filename (<code>patterns/anatomy_is_not_the_cockpit.md</code>). A claim screened against canon says which patterns it touched.</li></ul>
+<h3>the gate</h3>
+<ul><li><b>IS:</b> the queue of staged items awaiting the keeper's marks, plus its data file (<code>gate/data/gate_data.json</code>). The gate is human-only territory: no approve button, no auto-mark, ever.</li><li><b>IS NOT:</b> a task list or a pipeline stage. Items don't age out, escalate, or auto-apply.</li><li><b>IN ARTIFACTS:</b> deltas are staged <em>to</em> the gate as files; the GHOST-GATE rule requires reconciling gate/pending against patterns/ so no delta bypasses unstamped.</li></ul>
+<h3>felt-read</h3>
+<ul><li><b>IS:</b> a somatic yes/no the keeper performs. Deliberately not automatable. Instruments exist to <em>prompt</em> it (body-question composer, mark-record's field 5); none exist to <em>pass</em> it, simulate it, or infer it.</li><li><b>IS NOT:</b> sentiment, mood, or confidence. Any system that writes, paraphrases, or scores a felt-read has violated the grammar at its root ([[feedback_body_read_is_his]]: slots exist silently; blank = complete).</li><li><b>IN ARTIFACTS:</b> the felt-read field appears blank unless the keeper filled it. A blank field is a complete record, not a missing one.</li></ul>
+<h3>organ</h3>
+<ul><li><b>IS:</b> a named function of the system — metabolizer (sorts raw piles into dispositions), substrate (extracts patterns from writing), Converger (routes promote/hold/compost), Governor (the brake on the keeper's own overwork), daily-cycle (session open/close ritual), and peers. Organs are anatomy.</li><li><b>IS NOT:</b> a menu item. Anatomy is not the cockpit (<code>patterns/anatomy_is_not_the_cockpit.md</code>): the seven constitutional organs and the daily interface are different layers, many-to-many, never rendered 1:1.</li><li><b>IN ARTIFACTS:</b> organ names are lowercase working words, not product names. An artifact produced by an organ names the organ and its mode.</li></ul>
+<h3>the tetrahedron</h3>
+<ul><li><b>IS:</b> the development protocol — four agents with opposed jobs (Grounder holds what's real · Dreamer reaches · Governor cuts · Shaper forms) coupled by six stated tensions, with a separate synthesis step at the center. The meaning-compression engine: what survives four opposed constraints is dense and drift-resistant.</li><li><b>IS NOT:</b> a review checklist or a brainstorm-then-edit pass. Running only two vertices (screen + break-test) is a collapsed cycle — the standing rule is full tetrahedron for development chains, and the missing Dreamer is exactly how the geometry itself once went missing.</li><li><b>IN ARTIFACTS:</b> a tetrahedral product records which vertices ran, the cuts the Governor made, and carries a cycle identity. Survivors are listed as survivors, cuts as cuts — the artifact shows the compression, not just the residue.</li></ul>
+<h2>2 · The artifact rules (grammar-in-use, made explicit)</h2>
+<p>Any document produced inside this system must carry:</p>
+<ol><li><b>Status line</b> — one of: DRAFT / STAGED / HELD (+condition) / RATIFIED (+mark date) / COMPOSTED (+reason) / lineage-only. Near the top, dated.</li><li><b>Provenance</b> — what produced it (session, organ, chain, commission) and what it was produced <em>from</em>.</li><li><b>Mark-reasoning inline</b> — when a mark changed this document's state, the mark's date and (when available) the keeper's words appear at the point of change, not in a separate log.</li><li><b>Verdicts with conditions</b> — every HOLD names its re-screen condition; every compost names its reason; every correction stays on the page struck-through or noted, never silently overwritten ("discrepancy named, not smoothed").</li><li><b>Falsifiers where claims live</b> — a document making a structural claim states what observation would break it.</li><li><b>No self-ratification</b> — no artifact may describe itself as canon, ratified, or decided by virtue of its own coherence. Fluency is not authority (constitutional law #2).</li></ol>
+<h2>3 · The transmission caveat (this file's own falsifier)</h2>
+<p>The Copilot experiment showed that definitions do not bind a reader whose task has turned generative — it rewrote the spec with the dictionary in its hand. So this file's claim is deliberately modest: it makes drift <b>detectable and correctable</b>, not impossible. The check is mechanical: when an artifact or a return uses a load-bearing word, compare its usage against the IS/IS NOT lines here. Wrong-guess-with-key-in-hand is the signal that matters (the sharpened vocabulary ask from spec v1.1).</p>
+<p><b>Falsifier for this file:</b> if new artifacts stop carrying provenance, verdicts, and mark-reasoning after an engine swap, this grammar failed to transmit the habit — that outcome is already named in the migration doc as failure mode 3, and it would mean this file needs to become enforcement (harness-level), not documentation.</p>
+<hr>
+<p><em>Ratified as written, the keeper's mark 2026-07-16. This file stands with PROTOCOLS.md and reflexes.md as NESI-side authority; future vocabulary questions resolve here first. Amendments enter the way this did: drafted, then marked.</em></p>
+<footer class="pagefoot">Rendered from <a href="ARTIFACT_GRAMMAR.md">ARTIFACT_GRAMMAR.md</a> · <a href="../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

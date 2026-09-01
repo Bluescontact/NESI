@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marks/ — the mark record · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../house/index.html">house</a> &middot; <a href="../../house/starters/index.html">starters</a></nav>
+<h1>marks/ — the mark record</h1>
+<p><em>The canon's most important events are its least documented. A mark leaves an outcome — a pattern promoted, a direction taken, a situation composted — but no trace of the <b>read</b>: how it landed, in what condition the body was, what it actually felt like to know. This directory holds that trace. One file per mark.</em></p>
+<hr>
+<h2>What a mark record is</h2>
+<p>A mark is a felt-read that closed: a yes, a no, a compost, a hold — made off-panel, from the body, cold. The gate (<code>gate/</code>) records the <em>outcome</em>. This records the <em>read</em>. Five fields and one line:</p>
+<ol><li><b>date</b> — when the read happened.</li><li><b>item</b> — what was read.</li><li><b>disposition</b> — what the body did (ratified / refused / composted / held / direction-marked).</li><li><b>conditions of the read</b> — cold or hot · rested or pushed · on-screen or off. The texture that decides whether a mark is trustworthy.</li><li><b>the line</b> — <em>one line, in your words, from the body.</em> Even if the line is "it just landed." Especially then.</li></ol>
+<p>That's the whole format. Use <a href="_TEMPLATE.html"><code>_TEMPLATE.md</code></a>.</p>
+<hr>
+<h2>The hard constraint — written into the format, non-negotiable</h2>
+<p><b>This is a log, never an instrument.</b></p>
+<ul><li><b>No scoring.</b> A mark is not rated. There is no number on a felt-read.</li><li><b>No patterns-across-marks.</b> Nobody — no human, no AI, ever — runs analysis across these files looking for "how the keeper's marks trend." The moment marks become a dataset to model, the body has been turned into a thing to predict, and the origin has been measured from outside itself. That is the one move the whole framework forbids (<code>witness_as_origin</code>; the gate's <b>DISPLACED-ZERO</b> law).</li><li><b>No AI summarization of the body's reasons.</b> An AI may provide the empty slot and the prompt. It may <em>never</em> write, paraphrase, infer, or "clean up" the line in field 5. The line is yours or it is blank.</li><li><b>The displaced-zero guard applies to retrospect as much as to prediction.</b> It is as forbidden to mine the past marks for a decision rule as it is to let a tool decide a future one. Looking backward does not exempt the move.</li></ul>
+<p>If a use of this directory ever produces a score, a trend, a model, or an AI-written body-line, it has stopped being a log and become the forbidden instrument. Stop.</p>
+<hr>
+<h2>Reserved zero</h2>
+<p><b>Every entry's line is written by you or not at all.</b> The skill (<code>skills/mark-record</code>) provides the slot and the prompt — nothing else. It cannot fill field 5. A record with a blank line is a complete, honest record (the read happened; the words haven't been set down). A record with an AI-written line is a corruption of the only field that matters.</p>
+<hr>
+<h2>The reconstructions</h2>
+<p>Four marks were already made before this directory existed (<code>consented_ledger</code>, the v5 direction, <code>witness_as_origin</code>, the Kennatha threshold). They are backfilled here <b>as reconstructions, flagged as such</b> — the outward fields (date / item / disposition / conditions) rebuilt from the existing record, each flag marked <code>[reconstructed]</code> or <code>[inferred]</code>. <b>Their field-5 lines are left reserved</b>, because a reconstruction has no body to speak from. Only you can fill them, and only if you choose; otherwise they stand honestly blank. A reconstruction is scaffolding, not a mark — it never pretends to be your voice.</p>
+<hr>
+<h2>What this buys (and what it doesn't)</h2>
+<ul><li>The <b><code>reserved_zero</code> cardinality pass</b> gets real data on how a mark actually happens, instead of speculation.</li><li>A <b>future second sensor</b> (out-of-family model, or a human) can read <em>how ratification works here</em> — the conditions, the texture — not just the outputs.</li><li>A <b>successor or MESH node</b> inherits the feel of the gate, not only its verdicts.</li></ul>
+<p>It does <b>not</b> make the gate transferable. The read still dies with the body that does it. This records the texture so the texture isn't lost; it does not let anyone else do the reading. That limit is the point, not a shortfall.</p>
+<hr>
+<p><em>A log of how the body knew. Written by the body or left blank. Never scored, never modeled, never summarized. The reaching is not the mark — and the record of the mark is not the mark either.</em></p>
+<footer class="pagefoot">Rendered from <a href="README.md">README.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

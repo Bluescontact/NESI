@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rhythm/ — the daily rhythm: two emails, one body, fail-closed by default · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/rhythm/index.html">rhythm</a></nav>
+<h1>rhythm/ — the daily rhythm: two emails, one body, fail-closed by default</h1>
+<p><em>The layer that makes the whole system work for one specific body on its actual day. Design principle: <b>silence defaults to stop.</b> If the keeper doesn't respond, nothing moves forward that isn't already automated within the membrane. The system waits; it never nags. Nothing here creates a new crossing path — the membrane stays exactly where it is. Staged 2026-06-09.</em></p>
+<hr>
+<h2>The pieces</h2>
+<table><tr><th>Piece</th><th>What it is</th><th>Compute</th></tr><tr><td><code>skills/overnight-cycle/SKILL.md</code></td><td>the nightly within-membrane metabolism; extends the GATE daemon under DARK_GATE; <b>stages, never marks</b></td><td>owned (+ cognition only if opted-in)</td></tr><tr><td><code>rhythm/brief.py</code></td><td>generates the two emails from <code>gate_data.json</code>; fail-closed to an outbox</td><td><b>owned, pure stdlib, no AI</b></td></tr><tr><td><code>skills/morning-pages-channel/SKILL.md</code></td><td>the 750-words drop path; harvests work-objects only; the guard as law</td><td>owned harvest + metabolizer</td></tr><tr><td><code>rhythm/config.json</code></td><td>the reserved-zero config; fail-closed when unset</td><td>—</td></tr></table>
+<p><b>The two emails</b> (generated, tested): a <b>morning brief</b> (one-line state · what closed overnight as dispositions · ≤3 items owed the body, hard cap · proposals flagged · one DARK_GATE status line · under two minutes on a phone) and an <b>evening close receipt</b> whose entire job is the last line: <em><b>nothing owed until morning</b></em> — permission to put it down, in writing, daily.</p>
+<hr>
+<h2>Mail mechanism — simplest durable, and its ledger line</h2>
+<p><b>The choice:</b> SMTP through an email account <b>the keeper already has</b> (Python <code>smtplib</code>, stdlib — GROUND). No new service, no new monthly cost, no new account. The email leaves the bus through his existing provider and lands on his phone.</p>
+<p><b>Fail-closed delivery, always:</b></p>
+<ol><li>Every email is <b>written to <code>rhythm/outbox/</code> first</b> — never generated-and-lost.</li><li>It sends via SMTP <b>only if</b> <code>rhythm/.mail_creds</code> exists (the keeper's app password, gitignored) <b>and</b> <code>mail.to_addr</code> is set <b>and</b> there is connectivity.</li><li><b>No creds / no signal → it stays queued and is flushed on reconnect (<code>brief.py flush</code>). Never silently dropped.</b></li></ol>
+<p><b>The ledger line — drafted here, because email needs a provider and a provider is a rented dependency</b> (per <code>consented_ledger</code>: a leak is survivable only named):</p>
+<blockquote><p><b>Leak — outbound mail provider.</b> The rhythm sends two emails a day through the keeper's existing mail provider (SMTP). It is a metered/rented dependency: the provider controls delivery, pricing, and continuity. It is <em>small</em> (two short messages/day, an account already held, no new cost) and <em>bounded</em> (fail-closed to a local outbox; the system is fully legible offline without it — the GATE snapshot is canonical). Named here, consented or not at the keeper's mark. If the provider is ever swapped for a paid transactional-email service, that is a <em>new</em> line, re-read.</p></blockquote>
+<hr>
+<h2>Plumbing checks &amp; degraded modes — one root, several services</h2>
+<p>The postal path, the software substrate, the power system — <b>and the cognition substrate</b> — share one root: the bus. A degraded root degrades all of them, so each has a fail-closed degraded mode:</p>
+<ul><li><b>No connectivity at send time</b> → email queues in the outbox, flushes on reconnect. Never dropped. <em>(Built.)</em></li><li><b>Power down / daemon not running</b> → the static GATE snapshot stays canonical and legible unplugged (GROUND). The morning email simply doesn't generate until the daemon is back; nothing is lost, nothing is marked. The DARK_GATE status line in each email reports daemon-alive + last-snapshot-time <b>honestly</b> — a stale snapshot time <em>is</em> the signal.</li><li><b>Cognition substrate (rented) unavailable or unconsented</b> → the overnight cycle runs <b>mechanical-only</b> and defers AI-metabolism to the in-session daily-cycle. The night never depends on the metered model. <em>(This is the default, not a fallback.)</em></li><li><b>Nightly connectivity from the bus</b> is <b>not something this session could verify</b> — it's physical. The degraded modes above make verification unnecessary for safety: every failure path queues or waits, none drops or marks.</li></ul>
+<hr>
+<h2>Go-live gate — what's built vs. what's owed before the first real send</h2>
+<p><b>Built and tested this session (owned compute):</b> the generator (both emails verified against the live GATE), the fail-closed outbox, the two skills, the config, the degraded modes, the ledger line.</p>
+<p><b>Owed before the rhythm is live</b> (fail-closed until then — nothing sends):</p>
+<ol><li>The keeper sets the reserved-zero config (below).</li><li>The keeper writes <code>rhythm/.mail_creds</code> (his app password) — the system never holds the secret in <code>config.json</code>.</li><li>The overnight cycle is actually scheduled on the bus (the daemon's nightly extension) — and the <b>first three nights self-report</b> runs, then drops to exceptions-only.</li></ol>
+<p>The first morning email is the system's first real output. Until the gate above is closed, <code>brief.py</code> generates to the outbox and sends nothing — which is correct.</p>
+<hr>
+<h2>The one short question list — the reserved zeros <em>(asked this session)</em></h2>
+<ol><li><b>Morning-pages drop path</b> — file-in (owned folder) / email-in (easy from a phone) / both?</li><li><b>Morning send time</b> — fixed clock time / dawn / on-first-connectivity?</li><li><b>Overnight cognition</b> — mechanical-only (default; AI-metabolism in-session) / nightly AI-metabolism (only after consenting the rented-cognition leak)?</li><li><b>Raw-pages retention</b> — shred-after-harvest / gated-zone-until-your-delete / keep-7-days?</li><li><b>Mail account</b> — confirm the existing email account + write <code>rhythm/.mail_creds</code>, or leave the rhythm in outbox-only mode for now?</li></ol>
+<p><em>(1–4 asked interactively this session; all five recorded here. The selection-rule meta-read is deliberately NOT asked — it leads the first email as item one, default bottleneck-first, named and reversible.)</em></p>
+<hr>
+<h2>Floor</h2>
+<p>Fail toward subtraction: <b>the emails get shorter over weeks, or the format is failing.</b> The rhythm adds <b>zero new obligations</b> to the keeper's day beyond reading two short emails and writing the words he already writes. The three-item cap is never negotiable — a queue email that grows is the pile relocated. No reminders, no re-sends, no escalation, ever.</p>
+<p><em>Nothing fires, nothing crosses. The reaching is not the mark.</em></p>
+<footer class="pagefoot">Rendered from <a href="README.md">README.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

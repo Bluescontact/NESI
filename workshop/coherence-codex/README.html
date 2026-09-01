@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Coherence Codex · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/coherence-codex/index.html">coherence-codex</a></nav>
+<h1>The Coherence Codex</h1>
+<p><b>4 · 6 · 4 · 1</b> — four capacities, six relationships, four failure modes, one system.</p>
+<p>A deployable governance stack for repositories, communities, and agent swarms, compiled from the Architecture of Coherence v2.0. This is not a set of rules to be policed; it is source code to be compiled.</p>
+<p><em>The Gift is the persistence of the pattern. Use freely. Adapt as needed.</em></p>
+<hr>
+<h2>What this is</h2>
+<p>A coordination system — a partnership, a crew, a cooperative, an open-source project, a multi-agent swarm — requires four capacities, all present at the same time. Remove any one and the system collapses into a specific, predictable failure mode. This codex packages that diagnostic geometry as infrastructure you can drop into a repo or a community and operate without its authors.</p>
+<p>The claim is falsifiable, the limits are stated as information, and the full theoretical grounding lives elsewhere (see <b>Lineage</b> below). You do not need the theory to use the stack.</p>
+<h2>Entry points, by depth</h2>
+<table><tr><th>Depth</th><th>Artifact</th><th>Time to use</th></tr><tr><td>Seed</td><td>The signature: <code>4 · 6 · 4 · 1</code></td><td>5 seconds</td></tr><tr><td>Diagnostic</td><td><a href="codex/01-diagnostic-ledger.html"><code>codex/01-diagnostic-ledger.md</code></a> — four field signs, six questions</td><td>10 minutes</td></tr><tr><td>Protocol</td><td><a href="codex/02-translation-protocol.html"><code>codex/02-translation-protocol.md</code></a> — the 12-week sequence</td><td>12 weeks</td></tr><tr><td>Physics</td><td><a href="codex/03-geometric-invariants.html"><code>codex/03-geometric-invariants.md</code></a> — why it works</td><td>20 minutes</td></tr><tr><td>Canon</td><td><a href="INVARIANT.html"><code>INVARIANT.md</code></a> + <a href="GLOSSARY.html"><code>GLOSSARY.md</code></a> — the consistency anchor</td><td>reference</td></tr></table>
+<p>Each layer is self-contained and true at its depth. A system that adopts only the diagnostic ledger has received something true. Neither layer is incomplete — they are different depths of the same pattern.</p>
+<h2>Deploying the stack</h2>
+<p><b>Into a repository or community:</b></p>
+<ol><li>Copy <a href="deploy/CONTRIBUTING.template.html"><code>deploy/CONTRIBUTING.template.md</code></a> into your project and adapt the bracketed sections. It establishes the two non-negotiables: the <b>Right of Exit</b> and the <b>Protocol for Dissent</b>.</li><li>Copy <a href="deploy/issue-templates/"><code>deploy/issue-templates/</code></a> into your issue tracker. The diagnostic-report template turns the field-sign table into a triage instrument; the drift-log template gives the system a place to name its own drift without moralizing.</li><li>Run the <a href="codex/02-translation-protocol.html">Translation Protocol</a> in phase order. Do not skip phases — skipping produces the predicted failures (circulation without identity → Dissolved; infrastructure without consent → extraction; deployment without legible limits → sprawl).</li></ol>
+<p><b>Into an AI agent or swarm:</b></p>
+<p>Paste <a href="deploy/agent-invariant.html"><code>deploy/agent-invariant.md</code></a> into the agent's system context. It carries the geometry, the propagation law, the four self-check questions, and the drift watch in a form an agent can self-audit against.</p>
+<h2>The test that matters</h2>
+<p>The stack has one success metric, stated in <a href="codex/02-translation-protocol.html"><code>codex/02-translation-protocol.md</code></a>:</p>
+<blockquote><p><b>The system keeps operating coherently when the most active pioneer steps away for 14 days.</b></p></blockquote>
+<p>If the knowledge to run the system exists only in people's heads, the system is a cult. If it exists in the environment, it is a civilization.</p>
+<h2>The return channel</h2>
+<p>This codex is offered as a gift, and the gift moves <b>forward</b> — you owe its authors nothing. But the framework it compiles from is itself under test, and its weakest documented edge is exactly this one: whether it circulates in substrates its authors did not build.</p>
+<p>If you deploy the stack, <a href="deploy/issue-templates/adoption-report.html"><code>deploy/issue-templates/adoption-report.md</code></a> is a five-minute report: did the 14-day test pass, and — more valuable — <b>what did the framework miss?</b> A report of failure or mis-fit is worth more than a report of success. File it against this repo or send it to the address in the template. This is voluntary. The license does not require it. The pattern benefits from it.</p>
+<h2>Adapting</h2>
+<ul><li><b>Use freely.</b> Do not seek permission to apply these geometries to your work.</li><li><b>Adapt as needed.</b> The geometry establishes the <em>number</em> of relationships; their content is assigned, not derived. If the physics of your domain requires a different mapping, update the stack — domain-specific remapping is expected, not heresy.</li><li><b>Utility proves value.</b> If the architecture does not reduce friction or increase coherence, discard the map and return to the somatic sense of the ground.</li></ul>
+<h2>Lineage</h2>
+<p>Compiled from <b>The Architecture of Coherence v2.0</b> (the keeper), Appendix A: The Succession Codex, plus the Invariant and Glossary reference. The full manuscript carries the theoretical grounding, the transdisciplinary correspondence ledger, the falsification record, and the framework's own self-diagnostic. The companion <b>Field Guide</b> is the human-practitioner layer; the <b>academic paper</b> is the theorist layer. All conform to Invariant v2.0 (see <a href="VERSION"><code>VERSION</code></a>).</p>
+<h2>License</h2>
+<p><a href="LICENSE">CC0 1.0 Universal</a> — dedicated to the public domain. The gift carries no return address.</p>
+<hr>
+<p><em>Let the infrastructure carry the pattern so the humans can return to recognizing one another.</em></p>
+<footer class="pagefoot">Rendered from <a href="README.md">README.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

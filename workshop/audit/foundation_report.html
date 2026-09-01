@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NESI.exe — Phase 4 · THE FOUNDATION AUDIT · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/audit/index.html">audit</a></nav>
+<h1>NESI.exe — Phase 4 · THE FOUNDATION AUDIT</h1>
+<p><b>STATUS: run 2026-07-26, the keeper's mark ("run Phase 4's foundation audit now"). Verification pass per <code>_INTAKE/NESI_EXE_PLAN_2026-07-25.md</code> — "check each of the six organs, the two-state model, and the tetra-body: does each hold the law it claims?" A verify pass, not new construction. No dependency blocked this — Phase 4 has no listed gate in the plan's dependency map.</b></p>
+<p>The law being checked against everywhere below (canon): <b>the mechanic never does the recognizing</b> — no code path may produce a worth/value/skill number, rank, or verdict about the player.</p>
+<hr>
+<h2>1 · THE SIX ORGANS</h2>
+<p>Defined in <code>_INTAKE/nesi_vision_arc_2026-07-24.md</code> §1–2, restated as the tetra-body's six edges in <code>_INTAKE/TETRA_BODY_the_minimal_rigid_cell_2026-07-24.md</code>: player-surface · convener · SOIL · HEARTWOOD · circulation-witness · continuation.</p>
+<table><tr><th>Organ</th><th>File</th><th>Verdict</th></tr><tr><td><b>HEARTWOOD</b></td><td><code>nesi/conductor/heartwood.py</code></td><td><b>CONFIRMED.</b> Read in full: <code>gather()</code> derives live from <code>patterns/*.md</code> + <code>MARKS_LOG.jsonl</code>, stores nothing. <code>render_svg</code>/<code>render_html</code>/<code>draw_on_canvas</code> emit only ring counts, leaf counts, a mark string — no numeric field about the keeper anywhere.</td></tr><tr><td><b>SOIL</b></td><td><code>nesi/conductor/soil.py</code></td><td><b>CONFIRMED.</b> <code>compost()</code> builds a record with only <code>status/source/from/text/composted_at</code>. Line-level comment: "no score/worth/rank field, by construction." The file's own self-test asserts <code>not any(k in s for k in ("score","rank","worth"))</code>. <code>admit()</code> correctly gates external drops behind <code>keeper_mark</code>.</td></tr><tr><td><b>player-surface</b></td><td><code>_INTAKE/SPEC_the_player_surface_2026-07-24.md</code></td><td><b>PROBLEM (gap, not violation): spec only, no code.</b> A staged 9-field spec, explicitly "engine-dark," never built.</td></tr><tr><td><b>convener</b></td><td>—</td><td><b>PROBLEM (gap): no implementation.</b> Grepped all of <code>nesi/</code> — no file, no function.</td></tr><tr><td><b>circulation-witness</b></td><td>—</td><td><b>PROBLEM (gap): no implementation.</b> Same.</td></tr><tr><td><b>continuation</b></td><td>—</td><td><b>PROBLEM (gap): no implementation.</b> Same.</td></tr></table>
+<p><b>Bottom line on the six:</b> 2 of 6 are real, code-confirmed, and clean against the law. The other 4 exist only as prose/spec — the vision-arc document itself already calls these "surfaced, unmarked — dreamt," so this is an honest, already-flagged gap, not a newly-discovered contradiction.</p>
+<hr>
+<h2>2 · THE TWO-STATE MODEL</h2>
+<p>Defined in <code>_INTAKE/TWO_STATE_vector_equilibrium_and_the_jitterbug_2026-07-24.md</code> (VE-at-rest ↔ jitterbug motion ↔ rigid tetra-under-load).</p>
+<p><b>STILL-HOLDS-BUT-PARTIALLY-VERIFIED.</b> The geometry itself is genuinely math-checked in <code>nesi/mind/NESI_VE_TWELVE_ORGANS.md</code>: the cuboctahedron's basic facts (12 vertices, 24 edges, 8△+6□) verified directly; the full order-24 symmetry group kills all internal flex to zero, while the order-12 chiral-tetrahedral subgroup has a real nonzero flex (norm≈1.15) — this is the confirmed jitterbug mode, replacing an earlier wrong claim via an honest in-document correction; the tetrahedron-edge-midpoints = octahedron-vertices identity is an exact coordinate check.</p>
+<p>What is NOT verified: which named organ sits at which vertex/edge (HEARTWOOD, SOIL, etc.) is explicitly flagged in the source as "a felt-read... not yet either" — asserted by analogy, not derived from the math. <b>The geometry is verified; the identification of that geometry with the six specific organs is interpretive, not verified.</b></p>
+<hr>
+<h2>3 · THE TETRA-BODY</h2>
+<p>Defined in <code>_INTAKE/TETRA_BODY_the_minimal_rigid_cell_2026-07-24.md</code>; the spine restates it as "six organs = six edges of the minimal rigid cell."</p>
+<p><b>STILL-HOLDS-BUT-UNCHECKED as a claim about NESI; would be a PROBLEM only if read as "checked against code."</b> It's an abstract structural/topological argument (four points, six connections, minimum to stand rigid in 3D) — true as graph theory. The source document itself states plainly that "the labels (poles, organ→edge mapping, Canopy placement) are held for separate marks — not settled." It has never been checked against the six organs' actual code, because four of those six don't exist as code (§1). Its own author is honest that the organ-to-vertex naming is felt-read, not derivation.</p>
+<hr>
+<h2>Bottom line</h2>
+<p>HEARTWOOD and SOIL hold the recognition law with clean, direct code evidence — the foundation under those two is sound. The other four named organs are real gaps: documentation and spec, not yet built. The two-state model's geometry is genuinely verified math; its mapping onto the six organs is asserted. The tetra-body is a coherent, self-consistent geometric narrative that has never claimed to be more than that — and correctly says so in its own text. Nothing here contradicts what any of the three source documents already say about themselves; this pass confirms their honesty rather than exposing a hidden problem.</p>
+<p><b>What this changes for Phase 3 (the mechanism):</b> the KEYSTONE fork (pulse vs. board) can be marked on the strength of the verified geometry in <code>NESI_VE_TWELVE_ORGANS.md</code> — that part is real. But building the mechanism as if all six organs and their vertex-placement were equally solid would be building on documentation as if it were code. If Phase 3 needs convener/circulation-witness/continuation specifically, those are unbuilt, not just unverified.</p>
+<footer class="pagefoot">Rendered from <a href="foundation_report.md">foundation_report.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

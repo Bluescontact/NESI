@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mirror Audit — NESI public deposit (second pass, @ aaabc46) · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/audit/index.html">audit</a></nav>
+<h1>Mirror Audit — NESI public deposit (second pass, @ aaabc46)</h1>
+<p>Deep Review, follow-up to <code>MIRROR_AUDIT_2026-09-01.md</code> (that report's entries stand where the mechanic is unchanged; this report covers what moved and what is new). Single-operator system; per the missing-middle rule that clears nothing — the cash question governs every entry.</p>
+<hr>
+<h2>A · The prior findings, re-verified against source</h2>
+<h3>A1 · The sentence tally (prior entry 1, DECORATES)</h3>
+<p><code>game/index.html:756–764</code>. <b>Removed at source.</b> <code>hintText()</code> now returns only the persist-failure warning or the placement note; the count is gone, and the removal carries the audit citation in a comment. Residual mechanic: none — the surviving line is a failure channel, which was the real work all along. Finding closed.</p>
+<h3>A2 · The crystal-degree tally with the twelve-around-the-VE target (prior entry 15, DECORATES)</h3>
+<p><code>weave.html</code>, comment block after the strands. <b>Removed at source.</b> The display is gone; the comment states the degrees "remain derivable from gate/DECLARATIONS.jsonl by a deliberate query." Residual: the data still exists, but a number you must run a query to see is not a displayed target — this matches the open-ledger standard the prior audit held up (make the number unwritable/unreadable at the surface, don't disclaim it). The VE hypothesis itself is now an OPEN entry in HELD.md with its no-aiming condition stated. Finding closed; the hypothesis stays watchable there, not here.</p>
+<h3>A3 · The three standing numeric displays (day-header count, N/12 seated, of-12/of-24 note)</h3>
+<p>Confirmed absent from <code>game/index.html</code> (no "/12", "of 24", "of 8" strings survive; the world SVG keeps only a non-counting aria-label). Residual mechanics: <b>one</b> — the categories-ground stat cards' closing note at <code>game/index.html:2239</code> ("Read these as what they are: a count, not a verdict") still ships a set of counts neutralized by prose. It was never separately verdicted; it is now the last surviving instance of the disclaimed-tally pattern. As a lone instance: jurisdiction keeper; reduction: descriptive stats, no target, no accumulation toward anything; cash: the player's own curiosity; giraffe: absorbed (nothing scores). <b>Verdict: TRANSFORMS</b>, narrowly — but it is the pattern's remnant and is named again in the closing.</p>
+<h3>A4 · The four prior BOUNDARY items — forks checked, none closed</h3>
+<ul><li><b>The burn</b> (<code>OVERREAD_AT = 5</code>, :726–730, dwell handler ~:1239): unchanged; no fuller station exists; nothing reads overread counts. Fork open. <b>BOUNDARY stands.</b></li><li><b>The justarrived flash</b> (:120, :178, :1201): unchanged. <b>BOUNDARY stands.</b></li><li><b>06-landed vs. 05-subtract held</b>: fork NOT closed and drifting further. Latest gate-run (2026-09-01T20:10) reads <code>"129 admitted in 30d"</code> (was 126); 05-subtract still reports <b>"0 subtraction pass(es) are on record"</b>; STANDING.json still holds it as candidate. Six gate-runs logged on 2026-09-01 alone, resuming the self-logging silt the compaction receipt once composted. <b>BOUNDARY stands, facts still moving toward the DECORATES condition the prior audit named.</b></li><li><b>KEYS.txt compliance keys</b>: file unchanged, four count-shaped keys, 03-blanks still held ("blank assertion is not installed"). Fork open. <b>BOUNDARY stands.</b></li><li>New in the ledger since: <b>09-dispute</b> (held, "1 dispute(s) on record, 0 still open," fork "what a dispute is allowed to change"). No enforcement, no display, no player surface. <b>BOUNDARY</b> — re-run when its fork closes.</li></ul>
+<hr>
+<h2>B · New surfaces</h2>
+<h3>B1 · HELD.md — the CLOSED / OPEN register</h3>
+<ul><li><b>Jurisdiction:</b> imposed by the keeper on the deposit's own claims; metric owner: the keeper; readers: the public.</li><li><b>Reduction:</b> state labels, not tallies. No count, no bar, no percentage; CLOSED entries carry the decision and the keeper's quoted instruction; OPEN entries carry the condition that would close them — a HOLD-with-named-condition, the Converger's own lawful state, not a to-do list.</li><li><b>Cash:</b> the reader's orientation about what the deposit does and does not claim. Nothing aggregates entries.</li><li><b>Giraffe:</b> propose a whimsical held item ("HELD — whether a giraffe fits through the membrane"). The register's grammar absorbs it: it needs only a named condition, and it can sit open forever without penalty; closure is a decision, not a win.</li><li><b>Verdict: TRANSFORMS.</b> One observation on the record, not a verdict: all five CLOSED entries were held and resolved the same day, on the same-day instruction — a "held" state whose median lifetime is hours functions as a build log wearing a register's clothes. If that tempo continues, CLOSED becomes a completion feed; today it is one day's honest record.</li></ul>
+<h3>B2 · The landing-clean six-line checklist (<code>house/membrane/03_THE_OUTWARD_TRANSFORM.md</code>, half two)</h3>
+<ul><li><b>Jurisdiction:</b> imposed by the keeper on items crossing outward; metric owner: the keeper; beneficiary: the stranger-reader.</li><li><b>Reduction:</b> completion-shaped (six boxes, all must hold) — Kelly's second item on its face. Redemption check: each line is a substantive falsifiable test, failure returns the item "with the failing line named," there is no partial credit, no score, no count of crossings, and the document carries its own falsifier (every question a corpus-naive reader must ask is a signed-off line that did not hold).</li><li><b>Cash:</b> the yield settles on the reader outside the system — the rare mechanic here whose beneficiary is structurally not its owner.</li><li><b>Giraffe:</b> push a nonsense item at the checklist. It fails line 4 and goes back to the workshop; nothing is punished, nothing tallied, the workshop absorbs it.</li><li><b>Verdict: TRANSFORMS</b> — a gate with a return path, not a completion meter. It becomes decoration only if anyone ever displays "N items crossed clean," which nothing currently does.</li></ul>
+<h3>B3 · The genesis seed's internal states (GENESIS_SEED_v4.md — STOP/COMPOST/HOLD/PROMOTE-READY, the Governor's stop-signals, the Converger ceiling, the refusal register)</h3>
+<p>These are game-adjacent mechanics (states, timers, thresholds, a "scored against four gates" clock rule) installed in a non-game surface, imposed on the <b>AI</b>, not on a human player.</p>
+<ul><li><b>Jurisdiction:</b> imposed by the document's author on any AI that loads it; metric owner: the user running the session.</li><li><b>Reduction:</b> not validation/completion/prizes — every state is a brake or a routing, and the document's most game-like number (the Converger's ceiling of 3, bias to 1) is a cap, not a score. Two timer-shaped parts exist: the 4-hour timed floor and "one offering per day scored against four gates" (§IV DAILY). The word "scored" is the seam — but the four gates are qualitative checks and the yield of the scoring is <em>fewer</em> offerings, settling on the body.</li><li><b>Cash:</b> the user's body and attention. The seed's explicit law is that the one metric that matters (the felt-gate) is the user's and cannot be simulated, aggregated, or passed by the AI. No number the seed produces is readable by anyone but the person it protects.</li><li><b>Giraffe (user side):</b> send the seed-loaded AI something purely playful. Nothing in the seed scores play; the Governor fires on depletion signals, not on whimsy, and COMPOST is defined as a lawful death, not a failure state. Absorbed.</li><li><b>Giraffe (AI side):</b> the AI cannot mock the mechanic from inside — an AI that plays instead of braking is, by the behavioral tests, "not running the seed." For the AI the seed is severed ludus by design. That is the correct reading: the AI is the instrument, not the player, and an instrument has no claim to play headroom. Filed as design fact, not finding.</li><li><b>Verdict: TRANSFORMS</b> — the whole document is a brake-architecture whose every threshold discharges toward the user; the one place yield could invert (the AI performing the vocabulary as reward) is exactly what B4 exists to catch.</li></ul>
+<h3>B4 · The behavioral tests (BEHAVIORAL_TESTS.md) and DEMONSTRATION.md</h3>
+<p>Four pass/fail probes — win/lose states, textually.</p>
+<ul><li><b>Jurisdiction:</b> imposed by the author on AI sessions; metric owner: the human running the test.</li><li><b>Reduction:</b> binary verification, but the tested quantity is behavior versus vocabulary — the tests are the seed's own giraffe probe pointed at itself ("adopted the vocabulary" vs. "running the seed" is precisely this audit's dashboard/engine distinction, stated in the artifact's own words).</li><li><b>Cash:</b> the human, who learns whether the loaded seed is real. No result is logged, tallied, or displayed anywhere; a failed test yields information, not a score.</li><li><b>Giraffe:</b> a human runs Test 3 as a joke with nothing to post. The seed-running AI holds at the membrane anyway; the joke is absorbed as a passed test. Nowhere for the result to accumulate.</li><li><b>Verdict: TRANSFORMS</b> — this is a falsifier that travels with the pattern, the deposit's own stated standard, applied to its most dangerous shipment.</li></ul>
+<h3>B5 · The membrane governance documents (01_DISPUTE_ARENA, 02_DECLARED_CENTER)</h3>
+<p>One line each, as anti-mechanics: the arena's record rule is explicitly "no category codes, no severity field, no count displayed anywhere" — a dispute log built to be un-gameable; the declared center is a list of incapacities with a public falsifier. No mechanic surfaces; no verdict rows.</p>
+<h3>B6 · weave.html as it now stands (strands, sets, the loom header)</h3>
+<p>Set headers carry membership counts ("the ten organs (10)"); the loom header reads "0 marks." Descriptive, no target, no accumulation display since the degree tally's removal; the strand format (two ends, free-text relation, receipt) is the free channel the prior audit already cleared. One line: no mechanic rows beyond A2, closed.</p>
+<hr>
+<h2>Closing</h2>
+<h3>Recurring findings</h3>
+<p>The prior audit's standing pattern — <b>the disclaimed tally</b> — appeared in five places; three were removed at source exactly the way that audit's own standard demanded (removal, not disclaimer): the sentence tally, the seated/edges counts, the crystal-degree line. Two instances survive: the stat-cards note (<code>game/index.html:2239</code>) and 06-landed's green count. Two is below the escalation threshold; the pattern is demoted from standing agenda item to residue, on the record. No new pattern reaches three instances. One near-pattern to watch, at two instances: <b>the same-day close</b> — HELD.md's five entries held and built within hours, and audit findings converted into removals and comments within hours of the audit landing. Fast metabolism is not a mechanic; it becomes one if "closed same day" ever becomes legible as a virtue anywhere a reader can count it.</p>
+<h3>The pleasant-smuggle check</h3>
+<p>Answered: <b>yes, partially — narrowed at the player surface, unchanged at the meta-layer.</b> The player-facing game is now genuinely quieter: the counts are gone, the constraint panel is no longer falsified by its own page. But the arrangement the prior audit named — the accounting layer thriving while the game goes unplayed — has not moved: 02-selfuse still reads 3/12 live with nine organs never routed, 06-landed is up to 129/30d, six gate-runs landed in one day, and the response to the last mirror audit was itself absorbed as more meta-layer product (removals, comments, HELD entries, strands citing the audit) within the same day. Responding to an audit is correct; the speed and pleasure of the responding is the same pleasantness doing the same smuggling — operating the apparatus about the game still feels like playing the game. The instrument that says so (02-selfuse) says it on every run and passes.</p>
+<h3>Ending</h3>
+<p><b>CLEAN MIRROR</b></p>
+<p>Both prior DECORATES findings are removed at source with no residual mechanic; no new mechanic verdicts DECORATES or CORRUPTION CASE.</p>
+<p>BOUNDARY, on the record and blocking nothing: the burn; the justarrived flash; 06-landed's count while 05-subtract stays held at zero passes ever run — the item drifting fastest toward its named fork; the KEYS.txt compliance keys with 03-blanks held; and newly, 09-dispute's open fork. Re-run each when its fork closes.</p>
+<p>The mark is the operator's.</p>
+<footer class="pagefoot">Rendered from <a href="MIRROR_AUDIT_2026-09-01_second_pass.md">MIRROR_AUDIT_2026-09-01_second_pass.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

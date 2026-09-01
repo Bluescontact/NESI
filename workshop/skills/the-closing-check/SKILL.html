@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The closing check · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/the-closing-check/index.html">the-closing-check</a></nav>
+<hr>
+<p>name: the-closing-check description: Five questions to answer, in writing, before any new mechanic enters a build — a portable trigger-by-name copy of the check already living in .claude/agents/game-craft.md's mechanics-catalog section, for use by sessions or agents that aren't running as that lens. Use when asked "is this ready to build," "run the closing check," or "run the five questions," before writing code for a mechanic that hasn't been checked against it yet. Not the same instrument as this project's own gate/gate.mjs — that's a separate, wired, ledgered jurisdiction; don't say "run the gate" for this one, it collides.</p>
+<hr>
+<h1>The closing check</h1>
+<p>This is not new material. The five questions below already exist, verbatim in substance, in <code>.claude/agents/game-craft.md</code>'s mechanics-catalog section — that file is the source, this skill is a portable copy for triggering by name from a session or agent that isn't the game-craft lens itself. If the two ever disagree, the agent file is the one to trust and this file is stale.</p>
+<p>A mechanic earns build status by being checked against this; reasoned about alone, it stays a spec wearing the clothes of a build. This corpus paid for that distinction more than once: an unreachable beacon sited behind a planet, a knife-edge target inside its own miss-radius, a mirror range nobody re-checked after the geometry moved, an opening frame that read as intended in the plan and unreadably dark in the actual render. Every one of them was invisible to the reasoning that produced it.</p>
+<p><b>Question 4 alone would have caught both real bugs found on 2026-08-19, before either shipped.</b> <code>index.html</code>'s TANK seat and <code>ascent.html</code>'s 8-face menu were both, at the moment they were built, fully-reasoned, code-complete mechanics — and neither had an actually-reachable chamber from spawn: one routed to a retired file, the other crashed under the project's own documented serving mode with no fallback. Both were found afterward, by a walk (<code>cold-walk</code>), at real cost. Asking "name the actual chamber a player walks through to reach this" <em>before</em> the code was written would have forced the same finding for free. This is not hypothetical — it is this build's own two most expensive defects this session, restated as evidence for why question 4 is not decoration.</p>
+<h2>The five questions — answer all of them, in writing, before code</h2>
+<ol><li><b>Decision, not action.</b> Does the player choose something, or only perform something? A button with one outcome is an action; a fork with more than one live path is a decision.</li></ol>
+<ol><li><b>World physics, not UI.</b> Does the game answer through its own rules — the material's own behavior — rather than through a toast, a counter, a progress bar, or a menu telling the player what happened? <b>For any ambient readout specifically (a fill level, a glow, a density, anything read continuously rather than clicked) — the freshet test:</b> would this respond identically to two wildly different bodies of real content, because it reads structure/flow and has no access to anything else? A readout that would look different for a thousand words of grief than a thousand words of grocery lists has started reading content, not flow — and content-reading is exactly what a progress bar smuggles in under a different shape. Routed from <code>nesi/world3d/.walk/_snapshot/scripts/spires.gd:21-36</code> (gift <code>inbox/gift_2026-08-27_10_freshet_test.md</code>), where a converging ring's radius passes this test by construction: driven only by the mean of three live gate-release rates, never accumulating, returning to rest the instant a gate shuts.</li></ol>
+<ol><li><b>Irreversible record.</b> What remembers this act, and can that record only grow, never quietly reset or get overwritten to make the build simpler later?</li></ol>
+<ol><li><b>Reachable from spawn.</b> Name the actual chamber a player walks through to reach this, starting from the game's own front door — not from knowing the filename. A mechanic with no named path in is a spec, not a build, no matter how complete the code behind it is.</li></ol>
+<ol><li><b>The want-check for the rung below this one.</b> Quote the keeper's own words that asked for this, or write <code>WANT-CHECK: none</code> exactly. Those are the only two forms this line takes, and it is written before the build, not defended after it.</li></ol>
+<h2>The one rule that keeps this from being theater</h2>
+<p><b>A weak or missing answer is the finding.</b> Answer once, from the design as it stands — going back to strengthen the mechanic so the answer reads better reorders cause and effect, producing an honest-looking checklist over a decision this check only appears to have tested. Report the actual answer, including "no" and "none," and stop there. A weak answer on question 4 or 5 stays the keeper's fork, named and held open — the session that wants to keep building doesn't get to default it.</p>
+<h2>Ending state</h2>
+<p>Five answers, each quoted or explicitly <code>none</code>/<code>no chamber named</code>/etc. A weak answer is reported as the outcome of the check, visible, before any patching.</p>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instrument audit · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/instrument-audit/index.html">instrument-audit</a></nav>
+<hr>
+<p>name: instrument-audit description: Audit a verification instrument itself — a check, a script, a test, a grading pass — for the specific defects that let it pass while proving nothing, before trusting what it reports. Use when a check is proposed or already exists and hasn't been examined for what it actually selects and measures, when asked "does this check actually check anything," "audit this instrument," "is this test real," or before treating any green result as settled. Distinct from cold-walk (which walks a live surface as a stranger) — this skill examines the checking code or process itself, not the thing being checked. Born from nesi/mind/LEARNED.md laws 3, 5, 6, and 23 — a check that grades a proxy instead of the object, that measures data no eye would ever see, or that infers state from a symptom instead of asking the object directly, all pass clean while catching nothing.</p>
+<hr>
+<h1>Instrument audit</h1>
+<p>A green check is direct evidence about the instrument. Whether it's also evidence about the thing it claims to verify is a separate question, and takes asking. This corpus paid for that distinction four separate times: a selector that read a neighboring label instead of the object it named (<code>cold_walk.js:162</code>), a pixel-accurate measurement that a human eye would still see as wrong the next day, a harness that inferred a state from a symptom instead of asking the object itself, and a verifier whose authority was argued from <em>who built it</em> rather than from what it actually re-evaluates. None of these instruments were lying on purpose — each one was trusted because it ran and returned green, and the defect only showed up when someone asked what it was actually looking at.</p>
+<p>This skill exists to ask that question before the trust, not after a defect is found the expensive way.</p>
+<h2>The procedure</h2>
+<p>Answer each question in writing, against the actual code or process, not against what the instrument was intended to do.</p>
+<h3>1. Selector honesty (law 6)</h3>
+<p>What does the check actually select — the object itself, or something next to it? A check reading a caption, a wrapper element, a cached copy, or a "should be equivalent" proxy grades the proxy, not the thing named. Quote the actual selector, query, or lookup, and confirm it resolves to the real object.</p>
+<h3>2. Perceptible measurement (law 5)</h3>
+<p>If a human would look at the result and judge it by eye — layout, contrast, timing, feel — does the check measure something in that same register, or does it measure an adjacent number that can diverge from what's visible? "Read the pixels, not the plan": a check that passes on the spec while the render is wrong has measured the wrong layer.</p>
+<h3>3. Ask, don't infer (law 23)</h3>
+<p>Does the check query the object's actual state, or does it infer state from a side effect, a log line, a timestamp, or an absence of an error? Inferring state from a symptom is exactly the failure that let a harness report success it never actually saw. Name what the check queries and confirm it's the state itself, not a stand-in for it.</p>
+<h3>4. Structural authority, not identity (law 3)</h3>
+<p>Would this check's verdict change if a different hand ran it, or if it were re-run independently later? A check earns trust by being general and re-evaluating — trust that traces to what the check itself does, not to which particular person or session happened to run it. If the check's credibility rests on "I ran it and I'm trustworthy" rather than on what the check itself does, that is the defect, regardless of how trustworthy the runner actually is.</p>
+<h3>5. The vacuous-pass test (law 4)</h3>
+<p>Would this check pass against an empty, blank, or absent version of the thing it's supposed to verify? A test passable by absence only proves that it runs, not that anything was checked. If you can't immediately say what a blank or missing implementation would score, try it — feed the check a stub that does nothing and confirm it fails.</p>
+<h2>Ending states</h2>
+<ul><li><b>SOUND</b> — the check selects the real object, measures the perceptible layer, queries state directly, and would fail against an absent implementation. Name the evidence for each of the four questions, not just the verdict.</li><li><b>PROXY</b> — the check passes on something adjacent to the real object (question 1 or 2 failed). Name exactly what it's actually measuring instead.</li><li><b>VACUOUS</b> — the check would pass on absence or a stub (question 5 failed). This is the most expensive kind of false confidence, because the check has likely been "passing" the whole time regardless of the real work.</li><li><b>UNVERIFIABLE</b> — one or more questions couldn't be answered from reading the code or process (e.g. the selector is dynamic and its target can't be confirmed without running it). Say which question, and what would need to happen to answer it.</li></ul>
+<p>A weak answer to any question is the finding. Report what the instrument actually does today, before any strengthening pass.</p>
+<h2>Sibling lenses</h2>
+<p>One of six recurring checks named in <code>nesi/mind/DRAFT_SIX_SHAPES_2026-08-20.md</code> (seated 2026-08-21) — this one is lens 1, <em>does this only look verified, or is it</em>. The other five: <code>conservation-harness</code> (does the material conserve), <code>boundary-audit</code> (is the boundary a fact or a sentence), <code>record-audit</code> (is the record honest), <code>authority-check</code> (whose call is this), and <code>unrouted-gifts</code> (is capacity found or left dead).</p>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

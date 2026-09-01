@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>External extraction · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/external-extraction/index.html">external-extraction</a></nav>
+<hr>
+<p>name: external-extraction description: Procedure for pulling material from an outside source (a wiki, an archive, another author's corpus, a document set) into NESI as SOIL intake — Inventory, then Audit, then Cards, then a Routing Note. Use when asked to run an extraction pass on external material, to develop or build out SOIL, or when the keeper names his "external extractions" project. Sibling to unrouted-gifts, which runs the same shape inward on the keeper's own archive.</p>
+<hr>
+<h1>External extraction</h1>
+<p>Project-scoped override. This file takes precedence over the bundled <code>anthropic-skills:external-extraction</code> skill for this repository — no local copy of that skill's full instructions exists here to inherit from, so this file states the procedure as it has actually run in practice (confirmed against filed decks, e.g. the 2026-08-24 Aakash Gupta "Product Builder" extraction) plus one addition named below.</p>
+<h2>The procedure</h2>
+<h3>1. Inventory</h3>
+<p>List what the source actually contains — its parts, its structure, its claims — without judging any of it yet. Name the method used to reach the source (crawl, paste, fetch) and record where it was blocked, not just where it succeeded.</p>
+<h3>2. Audit</h3>
+<p>Separate what survives extraction standard from what doesn't. A claim passes when it's a genuine structural fact about the source (an explicit sequencing claim, a named taxonomy, a verbatim attributed quote). A claim is cut when it's the source's own rhetorical or credibility-laundering move — flag it as seen, but don't card it as a found nutrient.</p>
+<h3>3. Cards</h3>
+<p>File what survives audit as nutrient cards, one per finding: a Capacity / Effort / Confidence rating, the verbatim quote it rests on, and a routing note connecting it to NESI material — cited, not adopted, unless a mark says otherwise.</p>
+<p><b>Compression constraint (added 2026-08-24, Gift 5 of the routing pass on this deck):</b> a card must stand as a complete, meaningful unit from its one verbatim quote and its rating alone, without needing its source link to still resolve. Confirmed against this project's own extraction, whose 25 linked guides were unreachable (<code>ROBOTS_DISALLOWED</code>, paywalled) yet whose cards survived that intact — because the quote carried the claim, not the citation. If a drafted card can't stand as one sentence without its source, it isn't compressed enough yet; tighten it before filing.</p>
+<h3>4. Routing Note</h3>
+<p>Close with a routing note, not a decision. Cards order nothing — they wait at the gate for the keeper's mark, per this project's standing rule that no law becomes a lever to give the keeper less and no session marks on his behalf.</p>
+<h2>Sibling</h2>
+<p><code>unrouted-gifts</code> runs the identical shape inward, against the keeper's own past build archive instead of an outside source.</p>
+<h2>Provenance</h2>
+<p>This file's compression constraint is sourced to <code>nesi/mind/EXTRACTION_2026-08-24_aakash_product_builder_developed.html</code>, Gift 5 (pattern read P1), itself developed from the filed extraction deck on the same thread, under the keeper's mark "route gift 5 into the extraction skill's instructions."</p>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

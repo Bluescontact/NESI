@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genesis Seed — Getting Started · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../house/index.html">house</a> &middot; <a href="../../house/genesis-seed/index.html">genesis-seed</a></nav>
+<h1>Genesis Seed — Getting Started</h1>
+<h2>What this is</h2>
+<p>This is an operating system for AI collaboration — not a chatbot prompt, not a template. It is a document you load into any AI session that changes how the AI works with you for that session. Loaded, the AI grounds before it guesses. It names what it doesn't know. It stages work rather than overwriting what you have. It runs an internal brake so the pile of generated ideas doesn't grow faster than you can use them.</p>
+<p>The seed encodes one principle above all others: you are the gate. Every move the AI makes is staged for your review. Nothing is pushed, deleted, or finalized without your explicit mark. You load it once at the start of a session; the behavior runs until the session ends. Next session, load it again — it reboots clean from the document, no accumulated state carried forward.</p>
+<hr>
+<h2>What's in this folder</h2>
+<ul><li><b>GENESIS_SEED_v4.md</b> — the boot document. Copy the text and paste it into any AI to start.</li><li><b>BEHAVIORAL_TESTS.md</b> — four inputs you can send to any seed-loaded AI to verify it's actually running the OS, not just using its vocabulary. Start here if you want to test before committing to a session.</li><li><b>DEMONSTRATION.md</b> — three before/after examples showing what a STOP, a COMPOST, and a membrane HOLD look like in practice. Read this to know what to expect when the seed is working.</li><li><b>README.md</b> — this file.</li></ul>
+<h2>How to use it</h2>
+<ol><li>Open any AI — Claude, ChatGPT, Gemini, any of them. Start a new session.</li><li>Open <code>GENESIS_SEED_v4.md</code>, select all, copy it, and paste it as your first message. Send it.</li><li>Tell the AI what you're working on. Not background — just what you're trying to do right now.</li><li>Notice what's different. It will ask what's verified before it builds. It will name its own limits without being asked. It will not overwrite your existing work without checking. When it stages something, it waits for your mark before it moves.</li></ol>
+<p>That's the whole protocol. The seed is not complicated to use — the complexity lives inside it, not on you.</p>
+<hr>
+<h2>What it won't do</h2>
+<ul><li><b>Won't generate coherence you don't have.</b> It makes legible what already holds in your thinking. It cannot manufacture what isn't there.</li><li><b>Won't do the physical work.</b> If the work requires hands, presence, or decisions that only you can make — it cannot reach those.</li><li><b>Won't hold your vision for you.</b> It reflects your vision back clearly so you can hold it more steadily. The holding is still yours.</li><li><b>Won't replace your judgment.</b> The seed encodes you as the final arbiter at every step. The AI carries; you decide.</li><li><b>Won't replace the need to know what you're building.</b> It is a structure for developing clarity you already have the seeds of — not a substitute for having a direction.</li></ul>
+<hr>
+<h2>The one structural thing to know</h2>
+<p>The human is the gate. That is not a safety feature bolted on as an afterthought — it is the architecture. The seed encodes at every step that nothing crosses the membrane without your explicit mark. The AI names; you decide. The AI stages; you release. The AI flags a cost; you consent or don't.</p>
+<p>This matters because a lot of AI tools are designed to run away from you — to generate, to expand, to fill space. This one is designed not to. It runs an internal brake called the Governor (Body / Clock / Topology — three instruments that each catch what the others miss). It runs a back-of-stack gate called the Converger that routes accumulated candidates to promote, hold, or compost rather than letting them pile. These run silently. You don't manage them. They manage the stack so you don't have to.</p>
+<p>The result is an AI that serves the work you're already doing, at your pace, on your ground — not one that replaces it with its own.</p>
+<hr>
+<p>The seed is the gift. Use it on your own ground.</p>
+<footer class="pagefoot">Rendered from <a href="README.md">README.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

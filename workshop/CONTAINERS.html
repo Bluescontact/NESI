@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONTAINERS — the container law · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../index.html">NESI</a> &middot; <a href="../workshop/index.html">workshop</a></nav>
+<h1>CONTAINERS — the container law</h1>
+<p><b>Home:</b> <code>nesi/mind/CONTAINERS.md</code> — NESI-side, engine-agnostic. Third file of the law, beside <code>PROTOCOLS.md</code> (the session protocol) and <code>VERB_LENSES.md</code> (the action grammar).</p>
+<p><b>Adopted 2026-08-03 on the keeper's mark</b>, three marks in one deposit, caught in <code>MARKS_LOG.jsonl</code>:</p>
+<blockquote><p><em>"Adopt the four container kinds as law: MATERIAL holds state, EVENT is append-only, SURFACE holds nothing and derives, ORGAN acts. An action reads material, writes material, records to an event ledger, and may regenerate a surface."</em> <em>"Adopt the existence rule: a container exists only where one action puts something in and a different action takes it out. No in-action is a wish; no out-action is a landfill."</em> <em>"All six states are real containers: raw, sorted, substrate, dispositioned, canon, released. Name them."</em></p></blockquote>
+<p><b>Why this file exists.</b> <code>VERB_LENSES.md</code> articulated NESI's actions on 2026-07-23 and has been load-bearing since. The containers those actions move material through were never articulated — the file system accreted instead of being designed. The mismatch is what a session feels as <em>"I can't tell where anything stands."</em> This file closes that side.</p>
+<p><b>Standing on it:</b> these are laws, not descriptions. They are enforced by nothing yet — see § Open. A written law nothing enforces is ceremony, which this project keeps catching itself in; that gap is named here rather than hidden.</p>
+<hr>
+<h2>Law 1 — the four kinds</h2>
+<p>Every container in the system is exactly one of four kinds. The kinds are distinguished by <b>physics</b>, not by subject matter:</p>
+<table><tr><th>Kind</th><th>Physics</th><th>Holds</th><th>On disk today</th></tr><tr><td><b>MATERIAL</b></td><td>holds state · things move <b>in and out</b></td><td>the six states below</td><td><code>_INTAKE/</code> · <code>patterns/</code> · <code>membrane/release_packets/</code></td></tr><tr><td><b>EVENT</b></td><td>append-only · nothing ever moves or is edited</td><td>history</td><td><code>MARKS_LOG.jsonl</code> · <code>OPEN_GATES.jsonl</code> · <code>membrane/transition_records/</code> · <code>membrane/converger_passes/</code> · <code>membrane/VIOLATION_REGISTER.md</code></td></tr><tr><td><b>SURFACE</b></td><td>derived · regenerable · disposable</td><td><b>nothing of its own</b></td><td><code>_widgets/</code> · <code>CROSSING_LOG.html</code> · <code>state_view.html</code> · <code>THE_TERRAIN.html</code></td></tr><tr><td><b>ORGAN</b></td><td>behavior · acts on the other three</td><td>code and stance</td><td><code>tools/</code> · <code>nesi/bench/</code> · <code>nesi/mind/</code> · <code>nesi/game2d/</code></td></tr></table>
+<p><b>The movement law, stated once:</b></p>
+<blockquote><p>An action <b>reads</b> from a MATERIAL container, <b>writes</b> to a MATERIAL container, <b>records</b> to an EVENT container, and <b>may regenerate</b> a SURFACE. ORGANs run actions.</p></blockquote>
+<p><b>The load-bearing clause: a SURFACE holds nothing.</b> It is defined as having nothing of its own to store. Anything that exists only inside a surface does not exist. This is not a style preference — it is the diagnosis of two logged losses:</p>
+<ul><li>Five decisions stranded in <code>latest_af54f11d.html</code> and <code>latest_3f10db50.html</code> (07-30), recoverable only by reading old widget files one at a time.</li><li>The eight candidate membrane sentences (08-02), marked for by the keeper on 08-03 and <b>gone</b> — they lived in a session transcript and nowhere else.</li></ul>
+<p>Both were stored in the one kind of container defined as having nothing to store. The rule that prevents recurrence: <b>if a thing must survive the session, it goes to MATERIAL or EVENT before it is rendered to a SURFACE, never after.</b></p>
+<h3>The deposit-before-render rule (the keeper's mark, 2026-08-04)</h3>
+<blockquote><p><em>"Fix the widget pipeline: every decision gets written to MATERIAL or EVENT before it is rendered to a surface, never after. That is what the SURFACE_SOLE_HOME light is telling us."</em></p></blockquote>
+<p><code>DECISIONS_OFFERED.jsonl</code> is the EVENT container that clause needed. Every decision put in front of the keeper is deposited there <b>before</b> the surface showing it is written, via <code>tools/decisions.py offer</code>. A surface is where a decision is <em>shown</em>; it was never supposed to be where a decision is <em>kept</em>.</p>
+<p><b>The ordering is enforced, not trusted.</b> <code>decisions.py verify --surface &lt;path&gt;</code> compares each record's timestamp against the surface file's mtime. A record written <em>after</em> the file it describes is a breach — that is render-first wearing a ledger as a disguise. Records added for surfaces that predate the ledger are flagged <code>backfill: true</code> and verify reports them as <em>ordering not proven</em>, never as a pass.</p>
+<p><b>An offer is not a mark.</b> It records that a choice was put in front of the keeper, never that he made one. Marks stay in <code>MARKS_LOG.jsonl</code> and only his hand puts them there. The two ledgers together answer a question neither could alone — <code>decisions.py open</code> lists every decision ever offered and never answered, which is exactly the load the stranded widget files used to leave in the keeper's head.</p>
+<p>This is also what makes <code>_widgets/</code> honestly <code>derived_from</code> something rather than exempt: the decisions genuinely live elsewhere first, so the surface really does hold nothing of its own.</p>
+<p><b>Falsifier (Law 1):</b> if a thing on disk fits none of the four kinds, or genuinely fits two at once, the taxonomy is wrong and gets cut — not patched with a fifth kind.</p>
+<p><b>The against-case, recorded so it is not lost:</b> EVENT can be argued as a subtype of MATERIAL that simply never leaves, collapsing the law to three kinds. The reason it is held as distinct: append-only has different physics from state-holding, and conflating them is precisely how the derive-don't-store boundary gets violated — a ledger that can be edited stops being a record and becomes a second authority. If a future pass shows the three-kind form explains the same failures, take it; simpler is better.</p>
+<hr>
+<h2>Law 2 — the existence rule</h2>
+<blockquote><p><b>A container exists only where one action puts something in and a different action takes it out.</b> <b>No in-action, it is a wish. No out-action, it is a landfill.</b></p></blockquote>
+<p><b>Actions define containers. Never the reverse.</b> This is the container-side twin of the load-test build-gate in <code>PROTOCOLS.md</code>: the load-test gates whether a <em>build</em> deserves to exist; this gates whether a <em>place</em> does. Both run before making the thing.</p>
+<p>Two opposite failures were live on the day this was adopted, and both are named by this one rule:</p>
+<p><b>The landfill — <code>_INTAKE/</code>.</b> 460 loose files plus roughly 40 subdirectories, holding four different states at once, including 107 <code>SUBSTRATE_BRIEF_*</code> files that are finished development output sitting beside unread June drops. Four actions put things in; almost nothing takes anything out. Nothing in the file system distinguishes a brief the keeper has marked from one he has not.</p>
+<p><b>The wishes — nine containers under <code>nesi/</code>.</b> Counted 2026-08-03: <code>seed/</code> (0 files) · <code>inbox_external/</code> (0) · <code>soil/</code> (1) · <code>trade_notes/</code> (1) · <code>boundary/</code> (2) · <code>marks/</code> (2) · <code>interrogator/</code> (2) · <code>forest/</code> (3) · <code>inbox/</code> (3). Named in advance of any action that fills them.</p>
+<p><b>The against-case, recorded:</b> a container sometimes legitimately precedes its material — you build the drawer before the thing arrives. The rule as written forbids that. A softer form ("a container with no out-action is a landfill," silent about empty ones) was offered and <b>not</b> taken. If the strict form ever blocks a genuinely-intended empty container, that is the signal to revisit.</p>
+<p><b>Falsifier (Law 2):</b> if applying this rule forbids nothing and retires nothing, it was ceremony.</p>
+<hr>
+<h2>Law 3 — the six material containers</h2>
+<p>The chain is <b>derived from <code>VERB_LENSES.md</code></b>, not invented here. Each action's "moves material" column names a source state and a target state; read end to end, the five actions name six states. That derivation is what makes these containers rather than folders:</p>
+<table><tr><th>Action</th><th>Jurisdiction</th><th>Moves</th></tr><tr><td><b>SURFACE</b></td><td>machine</td><td>raw → sorted</td></tr><tr><td><b>DEVELOP</b></td><td>machine</td><td>sorted → substrate</td></tr><tr><td><b>DECIDE</b></td><td>the keeper's hands</td><td>substrate → dispositioned</td></tr><tr><td><b>CROSS</b></td><td>the keeper's hands, gated</td><td>dispositioned → canon, then canon → released</td></tr><tr><td><b>RUN</b></td><td>machine</td><td><em>nothing</em> — upkeep, no state change</td></tr></table>
+<p><code>RUN</code> moves no material, which is why it has no container and why a RUN action may never mint a verdict. That is the same jurisdictional boundary <code>VERB_LENSES.md</code> already draws, arriving here from the other direction.</p>
+<h3>The six, named</h3>
+<table><tr><th>#</th><th>Container</th><th>Holds</th><th>In-action</th><th>Out-action</th><th>State on disk, 2026-08-03</th></tr><tr><td>1</td><td><b>raw</b></td><td>dropped, unread, unsorted</td><td>the keeper drops · harvest</td><td>SURFACE</td><td><code>_INTAKE/</code> — shared with 2, 3, 4</td></tr><tr><td>2</td><td><b>sorted</b></td><td>surfaced, one disposition + evidence line each, not yet developed</td><td>SURFACE</td><td>DEVELOP</td><td><b>no container</b></td></tr><tr><td>3</td><td><b>substrate</b></td><td>developed, transferable, screened, not yet judged</td><td>DEVELOP</td><td>DECIDE</td><td><b>no container</b> — 107 briefs sit in <code>_INTAKE/</code></td></tr><tr><td>4</td><td><b>dispositioned</b></td><td>carries the keeper's mark: promote-ready / hold / compost</td><td>DECIDE</td><td>CROSS</td><td><b>no container</b> — dispositions live <em>inside</em> the briefs</td></tr><tr><td>5</td><td><b>canon</b></td><td>the Library — permanent ground</td><td>CROSS 1</td><td>CROSS 2</td><td><code>patterns/</code> — 176 files · <b>clean</b></td></tr><tr><td>6</td><td><b>released</b></td><td>scoped bundles cleared for outward reach</td><td>CROSS 2</td><td>the Transmission Engine</td><td><code>membrane/release_packets/</code> — <b>0, never used</b></td></tr></table>
+<p><b>One container is clean, and it is the only one with a controller on its door.</b> <code>patterns/</code> is guarded by <code>membrane-controller</code>, which is exclusive write authority. That is not a coincidence — it is the whole mechanism. Every other material container is either shared, missing, or unused.</p>
+<p><b>Falsifier (Law 3):</b> if a piece of material cannot be placed in exactly one of the six, the chain is wrong and gets recut from the verbs — not extended with a seventh state.</p>
+<hr>
+<h2>The registry — this file is the checker's only config</h2>
+<p><code>tools/container_check.py</code> reads the two fenced blocks below and nothing else. <b>The law is the config</b>: there is no second file to drift out of sync, which is the derive-don't-store boundary applied to the checker itself. To classify a container, edit the table here — not the script.</p>
+<p>Columns: <code>path | kind | state | in-action | out-action | derived_from | mirror_of</code>. Use <code>-</code> for not-applicable, and <code>?</code> for <b>unruled</b> — a container whose kind has not been decided. Unruled is an honest state and the checker reports it as an open question rather than a breach; it is the keeper's ruling to make, not the machine's to infer. A row may omit the seventh column, which reads as <code>-</code>.</p>
+<h3>Law 4 — a duplicate declares which copy wins (the keeper's mark, 2026-08-06)</h3>
+<blockquote><p><em>"Add a <code>mirror_of</code> column to the CONTAINERS.md registry and teach container_check.py to byte-compare every declared mirror against its authority, reporting drift as a named event."</em></p></blockquote>
+<p>The 2026-08-05 sweep found four duplicated pairs. <b>Three had drifted or had no named authority; the one that was clean was clean for a stated reason.</b> <code>ROUTER.md</code> says it out loud:</p>
+<blockquote><p><em>"this file is a RENDERING of the routing law as a graph node. The single authority … remains the fenced json block in <code>ESCALATION_CONDITIONS.md</code>. If this table and that json ever disagree, the json wins and the disagreement is a drift event to surface, not silently resolve. Do not edit conditions here."</em></p></blockquote>
+<p>A duplicate that names its authority <b>and</b> declares disagreement an event cannot rot quietly. One that does not, always does — <code>nesi/bench/</code> sat behind the keeper's own 07-20 and 07-27 skill amendments for three weeks, and the memory strikes of 08-05 had to be written twice because nothing said which memory directory was authoritative.</p>
+<p><b>The law:</b> any file or directory that duplicates another declares <code>mirror_of &lt;authority&gt;</code>. The authority is the copy that wins; the mirror is regenerated from it, never edited in place. A <code>~/</code> prefix resolves to the home directory, because two of the four authorities live vendor-side.</p>
+<p><b>Drift is an OPEN, not a BREACH.</b> The checker byte-compares and names the divergence; it never picks a side and never syncs. Which copy is authoritative is a ruling, and re-copying is a mark — the machine reports and stops. This mirrors how <code>UNRULED</code> already behaves.</p>
+<p><b>The direction is not uniform, and that is correct.</b> For skills and memory the <em>vendor</em> copy is live and current; for the chassis the <em>NESI</em> copy is the authority. Both are true at once, which is exactly why it has to be declared per pair rather than inferred.</p>
+<p><b>A mirror is not a rendering — the fourth pair is declared differently, and this is a deliberate departure from the mark.</b> the keeper's mark named <code>ESCALATION_CONDITIONS</code> json → <code>ROUTER.md</code> as one of the four pairs. But <code>mirror_of</code> means <em>should be byte-identical</em>, and <code>ROUTER.md</code> is a <b>rendering</b> of a json block as a human-readable table — it is not supposed to match byte for byte, and declaring it a mirror produced an immediate false positive on the first run. It is declared <code>derived_from</code> instead. The authority relationship the keeper wanted is stated exactly as before, in ROUTER.md's own prose, which is where it was already working. <b>Reversible on his word</b> — if he wants it declared as a mirror anyway, the row changes back and the check will report it drifted every run.</p>
+<p><b>Falsifier (Law 4):</b> if a declared mirror drifts and the check does not name it, or if the check ever resolves a drift by itself, this law failed.</p>
+<pre><code>_INTAKE/ | MATERIAL | raw | drop,harvest | SURFACE | - | -
+patterns/ | MATERIAL | canon | CROSS1 | CROSS2 | - | -
+membrane/release_packets/ | MATERIAL | released | CROSS2 | transmission-engine | - | -
+membrane/transition_records/ | EVENT | - | CROSS1,CROSS2 | - | - | -
+membrane/converger_passes/ | EVENT | - | converger | - | - | -
+MARKS_LOG.jsonl | EVENT | - | marks.py catch | - | - | -
+OPEN_GATES.jsonl | EVENT | - | gates.py open | - | - | -
+DECISIONS_OFFERED.jsonl | EVENT | - | decisions.py offer | - | - | -
+membrane/VIOLATION_REGISTER.md | EVENT | - | audit | - | - | -
+_widgets/ | SURFACE | - | render | - | DECISIONS_OFFERED.jsonl | -
+CROSSING_LOG.html | SURFACE | - | render_crossing_log.py | - | membrane/transition_records/ | -
+THE_FIELD.html | SURFACE | - | field_view.py | - | MARKS_LOG.jsonl | -
+tools/ | ORGAN | - | build | - | - | -
+skills/ | ORGAN | - | build | - | - | -
+nesi/mind/ | ORGAN | - | build | - | - | ~/.claude/projects/&lt;corpus-slug&gt;/memory/
+nesi/bench/ | ORGAN | - | build | - | - | ~/.claude/skills/
+nesi/world3d/ | RETIRED 2026-08-14 (the keeper's mark) — kept as record, never built against; see nesi/world3d/RETIRED.md | - | - | - | - | -
+nesi/game2d/ | ORGAN | - | build | - | - | -
+nesi/spec/ | ORGAN | - | build | - | - | -
+_COMPOST/ | MATERIAL | compost | DECIDE | - | - | -
+nesi/_compost/ | MATERIAL | compost | DECIDE | - | - | -
+nesi/seed/ | ? | - | - | - | - | -
+nesi/soil/ | ? | - | - | - | - | -
+nesi/forest/ | ? | - | - | - | - | -
+nesi/inbox/ | ? | - | - | - | - | -
+nesi/inbox_external/ | ? | - | - | - | - | -
+nesi/boundary/ | ? | - | - | - | - | -
+nesi/marks/ | ? | - | - | - | - | -
+nesi/interrogator/ | ? | - | - | - | - | -
+nesi/trade_notes/ | ? | - | - | - | - | -
+substack/ | ? | - | - | - | - | -
+mito-mcp/ | ? | - | - | - | - | -
+kwp/ | ? | - | - | - | - | -
+ds-kit/ | ? | - | - | - | - | -
+gate/ | ? | - | - | - | - | -
+aoc-v2/ | ? | - | - | - | - | -
+osg_organ/ | ? | - | - | - | - | -
+marks/ | ? | - | - | - | - | -
+genesis_seed_share/ | ? | - | - | - | - | -
+Ari_Tal_handoff/ | ? | - | - | - | - | -
+coherence-codex/ | ? | - | - | - | - | -
+_work_site/ | ? | - | - | - | - | -
+support/ | ? | - | - | - | - | -
+out_of_family_sensor_packet/ | ? | - | - | - | - | -
+osg-v6/ | ? | - | - | - | - | -
+kit/ | ? | - | - | - | - | -
+ROS_RI_site/ | ? | - | - | - | - | -
+open_ledger/ | ? | - | - | - | - | -
+frameworks/ | ? | - | - | - | - | -
+requests/ | ? | - | - | - | - | -
+OUTTAKE/ | ? | - | - | - | - | -
+rhythm/ | ? | - | - | - | - | -
+held_refusal/ | ? | - | - | - | - | -
+village_app/ | ? | - | - | - | - | -
+memory/ | ? | - | - | - | - | -
+gifts/ | ? | - | - | - | - | -
+deposits/ | ? | - | - | - | - | -
+seeds/ | ? | - | - | - | - | -
+negative_workspace/ | ? | - | - | - | - | -
+instruments/ | ? | - | - | - | - | -
+decks/ | ? | - | - | - | - | -
+audit/ | ? | - | - | - | - | -
+_widgets/DS_v1.html | ORGAN | - | build | - | - | nesi/mind/DS_v1.html
+nesi/mind/ROUTER.md | ORGAN | - | build | - | nesi/mind/ESCALATION_CONDITIONS.md | -</code></pre>
+<p><b>State signatures</b> — how the checker recognises a state a file <em>announces in its own name</em>. First match wins.</p>
+<p>A file matching nothing announces nothing, and takes its container's declared state. That is deliberate: <b>most states are conferred by position and crossing, not by naming.</b> <code>canon</code> has no signature and must not be given one — a pattern is canon because it is in <code>patterns/</code> with a transition record behind it, never because of what it is called. Only a file whose name announces a state <em>different from its container's</em> is in the wrong place.</p>
+<pre><code>substrate | ^SUBSTRATE_BRIEF|^substrate_.*\d{4}-\d{2}-\d{2}|_DEVELOPED_|^DEVELOPMENT_BRIEF
+dispositioned | ^DISPOSITION|^PATTERN_CANDIDATE|^promote_candidate
+sorted | ^SCANNER_DIGEST|^TRIAGE|^_TRIAGE</code></pre>
+<p><b>Signatures identify process artifacts, never topics.</b> <code>SUBSTRATE_BRIEF_</code> is a stage in the pipeline; a bare <code>substrate_</code> prefix is just a word a canon pattern is allowed to be about. The date requirement in the substrate signature is the discriminator that separates them, and it holds cleanly on today's disk: all seven <code>_INTAKE/substrate_*</code> files carry a date, and both <code>patterns/</code> files whose slugs contain "substrate" — <code>substrate_precedes_distillation</code> and <code>difference_preserving_substrate</code> — do not.</p>
+<p><em>These three rules were all written after running the checker, not before. Its first run produced three false positives against my own draft: it read all 175 canon files as "raw" (canon had a filename signature it should never have had), flagged two SURFACE containers as landfills for missing an out-action a SURFACE is not supposed to have, and called a legitimate canon pattern a stray because its slug starts with the word "substrate." Recorded here rather than quietly corrected — a checker that finds nothing on its first run has usually only confirmed its author's assumptions.</em></p>
+<p><b>A finding the registry itself surfaces, recorded rather than smoothed over:</b> <code>_COMPOST/</code> (129 files) and <code>nesi/_compost/</code> (33 files) hold material in a state the six-state chain does not name. Compost is a DECIDE <em>disposition</em>, not a state in the CROSS chain — yet it has a container in active use. They are declared here with state <code>compost</code> so the checker reports the mismatch instead of hiding it. Under Law 3's own falsifier this is the signal to either recut the chain to seven states or reclassify compost as a disposition whose material stays where it is. <b>Unruled — the keeper's call, not the machine's.</b></p>
+<hr>
+<h2>What this law does NOT authorize</h2>
+<p>Adopted 2026-08-03 alongside these three; <b>not marked</b>, therefore not law and not done:</p>
+<ul><li><b>Splitting <code>_INTAKE/</code> by state.</b> Offered, unmarked. Nothing has been moved. The landfill is named, not repaired.</li><li><b>Retiring the nine unfilled <code>nesi/</code> containers.</b> Offered, unmarked. All nine still stand. The file system cannot tell a dead folder from a waiting intention, and neither can the machine — only the keeper can.</li><li><b>A checker that enforces any of this.</b> Offered, unmarked. See below.</li></ul>
+<hr>
+<h2>Enforcement — built 2026-08-03 on the keeper's mark</h2>
+<blockquote><p><em>"Write nesi/mind/CONTAINERS.md as the container law, and ship it with a checker that fails when a file lands in the wrong kind of container."</em></p></blockquote>
+<p><code>tools/container_check.py</code>. It reads the two fenced blocks above and holds no classification of its own — <b>the law is the config</b>, so there is no second file to drift. Exit 1 on any breach.</p>
+<pre><code>python tools/container_check.py            # report + exit 1 on breach
+python tools/container_check.py --strict   # unruled containers fail too
+python tools/container_check.py --quiet    # one summary line</code></pre>
+<p>Two tiers, because they are different kinds of statement:</p>
+<ul><li><b>BREACH (exit 1)</b> — a file is in the wrong kind of container, or the law and the disk disagree. <code>MIXED_STATE</code> · <code>UNPLACEABLE</code> · <code>SURFACE_SOLE_HOME</code> · <code>SURFACE_DEAD_SOURCE</code> · <code>LANDFILL</code> · <code>NO_IN_ACTION</code> · <code>UNDECLARED</code> · <code>MISSING</code> · <code>BAD_KIND</code>.</li><li><b>OPEN (exit 0, reported loudly)</b> — <code>UNRULED</code>, a container whose kind has never been decided, and <code>WISH</code>, one named but never filled. These are the keeper's rulings. <b>The machine will not infer a kind</b>, which is why 42 containers sit unruled rather than being classified by guess.</li></ul>
+<p><b>First run, 2026-08-03 — 6 breaches, 42 open.</b> Verified live: planting one <code>SUBSTRATE_BRIEF_*</code> file into <code>_INTAKE/</code> moved the substrate count 117 → 118 and back on removal, so the detection is a running mechanism and not a static readout.</p>
+<p><b>Not built, not marked:</b> wiring this into the daily-cycle close the way <code>membrane_falsifier.py</code> is wired. Until that happens the check runs only when invoked, and a breach can survive indefinitely rather than at most one session.</p>
+<p><b>Whole-file falsifier:</b> if a session six months from now can hold material without being able to say which of the six states it is in, or can point at a folder and not say which of the four kinds it is, this file failed and should be cut rather than amended.</p>
+<footer class="pagefoot">Rendered from <a href="CONTAINERS.md">CONTAINERS.md</a> · <a href="../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

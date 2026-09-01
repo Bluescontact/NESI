@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NO BLUR — the formatting discipline for compounded gift-writing · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/boundary/index.html">boundary</a></nav>
+<h1>NO BLUR — the formatting discipline for compounded gift-writing</h1>
+<p>Named 2026-08-20, in the keeper's own words: the trimtab boundary is "a locating, coordination, and calibration tool to be able to identify and place structural load-bearing writing as an input, weaving other authors' work together into a compounded gift without blur. My gift and words, and their gifts and words, are always held separately."</p>
+<p>This is the formatting-discipline half of that: how a compounded piece is built so the separation is structural, not a matter of the writer remembering to be careful.</p>
+<h2>The rules</h2>
+<ol><li><b>Another author's words live inside a marked block, never inline.</b> A blockquote (<code>&gt; ...</code>), never merged into a sentence you are writing.</li></ol>
+<ol><li><b>Every marked block carries its attribution touching it.</b> Immediately before or after the block, one line naming who, what it's from, and when — never left to float elsewhere in the piece where a reader has to go hunting for whose words those were.</li></ol>
+<ol><li><b>Your own words never continue a quoted sentence.</b> A quote ends where it ends. Your next sentence starts fresh, visibly yours — it never picks up their clause, finishes their thought, or drifts into paraphrase that reads as continuation.</li></ol>
+<ol><li><b>A boundary ledger stands apart from the flow.</b> One place — top or bottom of the piece — listing every author drawn on and what of theirs appears. The compounded piece can be audited at a glance without rereading the whole thing.</li></ol>
+<ol><li><b>Your own prior writing gets the same treatment as anyone else's.</b> Reusing an earlier piece of your own as an input — the way the trimtab pattern names doing for another author's dormant work — is marked and attributed to that earlier self, not silently absorbed as "current you."</li></ol>
+<h2>What this refuses</h2>
+<ul><li>No silent paraphrase-blend. If a passage started as someone else's and you reshaped its wording, it is still theirs, still marked, still in the ledger — reshaping the words is not the same as originating them.</li><li>No attribution buried in a footnote system disconnected from the block it belongs to. Adjacency is the rule, not a link, not a number.</li><li>No ledger that undercounts. Every marked block's author appears in the ledger; the ledger is a checkable claim, not a courtesy gesture.</li></ul>
+<h2>What this does not decide</h2>
+<p>This discipline governs form, not selection. It has nothing to say about which passages are actually load-bearing enough to belong in the piece — that's the locating half of the trimtab boundary tool, and it is not built here. This is the boundary-keeping half only: once something is going in, this is how it goes in without blurring.</p>
+<p><code>blur_check.js</code> in this folder checks a draft against rules 1, 2, and 4 by shape — markdown structure, never content judgment. Rules 3 and 5 need a human read; a script cannot tell whether a sentence quietly finishes someone else's thought.</p>
+<footer class="pagefoot">Rendered from <a href="NO_BLUR.md">NO_BLUR.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

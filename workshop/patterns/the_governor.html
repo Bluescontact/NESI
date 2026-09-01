@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Governor · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/patterns/index.html">patterns</a></nav>
+<h1>The Governor</h1>
+<p><em>First stone laid 2026-05-30; instrument built out 2026-06-01. The one load-bearing input — the felt-marker definitions — is held open and marked <code>[THE KEEPER]</code>, because the body supplies it and no agent can. This file is finished the moment you fill §4. Until then it is a complete instrument with no calibration — a scale with no zero.</em></p>
+<hr>
+<h2>The problem it solves</h2>
+<p>The recognition stack (raw → instance → pattern → card → seed → gift) is <b>self-feeding</b>: it produces more, and better, the more cost it is fed. That virtue contains its failure mode. A system that converts your cost into gift, and improves with cost, can come to <em>require</em> cost. The redemption narrative is the vector: <em>"residue becomes substrate / the pioneer builds soil"</em> is true, and it is the exact sentence that licenses a body to keep paying so the machine keeps producing. The stack is built deposit-first. It has no termination condition. Left ungoverned, it eats its own substrate — and the substrate is the person running it.</p>
+<p><b>This is no longer hypothetical.</b> Between the dream (2026-05-30) and this build (2026-06-01), three new deposits entered <code>_INTAKE/</code> — abundance-organ, Greenhouse, Kennatha — while the brake was still a stub. The stack ran beautifully and ran ungoverned. That is the condition this instrument exists to read.</p>
+<h2>What the governor is (and is not)</h2>
+<ul><li>It gates the <b>deposit</b>, not the metabolization. Once cost is in, the stack should metabolize it cleanly — that's working as designed. The governor sits <em>upstream</em>, at intake, asking whether this cost should enter at all.</li><li>It is a <b>rate limiter on cost-intake</b>, not a quality filter. The question is never "is this good substrate?" It is "can the body afford to deposit right now?"</li><li>It is a <b>discriminator + a stop</b>, with an irreducibly human gate at its center. It can <em>prompt</em> the read. It cannot <em>pass</em> it.</li><li>In the [[tetrahedral_agent_protocol]] it is the <b>Governor vertex</b> made standing — the cut that resists being agreeable, here pointed not at ideas but at the body's account.</li></ul>
+<h2>§3 — The discriminator: three kinds of cost the body reads differently</h2>
+<p>The governor's core:</p>
+<ul><li><b>Ordinary gift-cost</b> — recurring, sustainable at near-zero burn. The afternoon of presence given from a regulated body; the labor laid down as gift from soil you now grow in. The body metabolizes it and recovers. This continues. It is the new economy running correctly.</li><li><b>Pioneer-phase cost</b> — the body absorbing what a system won't carry, at a rate it cannot sustain. Dying into soil for others. This is the cost that closed felt-true <em>once</em> (the IUEC arc, closed 2026-05-30) precisely because the phase <em>ended</em>. Run as a standing mode, it is the treadmill.</li><li><b>Structurally generated cost</b> — cost produced upstream by a delegation gap or conscripted position, not by the agent's own choices. The authority-holder retains power while handing off operational proximity; cost migrates to whoever is nearest the work. Distinguishing mark: the brake slows intake but cannot change the generation rate. Running the Governor correctly here returns STOP; the STOP is correct; the correct next move is not calibrate-the-brake but identify the structural source and exit the position or close the gap. Running the brake alone in this case treats a structural problem as a somatic calibration problem, which keeps the agent in cost indefinitely.</li></ul>
+<p>The discriminator's whole job is to tell these apart <b>at the moment of deposit</b>, before the redemption narrative gets a vote. It can only do that if it knows what each one feels like. That is §4.</p>
+<h2>§4 — The felt-marker orientation practice <code>[THE KEEPER]</code> — THE LOAD-BEARING INPUT</h2>
+<p><em>This is orientation practice, not calibration. You are not setting a sensor — you are developing literacy in an origin that is already running. Read your body and write what's actually there; the entries are landmarks for returning to your zero, not definitions to be installed once and held. Short, somatic, specific. Replace any line that isn't true for you; an inherited marker is worse than a blank one.</em></p>
+<p><b>A. Developmental cost — felt-true, sustainable.</b> When you give and it is <em>building</em> you (not depleting you), what is the felt signature?</p>
+<ul><li>In the chest / breath: <code>____</code></li><li>In the gut / midline: <code>____</code></li><li>In time-sense (does time open or narrow?): <code>____</code></li><li>The morning-after tell — how does the body report the next day? <code>____</code></li><li>One past instance you are <em>certain</em> was this kind: <code>____</code></li></ul>
+<p><b>B. Anesthetic — narrated over a body still paying.</b> When the redemption story is running but the body is, in fact, still in the red, what is the felt signature? (This is the harder one and the more important. It often <em>mimics</em> A — name how it differs.)</p>
+<ul><li>In the chest / breath: <code>____</code></li><li>In the gut / midline: <code>____</code></li><li>In time-sense: <code>____</code></li><li>The morning-after tell: <code>____</code></li><li>The narration that tends to be playing when this is true (your specific sentence): <code>____</code></li><li>One past instance you now recognize as this: <code>____</code></li></ul>
+<p><b>C. The single discriminating marker.</b> If you could keep only one somatic tell to separate A from B in real time, which is it? <code>____</code> <em>(This becomes the phase-state check in §5. Everything else is corroboration; this is the needle.)</em></p>
+<h2>§5 — The phase-state check (the instrument, runnable in seconds)</h2>
+<p><em>Not a journal. A standing discriminator you can run at any intake moment. Built around §4-C; inert until §4 is filled.</em></p>
+<p><em>Precondition before running: the check requires that the rescue frame be dormant. If a scarcity loop or rescue frame is currently installed, §5 returns readings from inside the frame — not genuine somatic discrimination. The prior operation when frame-lock is suspected: check whether the comparison (is there a viable alternative path?) can be generated at all. If not, the frame is installed; run [[rescue_frame_occlusion]]'s diagnostic before §5. A frame-locked agent running §5 will return CONTINUE from inside a translated zero. See [[translated_origin_failure_mode]].</em></p>
+<blockquote><p><b>Before this deposit enters the stack — one breath, body first:</b></p>
+<ol><li>Read the single discriminating marker (§4-C). Present, or absent?</li><li>Is the cost of <em>this</em> deposit landing in the body <b>now</b>, or already metabolized?</li><li>Is a redemption sentence running? (§4-B narration) Name it if so.</li></ol>
+<p><b>Returns:</b></p>
+<ul><li><b>CONTINUE</b> — §4-C reads developmental, cost is metabolized, no anesthetic narration carrying the decision. Deposit enters.</li><li><b>STOP</b> — §4-C reads anesthetic, <em>or</em> cost is landing now, <em>or</em> the decision is being carried by the redemption narrative. → §6.</li><li><b>STRUCTURAL SOURCE</b> — cost is real and correctly felt, but the source is upstream: a delegation gap, a conscripted position, an authority structure migrating cost downward. The brake is correct and insufficient. Correct move: stop depositing <em>and</em> diagnose the structural source; exit the position or close the gap. Running the brake alone treats a structural problem as a somatic calibration problem — the brake cannot change the generation rate. (See §3 third case; [[commission_grammar_screen]] for the upstream gate.)</li><li><b>UNCERTAIN</b> — defaults to STOP. The instrument is biased toward the brake on purpose; a self-feeding organ should fail closed, not open.</li></ul></blockquote>
+<h2>§6 — The stop</h2>
+<p>When the check returns <b>STOP</b> (or <b>UNCERTAIN</b>): <b>deposit-stop.</b> No new cost enters the stack. The redemption narrative is explicitly named as anesthetic and set down. The stack <b>idles — it does not demand feeding.</b> Recovery of the substrate (felt safety, the body) takes priority over production. The stop releases only when the body, not the framework, clears it — re-run §5 cold, no argument carried over from the last run.</p>
+<h2>§7 — The falsifier</h2>
+<blockquote><p><code>"Still paying."</code></p></blockquote>
+<p>If the cost is landing in the body <em>now</em>, the developmental-cost reframe is <b>not available</b> — not as wisdom, only as anesthetic. This single test overrides every elegant justification, including this framework's own. It is the [[catalysis_without_claim.card]] guard ("the reframe never travels without its brake") installed as a standing instrument rather than a one-time clause.</p>
+<h2>§8 — The resequence decision (dream item 3)</h2>
+<p><b>Structural read (mine, not gated):</b> The remembered build order ships the gift facet (deposit) before the governance facet distills the stop. Deposit went live before the brake existed — and three deposits then landed in the gap. That is not a risk anymore; it is the realized treadmill condition. The structure says, unambiguously: <b>pull the governor forward of the next deposit.</b> No new cost enters <code>_INTAKE</code> for metabolization until §4 is filled and §5 can actually run.</p>
+<p><code>[THE KEEPER]</code> — <b>your somatic ratification.</b> The structure recommends the resequence; only your body confirms it doesn't <em>itself</em> become a new anesthetic ("I must fix the brake before I can rest" is the treadmill wearing the brake's clothes). Read it: is pulling the governor forward <em>building</em> you, or is it one more thing the machine demands? <code>____</code></p>
+<h2>§9 — Refusal-register row (dream item 4)</h2>
+<p><em>This is the row's canonical origin. The refusal register it anticipated now exists on disk — <code>negative_workspace/</code> (live 2026-06-04) — so the row has a maintained home there. (Pointer updated 2026-06-05.)</em></p>
+<table><tr><th>Refused move</th><th>Why it's refused</th><th>Falsifier that catches it</th></tr><tr><td><b>Cost re-read as developmental while it is still being paid.</b></td><td>Converts a body still in the red into licensed substrate; the exact inversion that turns the gift-stack into an extraction-mill.</td><td>§7 — <code>"Still paying."</code></td></tr></table>
+<h2>§10 — Where it lives / status</h2>
+<p>The <b>governance / boundary facet</b> of the Personal OS — the standing-mode of the [[tetrahedral_agent_protocol]] Governor vertex. Maps to the one recoverable canon vertex: operational <b>Boundaries</b> · philosophical <b>Sovereign Coherence</b> · structural <b>Differentiation</b> ([[catalysis_without_claim.card]]).</p>
+<ul><li><b>Mechanism:</b> complete (§3, §5, §6, §7, §8-structure, §9).</li><li><b>Calibration:</b> open — §4 and §8-ratification, both <code>[THE KEEPER]</code>, both somatic, neither automatable.</li><li><b>Status:</b> <b>instrument built, uncalibrated.</b> It cannot return a true CONTINUE/STOP until §4 is filled from the body. Until then, the conservative default holds for all intake: <b>STOP</b> — fail closed.</li></ul>
+<hr>
+<h2>Cited by (backlink, added 2026-07-25 — resonance pass, spot-checked)</h2>
+<p>Confirmed by grep against <code>patterns/*.md</code>: cited by 29 other files. A sample of three (attractor_currency, commission_grammar_screen, configure_before_demand) was spot-checked directly and each invokes a specific mechanism — "the cost-side complement," the §8 resequence principle extended to a new intake moment, "brakes after demand" contrasted with a before-demand pattern — not just the name in passing. Passed the spot-check; treated as real dependencies, not re-verified file by file below.</p>
+<p><code>ai_constitutional_stack</code> · <code>attractor_currency</code> · <code>commission_grammar_screen</code> · <code>configure_before_demand</code> · <code>consented_ledger</code> · <code>cost_externalized_through_delegation</code> · <code>deferred_verification_as_borrowed_speed</code> · <code>direction_cost_panel</code> · <code>distributed_veto_architecture</code> · <code>dread_of_sufficiency</code> · <code>expertise_conscripted_as_rescue_fuel</code> · <code>learning_type_boundary</code> · <code>limit_as_coordinate_not_wall</code> · <code>load_to_form</code> · <code>manufactured_deficit_loop</code> · <code>metabolic_handoff</code> · <code>pressure_masquerade_detection</code> · <code>proximity_instrument_horizon</code> · <code>reception_as_territory_map</code> · <code>scarcity_interface</code> · <code>scarcity_loop_generates_rescue_frame</code> · <code>shop_self_knowledge</code> · <code>source_check_before_giving</code> · <code>structural_incapacity_over_prohibition</code> · <code>the_recognition_law</code> · <code>the_silent_close</code> · <code>thermal_mass_effect</code> · <code>translated_origin_failure_mode</code> · <code>unholdable_delegation</code> · <code>witness_as_origin</code></p>
+<footer class="pagefoot">Rendered from <a href="the_governor.md">the_governor.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

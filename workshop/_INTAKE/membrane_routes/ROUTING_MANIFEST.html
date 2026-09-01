@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROUTING MANIFEST — the membrane filter, as run · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/_INTAKE/index.html">_INTAKE</a> &middot; <a href="../../../workshop/_INTAKE/membrane_routes/index.html">membrane_routes</a></nav>
+<h1>ROUTING MANIFEST — the membrane filter, as run</h1>
+<p><em>2026-08-02 · routed by <code>_INTAKE/MEMBRANE_ROUTER.html</code> on the keeper's mark ("ACCEPT the default routing", MARKS_LOG 17:58)</em></p>
+<p><em>Source corpus: 1883 turns across 205 Claude Code sessions + 24113 turns across all 1290 claude.ai conversations (2024-12-12 → 2026-08-01). 5101 distinct lines extracted, all seven fields, merged and de-duplicated.</em></p>
+<hr>
+<h2>the balance</h2>
+<p><b>5101 lines in. 5101 lines out. 0 waiting on a disposition.</b></p>
+<ul><li><b>378</b> route to something that serves — MEMBRANE 82 · ASK 100 · STANDING 82 · STUCK 114</li><li><b>190</b> held — DIRECTION 190</li><li><b>4533</b> recycled — COMPOST</li></ul>
+<blockquote><p><b>RECORD no longer exists.</b> On the keeper's mark 2026-08-02 18:43 — "two-thirds of the record producing nothing is a graveyard with good manners" — the four rules that fed RECORD now feed COMPOST. Its 3,391 lines are in <code>COMPOST.md</code>, with the same provenance they had before. <code>RECORD.md</code> on disk is a tombstone pointing here.</p></blockquote>
+<blockquote><p><b>STUCK is now its own route.</b> On the same mark — "being stuck is a condition, not a request, and he asked what I needed" — the STUCK field split out of ASK. ASK fell from 235 to 114; STUCK holds 121. The serve total is unchanged at 403; only its shape changed.</p></blockquote>
+<blockquote><p><code>DIRECTION.md</code> was not named in any mark. It is written anyway, because without it 204 lines would have no file and the on-disk accounting would no longer sum to the input. Nothing is dropped silently.</p></blockquote>
+<h2>the rules, in order — first match wins</h2>
+<table><tr><th>#</th><th>rule</th><th>the disposition it reads</th><th>→</th><th>caught</th></tr><tr><td>1</td><td>It belongs to a chapter you closed.</td><td>first said before 2025-10-01 — the chapter you closed yourself</td><td>COMPOST</td><td>2597</td></tr><tr><td>2</td><td>You pasted it, you didn't type it.</td><td>formal register, no bare lowercase "i", no typo, no trailing dots — pasted, not typed</td><td>COMPOST</td><td>715</td></tr><tr><td>3</td><td>It was flagged as possibly not yours.</td><td>typographic quotes, em-dashes or second-person address — flagged as possibly not yours</td><td>COMPOST</td><td>34</td></tr><tr><td>4</td><td>It was an errand, and the errand is over.</td><td>errand-shaped — consumed on completion</td><td>COMPOST</td><td>119</td></tr><tr><td>5</td><td>You said it once in the bridge chapter and never again.</td><td>said once between 2025-10-01 and 2026-05-01 and never returned to</td><td>COMPOST</td><td>984</td></tr><tr><td>6</td><td>You returned to it in the bridge chapter.</td><td>said two or more times between 2025-10-01 and 2026-05-01</td><td>COMPOST</td><td>45</td></tr><tr><td>7</td><td>It names something from an arc you closed.</td><td>names an object or third party from an arc that has closed — the trade, the DSS people, the bike return, the coop, the legal thread</td><td>COMPOST</td><td>39</td></tr><tr><td>8</td><td>You said it in this chapter. It routes by field.</td><td>said on or after 2026-05-01, in your own typing, not an errand — routed by field</td><td>by field</td><td>568</td></tr></table>
+<p><b>The field map</b> (the one place a judgment is made, and the only rule not derived from the keeper's own record): <code>REFUSALS→MEMBRANE</code> · <code>CAPACITIES→MEMBRANE</code> · <code>EXCESS→MEMBRANE</code> · <code>NEEDS→ASK</code> · <code>STUCK→STUCK</code> · <code>STANDING→STANDING</code> · <code>WANTS→DIRECTION</code></p>
+<p><b>The dials as run:</b> closed chapter ends <code>2025-10-01</code> · current chapter begins <code>2026-05-01</code> · "returned to" means <code>×2</code> or more.</p>
+<hr>
+<h2>what this is not</h2>
+<ul><li>Not a decision. No line in any route file is marked, approved, or published.</li><li>Not a score. Nothing here measures the keeper; the counts are counts of the record.</li><li>Not a deletion. COMPOST holds its lines with full provenance, in this folder.</li><li>Not permanent. Every rule is a switch and every dial is live in <code>MEMBRANE_ROUTER.html</code>; re-running it with different dials re-routes everything.</li></ul>
+<footer class="pagefoot">Rendered from <a href="ROUTING_MANIFEST.md">ROUTING_MANIFEST.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

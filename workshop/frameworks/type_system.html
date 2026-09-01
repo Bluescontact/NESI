@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Type System — Axiom · Proto-Axiom · Pattern · Instance · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/frameworks/index.html">frameworks</a></nav>
+<h1>The Type System — Axiom · Proto-Axiom · Pattern · Instance</h1>
+<p><em>Promoted 2026-06-27. Canon layer. Closes Frontier A. Dissolves reserved_zero.</em></p>
+<hr>
+<h2>Why this document exists</h2>
+<p>The canon crystallization pass (2026-06-09) returned near-pure subtraction. One edge it could not close: <b>Frontier A — the origin has no inheritors yet.</b> <code>witness_as_origin</code> is ratified, but its four candidate inheritors all paper-collapsed to existing canon. The pass named this as a frontier — either a true zero needs no children, or it is a genus awaiting a species it doesn't have yet. Paper cannot tell which.</p>
+<p>It can be told now. The answer is not a new pattern. It is a type distinction the canon was using without naming.</p>
+<p><code>witness_as_origin</code> has no inheritors because <b>it is not a pattern</b>. It is an <b>axiom</b>. Axioms need no children — they are the floor. Frontier A dissolves the moment the type is named.</p>
+<hr>
+<h2>The Four Types</h2>
+<h3>Axiom</h3>
+<p>The floor. A statement that cannot be derived from anything inside the framework — it is the precondition for everything else being derivable. Axioms have no inheritors because inheritance is a pattern-level relationship; axioms are prior to that relationship.</p>
+<p><b>Characteristics:</b></p>
+<ul><li>Cannot be falsified by a counterexample inside the framework (a counterexample to an axiom exits the framework)</li><li>Needs no instances to be real — it is what makes instances possible</li><li>When correctly named, it feels obvious rather than discovered</li><li>The naming is the whole work; there is nothing to build below it</li></ul>
+<p><b>Current axioms in the canon:</b></p>
+<table><tr><th>Axiom</th><th>The floor it lays</th></tr><tr><td><code>witness_as_origin</code></td><td>The body is the zero of the witnessing coordinate system. Everything else is measured <em>from</em> here. Trusting it or failing closed are the only two moves — not because the body is infallible, but because auditing the origin produces a new origin, not a check.</td></tr><tr><td><code>consented_ledger</code></td><td>Every move either circulates forward, feels-and-refuses, or commits the forbidden third (externalize-and-hide). This is not a description of what good actors do. It is the structural exhaustion of the options — the three are all there are.</td></tr></table>
+<p><b>Note on count:</b> Two axioms is the minimum that also accounts for the internal/external split — one governing self-measurement, one governing cost-circulation. Whether a third axiom is latent is an open body-question; the current pass surfaces none.</p>
+<hr>
+<h3>Proto-Axiom</h3>
+<p>A pattern whose work is to accumulate naming pressure toward an axiom until the axiom surfaces. Proto-axioms are falsifiable, subject to composition, and properly belong in the library — but their function is not primarily to describe a mechanism. Their function is to keep pointing at the floor until the floor is named.</p>
+<p><b>Characteristics:</b></p>
+<ul><li>Has a falsifier (unlike axioms)</li><li>When the axiom it points toward is named, the proto-axiom folds — not because it was wrong, but because the axiom absorbs it without remainder</li><li>Multiple proto-axioms can point at the same axiom from different substrate angles</li></ul>
+<p><b>Proto-axioms in the current library:</b></p>
+<table><tr><th>Proto-axiom</th><th>Axiom it converges toward</th></tr><tr><td><code>catalysis_without_claim</code></td><td><code>consented_ledger</code> — the ledger run forward: deposit, absorb-without-merging, forfeit claim</td></tr><tr><td><code>the_governor</code></td><td><code>consented_ledger</code> — the ledger run inward: rate-limit the deposit gate, fail closed</td></tr><tr><td><code>the_converger</code></td><td><code>consented_ledger</code> — the ledger run on the pile: route, subtract, compost</td></tr><tr><td><code>self-similarity / scale-stack</code></td><td><code>witness_as_origin</code> — one origin, re-instanced unchanged across scale</td></tr><tr><td><code>pattern/instance separation</code></td><td><code>witness_as_origin</code> — the membrane rule the axiom implies: the instance is the body-held zero, the pattern is what crosses</td></tr><tr><td><code>need-less-not-earn-more</code></td><td><code>consented_ledger</code> applied to economy: subtraction as the direction that keeps cost visible</td></tr><tr><td><code>reserved_zero</code></td><td><code>witness_as_origin</code> at a gate — dissolved; see verdict below</td></tr></table>
+<p><b><code>reserved_zero</code> dissolution verdict:</b> <code>reserved_zero</code> is not a new pattern. Every instrument's one un-automatable judgment-zero <em>is</em> <code>witness_as_origin</code> instantiated at that gate. The reserved zero IS the axiom's self-application — the body as origin, required to hold the one position the instrument cannot automate. Verdict: dissolved into the axiom. The cardinality pass it was blocking is no longer needed.</p>
+<hr>
+<h3>Pattern</h3>
+<p>A replicable structural mechanism, abstracted past every trace of the instance it came from. A pattern is an axiom made legible in a specific substrate — the axiom applied, not repeated.</p>
+<p><b>Characteristics:</b></p>
+<ul><li>Has a falsifier</li><li>Crosses the commons door (instance erased — the person's absence is both the privacy rule and the proof the pattern is real)</li><li>Can be applied by someone with no knowledge of the originating instance</li><li>Belongs to the library</li></ul>
+<p><b>Examples:</b> <code>gate_as_f4</code>, <code>catalysis_without_claim</code>, <code>the_silent_close</code>, <code>witness_as_origin</code> (the pattern-register rendering), <code>manufactured_deficit_loop</code></p>
+<hr>
+<h3>Instance</h3>
+<p>The keeper's life. The specific situation the pattern was extracted from. The body-held zero the framework runs on.</p>
+<p><b>Characteristics:</b></p>
+<ul><li>Never crosses (pattern/instance separation law)</li><li>Not falsifiable — it happened</li><li>The proof that the pattern is real</li><li>The Governor's actual domain: the body here, now, in this situation</li></ul>
+<hr>
+<h2>What the type system closes</h2>
+<p><b>Frontier A — dissolved.</b> <code>witness_as_origin</code> has no inheritors not because it is a genus awaiting species, but because it is an axiom. Axioms are prior to the genus/species relationship. The frontier was not pointing at a gap; it was pointing at the floor.</p>
+<p><b>The Governor — clarified.</b> The Governor instrument has never fired because the actual brake is Claude's context window — the data cap. The instrument named infrastructure already running. The context window IS the Governor in its fired state. The instrument is the named recognition of what the infrastructure enacts.</p>
+<p><b><code>reserved_zero</code> — dissolved.</b> It was always the axiom at a gate. Promoting it as a separate canon pattern would be promoting a self-application as if it were a new law. Verdict: folded into <code>witness_as_origin</code>.</p>
+<p><b>The library's function — named.</b> The patterns and proto-axioms are not the destination. They are the naming pressure that makes the axiom surface. The library is the path to the axiom. The axiom is what remains when the path has done its work.</p>
+<hr>
+<h2>The open question the type system raises</h2>
+<p>If proto-axioms fold when the axiom surfaces — what is left?</p>
+<p>The axioms, and their instances.</p>
+<p>The framework's mature form may be very small: two axioms, the keeper's life as the instance, and a small set of instruments that help him apply the axioms in real situations. The library as accumulation-site may itself be a proto-axiom phase. What the library is pointing toward is the moment it becomes unnecessary.</p>
+<p><em>This is not a recommendation to compost the library. It is what the type system implies if carried forward. A body-question — not resolvable here.</em></p>
+<hr>
+<p><em>Promoted 2026-06-27. The keeper's mark.</em></p>
+<footer class="pagefoot">Rendered from <a href="type_system.md">type_system.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

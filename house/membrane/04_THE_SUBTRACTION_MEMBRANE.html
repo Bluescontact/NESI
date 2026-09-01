@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Subtraction Membrane · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../house/index.html">house</a> &middot; <a href="../../house/membrane/index.html">membrane</a></nav>
+<h1>The Subtraction Membrane</h1>
+<p>Adding to a collection feels like contribution; removing from one feels like accusation. So collections grow forever while their accuracy falls — public removal queues sit undrained for years. This project refuses that drift structurally: removal runs on a schedule, enforced by the project's own gate, with a check that cannot be satisfied by paperwork.</p>
+<h2>The rule</h2>
+<p>A <b>subtraction pass</b> must run at least every fourteen days (the quota lives in the gate's configuration, <code>gate.conf</code>). If the quota lapses, the gate refuses to report the project healthy, and says why, in the open.</p>
+<h2>The law of a pass</h2>
+<ol><li><b>Its only permitted output is removal or demotion.</b> A pass where the operator added good work and took nothing away does not count.</li><li><b>It must remove at least one thing.</b></li><li><b>Every removal is recorded with a cause</b> — an id and a stated reason, appended to the compost record. Nothing is removed to the void.</li><li><b>The unfakeable check:</b> the target file must be smaller after the pass than before, verified in bytes by the enforcement tool itself (<code>workshop/game-gate/gate/instruments/05-subtract.mjs</code>). A pass that didn't shrink the target didn't subtract, and nothing is recorded.</li><li><b>The full original is kept.</b> Before a pass, the target is backed up whole at a named path. Subtraction demotes material out of the live surface; it never erases the record.</li></ol>
+<h2>What a pass may and may not remove</h2>
+<ul><li><b>May remove, on the operator's own authority:</b> derived and self-generated material — run logs, machine-appended records, generated accounting nothing reads, duplicates. The test: removing it changes no tool's verdict and no person's record.</li><li><b>May propose, never remove:</b> anything a person decided into the project — patterns, essays, admitted contributions, the decisions themselves. For those, a pass produces a proposal with a cause; the removal is a decision, and decisions here belong to the keeper.</li><li><b>May never touch:</b> another person's records, or the compost record itself — the outflow ledger is not subject to its own outflow.</li></ul>
+<h2>The first pass</h2>
+<p>The membrane's first act was on the gate's own ledger: 155 lines of the gate logging its own runs — records nothing reads — removed with cause, the file cut from 244 KB to 3 KB, the full original kept at a named backup. It subtracted from the bookkeeping, not from the work.</p>
+<hr>
+<p><b>How to show this wrong:</b> the tool's own refusals are the test. If the quota lapses, the gate says so publicly; if a pass claims removals while the target didn't shrink, the tool refuses to record it; if compost entries appear without causes, the compost record itself shows the violation. The deeper test: watch whether removal proposals against decided material actually get decided, or pile up the way removal queues everywhere do. If they pile up, this membrane has outflow for bookkeeping but not for substance, and this document must say so.</p>
+<p><em>Record: built 2026-09-01, closing a question left open since the tool was written ("where does the removal quota live" — answer: in the gate's own configuration). Decision history in the workshop and commit log.</em></p>
+<footer class="pagefoot">Rendered from <a href="04_THE_SUBTRACTION_MEMBRANE.md">04_THE_SUBTRACTION_MEMBRANE.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boundary audit · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../../index.html">NESI</a> &middot; <a href="../../../workshop/index.html">workshop</a> &middot; <a href="../../../workshop/skills/index.html">skills</a> &middot; <a href="../../../workshop/skills/boundary-audit/index.html">boundary-audit</a></nav>
+<hr>
+<p>name: boundary-audit description: Before trusting that a stated rule, limit, or scope actually holds, check whether it's enforced as a mechanical fact — a missing file, a nonexistent parameter, a hard collision a script can't complete past — or whether it's just a sentence a session is expected to read and comply with. Use when asked "is this boundary real," "does this gate actually gate," "run a boundary audit," "is this enforced or just documented," or before relying on any freeze, scope limit, one-per-unit rule, or "never do X" instruction to actually hold under a session that doesn't read carefully. Not the-closing-check (which is five pre-build questions about a new mechanic) and not the gate/gate.mjs wired jurisdiction — this audits whether an <em>existing</em> stated boundary, anywhere in a project, is structurally enforced. Born from nesi/mind/LEARNED.md laws 11, 22, and 24 — a rule stated in prose is only as strong as the session currently reading it, and a guard that repairs the result after the fact instead of refusing the act breaks the very law it claims to serve.</p>
+<hr>
+<h1>Boundary audit</h1>
+<p>A rule that lives only in prose — a CLAUDE.md line, a comment, an instruction in a skill file — binds exactly as hard as the next session's attention span. This corpus named the difference directly: <em>"a gate that holds is one the machine cannot talk past — a file, a hash, a row only a hand can write, a parameter that does not exist. Not an instruction a session reads and complies with."</em> Most stated boundaries in a fast-moving project are still at the prose stage, because prose is cheaper to write than a mechanism — which is exactly why it's worth checking which stage a given boundary is actually at before depending on it.</p>
+<h2>The procedure</h2>
+<h3>1. Name the boundary exactly</h3>
+<p>State the rule as a single sentence with its scope: what may not happen, to what, under what condition. "One manifest per tetra" and "never delete a comment thread" are boundaries specific enough to test; "be careful with X" needs narrowing first, or gets reported as needing that before it can be audited.</p>
+<h3>2. Find the enforcement point</h3>
+<p>Locate where — if anywhere — this boundary is actually checked in code, config, permissions, or file structure, as opposed to where it is merely <em>described</em>. An enforcement point is a function that returns early, a file lock, a schema constraint, a missing credential, a permission the caller doesn't have; a line in a markdown file describing the rule is the separate, weaker thing.</p>
+<h3>3. Classify what you found</h3>
+<ul><li><b>Filesystem fact (law 22)</b> — the boundary is enforced by something that doesn't exist, can't be reached, or physically blocks completion: a missing file the code checks for, a parameter that isn't defined, a lock another process holds. Name the exact mechanism.</li><li><b>Refusal (law 24, the healthy half)</b> — the boundary is enforced by the act itself being refused before it happens: a validation that stops execution, a guard clause that returns without doing the thing.</li><li><b>Silent correction (law 24, the defect)</b> — the act is <em>allowed to happen</em> and something downstream quietly fixes, truncates, or reverts the result afterward. This looks like enforcement from the outside (the bad state doesn't persist) but it isn't — the boundary was crossed, and whatever the correction missed is now the actual behavior. Flag this even though the outcome looks fine; the corpus paid for this exact shape once (a 500-word write silently destroyed instead of the write being refused).</li><li><b>Prose only</b> — nothing in step 2 exists. The boundary is an instruction a session reads. Say so plainly; this is the majority case and naming it isn't a failure, it's the finding the audit exists to produce.</li></ul>
+<h3>4. Test it, don't just read it, when the boundary is scriptable</h3>
+<p>If step 3 found a mechanism, try to cross the boundary deliberately (in a disposable/test context, never against real state) and confirm it actually refuses. A mechanism that exists but has a gap — an unchecked second path, a race condition, a case the missing-file check doesn't cover — is worth exactly as little as prose until it's been pushed on.</p>
+<h2>Ending states</h2>
+<ul><li><b>MECHANICAL</b> — enforced by a filesystem fact or an actual refusal, and (where testable) confirmed to hold under a deliberate attempt to cross it.</li><li><b>PARTIAL</b> — a mechanism exists but has a known or found gap; name the gap precisely.</li><li><b>CORRECTIVE</b> — the act is allowed and repaired afterward rather than refused; name what the correction actually loses or overwrites.</li><li><b>PROSE ONLY</b> — no mechanism found. This is not a demand to go build one; it's a statement of what the boundary currently is, so nothing downstream depends on it as if it were stronger.</li></ul>
+<h2>Sibling lenses</h2>
+<p>One of six recurring checks named in <code>nesi/mind/DRAFT_SIX_SHAPES_2026-08-20.md</code> (seated 2026-08-21) — this one is lens 3, <em>is this boundary a fact, or just a sentence</em>. The other five: <code>instrument-audit</code> (does the check prove anything), <code>conservation-harness</code> (does the material conserve), <code>record-audit</code> (is the record honest), <code>authority-check</code> (whose call is this), and <code>unrouted-gifts</code> (is capacity found or left dead).</p>
+<footer class="pagefoot">Rendered from <a href="SKILL.md">SKILL.md</a> · <a href="../../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

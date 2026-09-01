@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Open Ledger · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../house/index.html">house</a> &middot; <a href="../../house/open-ledger/index.html">open-ledger</a></nav>
+<h1>The Open Ledger</h1>
+<p><em>The data spine of the village tool. The schema view of <a href="../CIRCUIT_TOOL.html">CIRCUIT_TOOL.md</a> — same tool, named by what it cannot do.</em> <em>Built 2026-06-21. Pre-gate. Not canon, not substrate. The keeper holds the mark.</em> <em>Working tool on this spine: <a href="circuit.html">circuit.html</a> — the four faces (Self · Field · Routes · System), persistent. <a href="demo.html">demo.html</a> proves the incapacities.</em></p>
+<hr>
+<h2>The one law</h2>
+<p><b>It records everything that circulates and computes nothing that is owed.</b></p>
+<p>A frame held by instruction breaks the moment the instructor leaves. A frame held by structural incapacity holds in any hands, because no one can violate a rule the software has no fields for. So the spine lives in the schema, not the onboarding. Debt isn't prohibited. It's <b>unrepresentable.</b></p>
+<hr>
+<h2>The five incapacities</h2>
+<p>Each vertebra is a transactional reflex killed by a missing field. Read against <a href="SCHEMA.sql"><code>SCHEMA.sql</code></a> and <a href="schema.ts"><code>schema.ts</code></a> — every "→" points at an absence.</p>
+<table><tr><th>#</th><th>The tool cannot…</th><th>…because the field is absent</th><th>What that makes unrepresentable</th></tr><tr><td>1</td><td>compute a balance between two people</td><td>no <code>recipient</code> / <code>counterparty</code> on any entry; entries attach to <code>commons</code></td><td><b>barter</b></td></tr><tr><td>2</td><td>price</td><td>no <code>value</code> / <code>amount</code> / numeric column anywhere; <code>weight</code> is words</td><td><b>the marketplace</b></td></tr><tr><td>3</td><td>record a refusal-to-respond</td><td>no <code>responses</code> / <code>declines</code> table at all</td><td><b>obligation-by-visibility</b></td></tr><tr><td>4</td><td>bind a person to a role</td><td><code>contact</code> carries only <code>reach</code>; no entry references a person</td><td><b>the "needy person"</b></td></tr><tr><td>5</td><td>turn a post into a claim</td><td>no <code>claim</code> / <code>obligation</code> / <code>due</code> / <code>assignee</code> table</td><td><b>the contract</b></td></tr></table>
+<p>The same person flows as need and as gift, and is never typed, because there is no column to type them in. A no leaves no mark, because there is no surface for it to land on. A post is a signal, never a demand, because nothing it writes can bind anyone.</p>
+<hr>
+<h2>The seam</h2>
+<p>The Open Ledger <b>shows the cost and hides the debt.</b></p>
+<p><code>weight</code> carries the visible weight of what a gift is and what it took — <em>"a full day," "the last of the firewood."</em> The receiver sees it; the cost is legible (the Costed Handoff is satisfied). And nowhere does the schema compute a balance from it — there is no number to sum, no counterparty to sum it against. Cost made <b>legible</b> without cost made <b>transactional.</b> That single seam is what the whole thing turns on, and both halves live in one field: <code>weight</code> is shown and never counted.</p>
+<hr>
+<h2>The limit (why the gathering is load-bearing)</h2>
+<p>The ledger has no <code>felt_as_gift</code>, no <code>quality</code>, no <code>sentiment</code> column — and that absence is honest, not an oversight. The one thing the tool cannot decide is whether a given gift was <em>felt</em> as gift or as extraction wearing gift's face. The schema makes the frame unbreakable on paper; it still can't read the room.</p>
+<p>That part doesn't live in the tool. It lives in the people the tool gathers — which is exactly why <code>gathering</code> is a first-class kind with its own view, not decoration. The ledger routes people to the room. The room does the felt-read. And the room is where visible cost gets <b>received as gift</b> instead of <b>tallied as owed</b>. That makes the gathering the circuit's dispute arena, and it is declared as one: <a href="../membrane/01_THE_DISPUTE_ARENA.html">the dispute arena</a> says who convenes it, what it can and cannot decide, and how its record is kept.</p>
+<hr>
+<h2>Holds in a stranger's hands</h2>
+<p>The proof isn't a rule that says "don't enter debt." It's that a stranger with full write access <em>cannot.</em> Open <a href="demo.html"><code>demo.html</code></a> and try the five transactional moves. Each one fails — not with "permission denied," but with <b>"there is no field for this."</b> That is the difference between a frame held by instruction and a frame held by structural incapacity.</p>
+<hr>
+<h2>Topology — A, marked 2026-06-21</h2>
+<p>The commons is the record; ownership is a <b>held key</b>, not a stored identity. This is the one place the Open Ledger and the <a href="../CIRCUIT_TOOL.html">Circuit Tool</a> collide — <em>"you hold your own node"</em> needs the system to know which entries are yours, but the moment an entry stores its owner, <em>"this person is needy"</em> becomes computable. The reconciliation splits authorship in two:</p>
+<ul><li><b>Control</b> — "I posted this, I can retract it" — lives in a secret you hold. The schema stores only <code>holder_proof = hash(secret)</code> on the entry.</li><li><b>Identity</b> — "this person <em>is</em> needy" — would be a column ranking people by their entries. It does not exist.</li></ul>
+<p>A fresh secret per entry makes every <code>holder_proof</code> unique, so even grouping by it profiles no one. <code>holder_proof</code> is in no view; the only write that touches it is <code>retract(entry, secret)</code>. <b>"Your node" is not a server query</b> — it is computed from the keyring you hold, by checking which entries your keys open. No authoritative record, no central authority, nothing to be kicked out of: the Circuit Tool's retention architecture falls straight out of the capability model, and incapacity #4 stays enforced in the schema, not the UI.</p>
+<p><em>(Rejected: <b>B</b> mesh-all-the-way-down made the needy-person ranking schema-representable — the spine dropping back to UI discipline; <b>C</b> commons-all-the-way-down dropped the conductor/mesh metaphor. <b>A</b> keeps both halves.)</em></p>
+<hr>
+<p><em>Pre-gate. Not canon, not substrate. Staged in <code>open_ledger/</code>. The keeper marks.</em></p>
+<footer class="pagefoot">Rendered from <a href="THE_OPEN_LEDGER.md">THE_OPEN_LEDGER.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>

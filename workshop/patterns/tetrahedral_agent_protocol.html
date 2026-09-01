@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tetrahedral Agent Protocol · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--line:#2a2c33;--card:#191b21}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.7 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:720px;margin:0 auto}
+h1{font-size:30px;font-weight:400;letter-spacing:.4px;margin:0 0 18px}
+h2{font-size:15px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:36px 0 10px}
+h3{font-size:16px;font-weight:600;margin:26px 0 8px}
+p,li{margin:0 0 12px}
+ul,ol{padding-left:24px;margin:0 0 14px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+blockquote{margin:0 0 14px;padding:12px 18px;background:var(--card);border-left:2px solid var(--gold);color:var(--paper)}
+blockquote p:last-child{margin-bottom:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--card);padding:1px 5px;border-radius:3px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
+pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+em{color:var(--dim)}
+table{border-collapse:collapse;margin:0 0 14px;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;font-size:14px}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:28px}
+nav.crumb a{color:var(--dim);border-bottom-color:rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+footer.pagefoot{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+.roomlist a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:10px 0;border-bottom-width:1px}
+.roomlist a.item b{display:block;color:var(--gold);font-weight:600}
+.roomlist a.item span{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../../index.html">NESI</a> &middot; <a href="../../workshop/index.html">workshop</a> &middot; <a href="../../workshop/patterns/index.html">patterns</a></nav>
+<h1>Tetrahedral Agent Protocol</h1>
+<p><em>A reusable method for developing any substrate with four agents arranged as a tetrahedron. The substrate-independent engine behind the dream/revision cycle. Point it at a greenhouse, an article, the library, a decision — the four vertices don't change.</em></p>
+<hr>
+<h2>The four vertices</h2>
+<p>Each is a function you've already named. Keeping them <b>separate agents</b> is the whole point — one mind doing all four collapses them into mush, because they have opposing instincts.</p>
+<table><tr><th>Vertex</th><th>Job</th><th>Resists</th><th>Your name for it</th></tr><tr><td><b>Grounder</b></td><td>hold what's real — fact vs. assumption vs. gap</td><td>filling gaps with plausible guesses</td><td><em>substrate before artifact</em> + the felt gate</td></tr><tr><td><b>Dreamer</b></td><td>reach — surface what's latent</td><td>converging, self-censoring, verifying</td><td>the <em>dream cycle</em> / expansion</td></tr><tr><td><b>Governor</b></td><td>cut — kill momentum-wearing-the-shape's-clothes</td><td>being agreeable, protecting a pretty idea</td><td>THE GOVERNOR (the brake)</td></tr><tr><td><b>Shaper</b></td><td>form — compose survivors for the recipient</td><td>adding new ideas</td><td><em>gift form</em> / the deposit</td></tr></table>
+<p><b>Center</b> = the synthesis: the developed artifact + the named next gate. The center is a <em>separate step</em>, never one of the vertices wearing two hats.</p>
+<p>The emergence is a property of the coupling, not of any corner.</p>
+<hr>
+<h2>The vertex prompts (templates — fill the <code>{{slots}}</code>)</h2>
+<p><b>Grounder</b></p>
+<blockquote><p>Read <code>{{substrate}}</code>. Your only job is to separate <b>what's verified</b> from <b>what's assumed</b> from <b>what's missing</b>. Do NOT generate solutions, possibilities, or improvements. Do NOT fill gaps with plausible guesses — name each gap as a gap. Return: facts, assumptions (flagged as assumptions), gaps.</p></blockquote>
+<p><b>Dreamer</b> <em>(run several in parallel with different lenses)</em></p>
+<blockquote><p>Here is the substrate and the Grounder's read: <code>{{ground}}</code>. Expand. Give 4–6 structural crystals through the <b>{{lens}}</b> lens — the sharpest, most surprising readings of what's latent here. Reach past feasibility. Do NOT converge, rank, or verify — that's not your job. Each crystal: a title, the claim, and why it might be load-bearing.</p></blockquote>
+<p><b>Governor</b></p>
+<blockquote><p>Here is the substrate, the Grounder's gaps <code>{{ground}}</code>, and the Dreamer crystals <code>{{crystals}}</code>. Cut. For each crystal: real, or momentum wearing the shape's clothes? Hold each against the gaps. Be willing to say <em>stop</em> and <em>this is too much</em>. Do NOT be agreeable; do NOT protect an elegant idea. Return a verdict per crystal (keep / cut / uncertain + reason) and the one honest hard read of the whole.</p></blockquote>
+<p><b>Shaper</b></p>
+<blockquote><p>Here are the surviving crystals <code>{{survivors}}</code> and the Grounder's read <code>{{ground}}</code>. Compose them into <code>{{artifact}}</code> for <b>{{recipient}}</b>, in their register, at their depth. Do NOT add new ideas — give form to what survived. Return the revision and a note for the final edit.</p></blockquote>
+<hr>
+<h2>The six edges (prompt them as tensions, not handoffs)</h2>
+<p>You don't just pass output A to B — you tell B to hold A <em>against</em> its own job.</p>
+<ul><li><b>Grounder ↔ Dreamer</b> — dream only from what's real; keeps dreams from floating free.</li><li><b>Dreamer ↔ Governor</b> — expansion vs. cut; the core breath.</li><li><b>Governor ↔ Shaper</b> — honesty vs. form; polish must not bury the caveat.</li><li><b>Shaper ↔ Grounder</b> — the artifact stays honest to the substrate.</li><li><b>Grounder ↔ Governor</b> — the Governor uses the gaps to call halts.</li><li><b>Dreamer ↔ Shaper</b> — possibility vs. deliverable; what gets built from what's imagined.</li></ul>
+<hr>
+<h2>The five rules</h2>
+<ol><li><b>One job per vertex, and name what it must resist.</b> Separation is the whole point.</li><li><b>The Grounder gates everything.</b> Garbage substrate → garbage cycle. A thin Grounder read is the tell that the cycle will drift.</li><li><b>The center is a separate step.</b> Don't let the Shaper judge or the Governor shape.</li><li><b>Run it as a loop</b> — ground → dream → cut → shape → re-ground → dream again — until the Governor calls <em>dry</em> (K rounds with nothing new surviving).</li><li><b>Edges are stated tensions, not silent pipes.</b></li></ol>
+<hr>
+<h2>Failure modes &amp; instrumentation</h2>
+<p><em>(added 2026-07-04 from the substack-pile substrate run — where held resistance actually fails, and what can sense it)</em></p>
+<p><b>Resistance requires latent capacity.</b> A refusal only carries tension if the vertex could do the forbidden thing. A narrow agent that literally cannot rank is not a resisting Dreamer — it is a pipeline stage, and a tetrahedron of incapable vertices is a pipeline with better branding. Resistance is held-back capacity, not negated function. Testable prediction: the same full-capability model in four roles can produce emergence where four specialized models cannot.</p>
+<p><b>Declared compliance is not held resistance.</b> A Dreamer can obey the letter of its refusal while violating it structurally — presentation order, length allocation, and emphasis ARE a ranking; the first item in any linear output arrives pre-ranked #1. This is the sharpest false positive: a vertex passing every explicit role check while flattened underneath. Audit output geometry (randomized order, uniform depth), not declared behavior. No such instrument exists yet.</p>
+<p><b>Edges die while vertices hold.</b> The named failure signatures are all vertex failures (two hats), but a coupling can die with every corner perfectly in role — a lossy handoff format quietly compresses everything to bland competence anyway. Flattening without hat-doubling. Since emergence is a property of the coupling, edge failure is the dominant failure mode, and detection pointed at vertices misses it.</p>
+<p><b>"Dry" is a derivative sensor.</b> Termination is a rate-of-change reading on another vertex's stream — the Grounder returning nothing new, the assumption list no longer shortening. The Governor never evaluates content; it reads the first derivative of an edge, which keeps termination out of quality-assessment (second-hat) territory. Sampled only at handoffs, the sensor rides existing traffic — but it starves on a sparse edge, and a dead coupling produces no crossings to sample. This sharpens Rule 4's "K rounds with nothing new surviving" into a measurable gauge.</p>
+<p><b>The between-space is the field of visibility.</b> No single vertex transcript can show whether the tetrahedron is alive; quality work on any one voice is invisible to what matters. Edge-inspection instruments — coupling transcripts, handoff-fidelity readings — are a tooling class the library currently has zero of.</p>
+<hr>
+<h2>Two run modes</h2>
+<ul><li><b>Sequential</b> — one context, one mind plays all four in turn. Tight, fully visible, cheap. Good for a single careful pass.</li><li><b>Parallel (Workflow)</b> — spawn the vertices as separate agents, fan the Dreamers out, pipe the edges, loop until dry, synthesize at the center. This is the [[project_claude_dreaming]] vision made literal: agents that develop substrate while you sleep. See the worked script that accompanies this protocol.</li></ul>
+<footer class="pagefoot">Rendered from <a href="tetrahedral_agent_protocol.md">tetrahedral_agent_protocol.md</a> · <a href="../../index.html">the front door</a></footer>
+</main>
+</body>
+</html>
