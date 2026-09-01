@@ -25,6 +25,19 @@
 > not advanced by this — the seating was the felt read answering the ground
 > pass, and the hypothesis's degree and circuit conditions remain untested.
 >
+> **SEATED — 2026-09-01, the keeper's mark: "seat it as a crystal."**
+> Crystal 12: THE GAME IS THE CONTAINER, in the keeper's own words the same
+> hour — *"the game is the container that carries the infrastructure for a
+> user."* Surfaced during the walk build (the session's read of the day's
+> work), seated by the keeper's felt read. The count stands at twelve. The
+> held VE hypothesis is NOT advanced by this seating: the count is an
+> arrived output, not an aim — the candidate arose from the keeper's own
+> axiom about the day's work, not from any pass counting toward twelve —
+> and conditions two through four (degree four per crystal, the four
+> six-member circuits, the empty thirteenth) remain untested and held.
+> One more or one fewer at the next honest pass kills or keeps the
+> hypothesis on its own terms.
+>
 > The pre-development text is held byte-for-byte in the source corpus's git
 > history (commit `2e6b434` there — the public repository carries only the
 > developed text; nothing about the prior version is hidden, it is simply
@@ -36,14 +49,15 @@ This corpus was built in pieces over about three months, and most of the
 pieces failed. This document names the structures that did not — the
 ones that kept turning up across builds and eras, including builds that later
 collapsed: eight crossed at first assembly, three more seated later by the
-keeper's felt read. Everything else in the deposit seats under one of them. Each
+keeper's felt read, and a twelfth seated by the keeper's own axiom the
+following day. Everything else in the deposit seats under one of them. Each
 comes with the evidence it stands on, graded honestly; at the bottom is the
 test that would show this document wrong, in both of the directions it can be
 wrong.
 
 ---
 
-## THE SPINE — the crystals (eight crossed 2026-08-31; 9–11 seated 2026-09-01)
+## THE SPINE — the crystals (eight crossed 2026-08-31; 9–11 seated 2026-09-01; 12 seated later the same day)
 
 The numbering here is the numbering in `tools/spine.js`; the two must never
 drift. One line of law and the single strongest verified sighting each; the
@@ -134,6 +148,20 @@ Strongest sighting: the framing rule enforced mechanically at every commit
 (framing_check in the game's suite), plus the documented rewrite pass that
 converted seven refusal-form strings to what the page does.
 (3 sightings — at the recurrence threshold, stated plainly.)
+
+**12 · THE GAME IS THE CONTAINER** — the game is the container that
+carries the infrastructure for a user; a document describes, only play
+transmits. *(Seated 2026-09-01, the keeper's words: "the game is the
+container that carries the infrastructure for a user.")*
+Strongest sighting: the genesis seed — the corpus's whole operating
+discipline carried into an AI session as one pasted, playable document;
+the container for a machine, as the game is the container for a person.
+(4 verified sightings: the seed · THE_GAME.md's inversion, "writing is
+the smallest act in the game — the game is what the world does with it"
+· THE_SIX_MANIFESTS, "Terrain is the save file" — the infrastructure IS
+the world state · the walk, where taking a seat builds a circuit node,
+the week carries the rhythm doctrine, and the door-out enacts the
+outward transform, none of them read as documents first.)
 
 ---
 
