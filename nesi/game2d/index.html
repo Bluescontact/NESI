@@ -1005,7 +1005,13 @@ function nearPairsFor(list, chainedKeys) {
 let GW = 640, GH = 640;
 function updateGraphDims() {
   if (!nodes.length) { GW = 640; GH = 640; return; }
-  const PACKING_SLACK = 2.6; // real gaps + repulsion margin, not a tight bin-pack
+  /* SCALE FIX, 2026-09-01 — measured, not guessed: at 128 sentences (1,871
+     words — the top of the keeper's stated 750-2000 functional band) the
+     2.6x stage left cards at 45% area fill, and 400 separation passes
+     could not converge — 42 overlapping pairs. Slack now graduates with
+     volume: small pages keep the tight feel, a freshet gets room. A feel
+     constant, sweepable, same class as sweep_thresholds' own two. */
+  const PACKING_SLACK = nodes.length <= 48 ? 2.6 : Math.min(5.2, 2.6 + (nodes.length - 48) * 0.03);
   const totalArea = nodes.reduce((s,n) => s + (n.w||90)*(n.h||44), 0) * PACKING_SLACK;
   const side = Math.max(640, Math.ceil(Math.sqrt(totalArea)));
   GW = side; GH = side;
@@ -1105,7 +1111,7 @@ function layout() {
   /* the settle phase — separation alone, nothing pulling back. This is
      what actually closes the remaining overlaps the interleaved loop
      above cannot; see the comment on separatePass(). */
-  const SETTLE = Math.min(400, 100 + nodes.length*3);
+  const SETTLE = Math.min(1400, 100 + nodes.length*6); // scale fix 2026-09-01: swept at 128 sentences until clean
   for (let s=0; s<SETTLE; s++) separatePass(GW, GH);
   const chainedKeys = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
   const nearPairs = nearPairsFor(spoken(), chainedKeys);
