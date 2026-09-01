@@ -11,7 +11,8 @@ what you came for.
   **gift circuit** ([`house/open-ledger/circuit.html`](house/open-ledger/circuit.html))
   beside it and the circuit's governance built out in the **membrane**
   ([`house/membrane/`](house/membrane/)): the dispute arena, the declared
-  center, the outward transform. The **genesis seed**
+  center, the outward transform, and the subtraction membrane — the
+  outflow, whose first pass ran the day it was built. The **genesis seed**
   ([`house/genesis-seed/`](house/genesis-seed/)) is paste-and-run
   onboarding for any model, shipped with its behavioral tests and
   demonstration. Behind those: the **kit** (six one-page instruments) and

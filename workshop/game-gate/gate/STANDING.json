@@ -8,16 +8,13 @@
     "01-motion",
     "02-selfuse",
     "04-horizon",
-    "06-landed"
+    "06-landed",
+    "05-subtract"
   ],
   "heldCandidateMechanisms": [
     {
       "id": "03-blanks",
       "fork": "whether blanks get asserted, and where"
-    },
-    {
-      "id": "05-subtract",
-      "fork": "where the subtraction quota lives"
     }
   ],
   "openForksNotImplemented": [
@@ -46,5 +43,8 @@
     }
   ],
   "sitedAt": "nesi/game2d/gate",
-  "sited": "2026-08-17"
+  "sited": "2026-08-17",
+  "notes": {
+    "05-subtract": "ACTIVE since 2026-09-01 — fork (\"where the subtraction quota lives\") closed by the keeper: the quota lives in gate.conf, enforced by the instrument; law at house/membrane/04_THE_SUBTRACTION_MEMBRANE.md. First pass ran the same day on LEDGER.jsonl (155 gate-run silt lines composted with cause; backup kept). Prior held entry, kept as the record of the fork: {\"id\":\"05-subtract\",\"fork\":\"where the subtraction quota lives\"}"
+  }
 }

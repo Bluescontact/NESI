@@ -3,9 +3,9 @@
   "marksCount": 128,
   "invocationRootsScanned": 1,
   "typologyCounts": {
-    "seed": 96,
-    "nutrient": 83,
-    "lens": 19,
+    "seed": 95,
+    "nutrient": 85,
+    "lens": 18,
     "organ": 1,
     "pollen": 14
   },
@@ -75,6 +75,7 @@
   },
   "excludedDebris": [
     "game2d/gate/LEDGER.jsonl.backup_pre-compaction_2026-08-24.jsonl",
+    "game2d/gate/LEDGER.jsonl.backup_pre-compaction_2026-09-01.jsonl",
     "game2d/tools/.check_all.js.pre_gate",
     "game2d/tools/retired/04-horizon.mjs",
     "game2d/tools/retired/assertion_audit.py",
@@ -205,7 +206,7 @@
       },
       {
         "path": "game2d/gate\\LEDGER.jsonl",
-        "category": "seed"
+        "category": "nutrient"
       },
       {
         "path": "game2d/gate\\lib.mjs",
@@ -233,7 +234,7 @@
       },
       {
         "path": "game2d/gate\\STANDING.json",
-        "category": "lens"
+        "category": "nutrient"
       },
       {
         "path": "game2d/gate\\tests\\gate.test.mjs",

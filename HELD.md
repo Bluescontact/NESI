@@ -48,13 +48,20 @@ crossed the same day, on that instruction:
   held on the keeper's mark 2026-08-31 with its four-part decidability
   condition, stated in full in the spine document. No pass may aim at
   twelve; the count must arrive as output.
-- **The mirror audit's four BOUNDARY items** — the burn, the justarrived
-  flash, 06-landed's count while 05-subtract stays held, the KEYS.txt
-  compliance keys; on the record in
-  [`workshop/audit/MIRROR_AUDIT_2026-09-01.md`](workshop/audit/MIRROR_AUDIT_2026-09-01.md),
-  blocking nothing, each awaiting its named fork.
-- **The membrane functions in practice** — the three built documents
-  declare; only a running circuit can prove. Each carries its own
+- **The mirror audit's BOUNDARY items** — the burn, the justarrived
+  flash, the KEYS.txt compliance keys, and (new in the second pass)
+  09-dispute's fork; on the record in
+  [`workshop/audit/MIRROR_AUDIT_2026-09-01.md`](workshop/audit/MIRROR_AUDIT_2026-09-01.md)
+  and [`the second pass`](workshop/audit/MIRROR_AUDIT_2026-09-01_second_pass.md),
+  blocking nothing, each awaiting its named fork. *(The 06-landed /
+  05-subtract item CLOSED 2026-09-01: the subtraction membrane was built —
+  [`house/membrane/04_THE_SUBTRACTION_MEMBRANE.md`](house/membrane/04_THE_SUBTRACTION_MEMBRANE.md)
+  — the fork closed, the instrument made active, and the first pass run on
+  the gate's own ledger, −241,290 bytes of self-logging silt composted with
+  cause.)*
+- **The membrane functions in practice** — of the four built documents,
+  the subtraction membrane alone has run for real; the other three
+  declare, and only a running circuit can prove them. Each carries its own
   falsifier; re-read them against the first real circuit that runs.
 
 ## Development record
