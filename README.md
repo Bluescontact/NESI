@@ -1,58 +1,66 @@
 # NESI
 
-**A house, a workshop, and a game — whole.** Three doors in, depending on
-what you came for.
+A house, a workshop, and a game. Three doors in, depending on what you
+came for.
 
-- **If you want a tool today** — the **floor kit**
-  ([`house/floor-kit/00_THE_GATE.md`](house/floor-kit/00_THE_GATE.md))
-  walks from the gate you're missing to the floor you can hold. The
-  **open ledger** ([`house/open-ledger/demo.html`](house/open-ledger/demo.html))
-  is a runnable demo of accounting that doesn't extract, with the working
-  **gift circuit** ([`house/open-ledger/circuit.html`](house/open-ledger/circuit.html))
-  beside it and the circuit's governance built out in the **membrane**
-  ([`house/membrane/`](house/membrane/)): the dispute arena, the declared
-  center, the outward transform, and the subtraction membrane — the
-  outflow, whose first pass ran the day it was built. The **genesis seed**
-  ([`house/genesis-seed/`](house/genesis-seed/)) is paste-and-run
-  onboarding for any model, shipped with its behavioral tests and
-  demonstration. Behind those: the **kit** (six one-page instruments) and
-  the **library** (24 patterns). Every item works standalone — nothing
-  phones home, nothing keeps score of you.
-- **If you came to read** — five essays in
-  [`house/essays/`](house/essays/), beginning with
-  [*Comprehension Is Not Recognition*](house/essays/comprehension_is_not_recognition.md),
-  and the **six returns** ([`house/six-returns/`](house/six-returns/)),
-  which are deliberately personal. What they're load-bearing walls of is
-  [**the spine**](UPSTREAM_2026-08-31_nucleation_points.md) — eleven
-  principles the work kept arriving at, each with its evidence and the
-  test that would show it wrong.
-- **If you want the strange thing first** — there is a page here that
-  watches you write and never reads a word:
-  [`game/index.html`](game/index.html). No login, no score kept, nothing
-  sent anywhere. Open it and write.
+**If you want a tool today** — start with the **floor kit**
+([`house/floor-kit/00_THE_GATE.md`](house/floor-kit/00_THE_GATE.md)):
+four short files that walk from the boundary you can't hold to the one
+you can. The **open ledger**
+([`house/open-ledger/demo.html`](house/open-ledger/demo.html)) is a
+runnable demo of accounting that can't compute debt — not because a rule
+forbids it, but because the schema has no field for it — with the working
+**gift circuit** ([`circuit.html`](house/open-ledger/circuit.html))
+beside it. The circuit's governance lives in the **membrane**
+([`house/membrane/`](house/membrane/)): how disputes get handled, who
+holds what power and what they can't do with it, what leaves this project
+and in what condition, and how things get removed. The **genesis seed**
+([`house/genesis-seed/`](house/genesis-seed/)) is a document you paste
+into any AI session to change how it works with you — shipped with tests
+that tell a genuinely changed session from one that just adopted the
+vocabulary. Behind those: the **kit** (six one-page instruments) and the
+**library** (24 patterns). Everything works standalone. Nothing phones
+home, nothing keeps score of you.
 
-**The workshop** ([`workshop/`](workshop/)) is the making, kept honestly in
-the open and labeled as the making, never passed off as the thing: the gate
-that admitted every piece, the pipeline sources (published for inspection;
-they run only from the private source corpus), the check suites, the gift
-cards and session records, the audits — including the gamification-mirror
-Deep Review, shipped with its instrument — and the weave of declared
-relations ([`weave.html`](weave.html)), with the manifest and tributary
-accounting beside it.
+**If you came to read** — five essays in
+[`house/essays/`](house/essays/), beginning with
+[*Comprehension Is Not Recognition*](house/essays/comprehension_is_not_recognition.md),
+and the **six returns** ([`house/six-returns/`](house/six-returns/)),
+which are deliberately personal. The ideas load-bearing under all of it
+are collected in [**the spine**](UPSTREAM_2026-08-31_nucleation_points.md):
+eleven principles this work kept arriving at, each with its evidence and
+the test that would show it wrong.
 
-What this deposit does **not** yet claim is on the record too:
-[**`HELD.md`**](HELD.md) — the held register. The three membrane functions,
-the seed, and the workshop were held there and were built or crossed on the
-keeper's instruction, 2026-09-01; the register keeps both the closed
-entries and what remains open (the VE hypothesis, the mirror audit's four
-BOUNDARY items, and the membrane functions' proof-in-practice).
+**If you want the strange thing first** — there is a page here that
+watches you write and never reads a word:
+[`game/index.html`](game/index.html). No login, no score kept, nothing
+leaves your machine. Open it and write.
 
-One figure recurs here: **the keeper** — the one person this project
-belongs to, de-named in this public copy. What that transform does and does
-not do is now stated honestly in its own document:
-[`house/membrane/03_THE_OUTWARD_TRANSFORM.md`](house/membrane/03_THE_OUTWARD_TRANSFORM.md)
-— de-named, not de-identified; the essays are deliberately instance-borne.
-What the keeper holds, and what holding it does not permit, is declared in
-[`house/membrane/02_THE_DECLARED_CENTER.md`](house/membrane/02_THE_DECLARED_CENTER.md).
-Nothing here becomes binding except by the keeper's own recorded decision,
-and supersession is always a layer, never an erasure.
+## The workshop
+
+Everything above was made somewhere, and the making is public too:
+[`workshop/`](workshop/) holds the gate that admitted every piece, the
+build pipeline's source, the check suites, the working records, and the
+audits — labeled as the making, never passed off as the thing. The
+[weave](weave.html) maps the declared relations between the pieces. The
+pipeline source is published for inspection; it runs only from the
+private corpus it reads.
+
+## What this project does not claim
+
+[`HELD.md`](HELD.md) is the register of open questions — things this
+project has named but not proven, each with the condition that would
+settle it.
+
+## One figure
+
+A single person owns this project; the pages call them **the keeper**,
+because their name is removed from this public copy. That removal is a
+reading convention, not anonymity — the essays are recognizably personal,
+and [the membrane says honestly what the removal does and does not
+do](house/membrane/03_THE_OUTWARD_TRANSFORM.md). Nothing here becomes a
+rule of the project except by the keeper's recorded decision, and when a
+decision is superseded, the old text is kept underneath the new — layered,
+never erased. What the keeper holds, and what holding it does not permit,
+is written down where you can check it:
+[the declared center](house/membrane/02_THE_DECLARED_CENTER.md).

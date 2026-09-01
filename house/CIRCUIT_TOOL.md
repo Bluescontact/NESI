@@ -3,23 +3,21 @@
 *Direction document. Not a build spec. The keeper holds the gate.*
 *Developed 2026-06-21.*
 
-> **HELD NOTICE — layered 2026-09-01, on the keeper's ruling in session**
-> (*"Those three places where it drew blood are membrane functions not yet
-> scoped or built"* — *"scope those three membrane functions into the rebuild
-> as held"*). A ground pass ran this framing against the commons record
-> (Ostrom's sixth design principle; Freeman 1970; the LETS and time-bank
-> record). Three of its claims below now read as **held, not solved**:
-> the dispute claim ("disputes are out of scope by design") — the gathering
-> is the arena in practice and is not yet declared (**HELD-1**); the
-> no-central-authority claim — the keeper holds the gate and the vocabulary,
-> which is a center, declared rather than denied (**HELD-2**); and the
-> sufficiency of vocabulary discipline — the schema refuses the ledger frame;
-> only the room can refuse the debt (**HELD-3** carries the rest).
-> **Built, 2026-09-01, on the keeper's instruction:** the three functions
-> now stand in [`membrane/`](membrane/01_THE_DISPUTE_ARENA.md) — the
-> dispute arena, the declared center, the outward transform; the register
-> (`HELD.md`) records the closing. The text below stands as written —
-> supersession is a layer, never an erasure.
+> **SUPERSEDED IN PART — notice layered 2026-09-01.** Three claims in the
+> text below were tested against the record of real commons and gift
+> economies, and did not survive as written. Each is now governed by a
+> built document in [`membrane/`](membrane/01_THE_DISPUTE_ARENA.md)
+> instead:
+> the dispute claim ("disputes are out of scope by design") — disputes do
+> land somewhere, and [the dispute arena](membrane/01_THE_DISPUTE_ARENA.md)
+> declares where and with what powers; the no-central-authority claim —
+> this project has a center, and [the declared
+> center](membrane/02_THE_DECLARED_CENTER.md) says what it holds and what
+> it cannot do; and the reliance on vocabulary alone — the data model
+> refuses debt-language, but [only the room can refuse the
+> debt](membrane/01_THE_DISPUTE_ARENA.md). The text below stands as
+> written: in this project, a superseded text is layered under its
+> replacement, never erased.
 
 ---
 
