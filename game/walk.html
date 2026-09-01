@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Walk · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--water:#7fa3b8;--line:#2a2c33;--card:#191b21;--root:#7fa66a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.65 Georgia,'Times New Roman',serif;padding:40px 20px 80px}
+main{max-width:820px;margin:0 auto}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:24px}
+nav.crumb a{color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+h1{font-size:30px;font-weight:400;margin:0 0 6px;letter-spacing:.4px}
+.lede{color:var(--dim);margin-bottom:22px}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+#map{display:block;margin:0 auto 8px;max-width:100%}
+.maphint{text-align:center;color:var(--dim);font-size:13px;margin-bottom:24px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin:16px 0}
+.panel h2{font-size:14px;font-weight:400;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
+.gesture{font-size:20px;letter-spacing:.04em}
+.gesture .dir{color:var(--dim);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-left:10px}
+.note{color:var(--dim);font-size:14px}
+button{font:inherit;background:none;border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:7px 16px;cursor:pointer;margin:4px 6px 4px 0}
+button:hover{background:rgba(201,168,76,.12)}
+button.quiet{border-color:var(--line);color:var(--dim)}
+textarea,input[type=text]{width:100%;font:inherit;background:var(--bg);border:1px solid var(--line);color:var(--paper);border-radius:4px;padding:9px 12px;margin:4px 0 10px}
+textarea{min-height:64px;resize:vertical}
+label{color:var(--dim);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.edgecard{border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin:10px 0;cursor:pointer}
+.edgecard:hover{border-color:var(--gold)}
+.edgecard .kind{color:var(--dim);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase}
+.edgecard .pair{font-size:17px}
+.edgecard .pair .g{color:var(--dim);font-style:italic;font-size:14px}
+.edgecard.done{border-color:rgba(201,168,76,.55)}
+.state{color:var(--dim);font-size:13.5px;margin-top:4px}
+.state b{color:var(--paper);font-weight:400}
+.terms{color:var(--dim);font-size:13.5px;margin:8px 0 14px}
+.terms b{color:var(--paper);font-weight:400}
+.act{border-top:1px solid var(--line);padding:14px 0}
+.act h3{font-size:13px;font-weight:400;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
+.rootline{height:10px;margin:6px 0 2px;display:flex;gap:4px;align-items:center}
+.rootline i{display:block;height:4px;width:26px;background:var(--root);border-radius:2px;opacity:.85}
+.rootline i.faint{background:var(--line)}
+.kept{color:var(--paper);font-style:italic;border-left:2px solid var(--line);padding:4px 12px;margin:6px 0}
+.laws{margin-top:30px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px;line-height:1.8}
+.beat{color:var(--dim);font-style:italic;font-size:13.5px}
+[hidden]{display:none!important}
+.giftout{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:12px;font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../index.html">NESI</a> &middot; <a href="index.html">the game</a> &middot; the walk</nav>
+<h1>The Walk</h1>
+<p class="lede">Take a seat, and work your position. A level here is not a
+place — it is an edge: the run between two seats, bordered by two faces. The
+map draws the runs. Each level is a week: it closes only after real days,
+not effort. Everything stays in your browser; nothing is sent, read, or
+judged.</p>
+
+<svg id="map" width="640" height="470" viewBox="-1.65 -1.62 3.3 3.24" aria-label="the solid: twelve seats around an empty centre; the map draws the runs"></svg>
+<p class="maphint" id="maphint">the centre stays empty — nothing is sited there, and nothing ever will be</p>
+
+<div class="panel" id="seatPanel">
+  <h2 id="seatTitle">Take a seat</h2>
+  <div id="seatBody"></div>
+</div>
+
+<div class="panel" id="positionPanel" hidden>
+  <h2>Your position</h2>
+  <p class="note">A position is declared by the hand, never inferred. These
+  lines are yours alone — kept in your browser, read by nothing.</p>
+  <label>what I carry</label><input type="text" id="posCarry">
+  <label>what I need</label><input type="text" id="posNeed">
+  <label>what I refuse</label><input type="text" id="posRefuse">
+  <p class="note">What you refuse is as structurally important as what you
+  carry. The gap between them is your ground. Blank is complete.</p>
+</div>
+
+<div class="panel" id="edgesPanel" hidden>
+  <h2>The runs from your seat</h2>
+  <p class="note" id="edgesNote"></p>
+  <div id="edges"></div>
+</div>
+
+<div class="panel" id="levelPanel" hidden></div>
+
+<div class="panel" id="giftPanel" hidden>
+  <h2>The door out — I GIVE IT AWAY</h2>
+  <p class="note">The run from CAST to TANK is the shortest crossing the
+  solid contains, and it is the door out. What leaves is fruit, and it
+  leaves only by your hand: below is everything you kept on your walk,
+  assembled for giving. Copy it, or leave it. Nothing sends itself.</p>
+  <div class="giftout" id="giftOut"></div>
+</div>
+
+<p class="laws">The standing laws, in force on this page: the machine is
+content-blind forever — what you write is kept and never read · no number
+reaches you — no tally, count, rank, or bar that fills · quitting loses
+nothing, and absence is productive — a missed stretch never punishes ·
+blank is complete · the centre stays empty. The geometry is read live from
+<a href="solid.js">the solid</a>, one source. The word each seat speaks is
+the keeper's; the beat each level deserves is the keeper's to give, and
+until given, it is blank — which is complete.
+<button class="quiet" id="setDown" style="margin-left:8px">set it down</button></p>
+</main>
+
+<script src="solid.js"></script>
+<script>
+(function(){
+"use strict";
+var S = window.SOLID;
+var GESTURES = {
+  TANK:"I POUR", DAM:"I HOLD, THEN I LET GO", FILTER:"I TAKE THIS ONE OUT",
+  STATIONS:"I SEND THIS THERE", GROUND:"I LET IT SETTLE", DEEP:"I LET IT GO DOWN",
+  LENS:"I WORK IT UNTIL IT HOLDS", HELIOSTAT:"I AIM", SEATING:"I FEED THE FRAME",
+  OVERWINTERING:"I COME BACK", GARDEN:"I LET IT GROW", CAST:"I GIVE IT AWAY"
+};
+var KINDWORD = { fall:"the fall", rise:"the rise", turn:"the turn — crossed by having reached the bottom", "return":"the return" };
+var WEEK_DAYS = ["first","second","third","fourth","fifth","sixth","seventh"];
+
+/* ── state: the compounding substrate ─────────────────────────────────── */
+var KEY="nesi_walk_v1";
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+var st = load();
+st.position = st.position || {carry:"",need:"",refuse:""};
+st.edges = st.edges || {};   // key -> {kept:[..], aim:null|'down'|'out', days:[dates], done:false}
+st.walked = st.walked || []; // edge keys walked (position moved along them)
+function edgeState(key){ if(!st.edges[key]) st.edges[key]={kept:[],aim:null,days:[],done:false}; return st.edges[key]; }
+function today(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+
+/* ── the map: it draws the runs ───────────────────────────────────────── */
+var AX=0.62, AY=0.53;
+function proj(v){ var x=v[0],y=v[1],z=v[2];
+  var y2=y*Math.cos(AX)-z*Math.sin(AX), z2=y*Math.sin(AX)+z*Math.cos(AX);
+  var x2=x*Math.cos(AY)+z2*Math.sin(AY);
+  return [x2, -y2]; }
+var P={}; S.NAMES.forEach(function(n){ P[n]=proj(S.EMBED[n]); });
+var svgNS="http://www.w3.org/2000/svg";
+function el(t,attrs,parent){ var e=document.createElementNS(svgNS,t); for(var k in attrs)e.setAttribute(k,attrs[k]); (parent||map).appendChild(e); return e; }
+var map=document.getElementById("map");
+function drawMap(){
+  while(map.firstChild) map.removeChild(map.firstChild);
+  S.MEMBERS.forEach(function(m){
+    var a=P[m.a], b=P[m.b];
+    var mine = st.seat && (m.a===st.seat||m.b===st.seat);
+    var done = edgeState(m.key).done && st.edges[m.key].done;
+    var stroke = done ? "#c9a84c" : mine ? "rgba(201,168,76,.45)" : "#2a2c33";
+    var w = done ? 0.028 : mine ? 0.018 : 0.008;
+    el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:stroke,"stroke-width":w,"stroke-linecap":"round"});
+  });
+  S.NAMES.forEach(function(n){
+    var p=P[n], isFall=S.SEATS[n].fall, sel = st.seat===n;
+    var g=el("g",{cursor:"pointer"});
+    el("circle",{cx:p[0],cy:p[1],r:sel?0.085:0.06,
+      fill:sel?"#c9a84c":(isFall?"#7fa3b8":"#c9a84c"),
+      "fill-opacity":sel?1:0.85, stroke:"#14151a","stroke-width":0.015},g);
+    el("text",{x:p[0],y:p[1]+(p[1]>0?0.19:-0.13),"text-anchor":"middle",
+      "font-size":0.105,fill:sel?"#e8e4da":"#8f8b80","font-family":"ui-monospace,Consolas,monospace"},g)
+      .textContent=n;
+    g.addEventListener("click",function(){ seatClicked(n); });
+    map.appendChild(g);
+  });
+}
+
+/* ── taking and holding a seat ────────────────────────────────────────── */
+var seatTitle=document.getElementById("seatTitle"), seatBody=document.getElementById("seatBody");
+function seatClicked(n){
+  if(st.seat===n) return;
+  if(!st.seat){ offerSeat(n); return; }
+  // moving is walking: only along a completed run from the current seat
+  var m=S.memberBetween(st.seat,n);
+  if(m && edgeState(m.key).done){
+    st.walked.push(m.key); st.seat=n; save(); render();
+  } else {
+    seatBody.innerHTML='<p class="note">Your seat is '+st.seat+'. You move by walking a run — an edge from your seat, worked to its close. '+(m?'The run to '+n+' is not yet closed.':'There is no run between '+st.seat+' and '+n+' — the solid has no such member.')+'</p>';
+  }
+}
+function offerSeat(n){
+  seatTitle.textContent="Take a seat";
+  seatBody.innerHTML='<div class="gesture">'+n+' — <i>'+GESTURES[n]+'</i><span class="dir">'+(S.SEATS[n].fall?"the water · descent":"the light · ascent")+'</span></div>'+
+    '<p class="note">Each seat is a place where a hand does one thing, and each declares its gesture in the first person. Taking a seat is a declaration, not a commitment — you can set it down whenever you choose, and nothing is lost.</p>'+
+    '<button id="takeSeat">take this seat</button>';
+  document.getElementById("takeSeat").addEventListener("click",function(){
+    st.seat=n; save(); render();
+  });
+}
+
+/* ── the runs from the seat ───────────────────────────────────────────── */
+var edgesPanel=document.getElementById("edgesPanel"), edgesEl=document.getElementById("edges");
+function facesFor(m){
+  var tri=S.TRIANGLES.find(function(t){return t.seats.indexOf(m.a)>=0&&t.seats.indexOf(m.b)>=0;});
+  var sq=S.SQUARES.find(function(q){return q.seats.indexOf(m.a)>=0&&q.seats.indexOf(m.b)>=0;});
+  return {tri:tri,sq:sq};
+}
+function stateWords(es){
+  var w=[];
+  w.push(es.kept.length? "settled":"nothing settled yet");
+  w.push(es.aim? "aimed "+es.aim:"not yet aimed");
+  if(es.days.length>=7) w.push("the week is in");
+  else if(es.days.length) w.push("the "+WEEK_DAYS[es.days.length-1]+" day is in");
+  else w.push("the week not begun");
+  return w.join(" · ");
+}
+function renderEdges(){
+  if(!st.seat){ edgesPanel.hidden=true; return; }
+  edgesPanel.hidden=false;
+  document.getElementById("edgesNote").textContent=
+    "A level is an edge: the run between two seats, with a tool face on one side and a window face on the other. Four runs leave "+st.seat+". Nothing in the geometry favors one — that choice is yours, every time.";
+  edgesEl.innerHTML="";
+  S.ADJ[st.seat].forEach(function(other){
+    var m=S.memberBetween(st.seat,other);
+    var es=edgeState(m.key);
+    var card=document.createElement("div");
+    card.className="edgecard"+(es.done?" done":"");
+    card.innerHTML='<div class="kind">'+KINDWORD[m.kind]+(m.key===S.DOOR_OUT.key?' · the door out':'')+'</div>'+
+      '<div class="pair">'+st.seat+' — '+other+' &nbsp;<span class="g">'+GESTURES[st.seat]+' · '+GESTURES[other]+'</span></div>'+
+      '<div class="state">'+(es.done?'<b>closed — walkable</b>':stateWords(es))+'</div>';
+    card.addEventListener("click",function(){ openLevel(m); });
+    edgesEl.appendChild(card);
+  });
+}
+
+/* ── the level: water, light, growth, inside every run ────────────────── */
+var levelPanel=document.getElementById("levelPanel");
+function openLevel(m){
+  var es=edgeState(m.key);
+  var f=facesFor(m);
+  var far=(m.a===st.seat)?m.b:m.a;
+  levelPanel.hidden=false;
+  var h='<h2>The run: '+st.seat+' — '+far+'</h2>';
+  h+='<div class="terms">'+KINDWORD[m.kind]+' · two nodes: <b>'+m.a+'</b> and <b>'+m.b+'</b> · tool: <b>tetra '+(f.tri?f.tri.tetra:'—')+'</b> · window: <b>'+(f.sq?f.sq.axis:'—')+'</b></div>';
+  h+='<p class="beat">text beat — the keeper’s to give; blank, which is complete.</p>';
+
+  h+='<div class="act"><h3>the water — let something settle</h3>'+
+     '<p class="note">Give this run a line. It is kept for you and read by nothing. Blank is complete — keeping a blank line is a real act here.</p>'+
+     (es.kept.length? es.kept.map(function(k){return '<div class="kept">'+(k?escp(k):'<span class="note">(kept blank)</span>')+'</div>';}).join(''):'')+
+     '<textarea id="settleText" placeholder="write here, or don’t — both are complete"></textarea>'+
+     '<button id="keepLine">keep it</button></div>';
+
+  h+='<div class="act"><h3>the light — aim it</h3>'+
+     '<p class="note">Aim down, into the window ('+(f.sq?f.sq.axis:'—')+'), and the charge gathers in one place; aim out, along the run, and it spreads. Nothing favors one. The aim is the act.</p>'+
+     (es.aim? '<p class="state"><b>aimed '+es.aim+'</b> — you can re-aim; the last aim stands</p>':'')+
+     '<button id="aimDown">aim down, into the window</button><button id="aimOut">aim out, along the run</button></div>';
+
+  var dots=''; for(var i=0;i<7;i++) dots+='<i class="'+(i<es.days.length?'':'faint')+'"></i>';
+  h+='<div class="act"><h3>the growth — the week</h3>'+
+     '<p class="note">Each level is a week. A day counts by your returning on it — not by effort, not by amount. Absence never subtracts; the root only grows.</p>'+
+     '<div class="rootline">'+dots+'</div>'+
+     '<p class="state">'+(es.days.length>=7?'<b>the week is in</b>':(es.days.indexOf(today())>=0?'today is in the root — come back tomorrow':'<button id="tendDay">tend it today</button>'))+'</p></div>';
+
+  var closed = es.kept.length>0 && es.aim && es.days.length>=7;
+  if(closed && !es.done){ es.done=true; save(); }
+  if(es.done){
+    h+='<div class="act"><h3>closed</h3><p class="note">Settled, aimed, and the week is in — this run holds. The map draws it solid, and you may walk it: your position moves to '+far+' whenever you choose, by clicking its seat on the map.</p></div>';
+  }
+  h+='<p class="note" style="margin-top:10px"><a id="backToRuns" href="#">back to the runs</a></p>';
+  levelPanel.innerHTML=h;
+
+  var t=document.getElementById("settleText");
+  document.getElementById("keepLine").addEventListener("click",function(){
+    es.kept.push((t.value||"").trim()); touchDay(es); save(); openLevel(m); drawMap();
+  });
+  document.getElementById("aimDown").addEventListener("click",function(){ es.aim="down"; touchDay(es); save(); openLevel(m); drawMap(); });
+  document.getElementById("aimOut").addEventListener("click",function(){ es.aim="out"; touchDay(es); save(); openLevel(m); drawMap(); });
+  var tend=document.getElementById("tendDay");
+  if(tend) tend.addEventListener("click",function(){ touchDay(es); save(); openLevel(m); });
+  document.getElementById("backToRuns").addEventListener("click",function(ev){ ev.preventDefault(); levelPanel.hidden=true; render(); });
+  renderGift();
+}
+function touchDay(es){ var d=today(); if(es.days.indexOf(d)<0) es.days.push(d); }
+function escp(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ── the door out ─────────────────────────────────────────────────────── */
+function renderGift(){
+  var door=edgeState(S.DOOR_OUT.key);
+  var p=document.getElementById("giftPanel");
+  if(!door.done){ p.hidden=true; return; }
+  p.hidden=false;
+  var lines=[];
+  Object.keys(st.edges).forEach(function(k){
+    st.edges[k].kept.forEach(function(l){ if(l) lines.push(l); });
+  });
+  document.getElementById("giftOut").textContent =
+    lines.length? lines.join("\n") : "(everything you kept was kept blank — a complete gift is still a gift)";
+}
+
+/* ── the position card ────────────────────────────────────────────────── */
+["Carry","Need","Refuse"].forEach(function(f){
+  var input=document.getElementById("pos"+f);
+  input.value=st.position[f.toLowerCase()]||"";
+  input.addEventListener("input",function(){ st.position[f.toLowerCase()]=input.value; save(); });
+});
+
+/* ── set it down ──────────────────────────────────────────────────────── */
+document.getElementById("setDown").addEventListener("click",function(){
+  if(!confirm("Set the walk down? Quitting loses nothing that mattered — but this clears this browser's record of it, and only your browser holds it.")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  st={position:{carry:"",need:"",refuse:""},edges:{},walked:[]};
+  render();
+});
+
+/* ── render ───────────────────────────────────────────────────────────── */
+function render(){
+  drawMap();
+  var posPanel=document.getElementById("positionPanel");
+  if(st.seat){
+    seatTitle.textContent="Your seat";
+    seatBody.innerHTML='<div class="gesture">'+st.seat+' — <i>'+GESTURES[st.seat]+'</i><span class="dir">'+(S.SEATS[st.seat].fall?"the water · descent":"the light · ascent")+'</span></div>'+
+      '<p class="note">You hold this seat by holding it — nothing enforces it, and no one can take it from you. You move by walking a closed run.</p>';
+    posPanel.hidden=false;
+  } else {
+    seatTitle.textContent="Take a seat";
+    seatBody.innerHTML='<p class="note">Twelve seats around an empty centre — the water seats below, the light seats above. Click one to read its gesture. A position is declared by the hand, never inferred, and never assigned.</p>';
+    posPanel.hidden=true;
+    levelPanel.hidden=true;
+  }
+  renderEdges();
+  renderGift();
+}
+render();
+})();
+</script>
+</body>
+</html>
