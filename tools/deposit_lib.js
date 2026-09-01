@@ -75,6 +75,7 @@ const PIPELINE_MECHANISM = [
   'tools/typology_classify.js',
   'tools/build_deposit.js',
   'tools/build_deposit_index.js',
+  'tools/build_weave.js',
 ];
 
 // De-naming at the crossing (Kevin's mark, 2026-08-31: "lets remove kevin

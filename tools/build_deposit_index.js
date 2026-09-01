@@ -229,6 +229,7 @@ footer{color:var(--muted);font-size:12px;margin-top:50px}
 </div>
 
 <nav class="jump">
+  <a href="weave.html">The weave →</a>
   <a href="#spine">The spine (8)</a>
   <a href="#gifts">Gifts &amp; tributaries (${tributaries.length})</a>
   <a href="#typology">Typology (${manifest.manifest.patterns.length - skillEntries.length - agentEntries.length})</a>

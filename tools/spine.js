@@ -188,6 +188,7 @@ const SEATS = {
   'five_terms_and_the_loop':                 { crystal: 'c6', why: 'five terms, five self-run tests — and the loop’s own limit stated as the load-bearing line' },
   'hunger_under_naming':                     { crystal: 'c6', why: 'an outside contribution absorbed at mechanism level — and the question whether precision is a fix, or the same hunger better dressed' },
   'match_noun_to_harm':                      { crystal: 'c6', why: 'event-shaped harm names the role-and-decision; structure-shaped harm names the mechanism — the wrong shape hands the structure a scapegoat' },
+  'the_weave':                                { crystal: 'c3', why: 'connective tissue from declared kinship only — every edge cited, the undeclared listed honestly, never linked by guesswork' },
 };
 
 // Unit-level seats — the things the deposit carries WHOLE (mechanism dirs,
