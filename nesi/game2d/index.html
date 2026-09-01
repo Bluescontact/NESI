@@ -1024,7 +1024,7 @@ function updateGraphDims() {
 function computeHinges(nearPairs){
   const today = dayStamp();
   const confirmedDeclared = declaredEdges.filter(e=>!e.staged);
-  const windowIds = new Set(nodes.filter(n => withinWindow(n.day, today)).map(n=>n.id));
+  const windowIds = new Set(spoken().filter(n => withinWindow(n.day, today)).map(n=>n.id));
   confirmedDeclared.forEach(e => { windowIds.add(e.aId); windowIds.add(e.bId); });
   const windowNodes = nodes.filter(n => windowIds.has(n.id));
   const windowEdges = edges.concat(nearPairs).filter(e => windowIds.has(e.aId) && windowIds.has(e.bId))
@@ -1066,6 +1066,17 @@ function separatePass(gw, gh) {
   }
   nodes.forEach(n => { if (!n.userMoved) { n.x=Math.max(n.w/2+4,Math.min(gw-n.w/2-4,n.x)); n.y=Math.max(n.h/2+4,Math.min(gh-n.h/2-4,n.y)); } });
 }
+/* THE BLIND FILTER, 2026-09-01 — found by playing, not by review: the pad's
+   blind promise ("kept in the store, never shown back") held in the document
+   and nowhere else — the margin cards drew the text, the weave matrix put it
+   in headers, the concordance indexed its words. spoken() is now the one
+   gate: TEXT-BEARING surfaces read spoken nodes only; volume-only surfaces
+   (tarp slabs, garden growth, the sentence counter) may read all — the same
+   volume-never-content line the whole build already holds. A blind
+   sentence's absence renders as an ordinary gap, indistinguishable from a
+   pause, which is exactly the ambiguity the catchment naming licenses. */
+function spoken(){ return nodes.filter(n => !n.blind); }
+
 function layout() {
   nodes.forEach(n => { if (!n.w) sizeNode(n); });
   updateGraphDims();
@@ -1097,7 +1108,7 @@ function layout() {
   const SETTLE = Math.min(400, 100 + nodes.length*3);
   for (let s=0; s<SETTLE; s++) separatePass(GW, GH);
   const chainedKeys = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
-  const nearPairs = nearPairsFor(nodes, chainedKeys);
+  const nearPairs = nearPairsFor(spoken(), chainedKeys);
   const hinges = computeHinges(nearPairs);
   return { chainedKeys, nearPairs, hinges };
 }
@@ -1395,12 +1406,12 @@ function graphPoint(e) {
    card's own size now actually reserves the space it draws into, so
    nothing needs iterating or settling — it can't overlap by construction. */
 function timePositions() {
-  const days = Array.from(new Set(nodes.map(n=>n.day))).sort();
+  const days = Array.from(new Set(spoken().map(n=>n.day))).sort();
   const pos = new Map();
   const PAD = 14, GAP = 10;
   let laneTop = PAD;
   days.forEach(day => {
-    const dayNodes = nodes.filter(n => n.day===day); // append order == time order
+    const dayNodes = spoken().filter(n => n.day===day); // append order == time order
     let cx = PAD, cy = laneTop, rowH = 0;
     dayNodes.forEach(n => {
       if (cx > PAD && cx + n.w > GW - PAD) { cx = PAD; cy += rowH + GAP; rowH = 0; }
@@ -1466,7 +1477,7 @@ function renderWeaveMatrix(L, activeId) {
   const table = document.createElement("table"); table.className = "weave-matrix";
   const head = document.createElement("tr");
   head.appendChild(document.createElement("th"));
-  nodes.forEach(n=>{
+  spoken().forEach(n=>{
     const th = document.createElement("th");
     th.textContent = n.text;
     th.style.cursor = "pointer";
@@ -1476,7 +1487,7 @@ function renderWeaveMatrix(L, activeId) {
     head.appendChild(th);
   });
   table.appendChild(head);
-  nodes.forEach(rowN=>{
+  spoken().forEach(rowN=>{
     const tr = document.createElement("tr");
     if (rowN.id===activeId) tr.classList.add("focusrow");
     const rowTh = document.createElement("th"); rowTh.className = "rowhead";
@@ -1485,7 +1496,7 @@ function renderWeaveMatrix(L, activeId) {
     rowTh.title = "click to focus this sentence";
     rowTh.addEventListener("click", () => selectSentence(rowN.id, L));
     tr.appendChild(rowTh);
-    nodes.forEach(colN=>{
+    spoken().forEach(colN=>{
       const td = document.createElement("td");
       if (colN.id===activeId) td.classList.add("focuscol");
       if (rowN.id===colN.id) {
@@ -1674,7 +1685,7 @@ function wordFollowsMap(query){
   const queryTokens = query.trim().split(/\s+/).filter(Boolean).map(w => w.toLowerCase());
   const qLen = queryTokens.length;
   if (!qLen) return { followers, queryCount, endOfSentenceCount };
-  nodes.forEach(n => {
+  spoken().forEach(n => {
     const words = tokenize(n.text);
     for (let i=0;i+qLen<=words.length;i++){
       /* the query phrase matches regardless of case — "You"/"you" and
@@ -2119,7 +2130,7 @@ function renderCategories(L){
       }
     }
   } catch(e) {}
-  const lastNode = nodes[nodes.length-1];
+  const lastNode = spoken().slice(-1)[0] || nodes[nodes.length-1]; // the card quotes text — blind never quoted
   let attendedId = lastNode.id;
   try {
     const raw = localStorage.getItem("nesi.thepage.attention");
@@ -2133,7 +2144,7 @@ function renderCategories(L){
      click handler, the same jump-to-sentence pattern renderRelated's own
      "near this one" list already uses), not a new mechanism. */
   const cards = [
-    { title:"1 · text", jump:{type:"sentence", id:nodes[0].id, label:"→ first sentence"},
+    { title:"1 · text", jump:{type:"sentence", id:(spoken()[0]||nodes[0]).id, label:"→ first sentence"},
       desc:"the sentence itself — verbatim and full in the page below; shortened for space in some cards and lists elsewhere (the full text is always still there, in the page) — plus what's derived directly from it alone.",
       stats: [ "<b>"+nodes.length+"</b> sentence"+(nodes.length===1?"":"s"), "<b>"+totalWords+"</b> word"+(totalWords===1?"":"s")+" total", "<b>"+avgWords+"</b> words per sentence, on average" ] },
     { title:"2 · timing", jump:{type:"ground", ground:"time", label:"→ time ground"},
@@ -2259,6 +2270,7 @@ function renderGraph(L) {
   graphSvg.innerHTML = "";
   edges.forEach(e => {
     const a=nodes.find(x=>x.id===e.aId), b=nodes.find(x=>x.id===e.bId); if(!a||!b) return;
+    if (a.blind || b.blind) return; // a blind end never draws — the gap reads as a pause
     const pa=P(a), pb=P(b);
     graphSvg.appendChild(svgEl("line",{x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,stroke:"rgba(224,196,84,.4)","stroke-width":1}));
   });
@@ -2281,7 +2293,7 @@ function renderGraph(L) {
      Kevin's mark: full text visible at all times, nothing cut). Stroke
      color, not fill, carries state (hinge, selected, connect-source) so
      the text stays readable regardless. */
-  nodes.forEach(n => {
+  spoken().forEach(n => {
     const p = P(n);
     const strokeColor = n.id===connectFrom ? "#8b6fd9"
       : L.hinges.has(n.id) ? "var(--hinge, #c1622e)"
