@@ -186,6 +186,41 @@ function walk(dir, acc = []) {
   return acc;
 }
 
+// Sequences: a walk should lead somewhere. Numbered siblings (00_, 01_, …)
+// chain automatically; the essays chain in the front door's reading order.
+// (Playtest finding, 2026-09-01: page one of every sequence was a dead end.)
+const ESSAY_ORDER = [
+  'comprehension_is_not_recognition.md', 'the_hunger_under_naming.md',
+  'witnessing_without_merging.md', 'match_the_noun_to_the_harm.md',
+];
+function sequenceOf(abs) {
+  const dir = path.dirname(abs), name = path.basename(abs);
+  const rel = path.relative(ROOT, dir).replace(/\\/g, '/');
+  if (rel === 'house/essays') {
+    const i = ESSAY_ORDER.indexOf(name);
+    if (i < 0) return null;
+    return { prev: ESSAY_ORDER[i - 1] || null, next: ESSAY_ORDER[i + 1] || null };
+  }
+  if (!/^\d\d?_/.test(name)) return null;
+  const sibs = fs.readdirSync(dir).filter((n) => /^\d\d?_.*\.md$/i.test(n)).sort();
+  const i = sibs.indexOf(name);
+  if (i < 0 || sibs.length < 2) return null;
+  return { prev: sibs[i - 1] || null, next: sibs[i + 1] || null };
+}
+function seqNav(abs) {
+  const seq = sequenceOf(abs);
+  if (!seq) return '';
+  const link = (n, word) => {
+    const t = titleOf(path.join(path.dirname(abs), n)) || n.replace(/\.md$/i, '');
+    return word + ': <a href="' + n.replace(/\.md$/i, '.html') + '">' + esc(t) + '</a>';
+  };
+  const parts = [];
+  if (seq.next) parts.push(link(seq.next, 'next'));
+  if (seq.prev) parts.push(link(seq.prev, 'back'));
+  if (!seq.next) parts.push('this is the last page of the walk');
+  return '<p style="border-top:1px solid var(--line);padding-top:12px;margin-top:30px;color:var(--dim);font-size:14px">' + parts.join(' &middot; ') + '</p>';
+}
+
 function main() {
   const files = walk(ROOT);
   let rendered = 0;
@@ -199,7 +234,7 @@ function main() {
     const name = path.basename(abs);
     const outAbs = abs.replace(/\.md$/i, '.html');
     // never clobber a real page (README.md -> README.html is safe; index.html is not derived from .md anywhere)
-    fs.writeFileSync(outAbs, shell(rel, title || name.replace(/\.md$/i, ''), body, name));
+    fs.writeFileSync(outAbs, shell(rel, title || name.replace(/\.md$/i, ''), body + seqNav(abs), name));
     rendered++;
   }
 
