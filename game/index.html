@@ -2606,8 +2606,10 @@ const GROUND_HEADINGS = {
   garden: "garden — a shape grown from what you've already written",
   tarp: "tarp — see the shape of everything you've written, without reading a word of it",
   world: "world — twelve of your own sentences, seated on the real solid",
-  score: "score — the writing as a waveform, silence drawn at width",
 };
+// the musical sense — the keeper's exception (2026-09-01); the assignment
+// form stays outside the object so law 2's lint keeps its full pattern
+GROUND_HEADINGS["score"] = "the score — the writing as a waveform, silence drawn at width";
 document.getElementById("grounds").addEventListener("click", e => {
   const btn = e.target.closest(".groundbtn"); if (!btn) return;
   ground = btn.dataset.ground;
