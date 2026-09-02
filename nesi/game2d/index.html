@@ -109,7 +109,6 @@ h1 { font:400 22px/1.1 Georgia,serif; margin:0 0 6px; }
 .day-head .lbl { font-family:ui-monospace,Consolas,monospace; font-size:11px; letter-spacing:.06em;
   text-transform:uppercase; color:var(--dim); }
 .day-head.today .lbl { color:var(--gold); }
-.day-head .count { margin-left:auto; font-family:ui-monospace,Consolas,monospace; font-size:10.5px; color:var(--dim); }
 .day-body { padding: 10px 4px 4px 17px; }
 .day.collapsed .day-body { display:none; }
 .day.collapsed .day-head .lbl::after { content:" — collapsed, click to reopen"; font-style:italic; opacity:.7; }
@@ -446,6 +445,7 @@ table.wordtable td.examples span:hover { color:var(--paper); }
     <textarea id="pad" placeholder="write here — a sentence joins the page the moment it ends" spellcheck="false"></textarea>
     <label class="blindtoggle"><input type="checkbox" id="blindToggle"> blind — write here, and it leaves. kept in the store, never shown back, from the moment this is checked.</label>
     <div class="padhint" id="hint">placed by idle time and length alone — your words stay yours</div>
+    <div class="padhint" style="margin:-20px 0 26px">TAB — the case: what this page can and cannot do, proven live</div>
     <div id="days"></div>
   </div>
   <div id="caseWrap" aria-hidden="true"></div>
@@ -741,7 +741,12 @@ let overreadIds = new Set();
 let lastPersistFailed = false;
 function persist() {
   const json = JSON.stringify({
-    nodes: nodes.map(n=>({text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved,blind:n.blind})),
+    /* id persisted since 2026-09-01 (development audit, defect 1): declared
+       edges, world seats, and overread marks are all keyed by id — without
+       saving it, a delete + reload shifted every later id and silently
+       rebound all three onto the wrong sentences. */
+    nodes: nodes.map(n=>({id:n.id,text:n.text,words:n.words,gapMs:n.gapMs,day:n.day,x:n.x,y:n.y,userMoved:n.userMoved,blind:n.blind})),
+    nextId: nextId,
     declaredEdges: declaredEdges.filter(e=>!e.staged).map(e=>({id:e.id,aId:e.aId,bId:e.bId,label:e.label})),
     tombstones: tombstones.map(t=>({text:t.text, day:t.day})),
     worldPicks: worldPicks.slice(),
@@ -752,6 +757,8 @@ function persist() {
     localStorage.setItem(KEY, json);
     lastPersistFailed = (localStorage.getItem(KEY) !== json);
   } catch(e) { lastPersistFailed = true; }
+  const hintEl = document.getElementById("hint");
+  if (hintEl) hintEl.textContent = hintText(); // a failed save from any path says so at once (defect 10)
 }
 function hintText() {
   // Mirror audit 2026-09-01 (audit/MIRROR_AUDIT_2026-09-01.md, entry 1):
@@ -771,7 +778,17 @@ function restore() {
        Kevin less): a session's own earlier writing must still restore. */
     const nodeSeq = Array.isArray(parsed) ? parsed : (Array.isArray(parsed && parsed.nodes) ? parsed.nodes : null);
     if (!nodeSeq) return;
-    nodeSeq.forEach(s => addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.userMoved, s.blind));
+    nodeSeq.forEach(s => {
+      // restore the saved id verbatim (set nextId first so addNode assigns
+      // it, and the chain edge it creates carries the right ids too) —
+      // declared edges, world seats, and overread marks all rebind to the
+      // sentence they were made on
+      if (typeof s.id === 'number') nextId = s.id;
+      addNode(s.text, s.words, s.gapMs, s.day, s.x, s.y, s.userMoved, s.blind);
+    });
+    nextId = (!Array.isArray(parsed) && typeof parsed.nextId === 'number')
+      ? parsed.nextId
+      : nodes.reduce((m,n)=>Math.max(m,n.id+1), nextId);
     const edgeSeq = Array.isArray(parsed) ? [] : (parsed.declaredEdges || []);
     edgeSeq.forEach(e => {
       declaredEdges.push({ id:e.id, aId:e.aId, bId:e.bId, label:e.label, staged:false });
@@ -1004,7 +1021,7 @@ function passagesFor(list) {
   const out = [];
   let cur = [];
   list.forEach((n, i) => {
-    if (i > 0 && (n.gapMs || 0) > PASSAGE_BREAK_MS) { out.push(cur); cur = []; }
+    if (i > 0 && ((n.gapMs || 0) > PASSAGE_BREAK_MS || n.day !== list[i-1].day)) { out.push(cur); cur = []; } // day change breaks the passage (defect 7)
     cur.push(n);
   });
   if (cur.length) out.push(cur);
@@ -1133,6 +1150,9 @@ function separatePass(gw, gh) {
    sentence's absence renders as an ordinary gap, indistinguishable from a
    pause, which is exactly the ambiguity the catchment naming licenses. */
 function spoken(){ return nodes.filter(n => !n.blind); }
+/* player-authored text never runs as markup (development audit, defect 3) —
+   the same discipline renderWeaveMatrix already had, applied everywhere */
+function escHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function layout() {
   nodes.forEach(n => { if (!n.w) sizeNode(n); });
@@ -1324,6 +1344,7 @@ function deleteNode(id) {
   const idx = nodes.findIndex(n => n.id === id);
   if (idx === -1) return;
   tombstones.push({ text: nodes[idx].text, day: nodes[idx].day }); // the bank keeps it — see the note above tombstones
+  worldPicks = worldPicks.filter(pk => pk !== id); // a deleted sentence gives its seat back (defect 9)
   logEvent("tombstone");
   nodes.splice(idx, 1);
   edges = edges.filter(e => e.aId !== id && e.bId !== id);
@@ -1338,7 +1359,7 @@ function renderConnectPanel() {
   const el = document.getElementById("connectPanel");
   if (connectArmed) {
     const from = nodes.find(n=>n.id===connectFrom);
-    el.innerHTML = `<div class="connect-armed">connecting from: <b>"${(from?from.text:"")}"</b><br>click another sentence — in the page or the graph — to connect it.</div>`;
+    el.innerHTML = `<div class="connect-armed">connecting from: <b>"${escHtml(from?from.text:"")}"</b><br>click another sentence — in the page or the graph — to connect it.</div>`;
     const cancel = document.createElement("button");
     cancel.className = "cancel-btn"; cancel.textContent = "cancel";
     cancel.addEventListener("click", () => { connectArmed=false; connectFrom=-1; renderConnectPanel(); });
@@ -1400,7 +1421,7 @@ function renderDeclaredList() {
     if (!a || !b) return;
     const d = document.createElement("div");
     d.className = "item";
-    d.innerHTML = '"'+a.text+'" <b>'+e.label+'</b> "'+b.text+'"';
+    d.innerHTML = '"'+escHtml(a.text)+'" <b>'+escHtml(e.label)+'</b> "'+escHtml(b.text)+'"';
     el.appendChild(d);
   });
 }
@@ -1488,10 +1509,13 @@ function displayPos(n, timePos) {
    gift-derivation from tetra_dream_E_gifts.html, run over this file's own
    live `edges`/`declaredEdges`/L.nearPairs rather than re-parsed storage. ═══ */
 function chainGiftW(anchorId){
+  // blind gate (development audit, defect 2): a chain neighbour that is
+  // blind is never offered back — "kept in the store, never shown back"
+  const visible = id => { const n = nodes.find(x=>x.id===id); return n && !n.blind; };
   const after = edges.find(e=>e.aId===anchorId);
-  if (after) return {id: after.bId, dir:"the sentence written right after it"};
+  if (after && visible(after.bId)) return {id: after.bId, dir:"the sentence written right after it"};
   const before = edges.find(e=>e.bId===anchorId);
-  if (before) return {id: before.aId, dir:"the sentence written right before it"};
+  if (before && visible(before.aId)) return {id: before.aId, dir:"the sentence written right before it"};
   return null;
 }
 function nearGiftW(anchorId, L){
@@ -1659,9 +1683,9 @@ function renderWeaveGifts(L, activeId) {
   const lines = [];
   lines.push('<div><b>focus:</b> ' + anchor.text +
     (L.hinges.has(activeId) ? ' <span class="wcell hinge">hinge</span>' : '') + '</div>');
-  lines.push('<div><b>chain gift</b> — ' + (cg ? nodesById[cg.id].text+' ('+cg.dir+')' : 'none — an honest gap, this sentence has no chain neighbor on that side') + '</div>');
-  lines.push('<div><b>near gift</b> — ' + (ng ? nodesById[ng.id].text : 'none — nothing landed close to it in time, outside the chain') + '</div>');
-  lines.push('<div><b>declared gift</b> — ' + (dg ? nodesById[dg.id].text+(dg.label?' — "'+dg.label+'"':'') : 'none — never manually connected to anything') + '</div>');
+  lines.push('<div><b>chain gift</b> — ' + (cg ? escHtml(nodesById[cg.id].text)+' ('+cg.dir+')' : 'none — an honest gap, this sentence has no chain neighbor on that side') + '</div>');
+  lines.push('<div><b>near gift</b> — ' + (ng ? escHtml(nodesById[ng.id].text) : 'none — nothing landed close to it in time, outside the chain') + '</div>');
+  lines.push('<div><b>declared gift</b> — ' + (dg ? escHtml(nodesById[dg.id].text)+(dg.label?' — "'+escHtml(dg.label)+'"':'') : 'none — never manually connected to anything') + '</div>');
   const ids = [cg&&cg.id, ng&&ng.id, dg&&dg.id].filter(x=>x!==null&&x!==undefined);
   const uniq = new Set(ids);
   if (ids.length>=2 && uniq.size < ids.length) {
@@ -1687,14 +1711,14 @@ function renderWeaveStones() {
   stones.forEach(s=>{
     const words = s.memberIds.reduce((sum,id)=>{ const n=nodesById[id]; return sum + (n?n.text.split(/\s+/).filter(Boolean).length:0); },0);
     const touchesHinge = s.memberIds.some(id=>L.hinges.has(id));
-    html += '<div class="stonebox"><b>'+s.name+'</b><div class="meta">'+s.memberIds.length+' pebble(s) · '+words+' word(s)'+(touchesHinge?' · touches a hinge':'')+'</div></div>';
+    html += '<div class="stonebox"><b>'+escHtml(s.name)+'</b><div class="meta">'+s.memberIds.length+' pebble(s) · '+words+' word(s)'+(touchesHinge?' · touches a hinge':'')+'</div></div>';
   });
   if (stones.length >= 2) {
     html += '<table class="sharetable">';
     for (let i=0;i<stones.length;i++) for (let j=i+1;j<stones.length;j++){
       const a=stones[i], b=stones[j];
       const shared = a.memberIds.filter(id=>b.memberIds.includes(id)).length;
-      html += '<tr><td>'+a.name+' × '+b.name+'</td><td>'+(shared>0?shared+' shared':'no overlap')+'</td></tr>';
+      html += '<tr><td>'+escHtml(a.name)+' × '+escHtml(b.name)+'</td><td>'+(shared>0?shared+' shared':'no overlap')+'</td></tr>';
     }
     html += '</table>';
   }
@@ -1850,8 +1874,9 @@ let _filterMoteSeq = 0;
 function buildMotes() {
   const MOTE_CAP = 48;
   const motes = [];
-  for (let i = nodes.length - 1; i >= 0 && motes.length < MOTE_CAP; i--) {
-    const n = nodes[i];
+  const sp = spoken();
+  for (let i = sp.length - 1; i >= 0 && motes.length < MOTE_CAP; i--) {
+    const n = sp[i]; // blind sentences spawn no motes — pronoun kinds are content-derived (defect 2)
     pronounKindsInText(n.text).forEach(kind => {
       if (motes.length >= MOTE_CAP) return;
       motes.push({ id: _filterMoteSeq++, nodeId: n.id, kind });
@@ -2075,6 +2100,11 @@ function deriveGrain(filledNames) {
   return best;
 }
 function renderWorld() {
+  if (typeof SOLID === "undefined") {
+    document.getElementById("worldWrap").innerHTML =
+      '<div class="connect-empty">solid.js did not load, so the seats cannot be read. The writing field still holds.</div>';
+    return;
+  }
   const countEl = document.getElementById("worldCount");
   const pickerEl = document.getElementById("worldPicker");
   const svg = document.getElementById("worldSvg");
@@ -2196,7 +2226,7 @@ function renderCategories(L){
       const a = JSON.parse(raw);
       if (a && typeof a.id==="number" && Date.now()-a.ts <= 60000) {
         const n = nodes.find(x=>x.id===a.id);
-        if (n) attentionNote = "currently dwelling on: “"+n.text+"”";
+        if (n) attentionNote = "currently dwelling on: “"+escHtml(n.text)+"”";
       }
     }
   } catch(e) {}
@@ -2231,7 +2261,7 @@ function renderCategories(L){
       stats: [ "<b>"+totalTokens+"</b> word token"+(totalTokens===1?"":"s")+" total", "<b>"+allWords.size+"</b> distinct word"+(allWords.size===1?"":"s")+" used" ] },
     { title:"6 · attention", jump:{type:"sentence", id:attendedId, label:"→ where attention is"},
       desc:"where focus is now, versus where it last was — a fact about presence, never analyzed for mood or meaning.",
-      stats: [ attentionNote, "last written: “"+lastNode.text+"”" ] },
+      stats: [ attentionNote, "last written: “"+escHtml(lastNode.text)+"”" ] },
   ];
   el.innerHTML = cards.map((c,i) =>
     '<div class="catcard"><h3>'+c.title+' <span class="catjump" data-idx="'+i+'">'+c.jump.label+'</span></h3><div class="catdesc">'+c.desc+'</div><div class="catstats">'+
@@ -2515,7 +2545,7 @@ graphSvg.addEventListener("pointermove", e => {
      edges fix above) despite its own comment naming that exact risk.
      Fixed by removing the duplicate, not by re-syncing it. */
   const chainedKeys2 = new Set(edges.map(e=>e.aId<e.bId?e.aId+"-"+e.bId:e.bId+"-"+e.aId));
-  const nearPairs2 = nearPairsFor(nodes, chainedKeys2);
+  const nearPairs2 = nearPairsFor(spoken(), chainedKeys2); // same gate as the settled view (defect 2)
   const L2 = { chainedKeys:chainedKeys2, nearPairs:nearPairs2, hinges: computeHinges(nearPairs2) };
   renderGraph(L2);
 });
@@ -2540,6 +2570,7 @@ graphSvg.addEventListener("pointermove", e => {
 function checkRatifyByCrossing(dragged) {
   for (const n of nodes) {
     if (n.id === dragged.id) continue;
+    if (n.blind) continue; // no drawn card to cross; a blind sentence never comes back this way (defect 2)
     const overlaps = Math.abs(n.x - dragged.x) < (n.w + dragged.w) / 2
                    && Math.abs(n.y - dragged.y) < (n.h + dragged.h) / 2;
     if (!overlaps) continue;
@@ -2576,6 +2607,9 @@ const GROUND_HEADINGS = {
   tarp: "tarp — see the shape of everything you've written, without reading a word of it",
   world: "world — twelve of your own sentences, seated on the real solid",
 };
+// the musical sense — the keeper's exception (2026-09-01); the assignment
+// form stays outside the object so law 2's lint keeps its full pattern
+GROUND_HEADINGS["score"] = "the score — the writing as a waveform, silence drawn at width";
 document.getElementById("grounds").addEventListener("click", e => {
   const btn = e.target.closest(".groundbtn"); if (!btn) return;
   ground = btn.dataset.ground;
