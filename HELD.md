@@ -8,6 +8,11 @@ entries stay on the record — old text is layered under new, never erased.
 
 ## Open
 
+- **The drowned page.** The game's named destination: the world as the
+  whole viewport, writing summoned by any key, the grounds become places.
+  The ten-minutes slice (`game/ten.html`) is its opening surface and
+  grows toward it. Settled when the slice has been played across real
+  weeks and the keeper marks the growing.
 - **The membrane in practice.** The four membrane documents
   ([`house/membrane/`](house/membrane/)) declare how disputes are
   handled, what the center may not do, what leaves clean, and how things
@@ -16,11 +21,13 @@ entries stay on the record — old text is layered under new, never erased.
   real routes, real disputes — can prove them. Each document carries its
   own test for being shown wrong; read them against the first circuit
   that runs.
-- **The twelve-vertex hypothesis.** The spine currently holds eleven
-  principles. There is a recorded hypothesis that they are the twelve
-  vertices of a known geometric figure with an empty center — held under
-  a strict condition: the count must arrive as an output of the evidence,
-  never as a target. The full condition, in four parts, is stated in
+- **The twelve-vertex hypothesis.** The spine now holds twelve
+  principles — a count that arrived as an output, on the record — but
+  the hypothesis that they are the twelve vertices of a known geometric
+  figure with an empty center stays held: its remaining conditions
+  (each principle bearing exactly four load-bearing relations, the four
+  circuits, the empty thirteenth) are untested, and no pass may aim at
+  them. The full condition, in four parts, is stated in
   [the spine](UPSTREAM_2026-08-31_nucleation_points.md).
 - **Four watched mechanics in the game and gate.** An independent audit
   of game mechanics found four items that are neither cleared nor
