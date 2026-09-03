@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ten Minutes · NESI</title>
+<style>
+:root{--bg:#14151a;--paper:#e8e4da;--dim:#8f8b80;--gold:#c9a84c;--water:#3d6a80;--waterlit:#5b8ba3;--deep:#0c141c;--line:#2a2c33;--land:#2b2620;--landlit:#3a332a;--shoot:#7fa66a;--stone:#b9b2a4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font:16px/1.6 Georgia,'Times New Roman',serif;padding:26px 16px 60px}
+main{max-width:860px;margin:0 auto}
+nav.crumb{color:var(--dim);font-size:13px;letter-spacing:.08em;margin-bottom:14px}
+nav.crumb a{color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(143,139,128,.35)}
+nav.crumb a:hover{color:var(--gold)}
+#since{color:var(--gold);font-size:14px;letter-spacing:.06em;min-height:20px;margin:0 0 8px}
+#padwrap{margin:0 0 10px}
+#pad{width:100%;font:inherit;font-size:17px;background:var(--bg);border:0;border-bottom:1px solid var(--line);color:var(--paper);padding:8px 2px;outline:none}
+#pad::placeholder{color:#565349}
+.hint{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--dim);margin:4px 0 0}
+#valley{display:block;width:100%;border:1px solid var(--line);border-radius:6px;background:var(--bg);touch-action:none;cursor:default}
+#word{color:var(--dim);font-size:13px;min-height:18px;margin:8px 2px 0;font-style:italic}
+.laws{margin-top:26px;color:var(--dim);font-size:12.5px;border-top:1px solid var(--line);padding-top:12px;line-height:1.8}
+.laws a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.35)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<nav class="crumb"><a href="../index.html">NESI</a> &middot; the game &middot; ten minutes</nav>
+<div id="since"></div>
+<div id="padwrap">
+  <input id="pad" type="text" autocomplete="off" spellcheck="false"
+    placeholder="this world keeps what you give it. write anything.">
+  <div class="hint">a sentence rains when it ends — kept for you, read by nothing</div>
+</div>
+<canvas id="valley" width="860" height="430" aria-label="a drowned valley: rain gathers, a dam holds, a mirror aims, the deep keeps"></canvas>
+<div id="word"></div>
+<p class="laws">Held here, in force: what you write is kept and never read ·
+no number reaches you · quitting loses nothing, and a missed stretch never
+punishes — absence is productive · nothing you release is wasted; the deep
+keeps it, and answers on a later day. The terrain is the save file: the
+channels you cut stay cut. This slice is the game's opening surface; its
+named destination is the drowned page, where the world is the whole screen.
+Also here: <a href="index.html">the study</a> — every sentence you have ever
+given this world, with its instruments · <a href="walk.html">the walk</a>.
+<button id="setdown" style="font:inherit;font-size:12px;background:none;border:1px solid var(--line);color:var(--dim);border-radius:4px;padding:3px 10px;cursor:pointer;margin-left:6px">set it down</button></p>
+</main>
+<script>
+(function(){
+"use strict";
+/* THE TEN MINUTES — the daily slice: the reveal, the rain, the dam-hand and
+   the mirror, and the deep that answers tomorrow. Content-blind: sentence
+   text is kept and never read; the world reads structural facts only (that
+   a sentence exists; its length shapes a stone, the way length already
+   shaped layout in the study). No number is ever displayed. */
+
+var KEY="nesi_ten_v1";
+var cv=document.getElementById("valley"), cx=cv.getContext("2d");
+var W=cv.width, H=cv.height, N=200, COL=W/N;
+
+/* ── state ─────────────────────────────────────────────────────────────── */
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function fresh(){
+  var h=[];
+  for(var i=0;i<N;i++){
+    var t=i/N;
+    // canvas y grows downward: a basin is a LARGER y, a ridge a smaller one
+    var base= t<0.06 ? 140+t/0.06*40                       // left ridge
+      : t<0.50 ? 180+(t-0.06)/0.44*150 + 5*Math.sin(t*46)  // the long slope: rain runs down toward the dam
+      : t<0.54 ? 335                                       // the dam sill — open when the hand is off it
+      : t<0.76 ? 335+40*Math.sin((t-0.54)/0.22*Math.PI)    // lower basin (the flood ground; stones lie here)
+      : t<0.80 ? 375-(t-0.76)/0.04*123                     // the shore lip
+      : 392;                                               // the bed under the deep
+    h.push(Math.max(80,Math.min(392,base)));
+  }
+  return {h:h, water:new Array(N).fill(0), stones:[], deepQueue:[], risen:[],
+          shoots:[], mirrorX:0.18, days:[], lastOpen:null};
+}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&s.h&&s.h.length===N)return s;}catch(e){}return fresh();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+var st=load();
+
+var DAM_I=Math.round(N*0.52), SHORE_I=Math.round(N*0.80);
+var DEEP_LEVEL=252;               // the deep's standing waterline (y)
+var damHeld=false;
+
+/* ── the reveal — the converged open-beat: what came due renders first ──── */
+var t0=today();
+var returnedDay = st.days.length>0 && st.days.indexOf(t0)<0;  // a prior real day exists
+(function reveal(){
+  var due = st.deepQueue.filter(function(q){return q.day!==t0;});
+  if(due.length){
+    st.risen.push({day:t0, pieces:due.map(function(q){return q.len;})});
+    st.deepQueue = st.deepQueue.filter(function(q){return q.day===t0;});
+    document.getElementById("since").textContent="since you were last here";
+    setTimeout(function(){document.getElementById("since").textContent="";},9000);
+  }
+  if(st.days.indexOf(t0)<0) st.days.push(t0);
+  st.lastOpen=t0; save();
+})();
+
+/* ── the rain ──────────────────────────────────────────────────────────── */
+var pad=document.getElementById("pad");
+var drops=[]; // transient
+function rain(text){
+  var len=(text.trim().match(/\S+/g)||[]).length;
+  var i0=Math.round(N*(0.28+Math.random()*0.18)); // rain lands on the slope above the dam
+  for(var k=0;k<Math.max(6,Math.min(30,len*2));k++){
+    drops.push({x:(i0+(Math.random()*10-5))*COL, y:-10-Math.random()*60,
+                vy:2+Math.random()*2, col:Math.max(2,Math.min(N-3,i0+Math.round(Math.random()*8-4)))});
+  }
+  st.stones.push({id:Date.now()+Math.random(), day:t0, len:len, text:text.trim(),
+                  x:(0.56+Math.random()*0.16), sunk:false});
+  save();
+}
+function takeSentence(){
+  var v=pad.value;
+  if(!v.trim())return;
+  rain(v); pad.value="";
+}
+pad.addEventListener("keydown",function(e){
+  if(e.key==="Enter"){takeSentence();return;}
+  clearTimeout(pad._idle);
+  pad._idle=setTimeout(function(){ if(/[.!?…]\s*$/.test(pad.value)) takeSentence(); },900);
+});
+
+/* ── water: settle toward rest; the dam holds while held ──────────────── */
+function eff(i){var e=st.h[i]; if(i===DAM_I&&damHeld) e-=170; return e;} // a held dam is a high wall (smaller y = higher)
+function settle(steps){
+  for(var s=0;s<steps;s++){
+    for(var i=1;i<N-1;i++){
+      if(st.water[i]<=0)continue;
+      var here=eff(i)-st.water[i];
+      for(var d of [1,-1]){
+        var j=i+d;
+        var there=eff(j)-st.water[j];
+        if(here<there-0.5){ // water surface higher than neighbour's: flow
+          var f=Math.min(st.water[i],(there-here)/2*0.5);
+          st.water[i]-=f; st.water[j]+=f;
+          if(f>0.6 && st.h[j]<380) st.h[j]=Math.min(392,st.h[j]+0)/1, carve(j,f);
+          here=eff(i)-st.water[i];
+        }
+      }
+    }
+    // the deep swallows what reaches past the shore
+    for(var i2=SHORE_I;i2<N;i2++){ st.water[i2]=0; }
+  }
+}
+function carve(j,f){ // strong flow cuts the channel; the terrain remembers
+  if(j>DAM_I-2&&j<SHORE_I){ st.h[j]=Math.min(392, st.h[j]+f*0.35); }
+}
+
+/* ── input on the valley: the dam-hand, the mirror, the stones ─────────── */
+var dragStone=null, wakeT=0, dirty=false;
+function pos(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*(W/r.width), y:(e.clientY-r.top)*(H/r.height)};}
+cv.addEventListener("pointerdown",function(e){
+  var p=pos(e); try{cv.setPointerCapture(e.pointerId);}catch(err){}
+  // a stone?
+  for(var s of st.stones){ if(s.sunk)continue;
+    var sx=s.x*W, sy=stoneY(s);
+    if(Math.hypot(p.x-sx,p.y-sy)<16){ dragStone=s; return; } }
+  // the mirror?
+  if(Math.abs(p.x-st.mirrorX*W)<26 && p.y<90){ dragStone="mirror"; return; }
+  // the dam
+  if(Math.abs(p.x-DAM_I*COL)<30){ damHeld=true; word("held — let go, and the water finds its channel"); }
+});
+cv.addEventListener("pointermove",function(e){
+  var p=pos(e);
+  if(dragStone==="mirror"){ st.mirrorX=Math.max(0.03,Math.min(0.97,p.x/W)); return; }
+  if(dragStone){ dragStone.x=Math.max(0.05,Math.min(0.97,p.x/W)); dragStone._y=p.y; }
+});
+cv.addEventListener("pointerup",function(){
+  if(damHeld){ damHeld=false; settle(60); word("the cut stays — the terrain remembers"); save(); }
+  if(dragStone && dragStone!=="mirror"){
+    var s=dragStone;
+    if(s.x*W>SHORE_I*COL+14 && (s._y||0)>DEEP_LEVEL){ // past the line, into the dark
+      s.sunk=true; st.deepQueue.push({day:s.day,len:s.len,text:s.text});
+      wakeT=1; word("gone from your reach — not from the world");
+    }
+    save();
+  }
+  if(dragStone==="mirror"){ tryShoot(); save(); }
+  dragStone=null;
+});
+function tryShoot(){
+  var i=Math.round(st.mirrorX*N);
+  if(st.water[i]>1.2){
+    if(returnedDay){
+      if(!st.shoots.some(function(sh){return Math.abs(sh.x-st.mirrorX)<0.02;})){
+        st.shoots.push({x:st.mirrorX,day:t0});
+        word("where beam meets wet ground, on a returned day — something stands");
+      }
+    } else {
+      word("things stand here only across returned days. today plants nothing. that is not a failure.");
+    }
+  }
+}
+function word(s){var el=document.getElementById("word");el.textContent=s;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},6000);}
+
+/* ── drawing ───────────────────────────────────────────────────────────── */
+function stoneY(s){ var i=Math.round(s.x*N); return (s._y&&dragStone===s)?s._y:Math.min(st.h[i]-8, 400); }
+function draw(){
+  cx.clearRect(0,0,W,H);
+  // the deep — standing dark water right of the shore
+  cx.fillStyle="#101b26";
+  cx.fillRect(SHORE_I*COL,DEEP_LEVEL,W-SHORE_I*COL,H-DEEP_LEVEL);
+  cx.strokeStyle="rgba(91,139,163,.5)"; cx.beginPath();
+  cx.moveTo(SHORE_I*COL,DEEP_LEVEL); cx.lineTo(W,DEEP_LEVEL); cx.stroke();
+  // land
+  cx.beginPath(); cx.moveTo(0,H);
+  for(var i=0;i<N;i++) cx.lineTo(i*COL,st.h[i]);
+  cx.lineTo(W,H); cx.closePath();
+  cx.fillStyle="var(--land)"; cx.fillStyle="#2b2620"; cx.fill();
+  // water in the basins
+  cx.fillStyle="rgba(61,106,128,.85)";
+  for(var i2=0;i2<SHORE_I;i2++){ if(st.water[i2]>0.4){
+    cx.fillRect(i2*COL, st.h[i2]-st.water[i2], COL+0.5, st.water[i2]); } }
+  // the dam
+  cx.fillStyle=damHeld?"#c9a84c":"#584c34";
+  cx.fillRect(DAM_I*COL-4, st.h[DAM_I]-(damHeld?46:26), 8, damHeld?46:26);
+  // the mirror and its beam
+  var mx=st.mirrorX*W;
+  cx.fillStyle="#e8e4da"; cx.beginPath(); cx.arc(mx,26,6,0,7); cx.fill();
+  cx.strokeStyle="rgba(232,228,218,.28)"; cx.beginPath(); cx.moveTo(mx,32);
+  var mi=Math.round(st.mirrorX*N);
+  cx.lineTo(mx, st.h[mi]-st.water[mi]); cx.stroke();
+  // shoots — what stood across returned days
+  cx.strokeStyle="#7fa66a"; cx.lineWidth=2;
+  st.shoots.forEach(function(sh){ var x=sh.x*W, i3=Math.round(sh.x*N);
+    cx.beginPath(); cx.moveTo(x,st.h[i3]); cx.lineTo(x,st.h[i3]-18); cx.stroke();
+    cx.beginPath(); cx.arc(x,st.h[i3]-20,2.5,0,7); cx.stroke(); });
+  cx.lineWidth=1;
+  // the risen — what the deep built, on the shore
+  st.risen.forEach(function(r,ri){
+    var bx=SHORE_I*COL+18+ri*26, by=DEEP_LEVEL;
+    cx.fillStyle="#b9b2a4";
+    var yy=by;
+    r.pieces.slice(0,7).forEach(function(len){
+      var w=6+Math.min(16,Math.sqrt(len||1)*3);
+      yy-=7; cx.beginPath(); cx.ellipse(bx,yy,w/2,3.4,0,0,7); cx.fill();
+    });
+  });
+  // today's stones
+  st.stones.forEach(function(s){ if(s.sunk)return;
+    cx.fillStyle="#b9b2a4";
+    cx.beginPath(); cx.ellipse(s.x*W,stoneY(s),9,5,0,0,7); cx.fill(); });
+  // rain
+  cx.strokeStyle="rgba(122,160,180,.8)";
+  drops.forEach(function(d){ cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(d.x,d.y+6); cx.stroke(); });
+  // the wake — once
+  if(wakeT>0){
+    cx.strokeStyle="rgba(91,139,163,"+(wakeT*0.8)+")";
+    cx.beginPath(); cx.ellipse(SHORE_I*COL+(W-SHORE_I*COL)/2, DEEP_LEVEL+40, (1-wakeT)*120+20, 8,0,0,7); cx.stroke();
+  }
+}
+/* time-based: the world advances by real elapsed time, not by frame count,
+   so a backgrounded tab or a slow machine integrates the same rain */
+var _last=performance.now();
+function tick(){
+  var now=performance.now(), dt=Math.min(500,now-_last)/16.7; _last=now;
+  drops.forEach(function(d){ d.y+=d.vy*dt;
+    var ground=st.h[d.col]-st.water[d.col];
+    if(d.y>=ground){ st.water[d.col]+=1.6; d.dead=true; dirty=true; } });
+  drops=drops.filter(function(d){return !d.dead;});
+  settle(Math.max(1,Math.round(2*dt)));
+  if(dirty && drops.length===0){ save(); dirty=false; } // the pool persists once the rain has landed
+  if(wakeT>0) wakeT=Math.max(0,wakeT-0.008*dt);
+  draw();
+}
+setInterval(tick,33); tick();
+
+/* ── set it down ───────────────────────────────────────────────────────── */
+document.getElementById("setdown").addEventListener("click",function(){
+  if(!confirm("Set it down? Quitting loses nothing that mattered — this clears this browser's valley, and only this browser holds it."))return;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  st=fresh(); location.reload();
+});
+})();
+</script>
+</body>
+</html>
