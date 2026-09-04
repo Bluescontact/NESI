@@ -1,0 +1,19 @@
+# SOCKET SEAM RECONCILE — 2026-09-04
+Step 1b of the socket-seam pass, run against the GitHub NESI repo (Bluescontact/NESI, cloned to `nesi-repo/`). Reading only; nothing resolved.
+
+## Tree divergence, named first
+This repo is the **published body** (house / workshop / game), not the engine tree the pass's site table names. `MARKS_LOG.jsonl`, `OPEN_GATES`, `DECISIONS_OFFERED`, `LEXICON.md`, `membrane/skin.py`, `tension_table.py`, `whole_body.py`, `pulse_wire.py`, `writing_store.gd`, `glance`/`deepdive`, the chromadb store, `world2d` — all absent here. Floor was printed against the ledgers that do exist: `workshop/game-gate/gate/` — MARKS.jsonl 128 · LEDGER.jsonl 35 · DECLARATIONS.jsonl 60 · COMPOST.jsonl 2. The MARKS.jsonl-vs-MARKS_LOG.jsonl name split is itself a collision between the pass and this tree.
+
+| joint | verdict | what was found (quoted where it matters) |
+|---|---|---|
+| J1 field ↔ tensegrity | **MISSING** | No membrane/skin.py, tension_table.py, or whole_body.py anywhere in the repo. The joint names an absence on this tree. |
+| J2 basins ↔ lint | **ASSUMED** | `workshop/nesi/conductor/preflight.py` exists but its membership test was not examined this pass; no chromadb store in the repo. Unresolved, honestly. |
+| J3 holographic ↔ four depths | **ASSUMED** | `workshop/tools/codex_index/` (grounder.py, query.py) exists, unexamined; the binding-graph artifacts (462 edges / 36 communities) are not in the repo. |
+| J4 layers-as-instants ↔ heliostat | **MISSING** | No world2d, no heliostat table, no LEXICON.md — *turn* cannot even be checked against a list that isn't here. |
+| J5 weighs ↔ candidate → mark | **ASSUMED** — the load-bearing verdict | No engine path to canon found: nothing in the repo writes `patterns/`; `osg_organ/engine.py` states and keeps "The engine reflects; it never rates… Nothing here writes" (verified — no write calls); `gate/lib.mjs` has a structural guard ("gate ledger refuses jurisdiction \"…\"; only \"builder\" is writable here") and `mark()` refuses a mark without `--made`; `admit.mjs` refuses duplicates and fictional `--at` paths. BUT the boundary is jurisdictional, not identity-based — no code checks *who* runs admit — and `workshop/tools/marks.py catch` defaults `source="the keeper"`, so an engine caller omitting `--source` is **attributed to Kevin by default**. Two findings, both named, neither resolved. Per the pass: ASSUMED means no ARTICULATION_SEAM append; this report outranks it. |
+| J6 perturbation ↔ intake | **COLLIDES** | The metabolizer the reading sites in the tree lives outside it — it is a Claude Code skill (`~/.claude/skills/metabolizer/`), and `writing_store.gd` / stones are not in this repo. The reading's site and the organ's actual address disagree; named, not resolved. "Blind to the author" remains prose only, as the 08-10 finding said. |
+| J7 terminal law ↔ the sequence | **MISSING** | No `glance` or `deepdive` in the repo. `daily_walk.js` and `cold_walk.js` exist but were not shown to be one operation in two gate-modes; as sited by the reading, the joint is absent here. |
+| THE BREAK | **VERIFIED (partial)** | `workshop/nesi/conductor/continuity.py`: resume-state carries `last_marks: [{ts, pile, verdict}]` ("tail of marks.jsonl") and `open_threads`, and `resume()` returns the last sitting's state at next boot — **a marked candidate does re-enter as context, in code**. The comparison half stays unwired by its own declaration: "SEAM (documented, not built): interrogator Move B may later read history/… Continuity leaves the yesterday; it never does the comparison." The BREAK is half-closed: return yes, comparison no. |
+
+Counts: VERIFIED 1 · ASSUMED 3 · MISSING 3 · COLLIDES 1.
+Collisions named: (1) MARKS.jsonl ≠ MARKS_LOG.jsonl; (2) metabolizer's address (skill system vs tree). Neither resolved here.

@@ -85,7 +85,14 @@ def _parse_edges(vals):
 
 
 def catch(mark, source, acted, ts=None, blocks=None):
-    entry = {"ts": ts or _now(), "mark": mark, "source": source or "the keeper", "acted": acted}
+    # 2026-09-04 (socket-seam pass, J5 finding): source used to default to
+    # "the keeper", so any caller that omitted it wore Kevin's name. Attribution
+    # is now explicit or the write is refused — fail-close, same as the valve.
+    if not source or not str(source).strip():
+        print("[brake] DENY — a mark must name its source (--source); nothing written. "
+              "\"the keeper\" is claimed, never assumed.")
+        return None
+    entry = {"ts": ts or _now(), "mark": mark, "source": source, "acted": acted}
     # Declared in the same call that catches the mark, when the dependency is already
     # in view. Absent means no edge, never an unknown edge — nothing is inferred.
     if blocks:
@@ -248,10 +255,13 @@ def _find_open(ts_prefix, match):
             and (not match or match.lower() in r.get("mark", "").lower())]
     return hits
 
-def act(ts_prefix, acted, match=None, source="the keeper"):
+def act(ts_prefix, acted, match=None, source=None):
     """Append an overlay closing one mark. Fail-close on 0 or >1 matches."""
     if not acted or not acted.strip():
         print("[valve] DENY — empty acted evidence; nothing written")
+        return False
+    if not source or not str(source).strip():
+        print("[valve] DENY — a closure must name its source (--source); nothing written")
         return False
     hits = _find_open(ts_prefix, match)
     if len(hits) == 0:
@@ -270,7 +280,7 @@ def act(ts_prefix, acted, match=None, source="the keeper"):
     print(f"        acted: {acted[:80]}")
     return True
 
-def act_batch(path, source="the keeper"):
+def act_batch(path, source=None):
     """Apply many closures from a jsonl of {ts, match?, acted}. Each row fail-closes independently."""
     ok = deny = 0
     for line in open(path, encoding="utf-8"):
@@ -316,7 +326,7 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("catch")
     c.add_argument("--mark", required=True)
-    c.add_argument("--source", default="the keeper")
+    c.add_argument("--source", default=None, help="who this mark is from; required — never assumed")
     c.add_argument("--acted", default=None)
     c.add_argument("--ts", default=None)
     c.add_argument("--blocks", action="append", default=None,
@@ -331,7 +341,7 @@ def main():
     v.add_argument("--ts", default=None)
     v.add_argument("--match", default=None)
     v.add_argument("--acted", default=None)
-    v.add_argument("--source", default="the keeper")
+    v.add_argument("--source", default=None, help="who closed it; required — never assumed")
     v.add_argument("--batch", default=None)
     a = ap.parse_args()
     if a.cmd == "catch":
