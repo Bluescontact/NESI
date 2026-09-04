@@ -133,7 +133,11 @@ const refuse = (n, pass, note) => { R.push({ n, note, pass, isCheck: true }); if
    checkRatifyByCrossing(), not re-described. */
 {
   const fs = require("fs");
-  const indexSrc = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+  /* REPOINTED 2026-09-03 (Kevin's mark "A — THE WORLD IS THE ENTRY"): the
+     page moved from index.html to page.html — index.html is the world now —
+     so this instrument follows the function to where it lives. The
+     assertion itself is unchanged. */
+  const indexSrc = fs.readFileSync(path.join(ROOT, "page.html"), "utf8");
   const fnMatch = indexSrc.match(/function checkRatifyByCrossing\(dragged\) \{[\s\S]*?\n\}/);
   const usesRealOverlap = fnMatch && /Math\.abs\(n\.x - dragged\.x\) < \(n\.w \+ dragged\.w\) \/ 2/.test(fnMatch[0]);
   const usesCircleProxy = fnMatch && /n\.r \+ dragged\.r/.test(fnMatch[0]);

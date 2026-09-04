@@ -34,17 +34,6 @@
   /* ---------------------------------------------------------- THE SOUNDING
      One settled sentence, brought back up out of the ground it went into,
      verbatim, because the hand asked for it. */
-  /* ------------------------------------------------------------ THE HEM
-     The sheet's lower edge is a hem the hand can take: drag it down and the
-     page face unrolls beneath the writing; drag it up and it rolls back. */
-  #sheetedge{position:absolute;left:0;right:0;bottom:0;height:12px;cursor:grab;
-         touch-action:none;background:linear-gradient(rgba(42,36,25,0),rgba(42,36,25,.10))}
-  #sheetedge:active{cursor:grabbing}
-  #pageface{position:fixed;overflow:hidden;border-radius:0 0 2px 2px;
-         background:rgba(247,244,236,.96);box-shadow:0 8px 30px rgba(0,0,0,.30);
-         transition:opacity .3s}
-  #pageface iframe{width:100%;height:100%;border:0;display:block}
-  #pageface.aside,#sheet.aside~#pageface{opacity:0;pointer-events:none}
   #sound{position:fixed;max-width:340px;font-family:Georgia,'Times New Roman',serif;
          font-size:13.5px;line-height:1.6;color:#22201a;
          background:rgba(247,244,236,.94);padding:9px 12px;border-radius:2px;
@@ -55,33 +44,11 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="sheet"><div id="pagebg"></div><textarea id="field" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea><div id="sheetedge"></div></div>
-<!-- THE PAGE FACE, 2026-09-03, Kevin's mark "A — THE WORLD IS THE ENTRY".
-     The standing document — margin graph, grounds, gift tetra (D), the
-     twelve-pick room (A) — lives at page.html and is seated HERE, spatially:
-     drag the sheet's hem down and the page unrolls beneath the writing, over
-     the same sky; drag the hem up (or Esc) and it rolls back and the world
-     stands as before. Not a link, not a destination — the lower half of the
-     same sheet. page.html's pad is disconnected; the sheet above is the one
-     authoring surface, and arrive() deposits every finished sentence into
-     the page's own store (nesi.thepage). -->
-<div id="pageface" hidden><iframe id="pageframe" title="the page"></iframe></div>
+<div id="sheet"><div id="pagebg"></div><textarea id="field" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea></div>
 <div id="sound"></div>
 <script>
 "use strict";
 /* ===========================================================================
-   NESI — THE WORLD IS THE ENTRY (Kevin's mark, 2026-09-03: "A — THE WORLD IS
-   THE ENTRY"). This file was world.html — THE FUN SLICE — and is the entry
-   now: NESI opens inside the valley, the sheet over the sky is the one place
-   writing happens, and the standing page (document, margin graph, grounds,
-   gift tetra D, twelve-pick room A — page.html) unrolls from the sheet's hem
-   as part of the same body. Every finished sentence rains here AND is
-   deposited into the page's store (nesi.thepage) — one authored act, one
-   durable identity. Prior entry kept byte-whole at
-   index.html.backup_pre-world-entry_2026-09-03.html; this file's own prior
-   standing at world.html.backup_pre-entry_2026-09-03.html; world.html now
-   redirects here.
-
    NESI — THE FUN SLICE
    One world, one camera. Rain from real writing · one dam · one basin ·
    one mirror aimed by hand · one shoot where light meets water · one stone
@@ -536,7 +503,7 @@ function bandCut(){
 }
 field.addEventListener("input",bandCut);
 field.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){e.preventDefault();layAside();return}
+  if(e.key==="Escape"){e.preventDefault();sheetEl.classList.toggle("aside");return}
   if(e.key==="Enter"){
     /* THE NEWLINE LANDS. Enter banks what is held, as it always did — but it is
        no longer swallowed, because the page is visible now and a record with no
@@ -553,7 +520,7 @@ field.addEventListener("keydown",e=>{
 });
 addEventListener("keydown",e=>{
   if(e.key==="Escape"&&document.activeElement!==field){
-    e.preventDefault(); layAside();
+    e.preventDefault(); sheetEl.classList.toggle("aside");
   }
 });
 /* the keyboard always has somewhere to go; the pointer belongs to the world. */
@@ -561,133 +528,12 @@ function keepFocus(){if(document.activeElement!==field)field.focus({preventScrol
 addEventListener("pointerdown",()=>setTimeout(keepFocus,0));
 setInterval(keepFocus,600); keepFocus();
 
-/* ------------------------------------------------- the hem, the page face */
-/* 2026-09-03, Kevin's mark "A — THE WORLD IS THE ENTRY". The page belongs
-   spatially to the world: take the sheet's hem and pull down past 40px (the
-   pull, not the click — C4's own threshold) and the standing document
-   unrolls beneath the writing; pull the hem up, or Esc, and it rolls back.
-   No button, no mode, no destination. */
-const pagefaceEl=document.getElementById("pageface");
-const pageframeEl=document.getElementById("pageframe");
-let unrolled=false;
-function unroll(){
-  if(unrolled)return;
-  unrolled=true;
-  pageframeEl.src="page.html";   /* fresh each unroll, so it reads the store as it stands */
-  pagefaceEl.hidden=false;
-  fit();
-}
-function rollUp(){
-  if(!unrolled)return;
-  unrolled=false;
-  pagefaceEl.hidden=true;
-  pageframeEl.src="about:blank";
-}
-/* Esc keeps its family: first it rolls the page back; only then does it lay
-   the sheet aside, exactly as before. */
-function layAside(){ if(unrolled){rollUp();return} sheetEl.classList.toggle("aside") }
-(function(){
-  const hem=document.getElementById("sheetedge");
-  let h0=null;
-  hem.addEventListener("pointerdown",e=>{
-    e.preventDefault(); e.stopPropagation();
-    h0=e.clientY; hem.setPointerCapture(e.pointerId);
-  });
-  hem.addEventListener("pointermove",e=>{
-    if(h0===null)return;
-    const dy=e.clientY-h0;
-    if(dy>40){h0=null;unroll()}
-    else if(dy<-40){h0=null;rollUp()}
-  });
-  hem.addEventListener("pointerup",()=>{h0=null});
-})();
-
-/* -------------------------------------------- the one-time writing weave */
-/* MIGRATION, 2026-09-03, run once: the world's own prior writing (S.writing,
-   per-day verbatim strings under nesiworld) crosses into the page's store so
-   there is one durable authored identity. Deterministic — the same cut
-   grammar as the band, exact-text dedup, day stamps preserved. Reversible —
-   both raw stores are backed up verbatim under the guard key before anything
-   is written. Nothing is read for meaning and nothing is deleted from the
-   world's own record. */
-(function migrateWorldWriting(){
-  const GUARD="nesi.thepage.migrated_from_world_2026-09-03";
-  try{
-    if(localStorage.getItem(GUARD))return;
-    const PKEY="nesi.thepage";
-    const pRaw=localStorage.getItem(PKEY), wRaw=localStorage.getItem(KEY);
-    let p=pRaw?JSON.parse(pRaw):null;
-    if(Array.isArray(p))p={nodes:p,nextId:p.reduce((m,n)=>Math.max(m,(n.id|0)+1),0),declaredEdges:[],tombstones:[],worldPicks:[],attentionCount:{},overreadIds:[]};
-    if(!p||typeof p!=="object")p={nodes:[],nextId:0,declaredEdges:[],tombstones:[],worldPicks:[],attentionCount:{},overreadIds:[]};
-    if(!Array.isArray(p.nodes))p.nodes=[];
-    if(typeof p.nextId!=="number")p.nextId=p.nodes.reduce((m,n)=>Math.max(m,(n.id|0)+1),0);
-    const have=new Set(p.nodes.map(n=>String(n.text).trim()));
-    const isEndC=c=>".!?…".indexOf(c)>=0;
-    const migrated=[];
-    const days=Object.keys((S&&S.writing)||{}).sort();
-    for(const day of days){
-      const v=String(S.writing[day]||"");
-      let i=0,start=0;
-      while(i<v.length){
-        if(isEndC(v[i])){
-          if(v[i]==="."&&/\d/.test(v[i-1]||"")&&/\d/.test(v[i+1]||"")){i++;continue}
-          let j=i;while(j+1<v.length&&isEndC(v[j+1]))j++;
-          const seg=v.slice(start,j+1).trim();
-          if(seg.length>1&&/[A-Za-z0-9]/.test(seg)&&!have.has(seg)){
-            p.nodes.push({id:p.nextId++,text:seg,words:seg.split(/\s+/).length,gapMs:0,day:day,x:0,y:0,userMoved:false,blind:false});
-            have.add(seg); migrated.push(seg);
-          }
-          start=j+1;i=j+1;
-        } else i++;
-      }
-    }
-    /* backup first, then the write, then the guard — a crash between steps
-       leaves the stores either untouched or fully recoverable */
-    const backup=JSON.stringify({when:new Date().toISOString(),world:wRaw,page:pRaw,migrated:migrated});
-    localStorage.setItem(GUARD+".backup",backup);
-    if(migrated.length){
-      const j=JSON.stringify(p);
-      localStorage.setItem(PKEY,j);
-      if(localStorage.getItem(PKEY)!==j)return; /* failed write: no guard, retry next open */
-    }
-    localStorage.setItem(GUARD,new Date().toISOString());
-  }catch(e){}
-})();
-
 /* ---------------------------------------------------------------- arrival */
 /* a sentence completes: the cloud discharges over the catchment and a stone
    comes to the shore. the world never learns what was written. */
 const drops=[], splashes=[], spray=[], bubbles=[];
 let rainQueue=0, rainT=0, flash=0;
-/* THE DEPOSIT, 2026-09-03 (Kevin's mark "A — THE WORLD IS THE ENTRY"): the
-   same completed act that rains here is also the page's authored sentence —
-   one authored act, one durable writing identity (nesi.thepage, the page
-   face's own store and schema), multiple lawful consequences. Structural
-   facts only cross: the text verbatim, its word count, the idle gap, the
-   day. Nothing reads what it says. Write, read back, only then trust it —
-   the page's own persist discipline, kept here. */
-let lastDepositAt=null;
-function pageDeposit(text){
-  try{
-    const PKEY="nesi.thepage";
-    const raw=localStorage.getItem(PKEY);
-    let p=raw?JSON.parse(raw):null;
-    if(Array.isArray(p))p={nodes:p,nextId:p.reduce((m,n)=>Math.max(m,(n.id|0)+1),0),declaredEdges:[],tombstones:[],worldPicks:[],attentionCount:{},overreadIds:[]};
-    if(!p||typeof p!=="object")p={nodes:[],nextId:0,declaredEdges:[],tombstones:[],worldPicks:[],attentionCount:{},overreadIds:[]};
-    if(!Array.isArray(p.nodes))p.nodes=[];
-    if(typeof p.nextId!=="number")p.nextId=p.nodes.reduce((m,n)=>Math.max(m,(n.id|0)+1),0);
-    const now=performance.now();
-    const gapMs=lastDepositAt===null?0:Math.max(0,now-lastDepositAt);
-    lastDepositAt=now;
-    const words=text.trim()?text.trim().split(/\s+/).length:0;
-    p.nodes.push({id:p.nextId++,text:text,words:words,gapMs:gapMs,day:dayKey(),x:0,y:0,userMoved:false,blind:false});
-    const j=JSON.stringify(p);
-    localStorage.setItem(PKEY,j);
-    if(localStorage.getItem(PKEY)!==j)return; /* a bad write never claims to have landed */
-  }catch(e){}
-}
 function arrive(text){
-  pageDeposit(text);
   rainQueue+=110; flash=1;
   const x=618+Math.random()*46, y=groundY(x)-4;
   S.nn++;
@@ -1373,15 +1219,6 @@ function fit(){
   const fs=Math.max(11,Math.min(19,15*sc));
   pagebg.style.fontSize=field.style.fontSize=fs+"px";
   pagebg.style.padding=field.style.padding=(10*sc)+"px "+(14*sc)+"px";
-  /* the page face hangs from the sheet's hem to the valley floor's edge —
-     the same left and right as the sheet, because it is the same sheet */
-  if(unrolled){
-    const top=oy+SHEET.y1*sc+2;
-    pagefaceEl.style.left=(ox+SHEET.x0*sc)+"px";
-    pagefaceEl.style.top=top+"px";
-    pagefaceEl.style.width=((SHEET.x1-SHEET.x0)*sc)+"px";
-    pagefaceEl.style.height=Math.max(120,(oy+(H-14)*sc)-top)+"px";
-  }
 }
 /* resizing resets the backing store, which CLEARS it — a still world would sit
    blank until the hand moved. one frame is owed, and it is not a stir. */
