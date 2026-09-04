@@ -42,6 +42,8 @@ The Open Ledger **shows the cost and hides the debt.**
 
 The ledger has no `felt_as_gift`, no `quality`, no `sentiment` column — and that absence is honest, not an oversight. The one thing the tool cannot decide is whether a given gift was *felt* as gift or as extraction wearing gift's face. The schema makes the frame unbreakable on paper; it still can't read the room.
 
+One more absence to name, because the demo will not surface it: `description` and `weight` are free text. *"Alice owes Bob $50, due Friday"* is a perfectly writable entry. Debt as a **column** is unrepresentable — there is no number to sum and no counterparty to sum it against — but debt as **prose** is not, and a room determined to keep score can keep it in words the schema cannot see. That path is closed by no structure. It is held only by the vocabulary discipline ([Circuit Tool](../CIRCUIT_TOOL.md)) and by the room itself — one more reason the gathering below is load-bearing rather than decorative.
+
 That part doesn't live in the tool. It lives in the people the tool gathers — which is exactly why `gathering` is a first-class kind with its own view, not decoration. The ledger routes people to the room. The room does the felt-read. And the room is where visible cost gets **received as gift** instead of **tallied as owed**. That makes the gathering the circuit's dispute arena, and it is declared as one: [the dispute arena](../membrane/01_THE_DISPUTE_ARENA.md) says who convenes it, what it can and cannot decide, and how its record is kept.
 
 ---

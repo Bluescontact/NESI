@@ -32,9 +32,11 @@ twelve principles this work kept arriving at, each with its evidence and
 the test that would show it wrong.
 
 **If you want the strange thing first** — there is a page here that
-watches you write and never reads a word:
-[`game/index.html`](game/index.html). No login, no score kept, nothing
-leaves your machine. Open it and write.
+watches you write and never interprets a word:
+[`game/index.html`](game/index.html). Your text stays in your own
+browser, read for shape — length, idle time, where your attention rests —
+never for meaning. No login, no score kept, nothing leaves your machine.
+Open it and write.
 
 ## The workshop
 

@@ -77,7 +77,11 @@ export interface Posted<T extends Entry> { entry: T; key: HolderKey; }
 
 // "Your node" is computed locally from the keyring you hold — never a server call.
 export type Keyring = HolderKey[];
-export function myNode(circulation: Entry[], keyring: Keyring): Entry[]; // local; no network
+// `declare`, because the checking is local-by-construction: entries as typed here
+// carry no holder_proof, so no implementation in this module COULD match keys to
+// entries — the join lives client-side, beside the keyring. The declaration
+// compiles; the claim "fails to compile" below is now itself compiler-checked.
+export declare function myNode(circulation: Entry[], keyring: Keyring): Entry[]; // local; no network
 
 // The operations the ledger HAS.
 // Read the comment block beneath them: those are the operations it cannot have,
